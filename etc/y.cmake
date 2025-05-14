@@ -3,8 +3,6 @@
 include(CMakePrintHelpers)
 message( STATUS "Project Settings" )
 cmake_print_variables(PROJECT_SOURCE_DIR)
-cmake_print_variables(CMAKE_C_COMPILER)
-cmake_print_variables(CMAKE_CXX_COMPILER)
 cmake_print_variables(CMAKE_GENERATOR)
 
 if("" STREQUAL "${CMAKE_BUILD_TYPE}")
@@ -33,11 +31,22 @@ if(NOT Y_BUILD_TYPE_DEFINED)
 	message( FATAL_ERROR "CMAKE_BUILD_TYPE!=[Debug|Release]")
 endif()
 
-
+# compiler
+cmake_print_variables(CMAKE_C_COMPILER)
+cmake_print_variables(CMAKE_CXX_COMPILER)
 get_filename_component(Y_CC ${CMAKE_C_COMPILER} NAME_WE)
 get_filename_component(Y_CXX ${CMAKE_CXX_COMPILER} NAME_WE)
 cmake_print_variables(Y_CC Y_CXX)
 
+macro(Y_FIND_COMPILER_VERSION)
+	execute_process(
+		COMMAND ${CMAKE_C_COMPILER} -v
+		OUTPUT_VARIABLE THE_OUT
+		ERROR_VARIABLE  THE_ERR
+	)
+	set(THE_INFO "${THE_OUT}${THE_ERR}")
+	cmake_print_variables(THE_INFO)
+endmacro()
 
-
+Y_FIND_COMPILER_VERSION()
 
