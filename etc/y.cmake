@@ -28,7 +28,6 @@ if("" STREQUAL "${CMAKE_BUILD_TYPE}")
 	set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
-cmake_print_variables(CMAKE_BUILD_TYPE)
 # selecting build type
 set(Y_DEBUG   TRUE)
 set(Y_RELEASE FALSE)
@@ -50,6 +49,15 @@ if(NOT Y_BUILD_TYPE_IS_DEFINED)
 	message( FATAL_ERROR "CMAKE_BUILD_TYPE!=[Debug|Release]")
 endif()
 
+
+################################################################################
+##
+##
+## Checking Platforms
+##
+##
+################################################################################
+
 ################################################################################
 ##
 ##
@@ -62,20 +70,30 @@ cmake_print_variables(CMAKE_C_COMPILER)
 cmake_print_variables(CMAKE_CXX_COMPILER)
 get_filename_component(Y_CC ${CMAKE_C_COMPILER} NAME_WE)
 get_filename_component(Y_CXX ${CMAKE_CXX_COMPILER} NAME_WE)
-cmake_print_variables(Y_CC Y_CXX)
+cmake_print_variables(Y_CC Y_CXX CMAKE_BUILD_TYPE)
 
 set(Y_CC_MAJOR 0)
 set(Y_CC_MINOR 0)
 
 
-macro(Y_FIND_COMPILER_VERSION)
+function(Y_FIND_COMPILER_VERSION)
 	# execute command to extract some version
-	execute_process(COMMAND ${CMAKE_C_COMPILER} ${ARGV} 
-		OUTPUT_VARIABLE THE_OUT	ERROR_VARIABLE  THE_ERR)
+	cmake_print_variables(ARGN)
+	cmake_print_variables(ARGC)
+	if( "0" STREQUAL "${ARGC}")
+		execute_process(COMMAND ${CMAKE_C_COMPILER}
+			OUTPUT_VARIABLE THE_OUT	ERROR_VARIABLE  THE_ERR)
+	endif()
+	if( "1" STREQUAL "${ARGC}")
+		#Y_MESSAGE("with one arg")
+		execute_process(COMMAND ${CMAKE_C_COMPILER} ${ARGV0}
+			OUTPUT_VARIABLE THE_OUT	ERROR_VARIABLE  THE_ERR)
+	endif()
 	set(THE_INFO "${THE_OUT}${THE_ERR}")
 	string( STRIP "${THE_INFO}" THE_INFO)
 	# transform output into list of words
 	string( REGEX REPLACE "[\r\n ]+" ";" THE_INFO "${THE_INFO}")
+	cmake_print_variables(THE_INFO)
 	list(FIND THE_INFO "version" VPOS)
 	if( "-1" STREQUAL "${VPOS}")
 		message( FATAL_ERROR "couldn't find 'version' from '${Y_CC}'")
@@ -84,7 +102,58 @@ macro(Y_FIND_COMPILER_VERSION)
 	math(EXPR VPOS "${VPOS}+1")
 	list(GET THE_INFO ${VPOS} Y_CC_VERSION)
 	cmake_print_variables(Y_CC_VERSION)
-endmacro()
+	set(Y_CC_MAJOR 1 PARENT_SCOPE)
+	set(Y_CC_MINOR 2 PARENT_SCOPE)
+endfunction()
 
-Y_FIND_COMPILER_VERSION(-v)
+set(Y_KNOWN_COMPILER FALSE)
 
+################################################################################
+#
+# configuration for gcc/g++
+#
+################################################################################
+if("${Y_CC}" MATCHES "gcc.*")
+	message( STATUS "Using GNU Compilers")
+	set(Y_KNOWN_COMPILER TRUE)
+	set(Y_GNU TRUE)
+	Y_FIND_COMPILER_VERSION(-v)
+endif()
+
+################################################################################
+#
+# configuration for clang/clang++
+#
+################################################################################
+if("${Y_CC}" MATCHES "clang.*")
+	message( STATUS "Using Clang Compilers")
+	set(Y_KNOWN_COMPILER TRUE)
+	set(Y_CLANG TRUE)
+	Y_FIND_COMPILER_VERSION(-v)
+	cmake_print_variables(Y_CC_MAJOR Y_CC_MINOR)
+endif()
+
+
+################################################################################
+#
+# configuration for icc/icpc
+#
+################################################################################
+if("${Y_CC}" MATCHES "icc.*")
+	message( STATUS "Using Intel Compilers")
+	set(Y_KNOWN_COMPILER TRUE)
+	set(Y_ICC TRUE)
+	Y_FIND_COMPILER_VERSION(-v)
+endif()
+
+################################################################################
+#
+# configuration for Microsoft
+#
+################################################################################
+if("${Y_CC}" MATCHES "cl[.].*")
+	message( STATUS "Using Microsoft Compilers")
+	set(Y_KNOWN_COMPILER TRUE)
+	set(Y_MSC TRUE)
+	Y_FIND_COMPILER_VERSION()
+endif()
