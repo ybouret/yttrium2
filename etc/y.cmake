@@ -6,14 +6,21 @@
 ##
 ##
 ################################################################################
-macro(Y_MESSAGE)
-	message(STATUS "---------------------------------------------------------" )
-	message(STATUS ${ARGV})
-	message(STATUS "---------------------------------------------------------" )
-endmacro(Y_MESSAGE)
+function(Y_Message)
+	set(MSG "${ARGV}")
+	string(LENGTH ${MSG} LEN)
+	string( REPEAT "-" ${LEN} SEP)
+	string( REPEAT " " ${LEN} SPC)
+	message( STATUS )
+	message( STATUS "/-"  ${SEP}  "-\\")
+	message( STATUS "| "  ${SPC}  " |")
+	message( STATUS "| "  ${ARGV} " |")
+	message( STATUS "| "  ${SPC}  " |")
+	message( STATUS "\\-" ${SEP}  "-/")
+endfunction(Y_Message)
 
 include(CMakePrintHelpers)
-Y_MESSAGE("Project Settings")
+Y_Message("Project Settings")
 cmake_print_variables(PROJECT_SOURCE_DIR)
 cmake_print_variables(CMAKE_GENERATOR)
 
@@ -65,12 +72,15 @@ endif()
 ##
 ##
 ################################################################################
-Y_MESSAGE("Checking Compilers")
-cmake_print_variables(CMAKE_C_COMPILER)
-cmake_print_variables(CMAKE_CXX_COMPILER)
+Y_Message("Checking Compilers")
+
 get_filename_component(Y_CC ${CMAKE_C_COMPILER} NAME_WE)
 get_filename_component(Y_CXX ${CMAKE_CXX_COMPILER} NAME_WE)
-cmake_print_variables(Y_CC Y_CXX CMAKE_BUILD_TYPE)
+cmake_print_variables(CMAKE_C_COMPILER)
+cmake_print_variables(CMAKE_CXX_COMPILER)
+cmake_print_variables(Y_CC)
+cmake_print_variables(Y_CXX)
+cmake_print_variables(CMAKE_BUILD_TYPE)
 
 set(Y_CC_MAJOR 0)
 set(Y_CC_MINOR 0)
@@ -159,3 +169,30 @@ if("${Y_CC}" STREQUAL "cl")
 	Y_FIND_COMPILER_VERSION()
 endif()
 
+################################################################################
+##
+##
+## Creating Library THE_LIB SUBDIRS=${ARGV}
+##
+##
+################################################################################
+function(Y_CreateLibrary THE_LIB)
+	Y_Message("Create Library <${THE_LIB}>")
+	set(SRC "")
+	set(PRV "")
+	set(HDR "")
+	foreach(SUBDIR IN LISTS ARGN)
+		message( STATUS "[${SUBDIR}]")
+		file( GLOB src "${SUBDIR}/*.cpp")
+		file( GLOB prv "${SUBDIR}/*.hxx")
+		file( GLOB hdr "${SUBDIR}/*.hpp" "${SUBDIR}/*.h")
+		source_group(${SUBDIR} FILES ${src} ${prv} ${hdr})
+		list( APPEND SRC ${src})
+		list( APPEND PRV ${prv})
+		list( APPEND HDR ${hdr})
+	endforeach()
+	cmake_print_variables(SRC)
+	cmake_print_variables(PRV)
+	cmake_print_variables(HDR)
+	add_library(${THE_LIB} STATIC ${SRC} ${HDR} ${PRV})
+endfunction()
