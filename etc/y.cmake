@@ -92,7 +92,7 @@ function(Y_FIND_COMPILER_VERSION)
 	set(THE_INFO "${THE_OUT}${THE_ERR}")
 	string( STRIP "${THE_INFO}" THE_INFO)
 	# transform output into list of words
-	string( REGEX REPLACE "[\r\n ]+" ";" THE_INFO "${THE_INFO}")
+	string( REGEX REPLACE "[\r\n \t]+" ";" THE_INFO "${THE_INFO}")
 	cmake_print_variables(THE_INFO)
 	list(FIND THE_INFO "version" VPOS)
 	if( "-1" STREQUAL "${VPOS}")
@@ -151,7 +151,7 @@ endif()
 # configuration for Microsoft
 #
 ################################################################################
-if("${Y_CC}" MATCHES "cl")
+if("${Y_CC}" STREQUAL "cl")
 	message( STATUS "Using Microsoft Compilers")
 	set(Y_KNOWN_COMPILER TRUE)
 	set(Y_MSC TRUE)
