@@ -151,7 +151,7 @@ endif()
 # configuration for Microsoft
 #
 ################################################################################
-if("${Y_CC}" MATCHES "cl[.].*")
+if("${Y_CC}" MATCHES "cl")
 	message( STATUS "Using Microsoft Compilers")
 	set(Y_KNOWN_COMPILER TRUE)
 	set(Y_MSC TRUE)
