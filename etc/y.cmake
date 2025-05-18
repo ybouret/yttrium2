@@ -103,6 +103,7 @@ function(Y_FIND_COMPILER_VERSION)
 	string( STRIP "${THE_INFO}" THE_INFO)
 	# transform output into list of words
 	string( REGEX REPLACE "[^A-Za-z0-9.]+" ";" THE_INFO "${THE_INFO}")
+	cmake_print_variables(THE_INFO)
  	list(FIND THE_INFO "version" VPOS)
 	if( "-1" STREQUAL "${VPOS}")
 		message( FATAL_ERROR "couldn't find 'version' from '${Y_CC}'")
