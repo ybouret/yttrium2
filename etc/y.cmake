@@ -130,6 +130,8 @@ if("${Y_CC}" MATCHES "gcc.*")
 	set(Y_KNOWN_COMPILER TRUE)
 	set(Y_GNU TRUE)
 	Y_FIND_COMPILER_VERSION(-v)
+	list( APPEND CMAKE_C_FLAGS "-Wall -Wextra")
+	list( APPEND CMAKE_C_FLAGS "-Wall -Wextra -Weffc++")
 endif()
 
 ################################################################################
@@ -142,6 +144,8 @@ if("${Y_CC}" MATCHES "clang.*")
 	set(Y_KNOWN_COMPILER TRUE)
 	set(Y_CLANG TRUE)
 	Y_FIND_COMPILER_VERSION(-v)
+	list( APPEND CMAKE_C_FLAGS   "-Wall -Wextra")
+	list( APPEND CMAKE_CXX_FLAGS "-Wall -Wextra -Weffc++ ")
 endif()
 
 
@@ -155,6 +159,8 @@ if("${Y_CC}" MATCHES "icc.*")
 	set(Y_KNOWN_COMPILER TRUE)
 	set(Y_ICC TRUE)
 	Y_FIND_COMPILER_VERSION(-v)
+	list( APPEND CMAKE_C_FLAGS "-Wall")
+	list( APPEND CMAKE_CXX_FLAGS "-Wall")
 endif()
 
 ################################################################################
@@ -168,6 +174,10 @@ if("${Y_CC}" STREQUAL "cl")
 	set(Y_MSC TRUE)
 	Y_FIND_COMPILER_VERSION()
 endif()
+
+
+cmake_print_variables(CMAKE_C_FLAGS)
+cmake_print_variables(CMAKE_CXX_FLAGS)
 
 ################################################################################
 ##
@@ -192,9 +202,9 @@ function(Y_CreateLibrary THE_LIB)
 		list( APPEND HDR ${hdr})
 		install( FILES  ${hdr} DESTINATION include/${SUBDIR})
 	endforeach()
-	cmake_print_variables(SRC)
-	cmake_print_variables(PRV)
-	cmake_print_variables(HDR)
+	#cmake_print_variables(SRC)
+	#cmake_print_variables(PRV)
+	#cmake_print_variables(HDR)
 	add_library(${THE_LIB} STATIC ${SRC} ${HDR} ${PRV})
 	install( TARGETS ${THE_LIB} ARCHIVE)
 endfunction()
