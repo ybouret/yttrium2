@@ -198,3 +198,12 @@ function(Y_CreateLibrary THE_LIB)
 	add_library(${THE_LIB} STATIC ${SRC} ${HDR} ${PRV})
 	install( TARGETS ${THE_LIB} ARCHIVE)
 endfunction()
+
+function(Y_CreateTest THE_TEST)
+	Y_MESSAGE("Create Test <${THE_TEST}>")
+	# top-level sources
+	set(SRC main.cpp)
+	file( GLOB src "test-*.cpp")
+	list( APPEND SRC ${src})
+	add_executable(${THE_TEST} ${SRC})
+endfunction()
