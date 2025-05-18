@@ -131,7 +131,7 @@ if("${Y_CC}" MATCHES "gcc.*")
 	set(Y_GNU TRUE)
 	Y_FIND_COMPILER_VERSION(-v)
 	list( APPEND CMAKE_C_FLAGS "-Wall -Wextra")
-	list( APPEND CMAKE_C_FLAGS "-Wall -Wextra -Weffc++")
+	list( APPEND CMAKE_CXX_FLAGS "-Wall -Wextra -Weffc++")
 endif()
 
 ################################################################################
@@ -159,7 +159,7 @@ if("${Y_CC}" MATCHES "icc.*")
 	set(Y_KNOWN_COMPILER TRUE)
 	set(Y_ICC TRUE)
 	Y_FIND_COMPILER_VERSION(-v)
-	list( APPEND CMAKE_C_FLAGS "-Wall")
+	list( APPEND CMAKE_C_FLAGS   "-Wall")
 	list( APPEND CMAKE_CXX_FLAGS "-Wall")
 endif()
 
