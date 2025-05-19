@@ -27,9 +27,10 @@ int main()
     excp.show(std::cerr);
 
     excp.add(" and '%s'", Y_Compiler);
-
     excp.show(std::cerr);
 
+    excp.pre("'%s': ", "Hello");
+    excp.show(std::cerr);
 
     return 0;
 }

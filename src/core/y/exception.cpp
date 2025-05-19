@@ -74,7 +74,20 @@ namespace Yttrium
             va_end(ap);
         }
         (void) Core::Text::Add(tell, sizeof(tell), buffer);
+    }
 
+    void Exception:: pre(const char * const formatString,...) noexcept
+    {
+        assert(0!=formatString);
+        char buffer[Length];
+        {
+            va_list ap;
+            va_start(ap,formatString);
+            (void) Core::Variadic::Format(buffer,sizeof(buffer),formatString,&ap);
+            va_end(ap);
+        }
+        (void) Core::Text::Add(buffer, sizeof(buffer), tell);
+        memcpy(tell,buffer,Length);
     }
 
 

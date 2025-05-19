@@ -29,7 +29,8 @@ namespace Yttrium
         const char *         when() const noexcept;
         void                 show(std::ostream &) const;
         void                 add(const char * const formatString,...) noexcept Y_Printf_Check(2,3);
-
+        void                 pre(const char * const formatString,...) noexcept Y_Printf_Check(2,3);
+        
     private:
         Y_Disable_Assign(Exception);
         char tell[Length];
