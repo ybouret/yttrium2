@@ -114,7 +114,7 @@ if("${Y_CC}" MATCHES "clang.*")
 	set(Y_KNOWN_COMPILER TRUE)
 	set(Y_CLANG TRUE)
 	list( APPEND CMAKE_C_FLAGS   "-Wall -Wextra")
-	list( APPEND CMAKE_CXX_FLAGS "-Wall -Wextra -Weffc++ ")
+	list( APPEND CMAKE_CXX_FLAGS "-Wall -Wextra -Weffc++ -std=c++11")
 endif()
 
 
