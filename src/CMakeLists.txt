@@ -7,5 +7,8 @@ set(CMAKE_INSTALL_PREFIX ${Y_SRC_DIR}/../sdk)
 
 include(${Y_ETC_DIR}/y.cmake)
 
+find_program(DOX doxygen DOC "Doxygen")
+cmake_print_variables(DOX)
+
 add_subdirectory(core)
 

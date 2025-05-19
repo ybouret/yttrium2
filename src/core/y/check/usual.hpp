@@ -11,11 +11,10 @@
 
 namespace Yttrium
 {
-    bool Good(const void * const addr,
-              const size_t       size) noexcept;
-    
-    bool Die(const char * const) noexcept;
+    bool Good(const void * const blockAddr,
+              const size_t       blockSize) noexcept;
 
+    bool Die(const char * const) noexcept;
 }
 
 #endif
