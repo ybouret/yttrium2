@@ -4,18 +4,38 @@
 #ifndef Y_Core_Utils_Included
 #define Y_Core_Utils_Included 1
 
-//#include "y/system/types.hpp"
 
 
 namespace Yttrium
 {
-
+    //__________________________________________________________________________
+    //
+    //
+    //! inline MaxOf
+    /**
+     \param a lhs argument
+     \param b rhs argument
+     \return max of a and b
+     */
+    //
+    //__________________________________________________________________________
     template <typename T> inline
     T MaxOf(const T a, const T b)
     {
         return a < b ? b : a;
     }
 
+    //__________________________________________________________________________
+    //
+    //
+    //! inline MinOf
+    /**
+     \param a lhs argument
+     \param b rhs argument
+     \return min of a and b
+     */
+    //
+    //__________________________________________________________________________
     template <typename T> inline
     T MinOf(const T a, const T b)
     {
