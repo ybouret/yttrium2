@@ -16,6 +16,7 @@
 #if defined(__INTEL_COMPILER)
 #define Y_Compiler "Intel"
 #define Y_ICC 1
+#define noexcept throw()
 #endif
 
 #if defined(_MSC_VER)
