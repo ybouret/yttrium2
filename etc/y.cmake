@@ -128,7 +128,7 @@ if("${Y_CC}" MATCHES "icc.*")
 	set(Y_KNOWN_COMPILER TRUE)
 	set(Y_ICC TRUE)
 	list( APPEND CMAKE_C_FLAGS   "-Wall")
-	list( APPEND CMAKE_CXX_FLAGS "-Wall")
+	list( APPEND CMAKE_CXX_FLAGS "-Wall -std=c++0x")
 endif()
 
 ################################################################################
