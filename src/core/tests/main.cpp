@@ -9,7 +9,7 @@
 
 Y_UTEST_DECL(4)
 {
-    Y_UTEST(error);
+    Y_UTEST(system_error);
 }
 Y_UTEST_EXEC()
 

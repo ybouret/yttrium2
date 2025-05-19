@@ -4,8 +4,13 @@
 
 using namespace Yttrium;
 
-Y_UTEST(error)
+Y_UTEST(system_error)
 {
+    for(int i=1;i<argc;++i)
+    {
+        std::cerr << "argv[" << i << "] = " << argv[i] << std::endl;
+    }
+    
     char buffer[256];
     for(int err=0;err<10;++err)
     {
@@ -14,11 +19,4 @@ Y_UTEST(error)
 }
 Y_UDONE()
 
-void testError()
-{
-    char buffer[256];
-    for(int err=0;err<10;++err)
-    {
-        std::cerr << System::Error::Format(buffer,sizeof(buffer),System::Error::Type(err)) << std::endl;
-    }
-}
+

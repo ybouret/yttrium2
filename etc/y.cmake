@@ -205,4 +205,17 @@ function(Y_CreateTest THE_TEST)
 
 	# gather
 	add_executable(${THE_TEST} ${SRC})
+	set(Y_Test ${THE_TEST} PARENT_SCOPE)
+	add_custom_target("u${THE_TEST}" 
+		COMMAND ${CMAKE_CTEST_COMMAND}
+		DEPENDS ${THE_TEST}
+		)
 endfunction()
+
+function(Y_UTest THE_NAME)
+	string(REPLACE ":" "_" THE_TEST "${THE_NAME}")
+	add_test(${THE_NAME} ${Y_Test} ${THE_TEST} ${ARGN})
+	message(STATUS "<${THE_NAME}>")
+endfunction()
+
+ 
