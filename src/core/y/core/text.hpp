@@ -1,0 +1,22 @@
+//! \file
+
+#ifndef Y_Core_Text_Included
+#define Y_Core_Text_Included 1
+
+#include "y/system/types.hpp"
+
+
+namespace Yttrium
+{
+    namespace Core
+    {
+        struct Text
+        {
+            static size_t Length(const char * const text) noexcept;
+        };
+    }
+
+}
+
+#endif
+

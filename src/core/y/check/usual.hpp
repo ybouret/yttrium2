@@ -35,6 +35,9 @@ namespace Yttrium
     //
     //__________________________________________________________________________
     bool Die(const char * const) noexcept;
+
+    size_t TextLength(const char * const text) noexcept;
+
 }
 
 #endif

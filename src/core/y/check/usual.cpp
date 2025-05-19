@@ -1,4 +1,5 @@
 #include "y/check/usual.hpp"
+#include <cstring>
 
 namespace Yttrium
 {
@@ -12,4 +13,6 @@ namespace Yttrium
     {
         return false;
     }
+
+   
 }

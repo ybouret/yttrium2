@@ -192,5 +192,9 @@ function(Y_CreateTest THE_TEST)
 	set(SRC main.cpp)
 	file( GLOB src "test-*.cpp")
 	list( APPEND SRC ${src})
+
+	#sub-dir
+
+	# gather
 	add_executable(${THE_TEST} ${SRC})
 endfunction()
