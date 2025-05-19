@@ -3,6 +3,8 @@
 #ifndef Y_Core_Setup_Included
 #define Y_Core_Setup_Included 1
 
+#include "y/system/compiler.hpp"
+
 namespace Yttrium
 {
     //__________________________________________________________________________

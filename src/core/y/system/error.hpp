@@ -5,8 +5,8 @@
 #define Y_System_Error_Included 1
 
 
-#include "y/system/platform.hpp"
 #include "y/system/compiler.hpp"
+#include "y/system/platform.hpp"
 #include "y/system/types.hpp"
 
 namespace Yttrium
