@@ -2,6 +2,7 @@
 #include "y/system/platform.hpp"
 #include "y/core/variadic.hpp"
 #include "y/core/setup.hpp"
+#include "y/exception.hpp"
 #include <cstring>
 #include <iostream>
 
@@ -19,5 +20,16 @@ int main()
     std::cerr << buf << ", res=" << res << std::endl;
 
     testError();
+
+    Exception excp("from '%s'", Y_Platform);
+    std::cerr << "sizeof(Exception)=" << sizeof(Exception) << std::endl;
+
+    excp.show(std::cerr);
+
+    excp.add(" and '%s'", Y_Compiler);
+
+    excp.show(std::cerr);
+
+
     return 0;
 }

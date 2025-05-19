@@ -46,6 +46,25 @@ namespace Yttrium
 			}
 			return text;
 		}
+
+
+        char * Text:: Add(char * const       outputBuffer,
+                          const size_t       outputLength,
+                          const char * const text) noexcept
+        {
+            assert( Good(outputBuffer,outputLength) );
+            if(outputLength>0)
+            {
+                const size_t occupied   = Length(outputBuffer); assert(occupied<outputLength);
+                const size_t available  = outputLength-(occupied+1);
+                const size_t textLength = Length(text);
+                const size_t toCopy     = MinOf(textLength,available);
+                char * const target     = outputBuffer+occupied;
+                memcpy(target,text,toCopy);
+                memset(target+toCopy,0,available-toCopy);
+            }
+            return outputBuffer;
+        }
     }
 
 }

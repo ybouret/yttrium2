@@ -1,6 +1,7 @@
 #include "y/core/variadic.hpp"
 #include "y/check/usual.hpp"
 #include <cstdarg>
+#include <cstring>
 
 namespace Yttrium
 {
@@ -15,6 +16,7 @@ namespace Yttrium
             assert( 0!=formatString                 || Die("invalid format string")               );
             assert( 0!=vaListAddress                || Die("ptr must be a valid va_list address") );
 
+            memset(outputBuffer,0,outputLength);
             va_list & ap = *static_cast<va_list *>(vaListAddress);
             return vsnprintf(outputBuffer, outputLength, formatString, ap);
         }

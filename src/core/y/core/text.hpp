@@ -28,7 +28,7 @@ namespace Yttrium
              */
             static size_t  Length(const char * const text) noexcept;
 
-            //! better strcpy
+            //! better strncpy
             /**
              \param outputBuffer output buffer
              \param outputLength output length
@@ -39,7 +39,23 @@ namespace Yttrium
                                 const size_t       outputLength,
                                 const char * const text) noexcept;
 
+            //! remove spaces from end of text
+            /**
+             \param  text trimmed
+             \return text
+             */
 			static char * Trim(char * const text) noexcept;
+
+            //! better strncat
+            /**
+             \param outputBuffer output buffer
+             \param outputLength output length
+             \param text         a C-style string
+             \return outputBuffer+text
+            **/
+            static char * Add(char * const       outputBuffer,
+                              const size_t       outputLength,
+                              const char * const text) noexcept;
         };
     }
 

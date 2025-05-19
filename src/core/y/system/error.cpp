@@ -9,16 +9,16 @@
 
 namespace Yttrium
 {
-	namespace Libc
-	{
-		char * Error::Format(char * const errorBuffer,
-			const size_t errorLength,
-			const Type   errorCode) noexcept
-		{
-			assert(Good(errorBuffer, errorLength));
-			return Core::Text::Copy(errorBuffer, errorLength, strerror(errorCode));
-		}
-	}
+    namespace Libc
+    {
+        char * Error::Format(char * const errorBuffer,
+                             const size_t errorLength,
+                             const Type   errorCode) noexcept
+        {
+            assert(Good(errorBuffer, errorLength));
+            return Core::Text::Copy(errorBuffer, errorLength, strerror(errorCode));
+        }
+    }
 }
 
 #if defined(Y_WIN)
@@ -26,22 +26,22 @@ namespace Yttrium
 #include <windows.h>
 namespace Yttrium
 {
-	namespace Windows
-	{
-		char * Error::Format(char * const errorBuffer,
-			const size_t errorLength,
-			const Type   errorCode) noexcept
-		{
-			assert(Good(errorBuffer, errorLength));
-			::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 
-				0, 
-				errorCode, 
-				MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), 
-				errorBuffer, 
-				DWORD(errorLength), 
-				0);
-			return Core::Text::Trim(errorBuffer);
-		}
-	}
+    namespace Windows
+    {
+        char * Error::Format(char * const errorBuffer,
+                             const size_t errorLength,
+                             const Type   errorCode) noexcept
+        {
+            assert(Good(errorBuffer, errorLength));
+            ::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,
+                            0,
+                            errorCode,
+                            MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                            errorBuffer,
+                            DWORD(errorLength),
+                            0);
+            return Core::Text::Trim(errorBuffer);
+        }
+    }
 }
 #endif

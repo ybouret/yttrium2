@@ -3,7 +3,8 @@
 #ifndef Y_Core_Setup_Included
 #define Y_Core_Setup_Included 1
 
-#include "y/system/compiler.hpp"
+#include "y/system/types.hpp"
+#include <iosfwd>
 
 namespace Yttrium
 {
@@ -71,6 +72,10 @@ namespace Yttrium
         extern const char * const Success;
         extern const char * const Failure;
         extern const char * const Unknown;
+
+        std::ostream & Indent(std::ostream & os,
+                              size_t         count,
+                              const char     separator=' ');
     }
 }
 
