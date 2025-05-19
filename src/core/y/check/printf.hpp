@@ -9,6 +9,12 @@
 
 #include <cstdio>
 
+//______________________________________________________________________________
+//
+//
+//! Static Check of printf-like format string
+//
+//______________________________________________________________________________
 #if defined(Y_CLANG) || defined(Y_GNU)
 #define Y_Printf_Check(FORMAT_POS,ELLIPSIS_POS) \
 __attribute__((__format__(__printf__, FORMAT_POS, ELLIPSIS_POS)));

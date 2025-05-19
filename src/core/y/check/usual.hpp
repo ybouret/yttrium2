@@ -11,9 +11,29 @@
 
 namespace Yttrium
 {
+    //__________________________________________________________________________
+    //
+    //
+    //! Test that a memory block is valid
+    /**
+     \param blockAddr address of the block
+     \param blockSize size of the block
+     \return !(0==blockAddr && blockSize>0)
+     */
+    //
+    //__________________________________________________________________________
     bool Good(const void * const blockAddr,
               const size_t       blockSize) noexcept;
 
+    //__________________________________________________________________________
+    //
+    //
+    //! helper to document assertions
+    /**
+     \return false
+     */
+    //
+    //__________________________________________________________________________
     bool Die(const char * const) noexcept;
 }
 

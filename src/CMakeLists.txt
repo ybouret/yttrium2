@@ -9,6 +9,12 @@ include(${Y_ETC_DIR}/y.cmake)
 
 find_program(DOX doxygen DOC "Doxygen")
 cmake_print_variables(DOX)
+if( "${DOX}" STREQUAL "DOX-NOTFOUND")
+    message( STATUS "no doxygen")
+else()
+    message( STATUS "found ${DOX}")
+    add_custom_target(dox ${DOX} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/..)
+endif()
 
 add_subdirectory(core)
 

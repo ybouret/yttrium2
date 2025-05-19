@@ -6,27 +6,30 @@ namespace Yttrium
 {
     namespace Core
     {
-        int Variadic:: Format(char * const       buf,
-                              const size_t       len,
-                              const char * const fmt,
-                              void * const       ptr) noexcept
+        int Variadic:: Format(char * const       outputBuffer,
+                              const size_t       outputLength,
+                              const char * const formatString,
+                              void * const       vaListAddress) noexcept
         {
-            assert( Good(buf,len) || Die("invalid buffer")                      );
-            assert( 0!=fmt        || Die("invalid format string")               );
-            assert( 0!=ptr        || Die("ptr must be a valid va_list address") );
+            assert( Good(outputBuffer,outputLength) || Die("invalid buffer")                      );
+            assert( 0!=formatString                 || Die("invalid format string")               );
+            assert( 0!=vaListAddress                || Die("ptr must be a valid va_list address") );
 
-            va_list & ap = *static_cast<va_list *>(ptr);
-            return vsnprintf(buf, len, fmt, ap);
+            va_list & ap = *static_cast<va_list *>(vaListAddress);
+            return vsnprintf(outputBuffer, outputLength, formatString, ap);
         }
 
-        int Variadic:: Sprintf(char *const buf, const size_t len, const char *const fmt, ...) noexcept
+        int Variadic:: Sprintf(char * const       outputBuffer,
+                               const size_t       outputLength,
+                               const char * const formatString,
+                               ...) noexcept
         {
-            assert( Good(buf,len) || Die("invalid buffer")        );
-            assert( 0!=fmt        || Die("invalid format string") );
+            assert( Good(outputBuffer,outputLength) || Die("invalid buffer")                      );
+            assert( 0!=formatString                 || Die("invalid format string")               );
 
             va_list ap;
-            va_start(ap,fmt);
-            const int res = vsnprintf(buf, len, fmt, ap);
+            va_start(ap,formatString);
+            const int res = Format(outputBuffer,outputLength,formatString,&ap);
             va_end(ap);
             return res;
         }
