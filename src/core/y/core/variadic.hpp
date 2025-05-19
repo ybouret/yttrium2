@@ -5,7 +5,8 @@
 #define Y_Core_Variadic_Included 1
 
 #include "y/check/printf.hpp"
-#include <cstdlib>
+#include "y/system/types.hpp"
+
 
 namespace Yttrium
 {

@@ -5,6 +5,7 @@
 #ifndef Y_Check_Usual_Included
 #define Y_Check_Usual_Included 1
 
+#include "y/system/types.hpp"
 #include <cassert>
 
 namespace Yttrium
