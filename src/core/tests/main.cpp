@@ -2,6 +2,8 @@
 #include "y/system/platform.hpp"
 #include "y/system/compiler.hpp"
 #include "y/core/variadic.hpp"
+#include "y/core/setup.hpp"
+#include <cstring>
 
 using namespace Yttrium;
 
