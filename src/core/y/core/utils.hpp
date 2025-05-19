@@ -25,6 +25,12 @@ namespace Yttrium
         return a < b ? b : a;
     }
 
+    template <typename T> inline
+    void InSituMax(T &a, const T b)
+    {
+        if(a<b) a = b;
+    }
+
     //__________________________________________________________________________
     //
     //
@@ -40,6 +46,15 @@ namespace Yttrium
     T MinOf(const T a, const T b)
     {
         return a < b ? a : b;
+    }
+
+
+    template <typename T> inline
+    void Swap(T &lhs, T &rhs)
+    {
+        const T tmp(rhs);
+        rhs = lhs;
+        lhs = tmp;
     }
 
 }
