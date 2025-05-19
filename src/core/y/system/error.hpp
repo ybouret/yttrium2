@@ -5,6 +5,7 @@
 #define Y_System_Error_Included 1
 
 
+#include "y/system/platform.hpp"
 #include "y/system/types.hpp"
 
 namespace Yttrium
@@ -14,9 +15,9 @@ namespace Yttrium
         struct Error
         {
             typedef int Type;
-            static void Format(char * const errorBuffer,
-                               const size_t errorLength,
-                               const Type   errorCode) noexcept;
+            static char * Format(char * const errorBuffer,
+                                 const size_t errorLength,
+                                 const Type   errorCode) noexcept;
         };
 
     }
@@ -26,9 +27,9 @@ namespace Yttrium
         struct Error
         {
             typedef uint32_t Type;
-            static void Format(char * const errorBuffer,
-                               const size_t errorLength,
-                               const Type   errorCode) noexcept;
+            static char * Format(char * const errorBuffer,
+                                 const size_t errorLength,
+                                 const Type   errorCode) noexcept;
         };
     }
 

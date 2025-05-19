@@ -63,6 +63,13 @@ namespace Yttrium
 /**/ Y_Disable_Copy(CLASS);              \
 /**/ Y_Disable_Assign(CLASS)
 
+
+    namespace Core
+    {
+        extern const char * const Success;
+        extern const char * const Failure;
+        extern const char * const Unknown;
+    }
 }
 
 #endif

@@ -12,7 +12,10 @@ namespace Yttrium
     {
         struct Text
         {
-            static size_t Length(const char * const text) noexcept;
+            static size_t      Length(const char * const text) noexcept;
+            static char *      Copy(char * const       outputBuffer,
+                                    const size_t       outputLength,
+                                    const char * const text) noexcept;
         };
     }
 

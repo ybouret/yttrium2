@@ -8,13 +8,12 @@ namespace Yttrium
 {
     namespace Libc
     {
-        void Error:: Format(char * const errorBuffer,
-                            const size_t errorLength,
-                            const Type   errorCode) noexcept
+        char * Error:: Format(char * const errorBuffer,
+                              const size_t errorLength,
+                              const Type   errorCode) noexcept
         {
             assert( Good(errorBuffer,errorLength) );
-            memset(errorBuffer,0,errorLength);
-            strncpy(errorBuffer,strerror(errorCode),errorLength);
+            return Core::Text::Copy(errorBuffer,errorLength,strerror(errorCode));
         }
     }
 }
@@ -26,7 +25,7 @@ namespace Yttrium
 {
     namespace Windows
     {
-        
+
     }
 }
 #endif

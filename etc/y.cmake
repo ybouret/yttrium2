@@ -193,7 +193,13 @@ function(Y_CreateTest THE_TEST)
 	file( GLOB src "test-*.cpp")
 	list( APPEND SRC ${src})
 
-	#sub-dir
+	# sub-dir sources
+	foreach(SUBDIR IN LISTS ARGN)
+		message( STATUS "[${SUBDIR}]")
+		file( GLOB src "${SUBDIR}/*.cpp")
+		list( APPEND SRC ${src})
+		source_group(${SUBDIR} FILES ${src})
+	endforeach()
 
 	# gather
 	add_executable(${THE_TEST} ${SRC})
