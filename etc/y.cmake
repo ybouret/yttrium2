@@ -150,6 +150,8 @@ if("${Y_CC}" STREQUAL "cl")
 	message( STATUS "Using Microsoft Compilers")
 	set(Y_KNOWN_COMPILER TRUE)
 	set(Y_MSC TRUE)
+	string( APPEND CMAKE_C_FLAGS " -Wall")
+	string( APPEND CMAKE_CXX_FLAGS " -Wall")
 endif()
 
 
