@@ -97,6 +97,7 @@ function(Y_FIND_COMPILER_VERSION)
 	endif()
 	list(GET THE_INFO 0 THE_INFO)
 	cmake_print_variables(THE_INFO)
+	message(FATAL_ERROR "need to parse!!")
 endfunction()
 
 if(OFF)
