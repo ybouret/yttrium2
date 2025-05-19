@@ -86,6 +86,10 @@ set(Y_CC_MAJOR 0)
 set(Y_CC_MINOR 0)
 
 cmake_print_variables(CMAKE_C_COMPILER_VERSION)
+string(REPLACE "." ";" Y_CC_VERSION ${CMAKE_C_COMPILER_VERSION})
+list(GET Y_CC_VERSION 0 Y_CC_MAJOR)
+list(GET Y_CC_VERSION 1 Y_CC_MINOR)
+cmake_print_variables(Y_CC_MAJOR Y_CC_MINOR)
 
  
 
@@ -102,6 +106,9 @@ if("${Y_CC}" MATCHES "gcc.*")
 	set(Y_GNU TRUE)
 	list( APPEND CMAKE_C_FLAGS "-Wall -Wextra")
 	list( APPEND CMAKE_CXX_FLAGS "-Wall -Wextra -Weffc++")
+	if( "${Y_CC_MAJOR}" LESS "7" )
+		list( APPEND CMAKE_CXX_FLAGS "-std=c++0x")
+	endif()
 endif()
 
 ################################################################################
@@ -128,7 +135,10 @@ if("${Y_CC}" MATCHES "icc.*")
 	set(Y_KNOWN_COMPILER TRUE)
 	set(Y_ICC TRUE)
 	list( APPEND CMAKE_C_FLAGS   "-Wall")
-	list( APPEND CMAKE_CXX_FLAGS "-Wall -std=c++0x")
+	list( APPEND CMAKE_CXX_FLAGS "-Wall")
+	if( "${Y_CC_MAJOR}" LESS_EQUAL "13" )
+		list( APPEND CMAKE_CXX_FLAGS "-std=c++0x")
+	endif()
 endif()
 
 ################################################################################
