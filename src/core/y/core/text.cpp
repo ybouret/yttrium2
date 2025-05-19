@@ -2,6 +2,7 @@
 #include "y/check/usual.hpp"
 #include "y/core/utils.hpp"
 #include <cstring>
+#include <cctype>
 
 namespace Yttrium
 {
@@ -28,6 +29,23 @@ namespace Yttrium
             }
             return outputBuffer;
         }
+
+		char * Text:: Trim(char * const text) noexcept
+		{
+			const size_t textLength = Length(text);
+			char *       curr = text + textLength;
+			while (--curr > text)
+			{
+				char & c = *curr;
+				if (isspace(c))
+				{
+					c = 0;
+					continue;
+				}
+				break;
+			}
+			return text;
+		}
     }
 
 }

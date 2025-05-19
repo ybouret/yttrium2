@@ -38,6 +38,8 @@ namespace Yttrium
             static char *  Copy(char * const       outputBuffer,
                                 const size_t       outputLength,
                                 const char * const text) noexcept;
+
+			static char * Trim(char * const text) noexcept;
         };
     }
 

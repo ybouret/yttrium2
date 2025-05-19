@@ -33,8 +33,14 @@ namespace Yttrium
 			const Type   errorCode) noexcept
 		{
 			assert(Good(errorBuffer, errorLength));
-
-			return 0;
+			::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 
+				0, 
+				errorCode, 
+				MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), 
+				errorBuffer, 
+				DWORD(errorLength), 
+				0);
+			return Core::Text::Trim(errorBuffer);
 		}
 	}
 }
