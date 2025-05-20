@@ -12,7 +12,7 @@ namespace
 
     static void todo(void *args)
     {
-        assert( 0 != args );
+        Y_CHECK( 0 != args );
         std::cerr << "todo: " << *(int *)args << std::endl;
     }
 
