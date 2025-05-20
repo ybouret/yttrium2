@@ -14,7 +14,10 @@ target_link_libraries(test-core y)
 
 enable_testing()
 
+Y_Message("Preparing ${Y_Test}")
+
 Y_UTEST(exception)
+Y_UTEST(singleton)
 
 # core
 Y_UTEST(core:variadic)
