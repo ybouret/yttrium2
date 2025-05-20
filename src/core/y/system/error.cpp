@@ -63,6 +63,7 @@ namespace Yttrium
 #endif
 
 #include <iostream>
+#include <cstdlib>
 namespace Yttrium
 {
     template <typename ERROR> static inline
@@ -72,6 +73,7 @@ namespace Yttrium
         ERROR::Format(buffer,sizeof(buffer),err);
         std::cerr << "*** Critical Error Detected" << std::endl;
         std::cerr << "*** " << buffer << std::endl;
+        abort();
     }
 
     namespace Libc
