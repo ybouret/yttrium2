@@ -69,10 +69,22 @@ namespace Yttrium
 
     namespace Core
     {
-        extern const char * const Success;
-        extern const char * const Failure;
-        extern const char * const Unknown;
+        extern const char * const Success; //!< "Success"
+        extern const char * const Failure; //!< "Failure"
+        extern const char * const Unknown; //!< "Unknown"
 
+        //______________________________________________________________________
+        //
+        //
+        //! Indent or Make a line of separator
+        /**
+         \param os        output stream
+         \param count     number of repetitions
+         \param separator single char separator
+         \return os
+         */
+        //
+        //______________________________________________________________________
         std::ostream & Indent(std::ostream & os,
                               size_t         count,
                               const char     separator=' ');

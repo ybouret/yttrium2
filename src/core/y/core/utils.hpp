@@ -25,6 +25,16 @@ namespace Yttrium
         return a < b ? b : a;
     }
 
+    //__________________________________________________________________________
+    //
+    //
+    //! inline in-situ Max
+    /**
+     \param a target value
+     \param b compared value
+     */
+    //
+    //__________________________________________________________________________
     template <typename T> inline
     void InSituMax(T &a, const T b)
     {
@@ -48,7 +58,12 @@ namespace Yttrium
         return a < b ? a : b;
     }
 
-
+    //__________________________________________________________________________
+    //
+    //
+    //! C-style swap
+    //
+    //__________________________________________________________________________
     template <typename T> inline
     void Swap(T &lhs, T &rhs)
     {

@@ -12,16 +12,40 @@
 namespace Yttrium
 {
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Base class for Exceptions
+    //
+    //
+    //__________________________________________________________________________
     class Exception : public std::exception
     {
     public:
+        //______________________________________________________________________
+        //
+        //
         // Definitions
-        static const char * const CallSign; //!< "Exception;
-        static const size_t       Length = 128;
+        //
+        //______________________________________________________________________
+        static const char * const CallSign;       //!< "Exception;
+        static const size_t       Length = 128;   //!< internal memory
 
-        explicit Exception()         noexcept;
-        Exception(const Exception &) noexcept;
-        virtual ~Exception()         noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+        explicit Exception()         noexcept; //!< setup emtpy
+        Exception(const Exception &) noexcept; //!< duplicate
+        virtual ~Exception()         noexcept; //!< cleanup
+
+        //! C-style formatting
+        /**
+         \param formatString C-style format string
+         */
         explicit Exception(const char * const formatString,...)  noexcept Y_Printf_Check(2,3);
 
 
@@ -35,7 +59,7 @@ namespace Yttrium
         Y_Disable_Assign(Exception);
         char tell[Length];
 
-        void clear() noexcept; //!< erase story
+        void clear() noexcept; //!< erase tell
     };
 
 }
