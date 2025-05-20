@@ -6,6 +6,7 @@
 
 #include "y/concurrent/singulet.hpp"
 
+
 namespace Yttrium
 {
 
@@ -16,6 +17,7 @@ namespace Yttrium
         public:
             static const char * const CallSign; //!< "Concurrent::Nucleus"
             static const Longevity    LifeTime = Singulet::GreatestLifeTime;
+            class        Code;
 
             // Interface
 
@@ -27,12 +29,20 @@ namespace Yttrium
             /** \return LifeTime */
             virtual Longevity    lifeTime() const noexcept;
 
+            //! [Singulet]
+            /** \return internal mutex */
+            virtual Lockable & access() noexcept;
+
+            // Methods
+
             static Nucleus & Instance();
 
         private:
             Y_Disable_Copy_And_Assign(Nucleus);
             explicit Nucleus();
             virtual ~Nucleus() noexcept;
+            Code * code;
+
             static void SelfDestruct(void*) noexcept;
         };
     }

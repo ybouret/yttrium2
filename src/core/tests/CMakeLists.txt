@@ -32,4 +32,5 @@ Y_UTEST(calculus:alignment)
 
 #concurrent
 Y_UTEST(concurrent:nucleus)
+Y_UTEST(concurrent:giant_lock)
 

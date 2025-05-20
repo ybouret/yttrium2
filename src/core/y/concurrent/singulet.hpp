@@ -7,6 +7,7 @@
 #include "y/system/at-exit.hpp"
 #include "y/type/identifiable.hpp"
 #include "y/type/ints.hpp"
+#include "y/lockable.hpp"
 
 namespace Yttrium
 {
@@ -23,7 +24,8 @@ namespace Yttrium
 
             explicit Singulet() noexcept;
             virtual ~Singulet() noexcept;
-            virtual Longevity lifeTime() const noexcept = 0;
+            virtual Longevity  lifeTime() const noexcept = 0;
+            virtual Lockable & access()         noexcept = 0;
 
         private:
             Y_Disable_Copy_And_Assign(Singulet);

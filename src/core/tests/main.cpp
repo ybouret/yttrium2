@@ -21,6 +21,8 @@ Y_UTEST_DECL(32)
     Y_UTEST(calculus_alignment);
 
     Y_UTEST(concurrent_nucleus);
+    Y_UTEST(concurrent_giant_lock);
+
 }
 Y_UTEST_EXEC()
 

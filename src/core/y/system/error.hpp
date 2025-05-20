@@ -39,8 +39,9 @@ namespace Yttrium
             //! stop on critical error
             /**
              \param errorCode from errno
+             \param title context of the error
              */
-            static void Critical(const Type errorCode);
+            static void Critical(const Type errorCode, const char * const title);
         };
 
     }
@@ -73,8 +74,9 @@ namespace Yttrium
             //! stop on critical error
             /**
              \param errorCode   from GetLastError()
+             \param title       context title
              */
-            static void Critical(const Type errorCode);
+            static void Critical(const Type errorCode, const char * const title);
 
         };
     }

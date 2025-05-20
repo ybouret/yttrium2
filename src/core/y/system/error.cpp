@@ -67,28 +67,30 @@ namespace Yttrium
 namespace Yttrium
 {
     template <typename ERROR> static inline
-    void OnCritical(const typename  ERROR::Type err)
+    void OnCritical(const typename  ERROR::Type err, const char * const title)
     {
         char buffer[256];
         ERROR::Format(buffer,sizeof(buffer),err);
-        std::cerr << "*** Critical Error Detected" << std::endl;
+        std::cerr << "*** Critical Error Detected in " << title << std::endl;
         std::cerr << "*** " << buffer << std::endl;
         abort();
     }
 
     namespace Libc
     {
-        void Error::Critical(const Type errorCode)
+        void Error::Critical(const Type errorCode, const char * const title)
         {
-            OnCritical<Error>(errorCode);
+            assert(0!=title);
+            OnCritical<Error>(errorCode,title);
         }
     }
 
     namespace Windows
     {
-        void Error::Critical(const Type errorCode)
+        void Error::Critical(const Type errorCode, const char * const title)
         {
-            OnCritical<Error>(errorCode);
+            assert(0!=title);
+            OnCritical<Error>(errorCode,title);
         }
     }
 

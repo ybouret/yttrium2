@@ -1,9 +1,19 @@
 #include "y/concurrent/nucleus.hpp"
-#include "y/calculus/alignment.hpp"
 #include "y/check/static.hpp"
 #include "y/type/destruct.hpp"
-#include "y/memory/stealth.hpp"
-#include "y/exception.hpp"
+#include "y/memory/workspace.hpp"
+#include "y/system/exception.hpp"
+#include "y/lockable.hpp"
+#include "y/system/platform.hpp"
+
+#if defined(Y_BSD)
+#include <pthread.h>
+#endif
+
+#if defined(Y_WIN)
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
 
 #include <iostream>
 
@@ -13,10 +23,107 @@ namespace Yttrium
     namespace Concurrent
     {
 
-        static void    * nucleusWorkspace[ Alignment::WordsFor<Nucleus>::Count ];
+#if defined(Y_BSD)
+        class PThreadMutexAttribute : public Memory::Workspace<pthread_mutexattr_t>
+        {
+        public:
+            inline explicit PThreadMutexAttribute() : Memory::Workspace<pthread_mutexattr_t>()
+            {
+                {
+                    const int err = pthread_mutexattr_init(data);
+                    if(0!=err) throw Libc::Exception(err,"pthread_mutexattr_init");
+                }
+
+                {
+                    const int err = pthread_mutexattr_settype(data,PTHREAD_MUTEX_RECURSIVE);
+                    if(0!=err)
+                    {
+                        pthread_mutexattr_destroy(data);
+                        throw Libc::Exception(err,"pthread_mutexattr_settype");
+                    }
+                }
+            }
+
+            inline virtual ~PThreadMutexAttribute() noexcept
+            {
+                pthread_mutexattr_destroy(data);
+            }
+
+            const pthread_mutexattr_t * operator()(void) const noexcept { return data; }
+
+        private:
+            Y_Disable_Copy_And_Assign(PThreadMutexAttribute);
+        };
+
+        class PThreadMutex :
+        public Memory::Workspace<pthread_mutex_t>,
+        public Lockable
+        {
+        public:
+            inline explicit PThreadMutex(const PThreadMutexAttribute &attr) :
+            Memory::Workspace<pthread_mutex_t>()
+            {
+                const int err = pthread_mutex_init(data, attr() );
+                if(0!=err) throw Libc::Exception(err,"pthread_mutex_init");
+            }
+
+            inline virtual ~PThreadMutex() noexcept
+            {
+                pthread_mutex_destroy(data);
+            }
+
+        private:
+            Y_Disable_Copy_And_Assign(PThreadMutex);
+            virtual void doLock() noexcept
+            {
+                const int err = pthread_mutex_lock(data);
+                if(0!=err) Libc::Error::Critical(err,"pthread_mutex_lock");
+            }
+
+            virtual void doUnlock() noexcept
+            {
+                const int err = pthread_mutex_unlock(data);
+                if(0!=err) Libc::Error::Critical(err,"pthread_mutex_lock");
+            }
+
+        };
+
+#endif
+
+        class Nucleus:: Code
+        {
+        public:
+            inline Code() :
+#if defined(Y_BSD)
+            mutexAttributes(), mutex(mutexAttributes)
+#endif
+            {
+            }
+
+            inline ~Code() noexcept
+            {
+            }
+
+#if defined(Y_BSD)
+            const PThreadMutexAttribute mutexAttributes;
+            PThreadMutex                mutex;
+#endif
+
+#if defined(Y_WIN)
+
+#endif
+
+
+
+        private:
+            Y_Disable_Copy_And_Assign(Code);
+        };
+
+        static void    * codeWorkspace[    Alignment::WordsFor<Nucleus::Code>::Count ];
+        static void    * nucleusWorkspace[ Alignment::WordsFor<Nucleus>::Count       ];
         static Nucleus * nucleus = 0;
 
-        
+
         void Nucleus:: SelfDestruct(void *) noexcept
         {
             assert(0!=nucleus);
@@ -25,15 +132,26 @@ namespace Yttrium
             Y_Memory_BZero(nucleusWorkspace);
         }
 
-        Nucleus:: Nucleus() : Singulet()
+        Nucleus:: Nucleus() : Singulet(), code(0)
         {
             if(Verbose) { std::cerr << '+' << CallSign << std::endl; }
+
+            try {
+                code = new ( Y_Memory_BZero(codeWorkspace) ) Code();
+            }
+            catch(...)
+            {
+                throw;
+            }
+
         }
 
         Nucleus:: ~Nucleus() noexcept
         {
             if(Verbose) { std::cerr << '-' << CallSign << std::endl; }
-
+            assert(0!=code);
+            Nullify(code);
+            Y_Memory_BZero(codeWorkspace);
         }
 
         const char * const Nucleus:: CallSign = "Concurrent::Nucleus";
@@ -48,10 +166,17 @@ namespace Yttrium
             return LifeTime;
         }
 
+        Lockable & Nucleus:: access() noexcept
+        {
+            assert(0!=code);
+            return code->mutex;
+        }
+
 
         Nucleus & Nucleus:: Instance()
         {
             Y_STATIC_CHECK(sizeof(nucleusWorkspace)>=sizeof(Nucleus),BadNucleusWorkspace);
+            Y_STATIC_CHECK(sizeof(codeWorkspace)>=sizeof(Nucleus::Code),BadNucleusCodeWorkspace);
 
             if(0==nucleus) {
 
@@ -81,13 +206,18 @@ namespace Yttrium
                     }
                 }
             }
-
-
             return *nucleus;
-
         }
 
     }
+
+        Lockable & Lockable:: Giant()
+        {
+            static Lockable &giant = Concurrent::Nucleus::Instance().access();
+            return giant;
+        }
+
+
 }
 
 
