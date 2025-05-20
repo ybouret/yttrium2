@@ -29,8 +29,8 @@ namespace Yttrium
         // Definitions
         //
         //______________________________________________________________________
-        static const char * const CallSign;       //!< "Exception;
-        static const size_t       Length = 128;   //!< internal memory
+        static const char * const CallSign;                           //!< "Exception;
+        static const size_t       Length =128-sizeof(std::exception); //!< internal memory
 
         //______________________________________________________________________
         //
@@ -81,14 +81,75 @@ namespace Yttrium
          \param formatString printf-like format string
          */
         void                 pre(const char * const formatString,...) noexcept Y_Printf_Check(2,3);
-        
-    private:
-        Y_Disable_Assign(Exception); //!< no assignment
+
+    protected:
         char tell[Length];           //!< store context
 
-        void clear() noexcept; //!< erase tell
+    private:
+        Y_Disable_Assign(Exception); //!< no assignment
+        void clear() noexcept;       //!< erase tell
+
     };
 
+
+    namespace Specific
+    {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Information with specific reason
+        //
+        //
+        //______________________________________________________________________
+        class Exception : public Yttrium::Exception
+        {
+        public:
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            virtual ~Exception() noexcept; //!< cleanup
+
+            //! initialize
+            /**
+             \param title will be what()
+             */
+            explicit Exception(const char * title) noexcept;
+
+            //! initialize
+            /**
+             \param title will be what()
+             \param formatString to format when()
+             */
+            explicit Exception(const char * title,
+                               const char * formatString,...) noexcept Y_Printf_Check(3,4);
+
+            //! duplicate
+            /** \param other source */
+            Exception(const Exception &other)      noexcept;
+
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
+
+            //! [std::exception]
+            /** \return info */
+            virtual const char * what() const noexcept;
+
+        protected:
+            char info[Length]; //!< store information
+
+        private:
+            Y_Disable_Assign(Exception); //!< no assigment
+        };
+
+    }
 }
 
 #endif

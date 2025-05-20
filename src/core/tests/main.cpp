@@ -9,6 +9,7 @@
 
 Y_UTEST_DECL(4)
 {
+    Y_UTEST(exception);
     Y_UTEST(core_variadic);
     Y_UTEST(system_error);
 }

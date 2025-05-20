@@ -212,7 +212,7 @@ function(Y_CreateTest THE_TEST)
 		)
 endfunction()
 
-function(Y_UTest THE_NAME)
+function(Y_UTEST THE_NAME)
 	string(REPLACE ":" "_" THE_TEST "${THE_NAME}")
 	add_test(${THE_NAME} ${Y_Test} ${THE_TEST} ${ARGN})
 	message(STATUS "<${THE_NAME}>")

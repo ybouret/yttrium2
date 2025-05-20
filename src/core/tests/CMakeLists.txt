@@ -9,8 +9,10 @@ target_link_libraries(test-core y)
 
 enable_testing()
 
+Y_UTEST(exception)
+
 # core
-Y_UTest(core:variadic)
+Y_UTEST(core:variadic)
 
 # system
-Y_UTest(system:error 1 2)
+Y_UTEST(system:error 1 2)

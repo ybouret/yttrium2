@@ -35,6 +35,12 @@ namespace Yttrium
             static char * Format(char * const errorBuffer,
                                  const size_t errorLength,
                                  const Type   errorCode) noexcept;
+
+            //! stop on critical error
+            /**
+             \param errorCode from errno
+             */
+            static void Critical(const Type errorCode);
         };
 
     }
@@ -63,6 +69,13 @@ namespace Yttrium
             static char * Format(char * const errorBuffer,
                                  const size_t errorLength,
                                  const Type   errorCode) noexcept;
+
+            //! stop on critical error
+            /**
+             \param errorCode   from GetLastError()
+             */
+            static void Critical(const Type errorCode);
+
         };
     }
 
@@ -76,6 +89,8 @@ namespace Yttrium
         typedef Windows::Error Error;
 #endif
     }
+
+
 
 
 }
