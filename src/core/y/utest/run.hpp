@@ -8,6 +8,7 @@
 #include "y/core/setup.hpp"
 #include "y/utest/catch.hpp"
 #include <iostream>
+#include <iomanip>
 
 namespace Yttrium
 {
