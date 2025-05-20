@@ -30,6 +30,17 @@ namespace Yttrium
 /**/    }\
 /**/  }
 
+    namespace UTest
+    {
+        struct Display
+        {
+            static size_t Width;
+            static void   Value(const char * const name, const size_t size);
+        };
+    }
+
+#define Y_SIZEOF(NAME) do { UTest::Display::Value( "sizeof(" #NAME ")",sizeof(NAME)); } while(false)
+#define Y_PRINTV(NAME) do { UTest::Display::Value( #NAME, NAME); } while(fasle)
 
 }
 

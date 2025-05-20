@@ -5,6 +5,7 @@ using namespace Yttrium;
 
 Y_UTEST(system_error)
 {
+    Y_SIZEOF(System::Error::Type);
     for(int i=1;i<argc;++i)
     {
         std::cerr << "argv[" << i << "] = " << argv[i] << std::endl;

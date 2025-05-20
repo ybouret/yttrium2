@@ -25,6 +25,7 @@ namespace Yttrium
             
         private:
             Y_Disable_Assign(Exception); //!< no assigment
+            char info[Length];
         };
     }
 }
