@@ -21,4 +21,6 @@ Y_UTEST(system:at_exit)
 
 #calculus
 Y_UTEST(calculus_integer_log2)
+Y_UTEST(calculus_alignment)
+
 

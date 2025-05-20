@@ -36,7 +36,7 @@ namespace Yttrium
             typedef void      (*Function)(void *);                     //!< alias
             static const size_t Capacity = (Y_System_AtExit_Capacity); //!< internal queue size
             struct Code;
-
+            
             //__________________________________________________________________
             //
             //

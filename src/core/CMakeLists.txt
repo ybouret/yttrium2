@@ -8,6 +8,7 @@ Y_CreateLibrary(y
     y/system
     y/type
     y/calculus
+    y/concurrent
     y/utest
 )
 
