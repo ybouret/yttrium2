@@ -4,7 +4,6 @@
 #define Y_System_AtExit_Included 1
 
 
-#include "y/type/ints.hpp"
 #include "y/core/setup.hpp"
 
 //! Tunable AtExit Capacity
@@ -32,11 +31,11 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            typedef uint16_t    Priority;                              //!< alias
+            typedef uint16_t    Longevity;                             //!< alias
             typedef void      (*Function)(void *);                     //!< alias
             static const size_t Capacity = (Y_System_AtExit_Capacity); //!< internal queue size
             struct Code;
-            
+
             //__________________________________________________________________
             //
             //
@@ -48,11 +47,11 @@ namespace Yttrium
             /**
              \param func function to be called
              \param args func(args)
-             \param prio unique priority, the lower the sooner
+             \param life unique lifetime
              */
-            static void Perform(Function       func,
-                                void * const   args,
-                                const Priority prio);
+            static void Perform(Function        func,
+                                void * const    args,
+                                const Longevity life);
         };
     }
 }

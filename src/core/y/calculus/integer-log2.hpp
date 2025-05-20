@@ -33,7 +33,11 @@ template <> struct IntegerLog2<(1<<LN2)> { enum { Value = LN2 }; }
     Y_IntegerLog2(14); //!< 2^14 = 16384
     Y_IntegerLog2(15); //!< 2^15 = 32768
 
-
+    template <typename T>
+    struct IntegerLog2For
+    {
+        enum { Value = IntegerLog2<sizeof(T)>::Value };
+    };
 
 }
 

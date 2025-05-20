@@ -15,19 +15,19 @@ namespace Yttrium
         //! encapsulate calls
         struct AtExit:: Code
         {
-            Function func; //!< function
-            void *   args; //!< persistent data
-            Priority prio; //!< priority
+            Function  func; //!< function
+            void *    args; //!< persistent data
+            Longevity life; //!< priority
 
-            //! comparison by increasing priority
+            //! comparison by decreasing lifetime
             static inline int Compare(const void * const lhs,
                                       const void * const rhs) noexcept
             {
                 assert( 0 != lhs );
                 assert( 0 != rhs );
-                const Priority &l = static_cast<const Code *>(lhs)->prio;
-                const Priority &r = static_cast<const Code *>(rhs)->prio;
-                return (l<r) ? -1 : ( (r<l) ? 1 : 0);
+                const Longevity &l = static_cast<const Code *>(lhs)->life;
+                const Longevity &r = static_cast<const Code *>(rhs)->life;
+                return (l<r) ? 1 : ( (r<l) ? -1 : 0);
             }
         };
 
@@ -62,9 +62,9 @@ namespace Yttrium
             AtExitClear();
         }
 
-        void AtExit:: Perform(Function       func,
-                              void * const   args,
-                              const Priority prio)
+        void AtExit:: Perform(Function        func,
+                              void * const    args,
+                              const Longevity life)
         {
             static const char fn[] = "AtExit::Perform";
             assert( 0 != func);
@@ -81,8 +81,8 @@ namespace Yttrium
             // no multiple priority
             for(size_t i=0;i<AtExitCount;++i)
             {
-                if(prio == AtExitQueue[i].prio)
-                    throw Specific::Exception(fn,"multiplie priority %u", unsigned(prio));
+                if(life == AtExitQueue[i].life)
+                    throw Specific::Exception(fn,"multiplie longevities %u", unsigned(life));
             }
 
             // limited count
@@ -94,7 +94,7 @@ namespace Yttrium
                 AtExit::Code &code = AtExitQueue[AtExitCount++];
                 code.func = func;
                 code.args = args;
-                code.prio = prio;
+                code.life = life;
             }
 
             // keep ordered

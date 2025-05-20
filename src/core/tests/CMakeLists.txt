@@ -3,6 +3,7 @@
 
 Y_CreateTest(test-core
 core
+type
 system
 calculus)
 
@@ -18,6 +19,9 @@ Y_UTEST(core:variadic)
 # system
 Y_UTEST(system:error 1 2)
 Y_UTEST(system:at_exit)
+
+# type
+Y_UTEST(type:ints)
 
 #calculus
 Y_UTEST(calculus_integer_log2)
