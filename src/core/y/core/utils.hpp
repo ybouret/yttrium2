@@ -62,6 +62,10 @@ namespace Yttrium
     //
     //
     //! C-style swap
+    /**
+     \param lhs first object
+     \param rhs second object
+     */
     //
     //__________________________________________________________________________
     template <typename T> inline

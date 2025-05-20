@@ -13,9 +13,25 @@ namespace Yttrium
 {
     namespace Libc
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! using errno/strerror API
+        //
+        //
+        //______________________________________________________________________
         struct Error
         {
-            typedef int Type;
+            typedef int Type; //!< alias
+
+            //! format with strerror
+            /**
+             \param errorBuffer output buffer
+             \param errorLength output buffer length
+             \param errorCode   from errno
+             \return formatted errorBuffer
+             */
             static char * Format(char * const errorBuffer,
                                  const size_t errorLength,
                                  const Type   errorCode) noexcept;
@@ -25,9 +41,25 @@ namespace Yttrium
 
     namespace Windows
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! using GetLastError()/FormatMessage API
+        //
+        //
+        //______________________________________________________________________
         struct Error
         {
-            typedef uint32_t Type;
+            typedef uint32_t Type; //!< alias
+
+            //! format with strerror
+            /**
+             \param errorBuffer output buffer
+             \param errorLength output buffer length
+             \param errorCode   from GetLastError()
+             \return formatted errorBuffer
+             */
             static char * Format(char * const errorBuffer,
                                  const size_t errorLength,
                                  const Type   errorCode) noexcept;

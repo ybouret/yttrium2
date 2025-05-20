@@ -6,10 +6,7 @@
 #include "y/core/setup.hpp"
 #include "y/exception.hpp"
 #include "y/core/utils.hpp"
-#include <iostream>
-#include <cstring>
-#include <cassert>
-#include <cstdlib>
+#include "y/utest/catch.hpp"
 
 namespace Yttrium
 {
@@ -17,123 +14,155 @@ namespace Yttrium
     namespace UTest
     {
 
-        typedef int (*CFunction)(int,char **);
+        typedef int (*CFunction)(int,char **); //!< alias
+
+        //______________________________________________________________________
+        //
+        //! function and its name
+        //______________________________________________________________________
         struct Procedure
         {
-            CFunction   call;
-            const char *name;
+            CFunction   call; //!< test function
+            const char *name; //!< test name
+
+            //! comparison by name for qsort
+            /**
+             \param lhs address of first procedure
+             \param rhs address of second procedure
+             \return name comparison
+             */
             static  int Compare(const void * const lhs, const void * const rhs) noexcept;
         };
 
-        template <size_t N>
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! storage and call of test functions
+        //
+        //
+        //______________________________________________________________________
         class Driver
         {
         public:
-            inline  Driver() noexcept : size(0), maxNameLength(0), proc() { clear(); }
-            inline ~Driver() noexcept { clear(); }
 
-            inline void operator()(CFunction          call,
-                                   const char * const name)
-            {
-                assert(0!=call);
-                assert(0!=name);
-                if(size>=N) throw Exception("UTest::Driver<%lu> is full!", static_cast<unsigned long>(size) );
-                for(size_t i=0;i<size;++i)
-                {
-                    if( 0 == strcmp(proc[i].name,name) ) throw Exception("multiple UTest '%s'",name);
-                }
-                Procedure &target = proc[size++];
-                target.call = call;
-                target.name = name;
-                InSituMax(maxNameLength, strlen(name) );
-                qsort(proc,size, sizeof(Procedure), Procedure::Compare);
-            }
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            virtual ~Driver() noexcept;
+            void     display()   const; //!< display content
 
-            inline void display() const
-            {
-                for(size_t i=0;i<size;++i)
-                {
-                    std::cerr << '\t' << '[' << proc[i].name << ']' << std::endl;
-                }
-            }
-
-            inline int operator()(int argc, char **argv) const
-            {
-                assert(0!=argv);
-                assert(argc>=1);
-                const char * const mainName = argv[0];
-                if(argc>1)
-                {
-                    const char * const testName = argv[1];
-                    for(size_t i=0;i<size;++i)
-                    {
-                        const Procedure &p = proc[i];
-                        if( 0 == strcmp(p.name,testName))
-                        {
-                            return p.call(--argc,++argv);
-                        }
-                    }
-                    std::cerr << "[" << testName << "] not found. Did you mean :" << std::endl;
-                    for(size_t i=0;i<size;++i)
-                    {
-                        const char * const name = proc[i].name;
-                        const char * big = name;
-                        const char * little = testName;
-                        if( strlen(big) < strlen(little) )
-                        {
-                            Swap(big,little);
-                        }
-                        if( strstr(big,little) )
-                        {
-                            std::cerr << "\t" << name << std::endl;
-                        }
-
-                    }
-                    return 1;
-                }
-                else
-                {
-                    std::cerr << "<" << mainName << " [" << size << "/" << N << "]>" << std::endl;
-                    display();
-                    std::cerr << "<" << mainName << "/>" << std::endl;
-                    return 0;
-                }
-            }
+            //! append a new test
+            /**
+             will throw upon too many or multiple tests
+             \param call test function
+             \param name test name
+             */
+            void operator()(CFunction          call,
+                            const char * const name);
 
 
+            //! call argv[1] or display()
+            /**
+             \param  argc from main
+             \param  argv from main
+             \return result of test(--argc,++argv)
+             */
+            int operator()(int argc, char **argv) const;
 
+        protected:
+            //! initialize
+            /**
+             \param p persistent procedures
+             \param n available procedures
+             */
+            explicit Driver(Procedure * const p,
+                            const size_t      n) noexcept;
 
+            Procedure * const proc;          //!< persistent procedures
+            const size_t      capacity;      //!< available procedures
+            size_t            size;          //!< number of active procedures
+            size_t            maxNameLength; //!< max name length of procedures
 
         private:
-            Y_Disable_Copy_And_Assign(Driver);
-            size_t    size;
-            size_t    maxNameLength;
-            Procedure proc[N];
+            Y_Disable_Copy_And_Assign(Driver); //!< discarding
+            void clear() noexcept;             //!< hard-reset
+        };
 
-            inline void clear() noexcept
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Data for N testds
+        //
+        //
+        //______________________________________________________________________
+        template <size_t N>
+        class DriverData
+        {
+        public:
+
+            inline virtual ~DriverData() noexcept {} //!< destructor
+
+        protected:
+            //! constructor
+            inline explicit DriverData() noexcept : proc_()
             {
-                memset(proc,0,sizeof(proc));
-                size          = 0;
-                maxNameLength = 0;
             }
+
+            Procedure proc_[N]; //!< local memory for procedures
+        private:
+            Y_Disable_Copy_And_Assign(DriverData); //!< discarding
+
+        };
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Driver with N tests
+        //
+        //
+        //______________________________________________________________________
+        template <size_t N>
+        class DriverWith : public DriverData<N>, public Driver
+        {
+        public:
+            //! constructor
+            inline  explicit DriverWith() noexcept :
+            DriverData<N>(),
+            Driver(this->proc_,N)
+            {
+            }
+
+            //! destructor
+            inline virtual ~DriverWith() noexcept {}
+
+        private:
+            Y_Disable_Copy_And_Assign(DriverWith); //!< discarding
         };
 
     }
 
+    //! prepare driver
 #define Y_UTEST_DECL(N) \
 /**/  using namespace Yttrium;\
 /**/  int main(int argc, char **argv) \
 /**/  {\
-/**/    UTest::Driver<N> driver;\
+/**/    UTest::DriverWith<N> driver;\
 /**/    try {\
 
+    //! run driver
 #define Y_UTEST_EXEC() \
 /**/      return driver(argc,argv);\
 /**/    }\
-/**/    catch(...)\
-/**/    { std::cerr << Core::Unknown << ' ' << Exception::CallSign << std::endl; return 3; }\
+/**/    Y_UTEST_CATCH();\
 /**/  }
 
+    //! declare test
 #define Y_UTEST(NAME) do { \
 /**/ extern int (Y_UTest_##NAME)(int,char **);\
 /**/ driver(Y_UTest_##NAME,#NAME);\

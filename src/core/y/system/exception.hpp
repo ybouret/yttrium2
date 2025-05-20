@@ -10,13 +10,21 @@ namespace Yttrium
 {
     namespace Specific
     {
+        //__________________________________________________________________________
+        //
+        //
+        //
+        //! Information with specific reason
+        //
+        //
+        //__________________________________________________________________________
         class Exception : public Yttrium::Exception
         {
         public:
             virtual ~Exception() noexcept;
             
         private:
-            Y_Disable_Assign(Exception);
+            Y_Disable_Assign(Exception); //!< no assigment
         };
     }
 }

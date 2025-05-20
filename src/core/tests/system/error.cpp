@@ -1,6 +1,5 @@
 #include "y/utest/run.hpp"
 #include "y/system/error.hpp"
-#include <iostream>
 
 using namespace Yttrium;
 

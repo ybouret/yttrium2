@@ -6,11 +6,13 @@
 
 #include "y/exception.hpp"
 #include "y/core/setup.hpp"
-#include <cstdio>
+#include "y/utest/catch.hpp"
+#include <iostream>
 
 namespace Yttrium
 {
 
+    //! start a int NAME(argc,argv)
 #define Y_UTEST(NAME) \
 /**/  int Y_UTest_##NAME(int argc, char **argv) \
 /**/  {\
@@ -21,14 +23,11 @@ namespace Yttrium
 /**/      try\
 /**/      {
 
+    //! finish test code
 #define Y_UDONE() \
 /**/      }\
-/**/      catch(...) {\
-/**/        std::cerr << Core::Unknown << ' ' << Exception::CallSign << std::endl;\
-/**/        return 3;\
-/**/      }\
+/**/      Y_UTEST_CATCH();\
 /**/    }\
-/**/    return 0;\
 /**/  }
 
 
