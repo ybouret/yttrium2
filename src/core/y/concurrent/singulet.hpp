@@ -17,10 +17,13 @@ namespace Yttrium
         class Singulet : public Identifiable
         {
         public:
+            static  bool                      Verbose;
             typedef System::AtExit::Longevity Longevity;
-            static  const Longevity GreatestLongevity;
+            static  const Longevity           GreatestLifeTime = IntegerFor<Longevity>::Maximum;
 
-            virtual Longevity lifeTime() const noexcept;
+            explicit Singulet() noexcept;
+            virtual ~Singulet() noexcept;
+            virtual Longevity lifeTime() const noexcept = 0;
 
         private:
             Y_Disable_Copy_And_Assign(Singulet);

@@ -5,7 +5,10 @@ Y_CreateTest(test-core
 core
 type
 system
-calculus)
+calculus
+concurrent
+)
+
 
 target_link_libraries(test-core y)
 
@@ -24,7 +27,9 @@ Y_UTEST(system:at_exit)
 Y_UTEST(type:ints)
 
 #calculus
-Y_UTEST(calculus_integer_log2)
-Y_UTEST(calculus_alignment)
+Y_UTEST(calculus:integer_log2)
+Y_UTEST(calculus:alignment)
 
+#concurrent
+Y_UTEST(concurrent:nucleus)
 

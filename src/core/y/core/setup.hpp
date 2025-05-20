@@ -40,6 +40,12 @@ namespace Yttrium
         typedef T Type; //!< identifier
     };
 
+    template <typename T> inline
+    T & Coerce(const T &obj) noexcept
+    {
+        return (T&)obj;
+    }
+
     //__________________________________________________________________________
     //
     //

@@ -14,14 +14,26 @@ namespace Yttrium
         class Nucleus : public Singulet
         {
         public:
-            static const char * const CallSign;
-            static const Longevity    LifeTime;
+            static const char * const CallSign; //!< "Concurrent::Nucleus"
+            static const Longevity    LifeTime = Singulet::GreatestLifeTime;
+
+            // Interface
+
+            //! [Identifiable]
+            /** \return CallSign */
             virtual const char * callSign() const noexcept;
+
+            //! [Singulet]
+            /** \return LifeTime */
+            virtual Longevity    lifeTime() const noexcept;
+
+            static Nucleus & Instance();
 
         private:
             Y_Disable_Copy_And_Assign(Nucleus);
             explicit Nucleus();
             virtual ~Nucleus() noexcept;
+            static void SelfDestruct(void*) noexcept;
         };
     }
 

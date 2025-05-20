@@ -16,7 +16,7 @@ namespace Yttrium
     public:
         virtual ~Identifiable() noexcept;
 
-        virtual const char * callSign() const noexcept;
+        virtual const char * callSign() const noexcept = 0;
 
     private:
         Y_Disable_Copy_And_Assign(Identifiable);

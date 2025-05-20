@@ -10,6 +10,7 @@ Y_CreateLibrary(y
     y/ascii
     y/calculus
     y/concurrent
+    y/memory
     y/utest
 )
 
