@@ -3,7 +3,8 @@
 
 Y_CreateTest(test-core
 core
-system)
+system
+calculus)
 
 target_link_libraries(test-core y)
 
@@ -16,3 +17,8 @@ Y_UTEST(core:variadic)
 
 # system
 Y_UTEST(system:error 1 2)
+Y_UTEST(system:at_exit)
+
+#calculus
+Y_UTEST(calculus_integer_log2)
+

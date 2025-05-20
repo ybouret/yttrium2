@@ -56,7 +56,7 @@ namespace Yttrium
 #define Y_SIZEOF(NAME) do { UTest::Display::Value( "sizeof(" #NAME ")",sizeof(NAME)); } while(false)
 
     //! helper to display value
-#define Y_PRINTV(NAME) do { UTest::Display::Value( #NAME, NAME); } while(fasle)
+#define Y_PRINTV(NAME) do { UTest::Display::Value( #NAME, NAME); } while(false)
 
 }
 
