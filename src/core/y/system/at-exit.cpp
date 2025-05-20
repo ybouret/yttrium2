@@ -5,6 +5,7 @@
 #include <cassert>
 #include <iostream>
 #include <cstdlib>
+#include <cstring>
 
 namespace Yttrium
 {
