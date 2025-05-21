@@ -5,7 +5,11 @@ using namespace Yttrium;
 
 namespace
 {
-
+    struct Block
+    {
+        void  *addr;
+        size_t size;
+    };
 }
 
 Y_UTEST(memory_system)
@@ -17,6 +21,8 @@ Y_UTEST(memory_system)
     size_t blockSize = 10;
     void * blockAddr = allocator.acquire(blockSize);
     std::cerr << "Allocated " << blockSize << " @" << blockAddr << std::endl;
+
+    
 
 }
 Y_UDONE()
