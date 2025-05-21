@@ -17,7 +17,7 @@ namespace Yttrium
         static const Longevity            GreatestLongevity = IntegerFor<Longevity>::Maximum; //!< reserved for ConcurrentNucleus
         enum { Initializer = __LINE__ + 1 };
         enum {
-            Y_LifeTime(System)
+            Y_LifeTime(SystemMemory)
         };
     };
 }

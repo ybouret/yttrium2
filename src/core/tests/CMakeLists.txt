@@ -7,6 +7,7 @@ type
 system
 calculus
 concurrent
+memory
 )
 
 
@@ -38,4 +39,7 @@ Y_UTEST(calculus:alignment)
 Y_UTEST(concurrent:nucleus)
 Y_UTEST(concurrent:giant_lock)
 Y_UTEST(concurrent:life_time)
+
+#memory
+Y_UTEST(memory:system)
 

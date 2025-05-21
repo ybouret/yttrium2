@@ -11,15 +11,18 @@ namespace Yttrium
 {
     namespace Memory
     {
-        
+
 
         class System : public Singleton<System,GiantLockPolicy>
         {
         public:
-            static const char * const CallSign;
+            static const char * const CallSign; //!< "Memory::System"
+            static const Longevity    LifeTime = LifeTime::SystemMemory;
 
-            void acquire(size_t &blockSize);
-            void release(void * &blockAddr, size_t &blockSize) noexcept;
+            void * acquire(size_t &blockSize);
+            void   release(void * &blockAddr, size_t &blockSize) noexcept;
+
+            const uint64_t allocated;
 
         private:
             Y_Disable_Copy_And_Assign(System);

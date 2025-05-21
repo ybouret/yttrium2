@@ -23,7 +23,7 @@ namespace Yttrium
             assert( Good(blockAddr,blockSize) );
             const uint8_t *p = static_cast<const uint8_t *>(blockAddr);
             for(size_t i=blockSize;i>0;--i)
-                if(*(p++)==0) return false;
+                if(0 != *(p++)) return false;
 
             return true;
         }

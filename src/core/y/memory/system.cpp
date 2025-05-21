@@ -3,15 +3,28 @@
 #include "y/system/exception.hpp"
 #include <cstdlib>
 #include <cerrno>
+#include <iostream>
 
 namespace Yttrium
 {
     namespace Memory
     {
-#if 0
-        static uint64_t SystemMemory = 0;
+        System:: System() :
+        Singleton<System, GiantLockPolicy>(),
+        allocated(0)
+        {
+        }
 
-        void * System:: Acquire(size_t &blockSize)
+        const char * const System::CallSign = "Memory::System";
+        System:: ~System() noexcept
+        {
+            if(allocated>0)
+            {
+                std::cerr << "*** " << CallSign << ": still allocated = " << allocated << std::endl;
+            }
+        }
+
+        void * System:: acquire(size_t &blockSize)
         {
             if(blockSize<=0)
             {
@@ -20,17 +33,17 @@ namespace Yttrium
             else
             {
                 void * const blockAddr = calloc(1,blockSize);
+                assert( Memory::Stealth::Are0(blockAddr,blockSize) );
                 if(0==blockAddr)
                 {
                     const size_t required = blockSize;
                     blockSize = 0;
                     throw Libc::Exception(ENOMEM,"System::Acquire(%lu)", (unsigned long) required);
                 }
-                SystemMemory += blockSize;
+                Coerce(allocated) += blockSize;
                 return blockAddr;
             }
         }
-#endif
     }
 
 }

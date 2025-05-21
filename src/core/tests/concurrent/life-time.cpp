@@ -7,7 +7,7 @@ using namespace Yttrium;
 
 Y_UTEST(concurrent_life_time)
 {
-    Y_PRINTV(LifeTime::System);
+    Y_PRINTV(LifeTime::SystemMemory);
 
 }
 Y_UDONE()
