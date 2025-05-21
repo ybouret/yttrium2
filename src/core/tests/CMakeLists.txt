@@ -25,6 +25,7 @@ Y_UTEST(core:variadic)
 # system
 Y_UTEST(system:error 1 2)
 Y_UTEST(system:at_exit)
+Y_UTEST(system:rand)
 
 # type
 Y_UTEST(type:ints)
