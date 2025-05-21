@@ -1,5 +1,4 @@
 
-#include "y/memory/system.hpp"
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
 
@@ -35,7 +34,9 @@ namespace Yttrium
             firstBlock(0),
             freeBlocks(numBlocks),
             userBlocks(numBlocks),
-            last( data + (blockSize * static_cast<size_t>(numBlocks)) )
+            last( data + (blockSize * static_cast<size_t>(numBlocks)) ),
+            next(0),
+            prev(0)
             {
                 assert(Good(blockAddr,numBlocks));
                 uint8_t *p=data;
@@ -84,6 +85,8 @@ namespace Yttrium
             uint8_t               freeBlocks;
             const uint8_t         userBlocks;
             const uint8_t * const last;
+            Chunk *               next;
+            Chunk *               prev;
 
         private:
             Y_Disable_Copy_And_Assign(Chunk);
@@ -122,9 +125,7 @@ namespace
 Y_UTEST(memory_chunk)
 {
     System::Rand    ran;
-    //Memory::System &allocator = Memory::System::Instance();
 
-    Y_SIZEOF(Memory::Chunk);
 
 
     void * addr[256];
@@ -153,6 +154,7 @@ Y_UTEST(memory_chunk)
         free(blockAddr);
     }
 
+    Y_SIZEOF(Memory::Chunk);
 
 
 }
