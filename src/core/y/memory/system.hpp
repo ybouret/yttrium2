@@ -4,18 +4,30 @@
 #ifndef Y_Memory_System_Included
 #define Y_Memory_System_Included 1
 
-#include "y/core/setup.hpp"
+#include "y/singleton.hpp"
+#include "y/concurrent/life-time.hpp"
 
 namespace Yttrium
 {
     namespace Memory
     {
+        
 
-        struct System
+        class System : public Singleton<System,GiantLockPolicy>
         {
-            static void * Acquire(size_t &blockSize);
-            static void   Release(void * &blockAddr, size_t &blockSize) noexcept;
+        public:
+            static const char * const CallSign;
+
+            void acquire(size_t &blockSize);
+            void release(void * &blockAddr, size_t &blockSize) noexcept;
+
+        private:
+            Y_Disable_Copy_And_Assign(System);
+            friend class Singleton<System,GiantLockPolicy>;
+            explicit System();
+            virtual ~System() noexcept;
         };
+
 
     }
 

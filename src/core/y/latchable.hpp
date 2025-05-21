@@ -21,8 +21,10 @@ namespace Yttrium
 
     private:
         Y_Disable_Copy_And_Assign(Latchable);
-        virtual bool doTryLock() noexcept;
+        virtual bool doTryLock() noexcept = 0;
     };
+
+#define Y_Latchable_Decl() virtual bool doTryLock() noexcept
 }
 
 #endif

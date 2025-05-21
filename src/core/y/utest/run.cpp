@@ -6,7 +6,7 @@ namespace Yttrium
 {
     namespace UTest
     {
-        size_t Display::Width = 64;
+        size_t Display::Width = 40;
 
         void Display::Value(const char *const name, const size_t size)
         {

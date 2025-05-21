@@ -15,7 +15,7 @@ namespace Yttrium
 {
 
 
-    template <typename T, typename LOCK_POLICY>
+    template <typename T, typename LOCK_POLICY = ClassLockPolicy>
     class Singleton : public Concurrent::Singulet, public LOCK_POLICY
     {
     public:

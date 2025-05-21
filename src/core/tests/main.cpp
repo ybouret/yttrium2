@@ -24,6 +24,7 @@ Y_UTEST_DECL(32)
 
     Y_UTEST(concurrent_nucleus);
     Y_UTEST(concurrent_giant_lock);
+    Y_UTEST(concurrent_life_time);
     
 }
 Y_UTEST_EXEC()

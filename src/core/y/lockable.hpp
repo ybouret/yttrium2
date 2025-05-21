@@ -31,6 +31,10 @@ namespace Yttrium
         virtual void doUnlock() noexcept = 0;
     };
 
+#define Y_Lockable_Decl()               \
+/**/  virtual void doLock()   noexcept; \
+/**/  virtual void doUnlock() noexcept
+
     //__________________________________________________________________________
     //
     //

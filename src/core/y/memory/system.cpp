@@ -8,6 +8,7 @@ namespace Yttrium
 {
     namespace Memory
     {
+#if 0
         static uint64_t SystemMemory = 0;
 
         void * System:: Acquire(size_t &blockSize)
@@ -29,6 +30,7 @@ namespace Yttrium
                 return blockAddr;
             }
         }
+#endif
     }
 
 }
