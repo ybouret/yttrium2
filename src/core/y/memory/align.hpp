@@ -13,7 +13,9 @@ namespace Yttrium
 
         struct Align
         {
-            typedef Alignment::On<16> On;
+            typedef Alignment::On<16> Compute;
+            static const size_t       MaxBlockSize = Compute::Inner::Maximum;
+            static const size_t       MinBlockSize = Compute::Inner::Byte;
         };
 
     }

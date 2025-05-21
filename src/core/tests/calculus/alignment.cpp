@@ -13,19 +13,19 @@ namespace
     void testAlign()
     {
         std::cerr << "Alignment On " << P << std::endl;
-        typedef Alignment::On<P> Alignment;
+        typedef Alignment::On<P> Align;
 
         for(size_t i=0;i<=20;++i)
         {
-            std::cerr << " / " << i << "->" << Alignment::Ceil(i);
+            std::cerr << " / " << i << "->" << Align::Ceil(i);
         }
         std::cerr << std::endl;
-        std::cerr << Alignment::template CeilOf<0>::Value << std::endl;
-        std::cerr << Alignment::template CeilOf<10>::Value << std::endl;
-        std::cerr << Alignment::template CeilOf<20>::Value << std::endl;
-        std::cerr << Alignment::template CeilOf<30>::Value << std::endl;
-        std::cerr << Alignment::template CeilOf<40>::Value << std::endl;
-
+        Y_PRINTV(Align::template CeilOf<0>::Value);
+        Y_PRINTV(Align::template CeilOf<10>::Value);
+        Y_PRINTV(Align::template CeilOf<20>::Value);
+        Y_PRINTV(Align::template CeilOf<30>::Value);
+        Y_PRINTV(Align::template CeilOf<40>::Value);
+        Y_PRINTV(Align::Inner::Maximum);
     }
 }
 

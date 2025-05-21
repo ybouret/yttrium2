@@ -1,6 +1,7 @@
 
 #include "y/memory/system.hpp"
 #include "y/system/exception.hpp"
+#include "y/check/usual.hpp"
 #include <cstdlib>
 #include <cerrno>
 #include <iostream>
@@ -11,6 +12,7 @@ namespace Yttrium
     {
         System:: System() :
         Singleton<System, GiantLockPolicy>(),
+        Allocator(CallSign),
         allocated(0)
         {
         }
@@ -24,26 +26,36 @@ namespace Yttrium
             }
         }
 
-        void * System:: acquire(size_t &blockSize)
+        void * System:: acquireBlock(size_t &blockSize)
         {
-            if(blockSize<=0)
+            // get system memory
+            assert(blockSize>0);
+            void * const blockAddr = calloc(1,blockSize);
+
+            // check return
+            if(0==blockAddr)
             {
-                return 0;
+                const size_t requested = blockSize;
+                blockSize = 0;
+                throw Libc::Exception(ENOMEM,"%s::Acquire(%lu)", CallSign, (unsigned long) requested);
             }
-            else
-            {
-                void * const blockAddr = calloc(1,blockSize);
-                assert( Memory::Stealth::Are0(blockAddr,blockSize) );
-                if(0==blockAddr)
-                {
-                    const size_t required = blockSize;
-                    blockSize = 0;
-                    throw Libc::Exception(ENOMEM,"System::Acquire(%lu)", (unsigned long) required);
-                }
-                Coerce(allocated) += blockSize;
-                return blockAddr;
-            }
+
+            // update state and return
+            Coerce(allocated) += blockSize;
+            return blockAddr;
         }
+
+        void System:: releaseBlock(void *const blockAddr, const size_t blockSize) noexcept
+        {
+            assert( 0 != blockAddr );
+            assert( blockSize > 0  );
+            assert( blockSize <= allocated || Die("corrupted allocation") );
+
+            free(blockAddr);
+            Coerce(allocated) -= blockSize;
+
+        }
+
     }
 
 }

@@ -42,6 +42,18 @@ namespace Yttrium
             /** \return "]0:1[" */
             template <typename T> T to() noexcept;
 
+            size_t leq(const size_t n) noexcept;
+
+            void shuffle(void * const blockAddr,
+                         const size_t numBlocks,
+                         const size_t blockSize) noexcept;
+
+            template <typename T> inline
+            void shuffle( T * const blockAddr, const size_t numBlocks) noexcept
+            {
+                shuffle(blockAddr,numBlocks,sizeof(T));
+            }
+
         private:
             Y_Disable_Copy_And_Assign(Rand); //!< discarding
         };

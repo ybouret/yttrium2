@@ -1,7 +1,10 @@
 
 #include "y/system/rand.hpp"
+#include "y/memory/stealth.hpp"
+#include "y/check/usual.hpp"
 #include <ctime>
 #include <cstdlib>
+#include <cmath>
 
 namespace Yttrium
 {
@@ -38,6 +41,27 @@ namespace Yttrium
             return ( static_cast<long double>( rand() ) + 0.5L ) / denom;
         }
 
+
+        size_t Rand:: leq(const size_t n) noexcept
+        {
+            return static_cast<size_t>( floor( double(n) * to<double>() + 0.5 ) );
+        }
+
+        void Rand:: shuffle(void * const blockAddr,
+                            const size_t numBlocks,
+                            const size_t blockSize) noexcept
+        {
+            assert( Good(blockAddr,numBlocks) );
+            assert( blockSize > 0 );
+            if(numBlocks<=1) return;
+
+            uint8_t * const base = static_cast<uint8_t *>(blockAddr);
+            for(size_t i=numBlocks-1;i>0;--i)
+            {
+                const size_t j = leq(i);
+                Memory::Stealth::Swap(base+i*blockSize, base+j*blockSize,blockSize);
+            }
+        }
     }
 
 }

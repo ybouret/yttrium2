@@ -6,6 +6,7 @@
 
 #include "y/calculus/integer-log2.hpp"
 #include "y/type/ints.hpp"
+#include <cassert>
 
 namespace Yttrium
 {
@@ -37,12 +38,12 @@ namespace Yttrium
             static const size_t Byte = One << LN2;   //!< 2^LN2
             static const size_t Mask = Byte-One;     //!< 2^LN2-1
             static const size_t Not2 = ~Mask;        //!< 2-complement of Mask
-            static const size_t Maxi = IntegerFor<size_t>::Maximum;
-            
+            static const size_t Maximum  = (IntegerFor<size_t>::Maximum/Byte) * Byte;
+
             //! template ceil
             template <size_t N> struct CeilOf
             {
-                static const size_t Value = Y_AlignmentOnLog2_Value(); //!< result
+                 static const size_t Value = Y_AlignmentOnLog2_Value(); //!< result
             };
 
             //! function ceil
@@ -52,6 +53,7 @@ namespace Yttrium
              */
             static inline size_t Ceil(const size_t N) noexcept
             {
+                assert(N<=Maximum);
                 return Y_AlignmentOnLog2_Value();
             }
         };

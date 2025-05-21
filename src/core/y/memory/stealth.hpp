@@ -22,6 +22,11 @@ namespace Yttrium
             static bool         Are0(const void * const blockAddr,
                                      const size_t       blockSize) noexcept;
 
+
+            static void         Swap(void * const lhsBlock,
+                                     void * const rhsBlock,
+                                     const size_t blockSize) noexcept;
+
             template <typename T>
             static inline T *Cast(void * const address) noexcept
             {
