@@ -90,12 +90,43 @@ namespace Yttrium
 
 #endif
 
+#if defined(Y_WIN)
+		class WindowsMutex : public Memory::Workspace<CRITICAL_SECTION>, public Lockable
+		{
+		public:
+			inline explicit WindowsMutex() : Memory::Workspace<CRITICAL_SECTION>()
+			{
+				::InitializeCriticalSection(data);
+			}
+
+			inline virtual ~WindowsMutex() noexcept
+			{
+				::DeleteCriticalSection(data);
+			}
+		private:
+			Y_Disable_Copy_And_Assign(WindowsMutex);
+			inline virtual void doLock() noexcept
+			{
+				::EnterCriticalSection(data);
+			}
+
+			inline virtual void doUnlock() noexcept
+			{
+				::LeaveCriticalSection(data);
+			}
+
+		};
+#endif
+
         class Nucleus:: Code
         {
         public:
             inline Code() :
 #if defined(Y_BSD)
             mutexAttributes(), mutex(mutexAttributes)
+#endif
+#if defined(Y_WIN)
+			mutex()
 #endif
             {
             }
@@ -110,7 +141,7 @@ namespace Yttrium
 #endif
 
 #if defined(Y_WIN)
-
+			WindowsMutex mutex;
 #endif
 
 

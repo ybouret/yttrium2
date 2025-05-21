@@ -84,8 +84,8 @@ namespace Yttrium
     struct SignedInt<int32_t>
     {
         typedef int32_t   Type;
-        static const Type Minimum = -2147483648;
-        static const Type Maximum =  2147483647;
+        static const Type Minimum = -2147483647L-1L;
+        static const Type Maximum =  2147483647L;
     };
 
     template <>

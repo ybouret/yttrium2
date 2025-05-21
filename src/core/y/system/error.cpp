@@ -66,11 +66,11 @@ namespace Yttrium
 #include <cstdlib>
 namespace Yttrium
 {
-    template <typename ERROR> static inline
-    void OnCritical(const typename  ERROR::Type err, const char * const title)
+    template <typename ERROR_API> static inline
+    void OnCritical(const typename  ERROR_API::Type err, const char * const title)
     {
         char buffer[256];
-        ERROR::Format(buffer,sizeof(buffer),err);
+        ERROR_API::Format(buffer,sizeof(buffer),err);
         std::cerr << "*** Critical Error Detected in " << title << std::endl;
         std::cerr << "*** " << buffer << std::endl;
         abort();

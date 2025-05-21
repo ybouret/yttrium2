@@ -134,7 +134,7 @@ namespace Yttrium
             //! constructor
             inline  explicit DriverWith() noexcept :
             DriverData<N>(),
-            Driver(this->proc_,N)
+            Driver(proc_,N)
             {
             }
 
