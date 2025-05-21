@@ -3,7 +3,7 @@
 #ifndef Y_Core_Setup_Included
 #define Y_Core_Setup_Included 1
 
-#include "y/system/types.hpp"
+#include "y/system/compiler.hpp"
 #include <iosfwd>
 
 namespace Yttrium

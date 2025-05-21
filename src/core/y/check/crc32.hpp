@@ -3,7 +3,7 @@
 #ifndef Y_CRC32_Included
 #define Y_CRC32_Included 1
 
-#include "y/system/types.hpp"
+#include "y/system/compiler.hpp"
 
 namespace Yttrium
 {

@@ -4,7 +4,7 @@
 #ifndef Y_SFH32_Included
 #define Y_SFH32_Included 1
 
-#include "y/system/types.hpp"
+#include "y/system/compiler.hpp"
 
 namespace Yttrium
 {

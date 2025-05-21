@@ -5,7 +5,6 @@
 #define Y_Memory_System_Included 1
 
 #include "y/core/setup.hpp"
-#include "y/system/types.hpp"
 
 namespace Yttrium
 {
