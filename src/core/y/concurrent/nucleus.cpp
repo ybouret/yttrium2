@@ -165,7 +165,7 @@ namespace Yttrium
 
         Nucleus:: Nucleus() : Singulet(), code(0)
         {
-            if(Verbose) { std::cerr << '+' << CallSign << std::endl; }
+            if(Verbose) Display("+",CallSign,LifeTime);
 
             try {
                 code = new ( Y_Memory_BZero(codeWorkspace) ) Code();
@@ -179,7 +179,7 @@ namespace Yttrium
 
         Nucleus:: ~Nucleus() noexcept
         {
-            if(Verbose) { std::cerr << '-' << CallSign << std::endl; }
+            if(Verbose) Display("~",CallSign,LifeTime);
             assert(0!=code);
             Nullify(code);
             Y_Memory_BZero(codeWorkspace);

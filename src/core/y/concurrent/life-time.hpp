@@ -10,7 +10,7 @@ namespace Yttrium
 {
 
     //! compute a named LifeTime
-#define Y_LifeTime(NAME) NAME = __LINE__ - Initializer
+#define Y_LifeTime(NAME) NAME = GreatestLongevity - (__LINE__ - Initializer)
 
     //__________________________________________________________________________
     //
