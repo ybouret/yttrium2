@@ -5,6 +5,7 @@
 #define Y_Calculus_Alignment_Included 1
 
 #include "y/calculus/integer-log2.hpp"
+#include "y/type/ints.hpp"
 
 namespace Yttrium
 {
@@ -36,7 +37,8 @@ namespace Yttrium
             static const size_t Byte = One << LN2;   //!< 2^LN2
             static const size_t Mask = Byte-One;     //!< 2^LN2-1
             static const size_t Not2 = ~Mask;        //!< 2-complement of Mask
-
+            static const size_t Maxi = IntegerFor<size_t>::Maximum;
+            
             //! template ceil
             template <size_t N> struct CeilOf
             {
