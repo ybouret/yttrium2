@@ -50,36 +50,37 @@ Y_UTEST(memory_chunk)
     System::Rand    ran;
 
 
-
-    void * addr[256];
-    size_t size = 0;
-
-    for(size_t userBytes=1; userBytes <= 1024; userBytes <<= 1)
     {
-        std::cerr << "userBytes=" << userBytes << std::endl;
-        void * const blockAddr = calloc(1,userBytes);
-        if(0==blockAddr) throw Exception("no memory");
-        for(size_t blockSize=1;blockSize<=256;++blockSize)
+        void * addr[256];
+        size_t size = 0;
+
+        for(size_t userBytes=1; userBytes <= 1024; userBytes <<= 1)
         {
-            Memory::Chunk chunk(blockAddr, Memory::Chunk::NumBlocksFor(userBytes,blockSize), blockSize);
-            std::cerr << "\tblockSize=" << blockSize << " / numBlocks=" << (int)chunk.userBlocks << std::endl;
-            memset(addr,0,sizeof(addr));
-            size = 0;
-            fill(addr,size,chunk,blockSize,ran);
-            for(size_t iter=0;iter<8;++iter)
+            std::cerr << "userBytes=" << userBytes << std::endl;
+            void * const blockAddr = calloc(1,userBytes);
+            if(0==blockAddr) throw Exception("no memory");
+            for(size_t blockSize=1;blockSize<=256;++blockSize)
             {
-                ran.shuffle(addr,size);
-                empty(size/2,addr,size,chunk,blockSize);
+                Memory::Chunk chunk(blockAddr, Memory::Chunk::NumBlocksFor(userBytes,blockSize), blockSize);
+                std::cerr << "\tblockSize=" << blockSize << " / numBlocks=" << (int)chunk.userBlocks << std::endl;
+                memset(addr,0,sizeof(addr));
+                size = 0;
                 fill(addr,size,chunk,blockSize,ran);
+                for(size_t iter=0;iter<8;++iter)
+                {
+                    ran.shuffle(addr,size);
+                    empty(size/2,addr,size,chunk,blockSize);
+                    fill(addr,size,chunk,blockSize,ran);
+                }
+                empty(0,addr,size,chunk,blockSize);
             }
-            empty(0,addr,size,chunk,blockSize);
+            free(blockAddr);
         }
-        free(blockAddr);
     }
 
     Y_SIZEOF(Memory::Chunk);
 
-
+    
 }
 Y_UDONE()
 
