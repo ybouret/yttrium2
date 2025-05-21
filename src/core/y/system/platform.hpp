@@ -27,6 +27,11 @@
 #define Y_Platform "FreeBSD"
 #endif
 
+#if defined(__sun__)
+#define Y_BSD 1
+#define Y_Platform "Sun"
+#endif
+
 #if !defined(Y_Platform)
 #error "Unknown Platform"
 #endif
