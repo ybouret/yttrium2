@@ -6,18 +6,8 @@
 
 #include "y/check/usual.hpp"
 
-#include <cstring>
-
-namespace Yttrium
-{
-    namespace Memory
-    {
-
-      
 
 
-    }
-}
 
 using namespace Yttrium;
 
@@ -72,6 +62,7 @@ Y_UTEST(memory_chunk)
                     empty(size/2,addr,size,chunk,blockSize);
                     fill(addr,size,chunk,blockSize,ran);
                 }
+                Y_ASSERT(0==chunk.freeBlocks);
                 empty(0,addr,size,chunk,blockSize);
             }
             free(blockAddr);
@@ -88,6 +79,10 @@ Y_UTEST(memory_chunk)
         if(userBytes <= Header)
         {
             std::cerr << "Too Small/Header" << std::endl;
+        }
+        for(size_t blockSize=1;blockSize<=10;++blockSize)
+        {
+            
         }
 
 

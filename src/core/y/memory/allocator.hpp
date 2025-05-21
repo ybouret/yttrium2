@@ -10,6 +10,7 @@ namespace Yttrium
 {
     namespace Memory
     {
+        
         class Allocator
         {
         protected:
