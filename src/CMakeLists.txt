@@ -16,5 +16,6 @@ else()
     add_custom_target(dox ${DOX} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/..)
 endif()
 
+set(Y_UnitTests "")
 add_subdirectory(core)
 
