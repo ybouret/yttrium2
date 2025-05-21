@@ -5,6 +5,8 @@
 #include "y/check/usual.hpp"
 #include "y/memory/stealth.hpp"
 
+#include <cstring>
+
 namespace Yttrium
 {
     namespace Memory

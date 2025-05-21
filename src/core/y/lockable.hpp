@@ -9,7 +9,7 @@
 
 namespace Yttrium
 {
-
+    
     class Lockable
     {
     protected:
@@ -31,6 +31,7 @@ namespace Yttrium
         virtual void doUnlock() noexcept = 0;
     };
 
+    //! Helper for Lockable API
 #define Y_Lockable_Decl()               \
 /**/  virtual void doLock()   noexcept; \
 /**/  virtual void doUnlock() noexcept
@@ -49,8 +50,8 @@ namespace Yttrium
         ScopedLock(Lockable &) noexcept; //!< setup by locking host
         ~ScopedLock()          noexcept; //!< unlock host
     private:
-        Y_Disable_Copy_And_Assign(ScopedLock);
-        Lockable &host;
+        Y_Disable_Copy_And_Assign(ScopedLock); //!< disacrding
+        Lockable &host;                        //!< persistent host
     };
 
     //! create the guard name

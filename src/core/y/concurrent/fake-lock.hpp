@@ -13,6 +13,14 @@ namespace Yttrium
     namespace Concurrent
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! FakeLock, counting calls only
+        //
+        //
+        //______________________________________________________________________
         class FakeLock : public Latchable
         {
         public:
@@ -20,9 +28,9 @@ namespace Yttrium
             virtual ~FakeLock() noexcept;
 
         private:
-            Y_Disable_Copy_And_Assign(FakeLock);
-            Y_Lockable_Decl();
-            Y_Latchable_Decl();
+            Y_Disable_Copy_And_Assign(FakeLock); //!< discarding
+            Y_Lockable_Decl();                   //!< lockable API
+            Y_Latchable_Decl();                  //!< latchable API
         };
 
     }

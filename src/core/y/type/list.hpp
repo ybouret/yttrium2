@@ -74,7 +74,7 @@ namespace Yttrium
         //! specialized length for NullType
         //______________________________________________________________________
         template <> struct LengthOf<NullType> {
-            enum { Value = 0 };
+            enum { Value = 0 /*!< special value */ };
         };
 
         //______________________________________________________________________
@@ -83,7 +83,7 @@ namespace Yttrium
         //______________________________________________________________________
         template <class T, class U>
         struct LengthOf< TypeList<T,U> > {
-            enum { Value = 1 + LengthOf<U>::Value };
+            enum { Value = 1 + LengthOf<U>::Value /*!< default value */ };
         };
 
         //______________________________________________________________________
@@ -158,21 +158,24 @@ namespace Yttrium
         class  IndexOf< TypeList<T, tail>, T>
         {
         public:
-            enum { Value = 0 };
+            enum { Value = 0 /*!< value for tail */ };
         };
 
         //! recursive index_of algorithm.
         template <class head, class tail, class T>
         class IndexOf<TypeList<head, tail>, T> {
         private:
-            enum { temp = IndexOf<tail, T>::Value };
+            enum { temp = IndexOf<tail, T>::Value /*!< value for head */};
         public:
-            enum { Value = (temp == -1 ? -1 : 1 + temp) };
+            enum { Value = (temp == -1 ? -1 : 1 + temp) /*!< default value */};
         };
 
-        //======================================================================
+        //______________________________________________________________________
+        //
+        //
         // append_to
-        //======================================================================
+        //
+        //______________________________________________________________________
         //! default append_to
         template <class TList,class T> struct AppendTo;
 
@@ -183,7 +186,9 @@ namespace Yttrium
 
         //! special append T to null_type
         template <class T> struct AppendTo<NullType,T> {
-            typedef TL1(T) result; //!< same list
+            //! same list
+            /** \return TL1(T) */
+            typedef TL1(T) result;
         };
 
         //! special append type_list to null_type

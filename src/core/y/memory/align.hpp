@@ -11,11 +11,19 @@ namespace Yttrium
     namespace Memory
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! helper for memory alignment
+        //
+        //
+        //______________________________________________________________________
         struct Align
         {
-            typedef Alignment::On<16> Compute;
-            static const size_t       MaxBlockSize = Compute::Inner::Maximum;
-            static const size_t       MinBlockSize = Compute::Inner::Byte;
+            typedef Alignment::On<16> Compute;                                //!< alias
+            static const size_t       MaxBlockSize = Compute::Inner::Maximum; //!< alias
+            static const size_t       MinBlockSize = Compute::Inner::Byte;    //!< alias
         };
 
     }

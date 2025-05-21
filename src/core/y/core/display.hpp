@@ -12,6 +12,17 @@ namespace Yttrium
 
     namespace Core
     {
+        //______________________________________________________________________
+        //
+        //
+        //! inline Display as vector of data
+        /**
+         \param os output stream
+         \param iter any valid iterator with '++' and '*' operators
+         \param n    number of items to display
+         \return output stream
+         */
+        //______________________________________________________________________
         template <typename ITERATOR> inline
         std::ostream & Display( std::ostream &os, ITERATOR iter, const size_t n)
         {

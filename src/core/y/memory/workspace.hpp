@@ -12,6 +12,14 @@ namespace Yttrium
     namespace Memory
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! inline workspace for given type
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class Workspace
         {
@@ -26,10 +34,10 @@ namespace Yttrium
                 Coerce(data) = static_cast<T *>( Y_Memory_BZero(wksp) );
             }
 
-            T * const data;
+            T * const data; //!< address of workspace
         private:
-            Y_Disable_Copy_And_Assign(Workspace);
-            void *    wksp[ Alignment::WordsFor<T>::Count ];
+            Y_Disable_Copy_And_Assign(Workspace);            //!< discarding
+            void *    wksp[ Alignment::WordsFor<T>::Count ]; //!< internal memory
         };
 
     }

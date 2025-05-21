@@ -14,12 +14,30 @@
 namespace Yttrium
 {
 
-
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Singleton implementation
+    //
+    //
+    //__________________________________________________________________________
     template <typename T, typename LOCK_POLICY = ClassLockPolicy>
     class Singleton : public Concurrent::Singulet, public LOCK_POLICY
     {
     public:
 
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+
+        //! get/create instance
+        /**
+         \return the unique instance
+         */
         static inline T & Instance()
         {
             static void *     workspace[ Alignment::WordsFor<T>::Count ];
@@ -31,14 +49,19 @@ namespace Yttrium
             {
 				Y_Lock(giantLock);
 
+                //--------------------------------------------------------------
                 // subscribe to AtExit once
+                //--------------------------------------------------------------
+
                 if(subscribe)
                 {
                     System::AtExit::Perform(Release,0,T::LifeTime);
                     subscribe = false;
                 }
 
+                //--------------------------------------------------------------
                 // create
+                //--------------------------------------------------------------
                 if(Verbose) Display("+", T::CallSign, T::LifeTime);
                 try
                 {
@@ -55,25 +78,39 @@ namespace Yttrium
             return *Instance_;
         }
 
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
+
+        //! [Identifiable]
+        /** \return CallSign */
         inline virtual const char * callSign() const noexcept
         {
             return T::CallSign;
         }
 
+        //! [Singulet]
+        /** \return LifeTime */
         inline virtual Longevity lifeTime() const noexcept
         {
             return T::LifeTime;
         }
 
+        //! [Singulet]
+        /** \return THE_POLICY::policyLock */
         inline virtual Lockable & access() noexcept
         {
             return this->policyLock;
         }
 
     private:
-        Y_Disable_Copy_And_Assign(Singleton);
-        static T * Instance_;
+        Y_Disable_Copy_And_Assign(Singleton); //!< discarding
+        static T * Instance_;                 //!< instance location
 
+        //! release singleton and its resources
         static inline void Release(void*) noexcept
         {
             if(0!=Instance_)
