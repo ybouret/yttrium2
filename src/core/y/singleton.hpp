@@ -22,13 +22,14 @@ namespace Yttrium
 
         static inline T & Instance()
         {
-            static void * workspace[ Alignment::WordsFor<T>::Count ];
-            static bool   subscribe = true;
-
-            Y_Giant_Lock();
+            static void *     workspace[ Alignment::WordsFor<T>::Count ];
+            static bool       subscribe = true;
+			static Lockable & giantLock = Lockable::Giant();
+            
+			Y_Lock(giantLock);
             if( 0 == Instance_ )
             {
-                Y_Giant_Lock();
+				Y_Lock(giantLock);
 
                 // subscribe to AtExit once
                 if(subscribe)
