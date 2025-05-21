@@ -24,8 +24,15 @@ namespace Yttrium
 
             explicit Singulet() noexcept;
             virtual ~Singulet() noexcept;
+
             virtual Longevity  lifeTime() const noexcept = 0;
             virtual Lockable & access()         noexcept = 0;
+
+            static void Display(const char * const prefix,
+                                const char * const identifier,
+                                const Longevity    longevity) noexcept;
+
+
 
         private:
             Y_Disable_Copy_And_Assign(Singulet);

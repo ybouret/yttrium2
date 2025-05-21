@@ -1,5 +1,6 @@
 
 #include "y/concurrent/singulet.hpp"
+#include <iostream>
 
 namespace Yttrium
 {
@@ -14,6 +15,22 @@ namespace Yttrium
         Singulet:: Singulet() noexcept
         {
         }
-        
+
+
+        void Singulet:: Display(const char * const prefix,
+                                const char * const identifier,
+                                const Longevity    longevity) noexcept
+        {
+            try
+            {
+                if(prefix) std::cerr << prefix;
+                std::cerr << '[' << identifier << '@' << longevity << ']';
+            }
+            catch(...)
+            {
+
+            }
+        }
+
     }
 }
