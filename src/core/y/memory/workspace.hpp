@@ -28,6 +28,7 @@ namespace Yttrium
 
             T * const data;
         private:
+            Y_Disable_Copy_And_Assign(Workspace);
             void *    wksp[ Alignment::WordsFor<T>::Count ];
         };
 
