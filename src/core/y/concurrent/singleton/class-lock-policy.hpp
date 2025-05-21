@@ -11,6 +11,14 @@
 namespace Yttrium
 {
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! One Lock (Mutex) per class
+    //
+    //
+    //__________________________________________________________________________
     class ClassLockPolicy
     {
     public:
@@ -18,10 +26,10 @@ namespace Yttrium
         virtual ~ClassLockPolicy() noexcept;
 
     protected:
-        Concurrent::FakeLock policyLock;
+        Concurrent::FakeLock policyLock; //!< for local access
 
     private:
-        Y_Disable_Copy_And_Assign(ClassLockPolicy);
+        Y_Disable_Copy_And_Assign(ClassLockPolicy); //!< disarding
     };
 
 

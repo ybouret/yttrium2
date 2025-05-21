@@ -9,7 +9,14 @@
 
 namespace Yttrium
 {
-
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Use giant lock for class access
+    //
+    //
+    //__________________________________________________________________________
     class GiantLockPolicy
     {
     public:
@@ -17,10 +24,10 @@ namespace Yttrium
         virtual ~GiantLockPolicy() noexcept;
 
     protected:
-        Lockable &policyLock;
+        Lockable &policyLock; //!< peristent giant lock
 
     private:
-        Y_Disable_Copy_And_Assign(GiantLockPolicy);
+        Y_Disable_Copy_And_Assign(GiantLockPolicy); //!< cleanup
     };
 
 

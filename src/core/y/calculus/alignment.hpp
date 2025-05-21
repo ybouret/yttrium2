@@ -38,7 +38,7 @@ namespace Yttrium
             static const size_t Byte = One << LN2;   //!< 2^LN2
             static const size_t Mask = Byte-One;     //!< 2^LN2-1
             static const size_t Not2 = ~Mask;        //!< 2-complement of Mask
-            static const size_t Maximum  = (IntegerFor<size_t>::Maximum/Byte) * Byte;
+            static const size_t Maximum  = (IntegerFor<size_t>::Maximum/Byte) * Byte; //!< alias
 
             //! template ceil
             template <size_t N> struct CeilOf

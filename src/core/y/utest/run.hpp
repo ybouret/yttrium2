@@ -65,9 +65,11 @@ namespace Yttrium
     //! helper to display value
 #define Y_PRINTV(NAME) do { UTest::Display::Value( #NAME, NAME); } while(false)
 
+    //! helper to assert
 #define Y_ASSERT(EXPR) do { if(!(EXPR)) \
 throw Specific::Exception(#EXPR,"%s:%d: %s", __FILE__,__LINE__,Core::Failure); } while(false)
 
+    //! heper to check
 #define Y_CHECK(EXPR) do {\
 /**/ const bool localRes = (EXPR);\
 /**/ UTest::Display::Result(#EXPR,localRes);\

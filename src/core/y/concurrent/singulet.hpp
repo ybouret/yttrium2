@@ -14,20 +14,67 @@ namespace Yttrium
 
     namespace Concurrent
     {
-        
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Base class for Singleton
+        //
+        //
+        //______________________________________________________________________
         class Singulet : public Identifiable
         {
         public:
-            static  bool                      Verbose;
-            typedef System::AtExit::Longevity Longevity;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static  bool                      Verbose;   //!< to trace operations
+            typedef System::AtExit::Longevity Longevity; //!< alias
+            //! assigned to Nucleus
             static  const Longevity           GreatestLifeTime = IntegerFor<Longevity>::Maximum;
 
-            explicit Singulet() noexcept;
-            virtual ~Singulet() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit Singulet() noexcept; //!< initialize
+            virtual ~Singulet() noexcept; //!< cleanup
 
+
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
+
+            //! assigned longevity
+            /** \return class longevity */
             virtual Longevity  lifeTime() const noexcept = 0;
+
+            //! access to the singleton
+            /** \return class policy lock */
             virtual Lockable & access()         noexcept = 0;
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! helper to display info during operations
+            /**
+             \param prefix     NULL or prefix text
+             \param identifier callSign()
+             \param longevity  lifeTime()
+             */
             static void Display(const char * const prefix,
                                 const char * const identifier,
                                 const Longevity    longevity) noexcept;
@@ -35,7 +82,7 @@ namespace Yttrium
 
 
         private:
-            Y_Disable_Copy_And_Assign(Singulet);
+            Y_Disable_Copy_And_Assign(Singulet); //!< discarding
         };
     }
     
