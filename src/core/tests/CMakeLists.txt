@@ -42,4 +42,5 @@ Y_UTEST(concurrent:life_time)
 
 #memory
 Y_UTEST(memory:system)
+Y_UTEST(memory:chunk)
 
