@@ -80,7 +80,21 @@ Y_UTEST(memory_chunk)
 
     Y_SIZEOF(Memory::Chunk);
 
-    
+    const size_t Header = sizeof(Memory::Chunk);
+    for(size_t p=0;p<10;++p)
+    {
+        const size_t userBytes = 1 << p;
+        std::cerr << "userBytes = " << userBytes << std::endl;
+        if(userBytes <= Header)
+        {
+            std::cerr << "Too Small/Header" << std::endl;
+        }
+
+
+    }
+
+
+
 }
 Y_UDONE()
 
