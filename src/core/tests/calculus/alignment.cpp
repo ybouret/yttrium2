@@ -2,6 +2,8 @@
 #include "y/utest/run.hpp"
 #include "y/calculus/alignment.hpp"
 
+#include "y/type/ints.hpp"
+
 using namespace Yttrium;
 
 namespace
@@ -36,6 +38,9 @@ Y_UTEST(calculus_alignment)
 
     Y_PRINTV( Alignment::WordsGEQ<1>::Count  );
     Y_PRINTV( Alignment::WordsGEQ<70>::Count );
+
+    //Y_PRINTV( Alignment:: On<8>:: Ceil( IntegerFor<size_t>::Maximum ) );
+
 
 }
 Y_UDONE()
