@@ -67,6 +67,10 @@ endif()
 Y_Message("Checking Platforms")
 cmake_print_variables(CMAKE_SYSTEM_NAME)
 
+if( "Linux" STREQUAL "${CMAKE_SYSTEM_NAME}")
+	set(Y_LINUX ON)
+endif()
+
 ################################################################################
 ##
 ##
@@ -208,6 +212,12 @@ function(Y_CreateTest THE_TEST)
 	# gather
 	add_executable(${THE_TEST} ${SRC})
 	set(Y_Test ${THE_TEST} PARENT_SCOPE)
+
+	if(Y_LINUX)
+		target_link_libraries(${THE_TEST} pthread)
+	endif()
+
+	# create unit tests
 	add_custom_target("u${THE_TEST}" 
 		COMMAND ${CMAKE_CTEST_COMMAND}
 		DEPENDS ${THE_TEST}
