@@ -11,17 +11,39 @@ namespace Yttrium
     namespace System
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! rand() wrapper
+        //
+        //
+        //______________________________________________________________________
         class Rand
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //
+            //__________________________________________________________________
             explicit Rand() noexcept;
             virtual ~Rand() noexcept;
 
-            template <typename T>
-            T to() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            //! convert to [float|double|long double]
+            /** \return "]0:1[" */
+            template <typename T> T to() noexcept;
 
         private:
-            Y_Disable_Copy_And_Assign(Rand);
+            Y_Disable_Copy_And_Assign(Rand); //!< discarding
         };
 
     }

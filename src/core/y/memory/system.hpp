@@ -17,7 +17,7 @@ namespace Yttrium
         {
         public:
             static const char * const CallSign; //!< "Memory::System"
-            static const Longevity    LifeTime = LifeTime::SystemMemory;
+            static const Longevity    LifeTime = LifeTimeOf::SystemMemory;
 
             void * acquire(size_t &blockSize);
             void   release(void * &blockAddr, size_t &blockSize) noexcept;

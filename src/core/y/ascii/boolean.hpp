@@ -11,9 +11,22 @@ namespace Yttrium
 
     namespace ASCII
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! bool to humand readable text
+        //
+        //
+        //______________________________________________________________________
         struct Boolean
         {
+            //! conversion
+            /** \param flag \return "True|False" */
             static const char *Text(const bool flag) noexcept;
+
+            //! conversion
+            /** \param flag \return "true|false" */
             static const char *text(const bool flag) noexcept;
 
         };

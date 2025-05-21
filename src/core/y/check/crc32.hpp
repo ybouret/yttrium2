@@ -20,19 +20,31 @@ namespace Yttrium
     {
         //______________________________________________________________________
         //
-        //! updated current crc from addr[size]
+        //! update crc
+        /**
+         \param crc current crc
+         \param blockAddr block address
+         \param blockSize block size
+         \return new crc
+         */
         //______________________________________________________________________
-        static uint32_t Run(uint32_t    crc,
-                            const void *addr,
-                            size_t      size) noexcept;
+        static uint32_t Run(uint32_t           crc,
+                            const void * const blockAddr,
+                            size_t             blockSize) noexcept;
 
 
         //______________________________________________________________________
         //
-        //! crc32 of a block
+        //! crc of a block
+        /**
+         \param blockAddr block address
+         \param blockSize block size
+         \return computed crc
+         */
         //______________________________________________________________________
-        static uint32_t Of(const void *addr, size_t size) noexcept;
-        
+        static uint32_t Of(const void * const blockAddr,
+                           const size_t       blockSize) noexcept;
+
     };
 
 }

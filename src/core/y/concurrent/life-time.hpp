@@ -9,15 +9,24 @@
 namespace Yttrium
 {
 
+    //! compute a named LifeTime
 #define Y_LifeTime(NAME) NAME = __LINE__ - Initializer
 
-    struct LifeTime
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Database of name LifeTimes for Singletons
+    //
+    //
+    //__________________________________________________________________________
+    struct LifeTimeOf
     {
         typedef System::AtExit::Longevity Longevity; //!< alias
         static const Longevity            GreatestLongevity = IntegerFor<Longevity>::Maximum; //!< reserved for ConcurrentNucleus
-        enum { Initializer = __LINE__ + 1 };
+        enum { Initializer = __LINE__ + 1 /*!< preprocessor current line+skip */ };
         enum {
-            Y_LifeTime(SystemMemory)
+            Y_LifeTime(SystemMemory) /*!< for Memory::System */
         };
     };
 }

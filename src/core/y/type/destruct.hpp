@@ -9,6 +9,10 @@
 
 namespace Yttrium
 {
+    //! in-place object destruction
+    /**
+     \param obj a valid object, destructed upon return
+     */
     template <typename T> inline
     void Destruct(T * const obj) noexcept
     {
@@ -16,6 +20,11 @@ namespace Yttrium
         obj->~T();
     }
 
+    //! in place object destruction
+    /**
+     \param obj a valid object
+     \return address of destructed object
+     */
     template <typename T> inline
     T * Destructed(T * const obj) noexcept
     {
@@ -24,6 +33,10 @@ namespace Yttrium
         return obj;
     }
 
+    //! in place object destruction and cleanup
+    /**
+     \param obj a valid object, destructed and address is set to NULL
+     */
     template <typename T> inline
     void Nullify(T * & obj) noexcept
     {

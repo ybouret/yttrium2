@@ -40,9 +40,20 @@ namespace Yttrium
         typedef T Type; //!< identifier
     };
 
+
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! set mutability
+    /**
+     \param obj target object
+     \return mutable obj
+     */
+    //
+    //__________________________________________________________________________
     template <typename T> inline
-    T & Coerce(const T &obj) noexcept
-    {
+    T & Coerce(const T &obj) noexcept {
         return (T&)obj;
     }
 
