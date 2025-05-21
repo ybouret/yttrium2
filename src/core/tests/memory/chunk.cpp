@@ -98,13 +98,13 @@ using namespace Yttrium;
 namespace
 {
     static inline
-    void fill( void * addr[], size_t &size , Memory::Chunk &chunk, const size_t blockSize) noexcept
+    void fill( void * addr[], size_t &size , Memory::Chunk &chunk, const size_t blockSize, System::Rand &ran) noexcept
     {
         while(true)
         {
             void * const p = chunk.acquire(blockSize);
             if(!p) break;
-            addr[size++] = p;
+            ran.fill(addr[size++] = p,blockSize);
         }
     }
 
@@ -135,15 +135,20 @@ Y_UTEST(memory_chunk)
         std::cerr << "userBytes=" << userBytes << std::endl;
         void * const blockAddr = calloc(1,userBytes);
         if(0==blockAddr) throw Exception("no memory");
-        for(size_t blockSize=1;blockSize<=32;++blockSize)
+        for(size_t blockSize=1;blockSize<=256;++blockSize)
         {
             Memory::Chunk chunk(blockAddr, Memory::Chunk::NumBlocksFor(userBytes,blockSize), blockSize);
             std::cerr << "\tblockSize=" << blockSize << " / numBlocks=" << (int)chunk.userBlocks << std::endl;
             memset(addr,0,sizeof(addr));
             size = 0;
-            fill(addr,size,chunk,blockSize);
+            fill(addr,size,chunk,blockSize,ran);
+            for(size_t iter=0;iter<8;++iter)
+            {
+                ran.shuffle(addr,size);
+                empty(size/2,addr,size,chunk,blockSize);
+                fill(addr,size,chunk,blockSize,ran);
+            }
             empty(0,addr,size,chunk,blockSize);
-
         }
         free(blockAddr);
     }

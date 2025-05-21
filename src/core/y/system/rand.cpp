@@ -62,6 +62,20 @@ namespace Yttrium
                 Memory::Stealth::Swap(base+i*blockSize, base+j*blockSize,blockSize);
             }
         }
+
+
+        void Rand:: fill(void * const blockAddr, const size_t blockSize) noexcept
+        {
+            assert( Good(blockAddr,blockSize) );
+            uint8_t * base = static_cast<uint8_t *>(blockAddr);
+            for(size_t i=blockSize;i>0;--i)
+            {
+                *(base++) = static_cast<uint8_t>( 1 + floor( to<double>() * 255.0 + 0.5) );
+            }
+        }
+
+
+
     }
 
 }

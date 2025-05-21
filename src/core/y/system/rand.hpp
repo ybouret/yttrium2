@@ -54,6 +54,8 @@ namespace Yttrium
                 shuffle(blockAddr,numBlocks,sizeof(T));
             }
 
+            void fill(void * const blockAddr, const size_t blockSize) noexcept;
+
         private:
             Y_Disable_Copy_And_Assign(Rand); //!< discarding
         };
