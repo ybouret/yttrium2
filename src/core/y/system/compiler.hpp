@@ -5,6 +5,7 @@
 
 #undef Y_Compiler
 
+
 // detect clang
 
 #if defined(__clang__)
@@ -39,6 +40,10 @@
 #if !defined(Y_Compiler)
 #  error "Unknown Compiler"
 #endif
+
+
+#include <cstdint>
+#include <cstddef>
 
 #endif
 

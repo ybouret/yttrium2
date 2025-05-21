@@ -131,6 +131,8 @@ namespace Yttrium
         class DriverWith : public DriverData<N>, public Driver
         {
         public:
+            using DriverData<N>::proc_;
+            
             //! constructor
             inline  explicit DriverWith() noexcept :
             DriverData<N>(),
