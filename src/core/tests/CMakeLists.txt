@@ -34,6 +34,7 @@ Y_UTEST(type:ints)
 #calculus
 Y_UTEST(calculus:integer_log2)
 Y_UTEST(calculus:alignment)
+Y_UTEST(calculus:base2)
 
 #concurrent
 Y_UTEST(concurrent:nucleus)
