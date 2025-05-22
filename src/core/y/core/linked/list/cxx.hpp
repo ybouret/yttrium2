@@ -15,9 +15,17 @@ namespace Yttrium
     class CxxListOf : public Core::ListOf<NODE>, public Releasable
     {
     public:
-        inline explicit CxxListOf() noexcept : Core::ListOf<NODE>() {}
+        inline explicit CxxListOf() noexcept :
+        Core::ListOf<NODE>(),
+        Releasable()
+        {
+        }
+
         inline virtual ~CxxListOf() noexcept { release_(); }
-        inline CxxListOf(const CxxListOf &other) : Core::ListOf<NODE>()
+
+        inline CxxListOf(const CxxListOf &other) :
+        Core::ListOf<NODE>(),
+        Releasable()
         {
             try
             {

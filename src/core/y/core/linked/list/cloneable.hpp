@@ -16,9 +16,15 @@ namespace Yttrium
     class ListOfCloneable : public Core::ListOf<NODE>, public Releasable
     {
     public:
-        inline explicit ListOfCloneable() noexcept : Core::ListOf<NODE>() {}
+        inline explicit ListOfCloneable() noexcept :
+        Core::ListOf<NODE>(),
+        Releasable()
+        {}
+
         inline virtual ~ListOfCloneable() noexcept { release_(); }
-        inline ListOfCloneable(const ListOfCloneable &other) : Core::ListOf<NODE>()
+
+        inline ListOfCloneable(const ListOfCloneable &other) :
+        Core::ListOf<NODE>(), Releasable()
         {
             try
             {
