@@ -115,6 +115,9 @@ if("${Y_CC}" MATCHES "gcc.*")
 	if( "${Y_CC_MAJOR}" LESS "7" )
 		string( APPEND CMAKE_CXX_FLAGS " -std=c++0x")
 	endif()
+	if(APPLE)
+	string( APPEND CMAKE_CXX_FLAGS " -D_Alignof=sizeof")
+	endif()
 endif()
 
 ################################################################################
