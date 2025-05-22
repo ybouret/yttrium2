@@ -5,6 +5,7 @@
 
 #include "y/core/setup.hpp"
 #include "y/check/usual.hpp"
+#include "y/type/sign.hpp"
 #include <iostream>
 
 namespace Yttrium
@@ -56,6 +57,8 @@ namespace Yttrium
                 catch(...) {}
                 return false;
             }
+
+            
 
             const size_t size;
             NODE *       head;
