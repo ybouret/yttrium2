@@ -9,19 +9,27 @@
 
 namespace Yttrium
 {
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Releasable interface
+    //
+    //
+    //__________________________________________________________________________
     class Releasable
     {
     protected:
-        explicit Releasable() noexcept;
+        explicit Releasable() noexcept; //!< setup
 
     public:
-        virtual ~Releasable() noexcept;
+        virtual ~Releasable() noexcept; //!< cleanup
 
         //! release all resources
         virtual void release() noexcept = 0;
         
     private:
-        Y_Disable_Copy_And_Assign(Releasable);
+        Y_Disable_Copy_And_Assign(Releasable); //!< discarding
     };
 
 }

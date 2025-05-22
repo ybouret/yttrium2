@@ -16,13 +16,18 @@ namespace Yttrium
     class ListOfCloneable : public Core::ListOf<NODE>, public Releasable
     {
     public:
+
+        //! initialize
         inline explicit ListOfCloneable() noexcept :
         Core::ListOf<NODE>(),
         Releasable()
         {}
 
+        //! cleanup
         inline virtual ~ListOfCloneable() noexcept { release_(); }
 
+        //! duplicate
+        /** \param other another list */
         inline ListOfCloneable(const ListOfCloneable &other) :
         Core::ListOf<NODE>(), Releasable()
         {
@@ -44,7 +49,9 @@ namespace Yttrium
         }
 
     private:
-        Y_Disable_Assign(ListOfCloneable);
+        Y_Disable_Assign(ListOfCloneable); //!< discarding
+
+        //! delete all nodes
         inline void release_() noexcept { while(this->size>0) delete this->popTail(); }
     };
 

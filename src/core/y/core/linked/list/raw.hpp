@@ -9,7 +9,14 @@
 namespace Yttrium
 {
 
+    //__________________________________________________________________________
+    //
+    //
+    //
     //! list of "static" nodes
+    //
+    //
+    //__________________________________________________________________________
     template <typename NODE>
     class RawListOf: public Core::ListOf<NODE>, public Resettable
     {
@@ -25,7 +32,7 @@ namespace Yttrium
         }
 
     private:
-        Y_Disable_Copy_And_Assign(RawListOf);
+        Y_Disable_Copy_And_Assign(RawListOf); //!< discarding
     };
 
 }

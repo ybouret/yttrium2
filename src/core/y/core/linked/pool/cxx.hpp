@@ -38,7 +38,9 @@ namespace Yttrium
         }
 
     private:
-        Y_Disable_Assign(CxxPoolOf);
+        Y_Disable_Assign(CxxPoolOf); //!< discarding
+
+        //! release all nodes
         inline void release_() noexcept { while(this->size>0) delete this->query(); }
     };
 

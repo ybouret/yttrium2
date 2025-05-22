@@ -9,23 +9,36 @@
 
 namespace Yttrium
 {
-
+    //__________________________________________________________________________
+    //
+    //
+    //
     //! pool of "static" nodes
+    //
+    //
+    //__________________________________________________________________________
     template <typename NODE>
     class RawPoolOf: public Core::PoolOf<NODE>, public Resettable
     {
     public:
-        inline explicit RawPoolOf() noexcept : Core::PoolOf<NODE>() {}
-        inline virtual ~RawPoolOf() noexcept {}
 
-        inline virtual void reset() noexcept
-        {
+        //! initialize
+        inline explicit RawPoolOf() noexcept : Core::PoolOf<NODE>() {}
+
+        //! cleanup
+        inline virtual ~RawPoolOf() noexcept { reset_(); }
+
+
+        inline virtual void reset() noexcept { reset_(); }
+
+    private:
+        Y_Disable_Copy_And_Assign(RawPoolOf); //!< discarding
+
+        //! hard reset members
+        inline void reset_() noexcept {
             Coerce(this->head) = 0;
             Coerce(this->size) = 0;
         }
-
-    private:
-        Y_Disable_Copy_And_Assign(RawPoolOf);
     };
 
 }

@@ -9,20 +9,31 @@
 
 namespace Yttrium
 {
-
+    //__________________________________________________________________________
+    //
+    //
+    //
     //! list of nodes with copy constructor and C++ destructor
+    //
+    //
+    //__________________________________________________________________________
     template <typename NODE>
     class CxxListOf : public Core::ListOf<NODE>, public Releasable
     {
     public:
+
+        //! initialize
         inline explicit CxxListOf() noexcept :
         Core::ListOf<NODE>(),
         Releasable()
         {
         }
 
+        //! cleanup
         inline virtual ~CxxListOf() noexcept { release_(); }
 
+        //! duplicate
+        /** \param other another list */
         inline CxxListOf(const CxxListOf &other) :
         Core::ListOf<NODE>(),
         Releasable()
@@ -40,12 +51,15 @@ namespace Yttrium
             }
         }
 
+        
         inline virtual void release() noexcept {
             release_();
         }
 
     private:
-        Y_Disable_Assign(CxxListOf);
+        Y_Disable_Assign(CxxListOf); //!< discarding
+
+        //! delete all nodes
         inline void release_() noexcept { while(this->size>0) delete this->popTail(); }
     };
 

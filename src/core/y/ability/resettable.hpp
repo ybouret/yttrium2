@@ -9,19 +9,27 @@
 
 namespace Yttrium
 {
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Resettable interface
+    //
+    //
+    //__________________________________________________________________________
     class Resettable
     {
     protected:
-        explicit Resettable() noexcept;
+        explicit Resettable() noexcept; //!< setup
 
     public:
-        virtual ~Resettable() noexcept;
+        virtual ~Resettable() noexcept; //!< cleanup
 
         //! hard-reset state
         virtual void reset() noexcept = 0;
 
     private:
-        Y_Disable_Copy_And_Assign(Resettable);
+        Y_Disable_Copy_And_Assign(Resettable); //!< discarding
     };
 
 }

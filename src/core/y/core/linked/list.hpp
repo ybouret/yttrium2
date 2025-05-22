@@ -169,11 +169,9 @@ namespace Yttrium
 
 
             NODE *tail;
-
-
-
+            
         private:
-            Y_Disable_Copy_And_Assign(ListOf);
+            Y_Disable_Copy_And_Assign(ListOf); //!< discarding
         };
     }
 }
