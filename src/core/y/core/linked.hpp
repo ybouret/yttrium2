@@ -61,6 +61,9 @@ namespace Yttrium
             template <typename COMPARE_NODES>
             bool isOrderedAccordingTo(COMPARE_NODES &compareNodes) const
             {
+                if(0!=head)
+                {
+                }
                 return true;
             }
 
