@@ -1,5 +1,5 @@
 
-#include "y/memory/dyadic.hpp"
+#include "y/memory/allocator/dyadic.hpp"
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
 

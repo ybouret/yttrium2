@@ -1,5 +1,5 @@
 
-#include "y/memory/dyadic.hpp"
+#include "y/memory/allocator/dyadic.hpp"
 #include "y/system/exception.hpp"
 #include "y/check/usual.hpp"
 
