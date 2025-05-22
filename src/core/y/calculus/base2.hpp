@@ -29,9 +29,13 @@ namespace Yttrium
         static const unsigned Bits       = Size << 3;                        //!< bit count
         static const bool     SignedType = IsSigned<T>::Value;               //!< alias
         static const unsigned MaxShift   = SignedType ? (Bits-2) : (Bits-1); //!< max shift
-        static const unsigned BadShift   = MaxShift+1;
         static const Type     MaxValue   = One << MaxShift;                  //!< max value
 
+        //! compute log2 of an exact power of two
+        /**
+         \param powerOfTwo = 2^p
+         \return p
+         */
         static unsigned ExactLog(const T powerOfTwo) noexcept
         {
             assert(IsPowerOfTwo(powerOfTwo));
@@ -66,6 +70,7 @@ namespace Yttrium
     //! Find next power of two and log2
     /**
      \param x <= Base2<T>::MaxValue
+     \param p computed in loop
      \return n=2^p>=x
      */
     template <typename T>
