@@ -1,4 +1,4 @@
-#include "y/lockable.hpp"
+#include "y/ability/lockable.hpp"
 #include "y/system/error.hpp"
 #include "y/check/usual.hpp"
 #include <cassert>

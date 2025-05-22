@@ -5,7 +5,7 @@
 #ifndef Y_Concurrent_FakeLock_Included
 #define Y_Concurrent_FakeLock_Included 1
 
-#include "y/latchable.hpp"
+#include "y/ability/latch.hpp"
 
 namespace Yttrium
 {
@@ -21,7 +21,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class FakeLock : public Latchable
+        class FakeLock : public Latch
         {
         public:
             explicit FakeLock() noexcept;

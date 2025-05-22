@@ -1,5 +1,5 @@
 
-#include "y/type/identifiable.hpp"
+#include "y/ability/identifiable.hpp"
 
 namespace Yttrium
 {

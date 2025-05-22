@@ -5,7 +5,7 @@
 #define Y_Concurrent_Singleton_GiantLockPolicy_Included 1
 
 
-#include "y/lockable.hpp"
+#include "y/ability/lockable.hpp"
 
 namespace Yttrium
 {

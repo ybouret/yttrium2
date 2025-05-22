@@ -1,10 +1,10 @@
 
 //! \file
 
-#ifndef Y_Latchable_Included
-#define Y_Latchable_Included 1
+#ifndef Y_Latch_Included
+#define Y_Latch_Included 1
 
-#include "y/lockable.hpp"
+#include "y/ability/lockable.hpp"
 
 
 namespace Yttrium
@@ -17,7 +17,7 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    class Latchable : public Lockable
+    class Latch : public Lockable
     {
         //______________________________________________________________________
         //
@@ -26,9 +26,9 @@ namespace Yttrium
         //
         //______________________________________________________________________
     protected:
-        explicit Latchable() noexcept; //!< initialize
+        explicit Latch() noexcept; //!< initialize
     public:
-        virtual ~Latchable() noexcept; //!< cleanup
+        virtual ~Latch() noexcept; //!< cleanup
 
         //______________________________________________________________________
         //
@@ -42,7 +42,7 @@ namespace Yttrium
         bool tryLock() noexcept;
 
     private:
-        Y_Disable_Copy_And_Assign(Latchable); //!< discarding
+        Y_Disable_Copy_And_Assign(Latch); //!< discarding
 
         //! do try lock
         /** \return success of operation*/

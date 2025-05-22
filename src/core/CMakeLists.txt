@@ -4,8 +4,9 @@ include_directories(.)
 Y_CreateLibrary(y
     y
     y/check
+    y/ability
     y/core
-    y/linked
+    y/core/linked
     y/system
     y/type
     y/ascii

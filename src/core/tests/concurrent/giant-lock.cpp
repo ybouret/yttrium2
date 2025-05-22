@@ -1,5 +1,5 @@
 
-#include "y/lockable.hpp"
+#include "y/ability/lockable.hpp"
 #include "y/concurrent/singulet.hpp"
 #include "y/utest/run.hpp"
 

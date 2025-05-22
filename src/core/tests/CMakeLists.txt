@@ -22,6 +22,7 @@ Y_UTEST(singleton)
 
 # core
 Y_UTEST(core:variadic)
+Y_UTEST(core:linked)
 
 # system
 Y_UTEST(system:error 1 2)

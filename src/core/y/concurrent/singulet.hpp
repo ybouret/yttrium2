@@ -5,9 +5,9 @@
 #define Y_Concurrent_Singulet_Included 1
 
 #include "y/system/at-exit.hpp"
-#include "y/type/identifiable.hpp"
+#include "y/ability/identifiable.hpp"
+#include "y/ability/lockable.hpp"
 #include "y/type/ints.hpp"
-#include "y/lockable.hpp"
 
 namespace Yttrium
 {

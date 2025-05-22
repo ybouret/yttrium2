@@ -1,13 +1,13 @@
 
-#include "y/latchable.hpp"
+#include "y/ability/latch.hpp"
 
 
 namespace Yttrium
 {
-    Latchable:: Latchable() noexcept : Lockable() {}
-    Latchable:: ~Latchable() noexcept {}
+    Latch::  Latch() noexcept : Lockable() {}
+    Latch:: ~Latch() noexcept {}
 
-    bool Latchable:: tryLock() noexcept
+    bool Latch:: tryLock() noexcept
     {
         if( doTryLock() )
         {

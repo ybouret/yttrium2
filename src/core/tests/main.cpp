@@ -13,6 +13,8 @@ Y_UTEST_DECL(32)
     Y_UTEST(singleton);
 
     Y_UTEST(core_variadic);
+    Y_UTEST(core_linked);
+
     Y_UTEST(type_ints);
 
     Y_UTEST(system_error);

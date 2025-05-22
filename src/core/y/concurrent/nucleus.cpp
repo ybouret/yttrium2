@@ -3,7 +3,7 @@
 #include "y/type/destruct.hpp"
 #include "y/memory/workspace.hpp"
 #include "y/system/exception.hpp"
-#include "y/lockable.hpp"
+#include "y/type/ints.hpp"
 #include "y/system/platform.hpp"
 
 #if defined(Y_BSD)
