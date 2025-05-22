@@ -115,6 +115,58 @@ namespace Yttrium
                 CoerceSwap(tail,other.tail);
             }
 
+            template <typename LIST>
+            inline void split(LIST &lhs, LIST &rhs) noexcept
+            {
+            SPLIT:
+                if(size<=0) return;
+                lhs.pushTail( popHead() );
+                if(size<=0) return;
+                rhs.pushTail( popHead() );
+                goto SPLIT;
+            }
+
+            template <typename LIST>
+            inline ListOf & mergeTail(LIST &other) noexcept
+            {
+                switch(size)
+                {
+                    case 0:
+                        swapListFor(other);
+                        break;
+
+                    case 1:
+                        other.pushHead( popTail() );
+                        swapListFor(other);
+                        break;
+
+                    default:
+                        switch(other.size)
+                        {
+                            case 0:
+                                break;
+
+                            case 1:
+                                pushTail( other.popHead() );
+                                break;
+
+                            default:
+                                tail->next = other.head;
+                                other.head->prev = tail;
+                                tail = other.tail;
+                                Coerce(size) += other.size;
+                                Coerce(other.size) = 0;
+                                Coerce(other.head) = 0;
+                                Coerce(other.tail) = 0;
+                                break;
+                        }
+                        break;
+                }
+
+                assert(0==other.size);
+                return *this;
+            }
+
 
             NODE *tail;
 

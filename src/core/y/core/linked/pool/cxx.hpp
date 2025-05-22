@@ -39,7 +39,7 @@ namespace Yttrium
 
     private:
         Y_Disable_Assign(CxxPoolOf);
-        inline void release_() noexcept { while(this->size>0) delete this->popTail(); }
+        inline void release_() noexcept { while(this->size>0) delete this->query(); }
     };
 
 }

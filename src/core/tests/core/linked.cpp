@@ -57,6 +57,7 @@ Y_UTEST(core_linked)
     
     System::Rand ran;
 
+    std::cerr << "Pool" << std::endl;
     {
         Core::PoolOf<Node> pool;
 
@@ -73,6 +74,22 @@ Y_UTEST(core_linked)
         }
 
         Y_CHECK(0==Node::Count);
+    }
+
+    std::cerr << "CxxPool" << std::endl;
+    {
+        CxxPoolOf<Node> pool;
+        for(size_t i=10+ran.leq(10);i>0;--i)
+        {
+            pool.store( new Node() );
+        }
+        std::cerr << pool << std::endl;
+
+        CxxPoolOf<Node> lhs, rhs;
+        pool.split(lhs,rhs);
+        std::cerr << "lhs=" << lhs << std::endl;
+        std::cerr << "rhs=" << rhs << std::endl;
+
     }
 
     {

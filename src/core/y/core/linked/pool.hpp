@@ -75,11 +75,24 @@ namespace Yttrium
                 }
             }
 
-
             inline void swapPoolFor(PoolOf &other) noexcept
             {
                 this->swapLinkedFor(other);
             }
+
+            template <typename POOL>
+            inline void split(POOL &lhs, POOL &rhs) noexcept
+            {
+            SPLIT:
+                if(size<=0) return;
+                lhs.stash( query() );
+                if(size<=0) return;
+                rhs.stash( query() );
+                goto SPLIT;
+            }
+
+
+
 
 
         private:
