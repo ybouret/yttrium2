@@ -19,6 +19,7 @@ namespace
             const T p = Base2<T>::One << shift;
             //std::cerr << uint64_t(p) << std::endl;
             Y_ASSERT(IsPowerOfTwo(p));
+            Y_ASSERT(shift==Base2<T>::ExactLog(p));
         }
 
         for(size_t iter=0;iter<1000;++iter)
