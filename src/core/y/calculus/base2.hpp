@@ -24,7 +24,7 @@ namespace Yttrium
     struct Base2
     {
         typedef T             Type;                                          //!< alias
-        static const Type     One        = 1;                                //!< alias
+        static const Type     One        = Type(1);                          //!< alias
         static const unsigned Size       = sizeof(Type);                     //!< in bytes
         static const unsigned Bits       = Size << 3;                        //!< bit count
         static const bool     SignedType = IsSigned<T>::Value;               //!< alias

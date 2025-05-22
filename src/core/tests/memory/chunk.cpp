@@ -72,7 +72,7 @@ Y_UTEST(memory_chunk)
     const size_t Header = sizeof(Memory::Chunk);
     for(size_t p=0;p<10;++p)
     {
-        const size_t userBytes = 1 << p;
+        const size_t userBytes = size_t(1) << p;
         std::cerr << "userBytes = " << userBytes << std::endl;
         if(userBytes <= Header)
         {
