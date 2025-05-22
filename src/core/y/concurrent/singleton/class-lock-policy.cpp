@@ -11,7 +11,7 @@ namespace Yttrium
     }
 
     ClassLockPolicy:: ClassLockPolicy()  :
-    policyLock(  )
+    access(  )
     {
 
     }

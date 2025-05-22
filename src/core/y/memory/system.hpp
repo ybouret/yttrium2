@@ -30,7 +30,7 @@ namespace Yttrium
             static const Longevity    LifeTime = LifeTimeOf::SystemMemory; //!< longevity
             const uint64_t            allocated;                           //!< currently allocated bytes
 
-            void * acquireDyadic(const unsigned shift);
+            void * acquireDyadic(unsigned &shift);
 
 
         private:

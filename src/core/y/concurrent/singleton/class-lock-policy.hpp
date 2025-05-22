@@ -25,8 +25,7 @@ namespace Yttrium
         explicit ClassLockPolicy();
         virtual ~ClassLockPolicy() noexcept;
 
-    protected:
-        Concurrent::FakeLock policyLock; //!< for local access
+        Concurrent::FakeLock access; //!< for local access
 
     private:
         Y_Disable_Copy_And_Assign(ClassLockPolicy); //!< disarding

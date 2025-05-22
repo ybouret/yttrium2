@@ -57,10 +57,7 @@ namespace Yttrium
             //! assigned longevity
             /** \return class longevity */
             virtual Longevity  lifeTime() const noexcept = 0;
-
-            //! access to the singleton
-            /** \return class policy lock */
-            virtual Lockable & access()         noexcept = 0;
+            
 
             //__________________________________________________________________
             //

@@ -99,12 +99,7 @@ namespace Yttrium
             return T::LifeTime;
         }
 
-        //! [Singulet]
-        /** \return THE_POLICY::policyLock */
-        inline virtual Lockable & access() noexcept
-        {
-            return this->policyLock;
-        }
+        
 
     private:
         Y_Disable_Copy_And_Assign(Singleton); //!< discarding

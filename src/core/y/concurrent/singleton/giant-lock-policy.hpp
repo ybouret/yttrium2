@@ -23,8 +23,7 @@ namespace Yttrium
         explicit GiantLockPolicy();
         virtual ~GiantLockPolicy() noexcept;
 
-    protected:
-        Lockable &policyLock; //!< peristent giant lock
+        Lockable &access; //!< peristent giant lock
 
     private:
         Y_Disable_Copy_And_Assign(GiantLockPolicy); //!< cleanup

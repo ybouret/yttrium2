@@ -10,7 +10,7 @@ namespace Yttrium
     }
 
     GiantLockPolicy:: GiantLockPolicy()  :
-    policyLock( Lockable::Giant() )
+    access( Lockable::Giant() )
     {
 
     }
