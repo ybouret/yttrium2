@@ -58,23 +58,7 @@ namespace Yttrium
         return a < b ? a : b;
     }
 
-    //__________________________________________________________________________
-    //
-    //
-    //! C-style swap
-    /**
-     \param lhs first object
-     \param rhs second object
-     */
-    //
-    //__________________________________________________________________________
-    template <typename T> inline
-    void Swap(T &lhs, T &rhs)
-    {
-        const T tmp(rhs);
-        rhs = lhs;
-        lhs = tmp;
-    }
+   
 
 }
 

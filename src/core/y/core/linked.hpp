@@ -5,11 +5,20 @@
 
 #include "y/core/setup.hpp"
 #include "y/check/usual.hpp"
+#include <iostream>
 
 namespace Yttrium
 {
     namespace Core
     {
+        struct LinkedInfo
+        {
+            static const char OwnsNodeMsg[];
+            static const char NullNodeMsg[];
+            static const char UsedNextMsg[];
+            static const char UsedPrevMsg[];
+        };
+
         template <typename NODE>
         class Linked
         {
@@ -28,6 +37,25 @@ namespace Yttrium
                 return false;
             }
 
+            inline friend std::ostream & operator<<( std::ostream &os, const Linked &self)
+            {
+                os << '[';
+                const NODE *node = self.head;
+                if(node)
+                {
+                    os << **node;
+                    for(node=node->next;node;node=node->next)
+                        os << ';' << **node;
+                }
+                os << ']';
+                return os;
+            }
+
+            bool warning(const char * const msg) const noexcept {
+                try { std::cerr << msg << std::endl; }
+                catch(...) {}
+                return false;
+            }
 
             const size_t size;
             NODE *       head;
@@ -39,6 +67,14 @@ namespace Yttrium
                 --Coerce(size);
                 assert(!(0==size&&0!=head) || Die("empty Linked with head!=NULL"));
             }
+
+            
+            inline void swapLinkedFor(Linked &other) noexcept
+            {
+                CoerceSwap(size,other.size);
+                CoerceSwap(head,other.head);
+            }
+
 
         private:
             Y_Disable_Copy_And_Assign(Linked);

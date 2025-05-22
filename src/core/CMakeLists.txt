@@ -7,6 +7,8 @@ Y_CreateLibrary(y
     y/ability
     y/core
     y/core/linked
+    y/core/linked/list
+    y/core/linked/pool
     y/system
     y/type
     y/ascii

@@ -60,6 +60,42 @@ namespace Yttrium
     //__________________________________________________________________________
     //
     //
+    //! C-style swap
+    /**
+     \param lhs first object
+     \param rhs second object
+     */
+    //
+    //__________________________________________________________________________
+    template <typename T> inline
+    void Swap(T &lhs, T &rhs)
+    {
+        const T tmp(rhs);
+        rhs = lhs;
+        lhs = tmp;
+    }
+
+    //__________________________________________________________________________
+    //
+    //
+    //! force C-style swap
+    /**
+     \param lhs first object
+     \param rhs second object
+     */
+    //
+    //__________________________________________________________________________
+    template <typename T> inline
+    void CoerceSwap(const T &lhs, const T &rhs)
+    {
+        const T tmp(rhs);
+        Coerce(rhs) = lhs;
+        Coerce(lhs) = tmp;
+    }
+
+    //__________________________________________________________________________
+    //
+    //
     //! privatize copy constructor
     //
     //__________________________________________________________________________

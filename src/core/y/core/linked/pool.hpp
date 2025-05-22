@@ -19,6 +19,7 @@ namespace Yttrium
             using Linked<NODE>::decr;
             using Linked<NODE>::owns;
             using Linked<NODE>::size;
+            using Linked<NODE>::warning;
 
             inline explicit PoolOf() noexcept : Linked<NODE>() {}
             inline virtual ~PoolOf() noexcept
@@ -26,17 +27,24 @@ namespace Yttrium
                 assert( (0==size && 0==head) || Die("pool memory leak") );
             }
 
-            void store(NODE * const node) noexcept
+            inline bool isValid(const NODE * const node) const noexcept
             {
-                assert(0!=node);
-                assert(!owns(node));
-                assert(0==node->next);
+                if(0==node)       return warning(LinkedInfo::NullNodeMsg);
+                if(0!=node->next) return warning(LinkedInfo::UsedNextMsg);
+                if(owns(node))    return warning(LinkedInfo::OwnsNodeMsg);
+                return true;
+            }
+
+            inline NODE * store(NODE * const node) noexcept
+            {
+                assert( isValid(node) );
                 node->next = head;
                 head       = node;
                 incr();
+                return node;
             }
 
-            NODE * query() noexcept
+            inline NODE * query() noexcept
             {
                 assert(0!=head);
                 assert(size>0);
@@ -44,6 +52,33 @@ namespace Yttrium
                 head = head->next;
                 node->next = 0;
                 decr();
+                assert(isValid(node));
+                return node;
+            }
+
+            inline NODE * stash(NODE * const node) noexcept
+            {
+                assert( isValid(node) );
+                if(0==head)
+                {
+                    assert(0==size);
+                    return store(node);
+                }
+                else
+                {
+                    NODE * tail = head;
+                    while(0!=tail->next)
+                        tail=tail->next;
+                    assert(0==tail->next);
+                    incr();
+                    return (tail->next = node);
+                }
+            }
+
+
+            inline void swapPoolFor(PoolOf &other) noexcept
+            {
+                this->swapLinkedFor(other);
             }
 
 
