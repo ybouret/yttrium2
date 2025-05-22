@@ -16,15 +16,14 @@ namespace
         Y_CHECK(!IsPowerOfTwo<T>(0));
         for(unsigned shift=0;shift<=Base2<T>::MaxShift;++shift)
         {
-            const T p = Base2<T>::One << shift;
-            //std::cerr << uint64_t(p) << std::endl;
+            const T p = static_cast<T>(T(1) << shift);
             Y_ASSERT(IsPowerOfTwo(p));
             Y_ASSERT(shift==Base2<T>::ExactLog(p));
         }
 
         for(size_t iter=0;iter<1000;++iter)
         {
-            const T x = ran.to<T>() % ( Base2<T>::MaxValue+1 );
+            const T x = static_cast<T>(ran.to<T>() % ( Base2<T>::MaxValue+1 ));
             Y_ASSERT(x<=Base2<T>::MaxValue);
             const T n = NextPowerOfTwo(x);
             Y_ASSERT(n>=x);
