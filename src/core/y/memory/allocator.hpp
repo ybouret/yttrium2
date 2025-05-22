@@ -60,6 +60,10 @@ namespace Yttrium
              */
             void   release(void * & blockAddr, size_t & blockSize) noexcept;
 
+            //! display status
+            /** \param os output stream */
+            virtual void  display(std::ostream &os) const = 0;
+
         private:
             Y_Disable_Copy_And_Assign(Allocator); //!< discarding
             const char * const CallSign_;         //!< persistent call sign

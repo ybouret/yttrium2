@@ -1,4 +1,5 @@
-#include "y/memory/system.hpp"
+
+#include "y/memory/dyadic.hpp"
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
 
@@ -13,11 +14,11 @@ namespace
     };
 }
 
-Y_UTEST(memory_system)
+Y_UTEST(memory_dyadic)
 {
     Concurrent::Singulet::Verbose  = true;
-    System::Rand       ran;
-    Memory::Allocator &allocator = Memory::System::Instance();
+    System::Rand        ran;
+    Memory::Allocator & allocator = Memory::Dyadic::Instance();
 
 
     Block        blocks[1000];
@@ -30,16 +31,13 @@ Y_UTEST(memory_system)
         block.addr   = allocator.acquire(block.size);
         std::cerr << block.size << std::endl;
     }
-
     allocator.display(std::cerr);
-
 
     ran.shuffle(blocks,numBlocks);
     for(size_t i=0;i<numBlocks;++i)
     {
         allocator.release(blocks[i].addr, blocks[i].size);
     }
-
     allocator.display(std::cerr);
 
 

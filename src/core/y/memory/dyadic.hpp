@@ -25,7 +25,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Dyadic : public Singleton<Dyadic,GiantLockPolicy>
+        class Dyadic : public Singleton<Dyadic,GiantLockPolicy>, public Allocator
         {
         public:
             static const char * const CallSign; //!< "Memory::Dyadic"
@@ -35,7 +35,9 @@ namespace Yttrium
             static const unsigned     MaxBlockShift = Base2<size_t>::MaxShift;
             static const size_t       MaxBlockBytes = Base2<size_t>::MaxValue;
 
-            const uint64_t allocated[MaxBlockShift+1];
+            virtual void display(std::ostream &os) const;
+
+            const size_t allocated[MaxBlockShift+1];
 
         private:
             Y_Disable_Copy_And_Assign(Dyadic);

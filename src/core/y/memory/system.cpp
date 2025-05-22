@@ -20,6 +20,12 @@ namespace Yttrium
         }
 
         const char * const System::CallSign = "Memory::System";
+
+        void System:: display(std::ostream &os) const
+        {
+            os << '<' << CallSign << " allocated=" << allocated << '>' << std::endl;
+        }
+        
         System:: ~System() noexcept
         {
             if(allocated>0)

@@ -31,7 +31,8 @@ namespace Yttrium
             static const Longevity    LifeTime = LifeTimeOf::SystemMemory; //!< longevity
             const uint64_t            allocated;                           //!< currently allocated bytes
 
-        
+            virtual void display(std::ostream &) const;
+            
         private:
             friend class Singleton<System,GiantLockPolicy>;
             Y_Disable_Copy_And_Assign(System); //!< discarding
