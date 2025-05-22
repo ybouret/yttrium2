@@ -67,7 +67,7 @@ namespace Yttrium
             assert(0!=p);
             assert(freeBlocks<userBlocks);
             uint8_t * const toRelease = static_cast<uint8_t *>(p);
-            const size_t    theOffset = toRelease-data;
+            const size_t    theOffset = static_cast<size_t>(toRelease-data);
             assert( toRelease >= data );
             assert( toRelease <  last );
             assert( 0 == theOffset % blockSize );

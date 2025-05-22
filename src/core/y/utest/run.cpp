@@ -8,7 +8,7 @@ namespace Yttrium
     {
         size_t Display::Width = 40;
 
-        void Display::Value(const char *const name, const size_t size)
+        void Display::Value(const char *const name, const uint64_t size)
         {
             assert( 0!=name );
             const size_t nameLength = strlen(name);

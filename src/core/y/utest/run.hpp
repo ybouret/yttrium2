@@ -48,7 +48,7 @@ namespace Yttrium
              \param name value name, aligned on Width
              \param size value size
              */
-            static void   Value(const char * const name, const size_t size);
+            static void   Value(const char * const name, const uint64_t size);
 
             //! display test result
             /**
