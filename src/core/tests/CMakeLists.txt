@@ -11,7 +11,7 @@ memory
 )
 
 
-target_link_libraries(test-core y)
+Y_LinkLibraries(test-core)
 
 enable_testing()
 

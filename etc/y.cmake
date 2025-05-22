@@ -197,6 +197,18 @@ function(Y_CreateLibrary THE_LIB)
 	install( TARGETS ${THE_LIB} ARCHIVE)
 endfunction()
 
+function(Y_LinkLibraries THE_EXE)
+	set(THE_LIBS "y")
+
+	# forward libraries
+	list( APPEND THE_LIBS ${ARGN} )
+	if(Y_LINUX)
+		list( APPEND THE_LIBS "pthread" )
+	endif()
+	cmake_print_variables(THE_LIBS)
+	target_link_libraries(${THE_EXE} ${THE_LIBS})
+endfunction()
+
 function(Y_CreateTest THE_TEST)
 	Y_MESSAGE("Create Test <${THE_TEST}>")
 	# top-level sources
@@ -215,10 +227,6 @@ function(Y_CreateTest THE_TEST)
 	# gather
 	add_executable(${THE_TEST} ${SRC})
 	set(Y_Test ${THE_TEST} PARENT_SCOPE)
-
-	if(Y_LINUX)
-		target_link_libraries(${THE_TEST} pthread)
-	endif()
 
 	# create unit tests
 	add_custom_target("u${THE_TEST}" 
