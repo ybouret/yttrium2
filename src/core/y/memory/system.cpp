@@ -2,6 +2,7 @@
 #include "y/memory/system.hpp"
 #include "y/system/exception.hpp"
 #include "y/check/usual.hpp"
+
 #include <cstdlib>
 #include <cerrno>
 #include <iostream>
@@ -58,7 +59,27 @@ namespace Yttrium
 
         }
 
+
+
     }
 
 }
 
+#include "y/calculus/base2.hpp"
+
+namespace Yttrium
+{
+    namespace Memory
+    {
+        void * System:: acquireDyadic(const unsigned shift)
+        {
+            static const unsigned MaxShift = Base2<size_t>::MaxShift;
+            if(shift>MaxShift) throw Specific::Exception(CallSign, "acquireDyadic(%u>%u)", shift, MaxShift);
+
+            Y_Lock(access());
+            const size_t blockSize = Base2<size_t>::One << shift;
+            return 0;
+        }
+    }
+
+}
