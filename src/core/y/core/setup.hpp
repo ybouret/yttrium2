@@ -142,6 +142,8 @@ namespace Yttrium
                               size_t         count,
                               const char     separator=' ');
     }
+
+#define Y_Return_Named_Case(NAME) case NAME: return #NAME
 }
 
 #endif

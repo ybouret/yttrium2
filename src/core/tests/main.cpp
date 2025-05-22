@@ -32,6 +32,7 @@ Y_UTEST_DECL(32)
     Y_UTEST(memory_system);
     Y_UTEST(memory_dyadic);
     Y_UTEST(memory_chunk);
+    Y_UTEST(memory_pages);
 }
 Y_UTEST_EXEC()
 

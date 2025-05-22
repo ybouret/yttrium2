@@ -80,6 +80,22 @@ namespace Yttrium
             free(blockAddr);
             --Coerce(allocated[blockShift]);
         }
+
+        void * Dyadic:: acquireDyadic(const unsigned blockShift)
+        {
+            static const size_t _1 = 1;
+            assert(blockShift<=MaxBlockShift);
+            assert(blockShift>=MinBlockShift);
+            const size_t blockSize = _1 << blockShift;
+
+            Y_Lock(access);
+            void * const blockAddr = calloc(1,blockSize);
+            if(0==blockAddr) throw Libc::Exception(ENOMEM,"%s::acquireDyadic(2^%u)",CallSign,blockShift);
+            
+            ++Coerce(allocated[blockShift]);
+            return blockAddr;
+        }
+
     }
 
 }

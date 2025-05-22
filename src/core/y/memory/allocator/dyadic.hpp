@@ -40,7 +40,8 @@ namespace Yttrium
             static const unsigned     MinBlockShift = IntegerLog2<MinBlockBytes>::Value; //!< alias
             static const unsigned     MaxBlockShift = Base2<size_t>::MaxShift;           //!< alias
             static const size_t       MaxBlockBytes = Base2<size_t>::MaxValue;           //!< alias
-
+            static const size_t       ShiftCount    = 1+MaxBlockShift - MinBlockShift;   //!< alias
+            
             //__________________________________________________________________
             //
             //
@@ -48,6 +49,8 @@ namespace Yttrium
             //
             //__________________________________________________________________
             virtual void display(std::ostream &os) const;
+
+            void *       acquireDyadic(const unsigned blockShift);
 
             //__________________________________________________________________
             //

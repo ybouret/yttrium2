@@ -58,7 +58,12 @@ namespace Yttrium
                 return false;
             }
 
-            
+            template <typename COMPARE_NODES>
+            bool isOrderedAccordingTo(COMPARE_NODES &compareNodes) const
+            {
+                return true;
+            }
+
 
             const size_t size;
             NODE *       head;

@@ -3,7 +3,7 @@
 #ifndef Y_Type_Sign_Included
 #define Y_Type_Sign_Included 1
 
-#include "y/system/compiler.hpp"
+#include "y/core/setup.hpp"
 
 namespace Yttrium
 {
