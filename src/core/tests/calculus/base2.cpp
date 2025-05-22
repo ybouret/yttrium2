@@ -2,13 +2,14 @@
 
 #include "y/utest/run.hpp"
 #include "y/calculus/base2.hpp"
+#include "y/system/rand.hpp"
 
 using namespace Yttrium;
 
 namespace 
 {
     template <typename T> static inline
-    void testBase2()
+    void testBase2( System::Rand &ran )
     {
         std::cerr << std::endl;
         std::cerr << "TestBase2<" << sizeof(T) << ">" << std::endl;
@@ -16,9 +17,19 @@ namespace
         for(unsigned shift=0;shift<=Base2<T>::MaxShift;++shift)
         {
             const T p = Base2<T>::One << shift;
-            std::cerr << uint64_t(p) << std::endl;
+            //std::cerr << uint64_t(p) << std::endl;
             Y_ASSERT(IsPowerOfTwo(p));
         }
+
+        for(size_t iter=0;iter<1000;++iter)
+        {
+            const T x = ran.to<T>() % ( Base2<T>::MaxValue+1 );
+            Y_ASSERT(x<=Base2<T>::MaxValue);
+            const T n = NextPowerOfTwo(x);
+            Y_ASSERT(n>=x);
+            Y_ASSERT(IsPowerOfTwo(n));
+        }
+
     }
 }
 
@@ -36,10 +47,12 @@ Y_UTEST(calculus_base2)
     Y_PRINTV(Base2<uint64_t>::MaxValue);
     Y_PRINTV(Base2<int64_t>::MaxValue);
 
-    testBase2<uint8_t>();
-    testBase2<uint16_t>();
-    testBase2<uint32_t>();
-    testBase2<uint64_t>();
+    System::Rand ran;
+
+    testBase2<uint8_t>(ran);
+    testBase2<uint16_t>(ran);
+    testBase2<uint32_t>(ran);
+    testBase2<uint64_t>(ran);
 
 
 }

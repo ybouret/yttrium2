@@ -41,6 +41,49 @@ namespace Yttrium
             return ( static_cast<long double>( rand() ) + 0.5L ) / denom;
         }
 
+        bool Rand:: choice() noexcept
+        {
+            return to<double>() <= 0.5;
+        }
+
+
+        template <typename T> static inline
+        T randFill(Rand &ran) noexcept
+        {
+            T result=0;
+            for(size_t i=sizeof(T)*8;i>0;--i)
+            {
+                result <<= 1;
+                if( ran.choice() ) result |= 1;
+            }
+            return result;
+        }
+
+        template <>
+        uint8_t Rand:: to<uint8_t>() noexcept
+        {
+            return randFill<uint8_t>(*this);
+        }
+
+        template <>
+        uint16_t Rand:: to<uint16_t>() noexcept
+        {
+            return randFill<uint16_t>(*this);
+        }
+
+        template <>
+        uint32_t Rand:: to<uint32_t>() noexcept
+        {
+            return randFill<uint32_t>(*this);
+        }
+
+        template <>
+        uint64_t Rand:: to<uint64_t>() noexcept
+        {
+            return randFill<uint64_t>(*this);
+        }
+
+
 
         size_t Rand:: leq(const size_t n) noexcept
         {
