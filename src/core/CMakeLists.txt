@@ -5,6 +5,7 @@ Y_CreateLibrary(y
     y
     y/check
     y/core
+    y/linked
     y/system
     y/type
     y/ascii
