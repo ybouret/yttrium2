@@ -13,23 +13,28 @@ namespace Yttrium
     namespace Memory
     {
 
-
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! calloc/free wrapper
+        //
+        //
+        //______________________________________________________________________
         class System :
         public Singleton<System,GiantLockPolicy>,
         public Allocator
         {
         public:
-            static const char * const CallSign; //!< "Memory::System"
-            static const Longevity    LifeTime = LifeTimeOf::SystemMemory;
-
-
-            const uint64_t allocated;
+            static const char * const CallSign;                            //!< "Memory::System"
+            static const Longevity    LifeTime = LifeTimeOf::SystemMemory; //!< longevity
+            const uint64_t            allocated;                           //!< currently allocated bytes
 
         private:
-            Y_Disable_Copy_And_Assign(System);
             friend class Singleton<System,GiantLockPolicy>;
-            explicit System();
-            virtual ~System() noexcept;
+            Y_Disable_Copy_And_Assign(System); //!< discarding
+            explicit System();                 //!< setup
+            virtual ~System() noexcept;        //!< cleanup with warning if allocated>0
 
             virtual void * acquireBlock(size_t & blockSize);
             virtual void   releaseBlock(void * const blockAddr,

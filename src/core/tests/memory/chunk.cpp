@@ -82,7 +82,7 @@ Y_UTEST(memory_chunk)
         }
         for(size_t blockSize=1;blockSize<=10;++blockSize)
         {
-            
+
         }
 
 

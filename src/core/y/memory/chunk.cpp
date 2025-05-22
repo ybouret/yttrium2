@@ -23,9 +23,7 @@ namespace Yttrium
         firstBlock(0),
         freeBlocks(numBlocks),
         userBlocks(numBlocks),
-        last( data + (blockSize * static_cast<size_t>(numBlocks)) ),
-        next(0),
-        prev(0)
+        last( data + (blockSize * static_cast<size_t>(numBlocks)) )
         {
             assert(Good(blockAddr,numBlocks));
             uint8_t *p=data;
@@ -39,6 +37,19 @@ namespace Yttrium
         Chunk:: ~Chunk() noexcept
         {
             assert(freeBlocks<=userBlocks);
+        }
+
+
+        bool Chunk:: owns(const void * const address) const noexcept
+        {
+            return (address >= data) && (address < last);
+        }
+
+        Ownership Chunk:: whose(const void * const address) const noexcept
+        {
+            if(address<data)       return OwnedByPrev;
+            if(address>=last)      return OwnedByNext;
+            assert(owns(address)); return OwnedByCurr;
         }
 
 

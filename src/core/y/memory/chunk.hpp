@@ -4,7 +4,7 @@
 #ifndef Y_Memory_Chunk_Included
 #define Y_Memory_Chunk_Included 1
 
-#include "y/core/setup.hpp"
+#include "y/memory/ownership.hpp"
 
 namespace Yttrium
 {
@@ -71,6 +71,21 @@ namespace Yttrium
             static uint8_t NumBlocksFor(const size_t userBytes,
                                         const size_t blockSize) noexcept;
 
+
+            //! check address is within
+            /**
+             \param address the address
+             \return address >= data && address < last
+             */
+            bool owns(const void * const address) const noexcept;
+
+            //! check ownership
+            /**
+             \param address the address
+             \return address position
+             */
+            Ownership whose(const void * const address) const noexcept;
+
             //__________________________________________________________________
             //
             //
@@ -82,8 +97,7 @@ namespace Yttrium
             uint8_t               freeBlocks; //!< number of free blocks
             const uint8_t         userBlocks; //!< initial number of blocks
             const uint8_t * const last;       //!< first invalid address
-            Chunk *               next;       //!< for list
-            Chunk *               prev;       //!< for list
+            
 
         private:
             Y_Disable_Copy_And_Assign(Chunk); //!< discarding
