@@ -63,6 +63,37 @@ namespace Yttrium
             {
                 if(0!=head)
                 {
+                    for(const NODE *curr=head;curr->next;curr=curr->next)
+                    {
+                        switch( compareNodes(curr,curr->next) )
+                        {
+                            case Negative:
+                            case __Zero__:
+                                continue;
+                            case Positive:
+                                return false;
+                        }
+                    }
+                }
+                return true;
+            }
+
+            template <typename COMPARE_NODES>
+            bool isStrictlyOrderedAccordingTo(COMPARE_NODES &compareNodes) const
+            {
+                if(0!=head)
+                {
+                    for(const NODE *curr=head;curr->next;curr=curr->next)
+                    {
+                        switch( compareNodes(curr,curr->next) )
+                        {
+                            case Negative:
+                                continue;
+                            case __Zero__:
+                            case Positive:
+                                return false;
+                        }
+                    }
                 }
                 return true;
             }
