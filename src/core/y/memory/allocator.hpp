@@ -42,7 +42,21 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
+
+            //! checked aquire
+            /**
+             if blockSize>0, it is aligned and passed to acquireBlock
+             \param blockSize desired blockSize
+             \return 0 if blockSize==0, valid address otherwise
+             */
             void * acquire(size_t & blockSize);
+
+            //! release a previously acquired block
+            /**
+             works with 0==blockAddr && 0==blockSize
+             \param blockAddr address, set to 0
+             \param blockSize bytes, set to 0
+             */
             void   release(void * & blockAddr, size_t & blockSize) noexcept;
 
         private:

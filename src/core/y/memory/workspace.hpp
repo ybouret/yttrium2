@@ -24,9 +24,13 @@ namespace Yttrium
         class Workspace
         {
         public:
+
+            //! cleanup
             inline virtual ~Workspace() noexcept { Y_Memory_BZero(wksp); Coerce(data) = 0; }
 
         protected:
+
+            //! initialize
             inline explicit Workspace() noexcept :
             data(0),
             wksp()

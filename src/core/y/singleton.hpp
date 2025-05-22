@@ -123,13 +123,11 @@ namespace Yttrium
         }
 
     protected:
-        inline explicit Singleton()
-        {
-        }
+        //! initialize
+        inline explicit Singleton() {}
 
-        inline virtual ~Singleton() noexcept
-        {
-        }
+        //! cleanup
+        inline virtual ~Singleton() noexcept {}
 
     };
 

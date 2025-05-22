@@ -19,17 +19,30 @@ namespace Yttrium
     //__________________________________________________________________________
     class Latchable : public Lockable
     {
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
     protected:
-        explicit Latchable() noexcept;
+        explicit Latchable() noexcept; //!< initialize
     public:
-        virtual ~Latchable() noexcept;
+        virtual ~Latchable() noexcept; //!< cleanup
 
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+        
         //! try lock and update count
         /** \return success of operation */
         bool tryLock() noexcept;
 
     private:
-        Y_Disable_Copy_And_Assign(Latchable); //!< discard
+        Y_Disable_Copy_And_Assign(Latchable); //!< discarding
 
         //! do try lock
         /** \return success of operation*/

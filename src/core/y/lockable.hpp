@@ -9,26 +9,51 @@
 
 namespace Yttrium
 {
-    
+
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! (Recursive) Locking API
+    //
+    //
+    //__________________________________________________________________________
     class Lockable
     {
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
     protected:
         explicit Lockable() noexcept;
     public:
         virtual ~Lockable() noexcept;
 
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+        void              lock()           noexcept; //!< lock object
+        void              unlock()         noexcept; //!< unlock object
+        bool              isLocked() const noexcept; //!< \return count>0
+        static Lockable & Giant();                   //!< \return Nucleus lock
 
-        void              lock()           noexcept;
-        void              unlock()         noexcept;
-        bool              isLocked() const noexcept;
-        static Lockable & Giant();
-
-        const size_t count;
+        //______________________________________________________________________
+        //
+        //
+        // Members
+        //
+        //______________________________________________________________________
+        const size_t count; //!< bookkeeping of lock/unlock
 
     private:
-        Y_Disable_Copy_And_Assign(Lockable);
-        virtual void doLock()   noexcept = 0;
-        virtual void doUnlock() noexcept = 0;
+        Y_Disable_Copy_And_Assign(Lockable);  //!< discarding
+        virtual void doLock()   noexcept = 0; //!< perform lock
+        virtual void doUnlock() noexcept = 0; //!< perform unlock
     };
 
     //! Helper for Lockable API
