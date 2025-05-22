@@ -9,7 +9,7 @@
 #include "y/concurrent/singleton/class-lock-policy.hpp"
 #include "y/calculus/alignment.hpp"
 #include "y/memory/stealth.hpp"
-
+#include <new>
 
 namespace Yttrium
 {

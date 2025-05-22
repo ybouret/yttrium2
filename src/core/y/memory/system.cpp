@@ -2,6 +2,7 @@
 #include "y/memory/system.hpp"
 #include "y/system/exception.hpp"
 #include "y/check/usual.hpp"
+#include "y/memory/align.hpp"
 
 #include <cstdlib>
 #include <cerrno>
@@ -29,18 +30,21 @@ namespace Yttrium
 
         void * System:: acquireBlock(size_t &blockSize)
         {
+            assert(blockSize>0);
+
+            if(blockSize>Align::MaxBlockSize)
+                throw Specific::Exception(CallSign,"blockSize=%lu>%lu", (unsigned long)blockSize, (unsigned long)Align::MaxBlockSize);
+
+            blockSize = Align::Compute::Ceil(blockSize);
+            
             Y_Lock( access );
             // get system memory
-            assert(blockSize>0);
             void * const blockAddr = calloc(1,blockSize);
 
             // check return
             if(0==blockAddr)
-            {
-                const size_t requested = blockSize;
-                blockSize = 0;
-                throw Libc::Exception(ENOMEM,"%s::Acquire(%lu)", CallSign, (unsigned long) requested);
-            }
+                throw Libc::Exception(ENOMEM,"%s::acquireBlock(%lu)", CallSign, (unsigned long) blockSize);
+
 
             // update state and return
             Coerce(allocated) += blockSize;
@@ -52,34 +56,13 @@ namespace Yttrium
             Y_Lock( access );
             assert( 0 != blockAddr );
             assert( blockSize > 0  );
-            assert( blockSize <= allocated || Die("corrupted allocation") );
+            assert( (blockSize <= allocated) || Die("corrupted allocation") );
 
             free(blockAddr);
             Coerce(allocated) -= blockSize;
-
         }
-
-
 
     }
 
 }
 
-#include "y/calculus/base2.hpp"
-
-namespace Yttrium
-{
-    namespace Memory
-    {
-        void * System:: acquireDyadic(unsigned &shift)
-        {
-            static const unsigned MaxShift = Base2<size_t>::MaxShift;
-            if(shift>MaxShift) throw Specific::Exception(CallSign, "acquireDyadic(%u>%u)", shift, MaxShift);
-
-            Y_Lock(access);
-            const size_t blockSize = Base2<size_t>::One << shift;
-            return 0;
-        }
-    }
-
-}

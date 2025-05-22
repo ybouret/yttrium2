@@ -1,6 +1,5 @@
 
 #include "y/memory/allocator.hpp"
-#include "y/memory/align.hpp"
 #include "y/system/exception.hpp"
 #include "y/memory/stealth.hpp"
 
@@ -30,10 +29,7 @@ namespace Yttrium
             }
             else
             {
-                // align and keep requested bytes
-                if(blockSize>Align::MaxBlockSize)
-                    throw Specific::Exception(CallSign_, "blockSize overflow");
-                blockSize = Align::Compute::Ceil(blockSize);
+                // keep requested bytes
                 const size_t requested = blockSize;
 
                 // safe allocation with check

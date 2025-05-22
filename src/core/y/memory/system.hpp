@@ -13,6 +13,7 @@ namespace Yttrium
     namespace Memory
     {
 
+
         //______________________________________________________________________
         //
         //
@@ -30,9 +31,7 @@ namespace Yttrium
             static const Longevity    LifeTime = LifeTimeOf::SystemMemory; //!< longevity
             const uint64_t            allocated;                           //!< currently allocated bytes
 
-            void * acquireDyadic(unsigned &shift);
-
-
+        
         private:
             friend class Singleton<System,GiantLockPolicy>;
             Y_Disable_Copy_And_Assign(System); //!< discarding

@@ -45,7 +45,8 @@ namespace Yttrium
 
             //! checked aquire
             /**
-             if blockSize>0, it is aligned and passed to acquireBlock
+             - if blockSize>0, it is passed to acquireBlock
+             - upon failure, blockSize=0
              \param blockSize desired blockSize
              \return 0 if blockSize==0, valid address otherwise
              */
