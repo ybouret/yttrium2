@@ -55,6 +55,8 @@ namespace Yttrium
             if(blockSize<MinBlockBytes) blockSize = MinBlockBytes;
             unsigned blockShift = 0;
             blockSize = NextPowerOfTwo(blockSize,blockShift);
+            assert(blockShift<=MaxBlockShift);
+            assert(blockShift>=MinBlockShift);
 
             Y_Lock(access);
             void * const blockAddr = calloc(1,blockSize);
