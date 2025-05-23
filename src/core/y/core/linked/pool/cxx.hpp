@@ -11,13 +11,33 @@
 namespace Yttrium
 {
 
+    //__________________________________________________________________________
+    //
+    //
+    //
     //! list of nodes with copy constructor and C++ destructor
+    //
+    //
+    //__________________________________________________________________________
     template <typename NODE>
     class CxxPoolOf : public Core::PoolOf<NODE>, public Releasable
     {
     public:
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+
+        //! initialize
         inline explicit CxxPoolOf() noexcept : Core::PoolOf<NODE>() {}
+
+        //! cleanup
         inline virtual ~CxxPoolOf() noexcept { release_(); }
+
+        //! duplicate using node copy semantics
+        /** \param *other other pool */
         inline CxxPoolOf(const CxxPoolOf &other) : Core::PoolOf<NODE>()
         {
             try
@@ -32,6 +52,13 @@ namespace Yttrium
                 throw;
             }
         }
+
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
 
         inline virtual void release() noexcept {
             release_();

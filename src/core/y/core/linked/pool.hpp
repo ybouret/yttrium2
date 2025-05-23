@@ -29,9 +29,9 @@ namespace Yttrium
 
             inline bool isValid(const NODE * const node) const noexcept
             {
-                if(0==node)       return warning(LinkedInfo::NullNodeMsg);
-                if(0!=node->next) return warning(LinkedInfo::UsedNextMsg);
-                if(owns(node))    return warning(LinkedInfo::OwnsNodeMsg);
+                if(0==node)       return warning(LinkedInfo::NullNode);
+                if(0!=node->next) return warning(LinkedInfo::UsedNext);
+                if(owns(node))    return warning(LinkedInfo::OwnsNode);
                 return true;
             }
 

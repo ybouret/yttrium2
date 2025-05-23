@@ -5,10 +5,10 @@ namespace Yttrium
 {
     namespace Core
     {
-        const char LinkedInfo:: OwnsNodeMsg[] = "owns node!"; 
-        const char LinkedInfo:: NullNodeMsg[] = "NULL==node";
-        const char LinkedInfo:: UsedNextMsg[] = "NULL!=next";
-        const char LinkedInfo:: UsedPrevMsg[] = "NULL!=prev";
+        const char LinkedInfo:: OwnsNode[] = "owns node!"; 
+        const char LinkedInfo:: NullNode[] = "NULL==node";
+        const char LinkedInfo:: UsedNext[] = "NULL!=next";
+        const char LinkedInfo:: UsedPrev[] = "NULL!=prev";
 
 
     }

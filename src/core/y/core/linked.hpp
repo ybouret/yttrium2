@@ -12,14 +12,29 @@ namespace Yttrium
 {
     namespace Core
     {
+
+        //______________________________________________________________________
+        //
+        //
+        //! common data for Linked structures
+        //
+        //______________________________________________________________________
         struct LinkedInfo
         {
-            static const char OwnsNodeMsg[];
-            static const char NullNodeMsg[];
-            static const char UsedNextMsg[];
-            static const char UsedPrevMsg[];
+            static const char OwnsNode[];
+            static const char NullNode[];
+            static const char UsedNext[];
+            static const char UsedPrev[];
         };
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! base class and methods for Linked structures
+        //
+        //
+        //______________________________________________________________________
         template <typename NODE>
         class Linked
         {
@@ -38,6 +53,13 @@ namespace Yttrium
                 return false;
             }
 
+
+            //! display assuming NODE has an operator*()
+            /**
+             \param os output stream
+             \param self this
+             \return os
+             */
             inline friend std::ostream & operator<<( std::ostream &os, const Linked &self)
             {
                 os << '[';
@@ -58,45 +80,26 @@ namespace Yttrium
                 return false;
             }
 
-            template <typename COMPARE_NODES>
-            bool isOrderedAccordingTo(COMPARE_NODES &compareNodes) const
+
+            template <typename COMPARE_NODES, typename QUALIFIES> inline
+            bool isOrderedBy(COMPARE_NODES & compareNodes,
+                             QUALIFIES &     qualifies) const
             {
                 if(0!=head)
                 {
                     for(const NODE *curr=head;curr->next;curr=curr->next)
                     {
-                        switch( compareNodes(curr,curr->next) )
-                        {
-                            case Negative:
-                            case __Zero__:
-                                continue;
-                            case Positive:
-                                return false;
-                        }
+                        const SignType comparison = compareNodes(curr,curr->next);
+                        if( !qualifies(comparison) ) return false;
                     }
                 }
                 return true;
             }
 
-            template <typename COMPARE_NODES>
-            bool isStrictlyOrderedAccordingTo(COMPARE_NODES &compareNodes) const
-            {
-                if(0!=head)
-                {
-                    for(const NODE *curr=head;curr->next;curr=curr->next)
-                    {
-                        switch( compareNodes(curr,curr->next) )
-                        {
-                            case Negative:
-                                continue;
-                            case __Zero__:
-                            case Positive:
-                                return false;
-                        }
-                    }
-                }
-                return true;
-            }
+
+
+
+
 
 
             const size_t size;
