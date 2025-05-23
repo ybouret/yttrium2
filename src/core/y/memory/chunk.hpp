@@ -72,6 +72,9 @@ namespace Yttrium
                                         const size_t blockSize) noexcept;
 
 
+            static unsigned BlockShiftFor(const size_t   blockSize,
+                                          const unsigned pageShift) noexcept;
+
             //! check address is within
             /**
              \param address the address

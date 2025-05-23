@@ -1,7 +1,13 @@
 #include "y/memory/chunk.hpp"
 #include "y/check/usual.hpp"
+#include "y/calculus/base2.hpp"
+#include "y/type/sign.hpp"
 
 #include <cstring>
+#include <cstdlib>
+
+#include <iostream>
+#include <iomanip>
 
 namespace Yttrium
 {
@@ -14,6 +20,105 @@ namespace Yttrium
             const size_t res = userBytes/blockSize;
             if(res<=0xff) return static_cast<uint8_t>(res); else return 0xff;
         }
+
+
+        namespace
+        {
+            struct ChunkMetrics
+            {
+                unsigned numBlocks;
+                unsigned userShift;
+                size_t   userBytes;
+                size_t   lostBytes;
+
+                //! compare by increasing lostBytes/decreasing userBytes
+                static inline
+                int Compare(const void * const lhs, const void * const rhs) noexcept
+                {
+                    assert(0!=lhs);
+                    assert(0!=rhs);
+                    const ChunkMetrics &L = *static_cast<const ChunkMetrics *>(lhs);
+                    const ChunkMetrics &R = *static_cast<const ChunkMetrics *>(rhs);
+
+                    if( L.lostBytes < R.lostBytes )
+                        return -1;
+                    else
+                    {
+                        if(R.lostBytes < L.lostBytes)
+                            return 1;
+                        else
+                        {
+                            // decreasing
+                            return int( Sign::Of(R.userBytes,L.userBytes) );
+                        }
+                    }
+
+                }
+
+
+
+
+            };
+        }
+
+        unsigned Chunk:: BlockShiftFor(const size_t   blockSize,
+                                       const unsigned pageShift) noexcept
+        {
+            assert(blockSize>0);
+            assert(pageShift>=7);
+
+            ChunkMetrics cms[256]; memset(cms,0,sizeof(cms));
+
+            for(unsigned numBlocks=0x01;numBlocks<=0xff;++numBlocks)
+            {
+                ChunkMetrics &cm = cms[numBlocks];
+                const size_t requested = blockSize*numBlocks;
+                cm.numBlocks = numBlocks;
+                cm.userBytes = NextPowerOfTwo(requested,cm.userShift);
+                cm.lostBytes = cm.userBytes - requested;
+
+#if 0
+                std::cerr
+                << "   numBlocks = " << std::setw(3) << numBlocks
+                << " | requested = " << std::setw(8) << requested
+                << " | userBytes = " << std::setw(8) << userBytes
+                << " | lostBytes = " << std::setw(8) << lostBytes
+
+                << std::endl;
+#endif
+            }
+
+            qsort(cms+1,255, sizeof(ChunkMetrics), ChunkMetrics::Compare);
+
+            const size_t   minLostBytes = cms[1].lostBytes;
+            const unsigned minIndex   = 1;
+            unsigned       maxIndex   = minIndex;
+            {
+            CHECK_NEXT:
+                const unsigned nextIndex = maxIndex+1;
+                if(nextIndex<=0xff && cms[nextIndex].lostBytes == minLostBytes )
+                {
+                    maxIndex = nextIndex;
+                    goto CHECK_NEXT;
+                }
+            }
+
+
+
+            for(unsigned i=minIndex;i<=maxIndex;++i)
+            {
+                std::cerr
+                << "   numBlocks = " << std::setw(3) << cms[i].numBlocks
+                << " | userBytes = " << std::setw(8) << cms[i].userBytes
+                << " | lostBytes = " << std::setw(8) << cms[i].lostBytes
+                << " @ 2^" << cms[i].userShift
+                << std::endl;
+            }
+
+
+            return 0;
+        }
+
 
 
         Chunk:: Chunk(void * const  blockAddr,
