@@ -139,6 +139,31 @@ Y_UTEST(core_linked)
 
     }
 
+    {
+        CxxListOf<Node> lhs;
+        CxxListOf<Node> rhs;
+
+        for(size_t nl=0;nl<=5;++nl)
+        {
+            for(size_t nr=0;nr<=5;++nr)
+            {
+                lhs.release();
+                rhs.release();
+                for(size_t i=0;i<nl;++i) lhs.pushTail( new Node() );
+                for(size_t i=0;i<nr;++i) rhs.pushTail( new Node() );
+                std::cerr << lhs << " <-" << rhs << " : ";
+                Y_ASSERT(nl==lhs.size);
+                Y_ASSERT(nr==rhs.size);
+                lhs.mergeTail(rhs);
+                Y_ASSERT(0==rhs.size);
+                Y_ASSERT(nl+nr==lhs.size);
+                std::cerr << lhs << std::endl;
+            }
+        }
+
+    }
+
+
 
 }
 Y_UDONE()

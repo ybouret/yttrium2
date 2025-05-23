@@ -118,12 +118,21 @@ namespace Yttrium
             template <typename LIST>
             inline void split(LIST &lhs, LIST &rhs) noexcept
             {
-            SPLIT:
-                if(size<=0) return;
-                lhs.pushTail( popHead() );
-                if(size<=0) return;
-                rhs.pushTail( popHead() );
-                goto SPLIT;
+                assert(0==lhs.size);
+                assert(0==rhs.size);
+#if !defined(NDEBUG)
+                const size_t oldSize = size;
+#endif
+                // send to lhs
+                {
+                    const size_t half = size>>1;
+                    while(size>half) lhs.pushTail( popHead() );
+                }
+
+                // send to rhs
+                swapListFor(rhs);
+                assert(0==size);
+                assert(lhs.size+rhs.size==oldSize);
             }
 
             template <typename LIST>
@@ -172,6 +181,34 @@ namespace Yttrium
             
         private:
             Y_Disable_Copy_And_Assign(ListOf); //!< discarding
+
+            inline virtual const NODE * doFetch(size_t nodeIndex) const noexcept
+            {
+                assert(nodeIndex>=1);
+                assert(nodeIndex<=size);
+                const size_t half = size >> 1;
+                if(nodeIndex<=half)
+                {
+                    const NODE *node = head; assert(0!=node);
+                    while(--nodeIndex>0) {
+                        assert(0!=node);
+                        node = node->next;
+                    }
+                    assert(0!=node);
+                    return node;
+                }
+                else
+                {
+                    const NODE *node = tail; assert(0!=node);
+                    nodeIndex = size-nodeIndex;
+                    while(nodeIndex-- > 0) {
+                        assert(0!=node);
+                        node = node->prev;
+                    }
+                    assert(0!=node);
+                    return node;
+                }
+            }
         };
     }
 }

@@ -83,20 +83,42 @@ namespace Yttrium
             template <typename POOL>
             inline void split(POOL &lhs, POOL &rhs) noexcept
             {
-            SPLIT:
-                if(size<=0) return;
-                lhs.stash( query() );
-                if(size<=0) return;
-                rhs.stash( query() );
-                goto SPLIT;
-            }
+                assert(0==lhs.size);
+                assert(0==rhs.size);
+#if !defined(NDEBUG)
+                const size_t oldSize = size;
+#endif
+                // send to lhs
+                {
+                    const size_t half = size>>1;
+                    while(size>half) lhs.store( query() );
+                }
 
+                // send to rhs
+                swapPoolFor(rhs);
+                assert(0==size);
+                assert(lhs.size+rhs.size==oldSize);
+            }
 
 
 
 
         private:
             Y_Disable_Copy_And_Assign(PoolOf);
+
+            inline virtual const NODE * doFetch(size_t nodeIndex) const noexcept
+            {
+                assert(nodeIndex>=1);
+                assert(nodeIndex<=size);
+                const NODE *node = head; assert(0!=node);
+                while(--nodeIndex>0) {
+                    assert(0!=node);
+                    node = node->next;
+                }
+                assert(0!=node);
+                return node;
+            }
+
         };
     }
 }

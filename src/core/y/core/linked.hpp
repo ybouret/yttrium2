@@ -44,6 +44,14 @@ namespace Yttrium
             inline explicit Linked() noexcept : size(0), head(0) {}
             inline virtual ~Linked() noexcept {}
 
+
+
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
             inline bool owns(const NODE * const node) const noexcept
             {
                 for(const NODE *mine=head;mine;mine=mine->next)
@@ -51,6 +59,17 @@ namespace Yttrium
                     if( node == mine ) return true;
                 }
                 return false;
+            }
+
+
+            inline const NODE * operator[](const size_t indx) const noexcept
+            {
+                return doFetch(indx);
+            }
+
+            inline NODE * operator[](const size_t indx) noexcept
+            {
+                return (NODE *)doFetch(indx);
             }
 
 
@@ -120,6 +139,8 @@ namespace Yttrium
                 CoerceSwap(head,other.head);
             }
 
+
+            virtual const NODE * doFetch(size_t nodeIndex) const noexcept =0;
 
         private:
             Y_Disable_Copy_And_Assign(Linked);
