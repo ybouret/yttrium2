@@ -64,13 +64,45 @@ namespace Yttrium
         unsigned Chunk:: BlockShiftFor(const size_t   blockSize,
                                        const unsigned pageShift) noexcept
         {
+            static const size_t MinUserBytes = 128;
+
             assert(blockSize>0);
-            assert(pageShift>=7);
 
             // construct all possible metrics from 1 to 255
             ChunkMetrics cms[256];
+            size_t       num = 0;
             memset(cms,0,sizeof(cms));
 
+            for(unsigned numBlocks=0x01;numBlocks<=0xff;++numBlocks)
+            {
+                ChunkMetrics &cm = cms[num];
+                const size_t requested = blockSize*numBlocks;
+                cm.numBlocks = numBlocks;
+                cm.userBytes = NextPowerOfTwo(requested,cm.userShift);
+                if(cm.userBytes<MinUserBytes)
+                {
+                    continue;
+                }
+                cm.lostBytes = cm.userBytes - requested;
+                ++num;
+            }
+
+            std::cerr << "#num=" << num << std::endl;
+
+            // order them
+            qsort(cms,num, sizeof(ChunkMetrics), ChunkMetrics::Compare);
+            for(unsigned i=0;i<num;++i)
+            {
+                const ChunkMetrics &cm = cms[i];
+                std::cerr
+                << "   numBlocks = " << std::setw(3) << cm.numBlocks
+                << " | userBytes = " << std::setw(8) << cm.userBytes
+                << " | lostBytes = " << std::setw(8) << cm.lostBytes
+                << " @ 2^" << cms[i].userShift
+                << std::endl;
+            }
+
+#if 0
             for(unsigned numBlocks=0x01;numBlocks<=0xff;++numBlocks)
             {
                 ChunkMetrics &cm = cms[numBlocks];
@@ -122,6 +154,7 @@ namespace Yttrium
                     << std::endl;
                 }
             }
+#endif
 #endif
 
             return 0;
