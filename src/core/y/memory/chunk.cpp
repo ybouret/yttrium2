@@ -61,8 +61,7 @@ namespace Yttrium
             };
         }
 
-        unsigned Chunk:: BlockShiftFor(const size_t   blockSize,
-                                       const unsigned pageShift) noexcept
+        unsigned Chunk:: BlockShiftFor(const size_t   blockSize) noexcept
         {
             static const size_t MinUserBytes = 128;
 
@@ -81,8 +80,10 @@ namespace Yttrium
                 cm.userBytes = NextPowerOfTwo(requested,cm.userShift);
                 if(cm.userBytes<MinUserBytes)
                 {
+                    // drop too small
                     continue;
                 }
+                
                 cm.lostBytes = cm.userBytes - requested;
                 ++num;
             }

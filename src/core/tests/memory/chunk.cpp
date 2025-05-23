@@ -74,7 +74,7 @@ Y_UTEST(memory_chunk)
     {
         std::cerr << std::endl;
         std::cerr << "blockSize=" << blockSize << std::endl;
-        Memory::Chunk::BlockShiftFor(blockSize,10);
+        Memory::Chunk::BlockShiftFor(blockSize);
     }
 
 
