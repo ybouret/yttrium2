@@ -31,9 +31,10 @@ namespace Yttrium
                 unsigned userShift;
                 size_t   userBytes;
                 size_t   lostBytes;
-                size_t   numer;
-                size_t   denom;
+                size_t   numer;      //!< numerator   of lost/user
+                size_t   denom;      //!< denominator of lost/user
 
+                //! compare ratios
                 static inline
                 SignType CompareRatios(const ChunkMetrics &lhs,
                                        const ChunkMetrics &rhs) noexcept
@@ -46,7 +47,7 @@ namespace Yttrium
                 }
 
 
-                //! compare by increasing lostBytes/decreasing userBytes
+                //! compare by increasing ratios/decreasibg
                 static inline
                 int Compare(const void * const lhs, const void * const rhs) noexcept
                 {
@@ -65,31 +66,14 @@ namespace Yttrium
                     // decreasing user bytes
                     return int( Sign::Of(R.userBytes,L.userBytes) );
 
-                    if( L.lostBytes < R.lostBytes )
-                        return -1;
-                    else
-                    {
-                        if(R.lostBytes < L.lostBytes)
-                            return 1;
-                        else
-                        {
-                            // decreasing user bytes
-                            return int( Sign::Of(R.userBytes,L.userBytes) );
-                        }
-                    }
-
                 }
-
-
-
 
             };
         }
 
         unsigned Chunk:: BlockShiftFor(const size_t   blockSize) noexcept
         {
-            static const size_t MinUserBytes = 128;
-
+            
             assert(blockSize>0);
 
             // construct all possible metrics from 1 to 255
@@ -97,7 +81,7 @@ namespace Yttrium
             size_t       num = 0;
             memset(cms,0,sizeof(cms));
 
-            for(unsigned numBlocks=0x01;numBlocks<=0xff;++numBlocks)
+            for(unsigned numBlocks=MinNumBlocks;numBlocks<=MaxNumBlocks;++numBlocks)
             {
                 ChunkMetrics &cm = cms[num];
                 const size_t requested = blockSize*numBlocks;
@@ -105,7 +89,7 @@ namespace Yttrium
                 cm.userBytes = NextPowerOfTwo(requested,cm.userShift);
                 if(cm.userBytes<MinUserBytes)
                 {
-                    // drop too small
+                    // drop: too small
                     continue;
                 }
                 
@@ -114,7 +98,7 @@ namespace Yttrium
                 ++num;
             }
 
-            std::cerr << "#num=" << num << std::endl;
+            //std::cerr << "#num=" << num << std::endl;
 
             // order them
             qsort(cms,num, sizeof(ChunkMetrics), ChunkMetrics::Compare);
@@ -124,12 +108,13 @@ namespace Yttrium
             {
                 const ChunkMetrics &cm = cms[i];
                 std::cerr
-                << "   numBlocks = " << std::setw(3) << cm.numBlocks
+                << " | numBlocks = " << std::setw(3) << cm.numBlocks
                 << " | userBytes = " << std::setw(8) << cm.userBytes
                 << " | lostBytes = " << std::setw(8) << cm.lostBytes
                 << " @ 2^" << std::setw(2) << cms[i].userShift
                 << " ratio=" << double(cm.numer)/double(cm.denom)
                 << std::endl;
+                break;
             }
 
 
