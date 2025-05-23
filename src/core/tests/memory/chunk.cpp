@@ -70,13 +70,17 @@ Y_UTEST(memory_chunk)
     Y_SIZEOF(Memory::Chunk);
 
 
-    for(size_t blockSize=9;blockSize<=9;++blockSize)
+    for(int i=1;i<argc;++i)
     {
+        const size_t blockSize = atol( argv[1] );
+        if(blockSize<=0) continue;;
+
         std::cerr << std::endl;
         std::cerr << "blockSize=" << blockSize << std::endl;
         Memory::Chunk::BlockShiftFor(blockSize);
-    }
 
+    }
+    
 
 
 
