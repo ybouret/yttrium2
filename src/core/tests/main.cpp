@@ -24,6 +24,8 @@ Y_UTEST_DECL(32)
     Y_UTEST(calculus_integer_log2);
     Y_UTEST(calculus_alignment);
     Y_UTEST(calculus_base2);
+    Y_UTEST(calculus_gcd);
+
 
     Y_UTEST(concurrent_nucleus);
     Y_UTEST(concurrent_giant_lock);

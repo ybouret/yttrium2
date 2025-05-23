@@ -1,6 +1,7 @@
 #include "y/memory/chunk.hpp"
 #include "y/check/usual.hpp"
 #include "y/calculus/base2.hpp"
+#include "y/calculus/gcd.hpp"
 #include "y/type/sign.hpp"
 
 #include <cstring>
@@ -30,6 +31,20 @@ namespace Yttrium
                 unsigned userShift;
                 size_t   userBytes;
                 size_t   lostBytes;
+                size_t   numer;
+                size_t   denom;
+
+                static inline
+                SignType CompareRatios(const ChunkMetrics &lhs,
+                                       const ChunkMetrics &rhs) noexcept
+                {
+                    assert(lhs.denom>0);
+                    assert(rhs.denom>0);
+                    const uint64_t L = uint64_t(lhs.numer) * uint64_t(rhs.denom);
+                    const uint64_t R = uint64_t(rhs.numer) * uint64_t(lhs.denom);
+                    return Sign::Of(L,R);
+                }
+
 
                 //! compare by increasing lostBytes/decreasing userBytes
                 static inline
@@ -40,6 +55,16 @@ namespace Yttrium
                     const ChunkMetrics &L = *static_cast<const ChunkMetrics *>(lhs);
                     const ChunkMetrics &R = *static_cast<const ChunkMetrics *>(rhs);
 
+                    switch( CompareRatios(L,R) )
+                    {
+                        case Negative: return -1;
+                        case Positive: return  1;
+                        case __Zero__: break;
+                    }
+
+                    // decreasing user bytes
+                    return int( Sign::Of(R.userBytes,L.userBytes) );
+
                     if( L.lostBytes < R.lostBytes )
                         return -1;
                     else
@@ -48,7 +73,7 @@ namespace Yttrium
                             return 1;
                         else
                         {
-                            // decreasing
+                            // decreasing user bytes
                             return int( Sign::Of(R.userBytes,L.userBytes) );
                         }
                     }
@@ -85,6 +110,7 @@ namespace Yttrium
                 }
                 
                 cm.lostBytes = cm.userBytes - requested;
+                SimplifyByGCD(cm.numer = cm.lostBytes,cm.denom = cm.userBytes);
                 ++num;
             }
 
@@ -92,6 +118,8 @@ namespace Yttrium
 
             // order them
             qsort(cms,num, sizeof(ChunkMetrics), ChunkMetrics::Compare);
+            
+
             for(unsigned i=0;i<num;++i)
             {
                 const ChunkMetrics &cm = cms[i];
@@ -99,9 +127,14 @@ namespace Yttrium
                 << "   numBlocks = " << std::setw(3) << cm.numBlocks
                 << " | userBytes = " << std::setw(8) << cm.userBytes
                 << " | lostBytes = " << std::setw(8) << cm.lostBytes
-                << " @ 2^" << cms[i].userShift
+                << " @ 2^" << std::setw(2) << cms[i].userShift
+                << " ratio=" << double(cm.numer)/double(cm.denom)
                 << std::endl;
             }
+
+
+
+
 
 #if 0
             for(unsigned numBlocks=0x01;numBlocks<=0xff;++numBlocks)
