@@ -67,7 +67,9 @@ namespace Yttrium
             assert(blockSize>0);
             assert(pageShift>=7);
 
-            ChunkMetrics cms[256]; memset(cms,0,sizeof(cms));
+            // construct all possible metrics from 1 to 255
+            ChunkMetrics cms[256];
+            memset(cms,0,sizeof(cms));
 
             for(unsigned numBlocks=0x01;numBlocks<=0xff;++numBlocks)
             {
@@ -76,37 +78,15 @@ namespace Yttrium
                 cm.numBlocks = numBlocks;
                 cm.userBytes = NextPowerOfTwo(requested,cm.userShift);
                 cm.lostBytes = cm.userBytes - requested;
-
-#if 0
-                std::cerr
-                << "   numBlocks = " << std::setw(3) << numBlocks
-                << " | requested = " << std::setw(8) << requested
-                << " | userBytes = " << std::setw(8) << userBytes
-                << " | lostBytes = " << std::setw(8) << lostBytes
-
-                << std::endl;
-#endif
             }
 
+            // order them
             qsort(cms+1,255, sizeof(ChunkMetrics), ChunkMetrics::Compare);
 
-            const size_t   minLostBytes = cms[1].lostBytes;
-            const unsigned minIndex   = 1;
-            unsigned       maxIndex   = minIndex;
+            for(unsigned i=0x01;i<=0xff;++i)
             {
-            CHECK_NEXT:
-                const unsigned nextIndex = maxIndex+1;
-                if(nextIndex<=0xff && cms[nextIndex].lostBytes == minLostBytes )
-                {
-                    maxIndex = nextIndex;
-                    goto CHECK_NEXT;
-                }
-            }
-
-
-
-            for(unsigned i=minIndex;i<=maxIndex;++i)
-            {
+                const ChunkMetrics &cm = cms[i];
+                //if(cm.lostBytes>cms[1].lostBytes) break;
                 std::cerr
                 << "   numBlocks = " << std::setw(3) << cms[i].numBlocks
                 << " | userBytes = " << std::setw(8) << cms[i].userBytes
@@ -115,6 +95,34 @@ namespace Yttrium
                 << std::endl;
             }
 
+
+#if 0
+            unsigned       maxIndex     = 1;
+            {
+                const size_t   minLostBytes = cms[1].lostBytes;
+                {
+                CHECK_NEXT:
+                    const unsigned nextIndex = maxIndex+1;
+                    if(nextIndex<=0xff && cms[nextIndex].lostBytes == minLostBytes )
+                    {
+                        maxIndex = nextIndex;
+                        goto CHECK_NEXT;
+                    }
+                }
+
+
+
+                for(unsigned i=1;i<=maxIndex;++i)
+                {
+                    std::cerr
+                    << "   numBlocks = " << std::setw(3) << cms[i].numBlocks
+                    << " | userBytes = " << std::setw(8) << cms[i].userBytes
+                    << " | lostBytes = " << std::setw(8) << cms[i].lostBytes
+                    << " @ 2^" << cms[i].userShift
+                    << std::endl;
+                }
+            }
+#endif
 
             return 0;
         }

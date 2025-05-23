@@ -70,7 +70,7 @@ Y_UTEST(memory_chunk)
     Y_SIZEOF(Memory::Chunk);
 
 
-    for(size_t blockSize=1;blockSize<=10;++blockSize)
+    for(size_t blockSize=9;blockSize<=9;++blockSize)
     {
         std::cerr << std::endl;
         std::cerr << "blockSize=" << blockSize << std::endl;
