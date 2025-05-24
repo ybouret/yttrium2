@@ -138,10 +138,24 @@ namespace Yttrium
             template <typename LIST, typename COMPARE_NODES> inline
             void fusion(LIST &lhs, LIST &rhs, COMPARE_NODES &compareNodes) noexcept
             {
+                assert(0==size);
+#if !defined(NDEBUG)
+                const size_t oldSize = lhs.size+rhs.size;
+#endif
                 while(lhs.size>0 && rhs.size>0)
                 {
-
+                    switch( compareNodes(lhs.head,rhs.head) )
+                    {
+                        case Negative:
+                        case __Zero__:
+                            pushTail( lhs.popHead() ); continue;
+                        case Positive:
+                            pushTail( rhs.popHead() ); continue;
+                    }
                 }
+                mergeTail(lhs);
+                mergeTail(rhs);
+                assert(oldSize==size);
             }
 
 
