@@ -50,7 +50,7 @@ Y_UTEST(memory_chunk)
             for(size_t blockSize=1;blockSize<=256;++blockSize)
             {
                 Memory::Chunk chunk(blockAddr, Memory::Chunk::NumBlocksFor(userBytes,blockSize), blockSize);
-                std::cerr << "\tblockSize=" << blockSize << " / numBlocks=" << (int)chunk.userBlocks << std::endl;
+                //std::cerr << "\tblockSize=" << blockSize << " / numBlocks=" << (int)chunk.userBlocks << std::endl;
                 memset(addr,0,sizeof(addr));
                 size = 0;
                 fill(addr,size,chunk,blockSize,ran);
@@ -67,28 +67,18 @@ Y_UTEST(memory_chunk)
         }
     }
 
-    Y_SIZEOF(Memory::Chunk);
 
 
-#if 0
-    for(int i=1;i<argc;++i)
-    {
-        const size_t blockSize = atol( argv[1] );
-        if(blockSize<=0) continue;;
-        std::cerr << std::endl;
-        std::cerr << "blockSize=" << blockSize << std::endl;
-        Memory::Chunk::BlockShiftFor(blockSize);
-    }
-#endif
 
     for(size_t blockSize=1;blockSize<=64;++blockSize)
     {
         std::cerr << "blockSize=" << std::setw(3) << blockSize; //<< std::endl;
-        Memory::Chunk::BlockShiftFor(blockSize);
+        Memory::Chunk::BlockShiftFor(blockSize,4096);
     }
 
 
 
+    Y_SIZEOF(Memory::Chunk);
 
 }
 Y_UDONE()
