@@ -241,4 +241,10 @@ function(Y_UTEST THE_NAME)
 	message(STATUS "    <${THE_NAME}>")
 endfunction()
 
+#register "utest-THE_LIB" tor Y_UnitTests
+macro(Y_Regression THE_LIB)
+	set(_UnitTests ${Y_UnitTests})
+	list(APPEND _UnitTests "utest-${THE_LIB}")
+	set(Y_UnitTests ${_UnitTests} PARENT_SCOPE)
+endmacro()
  

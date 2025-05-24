@@ -115,8 +115,8 @@ namespace Yttrium
                 CoerceSwap(tail,other.tail);
             }
 
-            template <typename LIST>
-            inline void split(LIST &lhs, LIST &rhs) noexcept
+            template <typename LIST>inline
+             void split(LIST &lhs, LIST &rhs) noexcept
             {
                 assert(0==lhs.size);
                 assert(0==rhs.size);
@@ -134,6 +134,16 @@ namespace Yttrium
                 assert(0==size);
                 assert(lhs.size+rhs.size==oldSize);
             }
+
+            template <typename LIST, typename COMPARE_NODES> inline
+            void fusion(LIST &lhs, LIST &rhs, COMPARE_NODES &compareNodes) noexcept
+            {
+                while(lhs.size>0 && rhs.size>0)
+                {
+
+                }
+            }
+
 
             template <typename LIST>
             inline ListOf & mergeTail(LIST &other) noexcept

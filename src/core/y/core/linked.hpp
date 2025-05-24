@@ -21,10 +21,10 @@ namespace Yttrium
         //______________________________________________________________________
         struct LinkedInfo
         {
-            static const char OwnsNode[];
-            static const char NullNode[];
-            static const char UsedNext[];
-            static const char UsedPrev[];
+            static const char OwnsNode[]; //!< "owns node!"
+            static const char NullNode[]; //!< "NULL==node"
+            static const char UsedNext[]; //!< "NULL!=next"
+            static const char UsedPrev[]; //!< "NULL!=prev"
         };
 
         //______________________________________________________________________
@@ -39,10 +39,22 @@ namespace Yttrium
         class Linked
         {
         public:
-            typedef NODE NodeType;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef NODE NodeType; //!< alias
 
-            inline explicit Linked() noexcept : size(0), head(0) {}
-            inline virtual ~Linked() noexcept {}
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            inline explicit Linked() noexcept : size(0), head(0) {} //!< initialize
+            inline virtual ~Linked() noexcept {}                    //!< cleanup
 
 
 
@@ -52,6 +64,9 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
+
+            //! check ownership
+            /** \param node any node \return true if linked to this */
             inline bool owns(const NODE * const node) const noexcept
             {
                 for(const NODE *mine=head;mine;mine=mine->next)
@@ -61,12 +76,21 @@ namespace Yttrium
                 return false;
             }
 
-
+            //! get const NODE in [1..size]
+            /**
+             \param indx valid index
+             \return indx-th node
+             */
             inline const NODE * operator[](const size_t indx) const noexcept
             {
                 return doFetch(indx);
             }
 
+            //! get NODE in [1..size]
+            /**
+             \param indx valid index
+             \return indx-th node
+             */
             inline NODE * operator[](const size_t indx) noexcept
             {
                 return (NODE *)doFetch(indx);
@@ -93,6 +117,8 @@ namespace Yttrium
                 return os;
             }
 
+            //! helper to debug
+            /** \param msg message to print \return false */
             bool warning(const char * const msg) const noexcept {
                 try { std::cerr << msg << std::endl; }
                 catch(...) {}
@@ -100,6 +126,12 @@ namespace Yttrium
             }
 
 
+            //! check orderer linked structure
+            /**
+             \param compareNodes nodes comparator
+             \param qualifies    sign qualification
+             \return true if all succesive nodes qualifiy
+             */
             template <typename COMPARE_NODES, typename QUALIFIES> inline
             bool isOrderedBy(COMPARE_NODES & compareNodes,
                              QUALIFIES &     qualifies) const
@@ -116,34 +148,50 @@ namespace Yttrium
             }
 
 
-
-
-
-
-
-            const size_t size;
-            NODE *       head;
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const size_t size; //!< current size
+            NODE *       head; //!< current head
 
         protected:
+            //! increase size
             inline void incr() noexcept { ++Coerce(size); }
+
+            //! decrease size
             inline void decr() noexcept {
                 assert(size>0 || Die("empty Linked") );
                 --Coerce(size);
                 assert(!(0==size&&0!=head) || Die("empty Linked with head!=NULL"));
             }
 
-            
+            //! C-swap size and head
+            /** \param other other linked */
             inline void swapLinkedFor(Linked &other) noexcept
             {
                 CoerceSwap(size,other.size);
                 CoerceSwap(head,other.head);
             }
 
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
 
+            //! getch node in [1..size]
+            /**
+             \param nodeIndex valid index
+             \return NODE address
+             */
             virtual const NODE * doFetch(size_t nodeIndex) const noexcept =0;
 
         private:
-            Y_Disable_Copy_And_Assign(Linked);
+            Y_Disable_Copy_And_Assign(Linked); //!< discarding
         };
     }
 }

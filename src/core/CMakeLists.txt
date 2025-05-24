@@ -21,4 +21,10 @@ Y_CreateLibrary(y
 )
 
 add_subdirectory(tests)
+Y_Regression(core)
+
+
+
+
+
 

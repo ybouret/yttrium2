@@ -143,6 +143,7 @@ namespace Yttrium
                               const char     separator=' ');
     }
 
+    //! helper to return named label case
 #define Y_Return_Named_Case(NAME) case NAME: return #NAME
 }
 
