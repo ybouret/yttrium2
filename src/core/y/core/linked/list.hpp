@@ -147,10 +147,9 @@ namespace Yttrium
                     switch( compareNodes(lhs.head,rhs.head) )
                     {
                         case Negative:
-                        case __Zero__:
-                            pushTail( lhs.popHead() ); continue;
-                        case Positive:
-                            pushTail( rhs.popHead() ); continue;
+                        case __Zero__: pushTail( lhs.popHead() ); continue;
+                        case Positive: pushTail( rhs.popHead() ); continue;
+
                     }
                 }
                 mergeTail(lhs);

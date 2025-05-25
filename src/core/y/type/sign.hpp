@@ -9,6 +9,7 @@
 namespace Yttrium
 {
 
+    //! Named Sign
     enum SignType
     {
         Negative = -1,
@@ -16,6 +17,8 @@ namespace Yttrium
         Positive =  1
     };
 
+
+    //! operations on signs
     struct Sign
     {
         static const char * HumanReadable(const SignType) noexcept;

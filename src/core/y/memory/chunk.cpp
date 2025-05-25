@@ -94,7 +94,11 @@ namespace Yttrium
                     continue;
                 }
 
-                if(num>0 && cm.userBytes>pageBytes) break;
+                if(num>0 && cm.userBytes>pageBytes)
+                {
+                    // done : too big
+                    break;
+                }
 
                 cm.lostBytes = cm.userBytes - requested;
                 SimplifyByGCD(cm.numer = cm.lostBytes,cm.denom = cm.userBytes);
