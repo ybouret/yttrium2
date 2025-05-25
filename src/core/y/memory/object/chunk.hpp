@@ -74,12 +74,12 @@ namespace Yttrium
 
             //! number of blocks for a given memory amount
             /**
-             \param userBytes memory amount
              \param blockSize block size to use
+             \param userBytes memory amount
              \return truncated number of blocks
              */
-            static uint8_t NumBlocksFor(const size_t userBytes,
-                                        const size_t blockSize) noexcept;
+            static uint8_t NumBlocksFor(const size_t blockSize,
+                                        const size_t userBytes) noexcept;
 
 
             //! computed once per block-size
@@ -87,14 +87,16 @@ namespace Yttrium
              Return 2^dataShift that minimize the lost/data ratio
              over MinNumBlocks and MaxNumBlocks,
              - >= MinUserBytes
-             - <= pageBuyes
+             - <= pageBytes
              \param blockSize object size
              \param pageBytes default bytes per page
+             \oaram numBlocks optimized numBlocks of blockSize
              \return optimized bytes to allocate
              */
             static size_t UserBytesFor(const size_t   blockSize,
                                        const size_t   pageBytes,
-                                       unsigned      &userhift) noexcept;
+                                       unsigned      &userhift,
+                                       uint8_t       &numBlocks) noexcept;
 
             //! check address is within
             /**

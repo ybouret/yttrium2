@@ -1,5 +1,5 @@
 
-#include "y/memory/chunk.hpp"
+#include "y/memory/object/chunk.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
@@ -49,7 +49,7 @@ Y_UTEST(memory_chunk)
             if(0==blockAddr) throw Exception("no memory");
             for(size_t blockSize=1;blockSize<=256;++blockSize)
             {
-                Memory::Chunk chunk(blockAddr, Memory::Chunk::NumBlocksFor(userBytes,blockSize), blockSize);
+                Memory::Chunk chunk(blockAddr, Memory::Chunk::NumBlocksFor(blockSize,userBytes), blockSize);
                 //std::cerr << "\tblockSize=" << blockSize << " / numBlocks=" << (int)chunk.userBlocks << std::endl;
                 memset(addr,0,sizeof(addr));
                 size = 0;
@@ -70,12 +70,15 @@ Y_UTEST(memory_chunk)
 
 
 
-    for(size_t blockSize=1;blockSize<=64;++blockSize)
+    for(size_t blockSize=1;blockSize<=512;++blockSize)
     {
         std::cerr << "blockSize=" << std::setw(3) << blockSize; //<< std::endl;
         unsigned     userShift = 0;
-        const size_t userBytes = Memory::Chunk::UserBytesFor(blockSize,4096,userShift);
+        uint8_t      numBlocks = 0;
+        const size_t userBytes = Memory::Chunk::UserBytesFor(blockSize,4096,userShift,numBlocks);
         Y_ASSERT(size_t(1)<<userShift == userBytes);
+        Y_ASSERT(Memory::Chunk::NumBlocksFor(blockSize,userBytes) == numBlocks);
+
     }
 
 

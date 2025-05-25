@@ -1,4 +1,4 @@
-#include "y/memory/chunk.hpp"
+#include "y/memory/object/chunk.hpp"
 #include "y/check/usual.hpp"
 #include "y/calculus/base2.hpp"
 #include "y/calculus/gcd.hpp"
@@ -14,8 +14,8 @@ namespace Yttrium
 {
     namespace Memory
     {
-        uint8_t Chunk:: NumBlocksFor(const size_t userBytes,
-                                     const size_t blockSize) noexcept
+        uint8_t Chunk:: NumBlocksFor(const size_t blockSize,
+                                     const size_t userBytes) noexcept
         {
             assert(blockSize>0);
             const size_t res = userBytes/blockSize;
@@ -73,7 +73,8 @@ namespace Yttrium
 
         size_t Chunk:: UserBytesFor(const size_t blockSize,
                                     const size_t pageBytes,
-                                    unsigned    &userShift) noexcept
+                                    unsigned    &userShift,
+                                    uint8_t     &numBlocks) noexcept
         {
 
             assert(blockSize>0);
@@ -83,11 +84,11 @@ namespace Yttrium
             size_t       num = 0;
             memset(cms,0,sizeof(cms));
 
-            for(unsigned numBlocks=MinNumBlocks;numBlocks<=MaxNumBlocks;++numBlocks)
+            for(unsigned nb=MinNumBlocks;nb<=MaxNumBlocks;++nb)
             {
                 ChunkMetrics &cm = cms[num];
-                const size_t requested = blockSize*numBlocks;
-                cm.numBlocks = numBlocks;
+                const size_t requested = blockSize*nb;
+                cm.numBlocks = nb;
                 cm.userBytes = NextPowerOfTwo(requested,cm.userShift);
                 if(cm.userBytes<MinUserBytes)
                 {
@@ -125,6 +126,7 @@ namespace Yttrium
                 break;
             }
 
+            numBlocks = cms[0].numBlocks;
             userShift = cms[0].userShift;
             return      cms[0].userBytes;
         }

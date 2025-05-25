@@ -48,4 +48,7 @@ Y_UTEST(memory:system)
 Y_UTEST(memory:chunk)
 Y_UTEST(memory:dyadic)
 Y_UTEST(memory:pages)
+Y_UTEST(memory:arena)
+
+
 
