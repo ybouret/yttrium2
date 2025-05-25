@@ -73,7 +73,9 @@ Y_UTEST(memory_chunk)
     for(size_t blockSize=1;blockSize<=64;++blockSize)
     {
         std::cerr << "blockSize=" << std::setw(3) << blockSize; //<< std::endl;
-        Memory::Chunk::BlockShiftFor(blockSize,4096);
+        unsigned     dataShift = 0;
+        const size_t dataBytes = Memory::Chunk::DataBytesFor(blockSize,4096,dataShift);
+        Y_ASSERT(size_t(1)<<dataShift == dataBytes);
     }
 
 

@@ -71,10 +71,11 @@ namespace Yttrium
             };
         }
 
-        unsigned Chunk:: BlockShiftFor(const size_t blockSize,
-                                       const size_t pageBytes) noexcept
+        size_t Chunk:: DataBytesFor(const size_t blockSize,
+                                    const size_t pageBytes,
+                                    unsigned    &dataShift) noexcept
         {
-            
+
             assert(blockSize>0);
 
             // construct all possible metrics from MinNumBlocks to 255
@@ -105,11 +106,11 @@ namespace Yttrium
                 ++num;
             }
 
-            //std::cerr << "#num=" << num << std::endl;
-
-            // order them
-            qsort(cms,num, sizeof(ChunkMetrics), ChunkMetrics::Compare);
             
+            // order them by least lost ratio first,
+            // then by decreasing data size
+            qsort(cms,num, sizeof(ChunkMetrics), ChunkMetrics::Compare);
+
 
             for(unsigned i=0;i<num;++i)
             {
@@ -124,12 +125,8 @@ namespace Yttrium
                 break;
             }
 
-
-
-
-            
-
-            return 0;
+            dataShift = cms[0].userShift;
+            return      cms[0].userBytes;
         }
 
 

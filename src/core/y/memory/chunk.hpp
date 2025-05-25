@@ -27,9 +27,9 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            static const unsigned MinNumBlocks = 0x04;
-            static const unsigned MaxNumBlocks = 0xff;
-            static const size_t   MinUserBytes = 128;
+            static const unsigned MinNumBlocks = 0x04;   //!< minimal number of blocks per chunk
+            static const unsigned MaxNumBlocks = 0xff;   //!< maximum number of blocks per chunk
+            static const size_t   MinUserBytes = 128;    //!< allows perfect match of 1-byte blocks
 
             //__________________________________________________________________
             //
@@ -82,8 +82,15 @@ namespace Yttrium
                                         const size_t blockSize) noexcept;
 
 
-            static unsigned BlockShiftFor(const size_t   blockSize,
-                                          const size_t   pageBytes) noexcept;
+            //! computed once per block-size
+            /**
+             \param blockSize object size
+             \param pageBytes default bytes per page
+             \return optimized bytes to allocate
+             */
+            static size_t DataBytesFor(const size_t   blockSize,
+                                       const size_t   pageBytes,
+                                       unsigned      &dataShift) noexcept;
 
             //! check address is within
             /**

@@ -155,6 +155,7 @@ namespace Yttrium
                 mergeTail(lhs);
                 mergeTail(rhs);
                 assert(oldSize==size);
+                assert(this->isOrderedBy(compareNodes,Sign::LooselyIncreasing));
             }
 
 
