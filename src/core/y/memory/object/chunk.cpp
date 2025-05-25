@@ -137,10 +137,11 @@ namespace Yttrium
                       const uint8_t numBlocks,
                       const size_t  blockSize) noexcept :
         data( static_cast<uint8_t *>(blockAddr) ),
+        last( data + (blockSize * static_cast<size_t>(numBlocks)) ),
         firstBlock(0),
         freeBlocks(numBlocks),
         userBlocks(numBlocks),
-        last( data + (blockSize * static_cast<size_t>(numBlocks)) )
+        memoryVoid()
         {
             assert(Good(blockAddr,numBlocks));
             uint8_t *p=data;

@@ -15,10 +15,17 @@ namespace Yttrium
         class Arena
         {
         public:
+            static const char * const CallSign;
+            
             Arena(const size_t userBlockSize,
                   const size_t userPageBytes);
             ~Arena() noexcept;
-
+            
+            const size_t   blockSize;
+            const unsigned userShift;
+            const uint8_t  numBlocks;
+            const size_t   userBytes;
+            
         private:
             Y_Disable_Copy_And_Assign(Arena);
         };

@@ -119,14 +119,15 @@ namespace Yttrium
             //
             //__________________________________________________________________
             uint8_t * const       data;       //!< base address
+            const uint8_t * const last;       //!< first invalid address
             uint8_t               firstBlock; //!< first available block
             uint8_t               freeBlocks; //!< number of free blocks
             const uint8_t         userBlocks; //!< initial number of blocks
-            const uint8_t * const last;       //!< first invalid address
-            
+            const uint8_t         memoryVoid[2*sizeof(void*)-3];
 
         private:
             Y_Disable_Copy_And_Assign(Chunk); //!< discarding
+
         };
     }
 
