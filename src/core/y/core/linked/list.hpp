@@ -116,7 +116,7 @@ namespace Yttrium
             }
 
             template <typename LIST>inline
-             void split(LIST &lhs, LIST &rhs) noexcept
+            void split(LIST &lhs, LIST &rhs) noexcept
             {
                 assert(0==lhs.size);
                 assert(0==rhs.size);
@@ -139,6 +139,8 @@ namespace Yttrium
             void fusion(LIST &lhs, LIST &rhs, COMPARE_NODES &compareNodes) noexcept
             {
                 assert(0==size);
+                assert(lhs.isOrderedBy(compareNodes,Sign::LooselyIncreasing));
+                assert(rhs.isOrderedBy(compareNodes,Sign::LooselyIncreasing));
 #if !defined(NDEBUG)
                 const size_t oldSize = lhs.size+rhs.size;
 #endif
@@ -149,7 +151,6 @@ namespace Yttrium
                         case Negative:
                         case __Zero__: pushTail( lhs.popHead() ); continue;
                         case Positive: pushTail( rhs.popHead() ); continue;
-
                     }
                 }
                 mergeTail(lhs);
@@ -158,6 +159,17 @@ namespace Yttrium
                 assert(this->isOrderedBy(compareNodes,Sign::LooselyIncreasing));
             }
 
+            template <typename COMPARE_NODES> inline
+            void sort(COMPARE_NODES &compareNodes) noexcept
+            {
+                if(size>1) {
+                    ListOf lhs, rhs;
+                    split(lhs,rhs);
+                    lhs.sort(compareNodes);
+                    rhs.sort(compareNodes);
+                    fusion(lhs,rhs,compareNodes);
+                }
+            }
 
             template <typename LIST>
             inline ListOf & mergeTail(LIST &other) noexcept
@@ -202,7 +214,7 @@ namespace Yttrium
 
 
             NODE *tail;
-            
+
         private:
             Y_Disable_Copy_And_Assign(ListOf); //!< discarding
 

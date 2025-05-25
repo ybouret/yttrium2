@@ -41,6 +41,13 @@ namespace
 
         const int & operator*() const noexcept { return value; }
 
+        static inline SignType Compare(const Node * const lhs, const Node * const rhs) noexcept
+        {
+            assert(0!=lhs);
+            assert(0!=rhs);
+            return Sign::Of(lhs->value,rhs->value);
+        }
+
         Node *next;
         Node *prev;
         const int value;
@@ -93,6 +100,7 @@ Y_UTEST(core_linked)
     }
 
     {
+        std::cerr << "CoreList" << std::endl;
         Core::ListOf<Node> list;
         for(size_t i=10+ran.leq(10);i>0;--i)
         {
@@ -109,6 +117,7 @@ Y_UTEST(core_linked)
     }
 
     {
+        std::cerr << "CxxList" << std::endl;
         CxxListOf<Node> list;
         for(size_t i=10+ran.leq(10);i>0;--i)
         {
@@ -125,6 +134,7 @@ Y_UTEST(core_linked)
     }
 
     {
+        std::cerr << "CloneableList..." << std::endl;
         ListOfCloneable<Node> list;
         for(size_t i=10+ran.leq(10);i>0;--i)
         {
@@ -140,6 +150,7 @@ Y_UTEST(core_linked)
     }
 
     {
+        std::cerr << "Merging..." << std::endl;
         CxxListOf<Node> lhs;
         CxxListOf<Node> rhs;
 
@@ -162,6 +173,19 @@ Y_UTEST(core_linked)
         }
 
     }
+
+    {
+        std::cerr << "Sorting..." << std::endl;
+        CxxListOf<Node> list;
+        for(size_t i=10+ran.leq(10);i>0;--i)
+        {
+            if( ran.choice() ) list.pushTail( new Node() ); else list.pushHead( new Node() );
+        }
+        std::cerr << list << std::endl;
+        list.sort(Node::Compare);
+        std::cerr << list << std::endl;
+    }
+
 
 
 
