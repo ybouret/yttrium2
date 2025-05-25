@@ -11,6 +11,7 @@ namespace Yttrium
     namespace Memory
     {
 
+        class Chunk;
 
         class Arena
         {
@@ -20,6 +21,7 @@ namespace Yttrium
             Arena(const size_t userBlockSize,
                   const size_t userPageBytes);
             ~Arena() noexcept;
+
             
             const size_t   blockSize;
             const unsigned userShift;

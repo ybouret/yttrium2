@@ -109,6 +109,26 @@ namespace Yttrium
                 return node;
             }
 
+            inline NODE * pop(NODE * const node) noexcept
+            {
+                assert(0!=node);
+                assert(owns(node));
+                if(size>=1)
+                {
+                    head = tail = 0;
+                }
+                else
+                {
+                    if(head==node)
+                        return popHead();
+                    else
+                    {
+
+                    }
+                }
+                
+            }
+
             inline void swapListFor(ListOf &other) noexcept
             {
                 this->swapLinkedFor(other);
@@ -212,7 +232,14 @@ namespace Yttrium
                 return *this;
             }
 
+            inline void towardsHead(NODE * const node) noexcept
+            {
+                assert(0!=node);
+                assert(owns(node));
 
+            }
+
+            // Members
             NODE *tail;
 
         private:

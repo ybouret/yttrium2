@@ -5,6 +5,7 @@
 #define Y_Memory_Allocator_Included 1
 
 #include "y/core/setup.hpp"
+#include <cassert>
 
 namespace Yttrium
 {
@@ -59,6 +60,22 @@ namespace Yttrium
              \param blockSize bytes, set to 0
              */
             void   release(void * & blockAddr, size_t & blockSize) noexcept;
+
+            template <typename T>
+            inline T * acquireAs(size_t & count,
+                                 size_t & bytes)
+            {
+                assert(0==bytes);
+                if(count>0)
+                {
+                    bytes = count * sizeof(T);
+                    T * const entry = static_cast<T *>(acquire(bytes)); assert(bytes>=count*sizeof(T));
+                    count = bytes/sizeof(T);
+                    return entry;
+                }
+                else
+                    return 0;
+            }
 
             //! display status
             /** \param os output stream */

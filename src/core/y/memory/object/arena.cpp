@@ -1,7 +1,8 @@
 
 #include "y/memory/object/arena.hpp"
-#include "y/system/exception.hpp"
+//#include "y/system/exception.hpp"
 #include "y/memory/object/chunk.hpp"
+#include "y/memory/allocator/dyadic.hpp"
 
 namespace Yttrium
 {
