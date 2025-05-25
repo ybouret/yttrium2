@@ -84,13 +84,17 @@ namespace Yttrium
 
             //! computed once per block-size
             /**
+             Return 2^dataShift that minimize the lost/data ratio
+             over MinNumBlocks and MaxNumBlocks,
+             - >= MinUserBytes
+             - <= pageBuyes
              \param blockSize object size
              \param pageBytes default bytes per page
              \return optimized bytes to allocate
              */
-            static size_t DataBytesFor(const size_t   blockSize,
+            static size_t UserBytesFor(const size_t   blockSize,
                                        const size_t   pageBytes,
-                                       unsigned      &dataShift) noexcept;
+                                       unsigned      &userhift) noexcept;
 
             //! check address is within
             /**

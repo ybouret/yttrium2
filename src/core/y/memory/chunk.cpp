@@ -71,9 +71,9 @@ namespace Yttrium
             };
         }
 
-        size_t Chunk:: DataBytesFor(const size_t blockSize,
+        size_t Chunk:: UserBytesFor(const size_t blockSize,
                                     const size_t pageBytes,
-                                    unsigned    &dataShift) noexcept
+                                    unsigned    &userShift) noexcept
         {
 
             assert(blockSize>0);
@@ -125,7 +125,7 @@ namespace Yttrium
                 break;
             }
 
-            dataShift = cms[0].userShift;
+            userShift = cms[0].userShift;
             return      cms[0].userBytes;
         }
 
