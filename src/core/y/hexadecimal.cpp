@@ -78,6 +78,7 @@ namespace Yttrium
     }
 
     Hexadecimal:: Hexadecimal(const Hexadecimal &other) noexcept :
+    LegacyString(),
     array()
     {
         memcpy(array,other.array,sizeof(array));

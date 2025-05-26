@@ -63,7 +63,9 @@ namespace Yttrium
          \param explanation for type of formatting
          */
         template <typename V> inline
-        Hexadecimal(const V &v, const Explanation explanation = Diffuse) : array()
+        Hexadecimal(const V &v, const Explanation explanation = Diffuse) :
+        LegacyString(),
+        array()
         {
             typedef typename UnsignedIntFor<V>::Result::Type U;
             union {
