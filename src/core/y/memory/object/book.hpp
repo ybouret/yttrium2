@@ -6,12 +6,20 @@
 
 #include "y/core/setup.hpp"
 
-namespace Ytrrium
+namespace Yttrium
 {
     namespace Memory
     {
         
+        class Book
+        {
+        public:
+            explicit Book() noexcept;
+            virtual ~Book() noexcept;
 
+        private:
+            Y_Disable_Copy_And_Assign(Book);
+        };
     }
 
 }

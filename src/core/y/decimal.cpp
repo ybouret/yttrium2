@@ -60,8 +60,7 @@ namespace Yttrium
             *(target++) = *(--source);
         }
 
-
-
+        
 
     }
 
