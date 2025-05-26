@@ -15,18 +15,15 @@ namespace Yttrium
         
         struct Page
         {
-            typedef Core::ListOf<Page> List;
             Page *next;
             Page *prev;
         };
 
-        class Pages : public Page::List
+        class Pages
         {
         public:
             static const char * const CallSign; //!< "Memory::Pages"
-
-
-
+            
             Pages(const unsigned userPageShift);
             virtual ~Pages() noexcept;
 
@@ -34,8 +31,13 @@ namespace Yttrium
 
             void *query();
             void  store(void * const addr) noexcept;
+            void  display(std::ostream &) const;
 
 
+        private:
+            Core::ListOf<Page> plist;
+
+        public:
             const unsigned shift;
             const size_t   bytes;
             Dyadic &       allocator;
@@ -43,7 +45,6 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(Pages);
 
-            static size_t ComputePageSize(const size_t requestedPageSize, unsigned &computedBlockShift);
         };
 
 

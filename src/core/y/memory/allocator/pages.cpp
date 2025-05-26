@@ -5,6 +5,8 @@
 #include "y/system/exception.hpp"
 #include "y/core/utils.hpp"
 
+#include <iomanip>
+
 namespace Yttrium
 {
     namespace Memory
@@ -20,7 +22,7 @@ namespace Yttrium
         }
 
         Pages:: Pages(const unsigned userShift) :
-        Page::List(),
+        plist(),
         shift( checkPageSizeShift(userShift) ),
         bytes( size_t(1) << shift ),
         allocator( Dyadic::Instance() )
@@ -34,21 +36,24 @@ namespace Yttrium
 
         void * Pages:: query()
         {
-            return (size>0) ? Stealth::Zero(popHead(),bytes) : allocator.acquireDyadic(shift);
+            return (plist.size>0) ? Stealth::Zero(plist.popHead(),bytes) : allocator.acquireDyadic(shift);
         }
 
         void Pages:: store(void * const addr) noexcept
         {
             assert(0!=addr);
-            pushHead( Stealth::CastZeroed<Page>(addr) );
+            plist.insertOderedByAddresses( Stealth::CastZeroed<Page>(addr) );
         }
 
-        size_t Pages:: ComputePageSize(const size_t requestedPageSize,
-                                       unsigned &   computedBlockShift)
+        void  Pages:: display(std::ostream &os) const
         {
-            if(requestedPageSize> Dyadic::MaxBlockBytes ) throw Specific::Exception(CallSign,"requestedPageSize overflow");
-            return NextPowerOfTwo( MaxOf(requestedPageSize,Dyadic::MinBlockBytes), computedBlockShift);
+            os << "\t<"
+            << CallSign
+            << " bytes=" << std::setw(8) << bytes
+            << " count=" << std::setw(8) << plist.size
+            << "/>" << std::endl;
         }
+
 
     }
 
