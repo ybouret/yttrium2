@@ -296,6 +296,22 @@ namespace Yttrium
                 return *this;
             }
 
+
+            //! insertion after a given node
+            inline NODE * insertAfter(NODE * const mine, NODE * const node) noexcept
+            {
+                assert(0!=mine); assert(owns(mine));
+                assert(0!=node); assert(isValid(node));
+                if(mine==tail) return pushTail(node);
+
+                assert(size>1);
+                NODE * const next = node->next = mine->next;
+                NODE * const prev = node->prev = next->prev;
+                next->prev = prev->next = node;
+                incr();
+                return node;
+            }
+
             inline void towardsHead(NODE * const node) noexcept
             {
                 assert(0!=node);

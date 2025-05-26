@@ -206,6 +206,19 @@ Y_UTEST(core_linked)
 
     }
 
+    {
+        std::cerr << "Insert After" << std::endl;
+        CxxListOf<Node> list;
+        list.pushHead( new Node() );
+        std::cerr << list << std::endl;
+        for(size_t i=10+ran.leq(10);i>0;--i)
+        {
+            list.insertAfter( list[ ran.in(list.size) ], new Node() );
+            std::cerr << list << std::endl;
+        }
+    }
+
+
 
 
 
