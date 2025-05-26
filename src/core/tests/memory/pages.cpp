@@ -1,7 +1,8 @@
-#include "y/memory/allocator/book/pages.hpp"
+#include "y/memory/object/book/pages.hpp"
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
 #include <cstring>
+#include "y/memory/allocator/dyadic.hpp"
 
 using namespace Yttrium;
 
@@ -36,23 +37,29 @@ namespace
 Y_UTEST(memory_pages)
 {
     System::Rand  ran;
-    Memory::Pages pages(10);
-    std::cerr << pages.bytes << " = 2^" << pages.shift << std::endl;
 
-    pages.display(std::cerr);
-
-    void *       addr[MaxSize];
-    size_t       size = 0;
-    for(size_t i=0;i<MaxSize;++i) addr[i] = 0;
-
-    fill(addr,size,pages);
-    for(size_t iter=0;iter<10;++iter)
+    for(unsigned shift=Memory::Dyadic::MinBlockShift;shift<=20;++shift)
     {
+        Memory::Pages pages(shift);
+        std::cerr << pages.bytes << " = 2^" << pages.shift << std::endl;
 
+        pages.display(std::cerr);
+
+        void *       addr[MaxSize];
+        size_t       size = 0;
+        for(size_t i=0;i<MaxSize;++i) addr[i] = 0;
+
+        fill(addr,size,pages);
+        for(size_t iter=0;iter<10;++iter)
+        {
+
+        }
+        empty(0,addr,size,pages,ran);
+
+        pages.display(std::cerr);
     }
-    empty(0,addr,size,pages,ran);
-    
-    pages.display(std::cerr);
+
+    Y_SIZEOF(Memory::Pages);
 
 }
 Y_UDONE()
