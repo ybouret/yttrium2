@@ -23,7 +23,8 @@ namespace Yttrium
             static const unsigned MinPageShift = Limits::MinDyadicBlockShift;
             static const unsigned MaxPageShift = Limits::MaxDyadicBlockShift;
             static const unsigned NumPageShift = 1+MaxPageShift - MinPageShift;
-
+            static const size_t   MinPageBytes = Limits::MinDyadicBlockBytes;
+            static const size_t   MaxPageBytes = Limits::MaxDyadicBlockBytes;
 
             virtual void release() noexcept;
 

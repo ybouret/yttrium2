@@ -12,6 +12,7 @@ namespace Yttrium
     {
 
         class Chunk;
+        class Book;
 
         class Arena
         {
@@ -22,11 +23,20 @@ namespace Yttrium
                   const size_t userPageBytes);
             ~Arena() noexcept;
 
-            
+        private:
+            Chunk * const  chunk;
+            size_t         count;
+            size_t         capacity;
+            size_t         memSpace;
+            unsigned       memShift;
+
+
+        public:
             const size_t   blockSize;
-            const unsigned userShift;
-            const uint8_t  numBlocks;
-            const size_t   userBytes;
+            const unsigned userShift; //!< metrics for Chunk userBytes = 2^userShift
+            const uint8_t  numBlocks; //!< metrics for Chunk constructor
+            const size_t   userBytes; //!< metrics for Chunk memory
+            Book          &book;      //!< memory manager
             
         private:
             Y_Disable_Copy_And_Assign(Arena);

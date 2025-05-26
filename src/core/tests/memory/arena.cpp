@@ -16,5 +16,10 @@ namespace
 
 Y_UTEST(memory_arena)
 {
+    Y_SIZEOF(Memory::Arena);
+
+    Memory::Arena arena(100,0);
+    
+
 }
 Y_UDONE()

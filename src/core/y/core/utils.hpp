@@ -58,7 +58,12 @@ namespace Yttrium
         return a < b ? a : b;
     }
 
-   
+
+    template <typename T> inline
+    T Clamp(const T a, const T b, const T c)
+    {
+        return MinOf( MaxOf(a,b), c );
+    }
 
 }
 
