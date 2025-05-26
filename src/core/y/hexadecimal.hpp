@@ -34,7 +34,7 @@ namespace Yttrium
         static const unsigned HeaderSize    = sizeof(Header);                                 //!< alias
         static const unsigned MaxOutputSize = HeaderSize + sizeof(uint64_t) * 2;              //!< alias
         static const unsigned RequiredChars = MaxOutputSize+1;                                //!< for final '\0';
-        static const unsigned InternalChars = Alignment::On<2>::CeilOf<RequiredChars>::Value; //!< alias
+        static const unsigned InternalChars = Alignment::On<4>::CeilOf<RequiredChars>::Value; //!< alias
 
         static const char     LowerChar[16];       //!< ['0'..'f']
         static const char     UpperChar[16];       //!< ['0'..'F']

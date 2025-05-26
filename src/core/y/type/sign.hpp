@@ -27,6 +27,14 @@ namespace Yttrium
         static bool         StriclyDecreasing(const SignType) noexcept; //!< check \return true for Positive
         static bool         LooselyDecreasing(const SignType) noexcept; //!< check \return true for Positive|__Zero__
 
+
+        //! natural sign
+        template <typename T> static inline
+        SignType Of(const T &value)
+        {
+            return value<0 ? Negative : (0<value ? Positive : __Zero__ );
+        }
+
         //! natural comparison
         /**
          \param lhs lhs
