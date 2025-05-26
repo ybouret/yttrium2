@@ -17,6 +17,7 @@ Y_CreateLibrary(y
     y/concurrent/singleton
     y/memory
     y/memory/allocator
+    y/memory/allocator/book
     y/memory/object
     y/utest
 )

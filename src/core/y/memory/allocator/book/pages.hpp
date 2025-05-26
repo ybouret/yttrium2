@@ -24,7 +24,8 @@ namespace Yttrium
         {
         public:
             static const char * const CallSign; //!< "Memory::Pages"
-            
+
+            //! tuned on dyadic
             Pages(const unsigned userPageShift);
             virtual ~Pages() noexcept;
 

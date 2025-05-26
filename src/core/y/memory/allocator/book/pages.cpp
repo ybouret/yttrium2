@@ -1,5 +1,5 @@
 
-#include "y/memory/allocator/pages.hpp"
+#include "y/memory/allocator/book/pages.hpp"
 #include "y/memory/allocator/dyadic.hpp"
 #include "y/check/static.hpp"
 #include "y/system/exception.hpp"
