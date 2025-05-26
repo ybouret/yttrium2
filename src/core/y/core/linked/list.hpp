@@ -11,10 +11,24 @@ namespace Yttrium
 {
     namespace Core
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! basic list operations
+        //
+        //
+        //______________________________________________________________________
         template <typename NODE>
         class ListOf : public Linked<NODE>
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
             using Linked<NODE>::head;
             using Linked<NODE>::incr;
             using Linked<NODE>::decr;
@@ -22,12 +36,31 @@ namespace Yttrium
             using Linked<NODE>::size;
             using Linked<NODE>::warning;
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup empty
             inline explicit ListOf() noexcept : Linked<NODE>(), tail(0) {}
+
+            //! cleanup, should be empty
             inline virtual ~ListOf() noexcept
             {
                 assert( (0==size && 0==head && 0==tail) || Die("list memory leak") );
             }
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! check standalone valid node
+            /**! \param node any node \return sanity of node **/
             inline bool isValid(const NODE * const node) const noexcept
             {
                 if(0==node)       return warning(LinkedInfo::NullNode);
@@ -37,6 +70,8 @@ namespace Yttrium
                 return true;
             }
 
+            //! push new node at tail of list
+            /** \param node a valid node \return node */
             inline NODE * pushTail(NODE * const node) noexcept
             {
                 assert( isValid(node) );
@@ -52,6 +87,8 @@ namespace Yttrium
                 return node;
             }
 
+            //! push new node at head of list
+            /** \param node a valid node \return node */
             inline NODE * pushHead(NODE * const node) noexcept
             {
                 assert( isValid(node) );
@@ -67,6 +104,8 @@ namespace Yttrium
                 return node;
             }
 
+            //! remove tail node
+            /** \return unlinked tail */
             inline NODE * popTail() noexcept
             {
                 assert(size>0);
@@ -88,6 +127,8 @@ namespace Yttrium
                 return node;
             }
 
+            //! remove head node
+            /** \return unlinked head */
             inline NODE * popHead() noexcept
             {
                 assert(size>0);
@@ -109,6 +150,8 @@ namespace Yttrium
                 return node;
             }
 
+            //! remove any node
+            /** \param node a node of the list \return unlinked node */
             inline NODE * pop(NODE * const node) noexcept
             {
                 assert(0!=node);
@@ -127,12 +170,19 @@ namespace Yttrium
                 return node;
             }
 
+            //! no-throw swap list content
+            /** \param other another list */
             inline void swapListFor(ListOf &other) noexcept
             {
                 this->swapLinkedFor(other);
                 CoerceSwap(tail,other.tail);
             }
 
+            //! split list into two halves
+            /**
+             \param lhs accepts first part
+             \param rhs accepts second part
+             */
             template <typename LIST>inline
             void split(LIST &lhs, LIST &rhs) noexcept
             {
@@ -153,6 +203,13 @@ namespace Yttrium
                 assert(lhs.size+rhs.size==oldSize);
             }
 
+
+            //! fusion of two sorted list
+            /**
+             \param lhs first sorted list
+             \param rhs second sorted list
+             \param compareNodes comparison function
+             */
             template <typename LIST, typename COMPARE_NODES> inline
             void fusion(LIST &lhs, LIST &rhs, COMPARE_NODES &compareNodes) noexcept
             {
@@ -177,6 +234,10 @@ namespace Yttrium
                 assert(this->isOrderedBy(compareNodes,Sign::LooselyIncreasing));
             }
 
+            //! recursive merge sort
+            /**
+             \param compareNodes comparison function
+             */
             template <typename COMPARE_NODES> inline
             void sort(COMPARE_NODES &compareNodes) noexcept
             {
@@ -189,6 +250,11 @@ namespace Yttrium
                 }
             }
 
+            //! merging a list to tail
+            /**
+             \param other list to be merged, emptied
+             \return self+other
+             */
             template <typename LIST>
             inline ListOf & mergeTail(LIST &other) noexcept
             {
@@ -237,8 +303,13 @@ namespace Yttrium
 
             }
 
+            //__________________________________________________________________
+            //
+            //
             // Members
-            NODE *tail;
+            //
+            //__________________________________________________________________
+            NODE *tail; //!< tail (sentinel) node
 
         private:
             Y_Disable_Copy_And_Assign(ListOf); //!< discarding

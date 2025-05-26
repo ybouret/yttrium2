@@ -21,11 +21,11 @@ namespace Yttrium
     //! operations on signs
     struct Sign
     {
-        static const char * HumanReadable(const SignType)     noexcept;
-        static bool         StriclyIncreasing(const SignType) noexcept;
-        static bool         LooselyIncreasing(const SignType) noexcept;
-        static bool         StriclyDecreasing(const SignType) noexcept;
-        static bool         LooselyDecreasing(const SignType) noexcept;
+        static const char * HumanReadable(const SignType)     noexcept; //!< named value \return C string
+        static bool         StriclyIncreasing(const SignType) noexcept; //!< check \return true for Negative
+        static bool         LooselyIncreasing(const SignType) noexcept; //!< check \return true for Negative|__Zero__
+        static bool         StriclyDecreasing(const SignType) noexcept; //!< check \return true for Positive
+        static bool         LooselyDecreasing(const SignType) noexcept; //!< check \return true for Positive|__Zero__
 
         //! natural comparison
         /**

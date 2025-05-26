@@ -47,7 +47,7 @@ namespace Yttrium
             size_t leq(const size_t n) noexcept;
 
             //! uniform [1..n]
-            /** \param n>0 \return [1:n] */
+            /** \param n positive value \return [1:n] */
             size_t in(const size_t n) noexcept;
 
 
