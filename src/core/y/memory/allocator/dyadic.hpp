@@ -8,6 +8,7 @@
 #include "y/calculus/base2.hpp"
 #include "y/calculus/integer-log2.hpp"
 #include "y/memory/allocator.hpp"
+#include "y/memory/limits.hpp"
 #include "y/singleton.hpp"
 #include "y/concurrent/life-time.hpp"
 
@@ -36,7 +37,7 @@ namespace Yttrium
             //__________________________________________________________________
             static const char * const CallSign; //!< "Memory::Dyadic"
             static const Longevity    LifeTime      = LifeTimeOf:: DyadicMemory;         //!< lifetime
-            static const size_t       MinBlockBytes = 128;                               //!< for Chunk with blockSize=1
+            static const size_t       MinBlockBytes = Limits::MinBlockBytes;             //!< for Chunk with blockSize=1
             static const unsigned     MinBlockShift = IntegerLog2<MinBlockBytes>::Value; //!< alias
             static const unsigned     MaxBlockShift = Base2<size_t>::MaxShift;           //!< alias
             static const size_t       MaxBlockBytes = Base2<size_t>::MaxValue;           //!< alias

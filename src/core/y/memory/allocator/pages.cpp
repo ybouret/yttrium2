@@ -12,10 +12,17 @@ namespace Yttrium
         const char * const Pages:: CallSign = "Memory::Pages";
 
 
-        Pages:: Pages(const size_t requestedPageSize) :
+        static unsigned checkPageSizeShift(const unsigned userShift)
+        {
+            if(userShift< Dyadic::MinBlockShift||userShift>Dyadic::MaxBlockShift)
+                throw Specific::Exception(Pages::CallSign,"page shift not in [%u:%u]", Dyadic::MinBlockShift,Dyadic::MaxBlockShift);
+            return userShift;
+        }
+
+        Pages:: Pages(const unsigned userShift) :
         Page::List(),
-        sizeShift(0),
-        sizeValue( ComputePageSize(requestedPageSize, Coerce(sizeShift)) ),
+        shift( checkPageSizeShift(userShift) ),
+        bytes( size_t(1) << shift ),
         allocator( Dyadic::Instance() )
         {
             Y_STATIC_CHECK(Dyadic::MinBlockBytes>=sizeof(Page),BadDyadicMetrics);
@@ -27,7 +34,7 @@ namespace Yttrium
 
         void * Pages:: query()
         {
-            return (size>0) ? Stealth::Zero(popHead(),sizeValue) : allocator.acquireDyadic(sizeShift);
+            return (size>0) ? Stealth::Zero(popHead(),bytes) : allocator.acquireDyadic(shift);
         }
 
         void Pages:: store(void * const addr) noexcept

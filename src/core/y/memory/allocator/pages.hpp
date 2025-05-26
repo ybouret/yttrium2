@@ -27,17 +27,17 @@ namespace Yttrium
 
 
 
-            Pages(const size_t requestedPageSize);
+            Pages(const unsigned userPageShift);
             virtual ~Pages() noexcept;
 
 
 
             void *query();
-            void store(void * const addr) noexcept;
+            void  store(void * const addr) noexcept;
 
 
-            const unsigned sizeShift;
-            const size_t   sizeValue;
+            const unsigned shift;
+            const size_t   bytes;
             Dyadic &       allocator;
 
         private:

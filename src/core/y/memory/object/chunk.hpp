@@ -5,6 +5,7 @@
 #define Y_Memory_Chunk_Included 1
 
 #include "y/memory/ownership.hpp"
+#include "y/memory/limits.hpp"
 
 namespace Yttrium
 {
@@ -27,10 +28,10 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            static const unsigned MinNumBlocks = 0x04;   //!< minimal number of blocks per chunk
-            static const unsigned MaxNumBlocks = 0xff;   //!< maximum number of blocks per chunk
-            static const size_t   MinUserBytes = 128;    //!< allows perfect match of 1-byte blocks
-
+            static const unsigned MinNumBlocks = 0x04;                  //!< minimal number of blocks per chunk
+            static const unsigned MaxNumBlocks = 0xff;                  //!< maximum number of blocks per chunk
+            static const size_t   MinUserBytes = Limits::MinBlockBytes; //!< allows perfect match of 1-byte blocks
+            
             //__________________________________________________________________
             //
             //
@@ -84,18 +85,19 @@ namespace Yttrium
 
             //! computed once per block-size
             /**
-             Return 2^dataShift that minimize the lost/data ratio
+             Return 2^userShift that minimize the lost/data ratio
              over MinNumBlocks and MaxNumBlocks,
              - >= MinUserBytes
              - <= pageBytes
              \param blockSize object size
              \param pageBytes default bytes per page
-             \oaram numBlocks optimized numBlocks of blockSize
+             \param userShift log2 of returned value
+             \param numBlocks optimized numBlocks of blockSize
              \return optimized bytes to allocate
              */
             static size_t UserBytesFor(const size_t   blockSize,
                                        const size_t   pageBytes,
-                                       unsigned      &userhift,
+                                       unsigned      &userShift,
                                        uint8_t       &numBlocks) noexcept;
 
             //! check address is within
@@ -118,12 +120,12 @@ namespace Yttrium
             // Members
             //
             //__________________________________________________________________
-            uint8_t * const       data;       //!< base address
-            const uint8_t * const last;       //!< first invalid address
-            uint8_t               firstBlock; //!< first available block
-            uint8_t               freeBlocks; //!< number of free blocks
-            const uint8_t         userBlocks; //!< initial number of blocks
-            const uint8_t         memoryVoid[2*sizeof(void*)-3];
+            uint8_t * const       data;                          //!< base address
+            const uint8_t * const last;                          //!< first invalid address
+            uint8_t               firstBlock;                    //!< first available block
+            uint8_t               freeBlocks;                    //!< number of free blocks
+            const uint8_t         userBlocks;                    //!< initial number of blocks
+            const uint8_t         memoryVoid[2*sizeof(void*)-3]; //!< power of two alignment
 
         private:
             Y_Disable_Copy_And_Assign(Chunk); //!< discarding

@@ -6,8 +6,8 @@ using namespace Yttrium;
 
 Y_UTEST(memory_pages)
 {
-    Memory::Pages pages(1000);
-    std::cerr << pages.sizeValue << " = 2^" << pages.sizeShift << std::endl;
+    Memory::Pages pages(10);
+    std::cerr << pages.bytes << " = 2^" << pages.shift << std::endl;
 
 }
 Y_UDONE()

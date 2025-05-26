@@ -4,6 +4,7 @@
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
 #include "y/check/usual.hpp"
+#include "y/calculus/base2.hpp"
 
 #include <cstring>
 
@@ -84,7 +85,7 @@ Y_UTEST(memory_chunk)
 
 
     Y_SIZEOF(Memory::Chunk);
-
+    Y_CHECK(IsPowerOfTwo( sizeof(Memory::Chunk)) );
 }
 Y_UDONE()
 
