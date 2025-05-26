@@ -353,6 +353,7 @@ namespace Yttrium
                             case Positive:
                                 break;
                         }
+                        // FALLTHRU
                     case 0:
                         return pushTail(node);
                     default:
