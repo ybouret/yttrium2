@@ -10,10 +10,10 @@ namespace Yttrium
 {
     namespace Memory
     {
-
+        //! Common static limits
         struct Limits
         {
-            static const size_t MinBlockBytes = 128;
+            static const size_t MinBlockBytes = 128; //!< for Object::Chunk and Pages
         };
     }
 

@@ -14,7 +14,11 @@ namespace Yttrium
         //
         //
         //! GCD(a>0,b>0)
-        //
+        /**
+         \param a positive value
+         \param b positive value
+         \return Euclid's algorithm for gcd
+         */
         //______________________________________________________________________
         template <typename T> inline
         T GreatestCommonDivisor(T a, T b) noexcept
@@ -43,7 +47,11 @@ namespace Yttrium
     //
     //
     //! GCD of integral types
-    //
+    /**
+     \param a any value
+     \param b any value
+     \return gcd of a,b
+     */
     //__________________________________________________________________________
     template <typename T> inline
     T GreatestCommonDivisor(const T a, const T b) noexcept
@@ -74,6 +82,11 @@ namespace Yttrium
         }
     }
 
+    //! simplification of  (a,b) by their gcd
+    /**
+     \param a any value
+     \param b any value
+     */
     template <typename T> inline
     void SimplifyByGCD(T &a, T &b) noexcept
     {

@@ -10,6 +10,7 @@
 Y_UTEST_DECL(32)
 {
     Y_UTEST(exception);
+    Y_UTEST(hexadecimal);
     Y_UTEST(singleton);
 
     Y_UTEST(core_variadic);

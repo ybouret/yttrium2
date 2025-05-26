@@ -23,7 +23,7 @@ namespace Yttrium
         class Pages : public Page::List
         {
         public:
-            static const char * const CallSign;
+            static const char * const CallSign; //!< "Memory::Pages"
 
 
 

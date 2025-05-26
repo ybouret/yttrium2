@@ -18,6 +18,7 @@ enable_testing()
 Y_Message("Preparing ${Y_Test}")
 
 Y_UTEST(exception)
+Y_UTEST(hexadecimal)
 Y_UTEST(singleton)
 
 # core
