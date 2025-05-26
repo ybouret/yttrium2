@@ -218,6 +218,36 @@ Y_UTEST(core_linked)
         }
     }
 
+    {
+        std::cerr << "Insert Before" << std::endl;
+        CxxListOf<Node> list;
+        list.pushHead( new Node() );
+        std::cerr << list << std::endl;
+        for(size_t i=10+ran.leq(10);i>0;--i)
+        {
+            list.insertBefore( list[ ran.in(list.size) ], new Node() );
+            std::cerr << list << std::endl;
+        }
+    }
+
+    {
+        std::cerr << "Towards Head" << std::endl;
+        for(size_t n=1;n<=10;++n)
+        {
+            CxxListOf<Node> list;
+            for(size_t i=n;i>0;--i)
+            {
+                list.pushTail( new Node() );
+            }
+            Y_ASSERT(n==list.size);
+            std::cerr << list << std::endl;
+            for(size_t i=1;i<=n;++i)
+            {
+                list.towardsHead( list[i] );
+                std::cerr << "\t" << list << std::endl;
+            }
+        }
+    }
 
 
 

@@ -312,11 +312,30 @@ namespace Yttrium
                 return node;
             }
 
-            inline void towardsHead(NODE * const node) noexcept
+            inline NODE * insertBefore(NODE * const mine, NODE * const node) noexcept
+            {
+                assert(0!=mine); assert(owns(mine));
+                assert(0!=node); assert(isValid(node));
+                if(mine==head) return pushHead(node);
+
+                assert(size>1);
+                NODE * const prev = node->prev = mine->prev;
+                NODE * const next = node->next = prev->next;
+                prev->next = next->prev = node;
+                incr();
+                return node;
+            }
+
+
+
+
+            inline NODE * towardsHead(NODE * const node) noexcept
             {
                 assert(0!=node);
                 assert(owns(node));
-
+                NODE * const prev = node->prev;
+                if(0!=prev) insertBefore(prev,pop(node));
+                return node;
             }
 
             //__________________________________________________________________
