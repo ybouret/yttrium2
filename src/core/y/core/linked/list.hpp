@@ -328,7 +328,6 @@ namespace Yttrium
 
 
 
-
             inline NODE * towardsHead(NODE * const node) noexcept
             {
                 assert(0!=node);
@@ -337,6 +336,81 @@ namespace Yttrium
                 if(0!=prev) insertBefore(prev,pop(node));
                 return node;
             }
+
+            template <typename COMPARE_NODES> inline
+            NODE * insertOrderedBy(COMPARE_NODES &compareNodes, NODE * const node) noexcept
+            {
+                assert(this->isOrderedBy(compareNodes,Sign::LooselyIncreasing));
+                assert(isValid(node));
+
+                switch(size)
+                {
+                    case 1:
+                        switch( compareNodes(node,head) )
+                        {
+                            case Negative:
+                            case __Zero__: return pushHead(node);
+                            case Positive:
+                                break;
+                        }
+                    case 0:
+                        return pushTail(node);
+                    default:
+                        break;
+                }
+
+                assert(size>=2); assert(head!=tail);
+
+                NODE * lower = head;
+                switch( compareNodes(node,lower) )
+                {
+                    case Negative:
+                    case __Zero__:
+                        return pushHead(node);
+                    case Positive:
+                        break;
+                }
+
+                NODE * const upper = tail;
+                switch( compareNodes(node,upper) )
+                {
+                    case Positive:
+                    case __Zero__:
+                        return pushTail(node);
+                    case Negative:
+                        break;
+                }
+
+            PROBE:
+                {
+                    NODE * const probe = lower->next;
+                    if(upper==probe)
+                        goto INSERT_AFTER_LOWER;
+
+                    switch( compareNodes(node,probe) )
+                    {
+                        case Negative:
+                        case __Zero__: goto INSERT_AFTER_LOWER;
+                        case Positive: lower=probe; goto PROBE;
+                    }
+                }
+
+            INSERT_AFTER_LOWER:
+                return insertAfter(lower,node);
+            }
+
+            static inline SignType CompareAddresses(const NODE * const lhs,
+                                                        const NODE * const rhs) noexcept
+            {
+                return Sign::Of(lhs,rhs);
+            }
+            
+            inline NODE * insertOderedByAddresses(NODE * const node) noexcept
+            {
+                return insertOrderedBy(CompareAddresses,node);
+            }
+
+
 
             //__________________________________________________________________
             //
@@ -348,6 +422,9 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(ListOf); //!< discarding
+
+
+
 
             inline virtual const NODE * doFetch(size_t nodeIndex) const noexcept
             {

@@ -250,6 +250,22 @@ Y_UTEST(core_linked)
     }
 
 
+    {
+        std::cerr << "By addresses" << std::endl;
+        CxxListOf<Node> list;
+        for(size_t i=10+ran.leq(10);i>0;--i)
+        {
+            if( ran.choice() ) list.pushTail( new Node() ); else list.pushHead( new Node() );
+        }
+
+        CxxListOf<Node> target;
+        while(list.size) {
+            target.insertOderedByAddresses( list.popHead() );
+            std::cerr << target << std::endl;
+            Y_ASSERT( target.isOrderedBy( CxxListOf<Node>::CompareAddresses, Sign::StriclyIncreasing );)
+        }
+
+    }
 
 
 }
