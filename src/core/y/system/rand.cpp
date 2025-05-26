@@ -90,6 +90,13 @@ namespace Yttrium
             return static_cast<size_t>( floor( double(n) * to<double>() + 0.5 ) );
         }
 
+        size_t Rand:: in(const size_t n) noexcept
+        {
+            assert(n>0);
+            return 1 + leq(n-1);
+        }
+
+
         void Rand:: shuffle(void * const blockAddr,
                             const size_t numBlocks,
                             const size_t blockSize) noexcept

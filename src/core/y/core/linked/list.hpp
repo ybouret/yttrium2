@@ -113,20 +113,18 @@ namespace Yttrium
             {
                 assert(0!=node);
                 assert(owns(node));
-                if(size>=1)
-                {
-                    head = tail = 0;
-                }
-                else
-                {
-                    if(head==node)
-                        return popHead();
-                    else
-                    {
-
-                    }
-                }
-                
+                if(head==node) return popHead();
+                if(tail==node) return popTail();
+                assert(size>=3);
+                NODE * const next = node->next; assert(0!=next);
+                NODE * const prev = node->prev; assert(0!=prev);
+                prev->next = next;
+                next->prev = prev;
+                node->prev = 0 ;
+                node->next = 0;
+                decr();
+                assert(isValid(node));
+                return node;
             }
 
             inline void swapListFor(ListOf &other) noexcept

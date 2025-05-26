@@ -46,6 +46,10 @@ namespace Yttrium
             /** \param n any integer \return [0:n] */
             size_t leq(const size_t n) noexcept;
 
+            //! uniform [1..n]
+            /** \param n>0 \return [1:n] */
+            size_t in(const size_t n) noexcept;
+
 
             //! half probability
             /** \return true with proba=0.5 */

@@ -186,6 +186,26 @@ Y_UTEST(core_linked)
         std::cerr << list << std::endl;
     }
 
+    {
+        std::cerr << "Pop" << std::endl;
+        CxxListOf<Node> list;
+        for(size_t i=10+ran.leq(10);i>0;--i)
+        {
+            if( ran.choice() ) list.pushTail( new Node() ); else list.pushHead( new Node() );
+        }
+        std::cerr << list << std::endl;
+        delete list.pop( list.head );
+        std::cerr << list << std::endl;
+        delete list.pop( list.tail );
+        std::cerr << list << std::endl;
+        while( list.size > 0 )
+        {
+            delete list.pop( list[ ran.in(list.size) ] );
+            std::cerr << list << std::endl;
+        }
+
+    }
+
 
 
 
