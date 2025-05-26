@@ -29,7 +29,7 @@ namespace Yttrium
         static const unsigned Bits       = Size << 3;                        //!< bit count
         static const bool     SignedType = IsSigned<T>::Value;               //!< alias
         static const unsigned MaxShift   = SignedType ? (Bits-2) : (Bits-1); //!< max shift
-        static const Type     MaxValue   = One << MaxShift;                  //!< max value
+        static const Type     MaxBytes   = One << MaxShift;                  //!< max value
 
         //! compute log2 of an exact power of two
         /**
@@ -61,7 +61,7 @@ namespace Yttrium
     template <typename T>
     inline T NextPowerOfTwo(const T x) noexcept
     {
-        assert( x <= Base2<T>::MaxValue );
+        assert( x <= Base2<T>::MaxBytes );
         T n = Base2<T>::One;
         while(n<x) n <<= 0x1;
         return n;
@@ -76,7 +76,7 @@ namespace Yttrium
     template <typename T>
     inline T NextPowerOfTwo(const T x, unsigned &p) noexcept
     {
-        assert( x <= Base2<T>::MaxValue );
+        assert( x <= Base2<T>::MaxBytes );
         T n = Base2<T>::One;
         p   = 0;
         while(n<x)

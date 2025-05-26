@@ -23,8 +23,8 @@ namespace
 
         for(size_t iter=0;iter<1000;++iter)
         {
-            const T x = static_cast<T>(ran.to<T>() % ( Base2<T>::MaxValue+1 ));
-            Y_ASSERT(x<=Base2<T>::MaxValue);
+            const T x = static_cast<T>(ran.to<T>() % ( Base2<T>::MaxBytes+1 ));
+            Y_ASSERT(x<=Base2<T>::MaxBytes);
             const T n = NextPowerOfTwo(x);
             Y_ASSERT(n>=x);
             Y_ASSERT(IsPowerOfTwo(n));
@@ -35,17 +35,17 @@ namespace
 
 Y_UTEST(calculus_base2)
 {
-    Y_PRINTV( uint64_t(Base2<uint8_t>::MaxValue) );
-    Y_PRINTV( int64_t(Base2<int8_t>::MaxValue)   );
+    Y_PRINTV( uint64_t(Base2<uint8_t>::MaxBytes) );
+    Y_PRINTV( int64_t(Base2<int8_t>::MaxBytes)   );
 
-    Y_PRINTV(Base2<uint16_t>::MaxValue);
-    Y_PRINTV(Base2<int16_t>::MaxValue);
+    Y_PRINTV(Base2<uint16_t>::MaxBytes);
+    Y_PRINTV(Base2<int16_t>::MaxBytes);
 
-    Y_PRINTV(Base2<uint32_t>::MaxValue);
-    Y_PRINTV(Base2<int32_t>::MaxValue);
+    Y_PRINTV(Base2<uint32_t>::MaxBytes);
+    Y_PRINTV(Base2<int32_t>::MaxBytes);
 
-    Y_PRINTV(Base2<uint64_t>::MaxValue);
-    Y_PRINTV(Base2<int64_t>::MaxValue);
+    Y_PRINTV(Base2<uint64_t>::MaxBytes);
+    Y_PRINTV(Base2<int64_t>::MaxBytes);
 
     System::Rand ran;
 
