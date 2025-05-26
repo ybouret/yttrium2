@@ -17,7 +17,7 @@ Y_UTEST(memory_pages)
     memset(addr,0,sizeof(addr));
 
     addr[0] = pages.query();
-    
+
 
 
 

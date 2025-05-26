@@ -36,6 +36,15 @@ namespace Yttrium
 
         Dyadic:: ~Dyadic() noexcept
         {
+            for(unsigned shift=MinBlockShift;shift<=MaxBlockShift;++shift)
+            {
+                const size_t &n = allocated[shift]; if(n<=0) continue;
+                std::cerr << "*** " << CallSign 
+                << " missing |2^"
+                << std::setw(2) << shift
+                << "| = |" << std::setw(6) << (Base2<size_t>::One<<shift) << "| = "
+                << n << std::endl;
+            }
             clear();
         }
 
