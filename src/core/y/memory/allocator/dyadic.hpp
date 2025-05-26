@@ -5,10 +5,8 @@
 #ifndef Y_Memory_Dyadic_Included
 #define Y_Memory_Dyadic_Included 1
 
-#include "y/calculus/base2.hpp"
-#include "y/calculus/integer-log2.hpp"
-#include "y/memory/allocator.hpp"
 #include "y/memory/limits.hpp"
+#include "y/memory/allocator.hpp"
 #include "y/singleton.hpp"
 #include "y/concurrent/life-time.hpp"
 
@@ -37,10 +35,10 @@ namespace Yttrium
             //__________________________________________________________________
             static const char * const CallSign; //!< "Memory::Dyadic"
             static const Longevity    LifeTime      = LifeTimeOf:: DyadicMemory;         //!< lifetime
-            static const size_t       MinBlockBytes = Limits::MinBlockBytes;             //!< for Chunk with blockSize=1
-            static const unsigned     MinBlockShift = IntegerLog2<MinBlockBytes>::Value; //!< alias
-            static const unsigned     MaxBlockShift = Base2<size_t>::MaxShift;           //!< alias
-            static const size_t       MaxBlockBytes = Base2<size_t>::MaxValue;           //!< alias
+            static const size_t       MinBlockBytes = Limits::MinDyadicBlockBytes;       //!< for Chunk with blockSize=1
+            static const unsigned     MinBlockShift = Limits::MinDyadicBlockShift;       //!< alias
+            static const unsigned     MaxBlockShift = Limits::MaxDyadicBlockShift;       //!< alias
+            static const size_t       MaxBlockBytes = Limits::MaxDyadicBlockBytes;       //!< alias
             static const size_t       ShiftCount    = 1+MaxBlockShift - MinBlockShift;   //!< alias
             
             //__________________________________________________________________

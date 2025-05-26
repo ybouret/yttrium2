@@ -4,10 +4,9 @@
 #ifndef Y_Type_Ints_Included
 #define Y_Type_Ints_Included 1
 
-#include "y/system/compiler.hpp"
+#include "y/calculus/integer-log2.hpp"
 #include "y/type/list.hpp"
 #include "y/type/pick.hpp"
-#include "y/calculus/integer-log2.hpp"
 
 namespace Yttrium
 {

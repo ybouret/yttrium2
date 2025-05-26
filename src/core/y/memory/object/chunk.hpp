@@ -28,10 +28,10 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            static const unsigned MinNumBlocks = 0x04;                  //!< minimal number of blocks per chunk
-            static const unsigned MaxNumBlocks = 0xff;                  //!< maximum number of blocks per chunk
-            static const size_t   MinUserBytes = Limits::MinBlockBytes; //!< allows perfect match of 1-byte blocks
-            
+            static const unsigned MinNumBlocks = 0x04;                        //!< minimal number of blocks per chunk
+            static const unsigned MaxNumBlocks = 0xff;                        //!< maximum number of blocks per chunk
+            static const size_t   MinUserBytes = Limits::MinDyadicBlockBytes; //!< allows perfect match of 1-byte blocks
+
             //__________________________________________________________________
             //
             //

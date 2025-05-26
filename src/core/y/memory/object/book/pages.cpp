@@ -43,6 +43,8 @@ namespace Yttrium
         }
 
 
+        size_t Pages:: count() const noexcept { return plist.size; }
+
         void Pages:: release() noexcept
         {
             release_();
@@ -59,6 +61,14 @@ namespace Yttrium
             plist.insertOderedByAddresses( Stealth::CastZeroed<Page>(addr) );
             assert(plist.isOrderedBy( plist.CompareAddresses, Sign::StriclyIncreasing ) );
         }
+
+        void Pages:: cache(size_t numPages)
+        {
+            while(numPages-- > 0) store( allocator.acquireDyadic(shift) );
+        }
+
+
+
 
         void  Pages:: display(std::ostream &os) const
         {

@@ -4,7 +4,7 @@
 #ifndef Y_Memory_Limits_Included
 #define Y_Memory_Limits_Included 1
 
-#include "y/system/compiler.hpp"
+#include "y/calculus/base2.hpp"
 
 namespace Yttrium
 {
@@ -13,7 +13,10 @@ namespace Yttrium
         //! Common static limits
         struct Limits
         {
-            static const size_t MinBlockBytes = 128; //!< for Object::Chunk and Pages
+            static const size_t   MinDyadicBlockBytes = 128; //!< for Object::Chunk and Pages
+            static const unsigned MinDyadicBlockShift = IntegerLog2<MinDyadicBlockBytes>::Value; //!< log2(MinBlockBytes)
+            static const size_t   MaxDyadicBlockBytes = Base2<size_t>::MaxValue;     //!< largest power of two
+            static const unsigned MaxDyadicBlockShift = Base2<size_t>::MaxShift;     //!< largest power of two exponent
         };
     }
 

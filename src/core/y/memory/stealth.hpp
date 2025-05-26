@@ -80,12 +80,16 @@ namespace Yttrium
             }
 
             //! alias and cast a zeroed block
-            /** \param address \return casted address with zeroed bytes */
+            /**
+             \param address base address
+             \return casted address with zeroed bytes
+             */
             template <typename T>
             static inline T *CastZeroed(void * const address) noexcept
             {
                 return static_cast<T *>(Zero(address,sizeof(T)));
             }
+            
 
         };
     }

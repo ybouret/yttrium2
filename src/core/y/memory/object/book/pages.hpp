@@ -30,9 +30,10 @@ namespace Yttrium
             virtual ~Pages() noexcept;
 
 
-
             void *       query();
             void         store(void * const addr) noexcept;
+            void         cache(size_t numPages);
+            size_t       count() const noexcept;
             void         display(std::ostream &) const;
             virtual void release() noexcept;
 
