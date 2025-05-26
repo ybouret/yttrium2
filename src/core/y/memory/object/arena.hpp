@@ -25,6 +25,7 @@ namespace Yttrium
 
             void  * acquire();
 
+            bool    isValid() const noexcept;
 
         private:
             size_t         available; //!< available blocks

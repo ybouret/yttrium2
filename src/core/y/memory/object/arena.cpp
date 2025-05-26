@@ -149,11 +149,21 @@ namespace Yttrium
         void Arena:: newChunkRequired()
         {
             assert(0==available);
+            assert(0!=acquiring);
+            assert(0!=releasing);
             if(count<capacity)
             {
                 acquiring = makeInPlaceChunk(chunk+count);
                 ++count;
                 available += numBlocks;
+                bool moved = false;
+                while(acquiring>chunk && acquiring[0].data < acquiring[-1].data)
+                {
+                    Memory::Stealth::Swap(acquiring, acquiring-1, sizeof(Chunk) );
+                    --acquiring;
+                    moved = true;
+                }
+                if(moved && releasing>acquiring) releasing = acquiring;
             }
             else
             {
