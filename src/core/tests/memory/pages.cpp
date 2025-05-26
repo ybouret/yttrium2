@@ -7,7 +7,7 @@ using namespace Yttrium;
 
 namespace
 {
-    static const size_t MaxSize = 10;
+    static const size_t MaxSize = 100;
 
     static inline void fill(void *addr[], size_t &size, Memory::Pages &pages)
     {
@@ -46,6 +46,10 @@ Y_UTEST(memory_pages)
     for(size_t i=0;i<MaxSize;++i) addr[i] = 0;
 
     fill(addr,size,pages);
+    for(size_t iter=0;iter<10;++iter)
+    {
+
+    }
     empty(0,addr,size,pages,ran);
     
     pages.display(std::cerr);
