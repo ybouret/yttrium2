@@ -30,8 +30,22 @@ namespace Yttrium
             Y_STATIC_CHECK(Dyadic::MinBlockBytes>=sizeof(Page),BadDyadicMetrics);
         }
 
+
+        void Pages:: release_() noexcept
+        {
+            while(plist.size>0)
+                allocator.releaseDyadic(Stealth::Zero(plist.popTail(),bytes),shift);
+        }
+
         Pages:: ~Pages() noexcept
         {
+            release_();
+        }
+
+
+        void Pages:: release() noexcept
+        {
+            release_();
         }
 
         void * Pages:: query()
@@ -43,6 +57,7 @@ namespace Yttrium
         {
             assert(0!=addr);
             plist.insertOderedByAddresses( Stealth::CastZeroed<Page>(addr) );
+            assert(plist.isOrderedBy( plist.CompareAddresses, Sign::StriclyIncreasing ) );
         }
 
         void  Pages:: display(std::ostream &os) const

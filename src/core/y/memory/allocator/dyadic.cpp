@@ -105,6 +105,19 @@ namespace Yttrium
             return blockAddr;
         }
 
+        void  Dyadic:: releaseDyadic(void *const blockAddr, const unsigned int blockShift) noexcept
+        {
+            assert(0 != blockAddr);
+            assert(blockShift<=MaxBlockShift);
+            assert(blockShift>=MinBlockShift);
+            assert( allocated[blockShift] > 0 || Die("corrupted release") );
+
+
+            Y_Lock(access);
+            --Coerce(allocated[blockShift]);
+            free(blockAddr);
+        }
+
     }
 
 }

@@ -78,6 +78,18 @@ namespace Yttrium
             return *Instance_;
         }
 
+        static inline bool Exists() noexcept
+        {
+            Y_Giant_Lock();
+            return 0 != Instance_;
+        }
+
+        static inline T & Location() noexcept
+        {
+            assert(0!=Instance_);
+            return *Instance_;
+        }
+
         //______________________________________________________________________
         //
         //

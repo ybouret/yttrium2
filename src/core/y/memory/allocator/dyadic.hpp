@@ -58,6 +58,13 @@ namespace Yttrium
              */
             void *       acquireDyadic(const unsigned blockShift);
 
+            //! release a power-of-two sized block
+            /*/
+             \para, blockAddr  previously acquired block
+             \param blockShift with 2^blockShift bytes
+             */
+            void releaseDyadic(void * const blockAddr, const unsigned blockShift) noexcept;
+
             //__________________________________________________________________
             //
             //

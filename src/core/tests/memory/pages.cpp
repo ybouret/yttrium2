@@ -18,6 +18,7 @@ Y_UTEST(memory_pages)
 
     addr[0] = pages.query();
 
+    pages.store( addr[0] );
 
 
 

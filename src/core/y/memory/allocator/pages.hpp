@@ -6,6 +6,7 @@
 
 #include "y/core/linked/list.hpp"
 #include "y/calculus/base2.hpp"
+#include "y/ability/releasable.hpp"
 
 namespace Yttrium
 {
@@ -19,7 +20,7 @@ namespace Yttrium
             Page *prev;
         };
 
-        class Pages
+        class Pages : public Releasable
         {
         public:
             static const char * const CallSign; //!< "Memory::Pages"
@@ -29,10 +30,10 @@ namespace Yttrium
 
 
 
-            void *query();
-            void  store(void * const addr) noexcept;
-            void  display(std::ostream &) const;
-
+            void *       query();
+            void         store(void * const addr) noexcept;
+            void         display(std::ostream &) const;
+            virtual void release() noexcept;
 
         private:
             Core::ListOf<Page> plist;
@@ -44,6 +45,7 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(Pages);
+            void release_() noexcept;
 
         };
 
