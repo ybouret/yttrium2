@@ -1,7 +1,7 @@
 #include "y/memory/allocator/pages.hpp"
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
-
+#include <cstring>
 
 using namespace Yttrium;
 
