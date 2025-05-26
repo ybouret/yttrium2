@@ -18,8 +18,17 @@ Y_UTEST(memory_arena)
 {
     Y_SIZEOF(Memory::Arena);
 
-    Memory::Arena arena(100,0);
-    
+    size_t blockSize = 100;
+    size_t pageBytes = 0;
+
+    if(argc>1) blockSize = atol(argv[1]);
+    if(argc>2) pageBytes = atol(argv[2]);
+
+    Memory::Arena arena(blockSize,pageBytes);
+
+    while( arena.acquire() )
+        ;
+
 
 }
 Y_UDONE()

@@ -23,7 +23,13 @@ namespace Yttrium
                   const size_t userPageBytes);
             ~Arena() noexcept;
 
+            void  * acquire();
+
+
         private:
+            size_t         available; //!< available blocks
+            Chunk *        acquiring;
+            Chunk *        releasing;
             Chunk * const  chunk;
             size_t         count;
             size_t         capacity;
@@ -37,9 +43,14 @@ namespace Yttrium
             const uint8_t  numBlocks; //!< metrics for Chunk constructor
             const size_t   userBytes; //!< metrics for Chunk memory
             Book          &book;      //!< memory manager
-            
+
         private:
             Y_Disable_Copy_And_Assign(Arena);
+
+            Chunk *makeInPlaceChunk(void * const);
+            void   releaseAllChunks() noexcept;
+            void   releaseWorkspace() noexcept;
+            void   newChunkRequired();
         };
     }
 
