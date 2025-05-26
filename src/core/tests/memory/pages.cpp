@@ -5,22 +5,50 @@
 
 using namespace Yttrium;
 
+namespace
+{
+    static const size_t MaxSize = 10;
+
+    static inline void fill(void *addr[], size_t &size, Memory::Pages &pages)
+    {
+        assert(0!=addr);
+        while(size<MaxSize)
+        {
+            addr[size] = pages.query();
+            ++size;
+        }
+    }
+
+    static inline void empty(const size_t    maxi,
+                             void *          addr[],
+                             size_t &        size,
+                             Memory::Pages & pages,
+                             System::Rand &  ran) noexcept
+    {
+        ran.shuffle(addr,size);
+        while(size>maxi) {
+            pages.store( addr[--size] );
+        }
+        memset(addr+size,0,(MaxSize-size)*sizeof(void*));
+    }
+}
+
 Y_UTEST(memory_pages)
 {
+    System::Rand  ran;
     Memory::Pages pages(10);
     std::cerr << pages.bytes << " = 2^" << pages.shift << std::endl;
+
     pages.display(std::cerr);
 
-    const size_t MaxSize = 100;
     void *       addr[MaxSize];
     size_t       size = 0;
-    memset(addr,0,sizeof(addr));
+    for(size_t i=0;i<MaxSize;++i) addr[i] = 0;
 
-    addr[0] = pages.query();
-
-    pages.store( addr[0] );
-
-
+    fill(addr,size,pages);
+    empty(0,addr,size,pages,ran);
+    
+    pages.display(std::cerr);
 
 }
 Y_UDONE()

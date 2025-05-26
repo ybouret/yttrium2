@@ -57,6 +57,7 @@ namespace Yttrium
         {
             assert(0!=addr);
             plist.insertOderedByAddresses( Stealth::CastZeroed<Page>(addr) );
+            std::cerr << "#" << plist.size << std::endl;
             assert(plist.isOrderedBy( plist.CompareAddresses, Sign::StriclyIncreasing ) );
         }
 
