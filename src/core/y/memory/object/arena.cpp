@@ -192,9 +192,15 @@ namespace Yttrium
             if(upper->owns(addr)) return upper;
             assert( OwnedByPrev == upper->whose(addr) );
 
-            std::cerr << "Need to implement further" << std::endl;
 
-            exit(1);
+        PROBE:
+            Chunk * const probe = lower + ( (upper-lower)>>1 );
+            switch( probe->whose(addr) )
+            {
+                case OwnedByCurr: return probe;
+                case OwnedByNext: lower=probe+1; goto PROBE;
+                case OwnedByPrev: upper=probe-1; goto PROBE;
+            }
         }
 
         void Arena:: release(void * const addr) noexcept
@@ -215,9 +221,10 @@ namespace Yttrium
                     break;
             }
 
+            // return block to its chunk
             assert(releasing->owns(addr));
             releasing->release(addr,blockSize);
-
+            ++available;
         }
     }
 

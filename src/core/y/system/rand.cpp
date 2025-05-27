@@ -2,6 +2,9 @@
 #include "y/system/rand.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/check/usual.hpp"
+#include "y/system/pid.hpp"
+#include "y/check/crc32.hpp"
+
 #include <ctime>
 #include <cstdlib>
 #include <cmath>
@@ -12,7 +15,12 @@ namespace Yttrium
     {
         Rand:: Rand() noexcept
         {
-            srand( unsigned(time(0)) );
+            const uint64_t stamp[2] =
+            {
+                uint64_t(time(0)),
+                ProcessID::Get()
+            };
+            srand( CRC32::Of(stamp,sizeof(stamp)) );
         }
 
         Rand:: ~Rand() noexcept

@@ -51,7 +51,11 @@ Y_UTEST(memory_arena)
     Y_Memory_BZero(addr);
 
     fill(addr,size,arena);
-
+    for(int iter=0;iter<100;++iter)
+    {
+        empty(size>>1,addr,size,arena,ran);
+        fill(addr,size,arena);
+    }
     empty(0,addr,size,arena,ran);
 
 }
