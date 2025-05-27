@@ -20,6 +20,10 @@ namespace Yttrium
         //______________________________________________________________________
         //
         //! Encode
+        /**
+         \param n and unsigned integral type
+         \return n Gray code
+         */
         //______________________________________________________________________
         template <typename T> static inline
         T Encode(const T n) noexcept
@@ -30,6 +34,10 @@ namespace Yttrium
         //______________________________________________________________________
         //
         //! Decode
+        /**
+         \param n a Gray code
+         \return original value
+         */
         //______________________________________________________________________
         template <typename T> static inline
         T Decode(const T n) noexcept

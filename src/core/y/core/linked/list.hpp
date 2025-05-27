@@ -298,6 +298,11 @@ namespace Yttrium
 
 
             //! insertion after a given node
+            /**
+             \param mine one of my node
+             \param node a valid node
+             \return node inserted after mine
+             */
             inline NODE * insertAfter(NODE * const mine, NODE * const node) noexcept
             {
                 assert(0!=mine); assert(owns(mine));
@@ -312,6 +317,12 @@ namespace Yttrium
                 return node;
             }
 
+            //! insertion before a given node
+            /**
+             \param mine one of my node
+             \param node a valid node
+             \return node inserted before mine
+             */
             inline NODE * insertBefore(NODE * const mine, NODE * const node) noexcept
             {
                 assert(0!=mine); assert(owns(mine));
@@ -327,7 +338,11 @@ namespace Yttrium
             }
 
 
-
+            //! move one of my node towards head
+            /**
+             \param node one of my node
+             \return node moved towards head if possible
+             */
             inline NODE * towardsHead(NODE * const node) noexcept
             {
                 assert(0!=node);
@@ -337,6 +352,13 @@ namespace Yttrium
                 return node;
             }
 
+
+            //! insertion in a previously ordered list
+            /**
+             \param compareNodes node comparison
+             \param node a valid node
+             \return node inserted at its right position
+             */
             template <typename COMPARE_NODES> inline
             NODE * insertOrderedBy(COMPARE_NODES &compareNodes, NODE * const node) noexcept
             {
@@ -400,12 +422,24 @@ namespace Yttrium
                 return insertAfter(lower,node);
             }
 
+            //! compare nodes by address
+            /**
+             \param lhs first node
+             \param rhs second node
+             \return address order
+             */
             static inline SignType CompareAddresses(const NODE * const lhs,
                                                         const NODE * const rhs) noexcept
             {
                 return Sign::Of(lhs,rhs);
             }
-            
+
+
+            //! insert using address comparison
+            /**
+             \param node a valid node
+             \return node inserted by increasing address
+             */
             inline NODE * insertOderedByAddresses(NODE * const node) noexcept
             {
                 return insertOrderedBy(CompareAddresses,node);

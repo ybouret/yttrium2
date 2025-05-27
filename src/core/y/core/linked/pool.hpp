@@ -10,10 +10,24 @@ namespace Yttrium
 {
     namespace Core
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! basic Pool of NODEs
+        //
+        //
+        //______________________________________________________________________
         template <typename NODE>
         class PoolOf : public Linked<NODE>
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
             using Linked<NODE>::head;
             using Linked<NODE>::incr;
             using Linked<NODE>::decr;
@@ -21,13 +35,36 @@ namespace Yttrium
             using Linked<NODE>::size;
             using Linked<NODE>::warning;
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! initialize
             inline explicit PoolOf() noexcept : Linked<NODE>() {}
+
+            //! cleanup
             inline virtual ~PoolOf() noexcept
             {
                 assert( (0==size && 0==head) || Die("pool memory leak") );
             }
 
-            inline bool isValid(const NODE * const node) const noexcept
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! check NODE validity : unlinked not null
+            /**
+             an error message is printed if a test fails
+             \param node any node
+             \return true iff all tests succeed
+             */
+             inline bool isValid(const NODE * const node) const noexcept
             {
                 if(0==node)       return warning(LinkedInfo::NullNode);
                 if(0!=node->next) return warning(LinkedInfo::UsedNext);
@@ -35,6 +72,12 @@ namespace Yttrium
                 return true;
             }
 
+
+            //! store a node at head
+            /**
+             \param node a valid node
+             \return stored node
+             */
             inline NODE * store(NODE * const node) noexcept
             {
                 assert( isValid(node) );
@@ -44,6 +87,8 @@ namespace Yttrium
                 return node;
             }
 
+            //! query first node that must exists
+            /** \return unlinked head */
             inline NODE * query() noexcept
             {
                 assert(0!=head);
@@ -56,6 +101,11 @@ namespace Yttrium
                 return node;
             }
 
+            //! store a node at end (SLOWER)
+            /**
+             \param node a valid node
+             \return store node at end of pool
+             */
             inline NODE * stash(NODE * const node) noexcept
             {
                 assert( isValid(node) );
@@ -75,11 +125,16 @@ namespace Yttrium
                 }
             }
 
+            //! swap pool members
+            /**
+             \param other another pool
+             */
             inline void swapPoolFor(PoolOf &other) noexcept
             {
                 this->swapLinkedFor(other);
             }
 
+#if 0
             template <typename POOL>
             inline void split(POOL &lhs, POOL &rhs) noexcept
             {
@@ -99,12 +154,12 @@ namespace Yttrium
                 assert(0==size);
                 assert(lhs.size+rhs.size==oldSize);
             }
-
+#endif
 
 
 
         private:
-            Y_Disable_Copy_And_Assign(PoolOf);
+            Y_Disable_Copy_And_Assign(PoolOf); //!< discarding
 
             inline virtual const NODE * doFetch(size_t nodeIndex) const noexcept
             {

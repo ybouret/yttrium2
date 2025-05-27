@@ -78,12 +78,16 @@ namespace Yttrium
             return *Instance_;
         }
 
+        //! check existence
+        /** \return true iff instantiated */
         static inline bool Exists() noexcept
         {
             Y_Giant_Lock();
             return 0 != Instance_;
         }
 
+        //! location of instantiated singleton
+        /** \return previously setup singleton */
         static inline T & Location() noexcept
         {
             assert(0!=Instance_);

@@ -61,6 +61,12 @@ namespace Yttrium
              */
             void   release(void * & blockAddr, size_t & blockSize) noexcept;
 
+            //! acquire memory for objects
+            /**
+             \param count minimal count of objects
+             \param bytes initially zero, set to acquired
+             \return available memory for count objects amd matching bytes
+             */
             template <typename T>
             inline T * acquireAs(size_t & count,
                                  size_t & bytes)
@@ -68,10 +74,18 @@ namespace Yttrium
                 assert(0==bytes);
                 if(count>0)
                 {
-                    bytes = count * sizeof(T);
-                    T * const entry = static_cast<T *>(acquire(bytes)); assert(bytes>=count*sizeof(T));
-                    count = bytes/sizeof(T);
-                    return entry;
+                    try{
+                        bytes = count * sizeof(T);
+                        T * const entry = static_cast<T *>(acquire(bytes)); assert(bytes>=count*sizeof(T));
+                        count = bytes/sizeof(T);
+                        return entry;
+                    }
+                    catch(...)
+                    {
+                        assert(0==bytes);
+                        count = 0;
+                        throw;
+                    }
                 }
                 else
                     return 0;

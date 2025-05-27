@@ -21,9 +21,25 @@ namespace Yttrium
     class RawListOf: public Core::ListOf<NODE>, public Resettable
     {
     public:
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+
+        //! setup
         inline explicit RawListOf() noexcept : Core::ListOf<NODE>() {}
+
+        //! cleanup
         inline virtual ~RawListOf() noexcept {}
 
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
         inline virtual void reset() noexcept
         {
             Coerce(this->head) = 0;

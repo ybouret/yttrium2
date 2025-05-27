@@ -53,6 +53,13 @@ namespace Yttrium
             static bool         Are0(const void * const blockAddr,
                                      const size_t       blockSize) noexcept;
 
+            //! copy memory blocks
+            /**
+             \param target target address
+             \param source source address
+             \param bytes  bytes to copy
+             \return target
+             */
             static void *       Copy(void * const       target,
                                      const void * const source,
                                      const size_t       bytes) noexcept;

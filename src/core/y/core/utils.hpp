@@ -58,7 +58,18 @@ namespace Yttrium
         return a < b ? a : b;
     }
 
-
+    //__________________________________________________________________________
+    //
+    //
+    //! Clamp integral values
+    /**
+     \param a lower bound
+     \param b test value
+     \param c upper bound
+     \return MinOf( MaxOf(a,b), c )
+     */
+    //
+    //__________________________________________________________________________
     template <typename T> inline
     T Clamp(const T a, const T b, const T c)
     {

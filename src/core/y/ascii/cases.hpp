@@ -11,6 +11,7 @@ namespace Yttrium
 
     namespace ASCII
     {
+        //! named letter case
         enum Case
         {
             Lowercase, //!< lower case
