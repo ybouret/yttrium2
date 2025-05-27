@@ -176,6 +176,7 @@ namespace Yttrium
 {
     namespace Memory
     {
+        static inline
         Chunk * findReleasing(const void * const addr,
                               Chunk *            lower,
                               Chunk *            upper) noexcept
@@ -198,8 +199,8 @@ namespace Yttrium
             switch( probe->whose(addr) )
             {
                 case OwnedByCurr: return probe;
-                case OwnedByNext: lower=probe+1; goto PROBE;
-                case OwnedByPrev: upper=probe-1; goto PROBE;
+                case OwnedByNext: (lower=probe)++; goto PROBE;
+                case OwnedByPrev: (upper=probe)--; goto PROBE;
             }
         }
 
@@ -207,6 +208,12 @@ namespace Yttrium
         {
             assert(0!=addr);
             assert(isValid());
+
+            //------------------------------------------------------------------
+            //
+            // look for releasing
+            //
+            //------------------------------------------------------------------
             switch( releasing->whose(addr) )
             {
                 case OwnedByCurr: // cached
@@ -221,7 +228,11 @@ namespace Yttrium
                     break;
             }
 
+            //------------------------------------------------------------------
+            //
             // return block to its chunk
+            //
+            //------------------------------------------------------------------
             assert(releasing->owns(addr));
             releasing->release(addr,blockSize);
             ++available;
@@ -247,13 +258,17 @@ namespace Yttrium
             {
                 if(memShift>=Limits::MaxBlockShift) throw Specific::Exception(CallSign,"workspace too big");
 
+                //--------------------------------------------------------------
                 // prepare next metrics
+                //--------------------------------------------------------------
                 const unsigned nextMemShift  = memShift+1;
                 const size_t   nextMemBytes  = memBytes << 1;
                 const size_t   nextCapacity  = capacity << 1; assert( nextCapacity == nextMemBytes / sizeof(Chunk) );
                 Chunk * const  nextWorkspace = static_cast<Chunk *>(book.query(nextMemShift));
 
+                //--------------------------------------------------------------
                 // transfer
+                //--------------------------------------------------------------
                 Memory::Stealth::Copy(nextWorkspace,workspace,memBytes);
                 acquiring = nextWorkspace + (acquiring-workspace);
                 releasing = nextWorkspace + (releasing-workspace);
@@ -298,23 +313,20 @@ namespace Yttrium
 
         void  * Arena:: acquire()
         {
-            // find acquiring
-            if(available>0)
-            {
-                if( acquiring->freeBlocks>0 )
-                {
-                    // cache
-                }
-                else
-                {
-                    throw Exception("ToDo");
-                }
-            }
-            else
+            assert(isValid());
+            if(available<=0)
             {
                 newChunkRequired();
+                assert(available>0);
             }
+            assert(available>0);
 
+
+            if( acquiring->freeBlocks <= 0 )
+            {
+                throw Exception("ToDo");
+            }
+            
             assert(0!=acquiring);
             assert(0!=releasing);
             assert(available>0);
