@@ -28,22 +28,23 @@ namespace Yttrium
             ~Arena() noexcept;
 
             void  * acquire();
-
             bool    isValid() const noexcept;
+
 
         private:
             size_t         available; //!< available blocks
-            Chunk *        acquiring;
-            Chunk *        releasing;
-            Chunk *        chunk;
+            Chunk *        acquiring; //!< cache for acquiring chunk
+            Chunk *        releasing; //!< cache for releasing chunk
+            Chunk *        workspace; //!< chunk workspace
             size_t         count;
             size_t         capacity;
-            size_t         memSpace;
+            Chunk *        endChunk;
+            size_t         memBytes;
             unsigned       memShift;
 
 
         public:
-            const size_t   blockSize;
+            const size_t   blockSize; //!< for all Chunks
             const unsigned userShift; //!< metrics for Chunk userBytes = 2^userShift
             const uint8_t  numBlocks; //!< metrics for Chunk constructor
             const size_t   userBytes; //!< metrics for Chunk memory

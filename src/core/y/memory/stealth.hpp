@@ -53,6 +53,10 @@ namespace Yttrium
             static bool         Are0(const void * const blockAddr,
                                      const size_t       blockSize) noexcept;
 
+            static void *       Copy(void * const       target,
+                                     const void * const source,
+                                     const size_t       bytes) noexcept;
+            
             //! memory swap
             /**
              \param lhsBlock lhs address

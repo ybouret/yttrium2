@@ -15,35 +15,58 @@ namespace Yttrium
 
         const char * const Arena:: CallSign = "Memory::Arena";
 
+#define Y_Arena_Check(EXPR) do { if ( !(EXPR) ) { std::cerr << "*** " << #EXPR << std::endl;  return false; } } while(false)
+
+        bool Arena:: isValid() const noexcept
+        {
+            Y_Arena_Check(0!=workspace);
+            Y_Arena_Check(count<=capacity);
+            Y_Arena_Check(workspace+capacity==endChunk);
+            Y_Arena_Check(0!=acquiring);
+            Y_Arena_Check(acquiring>=workspace);
+            Y_Arena_Check(acquiring<endChunk);
+            Y_Arena_Check(0!=releasing);
+            Y_Arena_Check(releasing>=workspace);
+            Y_Arena_Check(releasing<endChunk);
+
+            for(size_t i=0,j=1;j<count;++i,++j)
+            {
+                const Chunk & lhs = workspace[i];
+                const Chunk & rhs = workspace[j];
+                Y_Arena_Check(lhs.data<rhs.data);
+            }
+
+            return true;
+        }
+
+
         void Arena:: releaseWorkspace() noexcept
         {
             assert(0==count);
-            assert(0!=chunk);
+            assert(0!=workspace);
             assert(capacity>0);
-            assert(memSpace>0);
+            assert(memBytes>0);
             assert(memShift>0);
             assert(0==acquiring);
             assert(0==releasing);
 
-            book.store(memShift,chunk);
-            memSpace = 0;
-            memShift = 0;
-            capacity = 0;
-            Coerce(chunk) = 0;
-
+            book.store(memShift,workspace);
+            memBytes  = 0;
+            memShift  = 0;
+            capacity  = 0;
+            workspace = 0;
+            endChunk  = 0;
         }
 
 
         void Arena:: releaseAllChunks() noexcept
         {
-            assert(0!=chunk);
-            assert(0!=acquiring);
-            assert(0!=releasing);
+            assert( isValid() );
             acquiring = releasing = 0;
             size_t missing = 0;
             while(count>0)
             {
-                Chunk &current = chunk[--count];
+                Chunk &current = workspace[--count];
                 missing += current.userBlocks-current.freeBlocks;
                 book.store(userShift,current.data);
                 Memory::Stealth::Zero( &current, sizeof(Chunk) );
@@ -71,10 +94,13 @@ namespace Yttrium
         Arena:: Arena(const size_t userBlockSize,
                       const size_t userPageBytes) :
         available(0),
-        chunk(0),
+        acquiring(0),
+        releasing(0),
+        workspace(0),
         count(0),
         capacity(0),
-        memSpace(0),
+        endChunk(0),
+        memBytes(0),
         memShift(0),
         blockSize(userBlockSize),
         userShift(0),
@@ -82,28 +108,36 @@ namespace Yttrium
         userBytes( Chunk::UserBytesFor(blockSize, userPageBytes, Coerce(userShift), Coerce(numBlocks))),
         book( Book::Instance() )
         {
-            Y_STATIC_CHECK(Book::MinPageBytes>=sizeof(Chunk), BadMinPageShift);
 
+            //------------------------------------------------------------------
+            //
+            //
             // sanity check
+            //
+            //
+            //------------------------------------------------------------------
+            Y_STATIC_CHECK(Book::MinPageBytes>=sizeof(Chunk), BadMinPageShift);
             assert(userShift>=Book::MinPageShift);
             assert(userShift<=Book::MaxPageShift);
 
             std::cerr << "for userBlockSize     = " << userBlockSize << std::endl;
             std::cerr << "will allocate |chunk| = " << userBytes << " bytes" << std::endl;
-            std::cerr << "blocks/chunk          = " << int(numBlocks) << std::endl;
+            std::cerr << "numBlocks/chunk       = " << int(numBlocks) << std::endl;
 
             //------------------------------------------------------------------
             //
             //
-            // first allocation : for workspace
+            // first allocation : for workspace or chunks
             //
             //
             //------------------------------------------------------------------
-            memSpace  = NextPowerOfTwo(Clamp(Book::MinPageBytes,userPageBytes,Book::MaxPageBytes),memShift);
-            chunk     = static_cast<Chunk *>(book.query(memShift));
-            capacity  = memSpace / sizeof(Chunk);
+            memBytes  = NextPowerOfTwo(Clamp(Book::MinPageBytes,userPageBytes,Book::MaxPageBytes),memShift);
+            workspace = static_cast<Chunk *>(book.query(memShift));
+            capacity  = memBytes / sizeof(Chunk);
+            endChunk  = workspace+capacity;
 
-            std::cerr << "memSpace=" << memSpace << "=2^" << memShift << " => capacity=" << capacity << " chunks per arena" << std::endl;
+
+            std::cerr << "memBytes=" << memBytes << "=2^" << memShift << " => capacity=" << capacity << " chunks per arena" << std::endl;
 
             //------------------------------------------------------------------
             //
@@ -112,13 +146,8 @@ namespace Yttrium
             //
             //
             //------------------------------------------------------------------
-            try {
-                Coerce(chunk) = makeInPlaceChunk(chunk);
-                assert(chunk->freeBlocks==numBlocks);
-            }
-            catch(...)
-            {
-                Coerce(chunk) = 0;
+            try { (void) makeInPlaceChunk(workspace); }
+            catch(...) {
                 releaseWorkspace();
                 throw;
             }
@@ -126,14 +155,15 @@ namespace Yttrium
             //------------------------------------------------------------------
             //
             //
-            // update
+            // first update
             //
             //
             //------------------------------------------------------------------
             count      = 1;
             available  = numBlocks;
-            acquiring  = releasing = chunk;
+            acquiring  = releasing = workspace;
 
+            assert( isValid() );
         }
 
 
@@ -143,6 +173,7 @@ namespace Yttrium
 }
 
 #include "y/exception.hpp"
+#include <cstring>
 
 namespace Yttrium
 {
@@ -151,29 +182,59 @@ namespace Yttrium
 
         void Arena:: newChunkRequired()
         {
-            assert(0==available);
-            assert(0!=acquiring);
-            assert(0!=releasing);
-            if(count<capacity)
+            assert(isValid());
+
+            if(count>=capacity)
             {
-                acquiring = makeInPlaceChunk(chunk+count);
-                ++count;
-                available += numBlocks;
-                bool moved = false;
-                while(acquiring>chunk && acquiring[0].data < acquiring[-1].data)
-                {
-                    Memory::Stealth::Swap(acquiring, acquiring-1, sizeof(Chunk) );
-                    --acquiring;
-                    moved = true;
-                }
-                if(moved && releasing>acquiring) releasing = acquiring;
-            }
-            else
-            {
-                throw Exception("Need More Memory");
+                if(memShift>=Limits::MaxBlockShift) throw Specific::Exception(CallSign,"workspace too big");
+
+                // prepare next metrics
+                const unsigned nextMemShift  = memShift+1;
+                const size_t   nextMemBytes  = memBytes << 1;
+                const size_t   nextCapacity  = capacity << 1; assert( nextCapacity == nextMemBytes / sizeof(Chunk) );
+                Chunk * const  nextWorkspace = static_cast<Chunk *>(book.query(nextMemShift));
+
+                // transfer
+                Memory::Stealth::Copy(nextWorkspace,workspace,memBytes);
+                acquiring = nextWorkspace + (acquiring-workspace);
+                releasing = nextWorkspace + (releasing-workspace);
+                book.store(memShift,workspace);
+                workspace = nextWorkspace;
+                memShift  = nextMemShift;
+                memBytes  = nextMemBytes;
+                capacity  = nextCapacity;
+                endChunk  = workspace + capacity;
+                assert(isValid());
+                std::cerr << "capacity is now " << capacity << std::endl;
+                assert(count<capacity);
             }
 
+            assert(count<capacity);
 
+
+            //------------------------------------------------------------------
+            //
+            // append a new chunk
+            //
+            //------------------------------------------------------------------
+            acquiring = makeInPlaceChunk(workspace+count);
+            //std::cerr << "acquiring.data@" << (void*)(acquiring->data) << std::endl;
+            ++count;
+            available += numBlocks;
+            assert(releasing<acquiring);
+
+            //------------------------------------------------------------------
+            //
+            // update increasing memory
+            //
+            //------------------------------------------------------------------
+            while(acquiring>workspace && acquiring[0].data < acquiring[-1].data)
+            {
+                //std::cerr << "swap memory" << std::endl;
+                Memory::Stealth::Swap(acquiring, acquiring-1, sizeof(Chunk) );
+                --acquiring;
+            }
+            assert(isValid());
         }
 
         void  * Arena:: acquire()

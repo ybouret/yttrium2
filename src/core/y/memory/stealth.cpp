@@ -42,6 +42,16 @@ namespace Yttrium
                 Yttrium::Swap( *(lhs++), *(rhs++) );
         }
 
+
+        void * Stealth:: Copy(void * const       target,
+                              const void * const source,
+                              const size_t       bytes) noexcept
+        {
+            assert( Good(target,bytes) );
+            assert( Good(source,bytes) );
+            return memcpy(target,source,bytes);
+        }
+
     }
 
 }

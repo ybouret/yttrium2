@@ -11,6 +11,7 @@ using namespace Yttrium;
 
 namespace
 {
+    static const size_t MaxSize = 1000;
 
 }
 
@@ -26,8 +27,13 @@ Y_UTEST(memory_arena)
 
     Memory::Arena arena(blockSize,pageBytes);
 
-    while( arena.acquire() )
-        ;
+    void * addr[MaxSize];
+    size_t size = 0;
+    Y_Memory_BZero(addr);
+    while(size<MaxSize)
+    {
+        addr[size++] = arena.acquire();
+    }
 
 
 }
