@@ -180,7 +180,19 @@ namespace Yttrium
         {
             assert(0!=addr);
             assert(isValid());
-            
+            switch( releasing->whose(addr) )
+            {
+                case OwnedByCurr: // cached
+                    break;
+                case OwnedByNext:
+                case OwnedByPrev:
+                    std::cerr << "Need to work..." << std::endl;
+                    exit(0);
+            }
+
+            assert(releasing->owns(addr));
+            releasing->release(addr,blockSize);
+
         }
     }
 

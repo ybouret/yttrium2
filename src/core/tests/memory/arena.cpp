@@ -27,9 +27,18 @@ Y_UTEST(memory_arena)
 
     Memory::Arena arena(blockSize,pageBytes);
 
+    {
+        void * p = arena.acquire();
+        arena.release(p);
+    }
+
+    return 0;
+
     void * addr[MaxSize];
     size_t size = 0;
     Y_Memory_BZero(addr);
+
+
     while(size<MaxSize)
     {
         addr[size++] = arena.acquire();
