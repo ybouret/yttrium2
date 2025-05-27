@@ -20,11 +20,11 @@ namespace Yttrium
         public:
             static const char * const CallSign;
             static const Longevity    LifeTime      = LifeTimeOf:: MemoryBook;         //!< lifetime
-            static const unsigned MinPageShift = Limits::MinDyadicBlockShift;
-            static const unsigned MaxPageShift = Limits::MaxDyadicBlockShift;
+            static const unsigned MinPageShift = Limits::MinBlockShift;
+            static const unsigned MaxPageShift = Limits::MaxBlockShift;
             static const unsigned NumPageShift = 1+MaxPageShift - MinPageShift;
-            static const size_t   MinPageBytes = Limits::MinDyadicBlockBytes;
-            static const size_t   MaxPageBytes = Limits::MaxDyadicBlockBytes;
+            static const size_t   MinPageBytes = Limits::MinBlockBytes;
+            static const size_t   MaxPageBytes = Limits::MaxBlockBytes;
 
             virtual void release() noexcept;
 

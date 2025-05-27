@@ -35,10 +35,10 @@ namespace Yttrium
             //__________________________________________________________________
             static const char * const CallSign; //!< "Memory::Dyadic"
             static const Longevity    LifeTime      = LifeTimeOf:: DyadicMemory;         //!< lifetime
-            static const size_t       MinBlockBytes = Limits::MinDyadicBlockBytes;       //!< for Chunk with blockSize=1
-            static const unsigned     MinBlockShift = Limits::MinDyadicBlockShift;       //!< alias
-            static const unsigned     MaxBlockShift = Limits::MaxDyadicBlockShift;       //!< alias
-            static const size_t       MaxBlockBytes = Limits::MaxDyadicBlockBytes;       //!< alias
+            static const size_t       MinBlockBytes = Limits::MinBlockBytes;             //!< for Chunk with blockSize=1
+            static const unsigned     MinBlockShift = Limits::MinBlockShift;             //!< alias
+            static const unsigned     MaxBlockShift = Limits::MaxBlockShift;             //!< alias
+            static const size_t       MaxBlockBytes = Limits::MaxBlockBytes;             //!< alias
             static const size_t       ShiftCount    = 1+MaxBlockShift - MinBlockShift;   //!< alias
             
             //__________________________________________________________________

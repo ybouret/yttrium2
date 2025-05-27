@@ -133,17 +133,17 @@ namespace Yttrium
 
 
 
-        Chunk:: Chunk(void * const  blockAddr,
+        Chunk:: Chunk(void * const  userSpace,
                       const uint8_t numBlocks,
                       const size_t  blockSize) noexcept :
-        data( static_cast<uint8_t *>(blockAddr) ),
+        data( static_cast<uint8_t *>(userSpace) ),
         last( data + (blockSize * static_cast<size_t>(numBlocks)) ),
         firstBlock(0),
         freeBlocks(numBlocks),
         userBlocks(numBlocks),
         memoryVoid()
         {
-            assert(Good(blockAddr,numBlocks));
+            assert(Good(userSpace,numBlocks));
             uint8_t *p=data;
             for(uint8_t i=0;i!=numBlocks;p += blockSize)
             {

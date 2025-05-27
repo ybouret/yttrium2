@@ -28,9 +28,9 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            static const unsigned MinNumBlocks = 0x04;                        //!< minimal number of blocks per chunk
-            static const unsigned MaxNumBlocks = 0xff;                        //!< maximum number of blocks per chunk
-            static const size_t   MinUserBytes = Limits::MinDyadicBlockBytes; //!< allows perfect match of 1-byte blocks
+            static const unsigned MinNumBlocks = 0x04;                   //!< minimal number of blocks per chunk
+            static const unsigned MaxNumBlocks = 0xff;                   //!< maximum number of blocks per chunk
+            static const size_t   MinUserBytes = Limits::MinBlockBytes;  //!< allows perfect match of 1-byte blocks
 
             //__________________________________________________________________
             //
@@ -40,11 +40,11 @@ namespace Yttrium
             //__________________________________________________________________
             //! initialize provided memory
             /**
-             \param blockAddr available memory >= numBlocks*blockSize
+             \param userSpace available memory >= numBlocks*blockSize
              \param numBlocks in 0:255
              \param blockSize positive blockSize
              */
-            Chunk(void * const  blockAddr,
+            Chunk(void * const  userSpace,
                   const uint8_t numBlocks,
                   const size_t  blockSize) noexcept;
 
@@ -93,7 +93,7 @@ namespace Yttrium
              \param pageBytes default bytes per page
              \param userShift log2 of returned value
              \param numBlocks optimized numBlocks of blockSize
-             \return optimized bytes to allocate
+             \return optimized bytes to allocate per chunk
              */
             static size_t UserBytesFor(const size_t   blockSize,
                                        const size_t   pageBytes,
@@ -110,7 +110,7 @@ namespace Yttrium
             //! check ownership
             /**
              \param address the address
-             \return address position
+             \return address ownership
              */
             Ownership whose(const void * const address) const noexcept;
 
