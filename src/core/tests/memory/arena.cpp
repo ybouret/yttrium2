@@ -37,6 +37,7 @@ Y_UTEST(memory_arena)
     System::Rand ran;
     Y_SIZEOF(Memory::Arena);
 
+
     size_t blockSize = 100;
     size_t pageBytes = 0;
 
