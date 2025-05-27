@@ -13,10 +13,28 @@ namespace
 {
     static const size_t MaxSize = 1000;
 
+    static inline
+    void fill( void * addr[], size_t &size, Memory::Arena &arena)
+    {
+        while(size<MaxSize)
+            addr[size++] = arena.acquire();
+    }
+
+    static inline
+    void empty(const size_t to, void * addr[], size_t &size, Memory::Arena &arena, System::Rand &ran)
+    {
+        ran.shuffle(addr,size);
+        while(size>to)
+        {
+            arena.release(addr[--size]);
+        }
+    }
+
 }
 
 Y_UTEST(memory_arena)
 {
+    System::Rand ran;
     Y_SIZEOF(Memory::Arena);
 
     size_t blockSize = 100;
@@ -27,23 +45,14 @@ Y_UTEST(memory_arena)
 
     Memory::Arena arena(blockSize,pageBytes);
 
-    {
-        void * p = arena.acquire();
-        arena.release(p);
-    }
-
-    return 0;
 
     void * addr[MaxSize];
     size_t size = 0;
     Y_Memory_BZero(addr);
 
+    fill(addr,size,arena);
 
-    while(size<MaxSize)
-    {
-        addr[size++] = arena.acquire();
-    }
-
+    empty(0,addr,size,arena,ran);
 
 }
 Y_UDONE()

@@ -176,6 +176,27 @@ namespace Yttrium
 {
     namespace Memory
     {
+        Chunk * findReleasing(const void * const addr,
+                              Chunk *            lower,
+                              Chunk *            upper) noexcept
+        {
+            assert(0!=addr);
+            assert(0!=lower);
+            assert(0!=upper);
+            --upper;
+            assert(upper>=lower);
+
+            if(lower->owns(addr)) return lower;
+            assert( OwnedByNext == lower->whose(addr) );
+
+            if(upper->owns(addr)) return upper;
+            assert( OwnedByPrev == upper->whose(addr) );
+
+            std::cerr << "Need to implement further" << std::endl;
+
+            exit(1);
+        }
+
         void Arena:: release(void * const addr) noexcept
         {
             assert(0!=addr);
@@ -184,10 +205,14 @@ namespace Yttrium
             {
                 case OwnedByCurr: // cached
                     break;
-                case OwnedByNext:
+
                 case OwnedByPrev:
-                    std::cerr << "Need to work..." << std::endl;
-                    exit(0);
+                    releasing = findReleasing(addr,workspace,releasing);
+                    break;
+
+                case OwnedByNext:
+                    releasing = findReleasing(addr,++releasing,workspace+count);
+                    break;
             }
 
             assert(releasing->owns(addr));
