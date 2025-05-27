@@ -172,6 +172,21 @@ namespace Yttrium
 
 }
 
+namespace Yttrium
+{
+    namespace Memory
+    {
+        void Arena:: release(void * const addr) noexcept
+        {
+            assert(0!=addr);
+            assert(isValid());
+            
+        }
+    }
+
+}
+
+
 #include "y/exception.hpp"
 #include <cstring>
 

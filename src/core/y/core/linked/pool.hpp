@@ -134,6 +134,11 @@ namespace Yttrium
                 this->swapLinkedFor(other);
             }
 
+            //! split into two pools
+            /**
+             \param lhs first empty poool
+             \param rhs second empty pool
+             */
             template <typename POOL>
             inline void split(POOL &lhs, POOL &rhs) noexcept
             {

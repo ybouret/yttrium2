@@ -43,7 +43,7 @@ namespace Yttrium
 
             //! tuned on dyadic valid shifts
             /**
-             \param usePageShift in Dyadic::MinBlockShift,Dyadic::MaxBlockShift
+             \param userPageShift in Dyadic::MinBlockShift,Dyadic::MaxBlockShift
              */
             Pages(const unsigned userPageShift);
 
@@ -56,11 +56,11 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            void *       query();
-            void         store(void * const addr) noexcept;
-            void         cache(size_t numPages);
-            size_t       count() const noexcept;
-            void         display(std::ostream &) const;
+            void *       query();                       //!< query a new page \return clear new bytes
+            void         store(void * const) noexcept;  //!< store a previously acquire page
+            void         cache(size_t);                 //!< reserve some pages
+            size_t       count() const noexcept;        //!< \return available pages
+            void         display(std::ostream &) const; //!< display info
 
             //__________________________________________________________________
             //
@@ -77,16 +77,16 @@ namespace Yttrium
             //
             //__________________________________________________________________
         private:
-            Core::ListOf<Page> plist;
+            Core::ListOf<Page> plist; //!< content
         public:
-            const unsigned     shift;
-            const size_t       bytes;
-            Dyadic &           memIO;
+            const unsigned     shift; //!< common shift
+            const size_t       bytes; //!< common bytes=2^shift
+            Dyadic &           memIO; //!< instance of allocator
 
         private:
             Y_Disable_Copy_And_Assign(Pages); //!< discarding
             void   release_() noexcept;       //!< release all existing pages
-            void * newPage();                 //!< create a new page
+            void * newPage();                 //!< create a new page \return address of bytes from memIO
         };
 
 

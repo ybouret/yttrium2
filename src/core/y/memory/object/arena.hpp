@@ -14,10 +14,31 @@ namespace Yttrium
         class Chunk;
         class Book;
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Arena of Chunks of  blockSize
+        //
+        //
+        //______________________________________________________________________
         class Arena
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
             static const char * const CallSign; //!< "Memory::Arena"
+
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
 
             //! initialize
             /**
@@ -26,12 +47,27 @@ namespace Yttrium
              */
             Arena(const size_t userBlockSize,
                   const size_t userPageBytes);
+
+            //! cleanup
             ~Arena() noexcept;
 
-            void  * acquire();
-            bool    isValid() const noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
 
+            void  * acquire();                //!< \return a zeroed blockSize
+            void    release(void *) noexcept; //!< release a prevously acquired block
+            bool    isValid() const noexcept; //!< \return various validity tests
 
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
         private:
             size_t         available; //!< available blocks
             Chunk *        acquiring; //!< cache for acquiring chunk
@@ -52,12 +88,16 @@ namespace Yttrium
             Book          &book;      //!< memory manager
 
         private:
-            Y_Disable_Copy_And_Assign(Arena);
+            Y_Disable_Copy_And_Assign(Arena); //!< discarding
 
+            //! allocate and format a chunk at a given pre-allocated address
+            /**
+             \return a valid chunk with numBlocks available
+             */
             Chunk *makeInPlaceChunk(void * const);
-            void   releaseAllChunks() noexcept;
-            void   releaseWorkspace() noexcept;
-            void   newChunkRequired();
+            void   releaseAllChunks() noexcept; //!< release all chunks
+            void   releaseWorkspace() noexcept; //!< release workspace
+            void   newChunkRequired();          //!< when a new chunk is required
         };
     }
 
