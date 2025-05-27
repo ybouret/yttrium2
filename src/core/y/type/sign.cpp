@@ -19,7 +19,8 @@ namespace Yttrium
         switch(s)
         {
             case Negative: return true;
-            default:
+            case __Zero__:
+            case Positive:
                 break;
         }
         return false;
@@ -30,7 +31,8 @@ namespace Yttrium
         switch(s)
         {
             case Positive: return false;
-            default:
+            case __Zero__:
+            case Negative:
                 break;
         }
         return true;
@@ -41,7 +43,8 @@ namespace Yttrium
         switch(s)
         {
             case Positive: return true;
-            default:
+            case __Zero__:
+            case Negative:
                 break;
         }
         return false;
@@ -52,7 +55,8 @@ namespace Yttrium
         switch(s)
         {
             case Negative: return false;
-            default:
+            case __Zero__:
+            case Positive:
                 break;
         }
         return true;

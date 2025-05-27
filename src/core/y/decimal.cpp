@@ -81,9 +81,9 @@ namespace Yttrium
         clear();
         switch( Sign::Of(q) )
         {
-            case Positive: format64(array,q); return;
+            case Positive: format64(array,uint64_t(q)); return;
             case __Zero__: ldz(); return;
-            case Negative: array[0] = '-'; format64(array+1,-q); return;
+            case Negative: array[0] = '-'; format64(array+1,uint64_t(-q) ); return;
         }
     }
 

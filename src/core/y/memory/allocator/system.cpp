@@ -3,6 +3,7 @@
 #include "y/system/exception.hpp"
 #include "y/check/usual.hpp"
 #include "y/memory/align.hpp"
+#include "y/decimal.hpp"
 
 #include <cstdlib>
 #include <cerrno>
@@ -39,7 +40,7 @@ namespace Yttrium
             assert(blockSize>0);
 
             if(blockSize>Align::MaxBlockSize)
-                throw Specific::Exception(CallSign,"blockSize=%lu>%lu", (unsigned long)blockSize, (unsigned long)Align::MaxBlockSize);
+                throw Specific::Exception(CallSign,"blockSize=%s>%s", Decimal(blockSize).c_str(), Decimal(Align::MaxBlockSize).c_str());
 
             blockSize = Align::Compute::Ceil(blockSize);
             

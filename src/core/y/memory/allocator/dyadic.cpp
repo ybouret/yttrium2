@@ -2,6 +2,7 @@
 #include "y/memory/allocator/dyadic.hpp"
 #include "y/system/exception.hpp"
 #include "y/check/usual.hpp"
+#include "y/decimal.hpp"
 
 #include <cstring>
 #include <iostream>
@@ -14,6 +15,7 @@ namespace Yttrium
     {
         const char * const Dyadic:: CallSign = "Memory::Dyadic";
 
+        const size_t Dyadic::MaxBlockBytes;
 
         void Dyadic:: clear() noexcept
         {
@@ -60,7 +62,7 @@ namespace Yttrium
 
         void * Dyadic:: acquireBlock(size_t & blockSize)
         {
-            if(blockSize>MaxBlockBytes) throw Specific::Exception(CallSign,"blockSize=%lu > %lu", (unsigned long)blockSize, (unsigned long)MaxBlockBytes);
+            if(blockSize>MaxBlockBytes) throw Specific::Exception(CallSign,"blockSize=%s > %s", Decimal(blockSize).c_str(), Decimal(MaxBlockBytes).c_str());
             if(blockSize<MinBlockBytes) blockSize = MinBlockBytes;
             unsigned blockShift = 0;
             blockSize = NextPowerOfTwo(blockSize,blockShift);

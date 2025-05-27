@@ -28,7 +28,7 @@ namespace Yttrium
         {
             struct ChunkMetrics
             {
-                unsigned numBlocks;
+                uint8_t  numBlocks;
                 unsigned userShift;
                 size_t   userBytes;
                 size_t   lostBytes;
@@ -92,7 +92,7 @@ namespace Yttrium
             {
                 ChunkMetrics &cm = cms[num];
                 const size_t requested = blockSize*nb;
-                cm.numBlocks = nb;
+                cm.numBlocks = uint8_t(nb); assert(cm.numBlocks > 0);
                 cm.userBytes = NextPowerOfTwo(requested,cm.userShift);
                 if(cm.userBytes<MinUserBytes)
                 {
