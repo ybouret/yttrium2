@@ -34,7 +34,7 @@ namespace Yttrium
             assert(a>=b);
             while(b>0)
             {
-                const T r = a%b;
+                const T r = T(a%b);
                 a = b;
                 b = r;
             }

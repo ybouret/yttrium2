@@ -23,7 +23,7 @@
 #if defined(_MSC_VER)
 #  define Y_Compiler "Microsoft"
 #  define Y_MSC 1
-#  pragma warning ( disable : 4514 4820 4625 4626 5026 5027 4774 4710 4571 5039 5045)
+#  pragma warning ( disable : 4514 4820 4625 4626 5026 5027 4774 4710 4711 4571 5039 5045)
 #endif
 
 // detect GNU
