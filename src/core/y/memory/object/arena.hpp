@@ -17,8 +17,9 @@ namespace Yttrium
         class Arena
         {
         public:
-            static const char * const CallSign;
+            static const char * const CallSign; //!< "Memory::Arena"
 
+            //! initialize
             /**
              \param userBlockSize a positive block size
              \param userPageBytes will be set above Limits::MinBlockBytes
@@ -36,11 +37,11 @@ namespace Yttrium
             Chunk *        acquiring; //!< cache for acquiring chunk
             Chunk *        releasing; //!< cache for releasing chunk
             Chunk *        workspace; //!< chunk workspace
-            size_t         count;
-            size_t         capacity;
-            Chunk *        endChunk;
-            size_t         memBytes;
-            unsigned       memShift;
+            size_t         count;     //!< number of active chunks
+            size_t         capacity;  //!< maximum number of active chunks
+            Chunk *        endChunk;  //!< first invalid chunk address
+            size_t         memBytes;  //!< bytes used to hold workspace
+            unsigned       memShift;  //!< memBytes=2^memShift
 
 
         public:

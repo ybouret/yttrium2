@@ -64,7 +64,7 @@ namespace Yttrium
              \param node any node
              \return true iff all tests succeed
              */
-             inline bool isValid(const NODE * const node) const noexcept
+            inline bool isValid(const NODE * const node) const noexcept
             {
                 if(0==node)       return warning(LinkedInfo::NullNode);
                 if(0!=node->next) return warning(LinkedInfo::UsedNext);
@@ -134,7 +134,6 @@ namespace Yttrium
                 this->swapLinkedFor(other);
             }
 
-#if 0
             template <typename POOL>
             inline void split(POOL &lhs, POOL &rhs) noexcept
             {
@@ -154,7 +153,6 @@ namespace Yttrium
                 assert(0==size);
                 assert(lhs.size+rhs.size==oldSize);
             }
-#endif
 
 
 
