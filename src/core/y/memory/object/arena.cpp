@@ -172,20 +172,38 @@ namespace Yttrium
 
 }
 
+#include "y/system/error.hpp"
+#include <cerrno>
+
 namespace Yttrium
 {
     namespace Memory
     {
+        //----------------------------------------------------------------------
+        //
+        //
+        //
+        // releasing
+        //
+        //
+        //
+        //----------------------------------------------------------------------
+
+#define Y_Memory_Arena_Release_Critical() do {\
+/**/    if(upper<lower) Libc::Error::Critical(EINVAL, msg); \
+} while(false)
+
         static inline
         Chunk * findReleasing(const void * const addr,
                               Chunk *            lower,
                               Chunk *            upper) noexcept
         {
+            static const char msg[] = "Memory::Arena: no address owner";
             assert(0!=addr);
             assert(0!=lower);
             assert(0!=upper);
             --upper;
-            assert(upper>=lower);
+            Y_Memory_Arena_Release_Critical();
 
             if(lower->owns(addr)) return lower;
             assert( OwnedByNext == lower->whose(addr) );
@@ -198,10 +216,23 @@ namespace Yttrium
             Chunk * const probe = lower + ( (upper-lower)>>1 );
             switch( probe->whose(addr) )
             {
-                case OwnedByCurr: return probe;
-                case OwnedByNext: (lower=probe)++; goto PROBE;
-                case OwnedByPrev: (upper=probe)--; goto PROBE;
+                case OwnedByCurr:
+                    break;
+
+                case OwnedByNext:
+                    (lower=probe)++;
+                    Y_Memory_Arena_Release_Critical();
+                    goto PROBE;
+
+                case OwnedByPrev:
+                    (upper=probe)--;
+                    Y_Memory_Arena_Release_Critical();
+                    goto PROBE;
             }
+            return probe;
+
+
+
         }
 
         void Arena:: release(void * const addr) noexcept
@@ -249,6 +280,58 @@ namespace Yttrium
 {
     namespace Memory
     {
+
+        static inline
+        Chunk * findAcquiring(const Chunk * const base,
+                              const Chunk * const last,
+                              Chunk * const       acquiring) noexcept
+        {
+            static const char msg[] = "Memory::Arena: no chunk with free block";
+
+            assert(acquiring>=base);
+            assert(acquiring<last);
+            assert(0==acquiring->freeBlocks);
+            Chunk * lower = acquiring;
+            Chunk * upper = acquiring;
+
+        INTERLEAVED:
+            if(--lower<base)
+                goto UPPER_ONLY;
+
+            if(lower->freeBlocks>0)
+                return lower;
+
+            if(++upper>=last)
+                goto LOWER_ONLY;
+
+            if(upper->freeBlocks>0)
+                return upper;
+
+            goto INTERLEAVED;
+
+        LOWER_ONLY:
+            assert(upper>=last);
+
+            if(--lower<base)
+                Libc::Error::Critical(EINVAL,msg);
+
+            if(lower->freeBlocks>0)
+                return lower;
+            
+            goto LOWER_ONLY;
+
+        UPPER_ONLY:
+            assert(lower<base);
+
+            if(++upper>=last)
+                Libc::Error::Critical(EINVAL,msg);
+
+            if(upper->freeBlocks>0)
+                return upper;
+
+            goto UPPER_ONLY;
+
+        }
 
         void Arena:: newChunkRequired()
         {
@@ -323,13 +406,9 @@ namespace Yttrium
 
 
             if( acquiring->freeBlocks <= 0 )
-            {
-                throw Exception("ToDo");
-            }
-            
+                acquiring = findAcquiring(workspace,endChunk,acquiring);
+
             assert(0!=acquiring);
-            assert(0!=releasing);
-            assert(available>0);
             assert(acquiring->freeBlocks>0);
 
             --available;

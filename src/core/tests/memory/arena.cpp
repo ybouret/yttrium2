@@ -46,6 +46,7 @@ Y_UTEST(memory_arena)
     Memory::Arena arena(blockSize,pageBytes);
 
 
+
     void * addr[MaxSize];
     size_t size = 0;
     Y_Memory_BZero(addr);
