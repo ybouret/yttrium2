@@ -86,8 +86,8 @@ namespace Yttrium
 
             Y_Lock(access);
             assert( allocated[blockShift] > 0 || Die("corrupted release") );
-            free(blockAddr);
             --Coerce(allocated[blockShift]);
+            free( memset(blockAddr,0,blockSize) );
         }
 
         void * Dyadic:: acquireDyadic(const unsigned blockShift)
@@ -107,6 +107,7 @@ namespace Yttrium
 
         void  Dyadic:: releaseDyadic(void *const blockAddr, const unsigned int blockShift) noexcept
         {
+            static const size_t _1 = 1;
             assert(0 != blockAddr);
             assert(blockShift<=MaxBlockShift);
             assert(blockShift>=MinBlockShift);
@@ -115,7 +116,7 @@ namespace Yttrium
 
             Y_Lock(access);
             --Coerce(allocated[blockShift]);
-            free(blockAddr);
+            free( memset(blockAddr,0,_1<<blockShift) );
         }
 
     }

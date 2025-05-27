@@ -79,7 +79,9 @@ Y_UTEST(memory_chunk)
         const size_t userBytes = Memory::Chunk::UserBytesFor(blockSize,4096,userShift,numBlocks);
         Y_ASSERT(size_t(1)<<userShift == userBytes);
         Y_ASSERT(Memory::Chunk::NumBlocksFor(blockSize,userBytes) == numBlocks);
-
+        std::cerr << " | numBlocks = " << std::setw(3) << int(numBlocks);
+        std::cerr << " | userBytes = " << std::setw(8) << userBytes;
+        std::cerr << std::endl;
     }
 
 

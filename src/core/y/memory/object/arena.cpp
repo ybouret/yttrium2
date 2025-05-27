@@ -4,6 +4,7 @@
 #include "y/memory/allocator/dyadic.hpp"
 #include "y/memory/object/book.hpp"
 #include "y/core/utils.hpp"
+#include "y/check/static.hpp"
 
 #include <iostream>
 
@@ -81,11 +82,13 @@ namespace Yttrium
         userBytes( Chunk::UserBytesFor(blockSize, userPageBytes, Coerce(userShift), Coerce(numBlocks))),
         book( Book::Instance() )
         {
-            // sanity check
-            assert(userShift>=book.MinPageShift);
-            assert(userShift<=book.MaxPageShift);
+            Y_STATIC_CHECK(Book::MinPageBytes>=sizeof(Chunk), BadMinPageShift);
 
-            std::cerr << "for userBlockSize=" << userBlockSize << std::endl;
+            // sanity check
+            assert(userShift>=Book::MinPageShift);
+            assert(userShift<=Book::MaxPageShift);
+
+            std::cerr << "for userBlockSize     = " << userBlockSize << std::endl;
             std::cerr << "will allocate |chunk| = " << userBytes << " bytes" << std::endl;
             std::cerr << "blocks/chunk          = " << int(numBlocks) << std::endl;
 
@@ -96,11 +99,11 @@ namespace Yttrium
             //
             //
             //------------------------------------------------------------------
-            memSpace      = NextPowerOfTwo(Clamp(Book::MinPageBytes,userPageBytes,Book::MaxPageBytes),memShift);
-            Coerce(chunk) = static_cast<Chunk *>(book.query(memShift));
-            capacity      = memSpace / sizeof(Chunk);
+            memSpace  = NextPowerOfTwo(Clamp(Book::MinPageBytes,userPageBytes,Book::MaxPageBytes),memShift);
+            chunk     = static_cast<Chunk *>(book.query(memShift));
+            capacity  = memSpace / sizeof(Chunk);
 
-            std::cerr << "memSpace=" << memSpace << " => capacity=" << capacity << " chunks per arena" << std::endl;
+            std::cerr << "memSpace=" << memSpace << "=2^" << memShift << " => capacity=" << capacity << " chunks per arena" << std::endl;
 
             //------------------------------------------------------------------
             //

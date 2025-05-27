@@ -25,7 +25,7 @@ namespace Yttrium
         plist(),
         shift( checkPageSizeShift(userShift) ),
         bytes( size_t(1) << shift ),
-        allocator( Dyadic::Instance() )
+        memIO( Dyadic::Instance() )
         {
             Y_STATIC_CHECK(Dyadic::MinBlockBytes>=sizeof(Page),BadDyadicMetrics);
         }
@@ -34,7 +34,7 @@ namespace Yttrium
         void Pages:: release_() noexcept
         {
             while(plist.size>0)
-                allocator.releaseDyadic(Stealth::Zero(plist.popTail(),bytes),shift);
+                memIO.releaseDyadic(plist.popTail(),shift);
         }
 
         Pages:: ~Pages() noexcept
@@ -50,21 +50,26 @@ namespace Yttrium
             release_();
         }
 
+        void * Pages:: newPage()
+        {
+            return memIO.acquireDyadic(shift);
+        }
+
         void * Pages:: query()
         {
-            return (plist.size>0) ? Stealth::Zero(plist.popHead(),bytes) : allocator.acquireDyadic(shift);
+            return (plist.size>0) ? Page::Addr(plist.popHead(),bytes) : newPage();
         }
 
         void Pages:: store(void * const addr) noexcept
         {
             assert(0!=addr);
-            plist.insertOderedByAddresses( Stealth::CastZeroed<Page>(addr) );
+            plist.insertOderedByAddresses( Page::Cast(addr) );
             assert(plist.isOrderedBy( plist.CompareAddresses, Sign::StriclyIncreasing ) );
         }
 
         void Pages:: cache(size_t numPages)
         {
-            while(numPages-- > 0) store( allocator.acquireDyadic(shift) );
+            while(numPages-- > 0) store( newPage() );
         }
 
 

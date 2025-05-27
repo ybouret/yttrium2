@@ -7,6 +7,7 @@
 #include "y/core/linked/list.hpp"
 #include "y/calculus/base2.hpp"
 #include "y/ability/releasable.hpp"
+#include "y/memory/page.hpp"
 
 namespace Yttrium
 {
@@ -14,11 +15,7 @@ namespace Yttrium
     {
         class Dyadic;
         
-        struct Page
-        {
-            Page *next;
-            Page *prev;
-        };
+        
 
         class Pages : public Releasable
         {
@@ -39,16 +36,15 @@ namespace Yttrium
 
         private:
             Core::ListOf<Page> plist;
-
         public:
-            const unsigned shift;
-            const size_t   bytes;
-            Dyadic &       allocator;
+            const unsigned     shift;
+            const size_t       bytes;
+            Dyadic &           memIO;
 
         private:
             Y_Disable_Copy_And_Assign(Pages);
-            void release_() noexcept;
-
+            void   release_() noexcept;
+            void * newPage();
         };
 
 

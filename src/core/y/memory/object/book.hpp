@@ -14,17 +14,17 @@ namespace Yttrium
 {
     namespace Memory
     {
-
+        
         class Book : public Singleton<Book,GiantLockPolicy>, public Releasable
         {
         public:
             static const char * const CallSign;
             static const Longevity    LifeTime      = LifeTimeOf:: MemoryBook;         //!< lifetime
-            static const unsigned MinPageShift = Limits::MinBlockShift;
-            static const unsigned MaxPageShift = Limits::MaxBlockShift;
-            static const unsigned NumPageShift = 1+MaxPageShift - MinPageShift;
-            static const size_t   MinPageBytes = Limits::MinBlockBytes;
-            static const size_t   MaxPageBytes = Limits::MaxBlockBytes;
+            static const unsigned     MinPageShift = Limits::MinBlockShift;
+            static const unsigned     MaxPageShift = Limits::MaxBlockShift;
+            static const unsigned     NumPageShift = 1+MaxPageShift - MinPageShift;
+            static const size_t       MinPageBytes = Limits::MinBlockBytes;
+            static const size_t       MaxPageBytes = Limits::MaxBlockBytes;
 
             virtual void release() noexcept;
 

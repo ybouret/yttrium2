@@ -3,12 +3,13 @@
 #include "y/calculus/base2.hpp"
 #include "y/calculus/gcd.hpp"
 #include "y/type/sign.hpp"
+#include "y/core/utils.hpp"
 
 #include <cstring>
 #include <cstdlib>
 
-#include <iostream>
-#include <iomanip>
+//#include <iostream>
+//#include <iomanip>
 
 namespace Yttrium
 {
@@ -72,13 +73,16 @@ namespace Yttrium
         }
 
         size_t Chunk:: UserBytesFor(const size_t blockSize,
-                                    const size_t pageBytes,
+                                    size_t       pageBytes,
                                     unsigned    &userShift,
                                     uint8_t     &numBlocks) noexcept
         {
 
+            // adjust pageBytes
             assert(blockSize>0);
+            pageBytes = Clamp(MinUserBytes,pageBytes,MaxUserBytes);
 
+            
             // construct all possible metrics from MinNumBlocks to 255
             ChunkMetrics cms[256];
             size_t       num = 0;
@@ -113,6 +117,7 @@ namespace Yttrium
             qsort(cms,num, sizeof(ChunkMetrics), ChunkMetrics::Compare);
 
 
+#if 0
             for(unsigned i=0;i<num;++i)
             {
                 const ChunkMetrics &cm = cms[i];
@@ -125,6 +130,7 @@ namespace Yttrium
                 << std::endl;
                 break;
             }
+#endif
 
             numBlocks = cms[0].numBlocks;
             userShift = cms[0].userShift;

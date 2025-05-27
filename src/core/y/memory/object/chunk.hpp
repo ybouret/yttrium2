@@ -31,6 +31,7 @@ namespace Yttrium
             static const unsigned MinNumBlocks = 0x04;                   //!< minimal number of blocks per chunk
             static const unsigned MaxNumBlocks = 0xff;                   //!< maximum number of blocks per chunk
             static const size_t   MinUserBytes = Limits::MinBlockBytes;  //!< allows perfect match of 1-byte blocks
+            static const size_t   MaxUserBytes = Limits::MaxBlockBytes;  //!< consistency
 
             //__________________________________________________________________
             //
@@ -96,7 +97,7 @@ namespace Yttrium
              \return optimized bytes to allocate per chunk
              */
             static size_t UserBytesFor(const size_t   blockSize,
-                                       const size_t   pageBytes,
+                                       size_t         pageBytes,
                                        unsigned      &userShift,
                                        uint8_t       &numBlocks) noexcept;
 

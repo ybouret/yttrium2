@@ -18,7 +18,11 @@ namespace Yttrium
         {
         public:
             static const char * const CallSign;
-            
+
+            /**
+             \param userBlockSize a positive block size
+             \param userPageBytes will be set above Limits::MinBlockBytes
+             */
             Arena(const size_t userBlockSize,
                   const size_t userPageBytes);
             ~Arena() noexcept;
@@ -31,7 +35,7 @@ namespace Yttrium
             size_t         available; //!< available blocks
             Chunk *        acquiring;
             Chunk *        releasing;
-            Chunk * const  chunk;
+            Chunk *        chunk;
             size_t         count;
             size_t         capacity;
             size_t         memSpace;
