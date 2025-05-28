@@ -263,7 +263,7 @@ namespace Yttrium
         Nucleus:: Nucleus() : Singulet(), code(0)
         {
             if(Verbose) Display("+",CallSign,LifeTime);
-            std::cerr << "|code| = " << sizeof(codeWorkspace) << std::endl;
+            //std::cerr << "|code| = " << sizeof(codeWorkspace) << std::endl;
             try {
                 code = new ( Y_Memory_BZero(codeWorkspace) ) Code();
             }
