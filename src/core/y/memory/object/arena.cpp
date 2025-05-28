@@ -21,13 +21,12 @@ namespace Yttrium
         {
             Y_Arena_Check(0!=workspace);
             Y_Arena_Check(count<=capacity);
-            Y_Arena_Check(workspace+capacity==endChunk);
             Y_Arena_Check(0!=acquiring);
             Y_Arena_Check(acquiring>=workspace);
-            Y_Arena_Check(acquiring<endChunk);
+            Y_Arena_Check(acquiring<workspace+count);
             Y_Arena_Check(0!=releasing);
             Y_Arena_Check(releasing>=workspace);
-            Y_Arena_Check(releasing<endChunk);
+            Y_Arena_Check(releasing<workspace+count);
 
             for(size_t i=0,j=1;j<count;++i,++j)
             {
@@ -55,7 +54,6 @@ namespace Yttrium
             memShift  = 0;
             capacity  = 0;
             workspace = 0;
-            endChunk  = 0;
         }
 
 
@@ -99,7 +97,6 @@ namespace Yttrium
         workspace(0),
         count(0),
         capacity(0),
-        endChunk(0),
         memBytes(0),
         memShift(0),
         blockSize(userBlockSize),
@@ -134,7 +131,6 @@ namespace Yttrium
             memBytes  = NextPowerOfTwo(Clamp(Book::MinPageBytes,userPageBytes,Book::MaxPageBytes),memShift);
             workspace = static_cast<Chunk *>(book.query(memShift));
             capacity  = memBytes / sizeof(Chunk);
-            endChunk  = workspace+capacity;
 
 
             std::cerr << "memBytes=" << memBytes << "=2^" << memShift << " => capacity=" << capacity << " chunks per arena" << std::endl;
@@ -360,7 +356,6 @@ namespace Yttrium
                 memShift  = nextMemShift;
                 memBytes  = nextMemBytes;
                 capacity  = nextCapacity;
-                endChunk  = workspace + capacity;
                 assert(isValid());
                 std::cerr << "capacity is now " << capacity << std::endl;
                 assert(count<capacity);
@@ -406,7 +401,7 @@ namespace Yttrium
 
 
             if( acquiring->freeBlocks <= 0 )
-                acquiring = findAcquiring(workspace,endChunk,acquiring);
+                acquiring = findAcquiring(workspace,workspace+count,acquiring);
 
             assert(0!=acquiring);
             assert(acquiring->freeBlocks>0);

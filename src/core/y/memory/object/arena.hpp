@@ -75,7 +75,6 @@ namespace Yttrium
             Chunk *        workspace; //!< chunk workspace
             size_t         count;     //!< number of active chunks
             size_t         capacity;  //!< maximum number of active chunks
-            Chunk *        endChunk;  //!< first invalid chunk address
             size_t         memBytes;  //!< bytes used to hold workspace
             unsigned       memShift;  //!< memBytes=2^memShift
 
