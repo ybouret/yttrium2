@@ -127,9 +127,6 @@ namespace Yttrium
             assert(userShift>=Book::MinPageShift);
             assert(userShift<=Book::MaxPageShift);
 
-            std::cerr << "for userBlockSize     = " << userBlockSize << std::endl;
-            std::cerr << "will allocate |chunk| = " << userBytes << " bytes" << std::endl;
-            std::cerr << "numBlocks/chunk       = " << int(numBlocks) << std::endl;
 
             //------------------------------------------------------------------
             //
@@ -143,7 +140,6 @@ namespace Yttrium
             capacity  = memBytes / sizeof(Chunk);
 
 
-            std::cerr << "memBytes=" << memBytes << "=2^" << memShift << " => capacity=" << capacity << " chunks per arena" << std::endl;
 
             //------------------------------------------------------------------
             //
@@ -195,51 +191,52 @@ namespace Yttrium
         //
         //----------------------------------------------------------------------
 
+        namespace
+        {
 #define Y_Memory_Arena_Release_Critical() do {\
 /**/    if(upper<lower) Libc::Error::Critical(EINVAL, msg); \
 } while(false)
 
-        static inline
-        Chunk * findReleasing(const void * const addr,
-                              Chunk *            lower,
-                              Chunk *            upper) noexcept
-        {
-            static const char msg[] = "Memory::Arena: no address owner";
-            assert(0!=addr);
-            assert(0!=lower);
-            assert(0!=upper);
-            --upper;
-            Y_Memory_Arena_Release_Critical();
-
-            if(lower->owns(addr)) return lower;
-            assert( OwnedByNext == lower->whose(addr) );
-
-            if(upper->owns(addr)) return upper;
-            assert( OwnedByPrev == upper->whose(addr) );
-
-
-        PROBE:
-            Chunk * const probe = lower + ( (upper-lower)>>1 );
-            switch( probe->whose(addr) )
+            static inline
+            Chunk * findReleasing(const void * const addr,
+                                  Chunk *            lower,
+                                  Chunk *            upper) noexcept
             {
-                case OwnedByCurr:
-                    break;
+                static const char msg[] = "Memory::Arena: no address owner";
+                assert(0!=addr);
+                assert(0!=lower);
+                assert(0!=upper);
+                --upper;
+                Y_Memory_Arena_Release_Critical();
 
-                case OwnedByNext:
-                    (lower=probe)++;
-                    Y_Memory_Arena_Release_Critical();
-                    goto PROBE;
+                if(lower->owns(addr)) return lower;
+                assert( OwnedByNext == lower->whose(addr) );
 
-                case OwnedByPrev:
-                    (upper=probe)--;
-                    Y_Memory_Arena_Release_Critical();
-                    goto PROBE;
+                if(upper->owns(addr)) return upper;
+                assert( OwnedByPrev == upper->whose(addr) );
+
+
+            PROBE:
+                Chunk * const probe = lower + ( (upper-lower)>>1 );
+                switch( probe->whose(addr) )
+                {
+                    case OwnedByCurr:
+                        break;
+
+                    case OwnedByNext:
+                        (lower=probe)++;
+                        Y_Memory_Arena_Release_Critical();
+                        goto PROBE;
+
+                    case OwnedByPrev:
+                        (upper=probe)--;
+                        Y_Memory_Arena_Release_Critical();
+                        goto PROBE;
+                }
+                return probe;
             }
-            return probe;
-
-
-
         }
+
 
         void Arena:: release(void * const addr) noexcept
         {
@@ -324,56 +321,59 @@ namespace Yttrium
     namespace Memory
     {
 
-        static inline
-        Chunk * findAcquiring(const Chunk * const base,
-                              const Chunk * const last,
-                              Chunk * const       acquiring) noexcept
+        namespace
         {
-            static const char msg[] = "Memory::Arena: no chunk with free block";
+            static inline
+            Chunk * findAcquiring(const Chunk * const base,
+                                  const Chunk * const last,
+                                  Chunk * const       acquiring) noexcept
+            {
+                static const char msg[] = "Memory::Arena: no chunk with free block";
 
-            assert(acquiring>=base);
-            assert(acquiring<last);
-            assert(0==acquiring->freeBlocks);
-            Chunk * lower = acquiring;
-            Chunk * upper = acquiring;
+                assert(acquiring>=base);
+                assert(acquiring<last);
+                assert(0==acquiring->freeBlocks);
+                Chunk * lower = acquiring;
+                Chunk * upper = acquiring;
 
-        INTERLEAVED:
-            if(--lower<base)
-                goto UPPER_ONLY;
+            INTERLEAVED:
+                if(--lower<base)
+                    goto UPPER_ONLY;
 
-            if(lower->freeBlocks>0)
-                return lower;
+                if(lower->freeBlocks>0)
+                    return lower;
 
-            if(++upper>=last)
+                if(++upper>=last)
+                    goto LOWER_ONLY;
+
+                if(upper->freeBlocks>0)
+                    return upper;
+
+                goto INTERLEAVED;
+
+            LOWER_ONLY:
+                assert(upper>=last);
+
+                if(--lower<base)
+                    Libc::Error::Critical(EINVAL,msg);
+
+                if(lower->freeBlocks>0)
+                    return lower;
+
                 goto LOWER_ONLY;
 
-            if(upper->freeBlocks>0)
-                return upper;
+            UPPER_ONLY:
+                assert(lower<base);
 
-            goto INTERLEAVED;
+                if(++upper>=last)
+                    Libc::Error::Critical(EINVAL,msg);
 
-        LOWER_ONLY:
-            assert(upper>=last);
+                if(upper->freeBlocks>0)
+                    return upper;
 
-            if(--lower<base)
-                Libc::Error::Critical(EINVAL,msg);
+                goto UPPER_ONLY;
 
-            if(lower->freeBlocks>0)
-                return lower;
-            
-            goto LOWER_ONLY;
-
-        UPPER_ONLY:
-            assert(lower<base);
-
-            if(++upper>=last)
-                Libc::Error::Critical(EINVAL,msg);
-
-            if(upper->freeBlocks>0)
-                return upper;
-
-            goto UPPER_ONLY;
-
+            }
         }
 
         void Arena:: newChunkRequired()
@@ -405,7 +405,7 @@ namespace Yttrium
                 memBytes  = nextMemBytes;
                 capacity  = nextCapacity;
                 assert(isValid());
-                std::cerr << "capacity is now " << capacity << std::endl;
+                //std::cerr << "capacity is now " << capacity << std::endl;
                 assert(occupied<capacity);
             }
 

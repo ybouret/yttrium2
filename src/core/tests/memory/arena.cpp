@@ -42,11 +42,13 @@ Y_UTEST(memory_arena)
     size_t size = 0;
     Y_Memory_BZero(addr);
 
-    for(size_t blockSize=1;blockSize<=16;++blockSize)
+    for(size_t blockSize=1;blockSize<=64;++blockSize)
     {
-        std::cerr << "[blockSize=" << blockSize << "]" << std::endl;
+        std::cerr << "[blockSize=" << std::setw(3) << blockSize << "][";
         for(size_t pageBytes = 128; pageBytes <= 8192; pageBytes <<= 1)
         {
+            (std::cerr << '.').flush();
+
             Memory::Arena arena(blockSize, pageBytes);
 
             fill(addr, size, arena);
@@ -56,10 +58,8 @@ Y_UTEST(memory_arena)
                 fill(addr, size, arena);
             }
             empty(0, addr, size, arena, ran);
-            Memory::Book::Location().display(std::cerr);
-            break;
         }
-        break;
+        std::cerr << "]" << std::endl;
     }
 
     Memory::Book::Location().display(std::cerr);
