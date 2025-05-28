@@ -186,7 +186,7 @@ namespace Yttrium
             return memset(p,0,blockSize);
         }
 
-        void Chunk:: release(void * const p, const size_t blockSize) noexcept
+        bool Chunk:: release(void * const p, const size_t blockSize) noexcept
         {
             assert(0!=p);
             assert(freeBlocks<userBlocks);
@@ -198,7 +198,7 @@ namespace Yttrium
             *toRelease = firstBlock;
             const size_t deltaBlocks = theOffset/blockSize; assert(deltaBlocks<=0xff);
             firstBlock = static_cast<uint8_t>(deltaBlocks);
-            ++freeBlocks;
+            return (++freeBlocks>=userBlocks);
         }
 
     }

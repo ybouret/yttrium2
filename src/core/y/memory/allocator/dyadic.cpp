@@ -92,22 +92,28 @@ namespace Yttrium
             free( memset(blockAddr,0,blockSize) );
         }
 
-        void * Dyadic:: acquireDyadic(const unsigned blockShift)
+
+        void * Dyadic:: acquireUnlockedDyadic(const unsigned blockShift)
         {
             static const size_t _1 = 1;
             assert(blockShift<=MaxBlockShift);
             assert(blockShift>=MinBlockShift);
             const size_t blockSize = _1 << blockShift;
 
-            Y_Lock(access);
             void * const blockAddr = calloc(1,blockSize);
             if(0==blockAddr) throw Libc::Exception(ENOMEM,"%s::acquireDyadic(2^%u)",CallSign,blockShift);
-            
+
             ++Coerce(allocated[blockShift]);
             return blockAddr;
         }
 
-        void  Dyadic:: releaseDyadic(void *const blockAddr, const unsigned int blockShift) noexcept
+        void * Dyadic:: acquireDyadic(const unsigned blockShift)
+        {
+            Y_Lock(access);
+            return acquireUnlockedDyadic(blockShift);
+        }
+
+        void  Dyadic:: releaseUnlockedDyadic(void *const blockAddr, const unsigned int blockShift) noexcept
         {
             static const size_t _1 = 1;
             assert(0 != blockAddr);
@@ -116,11 +122,15 @@ namespace Yttrium
             assert( allocated[blockShift] > 0 || Die("corrupted release") );
 
 
-            Y_Lock(access);
             --Coerce(allocated[blockShift]);
             free( memset(blockAddr,0,_1<<blockShift) );
         }
 
+        void  Dyadic:: releaseDyadic(void *const blockAddr, const unsigned int blockShift) noexcept
+        {
+            Y_Lock(access);
+            return releaseUnlockedDyadic(blockAddr,blockShift);
+        }
     }
 
 }

@@ -56,9 +56,29 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            void *       query();                       //!< query a new page \return clear new bytes
-            void         store(void * const) noexcept;  //!< store a previously acquire page
-            void         cache(size_t);                 //!< reserve some pages
+
+            //! query a new page with
+            /**
+             - from plist if count() > 0
+             - from memIO.acquireUnlockedDyadic(shift) otherwise
+             \return a clear page of bytes=2^shift
+             \warning unlocked acquire
+             */
+            void *       query();
+
+
+            //!
+            void         store(void * const) noexcept;  //!< store a previously acquired page
+
+            //! grow availabale pages
+            /**
+             use memIO.acquireUnlockedDyadic(shift)
+             \param numPages pages to store
+             \warning unlocked
+             */
+            void         cache(size_t numPages);
+
+
             size_t       count() const noexcept;        //!< \return available pages
             void         display(std::ostream &) const; //!< display info
 
@@ -68,7 +88,7 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
-            virtual void release() noexcept;
+            virtual void release() noexcept; //! safe (locked) release
 
             //__________________________________________________________________
             //
@@ -86,7 +106,7 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(Pages); //!< discarding
             void   release_() noexcept;       //!< release all existing pages
-            void * newPage();                 //!< create a new page \return address of bytes from memIO
+            
         };
 
 

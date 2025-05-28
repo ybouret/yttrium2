@@ -70,7 +70,7 @@ namespace Yttrium
 
         void Book:: release() noexcept
         {
-            Y_Lock(access);
+            //Y_Lock(access);
             for(unsigned i=MaxPageShift;i>=MinPageShift;--i) bookPages[i].release();
         }
 

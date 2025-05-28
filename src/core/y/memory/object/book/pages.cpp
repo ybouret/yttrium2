@@ -33,8 +33,9 @@ namespace Yttrium
 
         void Pages:: release_() noexcept
         {
+            Y_Lock(memIO.access);
             while(plist.size>0)
-                memIO.releaseDyadic(plist.popTail(),shift);
+                memIO.releaseUnlockedDyadic(plist.popTail(),shift);
         }
 
         Pages:: ~Pages() noexcept
@@ -50,15 +51,15 @@ namespace Yttrium
             release_();
         }
 
-        void * Pages:: newPage()
-        {
-            return memIO.acquireDyadic(shift);
-        }
+
 
         void * Pages:: query()
         {
-            return (plist.size>0) ? Page::Addr(plist.popHead(),bytes) : newPage();
+            return (plist.size>0) ? Page::Addr(plist.popHead(),bytes) : memIO.acquireUnlockedDyadic(shift);
         }
+
+
+
 
         void Pages:: store(void * const addr) noexcept
         {
@@ -69,7 +70,7 @@ namespace Yttrium
 
         void Pages:: cache(size_t numPages)
         {
-            while(numPages-- > 0) store( newPage() );
+            while(numPages-- > 0) store( memIO.acquireUnlockedDyadic(shift) );
         }
 
 

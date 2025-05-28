@@ -70,8 +70,9 @@ namespace Yttrium
             /**
              \param p         a valid address
              \param blockSize with its block size
+             \return true if empty
              */
-            void  release(void * const p, const size_t blockSize) noexcept;
+            bool  release(void * const p, const size_t blockSize) noexcept;
 
 
             //! number of blocks for a given memory amount

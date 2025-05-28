@@ -49,6 +49,15 @@ namespace Yttrium
             //__________________________________________________________________
             virtual void display(std::ostream &os) const;
 
+
+            //! unlocked acquire a power-of-two sized block
+            /**
+             \param blockShift in [MinBlockShift:MaxBlockShift]
+             \return a 2^blockShift memory block
+             */
+            void *       acquireUnlockedDyadic(const unsigned blockShift);
+
+
             //! acquire a power-of-two sized block
             /**
              \param blockShift in [MinBlockShift:MaxBlockShift]
@@ -56,6 +65,16 @@ namespace Yttrium
              */
             void *       acquireDyadic(const unsigned blockShift);
 
+
+
+            //! unlocked release a power-of-two sized block
+            /**
+             \param blockAddr  previously acquired block
+             \param blockShift with 2^blockShift bytes
+             */
+
+            void releaseUnlockedDyadic(void * const blockAddr, const unsigned blockShift) noexcept;
+            
             //! release a power-of-two sized block
             /**
              \param blockAddr  previously acquired block
