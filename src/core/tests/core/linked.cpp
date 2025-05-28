@@ -1,3 +1,7 @@
+
+#include "y/core/linked/singly.hpp"
+#include "y/core/linked/doubly.hpp"
+
 #include "y/core/linked/pool/cxx.hpp"
 #include "y/core/linked/pool/raw.hpp"
 #include "y/core/linked/list/cloneable.hpp"
@@ -6,18 +10,19 @@
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
 
+
+
 using namespace Yttrium;
 
 namespace
 {
-    class Node
+    class Node : public Core::DoublyLinked<Node>
     {
     public:
         static int Count;
 
         explicit Node() noexcept :
-        next(0),
-        prev(0),
+        Core::DoublyLinked<Node>(),
         value(Count)
         {
             ++Count;
@@ -29,7 +34,8 @@ namespace
         }
 
         Node(const Node &node) noexcept :
-        next(0), prev(0), value(node.value)
+        Core::DoublyLinked<Node>(),
+        value(node.value)
         {
             ++Count;
         }
@@ -48,8 +54,7 @@ namespace
             return Sign::Of(lhs->value,rhs->value);
         }
 
-        Node *next;
-        Node *prev;
+
         const int value;
 
     private:

@@ -32,7 +32,7 @@ namespace Yttrium
         inline explicit RawListOf() noexcept : Core::ListOf<NODE>() {}
 
         //! cleanup
-        inline virtual ~RawListOf() noexcept {}
+        inline virtual ~RawListOf() noexcept { reset_(); }
 
         //______________________________________________________________________
         //
@@ -42,13 +42,24 @@ namespace Yttrium
         //______________________________________________________________________
         inline virtual void reset() noexcept
         {
-            Coerce(this->head) = 0;
-            Coerce(this->tail) = 0;
-            Coerce(this->size) = 0;
+            reset_();
         }
 
     private:
         Y_Disable_Copy_And_Assign(RawListOf); //!< discarding
+        inline virtual void reset_() noexcept
+        {
+            for(NODE *node=this->head;0!=node;)
+            {
+                NODE *  const next = node->next;
+                node->prev = 0;
+                node->next = 0;
+                node = next;
+            }
+            Coerce(this->head) = 0;
+            Coerce(this->tail) = 0;
+            Coerce(this->size) = 0;
+        }
     };
 
 }

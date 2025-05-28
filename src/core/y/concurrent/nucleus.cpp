@@ -72,6 +72,8 @@ namespace Yttrium
                 pthread_mutex_destroy(data);
             }
 
+            
+
         private:
             Y_Disable_Copy_And_Assign(PThreadMutex);
             virtual void doLock() noexcept
