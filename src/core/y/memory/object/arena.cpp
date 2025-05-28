@@ -354,6 +354,7 @@ namespace Yttrium
 
             if(occupied>=capacity)
             {
+                assert(0==freeChunk);
                 if(memShift>=Limits::MaxBlockShift) throw Specific::Exception(CallSign,"workspace too big");
 
                 //--------------------------------------------------------------
