@@ -27,6 +27,7 @@ namespace Yttrium
             Y_Arena_Check(0!=releasing);
             Y_Arena_Check(releasing>=workspace);
             Y_Arena_Check(releasing<workspace+occupied);
+            Y_Arena_Check(!(available<=0 && freeChunk));
 
             if(freeChunk)
             {
@@ -270,7 +271,17 @@ namespace Yttrium
             //------------------------------------------------------------------
             assert(releasing->owns(addr));
             ++available;
-            releasing->release(addr,blockSize);
+            if( releasing->release(addr,blockSize) )
+            {
+                if(0==freeChunk)
+                {
+
+                }
+                else
+                {
+
+                }
+            }
         }
     }
 

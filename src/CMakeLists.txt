@@ -17,6 +17,7 @@ else()
 endif()
 
 set(Y_UnitTests "")
+add_subdirectory(y)
 add_subdirectory(core)
 
 cmake_print_variables(Y_UnitTests)
