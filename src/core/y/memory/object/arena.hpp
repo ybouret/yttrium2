@@ -69,7 +69,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
         private:
-            size_t         available; //!< available blocks
+            size_t         available; //!< available blocks bookeeping
             Chunk *        acquiring; //!< cache for acquiring chunk
             Chunk *        releasing; //!< cache for releasing chunk
             Chunk *        workspace; //!< chunk workspace
