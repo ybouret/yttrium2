@@ -446,6 +446,14 @@ namespace Yttrium
             }
 
 
+            NODE * moveToFront(NODE * const node) noexcept
+            {
+                assert(0!=node);
+                assert( owns(node) );
+                if(node!=head)
+                    return pushHead( pop(node) );
+                return node;
+            }
 
             //__________________________________________________________________
             //
