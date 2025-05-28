@@ -20,11 +20,11 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        template <typename T>
+        template <typename T, size_t N = 1>
         class Workspace
         {
         public:
-
+            static const size_t Capacity = N;
             //! cleanup
             inline virtual ~Workspace() noexcept { Y_Memory_BZero(wksp); Coerce(data) = 0; }
 
@@ -40,8 +40,8 @@ namespace Yttrium
 
             T * const data; //!< address of workspace
         private:
-            Y_Disable_Copy_And_Assign(Workspace);            //!< discarding
-            void *    wksp[ Alignment::WordsFor<T>::Count ]; //!< internal memory
+            Y_Disable_Copy_And_Assign(Workspace);                      //!< discarding
+            void *    wksp[ Alignment::WordsGEQ<sizeof(T)*N>::Count ]; //!< internal memory
         };
 
     }

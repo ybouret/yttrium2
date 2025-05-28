@@ -17,7 +17,8 @@ Y_UTEST(concurrent_nucleus)
     }
 
     {
-        
+        Lockable &replica = nucleus.queryLockable();
+        Y_Lock(replica);
     }
 
 }

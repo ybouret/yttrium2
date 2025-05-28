@@ -29,8 +29,9 @@ namespace Yttrium
             // Definitiosn
             //
             //__________________________________________________________________
-            static const char * const CallSign; //!< "Concurrent::Nucleus"
-            static const Longevity    LifeTime = Singulet::GreatestLifeTime; //!< oldest
+            static const char * const CallSign;                                    //!< "Concurrent::Nucleus"
+            static const Longevity    LifeTime       = Singulet::GreatestLifeTime; //!< oldest
+            static const size_t       ReplicaMutexes = 4;
             class        Code;
 
             //__________________________________________________________________
@@ -52,12 +53,16 @@ namespace Yttrium
             /** \return internal mutex */
             virtual Lockable & access() noexcept;
 
+
             //__________________________________________________________________
             //
             //
             // Methods
             //
             //__________________________________________________________________
+
+            Lockable & queryLockable();
+
 
             //! create/get unique instance
             /** \return unique internal instance */
