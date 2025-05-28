@@ -35,7 +35,7 @@ namespace
     void empty(const size_t to, Memory::Object::Blocks &blocks, System::Rand &ran)
     {
         ran.shuffle(blk,num);
-        while(num>0)
+        while(num>to)
         {
             --num;
             blocks.release(blk[num].addr,blk[num].size);
@@ -55,7 +55,12 @@ Y_UTEST(memory_blocks)
 
     Y_Memory_BZero(blk);
 
-    fill( blocks, ran );
+    fill(blocks,ran);
+    for(size_t iter=0;iter<10;++iter)
+    {
+        empty(num/2,blocks,ran);
+        fill(blocks,ran);
+    }
     empty(0,blocks,ran);
 
 }
