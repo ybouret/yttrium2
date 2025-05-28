@@ -1,3 +1,6 @@
+set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS    ON)
+set(CMAKE_SKIP_PREPROCESSED_SOURCE_RULES ON)
+set(CMAKE_SKIP_ASSEMBLY_SOURCE_RULES     ON)
 
 ################################################################################
 ##
@@ -110,8 +113,8 @@ if("${Y_CC}" MATCHES "gcc.*")
 	message( STATUS "Using GNU Compilers")
 	set(Y_KNOWN_COMPILER TRUE)
 	set(Y_GNU TRUE)
-	string( APPEND CMAKE_C_FLAGS " -Wall -Wextra")
-	string( APPEND CMAKE_CXX_FLAGS " -Wall -Wextra -Weffc++")
+	string( APPEND CMAKE_C_FLAGS " -pipe -Wall -Wextra")
+	string( APPEND CMAKE_CXX_FLAGS " -pipe -Wall -Wextra -Weffc++")
 	if( "${Y_CC_MAJOR}" LESS "7" )
 		string( APPEND CMAKE_CXX_FLAGS " -std=c++0x")
 	endif()
@@ -129,8 +132,8 @@ if("${Y_CC}" MATCHES "clang.*")
 	message( STATUS "Using Clang Compilers")
 	set(Y_KNOWN_COMPILER TRUE)
 	set(Y_CLANG TRUE)
-	string( APPEND CMAKE_C_FLAGS   " -Wall -Wextra")
-	string( APPEND CMAKE_CXX_FLAGS " -Wall -Wextra -Weffc++ -std=c++11")
+	string( APPEND CMAKE_C_FLAGS   " -pipe -Wall -Wextra")
+	string( APPEND CMAKE_CXX_FLAGS " -pipe -Wall -Wextra -Weffc++ -std=c++11")
 endif()
 
 

@@ -15,14 +15,14 @@ namespace
 	static const size_t MaxSize = 1000;
 
 	static inline
-		void fill(void* addr[], size_t& size, Memory::Arena& arena)
+		void fill(void* addr[], size_t& size, Memory::Object::Arena& arena)
 	{
 		while (size < MaxSize)
 			addr[size++] = arena.acquire();
 	}
 
 	static inline
-		void empty(const size_t to, void* addr[], size_t& size, Memory::Arena& arena, System::Rand& ran)
+		void empty(const size_t to, void* addr[], size_t& size, Memory::Object::Arena& arena, System::Rand& ran)
 	{
 		ran.shuffle(addr, size);
 		while (size > to)
@@ -36,7 +36,7 @@ namespace
 Y_UTEST(memory_arena)
 {
 	System::Rand ran;
-	Y_SIZEOF(Memory::Arena);
+	Y_SIZEOF(Memory::Object::Arena);
 
     size_t maxBlockSize = 16;
     if(argc>1) maxBlockSize = size_t( atol(argv[1]) );
@@ -52,7 +52,7 @@ Y_UTEST(memory_arena)
         {
             (std::cerr << '.').flush();
 
-            Memory::Arena arena(blockSize, pageBytes);
+            Memory::Object::Arena arena(blockSize, pageBytes);
 
             fill(addr, size, arena);
             for (int iter = 0; iter < 100; ++iter)
@@ -65,9 +65,9 @@ Y_UTEST(memory_arena)
         std::cerr << "]" << std::endl;
     }
 
-    Memory::Book::Location().display(std::cerr);
+    Memory::Object::Book::Location().display(std::cerr);
 
-    Y_SIZEOF(Memory::Arena);
+    Y_SIZEOF(Memory::Object::Arena);
 
 }
 Y_UDONE()

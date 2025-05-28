@@ -12,165 +12,168 @@ namespace Yttrium
 {
     namespace Memory
     {
+        namespace Object
+        {
 
-        const char * const Arena:: CallSign = "Memory::Arena";
-        static const char ErrorHeader[] = "*** [FAILED] ";
+            const char * const Arena:: CallSign = "Memory::Arena";
+            static const char ErrorHeader[] = "*** [FAILED] ";
 
 #define Y_Arena_Check(EXPR) do { if ( !(EXPR) ) { std::cerr << ErrorHeader << #EXPR << std::endl;  return false; } } while(false)
 
-        bool Arena:: isValid() const noexcept
-        {
-            Y_Arena_Check(0!=workspace);
-            Y_Arena_Check(occupied<=capacity);
-            Y_Arena_Check(0!=acquiring);
-            Y_Arena_Check(acquiring>=workspace);
-            Y_Arena_Check(acquiring<workspace+occupied);
-            Y_Arena_Check(0!=releasing);
-            Y_Arena_Check(releasing>=workspace);
-            Y_Arena_Check(releasing<workspace+occupied);
-            Y_Arena_Check(!(available<=0 && freeChunk));
-
-            if(freeChunk)
+            bool Arena:: isValid() const noexcept
             {
-                Y_Arena_Check(freeChunk>=workspace);
-                Y_Arena_Check(freeChunk<workspace+occupied);
-                Y_Arena_Check(freeChunk->isFree());
+                Y_Arena_Check(0!=workspace);
+                Y_Arena_Check(occupied<=capacity);
+                Y_Arena_Check(0!=acquiring);
+                Y_Arena_Check(acquiring>=workspace);
+                Y_Arena_Check(acquiring<workspace+occupied);
+                Y_Arena_Check(0!=releasing);
+                Y_Arena_Check(releasing>=workspace);
+                Y_Arena_Check(releasing<workspace+occupied);
+                Y_Arena_Check(!(available<=0 && freeChunk));
+
+                if(freeChunk)
+                {
+                    Y_Arena_Check(freeChunk>=workspace);
+                    Y_Arena_Check(freeChunk<workspace+occupied);
+                    Y_Arena_Check(freeChunk->isFree());
+                }
+
+                for(size_t i=0,j=1;j<occupied;++i,++j)
+                {
+                    const Chunk & lhs = workspace[i];
+                    const Chunk & rhs = workspace[j];
+                    Y_Arena_Check(lhs.data<rhs.data);
+                }
+
+                return true;
             }
 
-            for(size_t i=0,j=1;j<occupied;++i,++j)
+
+            void Arena:: releaseWorkspace() noexcept
             {
-                const Chunk & lhs = workspace[i];
-                const Chunk & rhs = workspace[j];
-                Y_Arena_Check(lhs.data<rhs.data);
+                assert(0==occupied);
+                assert(0!=workspace);
+                assert(capacity>0);
+                assert(memBytes>0);
+                assert(memShift>0);
+                assert(0==acquiring);
+                assert(0==releasing);
+
+                book.store(memShift,workspace);
+                memBytes  = 0;
+                memShift  = 0;
+                capacity  = 0;
+                workspace = 0;
             }
 
-            return true;
-        }
 
-
-        void Arena:: releaseWorkspace() noexcept
-        {
-            assert(0==occupied);
-            assert(0!=workspace);
-            assert(capacity>0);
-            assert(memBytes>0);
-            assert(memShift>0);
-            assert(0==acquiring);
-            assert(0==releasing);
-
-            book.store(memShift,workspace);
-            memBytes  = 0;
-            memShift  = 0;
-            capacity  = 0;
-            workspace = 0;
-        }
-
-
-        void Arena:: releaseAllChunks() noexcept
-        {
-            assert( isValid() );
-            acquiring = releasing = 0;
-            size_t missing = 0;
-            while(occupied>0)
+            void Arena:: releaseAllChunks() noexcept
             {
-                Chunk &current = workspace[--occupied];
-                missing += current.userBlocks-current.freeBlocks;
-                book.store(userShift,current.data);
-                Memory::Stealth::Zero( &current, sizeof(Chunk) );
+                assert( isValid() );
+                acquiring = releasing = 0;
+                size_t missing = 0;
+                while(occupied>0)
+                {
+                    Chunk &current = workspace[--occupied];
+                    missing += current.userBlocks-current.freeBlocks;
+                    book.store(userShift,current.data);
+                    Memory::Stealth::Zero( &current, sizeof(Chunk) );
+                }
+                if(missing>0)
+                {
+                    std::cerr << "*** " << CallSign << "[" << blockSize << "] missing #" << missing << std::endl;
+                }
             }
-            if(missing>0)
+
+            Arena:: ~Arena() noexcept
             {
-                std::cerr << "*** " << CallSign << "[" << blockSize << "] missing #" << missing << std::endl;
-            }
-        }
-
-        Arena:: ~Arena() noexcept
-        {
-            releaseAllChunks();
-            releaseWorkspace();
-        }
-
-        Chunk * Arena:: makeInPlaceChunk(void * const addr)
-        {
-            assert(0!=addr);
-            return new (addr) Chunk(book.query(userShift),numBlocks,blockSize);
-        }
-
-
-
-        Arena:: Arena(const size_t userBlockSize,
-                      const size_t userPageBytes) :
-        available(0),
-        acquiring(0),
-        releasing(0),
-        freeChunk(0),
-        workspace(0),
-        occupied(0),
-        capacity(0),
-        memBytes(0),
-        memShift(0),
-        blockSize(userBlockSize),
-        userShift(0),
-        numBlocks(0),
-        userBytes( Chunk::UserBytesFor(blockSize, userPageBytes, Coerce(userShift), Coerce(numBlocks))),
-        book( Book::Instance() ),
-        next(0),
-        prev(0)
-        {
-
-            //------------------------------------------------------------------
-            //
-            //
-            // sanity check
-            //
-            //
-            //------------------------------------------------------------------
-            Y_STATIC_CHECK(Book::MinPageBytes>=sizeof(Chunk), BadMinPageShift);
-            assert(userShift>=Book::MinPageShift);
-            assert(userShift<=Book::MaxPageShift);
-
-
-            //------------------------------------------------------------------
-            //
-            //
-            // first allocation : for workspace or chunks
-            //
-            //
-            //------------------------------------------------------------------
-            memBytes  = NextPowerOfTwo(Clamp(Book::MinPageBytes,userPageBytes,Book::MaxPageBytes),memShift);
-            workspace = static_cast<Chunk *>(book.query(memShift));
-            capacity  = memBytes / sizeof(Chunk);
-
-
-
-            //------------------------------------------------------------------
-            //
-            //
-            // second allocation: create first chunk
-            //
-            //
-            //------------------------------------------------------------------
-            try { (void) makeInPlaceChunk(workspace); }
-            catch(...) {
+                releaseAllChunks();
                 releaseWorkspace();
-                throw;
             }
 
-            //------------------------------------------------------------------
-            //
-            //
-            // first update
-            //
-            //
-            //------------------------------------------------------------------
-            occupied   = 1;
-            available  = numBlocks;
-            acquiring  = releasing = workspace;
+            Chunk * Arena:: makeInPlaceChunk(void * const addr)
+            {
+                assert(0!=addr);
+                return new (addr) Chunk(book.query(userShift),numBlocks,blockSize);
+            }
 
-            assert( isValid() );
+
+
+            Arena:: Arena(const size_t userBlockSize,
+                          const size_t userPageBytes) :
+            available(0),
+            acquiring(0),
+            releasing(0),
+            freeChunk(0),
+            workspace(0),
+            occupied(0),
+            capacity(0),
+            memBytes(0),
+            memShift(0),
+            blockSize(userBlockSize),
+            userShift(0),
+            numBlocks(0),
+            userBytes( Chunk::UserBytesFor(blockSize, userPageBytes, Coerce(userShift), Coerce(numBlocks))),
+            book( Book::Instance() ),
+            next(0),
+            prev(0)
+            {
+
+                //--------------------------------------------------------------
+                //
+                //
+                // sanity check
+                //
+                //
+                //--------------------------------------------------------------
+                Y_STATIC_CHECK(Book::MinPageBytes>=sizeof(Chunk), BadMinPageShift);
+                assert(userShift>=Book::MinPageShift);
+                assert(userShift<=Book::MaxPageShift);
+
+
+                //--------------------------------------------------------------
+                //
+                //
+                // first allocation : for workspace or chunks
+                //
+                //
+                //--------------------------------------------------------------
+                memBytes  = NextPowerOfTwo(Clamp(Book::MinPageBytes,userPageBytes,Book::MaxPageBytes),memShift);
+                workspace = static_cast<Chunk *>(book.query(memShift));
+                capacity  = memBytes / sizeof(Chunk);
+
+
+
+                //--------------------------------------------------------------
+                //
+                //
+                // second allocation: create first chunk
+                //
+                //
+                //--------------------------------------------------------------
+                try { (void) makeInPlaceChunk(workspace); }
+                catch(...) {
+                    releaseWorkspace();
+                    throw;
+                }
+
+                //--------------------------------------------------------------
+                //
+                //
+                // first update
+                //
+                //
+                //--------------------------------------------------------------
+                occupied   = 1;
+                available  = numBlocks;
+                acquiring  = releasing = workspace;
+
+                assert( isValid() );
+            }
+
+
         }
-
-
 
     }
 
@@ -183,135 +186,140 @@ namespace Yttrium
 {
     namespace Memory
     {
-        //----------------------------------------------------------------------
-        //
-        //
-        //
-        // releasing
-        //
-        //
-        //
-        //----------------------------------------------------------------------
 
-        namespace
+        namespace Object
         {
+            //------------------------------------------------------------------
+            //
+            //
+            //
+            // releasing
+            //
+            //
+            //
+            //------------------------------------------------------------------
+
+            namespace
+            {
 #define Y_Memory_Arena_Release_Critical() do {\
 /**/    if(upper<lower) Libc::Error::Critical(EINVAL, msg); \
 } while(false)
 
-            static inline
-            Chunk * findReleasing(const void * const addr,
-                                  Chunk *            lower,
-                                  Chunk *            upper) noexcept
-            {
-                static const char msg[] = "Memory::Arena: no address owner";
-                assert(0!=addr);
-                assert(0!=lower);
-                assert(0!=upper);
-                --upper;
-                Y_Memory_Arena_Release_Critical();
-
-                if(lower->owns(addr)) return lower;
-                assert( OwnedByNext == lower->whose(addr) );
-
-                if(upper->owns(addr)) return upper;
-                assert( OwnedByPrev == upper->whose(addr) );
-
-
-            PROBE:
-                Chunk * const probe = lower + ( (upper-lower)>>1 );
-                switch( probe->whose(addr) )
+                static inline
+                Chunk * findReleasing(const void * const addr,
+                                      Chunk *            lower,
+                                      Chunk *            upper) noexcept
                 {
-                    case OwnedByCurr:
+                    static const char msg[] = "Memory::Arena: no address owner";
+                    assert(0!=addr);
+                    assert(0!=lower);
+                    assert(0!=upper);
+                    --upper;
+                    Y_Memory_Arena_Release_Critical();
+
+                    if(lower->owns(addr)) return lower;
+                    assert( OwnedByNext == lower->whose(addr) );
+
+                    if(upper->owns(addr)) return upper;
+                    assert( OwnedByPrev == upper->whose(addr) );
+
+
+                PROBE:
+                    Chunk * const probe = lower + ( (upper-lower)>>1 );
+                    switch( probe->whose(addr) )
+                    {
+                        case OwnedByCurr:
+                            break;
+
+                        case OwnedByNext:
+                            (lower=probe)++;
+                            Y_Memory_Arena_Release_Critical();
+                            goto PROBE;
+
+                        case OwnedByPrev:
+                            (upper=probe)--;
+                            Y_Memory_Arena_Release_Critical();
+                            goto PROBE;
+                    }
+                    return probe;
+                }
+            }
+
+
+            void Arena:: release(void * const addr) noexcept
+            {
+                assert(0!=addr);
+                assert(isValid());
+
+                //--------------------------------------------------------------
+                //
+                // look for releasing
+                //
+                //--------------------------------------------------------------
+                switch( releasing->whose(addr) )
+                {
+                    case OwnedByCurr: // cached
+                        break;
+
+                    case OwnedByPrev:
+                        releasing = findReleasing(addr,workspace,releasing);
                         break;
 
                     case OwnedByNext:
-                        (lower=probe)++;
-                        Y_Memory_Arena_Release_Critical();
-                        goto PROBE;
-
-                    case OwnedByPrev:
-                        (upper=probe)--;
-                        Y_Memory_Arena_Release_Critical();
-                        goto PROBE;
+                        releasing = findReleasing(addr,++releasing,workspace+occupied);
+                        break;
                 }
-                return probe;
-            }
-        }
 
-
-        void Arena:: release(void * const addr) noexcept
-        {
-            assert(0!=addr);
-            assert(isValid());
-
-            //------------------------------------------------------------------
-            //
-            // look for releasing
-            //
-            //------------------------------------------------------------------
-            switch( releasing->whose(addr) )
-            {
-                case OwnedByCurr: // cached
-                    break;
-
-                case OwnedByPrev:
-                    releasing = findReleasing(addr,workspace,releasing);
-                    break;
-
-                case OwnedByNext:
-                    releasing = findReleasing(addr,++releasing,workspace+occupied);
-                    break;
-            }
-
-            //------------------------------------------------------------------
-            //
-            // return block to its chunk
-            //
-            //------------------------------------------------------------------
-            assert(releasing->owns(addr));
-            ++available;
-            if( releasing->release(addr,blockSize) )
-            {
-                assert( releasing->isFree() );
-                if(0==freeChunk)
+                //--------------------------------------------------------------
+                //
+                // return block to its chunk
+                //
+                //--------------------------------------------------------------
+                assert(releasing->owns(addr));
+                ++available;
+                if( releasing->release(addr,blockSize) )
                 {
-                    freeChunk = releasing;
-                }
-                else
-                {
-                    //----------------------------------------------------------
-                    // get rid of highest memory free chunk and keep releasing
-                    //----------------------------------------------------------
+                    assert( releasing->isFree() );
+                    if(0==freeChunk)
                     {
-                        if(freeChunk<releasing)
-                            Swap(freeChunk,releasing);
-                        assert(releasing<freeChunk);
-                        assert(releasing->data<freeChunk->data);
-                        assert(available>=numBlocks);
-
-                        // return blocks
-                        book.store(userShift,freeChunk->data);
-                        available -= numBlocks;
-
-                        // update workspace
-                        Stealth::Move(freeChunk,freeChunk+1,sizeof(Chunk)*(--occupied - static_cast<size_t>(freeChunk-workspace)) );
-                        Stealth::Zero(workspace+occupied,sizeof(Chunk));
-                        freeChunk = 0;
+                        freeChunk = releasing;
                     }
+                    else
+                    {
+                        //------------------------------------------------------
+                        // get rid of highest memory free chunk and keep releasing
+                        //------------------------------------------------------
+                        {
+                            if(freeChunk<releasing)
+                                Swap(freeChunk,releasing);
+                            assert(releasing<freeChunk);
+                            assert(releasing->data<freeChunk->data);
+                            assert(available>=numBlocks);
 
-                    //----------------------------------------------------------
-                    // update acquiring status
-                    //----------------------------------------------------------
-                    if(acquiring>releasing)
-                        --acquiring;
+                            // return blocks
+                            book.store(userShift,freeChunk->data);
+                            available -= numBlocks;
 
-                    assert(isValid());
+                            // update workspace
+                            Stealth::Move(freeChunk,freeChunk+1,sizeof(Chunk)*(--occupied - static_cast<size_t>(freeChunk-workspace)) );
+                            Stealth::Zero(workspace+occupied,sizeof(Chunk));
+                            freeChunk = 0;
+                        }
+
+                        //------------------------------------------------------
+                        // update acquiring status
+                        //------------------------------------------------------
+                        if(acquiring>releasing)
+                            --acquiring;
+
+                        assert(isValid());
+                    }
                 }
             }
+
+
         }
     }
-
 }
 
 
@@ -323,142 +331,146 @@ namespace Yttrium
     namespace Memory
     {
 
-        namespace
+        namespace Object
         {
-            static inline
-            Chunk * findAcquiring(const Chunk * const base,
-                                  const Chunk * const last,
-                                  Chunk * const       acquiring) noexcept
+            namespace
             {
-                static const char msg[] = "Memory::Arena: no chunk with free block";
+                static inline
+                Chunk * findAcquiring(const Chunk * const base,
+                                      const Chunk * const last,
+                                      Chunk * const       acquiring) noexcept
+                {
+                    static const char msg[] = "Memory::Arena: no chunk with free block";
 
-                assert(acquiring>=base);
-                assert(acquiring<last);
-                assert(0==acquiring->freeBlocks);
-                Chunk * lower = acquiring;
-                Chunk * upper = acquiring;
+                    assert(acquiring>=base);
+                    assert(acquiring<last);
+                    assert(0==acquiring->freeBlocks);
+                    Chunk * lower = acquiring;
+                    Chunk * upper = acquiring;
 
-            INTERLEAVED:
-                if(--lower<base)
-                    goto UPPER_ONLY;
+                INTERLEAVED:
+                    if(--lower<base)
+                        goto UPPER_ONLY;
 
-                if(lower->freeBlocks>0)
-                    return lower;
+                    if(lower->freeBlocks>0)
+                        return lower;
 
-                if(++upper>=last)
+                    if(++upper>=last)
+                        goto LOWER_ONLY;
+
+                    if(upper->freeBlocks>0)
+                        return upper;
+
+                    goto INTERLEAVED;
+
+                LOWER_ONLY:
+                    assert(upper>=last);
+
+                    if(--lower<base)
+                        Libc::Error::Critical(EINVAL,msg);
+
+                    if(lower->freeBlocks>0)
+                        return lower;
+
                     goto LOWER_ONLY;
 
-                if(upper->freeBlocks>0)
-                    return upper;
+                UPPER_ONLY:
+                    assert(lower<base);
 
-                goto INTERLEAVED;
+                    if(++upper>=last)
+                        Libc::Error::Critical(EINVAL,msg);
 
-            LOWER_ONLY:
-                assert(upper>=last);
+                    if(upper->freeBlocks>0)
+                        return upper;
 
-                if(--lower<base)
-                    Libc::Error::Critical(EINVAL,msg);
+                    goto UPPER_ONLY;
 
-                if(lower->freeBlocks>0)
-                    return lower;
-
-                goto LOWER_ONLY;
-
-            UPPER_ONLY:
-                assert(lower<base);
-
-                if(++upper>=last)
-                    Libc::Error::Critical(EINVAL,msg);
-
-                if(upper->freeBlocks>0)
-                    return upper;
-
-                goto UPPER_ONLY;
-
+                }
             }
-        }
 
-        void Arena:: newChunkRequired()
-        {
-            assert(isValid());
-
-            if(occupied>=capacity)
+            void Arena:: newChunkRequired()
             {
-                assert(0==freeChunk);
-                if(memShift>=Limits::MaxBlockShift) throw Specific::Exception(CallSign,"workspace too big");
-
-                //--------------------------------------------------------------
-                // prepare next metrics
-                //--------------------------------------------------------------
-                const unsigned nextMemShift  = memShift+1;
-                const size_t   nextMemBytes  = memBytes << 1;
-                const size_t   nextCapacity  = capacity << 1; assert( nextCapacity == nextMemBytes / sizeof(Chunk) );
-                Chunk * const  nextWorkspace = static_cast<Chunk *>(book.query(nextMemShift));
-
-                //--------------------------------------------------------------
-                // transfer
-                //--------------------------------------------------------------
-                Memory::Stealth::Copy(nextWorkspace,workspace,memBytes);
-                acquiring = nextWorkspace + (acquiring-workspace);
-                releasing = nextWorkspace + (releasing-workspace);
-                book.store(memShift,workspace);
-                workspace = nextWorkspace;
-                memShift  = nextMemShift;
-                memBytes  = nextMemBytes;
-                capacity  = nextCapacity;
                 assert(isValid());
-                //std::cerr << "capacity is now " << capacity << std::endl;
+
+                if(occupied>=capacity)
+                {
+                    assert(0==freeChunk);
+                    if(memShift>=Limits::MaxBlockShift) throw Specific::Exception(CallSign,"workspace too big");
+
+                    //--------------------------------------------------------------
+                    // prepare next metrics
+                    //--------------------------------------------------------------
+                    const unsigned nextMemShift  = memShift+1;
+                    const size_t   nextMemBytes  = memBytes << 1;
+                    const size_t   nextCapacity  = capacity << 1; assert( nextCapacity == nextMemBytes / sizeof(Chunk) );
+                    Chunk * const  nextWorkspace = static_cast<Chunk *>(book.query(nextMemShift));
+
+                    //--------------------------------------------------------------
+                    // transfer
+                    //--------------------------------------------------------------
+                    Memory::Stealth::Copy(nextWorkspace,workspace,memBytes);
+                    acquiring = nextWorkspace + (acquiring-workspace);
+                    releasing = nextWorkspace + (releasing-workspace);
+                    book.store(memShift,workspace);
+                    workspace = nextWorkspace;
+                    memShift  = nextMemShift;
+                    memBytes  = nextMemBytes;
+                    capacity  = nextCapacity;
+                    assert(isValid());
+                    //std::cerr << "capacity is now " << capacity << std::endl;
+                    assert(occupied<capacity);
+                }
+
                 assert(occupied<capacity);
+
+
+                //------------------------------------------------------------------
+                //
+                // append a new chunk
+                //
+                //------------------------------------------------------------------
+                acquiring = makeInPlaceChunk(workspace+occupied);
+                //std::cerr << "acquiring.data@" << (void*)(acquiring->data) << std::endl;
+                ++occupied;
+                available += numBlocks;
+                assert(releasing<acquiring);
+
+                //------------------------------------------------------------------
+                //
+                // update increasing memory
+                //
+                //------------------------------------------------------------------
+                while(acquiring>workspace && acquiring[0].data < acquiring[-1].data)
+                {
+                    //std::cerr << "swap memory" << std::endl;
+                    Memory::Stealth::Swap(acquiring, acquiring-1, sizeof(Chunk) );
+                    --acquiring;
+                }
+                assert(isValid());
             }
 
-            assert(occupied<capacity);
-
-
-            //------------------------------------------------------------------
-            //
-            // append a new chunk
-            //
-            //------------------------------------------------------------------
-            acquiring = makeInPlaceChunk(workspace+occupied);
-            //std::cerr << "acquiring.data@" << (void*)(acquiring->data) << std::endl;
-            ++occupied;
-            available += numBlocks;
-            assert(releasing<acquiring);
-
-            //------------------------------------------------------------------
-            //
-            // update increasing memory
-            //
-            //------------------------------------------------------------------
-            while(acquiring>workspace && acquiring[0].data < acquiring[-1].data)
+            void  * Arena:: acquire()
             {
-                //std::cerr << "swap memory" << std::endl;
-                Memory::Stealth::Swap(acquiring, acquiring-1, sizeof(Chunk) );
-                --acquiring;
-            }
-            assert(isValid());
-        }
-
-        void  * Arena:: acquire()
-        {
-            assert(isValid());
-            if(available<=0)
-            {
-                newChunkRequired();
+                assert(isValid());
+                if(available<=0)
+                {
+                    newChunkRequired();
+                    assert(available>0);
+                }
                 assert(available>0);
+
+
+                if( acquiring->freeBlocks <= 0 )
+                    acquiring = findAcquiring(workspace,workspace+occupied,acquiring);
+
+                assert(0!=acquiring);
+                assert(acquiring->freeBlocks>0);
+
+                --available;
+                if( freeChunk == acquiring) freeChunk = 0;
+                return acquiring->acquire(blockSize);
             }
-            assert(available>0);
 
-
-            if( acquiring->freeBlocks <= 0 )
-                acquiring = findAcquiring(workspace,workspace+occupied,acquiring);
-
-            assert(0!=acquiring);
-            assert(acquiring->freeBlocks>0);
-
-            --available;
-            if( freeChunk == acquiring) freeChunk = 0;
-            return acquiring->acquire(blockSize);
         }
 
     }
