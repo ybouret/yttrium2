@@ -1,27 +1,24 @@
-
 //! \file
 
-#ifndef Y_Memory_Workspace_Included
-#define Y_Memory_Workspace_Included 1
+#ifndef Y_Hashing_DES64_Included
+#define Y_Hashing_DES64_Included 1
 
-#include "y/memory/stealth.hpp"
-#include "y/calculus/alignment.hpp"
+#include "y/hashing/mix64.hpp"
 
 namespace Yttrium
 {
-    namespace Memory
+    namespace Hashing
     {
 
         //______________________________________________________________________
         //
         //
         //
-        //! inline workspace for given type
+        //! DES-like hashing
         //
         //
         //______________________________________________________________________
-        template <typename T, size_t N = 1>
-        class Workspace
+        class DES64 : public Mix64
         {
         public:
             //__________________________________________________________________
@@ -30,7 +27,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            static const size_t Capacity = N; //!< alias
+            static const char * const CallSign; //!< "Hashing::DES64"
 
             //__________________________________________________________________
             //
@@ -38,30 +35,21 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-
-            //! cleanup
-            inline virtual ~Workspace() noexcept { Y_Memory_BZero(wksp); Coerce(data) = 0; }
-
-        protected:
-
-            //! initialize
-            inline explicit Workspace() noexcept :
-            data(0),
-            wksp()
-            {
-                Coerce(data) = static_cast<T *>( Y_Memory_BZero(wksp) );
-            }
+            explicit DES64() noexcept; //!< setup
+            virtual ~DES64() noexcept; //!< cleanup
 
             //__________________________________________________________________
             //
             //
-            // Members
+            // Methods
             //
             //__________________________________________________________________
-            T * const data; //!< address of workspace
+            virtual const char * callSign()                         const noexcept;
+            virtual void         operator()(uint32_t &, uint32_t &) const noexcept;
+            bool                 test()                             const noexcept; //!< test challenge \return passed
+
         private:
-            Y_Disable_Copy_And_Assign(Workspace);                      //!< discarding
-            void *    wksp[ Alignment::WordsGEQ<sizeof(T)*N>::Count ]; //!< internal memory
+            Y_Disable_Copy_And_Assign(DES64); //!< discarding
         };
 
     }
@@ -69,5 +57,4 @@ namespace Yttrium
 }
 
 #endif
-
 

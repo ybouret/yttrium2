@@ -105,6 +105,8 @@ namespace Yttrium
                 static const size_t Value = OuterCeilOf::Value;         //!< result
             };
 
+            
+
             //! function ceil
             /**
              \param  N guess value

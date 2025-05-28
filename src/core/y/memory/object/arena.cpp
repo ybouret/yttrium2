@@ -5,6 +5,7 @@
 #include "y/memory/object/book.hpp"
 #include "y/core/utils.hpp"
 #include "y/check/static.hpp"
+#include "y/hashing/ibj32.hpp"
 
 #include <iostream>
 
@@ -59,6 +60,8 @@ namespace Yttrium
                 assert(memShift>0);
                 assert(0==acquiring);
                 assert(0==releasing);
+                assert( Book::Exists() );
+                static Book & book = Book::Location();
 
                 book.store(memShift,workspace);
                 memBytes  = 0;
@@ -71,6 +74,9 @@ namespace Yttrium
             void Arena:: releaseAllChunks() noexcept
             {
                 assert( isValid() );
+                assert(Book::Exists());
+                static Book & book = Book::Location();
+
                 acquiring = releasing = 0;
                 size_t missing = 0;
                 while(occupied>0)
@@ -95,10 +101,13 @@ namespace Yttrium
             Chunk * Arena:: makeInPlaceChunk(void * const addr)
             {
                 assert(0!=addr);
-                return new (addr) Chunk(book.query(userShift),numBlocks,blockSize);
+                return new (addr) Chunk(Book::Instance().query(userShift),numBlocks,blockSize);
             }
 
-
+            size_t Arena:: Hash(const size_t bs) noexcept
+            {
+                return Hashing::IBJ32( uint32_t(bs) );
+            }
 
             Arena:: Arena(const size_t userBlockSize,
                           const size_t userPageBytes) :
@@ -115,7 +124,7 @@ namespace Yttrium
             userShift(0),
             numBlocks(0),
             userBytes( Chunk::UserBytesFor(blockSize, userPageBytes, Coerce(userShift), Coerce(numBlocks))),
-            book( Book::Instance() ),
+            hkey( Hash(blockSize) ),
             next(0),
             prev(0)
             {
@@ -130,7 +139,7 @@ namespace Yttrium
                 Y_STATIC_CHECK(Book::MinPageBytes>=sizeof(Chunk), BadMinPageShift);
                 assert(userShift>=Book::MinPageShift);
                 assert(userShift<=Book::MaxPageShift);
-
+                Book & book = Book::Instance();
 
                 //--------------------------------------------------------------
                 //
@@ -250,6 +259,8 @@ namespace Yttrium
             {
                 assert(0!=addr);
                 assert(isValid());
+                assert( Book::Exists() );
+                static Book & book = Book::Location();
 
                 //--------------------------------------------------------------
                 //
@@ -396,6 +407,7 @@ namespace Yttrium
                 {
                     assert(0==freeChunk);
                     if(memShift>=Limits::MaxBlockShift) throw Specific::Exception(CallSign,"workspace too big");
+                    Book & book = Book::Instance();
 
                     //--------------------------------------------------------------
                     // prepare next metrics
@@ -417,7 +429,6 @@ namespace Yttrium
                     memBytes  = nextMemBytes;
                     capacity  = nextCapacity;
                     assert(isValid());
-                    //std::cerr << "capacity is now " << capacity << std::endl;
                     assert(occupied<capacity);
                 }
 
@@ -430,7 +441,6 @@ namespace Yttrium
                 //
                 //------------------------------------------------------------------
                 acquiring = makeInPlaceChunk(workspace+occupied);
-                //std::cerr << "acquiring.data@" << (void*)(acquiring->data) << std::endl;
                 ++occupied;
                 available += numBlocks;
                 assert(releasing<acquiring);

@@ -84,7 +84,7 @@ namespace Yttrium
             private:
                 Y_Disable_Copy_And_Assign(Book);               //!< discarding
                 friend class Singleton<Book,BroadLockPolicy>;
-                explicit Book() noexcept; //!< initialize
+                explicit Book();          //!< initialize
                 virtual ~Book() noexcept; //!< cleanup
 
 

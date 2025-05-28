@@ -117,7 +117,7 @@ namespace Yttrium
             if(size==skip) --skip;
             if(skip>0)
             {
-                std::cerr << "Should skip " << skip << std::endl;
+                //std::cerr << "Should skip " << skip << std::endl;
                 memmove(text,text+skip,size-=skip);
                 memset(text+size,0,skip);
             }

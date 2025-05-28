@@ -20,7 +20,7 @@ namespace Yttrium
                 static Pages *        bookPages = 0;
             }
 
-            Book:: Book() noexcept //: Singleton<Book, GiantLockPolicy>()
+            Book:: Book()  : Singleton<Book,BroadLockPolicy>()
             {
                 assert(0==bookPages);
                 bookPages = static_cast<Pages *>( Y_Memory_BZero(PagesData) ) - MinPageShift;

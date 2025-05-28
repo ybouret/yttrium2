@@ -61,6 +61,12 @@ namespace Yttrium
             return memmove(target,source,bytes);
         }
 
+        void * Stealth:: Incr(void * const addr,
+                              const size_t delta) noexcept
+        {
+            return static_cast<char *>(addr)+delta;
+        }
+
     }
 
 }

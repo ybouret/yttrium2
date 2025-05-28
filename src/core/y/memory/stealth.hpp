@@ -85,6 +85,9 @@ namespace Yttrium
                                      void * const rhsBlock,
                                      const size_t blockSize) noexcept;
 
+            static void * Incr(void * const addr,
+                               const size_t delta) noexcept;
+
             //! alias and cast
             /** \param address \return casted address */
             template <typename T>

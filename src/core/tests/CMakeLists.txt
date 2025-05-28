@@ -8,6 +8,7 @@ system
 calculus
 concurrent
 memory
+hashing
 )
 
 
@@ -52,6 +53,8 @@ Y_UTEST(memory:dyadic)
 Y_UTEST(memory:pages)
 Y_UTEST(memory:book)
 Y_UTEST(memory:arena)
+Y_UTEST(memory:blocks)
 
-
+#hashing
+Y_UTEST(hashing_mix64)
 

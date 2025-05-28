@@ -446,6 +446,11 @@ namespace Yttrium
             }
 
 
+            //! move to front
+            /**
+             \param node selected node of list
+             \return node
+             */
             NODE * moveToFront(NODE * const node) noexcept
             {
                 assert(0!=node);

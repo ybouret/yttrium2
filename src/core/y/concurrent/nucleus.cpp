@@ -148,7 +148,9 @@ namespace Yttrium
                 //! setup with no argument
                 inline explicit InnerLocking() :
                 Content(),
-                primary()
+                primary(),
+                replica(),
+                engaged()
                 {
                     size_t built = 0;
                     try {
@@ -169,7 +171,9 @@ namespace Yttrium
                 template <typename T>
                 inline explicit InnerLocking(T &arg) :
                 Content(),
-                primary(arg)
+                primary(arg),
+                replica(),
+                engaged()
                 {
                     size_t built = 0;
                     try {
@@ -195,7 +199,7 @@ namespace Yttrium
                     if(replica.size<=0) throw Specific::Exception(Nucleus::CallSign,"out of inner mutex!");
                     return * engaged.pushTail( replica.popHead() );
                 }
-
+                
 
                 //! primary mutex
                 MUTEX            primary; //!< THE primary mutex
@@ -263,7 +267,6 @@ namespace Yttrium
         Nucleus:: Nucleus() : Singulet(), code(0)
         {
             if(Verbose) Display("+",CallSign,LifeTime);
-            //std::cerr << "|code| = " << sizeof(codeWorkspace) << std::endl;
             try {
                 code = new ( Y_Memory_BZero(codeWorkspace) ) Code();
             }

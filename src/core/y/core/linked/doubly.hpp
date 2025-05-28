@@ -17,13 +17,17 @@ namespace Yttrium
         class DoublyLinked
         {
         public:
+            //! setup
             inline explicit DoublyLinked() noexcept : next(0), prev(0) {}
+
+            //! cleanup
             inline virtual ~DoublyLinked() noexcept { assert(0==next); assert(0==prev); }
 
-            T * next;
-            T * prev;
+            T * next; //!< for list/pool
+            T * prev; //!< for list
+
         private:
-            Y_Disable_Copy_And_Assign(DoublyLinked);
+            Y_Disable_Copy_And_Assign(DoublyLinked); //!< discarding
         };
     }
 }

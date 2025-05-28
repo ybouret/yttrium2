@@ -35,6 +35,8 @@ namespace Yttrium
                 //______________________________________________________________
                 static const char * const CallSign; //!< "Memory::Arena"
 
+                static size_t Hash(const size_t) noexcept;
+                
                 //______________________________________________________________
                 //
                 //
@@ -87,7 +89,7 @@ namespace Yttrium
                 const unsigned userShift; //!< metrics for Chunk userBytes = 2^userShift
                 const uint8_t  numBlocks; //!< metrics for Chunk constructor
                 const size_t   userBytes; //!< metrics for Chunk memory
-                Book &         book;      //!< memory manager
+                const size_t   hkey;      //!< hashing key
                 Arena *        next;      //!< for list
                 Arena *        prev;      //!< for list
 

@@ -88,6 +88,15 @@ namespace Yttrium
         return n;
     }
 
+    template <typename T>
+    inline T PrevPowerOfTwo(const T x) noexcept
+    {
+        assert(x>0);
+        T n = Base2<T>::MaxBytes;
+        while(n>x) n >>= 1;
+        return n;
+    }
+
 
 
 

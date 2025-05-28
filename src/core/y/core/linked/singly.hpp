@@ -16,12 +16,16 @@ namespace Yttrium
         class SinglyLinked
         {
         public:
+            //! setup
             inline explicit SinglyLinked() noexcept : next(0) {}
+
+            //! cleanup
             inline virtual ~SinglyLinked() noexcept { assert(0==next); }
 
-            T * next;
+            T * next; //!< for pool
+            
         private:
-            Y_Disable_Copy_And_Assign(SinglyLinked);
+            Y_Disable_Copy_And_Assign(SinglyLinked); //!< discarding
         };
     }
 }
