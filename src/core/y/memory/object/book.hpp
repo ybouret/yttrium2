@@ -35,7 +35,7 @@ namespace Yttrium
                 //
                 //__________________________________________________________________
                 static const char * const CallSign;                                     //!< "Memory::Object::Book"
-                static const Longevity    LifeTime      = LifeTimeOf:: MemoryBook;      //!< LifeTimeOf::MemoryBook
+                static const Longevity    LifeTime     = LifeTimeOf:: MemoryObjectBook; //!< LifeTimeOf::MemoryBook
                 static const unsigned     MinPageShift = Limits::MinBlockShift;         //!< alias
                 static const unsigned     MaxPageShift = Limits::MaxBlockShift;         //!< alias
                 static const unsigned     NumPageShift = 1+MaxPageShift - MinPageShift; //!< alias
