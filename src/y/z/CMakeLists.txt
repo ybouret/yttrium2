@@ -1,2 +1,0 @@
-project(z C)
-
