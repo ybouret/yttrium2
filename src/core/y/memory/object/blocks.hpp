@@ -13,8 +13,9 @@ namespace Yttrium
 
         namespace Object
         {
-            class Book;
 
+            class Book;
+            
             class Blocks
             {
             public:
@@ -23,7 +24,10 @@ namespace Yttrium
                 explicit Blocks(const size_t userPageSize);
                 virtual ~Blocks() noexcept;
 
-                Book &book;
+                void * acquire(const size_t blockSize);
+                void   release(void * const blockAddr, const size_t blockSize) noexcept;
+                
+                Book & book;
             private:
                 Y_Disable_Copy_And_Assign(Blocks);
                 const unsigned pageShift;
