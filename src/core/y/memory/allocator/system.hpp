@@ -7,6 +7,7 @@
 #include "y/singleton.hpp"
 #include "y/concurrent/life-time.hpp"
 #include "y/memory/allocator.hpp"
+#include "y/concurrent/singleton/giant-lock-policy.hpp"
 
 namespace Yttrium
 {

@@ -10,24 +10,24 @@ namespace Yttrium
     {
         namespace Object
         {
-            
+
             const char * const Book:: CallSign = "Memory::Object::Book";
-            
+
             namespace
             {
                 static const unsigned Requested   = sizeof(Pages) * Book::NumPageShift;
                 static void *         PagesData[ Alignment::WordsGEQ<Requested>::Count ];
                 static Pages *        bookPages = 0;
             }
-            
-            Book:: Book() noexcept : Singleton<Book, GiantLockPolicy>()
+
+            Book:: Book() noexcept //: Singleton<Book, GiantLockPolicy>()
             {
                 assert(0==bookPages);
                 bookPages = static_cast<Pages *>( Y_Memory_BZero(PagesData) ) - MinPageShift;
                 for(unsigned i=MinPageShift;i<=MaxPageShift;++i)
                     new (bookPages+i) Pages(i);
             }
-            
+
             Book:: ~Book() noexcept
             {
                 assert(0!=bookPages);
@@ -35,7 +35,7 @@ namespace Yttrium
                     Memory::Stealth::Zero( Destructed(bookPages+i), sizeof(Pages) );
                 bookPages = 0;
             }
-            
+
             void Book:: display(std::ostream &os) const
             {
                 os << '<' << CallSign << " NumPageShift=" << NumPageShift << '>' << std::endl;
@@ -46,7 +46,7 @@ namespace Yttrium
                 }
                 os << '<' << CallSign << '/' << '>' << std::endl;
             }
-            
+
             void * Book:: query(const unsigned blockShift)
             {
                 Y_Lock(access);
@@ -54,7 +54,7 @@ namespace Yttrium
                 assert(blockShift<=MaxPageShift);
                 return bookPages[blockShift].query();
             }
-            
+
             void   Book:: store(const unsigned blockShift, void * const blockAddr) noexcept
             {
                 Y_Lock(access);
@@ -62,7 +62,7 @@ namespace Yttrium
                 assert(blockShift<=MaxPageShift);
                 bookPages[blockShift].store(blockAddr);
             }
-            
+
             void  Book::  cache(const unsigned blockShift, const size_t numPages)
             {
                 Y_Lock(access);
@@ -70,14 +70,14 @@ namespace Yttrium
                 assert(blockShift<=MaxPageShift);
                 bookPages[blockShift].cache(numPages);
             }
-            
+
             void Book:: release() noexcept
             {
                 //Y_Lock(access);
                 for(unsigned i=MaxPageShift;i>=MinPageShift;--i) bookPages[i].release();
             }
-            
-            
+
+
         }
     }
 

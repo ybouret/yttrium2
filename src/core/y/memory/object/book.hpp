@@ -9,6 +9,7 @@
 #include "y/singleton.hpp"
 #include "y/concurrent/life-time.hpp"
 #include "y/ability/releasable.hpp"
+#include "y/concurrent/singleton/broad-lock-policy.hpp"
 
 namespace Yttrium
 {
@@ -21,11 +22,11 @@ namespace Yttrium
             //
             //
             //
-            //! (System) Book of pages
+            //!  Book of pages for Arena/Blocks
             //
             //
             //__________________________________________________________________
-            class Book : public Singleton<Book,GiantLockPolicy>, public Releasable
+            class Book : public Singleton<Book,BroadLockPolicy>, public Releasable
             {
             public:
                 //__________________________________________________________________
@@ -82,7 +83,7 @@ namespace Yttrium
 
             private:
                 Y_Disable_Copy_And_Assign(Book);               //!< discarding
-                friend class Singleton<Book,GiantLockPolicy>;
+                friend class Singleton<Book,BroadLockPolicy>;
                 explicit Book() noexcept; //!< initialize
                 virtual ~Book() noexcept; //!< cleanup
 

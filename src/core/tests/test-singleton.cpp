@@ -1,6 +1,7 @@
 
 #include "y/singleton.hpp"
 #include "y/utest/run.hpp"
+#include "y/concurrent/singleton/giant-lock-policy.hpp"
 
 using namespace Yttrium;
 

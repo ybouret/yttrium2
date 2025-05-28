@@ -57,7 +57,7 @@ namespace Yttrium
 
             void * Pages:: query()
             {
-                return (plist.size>0) ? Page::Addr(plist.popHead(),bytes) : memIO.acquireUnlockedDyadic(shift);
+                return (plist.size>0) ? Page::Addr(plist.popHead(),bytes) : memIO.acquireDyadic(shift);
             }
 
 
@@ -72,6 +72,7 @@ namespace Yttrium
 
             void Pages:: cache(size_t numPages)
             {
+                Y_Lock(memIO.access);
                 while(numPages-- > 0) store( memIO.acquireUnlockedDyadic(shift) );
             }
 

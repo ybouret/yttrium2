@@ -5,7 +5,6 @@
 
 
 #include "y/concurrent/singulet.hpp"
-#include "y/concurrent/singleton/giant-lock-policy.hpp"
 #include "y/concurrent/singleton/class-lock-policy.hpp"
 #include "y/calculus/alignment.hpp"
 #include "y/memory/stealth.hpp"

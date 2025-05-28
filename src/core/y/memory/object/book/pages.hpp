@@ -21,7 +21,7 @@ namespace Yttrium
             //
             //
             //
-            //! Pages of the same power-of-two size
+            //! Local Pages of the same power-of-two size Global Dyadic alloc
             //
             //
             //__________________________________________________________________
@@ -59,10 +59,10 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-                //! query a new page with
+                //! query a new/cached page
                 /**
                  - from plist if count() > 0
-                 - from memIO.acquireUnlockedDyadic(shift) otherwise
+                 - from memIO.acquireDyadic(shift) otherwise
                  \return a clear page of bytes=2^shift
                  \warning unlocked acquire
                  */
@@ -74,9 +74,7 @@ namespace Yttrium
                 
                 //! grow available pages
                 /**
-                 use memIO.acquireUnlockedDyadic(shift)
                  \param numPages pages to store
-                 \warning unlocked
                  */
                 void         cache(size_t numPages);
                 

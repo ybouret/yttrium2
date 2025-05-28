@@ -14,7 +14,7 @@ namespace Yttrium
 
         namespace Object
         {
-            class Blocks : public Singleton<Blocks,GiantLockPolicy>
+            class Blocks : public Singleton<Blocks,ClassLockPolicy>
             {
             public:
                 static const char * const CallSign;                                     //!< "Memory::Object::Blocks"
