@@ -20,15 +20,22 @@ namespace Yttrium
         bool Arena:: isValid() const noexcept
         {
             Y_Arena_Check(0!=workspace);
-            Y_Arena_Check(count<=capacity);
+            Y_Arena_Check(occupied<=capacity);
             Y_Arena_Check(0!=acquiring);
             Y_Arena_Check(acquiring>=workspace);
-            Y_Arena_Check(acquiring<workspace+count);
+            Y_Arena_Check(acquiring<workspace+occupied);
             Y_Arena_Check(0!=releasing);
             Y_Arena_Check(releasing>=workspace);
-            Y_Arena_Check(releasing<workspace+count);
+            Y_Arena_Check(releasing<workspace+occupied);
 
-            for(size_t i=0,j=1;j<count;++i,++j)
+            if(freeChunk)
+            {
+                Y_Arena_Check(freeChunk>=workspace);
+                Y_Arena_Check(freeChunk<workspace+occupied);
+                Y_Arena_Check(freeChunk->isFree());
+            }
+
+            for(size_t i=0,j=1;j<occupied;++i,++j)
             {
                 const Chunk & lhs = workspace[i];
                 const Chunk & rhs = workspace[j];
@@ -41,7 +48,7 @@ namespace Yttrium
 
         void Arena:: releaseWorkspace() noexcept
         {
-            assert(0==count);
+            assert(0==occupied);
             assert(0!=workspace);
             assert(capacity>0);
             assert(memBytes>0);
@@ -62,9 +69,9 @@ namespace Yttrium
             assert( isValid() );
             acquiring = releasing = 0;
             size_t missing = 0;
-            while(count>0)
+            while(occupied>0)
             {
-                Chunk &current = workspace[--count];
+                Chunk &current = workspace[--occupied];
                 missing += current.userBlocks-current.freeBlocks;
                 book.store(userShift,current.data);
                 Memory::Stealth::Zero( &current, sizeof(Chunk) );
@@ -94,8 +101,9 @@ namespace Yttrium
         available(0),
         acquiring(0),
         releasing(0),
+        freeChunk(0),
         workspace(0),
-        count(0),
+        occupied(0),
         capacity(0),
         memBytes(0),
         memShift(0),
@@ -155,7 +163,7 @@ namespace Yttrium
             //
             //
             //------------------------------------------------------------------
-            count      = 1;
+            occupied   = 1;
             available  = numBlocks;
             acquiring  = releasing = workspace;
 
@@ -251,7 +259,7 @@ namespace Yttrium
                     break;
 
                 case OwnedByNext:
-                    releasing = findReleasing(addr,++releasing,workspace+count);
+                    releasing = findReleasing(addr,++releasing,workspace+occupied);
                     break;
             }
 
@@ -261,8 +269,8 @@ namespace Yttrium
             //
             //------------------------------------------------------------------
             assert(releasing->owns(addr));
-            releasing->release(addr,blockSize);
             ++available;
+            releasing->release(addr,blockSize);
         }
     }
 
@@ -333,7 +341,7 @@ namespace Yttrium
         {
             assert(isValid());
 
-            if(count>=capacity)
+            if(occupied>=capacity)
             {
                 if(memShift>=Limits::MaxBlockShift) throw Specific::Exception(CallSign,"workspace too big");
 
@@ -358,10 +366,10 @@ namespace Yttrium
                 capacity  = nextCapacity;
                 assert(isValid());
                 std::cerr << "capacity is now " << capacity << std::endl;
-                assert(count<capacity);
+                assert(occupied<capacity);
             }
 
-            assert(count<capacity);
+            assert(occupied<capacity);
 
 
             //------------------------------------------------------------------
@@ -369,9 +377,9 @@ namespace Yttrium
             // append a new chunk
             //
             //------------------------------------------------------------------
-            acquiring = makeInPlaceChunk(workspace+count);
+            acquiring = makeInPlaceChunk(workspace+occupied);
             //std::cerr << "acquiring.data@" << (void*)(acquiring->data) << std::endl;
-            ++count;
+            ++occupied;
             available += numBlocks;
             assert(releasing<acquiring);
 
@@ -401,7 +409,7 @@ namespace Yttrium
 
 
             if( acquiring->freeBlocks <= 0 )
-                acquiring = findAcquiring(workspace,workspace+count,acquiring);
+                acquiring = findAcquiring(workspace,workspace+occupied,acquiring);
 
             assert(0!=acquiring);
             assert(acquiring->freeBlocks>0);

@@ -116,6 +116,9 @@ namespace Yttrium
              */
             Ownership whose(const void * const address) const noexcept;
 
+            bool isUsed() const noexcept; //! \return freeBlocks<userBlocks
+            bool isFree() const noexcept; //! \return freeBlocks>=userBlocks
+
             //__________________________________________________________________
             //
             //

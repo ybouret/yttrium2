@@ -72,8 +72,9 @@ namespace Yttrium
             size_t         available; //!< available blocks bookeeping
             Chunk *        acquiring; //!< cache for acquiring chunk
             Chunk *        releasing; //!< cache for releasing chunk
+            Chunk *        freeChunk; //!< if a freeChunk exists
             Chunk *        workspace; //!< chunk workspace
-            size_t         count;     //!< number of active chunks
+            size_t         occupied;  //!< number of occupied chunks
             size_t         capacity;  //!< maximum number of active chunks
             size_t         memBytes;  //!< bytes used to hold workspace
             unsigned       memShift;  //!< memBytes=2^memShift

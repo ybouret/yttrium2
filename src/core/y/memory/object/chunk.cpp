@@ -201,6 +201,17 @@ namespace Yttrium
             return (++freeBlocks>=userBlocks);
         }
 
+        bool Chunk:: isFree() const noexcept
+        {
+            return freeBlocks>=userBlocks;
+        }
+
+        bool Chunk:: isUsed() const noexcept
+        {
+            return freeBlocks<userBlocks;
+        }
+
+
     }
 
 }
