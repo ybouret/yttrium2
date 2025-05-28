@@ -85,8 +85,10 @@ namespace Yttrium
             const unsigned userShift; //!< metrics for Chunk userBytes = 2^userShift
             const uint8_t  numBlocks; //!< metrics for Chunk constructor
             const size_t   userBytes; //!< metrics for Chunk memory
-            Book          &book;      //!< memory manager
-
+            Book &         book;      //!< memory manager
+            Arena *        next;      //!< for list
+            Arena *        prev;      //!< for list
+            
         private:
             Y_Disable_Copy_And_Assign(Arena); //!< discarding
 

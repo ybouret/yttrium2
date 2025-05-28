@@ -38,11 +38,14 @@ Y_UTEST(memory_arena)
 	System::Rand ran;
 	Y_SIZEOF(Memory::Arena);
 
+    size_t maxBlockSize = 16;
+    if(argc>1) maxBlockSize = size_t( atol(argv[1]) );
+
     void* addr[MaxSize];
     size_t size = 0;
     Y_Memory_BZero(addr);
 
-    for(size_t blockSize=1;blockSize<=64;++blockSize)
+    for(size_t blockSize=1;blockSize<=maxBlockSize;++blockSize)
     {
         std::cerr << "[blockSize=" << std::setw(3) << blockSize << "][";
         for(size_t pageBytes = 128; pageBytes <= 8192; pageBytes <<= 1)
@@ -64,6 +67,7 @@ Y_UTEST(memory_arena)
 
     Memory::Book::Location().display(std::cerr);
 
+    Y_SIZEOF(Memory::Arena);
 
 }
 Y_UDONE()

@@ -113,7 +113,9 @@ namespace Yttrium
         userShift(0),
         numBlocks(0),
         userBytes( Chunk::UserBytesFor(blockSize, userPageBytes, Coerce(userShift), Coerce(numBlocks))),
-        book( Book::Instance() )
+        book( Book::Instance() ),
+        next(0),
+        prev(0)
         {
 
             //------------------------------------------------------------------
