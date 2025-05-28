@@ -11,13 +11,16 @@ namespace Yttrium
     namespace Memory
     {
 
-        class Blocks
+        namespace Object
         {
-        public:
-
-        private:
-            
-        };
+            class Blocks
+            {
+            public:
+                
+            private:
+                
+            };
+        }
     }
 
 }
