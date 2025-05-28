@@ -211,11 +211,13 @@ namespace Yttrium
                 }
 
                 inline void free(size_t built) noexcept {
+                    replica.reset();
+                    engaged.reset();
                     while(built>0) Destruct(&data[--built]);
                 }
             };
 
-            typedef InnerLocking<SystemMutex,Nucleus::ReplicaMutexes> InnerLockingKernel;
+            typedef InnerLocking<SystemMutex,Nucleus::Replicae> InnerLockingKernel;
         }
 
         class Nucleus:: Code
@@ -239,8 +241,7 @@ namespace Yttrium
             const PThreadMutexAttribute mutexAttributes;
 #endif
             InnerLockingKernel kernel;
-            //SystemMutex mutex;
-
+            
 
         private:
             Y_Disable_Copy_And_Assign(Code);

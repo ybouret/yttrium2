@@ -30,8 +30,8 @@ namespace Yttrium
             //
             //__________________________________________________________________
             static const char * const CallSign;                                    //!< "Concurrent::Nucleus"
-            static const Longevity    LifeTime       = Singulet::GreatestLifeTime; //!< oldest
-            static const size_t       ReplicaMutexes = 4;
+            static const Longevity    LifeTime = Singulet::GreatestLifeTime; //!< oldest
+            static const size_t       Replicae = 4;
             class        Code;
 
             //__________________________________________________________________

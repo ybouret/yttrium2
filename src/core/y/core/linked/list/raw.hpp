@@ -47,6 +47,8 @@ namespace Yttrium
 
     private:
         Y_Disable_Copy_And_Assign(RawListOf); //!< discarding
+
+        //! hard-reset of nodes and list
         inline virtual void reset_() noexcept
         {
             for(NODE *node=this->head;0!=node;)
