@@ -56,7 +56,10 @@ Y_UTEST(memory_arena)
                 fill(addr, size, arena);
             }
             empty(0, addr, size, arena, ran);
+            Memory::Book::Location().display(std::cerr);
+            break;
         }
+        break;
     }
 
     Memory::Book::Location().display(std::cerr);

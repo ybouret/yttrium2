@@ -14,8 +14,9 @@ namespace Yttrium
     {
 
         const char * const Arena:: CallSign = "Memory::Arena";
+        static const char ErrorHeader[] = "*** [FAILED] ";
 
-#define Y_Arena_Check(EXPR) do { if ( !(EXPR) ) { std::cerr << "*** " << #EXPR << std::endl;  return false; } } while(false)
+#define Y_Arena_Check(EXPR) do { if ( !(EXPR) ) { std::cerr << ErrorHeader << #EXPR << std::endl;  return false; } } while(false)
 
         bool Arena:: isValid() const noexcept
         {
@@ -273,13 +274,40 @@ namespace Yttrium
             ++available;
             if( releasing->release(addr,blockSize) )
             {
+                assert( releasing->isFree() );
                 if(0==freeChunk)
                 {
-
+                    freeChunk = releasing;
                 }
                 else
                 {
+                    //----------------------------------------------------------
+                    // get rid of highest memory free chunk and keep releasing
+                    //----------------------------------------------------------
+                    {
+                        if(freeChunk<releasing)
+                            Swap(freeChunk,releasing);
+                        assert(releasing<freeChunk);
+                        assert(releasing->data<freeChunk->data);
+                        assert(available>=numBlocks);
 
+                        // return blocks
+                        book.store(userShift,freeChunk->data);
+                        available -= numBlocks;
+
+                        // update workspace
+                        Stealth::Move(freeChunk,freeChunk+1,sizeof(Chunk)*(--occupied - static_cast<size_t>(freeChunk-workspace)) );
+                        Stealth::Zero(workspace+occupied,sizeof(Chunk));
+                        freeChunk = 0;
+                    }
+
+                    //----------------------------------------------------------
+                    // update acquiring status
+                    //----------------------------------------------------------
+                    if(acquiring>releasing)
+                        --acquiring;
+
+                    assert(isValid());
                 }
             }
         }
@@ -427,6 +455,7 @@ namespace Yttrium
             assert(acquiring->freeBlocks>0);
 
             --available;
+            if( freeChunk == acquiring) freeChunk = 0;
             return acquiring->acquire(blockSize);
         }
 

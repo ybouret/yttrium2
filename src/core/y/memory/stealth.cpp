@@ -52,6 +52,15 @@ namespace Yttrium
             return memcpy(target,source,bytes);
         }
 
+        void * Stealth:: Move(void * const       target,
+                              const void * const source,
+                              const size_t       bytes) noexcept
+        {
+            assert( Good(target,bytes) );
+            assert( Good(source,bytes) );
+            return memmove(target,source,bytes);
+        }
+
     }
 
 }

@@ -63,7 +63,18 @@ namespace Yttrium
             static void *       Copy(void * const       target,
                                      const void * const source,
                                      const size_t       bytes) noexcept;
-            
+
+            //! move memory blocks
+            /**
+             \param target target address
+             \param source source address
+             \param bytes  bytes to copy
+             \return target
+             */
+            static void *       Move(void * const       target,
+                                     const void * const source,
+                                     const size_t       bytes) noexcept;
+
             //! memory swap
             /**
              \param lhsBlock lhs address
@@ -101,7 +112,7 @@ namespace Yttrium
                 return static_cast<T *>(Zero(address,sizeof(T)));
             }
             
-
+            
         };
     }
 
