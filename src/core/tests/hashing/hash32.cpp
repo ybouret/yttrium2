@@ -40,7 +40,7 @@ namespace
         Y_Disable_Assign(Node);
     };
 
-    template <unsigned p, unsigned q>
+    template <unsigned p, unsigned q, size_t delta>
     inline void testHash32()
     {
         static const size_t _1        = 1;
@@ -48,13 +48,27 @@ namespace
         static const size_t TableMask = TableSize-1;
         static const size_t ItemCount = _1 << q;
 
+        std::cerr << "Setting " << ItemCount << "/" << delta << " in " << TableSize << " slots" << std::endl;
         Node::List Table[TableSize];
 
-        for(size_t i=0;i<ItemCount;++i)
+        for(size_t i=delta;i<=ItemCount;i += delta)
         {
             Node * const node = new Node(i);
             Table[node->hkey&TableMask].pushTail(node);
         }
+
+        for(size_t i=0;i<TableSize;++i)
+        {
+            const Node::List &slot = Table[i];
+            std::cerr << "[" << std::setw(4) << i << "]";
+            std::cerr << "#" << std::setw(5) << slot.size << " |";
+            for(const Node *node=slot.head;node;node=node->next)
+            {
+                std::cerr << " " << node->indx;
+            }
+            std::cerr << std::endl;
+        }
+
 
     }
 }
@@ -63,7 +77,7 @@ Y_UTEST(hashing_hash32)
 {
 
 
-    testHash32<5,10>();
+    testHash32<5,8,2>();
 
 }
 Y_UDONE()
