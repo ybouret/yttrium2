@@ -18,8 +18,8 @@ namespace Yttrium
     //__________________________________________________________________________
     struct CRC32
     {
-        static const uint32_t Table[256];
-        
+        static const uint32_t Table[256]; //!< pre-computed table
+
         //______________________________________________________________________
         //
         //! update crc
@@ -47,6 +47,7 @@ namespace Yttrium
         static uint32_t Of(const void * const blockAddr,
                            const size_t       blockSize) noexcept;
 
+        
         template <typename T> static inline
         uint32_t Run(const T &arg, uint32_t crc = 0x00) noexcept
         {

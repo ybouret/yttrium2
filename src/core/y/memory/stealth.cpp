@@ -67,6 +67,13 @@ namespace Yttrium
             return static_cast<char *>(addr)+delta;
         }
 
+
+        void * Stealth:: Decr(void * const addr,
+                              const size_t delta) noexcept
+        {
+            return static_cast<char *>(addr)-delta;
+        }
+
     }
 
 }

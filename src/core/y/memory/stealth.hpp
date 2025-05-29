@@ -85,7 +85,22 @@ namespace Yttrium
                                      void * const rhsBlock,
                                      const size_t blockSize) noexcept;
 
+            //! anonymous memory address increase
+            /**
+             \param addr
+             \param delta
+             \return addr plus delta bytes
+             */
             static void * Incr(void * const addr,
+                               const size_t delta) noexcept;
+
+            //! anonymous memory address decrease
+            /**
+             \param addr
+             \param delta
+             \return addr minus delta bytes
+             */
+            static void * Decr(void * const addr,
                                const size_t delta) noexcept;
 
             //! alias and cast
