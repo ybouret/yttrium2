@@ -4,7 +4,6 @@
 #include "y/check/sfh32.hpp"
 
 #include "y/core/linked/list/cxx.hpp"
-//#include "y/hexadecimal.hpp"
 #include "y/utest/run.hpp"
 
 using namespace Yttrium;
@@ -46,6 +45,12 @@ namespace
 
         }
 
+        static inline
+        SignType Compare(const Node * const lhs, const Node * rhs) noexcept
+        {
+            return Sign::Of(lhs->indx,rhs->indx);
+        }
+
         const size_t indx;
         Node *       next;
         Node *       prev;
@@ -79,7 +84,8 @@ namespace
 
             for(size_t i=0;i<TableSize;++i)
             {
-                const Node::List &slot = Table[i];
+                Node::List &slot = Table[i];
+                slot.sort(Node::Compare);
                 std::cerr << "[" << std::setw(4) << i << "]";
                 std::cerr << "#" << std::setw(5) << slot.size << " |";
                 for(const Node *node=slot.head;node;node=node->next)
@@ -117,9 +123,8 @@ namespace
 Y_UTEST(hashing_hash32)
 {
     TestHash32<5,8,2>::With(UsingIBJ32);
-    TestHash32<5,8,2>::With(UsingCRC32);
     TestHash32<5,8,2>::With(UsingSFH32);
-
+    TestHash32<5,8,2>::With(UsingCRC32);
 
 }
 Y_UDONE()
