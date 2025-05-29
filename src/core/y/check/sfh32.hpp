@@ -46,7 +46,7 @@ namespace Yttrium
         static uint32_t Of(const void * const blockAddr,
                            const size_t       blockSize) noexcept;
 
-
+        
         
 
     };
