@@ -53,6 +53,7 @@ namespace
         for(size_t i=0;i<ItemCount;++i)
         {
             Node * const node = new Node(i);
+            Table[node->hkey&TableMask].pushTail(node);
         }
 
     }
