@@ -1,7 +1,5 @@
 
-#include "y/hashing/ibj32.hpp"
 #include "y/check/crc32.hpp"
-#include "y/check/sfh32.hpp"
 
 #include "y/core/linked/list/cxx.hpp"
 #include "y/utest/run.hpp"
@@ -99,32 +97,21 @@ namespace
     };
 
 
-    static inline size_t UsingIBJ32(const size_t x)
-    {
-        return Hashing::IBJ32(uint16_t(x));
-    }
+    static uint32_t seed32 = 0x00;
 
     static inline size_t UsingCRC32(const size_t x)
     {
         const uint16_t xx = uint16_t(x);
-        const size_t ans = Hash32<CRC32,0x0>::Key(xx);
+        const size_t  ans = CRC32:: Run(xx,seed32);
         return ans;
     }
 
-    static inline size_t UsingSFH32(const size_t x)
-    {
-        const uint16_t xx = uint16_t(x);
-        const size_t ans = Hash32<SFH32,0xaaaaaaaa>::Key(xx);
-        return ans;
-    }
+
 
 }
 
 Y_UTEST(hashing_hash32)
 {
-    //TestHash32<5,8,2>::With(UsingIBJ32);
-    //TestHash32<5,8,2>::With(UsingSFH32);
     TestHash32<5,9,1>::With(UsingCRC32);
-
 }
 Y_UDONE()
