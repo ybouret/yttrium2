@@ -56,5 +56,6 @@ Y_UTEST(memory:arena)
 Y_UTEST(memory:blocks)
 
 #hashing
-Y_UTEST(hashing_mix64)
+Y_UTEST(hashing:mix64)
+Y_UTEST(hashing:hash32)
 
