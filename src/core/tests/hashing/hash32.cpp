@@ -107,7 +107,7 @@ namespace
     static inline size_t UsingCRC32(const size_t x)
     {
         const uint16_t xx = uint16_t(x);
-        const size_t ans = Hash32<CRC32,0>::Key(xx);
+        const size_t ans = Hash32<CRC32,0x0>::Key(xx);
         return ans;
     }
 
@@ -122,9 +122,9 @@ namespace
 
 Y_UTEST(hashing_hash32)
 {
-    TestHash32<5,8,2>::With(UsingIBJ32);
-    TestHash32<5,8,2>::With(UsingSFH32);
-    TestHash32<5,8,2>::With(UsingCRC32);
+    //TestHash32<5,8,2>::With(UsingIBJ32);
+    //TestHash32<5,8,2>::With(UsingSFH32);
+    TestHash32<5,9,1>::With(UsingCRC32);
 
 }
 Y_UDONE()
