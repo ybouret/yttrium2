@@ -11,7 +11,7 @@ using namespace Yttrium;
 namespace
 {
 
-#if 0
+
     struct Block
     {
         void * addr;
@@ -42,7 +42,6 @@ namespace
             blocks.release(blk[num].addr,blk[num].size);
         }
     }
-#endif
 
 }
 
@@ -55,9 +54,12 @@ Y_UTEST(memory_blocks)
     Memory::Object::Blocks blocks(1000);
 
 
+#if 0
     void * p = blocks.acquire(10); std::cerr << "p@" << p << std::endl;
     blocks.release(p,10);
-#if 0
+#endif
+    
+#if 1
     Y_Memory_BZero(blk);
 
     fill(blocks,ran);
