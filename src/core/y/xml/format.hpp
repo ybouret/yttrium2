@@ -16,7 +16,7 @@ namespace Yttrium
             static const char SLASH  = '/';
         };
 
-        std::ostream & Indent(std::ostream &);
+        std::ostream & Indent(std::ostream &os, const size_t indentation);
 
     }
 }
