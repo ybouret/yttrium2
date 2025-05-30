@@ -25,6 +25,12 @@ namespace {
         {
 
         }
+
+        virtual void display(std::ostream &os, const size_t indent) const
+        {
+            initEpilog( initProlog(os,indent), true ) << std::endl;
+        }
+
     };
 
     const char * const MySingle:: CallSign = "MySingle";

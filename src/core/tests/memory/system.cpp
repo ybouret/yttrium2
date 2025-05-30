@@ -17,7 +17,7 @@ Y_UTEST(memory_system)
 {
     Concurrent::Singulet::Verbose  = true;
     System::Rand       ran;
-    Memory::Allocator &allocator = Memory::System::Instance();
+    Memory::System    &allocator = Memory::System::Instance();
 
 
     Block        blocks[1000];

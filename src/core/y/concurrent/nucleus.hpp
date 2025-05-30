@@ -54,6 +54,8 @@ namespace Yttrium
             virtual Lockable & access() noexcept;
 
 
+            virtual void display(std::ostream &, const size_t) const;
+
             //__________________________________________________________________
             //
             //

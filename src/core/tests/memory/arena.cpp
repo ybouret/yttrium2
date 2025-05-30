@@ -65,7 +65,7 @@ Y_UTEST(memory_arena)
         std::cerr << "]" << std::endl;
     }
 
-    Memory::Object::Book::Location().display(std::cerr);
+    Memory::Object::Book::Location().display(std::cerr,0);
 
     Y_SIZEOF(Memory::Object::Arena);
 

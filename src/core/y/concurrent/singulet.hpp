@@ -5,7 +5,7 @@
 #define Y_Concurrent_Singulet_Included 1
 
 #include "y/system/at-exit.hpp"
-#include "y/ability/identifiable.hpp"
+#include "y/xml/output.hpp"
 #include "y/ability/lockable.hpp"
 #include "y/type/ints.hpp"
 
@@ -23,7 +23,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Singulet : public virtual Identifiable
+        class Singulet : public  XML::Output
         {
         public:
             //__________________________________________________________________
@@ -57,8 +57,8 @@ namespace Yttrium
             //! assigned longevity
             /** \return class longevity */
             virtual Longevity  lifeTime() const noexcept = 0;
-            
 
+            
             //__________________________________________________________________
             //
             //

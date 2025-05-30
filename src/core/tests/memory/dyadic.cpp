@@ -18,7 +18,7 @@ Y_UTEST(memory_dyadic)
 {
     Concurrent::Singulet::Verbose  = true;
     System::Rand        ran;
-    Memory::Allocator & allocator = Memory::Dyadic::Instance();
+    Memory::Dyadic & allocator = Memory::Dyadic::Instance();
 
 
     Block        blocks[1000];

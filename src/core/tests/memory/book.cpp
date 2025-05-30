@@ -27,7 +27,7 @@ Y_UTEST(memory_book)
         book.cache( unsigned(Memory::Object::Book::MinPageShift + ran.leq(Memory::Object::Book::NumPageShift/5)), ran.leq(5));
     }
 
-    book.display(std::cerr);
+    book.display(std::cerr,0);
     
 
 }

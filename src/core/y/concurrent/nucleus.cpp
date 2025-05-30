@@ -202,7 +202,7 @@ namespace Yttrium
                     if(replica.size<=0) throw Specific::Exception(Nucleus::CallSign,"out of inner mutex!");
                     return * engaged.pushTail( replica.popHead() );
                 }
-                
+
 
                 //! primary mutex
                 MUTEX            primary; //!< THE primary mutex
@@ -248,7 +248,7 @@ namespace Yttrium
             const PThreadMutexAttribute mutexAttributes;
 #endif
             InnerLockingKernel kernel;
-            
+
 
         private:
             Y_Disable_Copy_And_Assign(Code);
@@ -350,13 +350,22 @@ namespace Yttrium
             return *nucleus;
         }
 
+        void Nucleus:: display(std::ostream &os, const size_t indent) const
+        {
+            assert(0!=code);
+            init(os,indent) << std::endl;
+            XML::Indent(os,indent+1) << "available replica mutex = " << code->kernel.replica.size << std::endl;
+            XML::Indent(os,indent+1) << "already   engaged mutex = " << code->kernel.engaged.size << std::endl;
+            quit(os,indent) << std::endl;
+        }
+
     }
 
-        Lockable & Lockable:: Giant()
-        {
-            static Lockable &giant = Concurrent::Nucleus::Instance().access();
-            return giant;
-        }
+    Lockable & Lockable:: Giant()
+    {
+        static Lockable &giant = Concurrent::Nucleus::Instance().access();
+        return giant;
+    }
 
 
 }

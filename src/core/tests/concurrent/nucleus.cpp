@@ -21,6 +21,8 @@ Y_UTEST(concurrent_nucleus)
         Y_Lock(replica);
     }
 
+    nucleus.display(std::cerr,0);
+
 }
 Y_UDONE()
 
