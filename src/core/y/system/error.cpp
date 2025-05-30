@@ -64,33 +64,58 @@ namespace Yttrium
 
 #include <iostream>
 #include <cstdlib>
+#include <cstdarg>
+#include <cstdio>
+
 namespace Yttrium
 {
     template <typename ERROR_API> static inline
-    void OnCritical(const typename  ERROR_API::Type err, const char * const title)
+    void OnCritical(const typename  ERROR_API::Type err,
+                    const char * const              fmt,
+                    va_list &                       ap) noexcept
     {
-        char buffer[256];
-        ERROR_API::Format(buffer,sizeof(buffer),err);
-        std::cerr << "*** Critical Error Detected in " << title << std::endl;
-        std::cerr << "*** " << buffer << std::endl;
+
+        static const char Prolog[] = "\t*** ";
+        try
+        {
+            (std::cerr << std::endl << Prolog).flush();
+            char buffer[256];
+            ERROR_API::Format(buffer,sizeof(buffer),err);
+            if(0!=stderr)
+            {
+                vfprintf(stderr,fmt,ap);
+                fflush(stderr);
+            }
+            std::cerr << std::endl << Prolog << "Critical Error: " << buffer << std::endl << std::endl;
+        }
+        catch(...)
+        {
+        }
         abort();
     }
 
     namespace Libc
     {
-        void Error::Critical(const Type errorCode, const char * const title)
+        void Error::Critical(const Type errorCode, const char * const fmt,...) noexcept
         {
-            assert(0!=title);
-            OnCritical<Error>(errorCode,title);
+            assert(0!=fmt);
+            va_list ap;
+            va_start(ap,fmt);
+            OnCritical<Error>(errorCode,fmt,ap);
+            va_end(ap);
         }
     }
 
+
     namespace Windows
     {
-        void Error::Critical(const Type errorCode, const char * const title)
+        void Error::Critical(const Type errorCode,  const char * const fmt,...) noexcept
         {
-            assert(0!=title);
-            OnCritical<Error>(errorCode,title);
+            assert(0!=fmt);
+            va_list ap;
+            va_start(ap,fmt);
+            OnCritical<Error>(errorCode,fmt,ap);
+            va_end(ap);
         }
     }
 

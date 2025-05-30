@@ -9,6 +9,7 @@
 #include "y/check/static.hpp"
 #include "y/system/exception.hpp"
 #include "y/memory/stealth.hpp"
+#include "y/decimal.hpp"
 #include <cerrno>
 
 namespace Yttrium
@@ -18,6 +19,8 @@ namespace Yttrium
 
         namespace Object
         {
+
+            const char * const Blocks:: CallSign = "Memory::Object::Blocks";
 
             Blocks:: Knot:: Knot(const size_t blockSize, const size_t pageBytes) :
             arena(blockSize,pageBytes),
@@ -102,7 +105,7 @@ namespace Yttrium
                 if(releasing && blockSize==releasing->blockSize) { return releasing->release(blockAddr); }
                 releasing = search(blockSize);
                 if(!releasing) {
-                    Libc::Error::Critical(EINVAL, "address/blockSize not allocated by Memory::Object::Blocks");
+                    Libc::Error::Critical(EINVAL, "@%p+%s not allocated by %s", blockAddr, Decimal(blockSize).c_str(), CallSign);
                 }
                 return releasing->release(blockAddr);
             }

@@ -33,7 +33,7 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
-                static const char * const CallSign; //!< "Memory::Arena"
+                static const char * const CallSign; //!< "Memory::Objec::Arena"
 
                 static size_t Hash(const size_t) noexcept;
                 

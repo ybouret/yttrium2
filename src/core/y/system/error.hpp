@@ -7,7 +7,7 @@
 
 #include "y/system/compiler.hpp"
 #include "y/system/platform.hpp"
-#include "y/system/compiler.hpp"
+#include "y/check/printf.hpp"
 
 namespace Yttrium
 {
@@ -39,9 +39,11 @@ namespace Yttrium
             //! stop on critical error
             /**
              \param errorCode from errno
-             \param title context of the error
+             \param fmt       context of the error
              */
-            static void Critical(const Type errorCode, const char * const title);
+            static void Critical(const Type errorCode,
+                                 const char * const fmt,
+                                 ...) noexcept Y_Printf_Check(2,3);
         };
 
     }
@@ -74,10 +76,9 @@ namespace Yttrium
             //! stop on critical error
             /**
              \param errorCode   from GetLastError()
-             \param title       context title
+             \param fmt         context of the error
              */
-            static void Critical(const Type errorCode, const char * const title);
-
+            static void Critical(const Type errorCode, const char * const fmt,...) noexcept;
         };
     }
 

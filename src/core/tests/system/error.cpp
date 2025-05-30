@@ -1,5 +1,6 @@
 #include "y/utest/run.hpp"
 #include "y/system/error.hpp"
+#include <cerrno>
 
 using namespace Yttrium;
 
@@ -16,6 +17,9 @@ Y_UTEST(system_error)
     {
         std::cerr << System::Error::Format(buffer,sizeof(buffer),System::Error::Type(err)) << std::endl;
     }
+
+    //Libc::Error::Critical(EINVAL, "invalid %s detected", program);
+
 }
 Y_UDONE()
 

@@ -8,6 +8,7 @@
 #include "y/check/crc32.hpp"
 
 #include <iostream>
+#include <iomanip>
 
 namespace Yttrium
 {
@@ -22,7 +23,7 @@ namespace Yttrium
                 return CRC32::Run(w);;
             }
 
-            const char * const Arena:: CallSign = "Memory::Arena";
+            const char * const Arena:: CallSign = "Memory::Object::Arena";
             static const char  ErrorHeader[]    = "*** [FAILED] ";
 
 #define Y_Arena_Check(EXPR) do { if ( !(EXPR) ) { std::cerr << ErrorHeader << #EXPR << std::endl;  return false; } } while(false)
@@ -94,7 +95,7 @@ namespace Yttrium
                 }
                 if(missing>0)
                 {
-                    std::cerr << "*** " << CallSign << "[" << blockSize << "] missing #" << missing << std::endl;
+                    std::cerr << "*** " << CallSign << "[" << std::setw(3) << blockSize << "] missing #" << missing << std::endl;
                 }
             }
 
@@ -214,7 +215,7 @@ namespace Yttrium
             namespace
             {
 #define Y_Memory_Arena_Release_Critical() do {\
-/**/    if(upper<lower) Libc::Error::Critical(EINVAL, msg); \
+/**/    if(upper<lower) Libc::Error::Critical(EINVAL, fmt, Arena::CallSign, addr); \
 } while(false)
 
                 static inline
@@ -222,7 +223,7 @@ namespace Yttrium
                                       Chunk *            lower,
                                       Chunk *            upper) noexcept
                 {
-                    static const char msg[] = "Memory::Arena: no address owner";
+                    static const char fmt[] = "%s: no owner of @%p";
                     assert(0!=addr);
                     assert(0!=lower);
                     assert(0!=upper);
@@ -338,6 +339,7 @@ namespace Yttrium
 
 
 #include "y/exception.hpp"
+#include "y/decimal.hpp"
 #include <cstring>
 
 namespace Yttrium
@@ -354,7 +356,7 @@ namespace Yttrium
                                       const Chunk * const last,
                                       Chunk * const       acquiring) noexcept
                 {
-                    static const char msg[] = "Memory::Arena: no chunk with free block";
+                    static const char fmt[] = "%s: no chunk with free block";
 
                     assert(acquiring>=base);
                     assert(acquiring<last);
@@ -381,7 +383,7 @@ namespace Yttrium
                     assert(upper>=last);
 
                     if(--lower<base)
-                        Libc::Error::Critical(EINVAL,msg);
+                        Libc::Error::Critical(EINVAL,fmt,Arena::CallSign);
 
                     if(lower->freeBlocks>0)
                         return lower;
@@ -392,7 +394,7 @@ namespace Yttrium
                     assert(lower<base);
 
                     if(++upper>=last)
-                        Libc::Error::Critical(EINVAL,msg);
+                        Libc::Error::Critical(EINVAL,fmt,Arena::CallSign);
 
                     if(upper->freeBlocks>0)
                         return upper;

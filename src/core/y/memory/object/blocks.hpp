@@ -21,7 +21,7 @@ namespace Yttrium
             class Blocks
             {
             public:
-
+                static const char * const CallSign;
                 static const unsigned TableSizeLn2 = 5;
                 static const size_t   TableSize = size_t(1) << TableSizeLn2;
                 static const size_t   TableMask = TableSize - 1;
