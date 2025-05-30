@@ -19,7 +19,8 @@ namespace Yttrium
         public:
             virtual ~Output() noexcept;
 
-            
+            std::ostream & init(std::ostream &, const size_t indentation) const;
+            std::ostream & quit(std::ostream &, const size_t indentation) const;
 
             virtual void display(std::ostream &os,
                                  const size_t &indentation) const = 0;
