@@ -1,12 +1,7 @@
 #include "y/memory/object/blocks.hpp"
 #include "y/memory/object/book.hpp"
-#include "y/memory/object/arena.hpp"
-#include "y/core/linked/list/raw.hpp"
 #include "y/core/utils.hpp"
 #include "y/type/destruct.hpp"
-#include "y/core/linked/pool.hpp"
-#include "y/memory/align.hpp"
-#include "y/check/static.hpp"
 #include "y/system/exception.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/decimal.hpp"
@@ -48,16 +43,8 @@ namespace Yttrium
 
             Blocks:: ~Blocks() noexcept
             {
-#if 0
-                for(size_t i=0;i<TableSize;++i)
-                {
-                    Slot &slot = table[i];
-                    Stealth::Zero(&slot,sizeof(Slot));
-                }
-#endif
                 Y_Memory_BZero(table);
                 while(kpool.size) knots.release( Destructed(kpool.query()) );
-
             }
 
 

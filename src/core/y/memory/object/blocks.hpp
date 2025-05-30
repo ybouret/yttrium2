@@ -16,46 +16,111 @@ namespace Yttrium
         namespace Object
         {
 
-            class Book;
-            
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Blocks handle multiple arenas
+            //
+            //
+            //__________________________________________________________________
             class Blocks
             {
             public:
-                static const char * const CallSign;
-                static const unsigned TableSizeLn2 = 5;
-                static const size_t   TableSize = size_t(1) << TableSizeLn2;
-                static const size_t   TableMask = TableSize - 1;
-                typedef Core::ListOf<Arena> Slot;
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                static const char * const   CallSign;                              //!< memory object blocks
+                static const unsigned       TableSizeLn2 = 5;                      //!< for hash table
+                static const size_t         TableSize = size_t(1) << TableSizeLn2; //!< alias
+                static const size_t         TableMask = TableSize - 1;             //!< alias
+                typedef Core::ListOf<Arena> Slot;                                  //!< alias
 
+                //______________________________________________________________
+                //
+                //
+                //! Arena+next, allocated by knots, stored in kpool
+                //
+                //______________________________________________________________
                 class Knot
                 {
                 public:
-                    typedef Core::PoolOf<Knot> Pool;
+                    typedef Core::PoolOf<Knot> Pool; //!< alias
+
+                    //! setup \param blockSize block size \param pageBytes page size
                     Knot(const size_t blockSize, const size_t pageBytes);
+
+                    //! cleanup
                     ~Knot() noexcept;
-                    Arena arena;
-                    Knot * next;
+
+                    Arena arena; //!< actual arena
+                    Knot * next; //!< for pool
                 private:
-                    Y_Disable_Copy_And_Assign(Knot);
+                    Y_Disable_Copy_And_Assign(Knot); //!< discarding
                 };
 
-                explicit Blocks(const size_t userPageBytes);
-                virtual ~Blocks() noexcept;
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+                explicit Blocks(const size_t userPageBytes); //!< setup \param userPageBytes page size hint
+                virtual ~Blocks() noexcept;                  //!< cleanup
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+
+                //! acquire a new block
+                /**
+                 use caching, look up or new arena
+                 \param blockSize
+                 \return clean block
+                 */
                 void * acquire(const size_t blockSize);
+
+                //! release a previously acquired block
+                /**
+                 use caching or look up
+                 \param blockAddr block address
+                 \param blockSize block size
+                 */
                 void   release(void * const blockAddr, const size_t blockSize) noexcept;
 
             private:
-                Y_Disable_Copy_And_Assign(Blocks);
+                Y_Disable_Copy_And_Assign(Blocks); //!< discarding
+
+                //! return new acquiring
+                /**
+                 - use knots to create Knot, stored into kpool
+                 - arena is stored in table
+                 \param blockSize block size
+                 \return acquiring pointing to proper arena
+                 */
                 Arena *        newAcquiring(const size_t blockSize);
+
+                //! look up into table
+                /**
+                 - use hash of blockSize
+                 - applies moveToFront heuristic
+                 \param blockSize block size
+                 \return proper arena if found, NULL otherwise
+                 */
                 Arena *        search(const size_t blockSize) noexcept;
-                Arena *        acquiring;
-                Arena *        releasing;
-                const unsigned pageShift;
-                const size_t   pageBytes;
-                Knot::Pool     kpool;
-                Arena          knots;
-                Slot           table[TableSize];
+                Arena *        acquiring;        //!< last acquiring
+                Arena *        releasing;        //!< last releasing
+                const unsigned pageShift;        //!< computed pageShift
+                const size_t   pageBytes;        //!< 2^pageShift
+                Knot::Pool     kpool;            //!< store Knots
+                Arena          knots;            //!< tailored memory for Knot
+                Slot           table[TableSize]; //!< hash table
             };
         }
     }

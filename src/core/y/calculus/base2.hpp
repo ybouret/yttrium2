@@ -88,6 +88,11 @@ namespace Yttrium
         return n;
     }
 
+    //! Find previous power of two
+    /**
+     \param x positive value
+     \return 2^n <= x
+     */
     template <typename T>
     inline T PrevPowerOfTwo(const T x) noexcept
     {

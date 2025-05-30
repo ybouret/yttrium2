@@ -47,7 +47,15 @@ namespace Yttrium
         static uint32_t Of(const void * const blockAddr,
                            const size_t       blockSize) noexcept;
 
-        
+        //______________________________________________________________________
+        //
+        //! crc of a type
+        /**
+         \param arg the argument
+         \param crc (optional) initial crc
+         \return updated crc
+         */
+        //______________________________________________________________________
         template <typename T> static inline
         uint32_t Run(const T &arg, uint32_t crc = 0x00) noexcept
         {
