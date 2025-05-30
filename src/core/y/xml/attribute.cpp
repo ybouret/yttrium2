@@ -8,6 +8,12 @@ namespace Yttrium
     {
         Attribute:: ~Attribute() noexcept
         {
+            Coerce(hName) = 0;
+            Coerce(hData) = 0;
+            Coerce(dName) = 0;
+            Coerce(dData) = 0;
+            Coerce(width) = 0;
+
         }
 
         Attribute:: Attribute(const Attribute &_) noexcept :

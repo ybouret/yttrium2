@@ -4,6 +4,7 @@
 #include "y/check/static.hpp"
 #include "y/system/exception.hpp"
 #include "y/core/utils.hpp"
+#include "y/xml/attribute.hpp"
 
 #include <iomanip>
 
@@ -86,10 +87,8 @@ namespace Yttrium
             void  Pages:: display(std::ostream &os, const size_t indent) const
             {
                 initProlog(os,indent);
-
-
-                os << " bytes=" << std::setw(8) << bytes
-                << " count=" << std::setw(8) << plist.size;
+                os << XML::Attribute("bytes",bytes,8);
+                os << XML::Attribute("count",plist.size,8);
                 initEpilog(os,true) << std::endl;
             }
 
