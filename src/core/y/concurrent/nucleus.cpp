@@ -110,8 +110,7 @@ namespace Yttrium
             public:
                 inline explicit WindowsMutex() noexcept :
                 Memory::Workspace<CRITICAL_SECTION>(),
-                Lockable(),
-                public Core::DoublyLinked<WindowsMutex>
+                Lockable()
                 {
                     ::InitializeCriticalSection(data);
                 }
