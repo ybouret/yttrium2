@@ -4,7 +4,7 @@
 #ifndef Y_XML_Output_Included
 #define Y_XML_Output_Included 1
 
-#include "y/xml/format.hpp"
+#include "y/xml/syntax.hpp"
 #include "y/ability/identifiable.hpp"
 
 namespace Yttrium
