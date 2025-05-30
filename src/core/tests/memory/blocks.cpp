@@ -49,8 +49,7 @@ namespace
 
 Y_UTEST(memory_blocks)
 {
-    Y_PRINTV(Memory::Object::Blocks::TableSize);
-    Y_SIZEOF(Memory::Object::Blocks::Slot);
+
     
     System::Rand           ran;
     Memory::Object::Blocks blocks(1000);
@@ -75,5 +74,7 @@ Y_UTEST(memory_blocks)
     std::cerr << ']' << std::endl;
 #endif
 
+    Y_SIZEOF(Memory::Object::Blocks);
+    
 }
 Y_UDONE()
