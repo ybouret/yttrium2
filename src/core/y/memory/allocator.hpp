@@ -4,7 +4,7 @@
 #ifndef Y_Memory_Allocator_Included
 #define Y_Memory_Allocator_Included 1
 
-#include "y/xml/output.hpp"
+#include "y/core/setup.hpp"
 #include <cassert>
 
 namespace Yttrium

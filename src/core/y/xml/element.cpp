@@ -1,5 +1,5 @@
 
-#include "y/xml/output.hpp"
+#include "y/xml/element.hpp"
 #include <iostream>
 
 namespace Yttrium
@@ -7,21 +7,21 @@ namespace Yttrium
     namespace XML
     {
 
-        Output:: ~Output() noexcept
+        Element:: ~Element() noexcept
         {
         }
 
-        Output:: Output() noexcept  
+        Element:: Element() noexcept
         {
         }
 
 
-        std::ostream & Output:: initProlog(std::ostream &os, const size_t indent) const
+        std::ostream & Element:: initProlog(std::ostream &os, const size_t indent) const
         {
             return Indent(os,indent) << Format::LANGLE << callSign();
         }
 
-        std::ostream & Output:: initEpilog(std::ostream &os, const bool standAlone) const
+        std::ostream & Element:: initEpilog(std::ostream &os, const bool standAlone) const
         {
             if(standAlone) os << Format::SLASH;
             return os << Format::RANGLE;
@@ -29,12 +29,12 @@ namespace Yttrium
 
 
 
-        std::ostream & Output:: init(std::ostream &os, const size_t indent) const
+        std::ostream & Element:: init(std::ostream &os, const size_t indent) const
         {
             return initEpilog(initProlog(os,indent),false);
         }
 
-        std::ostream & Output:: quit(std::ostream &os, const size_t indent) const
+        std::ostream & Element:: quit(std::ostream &os, const size_t indent) const
         {
             return Indent(os,indent) << Format::LANGLE << Format::SLASH << callSign() << Format::RANGLE;
         }

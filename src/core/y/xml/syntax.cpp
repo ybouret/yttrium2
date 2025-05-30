@@ -1,5 +1,5 @@
 
-#include "y/xml/output.hpp"
+#include "y/xml/syntax.hpp"
 
 namespace Yttrium
 {

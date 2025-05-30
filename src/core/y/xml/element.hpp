@@ -12,12 +12,12 @@ namespace Yttrium
     namespace XML
     {
 
-        class Output : public virtual Identifiable
+        class Element : public virtual Identifiable
         {
         protected:
-            explicit Output() noexcept;
+            explicit Element() noexcept;
         public:
-            virtual ~Output() noexcept;
+            virtual ~Element() noexcept;
 
 
             //! write "<callSign"
@@ -37,7 +37,7 @@ namespace Yttrium
                                  const size_t  indentation) const = 0;
 
         private:
-            Y_Disable_Copy_And_Assign(Output);
+            Y_Disable_Copy_And_Assign(Element);
         };
 
     }

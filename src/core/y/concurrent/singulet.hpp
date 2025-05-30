@@ -5,7 +5,7 @@
 #define Y_Concurrent_Singulet_Included 1
 
 #include "y/system/at-exit.hpp"
-#include "y/xml/output.hpp"
+#include "y/xml/element.hpp"
 #include "y/ability/lockable.hpp"
 #include "y/type/ints.hpp"
 
@@ -23,7 +23,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Singulet : public  XML::Output
+        class Singulet : public  XML::Element
         {
         public:
             //__________________________________________________________________
