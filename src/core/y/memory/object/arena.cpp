@@ -5,7 +5,7 @@
 #include "y/memory/object/book.hpp"
 #include "y/core/utils.hpp"
 #include "y/check/static.hpp"
-#include "y/hashing/ibj32.hpp"
+#include "y/check/crc32.hpp"
 
 #include <iostream>
 
@@ -16,8 +16,14 @@ namespace Yttrium
         namespace Object
         {
 
+            size_t Arena:: Hash(const size_t bs) noexcept
+            {
+                const uint16_t w = uint16_t(bs);
+                return CRC32::Run(w);;
+            }
+
             const char * const Arena:: CallSign = "Memory::Arena";
-            static const char ErrorHeader[] = "*** [FAILED] ";
+            static const char  ErrorHeader[]    = "*** [FAILED] ";
 
 #define Y_Arena_Check(EXPR) do { if ( !(EXPR) ) { std::cerr << ErrorHeader << #EXPR << std::endl;  return false; } } while(false)
 
@@ -104,10 +110,7 @@ namespace Yttrium
                 return new (addr) Chunk(Book::Instance().query(userShift),numBlocks,blockSize);
             }
 
-            size_t Arena:: Hash(const size_t bs) noexcept
-            {
-                return Hashing::IBJ32( uint32_t(bs) );
-            }
+
 
             Arena:: Arena(const size_t userBlockSize,
                           const size_t userPageBytes) :

@@ -48,14 +48,16 @@ namespace
 
 Y_UTEST(memory_blocks)
 {
+    Y_PRINTV(Memory::Object::Blocks::TableSize);
+    Y_SIZEOF(Memory::Object::Blocks::Slot);
+    
     System::Rand           ran;
     Memory::Object::Blocks blocks(1000);
 
-#if 0
 
     void * p = blocks.acquire(10); std::cerr << "p@" << p << std::endl;
     blocks.release(p,10);
-
+#if 0
     Y_Memory_BZero(blk);
 
     fill(blocks,ran);
