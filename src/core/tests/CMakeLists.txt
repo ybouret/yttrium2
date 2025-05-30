@@ -9,6 +9,7 @@ calculus
 concurrent
 memory
 hashing
+xml
 )
 
 
@@ -58,4 +59,7 @@ Y_UTEST(memory:blocks)
 #hashing
 Y_UTEST(hashing:mix64)
 Y_UTEST(hashing:hash32)
+
+#xml
+Y_UTEST(xml:attribute)
 

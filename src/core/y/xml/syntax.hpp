@@ -9,7 +9,7 @@ namespace Yttrium
 {
     namespace XML
     {
-        struct Format
+        struct Syntax
         {
             static const char LANGLE = '<';
             static const char RANGLE = '>';

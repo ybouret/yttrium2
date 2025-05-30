@@ -18,13 +18,13 @@ namespace Yttrium
 
         std::ostream & Element:: initProlog(std::ostream &os, const size_t indent) const
         {
-            return Indent(os,indent) << Format::LANGLE << callSign();
+            return Indent(os,indent) << Syntax::LANGLE << callSign();
         }
 
         std::ostream & Element:: initEpilog(std::ostream &os, const bool standAlone) const
         {
-            if(standAlone) os << Format::SLASH;
-            return os << Format::RANGLE;
+            if(standAlone) os << Syntax::SLASH;
+            return os << Syntax::RANGLE;
         }
 
 
@@ -36,7 +36,7 @@ namespace Yttrium
 
         std::ostream & Element:: quit(std::ostream &os, const size_t indent) const
         {
-            return Indent(os,indent) << Format::LANGLE << Format::SLASH << callSign() << Format::RANGLE;
+            return Indent(os,indent) << Syntax::LANGLE << Syntax::SLASH << callSign() << Syntax::RANGLE;
         }
 
 

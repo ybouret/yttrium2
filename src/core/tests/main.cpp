@@ -43,6 +43,8 @@ Y_UTEST_DECL(32)
 
     Y_UTEST(hashing_mix64);
     Y_UTEST(hashing_hash32);
+    
+    Y_UTEST(xml_attribute);
 
 }
 Y_UTEST_EXEC()
