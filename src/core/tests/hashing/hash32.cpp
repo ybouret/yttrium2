@@ -77,7 +77,6 @@ namespace
             if(verbosity) std::cerr << "Setting " << ItemCount << "/" << delta << " in " << TableSize << " slots" << std::endl;
 
             Node::List Table[TableSize];
-
             for(size_t i=delta;i<=ItemCount;i += delta)
             {
                 Node * const node = new Node(i);
@@ -110,7 +109,7 @@ namespace
 
     static inline size_t UsingCRC32(const size_t x)
     {
-#if 0
+#if 1
         const uint16_t xx = uint16_t(x);
         const size_t  ans = CRC32:: Run(xx,seed32);
         return ans;
@@ -130,6 +129,7 @@ Y_UTEST(hashing_hash32)
     {
         const size_t maxLoad = TestHash32<5,10,1>::With(UsingCRC32);
         std::cerr << "=> maxLoad = " << maxLoad << std::endl;
+
     }
 }
 Y_UDONE()

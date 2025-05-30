@@ -48,6 +48,8 @@ namespace
 Y_UTEST(memory_blocks)
 {
     System::Rand           ran;
+
+#if 0
     Memory::Object::Blocks blocks(1000);
 
     void * p = blocks.acquire(10); std::cerr << "p@" << p << std::endl;
@@ -62,6 +64,7 @@ Y_UTEST(memory_blocks)
         fill(blocks,ran);
     }
     empty(0,blocks,ran);
-
+#endif
+    
 }
 Y_UDONE()

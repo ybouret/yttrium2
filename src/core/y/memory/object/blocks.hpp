@@ -27,14 +27,11 @@ namespace Yttrium
                 void * acquire(const size_t blockSize);
                 void   release(void * const blockAddr, const size_t blockSize) noexcept;
                 
-                Book & book;
             private:
                 Y_Disable_Copy_And_Assign(Blocks);
                 const unsigned pageShift;
                 const size_t   pageBytes;
-                const unsigned codeShift;
-                const size_t   codeBytes;
-                Code *         code;
+                
 
             };
         }

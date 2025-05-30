@@ -18,10 +18,10 @@ namespace Yttrium
 
         namespace Object
         {
+#if 0
 
             namespace
             {
-
 
 
                 class MetaArena
@@ -212,11 +212,9 @@ namespace Yttrium
                 assert(blockSize>0);
                 code->release(blockAddr,blockSize);
             }
-
+#endif
 
         }
-
-
     }
 }
 
