@@ -23,7 +23,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Singulet : public Identifiable
+        class Singulet : public virtual Identifiable
         {
         public:
             //__________________________________________________________________

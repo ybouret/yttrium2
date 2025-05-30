@@ -48,7 +48,7 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            virtual void display(std::ostream &os) const;
+            virtual void display(std::ostream &os, const size_t indent) const;
 
 
             //! unlocked acquire a power-of-two sized block

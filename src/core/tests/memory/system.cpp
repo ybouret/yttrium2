@@ -31,7 +31,7 @@ Y_UTEST(memory_system)
         std::cerr << block.size << std::endl;
     }
 
-    allocator.display(std::cerr);
+    allocator.display(std::cerr,0);
 
 
     ran.shuffle(blocks,numBlocks);
@@ -40,7 +40,7 @@ Y_UTEST(memory_system)
         allocator.release(blocks[i].addr, blocks[i].size);
     }
 
-    allocator.display(std::cerr);
+    allocator.display(std::cerr,0);
 
 
 }

@@ -8,7 +8,7 @@ namespace Yttrium
 
         std::ostream & Indent(std::ostream &os, const size_t count)
         {
-            return Core::Indent(os, count, ' ');
+            return Core::Indent(os, count << 1, ' ');
         }
     }
 }

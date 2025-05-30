@@ -12,7 +12,7 @@ namespace Yttrium
     namespace XML
     {
 
-        class Output : public Identifiable
+        class Output : public virtual Identifiable
         {
         protected:
             explicit Output() noexcept;
@@ -20,6 +20,7 @@ namespace Yttrium
             virtual ~Output() noexcept;
 
 
+            
             //! write "<callSign"
             std::ostream & initProlog(std::ostream &os, const size_t) const;
 
@@ -34,7 +35,7 @@ namespace Yttrium
             std::ostream & quit(std::ostream &, const size_t) const;
 
             virtual void display(std::ostream &os,
-                                 const size_t &indentation) const = 0;
+                                 const size_t  indentation) const = 0;
 
         private:
             Y_Disable_Copy_And_Assign(Output);

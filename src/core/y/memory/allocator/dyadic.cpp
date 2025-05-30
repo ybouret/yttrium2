@@ -22,18 +22,22 @@ namespace Yttrium
             memset(Coerce(allocated),0,sizeof(allocated));
         }
 
-        void Dyadic:: display(std::ostream &os) const
+        void Dyadic:: display(std::ostream &os, const size_t indent) const
         {
-            os << '<' << CallSign  << '>' << std::endl;
+            init(os,indent) << std::endl;
+            bool         hasData = false;
+            const size_t sub = indent+1;
             for(unsigned shift=MinBlockShift;shift<=MaxBlockShift;++shift)
             {
                 const size_t &n = allocated[shift]; if(n<=0) continue;
-                os << "\t|2^"
+                hasData = true;
+                XML::Indent(os,sub) << "|2^"
                 << std::setw(2) << shift
                 << "| = |" << std::setw(6) << (Base2<size_t>::One<<shift) << "| = "
                 << n << std::endl;
             }
-            os << '<' << CallSign  << '/' << '>' << std::endl;
+            if(!hasData) XML::Indent(os,sub) << "Empty..." << std::endl;;
+            quit(os,indent) << std::endl;
         }
 
         Dyadic:: ~Dyadic() noexcept

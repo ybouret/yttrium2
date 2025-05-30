@@ -31,14 +31,14 @@ Y_UTEST(memory_dyadic)
         block.addr   = allocator.acquire(block.size);
         std::cerr << block.size << std::endl;
     }
-    allocator.display(std::cerr);
+    allocator.display(std::cerr,0);
 
     ran.shuffle(blocks,numBlocks);
     for(size_t i=0;i<numBlocks;++i)
     {
         allocator.release(blocks[i].addr, blocks[i].size);
     }
-    allocator.display(std::cerr);
+    allocator.display(std::cerr,0);
 
 
 }

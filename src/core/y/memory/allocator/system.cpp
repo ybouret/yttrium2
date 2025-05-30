@@ -22,11 +22,14 @@ namespace Yttrium
 
         const char * const System::CallSign = "Memory::System";
 
-        void System:: display(std::ostream &os) const
+        void System:: display(std::ostream &os, const size_t indent) const
         {
-            os << '<' << CallSign << " allocated=" << allocated << '>' << std::endl;
+            initProlog(os,indent);
+            os << " allocated=" << allocated;
+            initEpilog(os,true) << std::endl;
+            //os << '<' << CallSign << " allocated=" << allocated << '>' << std::endl;
         }
-        
+
         System:: ~System() noexcept
         {
             if(allocated>0)
@@ -43,7 +46,7 @@ namespace Yttrium
                 throw Specific::Exception(CallSign,"blockSize=%s>%s", Decimal(blockSize).c_str(), Decimal(Align::MaxBlockSize).c_str());
 
             blockSize = Align::Compute::Ceil(blockSize);
-            
+
             Y_Lock( access );
             // get system memory
             void * const blockAddr = calloc(1,blockSize);
