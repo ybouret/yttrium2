@@ -11,33 +11,72 @@ namespace Yttrium
 {
     namespace XML
     {
-
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Help to format an Identifiable as an XML element
+        //
+        //
+        //______________________________________________________________________
         class Element : public virtual Identifiable
         {
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
         protected:
-            explicit Element() noexcept;
+            explicit Element() noexcept; //!< setup
         public:
-            virtual ~Element() noexcept;
+            virtual ~Element() noexcept; //!< cleanup
 
-
-            //! write "<callSign"
-            std::ostream & initProlog(std::ostream &os, const size_t) const;
+            //__________________________________________________________________
+            //
+            //
+            // Methods/Helper
+            //
+            //__________________________________________________________________
+            //! write "<callSign" with indentation
+            /** \return output stream */
+            std::ostream & initProlog(std::ostream &, const size_t) const;
 
             //! write "/>" if standalone, ">" otherwise
-            std::ostream & initEpilog(std::ostream &os, const bool standAlone=false) const;
+            /**
+             \param os output stream
+             \param standalone true if standalone element
+             \return os
+             */
+            std::ostream & initEpilog(std::ostream &os, const bool standalone=false) const;
 
-            //! write "<callSign>
+            //! write "<callSign>" with indentation
+            /** \return output stream */
             std::ostream & init(std::ostream &, const size_t) const;
 
 
-            //! write "</callSign>
+            //! write "</callSign>" with indentation
+            /** \return output stream */
             std::ostream & quit(std::ostream &, const size_t) const;
 
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
+
+
+            //! display the element with starting indentation
+            /**
+             \param os output stream
+             \param indentation top-level indentation
+             */
             virtual void display(std::ostream &os,
                                  const size_t  indentation) const = 0;
 
         private:
-            Y_Disable_Copy_And_Assign(Element);
+            Y_Disable_Copy_And_Assign(Element); //!< discarding
         };
 
     }

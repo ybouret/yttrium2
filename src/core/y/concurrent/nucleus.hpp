@@ -53,7 +53,7 @@ namespace Yttrium
             /** \return internal mutex */
             virtual Lockable & access() noexcept;
 
-
+            //! [XML::Element]
             virtual void display(std::ostream &, const size_t) const;
 
             //__________________________________________________________________
