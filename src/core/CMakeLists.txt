@@ -21,6 +21,7 @@ Y_CreateLibrary(y
     y/memory/object/book
     y/utest
     y/hashing
+    y/xml
 )
 
 add_subdirectory(tests)
