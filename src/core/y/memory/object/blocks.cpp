@@ -18,6 +18,19 @@ namespace Yttrium
 
         namespace Object
         {
+
+
+            Blocks:: Blocks(const size_t userPageBytes) :
+            pageShift(0),
+            pageBytes( NextPowerOfTwo( Clamp(Book::MinPageBytes,userPageBytes,Book::MaxPageBytes), Coerce(pageShift)))
+            {
+                
+            }
+
+            Blocks:: ~Blocks() noexcept
+            {
+                
+            }
 #if 0
 
             namespace
