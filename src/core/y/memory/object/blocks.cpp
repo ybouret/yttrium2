@@ -43,8 +43,16 @@ namespace Yttrium
 
             Blocks:: ~Blocks() noexcept
             {
-                Y_Memory_BZero(table);
-                while(kpool.size) knots.release( Destructed(kpool.query()) );
+                //Y_Memory_BZero(table);
+                for(size_t i=0;i<TableSize;++i)
+                {
+                    Slot &slot = table[i];
+                    Coerce(slot.size) = 0;
+                    slot.head = 0;
+                    slot.tail = 0;
+                }
+                while(kpool.size)
+                    knots.release( Destructed(kpool.query()) );
             }
 
 
