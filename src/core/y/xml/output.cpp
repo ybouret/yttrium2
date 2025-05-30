@@ -11,7 +11,7 @@ namespace Yttrium
         {
         }
 
-        Output:: Output() noexcept : Identifiable()
+        Output:: Output() noexcept  
         {
         }
 

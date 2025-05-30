@@ -14,6 +14,7 @@ namespace Yttrium
     namespace Memory
     {
         System:: System() :
+        Identifiable(),
         Singleton<System, GiantLockPolicy>(),
         Allocator(CallSign),
         allocated(0)

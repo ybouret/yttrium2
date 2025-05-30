@@ -20,7 +20,6 @@ namespace Yttrium
             virtual ~Output() noexcept;
 
 
-            
             //! write "<callSign"
             std::ostream & initProlog(std::ostream &os, const size_t) const;
 
