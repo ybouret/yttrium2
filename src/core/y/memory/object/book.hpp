@@ -81,7 +81,13 @@ namespace Yttrium
                  */
                 void   cache(const unsigned blockShift, const size_t numPages);
 
-                virtual void display(std::ostream &, const size_t) const; //!< display info
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
+                virtual void display(std::ostream &, const size_t) const; 
 
             private:
                 Y_Disable_Copy_And_Assign(Book);               //!< discarding
