@@ -88,12 +88,15 @@ namespace Yttrium
             void Blocks:: release(void * const blockAddr, const size_t blockSize) noexcept
             {
                 assert(0!=blockAddr);
-                assert(0!=blockSize);
+                assert(blockSize>0);
                 if(releasing && blockSize==releasing->blockSize) { return releasing->release(blockAddr); }
                 releasing = search(blockSize);
-                if(!releasing) {
+                if(0==releasing)
+                {
                     Libc::Error::Critical(EINVAL, "@%p+%s not allocated by %s", blockAddr, Decimal(blockSize).c_str(), CallSign);
+                    return; // to avoid report in code analysis
                 }
+
                 return releasing->release(blockAddr);
             }
 
