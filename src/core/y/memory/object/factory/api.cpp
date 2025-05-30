@@ -1,5 +1,5 @@
 
-#include "y/memory/object/factory.hpp"
+#include "y/memory/object/factory/api.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/calculus/alignment.hpp"
 

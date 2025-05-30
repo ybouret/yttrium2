@@ -1,10 +1,10 @@
 //! \file
 
-#ifndef Y_Memory_Object_Factory
-#define Y_Memory_Object_Factory 1
+#ifndef Y_Memory_Object_Factory_Included
+#define Y_Memory_Object_Factory_Included 1
 
+#include "y/memory/object/factory/api.hpp"
 #include "y/singleton.hpp"
-#include "y/concurrent/life-time.hpp"
 #include "y/concurrent/singleton/broad-lock-policy.hpp"
 
 namespace Yttrium
@@ -14,20 +14,6 @@ namespace Yttrium
         namespace Object
         {
 
-            class FactoryAPI
-            {
-            public:
-                static const char * const              CallSign; //!< "Memory::Object::Factory"
-                static const System::AtExit::Longevity LifeTime = LifeTimeOf::MemoryObjectFactory;
-
-                virtual ~FactoryAPI() noexcept;
-
-            protected:
-                explicit FactoryAPI(const size_t pageBytes,
-                                    const size_t maxBlockSize);
-            private:
-                Y_Disable_Copy_And_Assign(FactoryAPI);
-            };
 
             class Factory : public Singleton<Factory,BroadLockPolicy>
             {
