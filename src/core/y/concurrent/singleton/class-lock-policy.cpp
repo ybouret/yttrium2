@@ -5,7 +5,7 @@
 namespace Yttrium
 {
 
-
+    
     ClassLockPolicy:: ~ClassLockPolicy() noexcept
     {
     }
