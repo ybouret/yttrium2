@@ -26,7 +26,9 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Book : public Singleton<Book,BroadLockPolicy>, public Releasable
+            class Book :
+            public Singleton<Book,BroadLockPolicy>,
+            public Releasable
             {
             public:
                 //__________________________________________________________________

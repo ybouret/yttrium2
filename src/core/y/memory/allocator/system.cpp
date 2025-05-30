@@ -27,7 +27,6 @@ namespace Yttrium
             initProlog(os,indent);
             os << " allocated=" << allocated;
             initEpilog(os,true) << std::endl;
-            //os << '<' << CallSign << " allocated=" << allocated << '>' << std::endl;
         }
 
         System:: ~System() noexcept
