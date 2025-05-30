@@ -145,6 +145,7 @@ namespace Yttrium
                 typedef Memory::Workspace<MUTEX,N> Content; //!< alias
                 using Content::data;
 
+#if defined(Y_WIN)
                 //! setup with no argument
                 inline explicit InnerLocking() :
                 Content(),
@@ -166,7 +167,9 @@ namespace Yttrium
                     }
                     setup();
                 }
+#endif
 
+#if defined(Y_BSD)
                 //! setup with one argument
                 template <typename T>
                 inline explicit InnerLocking(T &arg) :
@@ -189,6 +192,7 @@ namespace Yttrium
                     }
                     setup();
                 }
+#endif
 
                 //! cleanup
                 inline virtual ~InnerLocking() noexcept { free(N); }
