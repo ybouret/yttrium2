@@ -15,6 +15,10 @@ namespace Yttrium
         {
             const char * const Pages:: CallSign = "Memory::Object::Pages";
 
+            const char * Pages:: callSign() const noexcept
+            {
+                return CallSign;
+            }
 
             static unsigned checkPageSizeShift(const unsigned userShift)
             {
@@ -79,13 +83,14 @@ namespace Yttrium
 
 
 
-            void  Pages:: display(std::ostream &os) const
+            void  Pages:: display(std::ostream &os, const size_t indent) const
             {
-                os << "\t<"
-                << CallSign
-                << " bytes=" << std::setw(8) << bytes
-                << " count=" << std::setw(8) << plist.size
-                << "/>" << std::endl;
+                initProlog(os,indent);
+
+
+                os << " bytes=" << std::setw(8) << bytes
+                << " count=" << std::setw(8) << plist.size;
+                initEpilog(os,true) << std::endl;
             }
 
 

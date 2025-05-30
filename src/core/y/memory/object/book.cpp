@@ -43,7 +43,7 @@ namespace Yttrium
                 for(unsigned i=MinPageShift;i<=MaxPageShift;++i)
                 {
                     const Pages & pages = bookPages[i];
-                    if(pages.count()>0) pages.display(os);
+                    if(pages.count()>0) pages.display(os,indent+1);
                 }
                 os << '<' << CallSign << '/' << '>' << std::endl;
             }

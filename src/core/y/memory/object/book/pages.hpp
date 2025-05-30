@@ -8,6 +8,7 @@
 #include "y/calculus/base2.hpp"
 #include "y/ability/releasable.hpp"
 #include "y/memory/page.hpp"
+#include "y/xml/element.hpp"
 
 namespace Yttrium
 {
@@ -25,7 +26,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Pages : public Releasable
+            class Pages : public Releasable, public XML::Element
             {
             public:
                 //______________________________________________________________
@@ -80,16 +81,17 @@ namespace Yttrium
                 
                 
                 size_t       count() const noexcept;        //!< \return available pages
-                void         display(std::ostream &) const; //!< display info
-                
+
                 //______________________________________________________________
                 //
                 //
                 // Interface
                 //
                 //______________________________________________________________
-                virtual void release() noexcept; //! safe (locked) release
-                
+                virtual void         release() noexcept; //! safe (locked) release
+                virtual void         display(std::ostream &, const size_t) const; //!< display info
+                virtual const char * callSign() const noexcept;
+
                 //______________________________________________________________
                 //
                 //

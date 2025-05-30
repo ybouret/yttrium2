@@ -14,6 +14,7 @@ namespace Yttrium
             static const char LANGLE = '<';
             static const char RANGLE = '>';
             static const char SLASH  = '/';
+            static const char DQUOTE = '"';
         };
 
         std::ostream & Indent(std::ostream &os, const size_t indentation);

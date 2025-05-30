@@ -1,8 +1,8 @@
 
 //! \file
 
-#ifndef Y_XML_Output_Included
-#define Y_XML_Output_Included 1
+#ifndef Y_XML_Element_Included
+#define Y_XML_Element_Included 1
 
 #include "y/xml/syntax.hpp"
 #include "y/ability/identifiable.hpp"

@@ -43,7 +43,7 @@ Y_UTEST(memory_pages)
         Memory::Object::Pages pages(shift);
         std::cerr << pages.bytes << " = 2^" << pages.shift << std::endl;
 
-        pages.display(std::cerr);
+        pages.display(std::cerr,0);
 
         void *       addr[MaxSize];
         size_t       size = 0;
@@ -56,7 +56,7 @@ Y_UTEST(memory_pages)
         }
         empty(0,addr,size,pages,ran);
 
-        pages.display(std::cerr);
+        pages.display(std::cerr,0);
     }
 
     Y_SIZEOF(Memory::Object::Pages);
