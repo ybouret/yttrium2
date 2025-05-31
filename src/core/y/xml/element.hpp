@@ -30,7 +30,7 @@ namespace Yttrium
             // Definition
             //
             //__________________________________________________________________
-            typedef XML::Attribute Attribute;
+            typedef XML::Attribute Attribute; //!< alias for derived Element
             
             //__________________________________________________________________
             //

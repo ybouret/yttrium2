@@ -9,7 +9,7 @@ Y_UTEST(memory_object_factory)
 
     Memory::Object::Factory & F = Memory::Object::Factory::Instance();
 
-
+    std::cerr << F.callSign() << std::endl;
 }
 Y_UDONE()
 

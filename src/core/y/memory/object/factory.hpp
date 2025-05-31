@@ -17,15 +17,15 @@ namespace Yttrium
             class Factory : public FactoryAPI, public Singleton<Factory,BroadLockPolicy>
             {
             public:
-                static const size_t PAGE_BYTES = 1000;
+                static const size_t PAGE_BYTES = 1000; //!< default page size
 
                 virtual void display(std::ostream &,size_t) const;
                 
             private:
-                Y_Disable_Copy_And_Assign(Factory);
+                Y_Disable_Copy_And_Assign(Factory); //!< discarding
                 friend class Singleton<Factory,BroadLockPolicy>;
-                explicit Factory();
-                virtual ~Factory() noexcept;
+                explicit Factory();          //!< setup
+                virtual ~Factory() noexcept; //!< cleanup
 
             };
         }
