@@ -34,7 +34,7 @@ namespace
     }
 }
 
-Y_UTEST(memory_pages)
+Y_UTEST(memory_object_pages)
 {
     System::Rand  ran;
 

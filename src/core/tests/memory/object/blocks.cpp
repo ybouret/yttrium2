@@ -47,7 +47,7 @@ namespace
 
 }
 
-Y_UTEST(memory_blocks)
+Y_UTEST(memory_object_blocks)
 {
 
     

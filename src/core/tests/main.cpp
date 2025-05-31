@@ -36,10 +36,10 @@ Y_UTEST_DECL(32)
     Y_UTEST(memory_system);
     Y_UTEST(memory_dyadic);
     Y_UTEST(memory_object_chunk);
-    Y_UTEST(memory_pages);
-    Y_UTEST(memory_book);
-    Y_UTEST(memory_arena);
-    Y_UTEST(memory_blocks);
+    Y_UTEST(memory_object_pages);
+    Y_UTEST(memory_object_book);
+    Y_UTEST(memory_object_arena);
+    Y_UTEST(memory_object_blocks);
     Y_UTEST(memory_object_factory);
 
     Y_UTEST(hashing_mix64);

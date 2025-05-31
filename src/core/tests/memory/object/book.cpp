@@ -13,7 +13,7 @@ namespace
 
 }
 
-Y_UTEST(memory_book)
+Y_UTEST(memory_object_book)
 {
     Concurrent::Singulet::Verbose = true;
     System::Rand  ran;

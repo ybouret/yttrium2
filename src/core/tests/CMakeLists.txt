@@ -50,12 +50,12 @@ Y_UTEST(concurrent:life_time)
 
 #memory
 Y_UTEST(memory:system)
-Y_UTEST(memory:object:chunk)
 Y_UTEST(memory:dyadic)
-Y_UTEST(memory:pages)
-Y_UTEST(memory:book)
-Y_UTEST(memory:arena)
-Y_UTEST(memory:blocks)
+Y_UTEST(memory:object:chunk)
+Y_UTEST(memory:object:pages)
+Y_UTEST(memory:object:book)
+Y_UTEST(memory:object:arena)
+Y_UTEST(memory:object:blocks)
 Y_UTEST(memory:object:factory)
 
 #hashing
