@@ -34,7 +34,7 @@ namespace
 
 }
 
-Y_UTEST(memory_chunk)
+Y_UTEST(memory_object_chunk)
 {
     System::Rand    ran;
 
