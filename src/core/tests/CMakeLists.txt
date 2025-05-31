@@ -8,6 +8,7 @@ system
 calculus
 concurrent
 memory
+memory/object
 hashing
 xml
 )
@@ -55,6 +56,7 @@ Y_UTEST(memory:pages)
 Y_UTEST(memory:book)
 Y_UTEST(memory:arena)
 Y_UTEST(memory:blocks)
+Y_UTEST(memory:object:factory)
 
 #hashing
 Y_UTEST(hashing:mix64)
