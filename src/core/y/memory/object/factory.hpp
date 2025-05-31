@@ -5,7 +5,7 @@
 
 #include "y/singleton.hpp"
 #include "y/concurrent/singleton/broad-lock-policy.hpp"
-#include "y/concurrent/life-time.hpp"
+#include "y/memory/object/factory/api.hpp"
 
 namespace Yttrium
 {
@@ -14,13 +14,13 @@ namespace Yttrium
         namespace Object
         {
 
-            
-            class Factory : public Singleton<Factory,BroadLockPolicy>
+            class Factory : public FactoryAPI, public Singleton<Factory,BroadLockPolicy>
             {
             public:
-                static const char * const CallSign;
-                static const Longevity    LifeTime = LifeTimeOf::MemoryObjectFactory;
+                static const size_t PAGE_BYTES = 1000;
 
+                virtual void display(std::ostream &,size_t) const;
+                
             private:
                 Y_Disable_Copy_And_Assign(Factory);
                 friend class Singleton<Factory,BroadLockPolicy>;

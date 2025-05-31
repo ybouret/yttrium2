@@ -33,7 +33,7 @@ namespace Yttrium
                 hasData = true;
                 XML::Indent(os,sub) << "|2^"
                 << std::setw(2) << shift
-                << "| = |" << std::setw(6) << (Base2<size_t>::One<<shift) << "| = "
+                << "| = |" << std::setw(6) << (Base2<size_t>::One<<shift) << "| : # "
                 << n << std::endl;
             }
             if(!hasData) XML::Indent(os,sub) << "Empty..." << std::endl;;
@@ -48,7 +48,7 @@ namespace Yttrium
                 std::cerr << "*** " << CallSign 
                 << " missing |2^"
                 << std::setw(2) << shift
-                << "| = |" << std::setw(6) << (Base2<size_t>::One<<shift) << "| = "
+                << "| = |" << std::setw(6) << (Base2<size_t>::One<<shift) << "| : # "
                 << n << std::endl;
             }
             clear();

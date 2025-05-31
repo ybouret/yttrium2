@@ -18,14 +18,14 @@ namespace Yttrium
             public:
                 static const char * const              CallSign; //!< "Memory::Object::Factory"
                 static const System::AtExit::Longevity LifeTime = LifeTimeOf::MemoryObjectFactory;
+                class Code;
 
                 virtual ~FactoryAPI() noexcept;
 
             protected:
-                explicit FactoryAPI(const size_t userPageBytes,
-                                    const size_t userMaxBlockSize);
-
-
+                explicit FactoryAPI(const size_t userPageBytes);
+                Code * const code;
+                
             private:
                 Y_Disable_Copy_And_Assign(FactoryAPI);
             };

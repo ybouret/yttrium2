@@ -73,7 +73,7 @@ namespace Yttrium
              \param indentation top-level indentation
              */
             virtual void display(std::ostream &os,
-                                 const size_t  indentation) const = 0;
+                                 size_t        indentation) const = 0;
 
         private:
             Y_Disable_Copy_And_Assign(Element); //!< discarding
