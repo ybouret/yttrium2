@@ -11,6 +11,8 @@ namespace Yttrium
 {
     namespace XML
     {
+        class Attribute;
+
         //______________________________________________________________________
         //
         //
@@ -21,6 +23,15 @@ namespace Yttrium
         //______________________________________________________________________
         class Element : public virtual Identifiable
         {
+        public:
+            //__________________________________________________________________
+            //
+            //
+            // Definition
+            //
+            //__________________________________________________________________
+            typedef XML::Attribute Attribute;
+            
             //__________________________________________________________________
             //
             //
@@ -46,7 +57,7 @@ namespace Yttrium
             /**
              \param os output stream
              \param standalone true if standalone element
-             \return os
+             \return os << std::endl
              */
             std::ostream & initEpilog(std::ostream &os, const bool standalone=false) const;
 
@@ -56,7 +67,7 @@ namespace Yttrium
 
 
             //! write "</callSign>" with indentation
-            /** \return output stream */
+            /** \return output stream << std::endl */
             std::ostream & quit(std::ostream &, const size_t) const;
 
             //__________________________________________________________________

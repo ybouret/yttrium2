@@ -5,6 +5,7 @@
 #include "y/system/exception.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/decimal.hpp"
+#include "y/xml/attribute.hpp"
 #include <cerrno>
 
 namespace Yttrium
@@ -38,7 +39,6 @@ namespace Yttrium
             knots(sizeof(Knot),pageBytes),
             table()
             {
-                std::cerr << "sizeof(table)=" << sizeof(table) << std::endl;
             }
 
             Blocks:: ~Blocks() noexcept
@@ -108,6 +108,15 @@ namespace Yttrium
                 return releasing->release(blockAddr);
             }
 
+
+            const char * Blocks:: callSign() const noexcept { return CallSign; }
+
+            void Blocks:: display(std::ostream &os, size_t indent) const
+            {
+                initProlog(os,indent);
+                os << Attribute("numArena",kpool.size);
+                initEpilog(os,true);
+            }
 
 
         }

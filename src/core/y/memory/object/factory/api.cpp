@@ -14,8 +14,8 @@ namespace Yttrium
         {
 
 
-            const char * const FactoryAPI:: CallSign = "Memory::Object::Factory";
-
+            const char * const              FactoryAPI:: CallSign = "Memory::Object::Factory";
+            const System::AtExit::Longevity FactoryAPI:: LifeTime;
 
 
             class FactoryAPI:: Code
@@ -71,6 +71,13 @@ namespace Yttrium
                 assert(0!=code);
                 Stealth::Zero( Destructed(code), sizeof(codeWorkspace) );
                 Coerce(code) = 0;
+            }
+
+            void FactoryAPI:: displayAll(std::ostream &os, size_t indent) const
+            {
+                assert(0!=code);
+                code->blocks.display(os,indent+1);
+
             }
 
 

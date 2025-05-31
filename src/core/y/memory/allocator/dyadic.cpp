@@ -3,6 +3,7 @@
 #include "y/system/exception.hpp"
 #include "y/check/usual.hpp"
 #include "y/decimal.hpp"
+#include "y/xml/attribute.hpp"
 
 #include <cstring>
 #include <iostream>
@@ -24,7 +25,7 @@ namespace Yttrium
 
         void Dyadic:: display(std::ostream &os, const size_t indent) const
         {
-            init(os,indent) << std::endl;
+            init(os,indent);
             bool         hasData = false;
             const size_t sub = indent+1;
             for(unsigned shift=MinBlockShift;shift<=MaxBlockShift;++shift)
@@ -37,7 +38,7 @@ namespace Yttrium
                 << n << std::endl;
             }
             if(!hasData) XML::Indent(os,sub) << "Empty..." << std::endl;;
-            quit(os,indent) << std::endl;
+            quit(os,indent);
         }
 
         Dyadic:: ~Dyadic() noexcept

@@ -89,7 +89,7 @@ namespace Yttrium
                 initProlog(os,indent);
                 os << XML::Attribute("bytes",bytes,8);
                 os << XML::Attribute("count",plist.size,8);
-                initEpilog(os,true) << std::endl;
+                initEpilog(os,true);
             }
 
 

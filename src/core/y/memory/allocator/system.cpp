@@ -4,6 +4,7 @@
 #include "y/check/usual.hpp"
 #include "y/memory/align.hpp"
 #include "y/decimal.hpp"
+#include "y/xml/attribute.hpp"
 
 #include <cstdlib>
 #include <cerrno>
@@ -26,8 +27,8 @@ namespace Yttrium
         void System:: display(std::ostream &os, const size_t indent) const
         {
             initProlog(os,indent);
-            os << " allocated=" << allocated;
-            initEpilog(os,true) << std::endl;
+            os << Attribute("allocated",allocated);
+            initEpilog(os,true);
         }
 
         System:: ~System() noexcept

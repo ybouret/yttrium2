@@ -7,6 +7,7 @@
 #include "y/memory/object/arena.hpp"
 #include "y/core/linked/list.hpp"
 #include "y/core/linked/pool.hpp"
+#include "y/xml/element.hpp"
 
 namespace Yttrium
 {
@@ -24,7 +25,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Blocks
+            class Blocks : public XML::Element
             {
             public:
                 //______________________________________________________________
@@ -70,6 +71,16 @@ namespace Yttrium
                 //______________________________________________________________
                 explicit Blocks(const size_t userPageBytes); //!< setup \param userPageBytes page size hint
                 virtual ~Blocks() noexcept;                  //!< cleanup
+
+
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
+                virtual const char * callSign() const noexcept;
+                virtual void         display(std::ostream &, size_t) const;
 
                 //______________________________________________________________
                 //

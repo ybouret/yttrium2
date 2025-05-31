@@ -1,5 +1,7 @@
 
 #include "y/memory/object/factory.hpp"
+#include "y/xml/attribute.hpp"
+#include <iostream>
 
 namespace Yttrium
 {
@@ -17,8 +19,11 @@ namespace Yttrium
             {
             }
 
-            void Factory:: display(std::ostream &, size_t) const
+            void Factory:: display(std::ostream &os, size_t indent) const
             {
+                initProlog(os, indent);
+                os << Attribute("LifeTime",LifeTime);
+                initEpilog(os);
             }
 
 

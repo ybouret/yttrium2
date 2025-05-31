@@ -74,7 +74,9 @@ Y_UTEST(memory_object_blocks)
     std::cerr << ']' << std::endl;
 #endif
 
+    blocks.display(std::cerr,0);
+
     Y_SIZEOF(Memory::Object::Blocks);
-    
+
 }
 Y_UDONE()

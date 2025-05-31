@@ -25,6 +25,8 @@ namespace Yttrium
             protected:
                 explicit FactoryAPI(const size_t userPageBytes);
                 Code * const code;
+
+                void     displayAll(std::ostream &,size_t) const;
                 
             private:
                 Y_Disable_Copy_And_Assign(FactoryAPI);
