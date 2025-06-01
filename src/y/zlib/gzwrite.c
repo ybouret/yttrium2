@@ -4,6 +4,7 @@
  */
 
 #include "gzguts.h"
+#include <assert.h>
 
 /* Initialize state for writing a gzip file.  Mark initialization by setting
    state->size to non-zero.  Return -1 on a memory allocation failure, or 0 on
@@ -263,6 +264,7 @@ z_size_t ZEXPORT gzfwrite(voidpc buf, z_size_t size, z_size_t nitems,
     z_size_t len;
     gz_statep state;
 
+
     /* get internal structure */
     if (file == NULL)
         return 0;
@@ -278,6 +280,8 @@ z_size_t ZEXPORT gzfwrite(voidpc buf, z_size_t size, z_size_t nitems,
         gz_error(state, Z_STREAM_ERROR, "request does not fit in a size_t");
         return 0;
     }
+
+    assert(size>0);
 
     /* write len bytes to buf, return the number of full items written */
     return len ? gz_write(state, buf, len) / size : 0;

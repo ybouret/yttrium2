@@ -13,6 +13,8 @@ namespace Yttrium
         namespace Object
         {
 
+            class Blocks;
+
             //__________________________________________________________________
             //
             //
@@ -38,10 +40,12 @@ namespace Yttrium
                  \param userPageBytes Factory::PAGE_SIZE
                  */
                 explicit FactoryAPI(const size_t userPageBytes);
-                Code * const code; //!< singleton code
-
                 //! display for all internal elements
                 void     displayAll(std::ostream &,size_t) const;
+
+                Code * const code;   //!< singleton code
+                Blocks      &blocks; //!< singleton blocks
+
 
             private:
                 Y_Disable_Copy_And_Assign(FactoryAPI); //!< discading

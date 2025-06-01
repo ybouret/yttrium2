@@ -61,7 +61,8 @@ namespace Yttrium
 
 
             FactoryAPI:: FactoryAPI(const size_t userPageBytes) :
-            code( new ( Y_Memory_BZero(codeWorkspace) ) Code(userPageBytes) )
+            code( new ( Y_Memory_BZero(codeWorkspace) ) Code(userPageBytes) ),
+            blocks( code->blocks )
             {
 
             }

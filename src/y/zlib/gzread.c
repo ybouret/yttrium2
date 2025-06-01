@@ -4,6 +4,7 @@
  */
 
 #include "gzguts.h"
+#include <assert.h>
 
 /* Use read() to load a buffer -- return -1 on error, otherwise 0.  Read from
    state->fd, and update state->eof, state->err, and state->msg as appropriate.
@@ -394,6 +395,8 @@ z_size_t ZEXPORT gzfread(voidp buf, z_size_t size, z_size_t nitems, gzFile file)
         gz_error(state, Z_STREAM_ERROR, "request does not fit in a size_t");
         return 0;
     }
+
+    assert(size>0);
 
     /* read len or fewer bytes to buf, return the number of full items read */
     return len ? gz_read(state, buf, len) / size : 0;
