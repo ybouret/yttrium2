@@ -1,6 +1,7 @@
 
 #include "y/memory/object/factory.hpp"
 #include "y/xml/attribute.hpp"
+#include "y/memory/object/blocks.hpp"
 #include <iostream>
 
 namespace Yttrium
@@ -26,6 +27,20 @@ namespace Yttrium
                 initEpilog(os);
             }
 
+            void * Factory:: acquireBlock(const size_t blockSize)
+            {
+                assert(blockSize>0);
+                Y_Lock(access);
+                return blocks.acquire(blockSize);
+            }
+
+            void Factory:: releaseBlock(void * const blockAddr, const size_t blockSize) noexcept
+            {
+                assert(blockSize>0);
+                assert(0!=blockAddr);
+                Y_Lock(access);
+                blocks.release(blockAddr,blockSize);
+            }
 
         }
 

@@ -84,12 +84,18 @@ namespace Yttrium
             }
 
 
+            Arena & Blocks:: operator[](const size_t blockSize)
+            {
+                assert(blockSize>0);
+                if(acquiring && blockSize==acquiring->blockSize) return *acquiring; // cached
+                if( 0!=(acquiring = search(blockSize) ) )        return *acquiring; // existing
+                return *newAcquiring(blockSize);                                    // new
+            }
+
             void * Blocks:: acquire(const size_t blockSize)
             {
                 assert(blockSize>0);
-                if(acquiring && blockSize==acquiring->blockSize) return acquiring->acquire(); // cached
-                if( 0!=(acquiring = search(blockSize) ) )        return acquiring->acquire(); // existing
-                return newAcquiring(blockSize)->acquire();                                    // new
+                return (*this)[blockSize].acquire();
             }
 
 
@@ -117,6 +123,10 @@ namespace Yttrium
                 os << Attribute("numArena",kpool.size);
                 initEpilog(os,true);
             }
+
+
+
+
 
 
         }

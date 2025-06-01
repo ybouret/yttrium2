@@ -1,8 +1,8 @@
 
 //! \file
 
-#ifndef Y_Memory_Chunk_Included
-#define Y_Memory_Chunk_Included 1
+#ifndef Y_Memory_Object_Chunk_Included
+#define Y_Memory_Object_Chunk_Included 1
 
 #include "y/memory/ownership.hpp"
 #include "y/memory/limits.hpp"

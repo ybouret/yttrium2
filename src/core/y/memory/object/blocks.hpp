@@ -105,6 +105,8 @@ namespace Yttrium
                  */
                 void   release(void * const blockAddr, const size_t blockSize) noexcept;
 
+                Arena & operator[](const size_t blockSize);
+
             private:
                 Y_Disable_Copy_And_Assign(Blocks); //!< discarding
 
