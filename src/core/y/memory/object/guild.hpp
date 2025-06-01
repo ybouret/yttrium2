@@ -30,19 +30,7 @@ namespace Yttrium
                 Code * const code;
             };
 
-            template <typename T>
-            class GuildOf : public Guild
-            {
-            public:
-                inline explicit GuildOf() : Guild(sizeof(T)) {}
-                inline virtual ~GuildOf() noexcept {}
-
-                
-
-            private:
-                Y_Disable_Copy_And_Assign(GuildOf);
-            };
-
+            
         }
     }
 
