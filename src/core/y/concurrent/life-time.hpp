@@ -29,7 +29,9 @@ namespace Yttrium
             Y_LifeTime(SystemMemory)        /*!< for Memory::System          */,
             Y_LifeTime(DyadicMemory)        /*!< for Memory::Dyadic          */,
             Y_LifeTime(MemoryObjectBook)    /*!< for Memory::Object::Book    */,
-            Y_LifeTime(MemoryObjectFactory) /*!< for Memory::Object::Factory */
+            Y_LifeTime(MemoryObjectFactory) /*!< for Memory::Object::Factory */,
+            Y_LifeTime(MemoryDyads)         /*!< for Memory::Object::Factory */
+
         };
     };
 }
