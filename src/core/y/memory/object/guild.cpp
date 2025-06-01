@@ -2,6 +2,7 @@
 #include "y/memory/object/guild.hpp"
 #include "y/memory/object/factory.hpp"
 #include "y/memory/object/blocks.hpp"
+#include "y/memory/stealth.hpp"
 
 namespace Yttrium
 {
@@ -14,20 +15,37 @@ namespace Yttrium
             {
             public:
 
-                Code()
+                inline Code(Lockable &theAccess,
+                            Arena    &theArena) :
+                access(theAccess),
+                arena(theArena)
                 {
 
                 }
 
-                ~Code() noexcept
+
+                inline ~Code() noexcept
                 {
                 }
 
-
+                static inline
                 Code * Create(const size_t blockSize)
                 {
-                    return 0;
+                    Factory &    F = Factory::Instance();
+                    Code * const p = F.acquireBlockFor<Code>();
+                    try
+                    {
+                        return new (p) Code(F.access,F.blocks.getArenaFor(blockSize));
+                    }
+                    catch(...)
+                    {
+                        F.releaseBlockFor(p);
+                        throw;
+                    }
                 }
+
+                Lockable & access;
+                Arena    & arena;
 
             private:
                 Y_Disable_Copy_And_Assign(Code);
@@ -35,16 +53,40 @@ namespace Yttrium
 
 
 
-            Guild:: Guild(const size_t blockSize) :
-            code( 0 )
+            Guild:: Guild(const size_t userBlockSize) :
+            code( Code::Create(userBlockSize) )
             {
             }
 
 
             Guild:: ~Guild() noexcept
             {
+                assert( 0!= code);
+                assert( Factory::Exists() );
+                Factory::Location().releaseBlockFor( Stealth::DestructedAndZeroed(code) );
             }
-            
+
+            size_t Guild:: blockSize() const noexcept
+            {
+                assert( 0 != code);
+                return code->arena.blockSize;
+            }
+
+            void * Guild:: acquireBlock()
+            {
+                assert(0!=code);
+                Y_Lock(code->access);
+                return code->arena.acquire();
+            }
+
+            void Guild:: releaseBlock(void * const addr) noexcept
+            {
+                assert(0!=code);
+                Y_Lock(code->access);
+                code->arena.release(addr);
+            }
+
+
 
         }
     }

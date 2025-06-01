@@ -84,7 +84,7 @@ namespace Yttrium
             }
 
 
-            Arena & Blocks:: operator[](const size_t blockSize)
+            Arena & Blocks:: getArenaFor(const size_t blockSize)
             {
                 assert(blockSize>0);
                 if(acquiring && blockSize==acquiring->blockSize) return *acquiring; // cached
@@ -95,7 +95,7 @@ namespace Yttrium
             void * Blocks:: acquire(const size_t blockSize)
             {
                 assert(blockSize>0);
-                return (*this)[blockSize].acquire();
+                return getArenaFor(blockSize).acquire();
             }
 
 

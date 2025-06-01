@@ -129,7 +129,15 @@ namespace Yttrium
             {
                 return static_cast<T *>(Zero(address,sizeof(T)));
             }
-            
+
+            template <typename T>
+            static inline T * DestructedAndZeroed( T * const obj ) noexcept
+            {
+                assert(0!=obj);
+                obj->~T();
+                return static_cast<T*>(Zero(obj,sizeof(T)));
+            }
+
             
         };
     }

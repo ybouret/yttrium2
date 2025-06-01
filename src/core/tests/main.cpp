@@ -41,6 +41,7 @@ Y_UTEST_DECL(32)
     Y_UTEST(memory_object_arena);
     Y_UTEST(memory_object_blocks);
     Y_UTEST(memory_object_factory);
+    Y_UTEST(memory_object_guild);
 
     Y_UTEST(hashing_mix64);
     Y_UTEST(hashing_hash32);

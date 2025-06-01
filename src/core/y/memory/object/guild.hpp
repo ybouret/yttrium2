@@ -17,14 +17,32 @@ namespace Yttrium
             {
             public:
                 class Code;
-
-                explicit Guild(const size_t blockSize);
-                virtual ~Guild() noexcept;
                 
+                explicit Guild(const size_t userBlockSize);
+                virtual ~Guild() noexcept;
+
+                size_t blockSize() const noexcept;
+                void * acquireBlock();
+                void   releaseBlock(void * const) noexcept;
+
             private:
                 Y_Disable_Copy_And_Assign(Guild);
                 Code * const code;
             };
+
+            template <typename T>
+            class GuildOf : public Guild
+            {
+            public:
+                inline explicit GuildOf() : Guild(sizeof(T)) {}
+                inline virtual ~GuildOf() noexcept {}
+
+                
+
+            private:
+                Y_Disable_Copy_And_Assign(GuildOf);
+            };
+
         }
     }
 
