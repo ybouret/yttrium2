@@ -77,13 +77,30 @@ namespace Yttrium
                                          size_t &        request) noexcept;
 
                 //! CRC32 of markers
+                /**
+                 \param segment a valid segment
+                 \return crc of all blocks
+                 */
                 static uint32_t CRC(const Segment * segment) noexcept;
 
-
+                //! (fast) check of ownership
+                /**
+                 \return true iff address between head an tail
+                 */
                 static bool      Owns(const Segment * const, void * const) noexcept;
-                static Segment * Release(void * const addr)   noexcept;
+
+                //! check empty \return true iff unused head whose next is tail
                 static bool      IsEmpy(const Segment *const) noexcept;
+
+                //! retrieve formated memory size \return original block size
                 static size_t    Bytes(const Segment *const)  noexcept;
+
+                //! releasing and address
+                /**
+                 \param addr previousluy acquired
+                 \return owning segment
+                 */
+                static Segment * Release(void * const addr)   noexcept;
 
                 //______________________________________________________________
                 //

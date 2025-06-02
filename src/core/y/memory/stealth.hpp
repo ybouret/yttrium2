@@ -143,6 +143,12 @@ namespace Yttrium
                 return static_cast<T*>(Zero(obj,sizeof(T)));
             }
 
+            //! anonymous address difference
+            /**
+             \param ini any address
+             \param end any address
+             \return end-ini difference in bytes
+             */
             static ptrdiff_t Diff(const void * const ini, const void *const end) noexcept;
 
         };
