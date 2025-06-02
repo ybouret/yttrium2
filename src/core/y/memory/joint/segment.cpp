@@ -40,6 +40,7 @@ namespace Yttrium
                 if(numBlocks*BlockSize+SegmentBytes!=bytes)
                     throw Specific::Exception(CallSign,"unaligned bytes=%s", Decimal(bytes).c_str());;
 
+                // prepare segment
                 Segment * const segment = static_cast<Segment *>( Stealth::Zero(entry,bytes) );
 
                 // check and perform various links
@@ -47,20 +48,21 @@ namespace Yttrium
                 assert(0==segment->next);
                 assert(0==segment->prev);
 
+                // prepare head and tail
                 Coerce(segment->head) = static_cast<Block *>(Stealth::Incr(entry, SegmentBytes));
                 Coerce(segment->tail) = segment->head + (numBlocks-1);
                 assert(!segment->head->used);
                 assert(!segment->tail->used);
 
-                segment->head->next   = segment->tail;
-                segment->tail->prev   = segment->head;
-                segment->head->size   = (numBlocks-2) << BlockLog2;
-                segment->tail->used   = segment;
+                segment->head->next = segment->tail;
+                segment->tail->prev = segment->head;
+                segment->head->size = (numBlocks-2) << BlockLog2;
+                segment->tail->used = segment;
 
                 // parameters
-                segment->param.bytes  = bytes;
+                segment->param.bytes           = bytes;
                 segment->param.nextPowerOfTwo  = NextPowerOfTwo(segment->param.bytes, segment->param.shift);
-                segment->param.isDyadic = ( segment->param.bytes ==  segment->param.nextPowerOfTwo );
+                segment->param.isDyadic        = ( segment->param.bytes ==  segment->param.nextPowerOfTwo );
                 assert(IsValid(segment));
 
                 return segment;
