@@ -43,7 +43,14 @@ namespace Yttrium
                 static Segment * Format(void * const  entry,
                                         const  size_t bytes);
                 static void      Display(const Segment * const,std::ostream &);
-                static void *    Acquire(Segment * const, size_t &) noexcept;
+                static bool      IsValid(const Segment * const) noexcept;
+
+                //!
+                /**
+                 \return 0 if not found and request is untouched, address and request otherwise
+                 */
+                static void *    Acquire(Segment * const segment,
+                                         size_t &        request) noexcept;
 
             };
         }

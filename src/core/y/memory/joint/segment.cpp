@@ -47,7 +47,10 @@ namespace Yttrium
 
                 segment->head->next   = segment->tail;
                 segment->tail->prev   = segment->head;
-                segment->head->size   = sizeof(Block) * (numBlocks-2);
+                segment->head->size   = (numBlocks-2) << BlockLog2;
+                segment->tail->used   = segment;
+
+                assert(IsValid(segment));
 
                 return segment;
             }
@@ -80,40 +83,82 @@ namespace Yttrium
                 os << ']' << std::endl;
             }
 
+#define Y_Segment_Check(EXPR) do {\
+if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
+} while(false)
+
+            bool Segment:: IsValid(const Segment * const segment) noexcept
+            {
+                Y_Segment_Check(0!=segment);
+                Y_Segment_Check(0!=segment->head);
+                Y_Segment_Check(0!=segment->tail);
+                Y_Segment_Check(segment==segment->tail->used);
+                Y_Segment_Check(0==segment->tail->size);
+
+                for(const Block *block=segment->head;block!=segment->tail;block=block->next)
+                {
+                    if(block->used) Y_Segment_Check(segment==block->used);
+                    const Block * const next = block->next;
+                    Y_Segment_Check(0!=next);
+                    Y_Segment_Check(block==next->prev);
+                    const size_t numBlocks = static_cast<size_t>(next-block);
+                    Y_Segment_Check(numBlocks>=2);
+                    const size_t numBytes  = (numBlocks-1)*BlockSize;
+                    Y_Segment_Check(numBytes==block->size);
+                }
+                return true;
+            }
+
+
 
             void * Segment:: Acquire(Segment * const segment,
-                                     size_t &        blockSize) noexcept
+                                     size_t &        request) noexcept
             {
-                assert(0!=segment);
+                assert(IsValid(segment));
+
                 for(Block *block=segment->head;block!=segment->tail;block=block->next)
                 {
+
+                    // check if block is used
                     if(block->used) {
                         assert(segment==block->used);
                         continue; // used blocks
                     }
 
-                    assert(block->size>=sizeof(Block));
-
-                    if(block->size<blockSize)
+                    // check if block can accept request
+                    if(block->size<request)
                         continue; // block is too small
 
-                    const size_t required = Alignment::To<Block>::Ceil( MaxOf(blockSize,BlockSize) );
-
-
-                    std::cerr << "blockSize = " << blockSize << " -> " << required << std::endl;;
+                    // using alignment
+                    const size_t aligned = Alignment::To<Block>::Ceil( MaxOf(request,BlockSize) );
+                    assert(aligned<=block->size);
                     {
-                        const size_t remaining = block->size - required;
-                        std::cerr << "remaining=" << remaining << std::endl;
-                        if(remaining>=2*BlockSize)
-                            std::cerr << "should split" << std::endl;
+                        const size_t remains = block->size - aligned; assert(0==remains%BlockSize);
+                        if(remains>=2*BlockSize)
+                        {
+                            // split
+                            const size_t requestedBlocks = aligned>>BlockLog2;
+                            const size_t remainingBlocks = remains>>BlockLog2;
+                            Block * const next = block->next;
+                            Block * const slit = block+1+requestedBlocks;
+                            slit->used  = 0;
+                            slit->next  = next;
+                            slit->prev  = block;
+                            slit->size  = (remainingBlocks-1) << BlockLog2;
+                            next->prev  = slit;
+                            block->next = slit;
+                            block->size = aligned;
+                            assert(IsValid(segment));
+                        }
                     }
 
                     block->used = segment;
-                    blockSize   = block->size;
+                    request     = block->size;
+                    assert(IsValid(segment));
                     return block+1;
                 }
 
-                // not found, leave blockSize untouched
+                // not found, leave request untouched
                 return 0;
             }
 
