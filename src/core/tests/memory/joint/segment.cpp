@@ -69,6 +69,7 @@ Y_UTEST(memory_joint_segment)
 
     void *wksp[100];
     Memory::Joint::Segment *segment = Memory::Joint::Segment::Format(wksp,sizeof(wksp));
+    Y_CHECK( Memory::Joint::Segment::IsEmpy(segment));
 
     Memory::Joint::Segment::Display(segment,std::cerr);
 
@@ -79,6 +80,7 @@ Y_UTEST(memory_joint_segment)
         fillSeg(segment,ran);
     }
     emptySeg(0,segment,ran);
+    Y_CHECK( Memory::Joint::Segment::IsEmpy(segment));
 
 
 }

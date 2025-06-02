@@ -182,6 +182,14 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                 return addr >= (const void *)(segment->head+1) && addr < (const void *)(segment->tail);
             }
 
+            bool Segment:: IsEmpy(const Segment *const segment) noexcept
+            {
+                assert(IsValid(segment));
+                Block * const head = segment->head;
+                return !head->used && segment->tail == head->next;
+            }
+
+
             Segment * Segment:: Release(void *const addr) noexcept
             {
                 // get block from address
