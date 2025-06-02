@@ -9,6 +9,7 @@ calculus
 concurrent
 memory
 memory/object
+memory/joint
 hashing
 xml
 )
@@ -60,6 +61,8 @@ Y_UTEST(memory:object:blocks)
 Y_UTEST(memory:object:factory)
 Y_UTEST(memory:object:guild)
 Y_UTEST(memory:dyads)
+Y_UTEST(memory:joint:segment)
+
 
 #hashing
 Y_UTEST(hashing:mix64)
