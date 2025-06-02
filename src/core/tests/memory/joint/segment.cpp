@@ -25,6 +25,13 @@ Y_UTEST(memory_joint_segment)
 
     Memory::Joint::Segment::Display(segment,std::cerr);
 
+    size_t size = 0;
+    void * addr = Memory::Joint::Segment::Acquire(segment,size);
+    std::cerr << addr << "+" << size << std::endl;
+
+    Memory::Joint::Segment::Display(segment,std::cerr);
+
+
 }
 Y_UDONE()
 

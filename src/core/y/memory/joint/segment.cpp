@@ -5,6 +5,7 @@
 #include "y/system/exception.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/memory/sentinel.hpp"
+#include "y/core/utils.hpp"
 
 #include <iostream>
 
@@ -84,19 +85,35 @@ namespace Yttrium
                                      size_t &        blockSize) noexcept
             {
                 assert(0!=segment);
-                for(const Block *block=segment->head;block!=segment->tail;block=block->next)
+                for(Block *block=segment->head;block!=segment->tail;block=block->next)
                 {
                     if(block->used) {
                         assert(segment==block->used);
                         continue; // used blocks
                     }
 
+                    assert(block->size>=sizeof(Block));
+
                     if(block->size<blockSize)
                         continue; // block is too small
 
-                    
+                    const size_t required = Alignment::To<Block>::Ceil( MaxOf(blockSize,BlockSize) );
 
+
+                    std::cerr << "blockSize = " << blockSize << " -> " << required << std::endl;;
+                    {
+                        const size_t remaining = block->size - required;
+                        std::cerr << "remaining=" << remaining << std::endl;
+                        if(remaining>=2*BlockSize)
+                            std::cerr << "should split" << std::endl;
+                    }
+
+                    block->used = segment;
+                    blockSize   = block->size;
+                    return block+1;
                 }
+
+                // not found, leave blockSize untouched
                 return 0;
             }
 
