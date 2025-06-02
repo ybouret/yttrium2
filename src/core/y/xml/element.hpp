@@ -21,7 +21,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Element : public virtual Identifiable
+        class Element : public Identifiable
         {
         public:
             //__________________________________________________________________

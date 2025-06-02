@@ -350,13 +350,15 @@ namespace Yttrium
             return *nucleus;
         }
 
-        void Nucleus:: display(std::ostream &os, const size_t indent) const
+        void Nucleus:: display(std::ostream &os, size_t indent) const
         {
             assert(0!=code);
             init(os,indent) << std::endl;
-            XML::Indent(os,indent+1) << "available replica mutex = " << code->kernel.replica.size << std::endl;
-            XML::Indent(os,indent+1) << "already   engaged mutex = " << code->kernel.engaged.size << std::endl;
-            quit(os,indent) << std::endl;
+			++indent;
+            XML::Indent(os,indent) << "available replica mutex = " << code->kernel.replica.size << std::endl;
+            XML::Indent(os,indent) << "already   engaged mutex = " << code->kernel.engaged.size << std::endl;
+			--indent;
+			quit(os,indent) << std::endl;
         }
 
     }

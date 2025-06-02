@@ -15,7 +15,6 @@ namespace Yttrium
     namespace Memory
     {
         System:: System() :
-        Identifiable(),
         Singleton<System, GiantLockPolicy>(),
         Allocator(CallSign),
         allocated(0)
@@ -24,7 +23,7 @@ namespace Yttrium
 
         const char * const System::CallSign = "Memory::System";
 
-        void System:: display(std::ostream &os, const size_t indent) const
+        void System:: display(std::ostream &os, size_t indent) const
         {
             initProlog(os,indent);
             os << Attribute("allocated",allocated);

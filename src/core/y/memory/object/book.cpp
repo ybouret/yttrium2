@@ -36,7 +36,7 @@ namespace Yttrium
                 bookPages = 0;
             }
 
-            void Book:: display(std::ostream &os, const size_t indent) const
+            void Book:: display(std::ostream &os, size_t indent) const
             {
                 
                 os << '<' << CallSign << " NumPageShift=" << NumPageShift << '>' << std::endl;

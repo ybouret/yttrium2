@@ -54,7 +54,7 @@ namespace Yttrium
             virtual Lockable & access() noexcept;
 
             //! [XML::Element]
-            virtual void display(std::ostream &, const size_t) const;
+            virtual void display(std::ostream &,size_t) const;
 
             //__________________________________________________________________
             //
