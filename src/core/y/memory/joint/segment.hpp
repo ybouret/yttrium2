@@ -108,6 +108,8 @@ namespace Yttrium
                  */
                 static Segment * Release(void * const addr)   noexcept;
 
+                static size_t BytesFor(const size_t blockSize);
+
                 //______________________________________________________________
                 //
                 //

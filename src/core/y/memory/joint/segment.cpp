@@ -263,6 +263,10 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                 return segment;
             }
 
+            size_t Segment:: BytesFor(const size_t blockSize)
+            {
+                
+            }
 
 
 
