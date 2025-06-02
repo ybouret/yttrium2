@@ -22,14 +22,18 @@ namespace Yttrium
             const size_t       Segment:: SegmentBytes = sizeof(Segment);
             const size_t       Segment:: MinNumBlocks;
             const size_t       Segment:: MinDataBytes = SegmentBytes + MinNumBlocks * BlockSize;
+            const size_t       Segment:: MaxDataBytes;
 
             Segment * Segment:: Format(void * const  entry,
                                        const  size_t bytes)
             {
-                // sanoty check
+                // sanity check
                 assert( Good(entry,bytes) );
-                if(bytes<MinDataBytes)
-                    throw Specific::Exception(CallSign,"bytes=%s<MinDataBytes=%s", Decimal(bytes).c_str(), Decimal(MinDataBytes).c_str());
+                if(bytes<MinDataBytes||bytes<MaxDataBytes)
+                    throw Specific::Exception(CallSign,"bytes=%snot in %s:%s", Decimal(bytes).c_str(), Decimal(MinDataBytes).c_str(), Decimal(MaxDataBytes).c_str());
+
+
+
                 assert(0!=entry);
                 assert(bytes>=MinDataBytes);
 
@@ -54,6 +58,8 @@ namespace Yttrium
                 segment->head->size   = (numBlocks-2) << BlockLog2;
                 segment->tail->used   = segment;
 
+                segment->param.bytes  = bytes;
+                segment->param.nextPowerOfTwo  = NextPowerOfTwo(segment->param.bytes, segment->param.shift);
                 assert(IsValid(segment));
 
                 return segment;

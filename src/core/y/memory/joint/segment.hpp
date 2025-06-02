@@ -50,13 +50,21 @@ namespace Yttrium
                 static const size_t   SegmentBytes;                                //!< sizeof(SegmentBytes)
                 static const size_t   MinNumBlocks = 3;                            //!< head+free block+tail
                 static const size_t   MinDataBytes;                                //!< SegmentBytes + MinNumBlocks * BlockSize
+                static const size_t   MaxDataBytes = Base2<size_t>::MaxBytes;
 
+                struct Param
+                {
+                    size_t   bytes;
+                    unsigned shift;
+                    size_t   nextPowerOfTwo;
+                    bool     isDyadic;
+                };
 
 
                 //! format a segment
                 /**
                  \param entry valid memory
-                 \param bytes bytes >= MinDataBytes
+                 \param bytes bytes >= MinDataBytes and bytes <= Base2::MaxBytes
                  \return a formatted segment
                  */
                 static Segment * Format(void * const entry, const size_t bytes);
@@ -112,6 +120,10 @@ namespace Yttrium
                 Segment *     prev; //!< for list/cache
                 Block * const head; //!< head marker
                 Block * const tail; //!< tail marker
+                union {
+                    Block _;
+                    Param param;
+                };
 
             };
         }

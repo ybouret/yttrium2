@@ -35,7 +35,7 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
-                static const size_t   DEFAULT_PAGE_BYTES = 1024;                                   //!< default page size
+                static const size_t   DEFAULT_PAGE_BYTES = 4096;                                   //!< default page size
                 static const unsigned DEFAULT_PAGE_SHIFT = IntegerLog2<DEFAULT_PAGE_BYTES>::Value; //!< ensure power of two
                 static const size_t   LIMIT_OBJECT_BYTES = 512;                                    //!< limit size
                 static const unsigned LIMIT_OBJECT_SHIFT = IntegerLog2<LIMIT_OBJECT_BYTES>::Value; //!< ensure power of two
