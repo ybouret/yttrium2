@@ -35,6 +35,7 @@ Y_UTEST_DECL(64)
 
     Y_UTEST(memory_system);
     Y_UTEST(memory_dyadic);
+    Y_UTEST(memory_workspace);
     Y_UTEST(memory_object_chunk);
     Y_UTEST(memory_object_pages);
     Y_UTEST(memory_object_book);

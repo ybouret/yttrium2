@@ -21,7 +21,8 @@ Y_UTEST(memory_dyads)
     System::Rand        ran;
 
     Memory::Dyads & dyads = Memory::Dyads::Instance();
-    
+
+    dyads.display(std::cerr,0);
 
 }
 Y_UDONE()

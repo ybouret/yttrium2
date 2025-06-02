@@ -38,7 +38,7 @@ namespace Yttrium
             static const unsigned     MaxFactoryShift = Object::Factory::LIMIT_OBJECT_SHIFT;
             static const unsigned     MaxAllowedShift = Limits::MaxBlockShift;
             static const unsigned     NumFactoryShift = MaxFactoryShift+1;               //!< [0..MaxFactoryShift]
-            static const unsigned     NumGreaterShoft = MaxAllowedShift-MaxFactoryShift; //! [MaxFactoryShift+1..MaxAllowedShift]
+            static const unsigned     NumGreaterShift = MaxAllowedShift-MaxFactoryShift; //! [MaxFactoryShift+1..MaxAllowedShift]
 
             class Code;
 

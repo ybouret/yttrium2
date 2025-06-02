@@ -15,7 +15,9 @@ Y_CreateLibrary(y
     y/calculus
     y/concurrent
     y/concurrent/singleton
+    y/container
     y/memory
+    y/memory/workspace
     y/memory/allocator
     y/memory/object
     y/memory/object/book

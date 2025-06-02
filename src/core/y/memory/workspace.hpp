@@ -7,6 +7,7 @@
 #include "y/memory/stealth.hpp"
 #include "y/calculus/alignment.hpp"
 
+
 namespace Yttrium
 {
     namespace Memory
@@ -47,10 +48,14 @@ namespace Yttrium
             //! initialize
             inline explicit Workspace() noexcept :
             data(0),
+            item(0),
             wksp()
             {
                 Coerce(data) = static_cast<T *>( Y_Memory_BZero(wksp) );
+                Coerce(item) = data-1;
             }
+
+
 
             //__________________________________________________________________
             //
@@ -59,6 +64,8 @@ namespace Yttrium
             //
             //__________________________________________________________________
             T * const data; //!< address of workspace
+            T * const item; //!< C++ address
+
         private:
             Y_Disable_Copy_And_Assign(Workspace);                      //!< discarding
             void *    wksp[ Alignment::WordsGEQ<sizeof(T)*N>::Count ]; //!< internal memory

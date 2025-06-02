@@ -51,6 +51,7 @@ Y_UTEST(concurrent:life_time)
 #memory
 Y_UTEST(memory:system)
 Y_UTEST(memory:dyadic)
+Y_UTEST(memory:workspace)
 Y_UTEST(memory:object:chunk)
 Y_UTEST(memory:object:pages)
 Y_UTEST(memory:object:book)
