@@ -71,6 +71,9 @@ Y_UTEST(memory_joint_segment)
     Memory::Joint::Segment *segment = Memory::Joint::Segment::Format(wksp,sizeof(wksp));
     Y_CHECK( Memory::Joint::Segment::IsEmpy(segment));
 
+
+
+
     Memory::Joint::Segment::Display(segment,std::cerr);
 
     fillSeg(segment,ran);
@@ -82,6 +85,9 @@ Y_UTEST(memory_joint_segment)
     emptySeg(0,segment,ran);
     Y_CHECK( Memory::Joint::Segment::IsEmpy(segment));
 
+    Y_PRINTV(sizeof(wksp));
+    Y_PRINTV( Memory::Joint::Segment::Bytes(segment) );
+    Y_CHECK( Memory::Joint::Segment::Bytes(segment) == sizeof(wksp) );
 
 }
 Y_UDONE()

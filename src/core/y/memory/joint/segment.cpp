@@ -34,7 +34,9 @@ namespace Yttrium
                 assert(bytes>=MinDataBytes);
 
                 const size_t numBlocks = (bytes - SegmentBytes) / BlockSize; assert(numBlocks>=MinNumBlocks);
-                std::cerr << "numBlocks=" << numBlocks << " in " << bytes << " bytes " << std::endl;
+                if(numBlocks*BlockSize+SegmentBytes!=bytes)
+                    throw Specific::Exception(CallSign,"unaligned bytes=%s", Decimal(bytes).c_str());;
+
                 Segment * const segment = static_cast<Segment *>( Stealth::Zero(entry,bytes) );
 
                 // check and perform various links
@@ -250,6 +252,14 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
 
 
                 return segment;
+            }
+
+
+            size_t Segment:: Bytes(const Segment *const segment)  noexcept
+            {
+                assert( IsValid(segment) );
+                const ptrdiff_t diff = Stealth::Diff(segment,segment->tail+1);
+                return static_cast<size_t>(diff);
             }
 
         }

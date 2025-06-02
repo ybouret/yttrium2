@@ -74,6 +74,13 @@ namespace Yttrium
             return static_cast<char *>(addr)-delta;
         }
 
+
+        ptrdiff_t Stealth:: Diff(const void * const ini, const void *const end) noexcept
+        {
+            return static_cast<const char *>(end) - static_cast<const char *>(ini);
+        }
+
+
     }
 
 }

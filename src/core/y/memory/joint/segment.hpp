@@ -81,8 +81,9 @@ namespace Yttrium
 
 
                 static bool      Owns(const Segment * const, void * const) noexcept;
-                static Segment * Release(void * const addr) noexcept;
+                static Segment * Release(void * const addr)   noexcept;
                 static bool      IsEmpy(const Segment *const) noexcept;
+                static size_t    Bytes(const Segment *const)  noexcept;
 
                 //______________________________________________________________
                 //
