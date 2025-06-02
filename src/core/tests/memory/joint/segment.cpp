@@ -73,6 +73,11 @@ Y_UTEST(memory_joint_segment)
     Memory::Joint::Segment::Display(segment,std::cerr);
 
     fillSeg(segment,ran);
+    for(int iter=0;iter<10;++iter)
+    {
+        emptySeg(count>>1,segment,ran);
+        fillSeg(segment,ran);
+    }
     emptySeg(0,segment,ran);
 
 

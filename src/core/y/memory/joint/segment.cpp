@@ -207,28 +207,37 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                 switch(flags)
                 {
                     case MERGE_PREV: {
-                        std::cerr << "should merge prev" << std::endl;
-                        exit(1);
+                        //std::cerr << "should merge prev" << std::endl;
+                        prev->next = next;
+                        next->prev = prev;
+                        prev->size = (static_cast<size_t>(next-prev)-1) << BlockLog2;
+                        assert(IsValid(segment) || Die("MERGE_PREV") );
                     } break;
 
                     case MERGE_NEXT: {
-                        std::cerr << "should merge next" << std::endl;
+                        //std::cerr << "should merge next" << std::endl;
                         Block * const after = next->next; assert(0!=after);
                         block->next = after;
                         after->prev = block;
                         block->size = (static_cast<size_t>(after-block)-1) << BlockLog2;
+                        block->used = 0;
                         assert(IsValid(segment) || Die("MERGE_NEXT") );
                     } break;
 
-                    case MERGE_BOTH:
-                        std::cerr << "should merge both" << std::endl;
-                        exit(1);
-                        break;
+                    case MERGE_BOTH: {
+                        //std::cerr << "should merge both" << std::endl;
+                        Block * const after = next->next; assert(0!=after);
+                        prev->next  = after;
+                        after->prev = prev;
+                        prev->size = (static_cast<size_t>(after-prev)-1) << BlockLog2;
+                        assert(IsValid(segment) || Die("MERGE_BOTH") );
+                    } break;
 
                     default:
                         assert(MERGE_NONE==flags);
                         block->used = 0;
                         assert(IsValid(segment) || Die("MERGE_NONE") );
+                        break;
                 }
 
 
