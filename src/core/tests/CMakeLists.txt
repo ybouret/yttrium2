@@ -58,6 +58,7 @@ Y_UTEST(memory:object:arena)
 Y_UTEST(memory:object:blocks)
 Y_UTEST(memory:object:factory)
 Y_UTEST(memory:object:guild)
+Y_UTEST(memory:dyads)
 
 #hashing
 Y_UTEST(hashing:mix64)

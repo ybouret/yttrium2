@@ -7,7 +7,7 @@
 #include <cstring>
 #include <iostream>
 
-Y_UTEST_DECL(32)
+Y_UTEST_DECL(64)
 {
     Y_UTEST(exception);
     Y_UTEST(hexadecimal);
@@ -42,6 +42,7 @@ Y_UTEST_DECL(32)
     Y_UTEST(memory_object_blocks);
     Y_UTEST(memory_object_factory);
     Y_UTEST(memory_object_guild);
+    Y_UTEST(memory_dyads);
 
     Y_UTEST(hashing_mix64);
     Y_UTEST(hashing_hash32);
