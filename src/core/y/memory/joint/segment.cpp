@@ -40,6 +40,9 @@ namespace Yttrium
 
                 Coerce(segment->head) = static_cast<Block *>(Stealth::Incr(entry, SegmentBytes));
                 Coerce(segment->tail) = segment->head + (numBlocks-1);
+                assert(!segment->head->used);
+                assert(!segment->tail->used);
+
                 segment->head->next   = segment->tail;
                 segment->tail->prev   = segment->head;
                 segment->head->size   = sizeof(Block) * (numBlocks-2);
@@ -53,9 +56,9 @@ namespace Yttrium
                 os << '[';
                 for(const Block *block=segment->head;block!=segment->tail;block=block->next)
                 {
-                    if(block->link!=0)
+                    if(block->used)
                     {
-                        assert(segment==block->link);
+                        assert(segment==block->used);
                         // used
                         os << '*';
                     }
@@ -67,8 +70,27 @@ namespace Yttrium
                 }
                 os << ']' << std::endl;
             }
-        }
 
+
+            void * Segment:: Acquire(Segment * const segment,
+                                     size_t &        blockSize) noexcept
+            {
+                assert(0!=segment);
+                for(const Block *block=segment->head;block!=segment->tail;block=block->next)
+                {
+                    if(block->used)
+                    {
+                        assert(segment==block->used);
+                        continue;
+                    }
+                    if(block->size<blockSize)
+                        continue;
+
+                }
+                return 0;
+            }
+
+        }
     }
 
 }
