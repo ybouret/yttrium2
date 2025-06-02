@@ -55,6 +55,9 @@ namespace Yttrium
             public:
                 virtual ~Manager() noexcept;
 
+                virtual void * acquire() = 0;
+                virtual void   release(void * const) noexcept = 0;
+
                 const unsigned shift;
                 const size_t   bytes;
                 
@@ -79,6 +82,8 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
+            void *acquireDyadic(const unsigned blockShift);
+            void  releaseDyadic(void * const blockAddr, const unsigned blockShift) noexcept;
 
         private:
             Y_Disable_Copy_And_Assign(Dyads); //!< discarding

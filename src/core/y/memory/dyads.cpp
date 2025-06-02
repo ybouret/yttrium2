@@ -45,6 +45,18 @@ namespace Yttrium
                 {
                 }
 
+                inline virtual void * acquire()
+                {
+                    return acquireBlock();
+                }
+
+                inline virtual void   release(void * const addr) noexcept
+                {
+                    assert(0!=addr);
+                    releaseBlock(addr);
+                }
+
+
                 static void Create(void * const addr, const size_t blockShift)
                 {
                     new (addr) ObjectManager(unsigned(blockShift));
@@ -71,6 +83,17 @@ namespace Yttrium
                 }
 
                 inline virtual ~DyadicManager() noexcept {}
+
+                inline virtual void *acquire()
+                {
+                    return dyadic.acquireDyadic(shift);
+                }
+
+                inline virtual void   release(void * const addr) noexcept
+                {
+                    assert(0!=addr);
+                    return dyadic.releaseDyadic(addr,shift);
+                }
 
                 static void Create(void * const addr, const size_t blockShift)
                 {
@@ -147,6 +170,7 @@ namespace Yttrium
 
         void Dyads:: display(std::ostream &os, size_t indent) const
         {
+            assert(0!=code);
             initProlog(os,indent)
             << Attribute("NumFactoryShift",NumFactoryShift)
             << Attribute("NumGreaterShift",NumGreaterShift);
@@ -157,6 +181,13 @@ namespace Yttrium
             --indent;
 
             quit(os,indent);
+        }
+
+        void * Dyads:: acquireDyadic(const unsigned int blockShift)
+        {
+            assert(blockShift<=MaxAllowedShift);
+            assert(blockShift==code->manager[blockShift]->shift);
+            return code->manager[blockShift]->acquire();
         }
 
     }
