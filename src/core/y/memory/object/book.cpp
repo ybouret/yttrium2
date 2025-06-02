@@ -3,6 +3,7 @@
 #include "y/memory/object/book/pages.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/type/destruct.hpp"
+#include "y/xml/attribute.hpp"
 
 namespace Yttrium
 {
@@ -12,6 +13,7 @@ namespace Yttrium
         {
 
             const char * const Book:: CallSign = "Memory::Object::Book";
+            const unsigned     Book:: NumPageShift;
 
             namespace
             {
@@ -38,14 +40,16 @@ namespace Yttrium
 
             void Book:: display(std::ostream &os, size_t indent) const
             {
-                
-                os << '<' << CallSign << " NumPageShift=" << NumPageShift << '>' << std::endl;
+                initProlog(os,indent) << Y_XML_Attr(NumPageShift);
+                initEpilog(os,false);
+                ++indent;
                 for(unsigned i=MinPageShift;i<=MaxPageShift;++i)
                 {
                     const Pages & pages = bookPages[i];
                     if(pages.count()>0) pages.display(os,indent+1);
                 }
-                os << '<' << CallSign << '/' << '>' << std::endl;
+                --indent;
+                quit(os,indent);
             }
 
             void * Book:: query(const unsigned blockShift)
