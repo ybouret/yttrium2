@@ -20,7 +20,8 @@ namespace
     static Block  blocks[MaxBlocks];
     static size_t count = 0;
 
-    void fill(Memory::Joint::Segment * const segment, System::Rand &ran)
+    static inline
+    void fillSeg(Memory::Joint::Segment * const segment, System::Rand &ran)
     {
         while(count<MaxBlocks)
         {
@@ -33,14 +34,29 @@ namespace
                 break;
             }
 
+            ++count;
             const uint32_t crc = Memory::Joint::Segment::CRC(segment);
             ran.fill(b.addr,b.size);
             Y_ASSERT(Memory::Joint::Segment::CRC(segment) == crc);
-
         }
-    }
+        Memory::Joint::Segment::Display(segment,std::cerr);
 
     }
+
+    static inline
+    void emptySeg(const size_t to, Memory::Joint::Segment * const segment, System::Rand &ran)
+    {
+        ran.shuffle(blocks,count);
+        while(count>to)
+        {
+            Block &b = blocks[--count];
+            Memory::Joint::Segment * const s = Memory::Joint::Segment::Release(b.addr);
+            Y_ASSERT(s==segment);
+        }
+        Memory::Joint::Segment::Display(segment,std::cerr);
+    }
+
+}
 
 Y_UTEST(memory_joint_segment)
 {
@@ -56,9 +72,8 @@ Y_UTEST(memory_joint_segment)
 
     Memory::Joint::Segment::Display(segment,std::cerr);
 
-    fill(segment,ran);
-
-    Memory::Joint::Segment::Display(segment,std::cerr);
+    fillSeg(segment,ran);
+    emptySeg(0,segment,ran);
 
 
 }

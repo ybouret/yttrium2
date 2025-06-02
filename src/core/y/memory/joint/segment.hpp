@@ -79,6 +79,11 @@ namespace Yttrium
                 //! CRC32 of markers
                 static uint32_t CRC(const Segment * segment) noexcept;
 
+
+                static bool      Owns(const Segment * const, void * const) noexcept;
+                static Segment * Release(void * const addr) noexcept;
+
+
                 //______________________________________________________________
                 //
                 //

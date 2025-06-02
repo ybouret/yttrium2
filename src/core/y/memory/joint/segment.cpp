@@ -9,6 +9,7 @@
 #include "y/core/utils.hpp"
 
 #include <iostream>
+#include <cstring>
 
 namespace Yttrium
 {
@@ -154,9 +155,8 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                     }
 
                     block->used = segment;
-                    request     = block->size;
                     assert(IsValid(segment));
-                    return block+1;
+                    return memset(block+1,0,request = block->size);
                 }
 
                 // not found, leave request untouched
@@ -174,6 +174,28 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                 }
                 return crc;
             }
+
+            bool Segment:: Owns(const Segment * const segment, void * const addr) noexcept
+            {
+                assert(0!=addr);
+                assert( IsValid(segment) );
+                return addr >= (const void *)(segment->head+1) && addr < (const void *)(segment->tail);
+            }
+
+            Segment * Segment:: Release(void *const addr) noexcept
+            {
+                assert(0!=addr);
+                Block *   const block   = static_cast<Block *>(addr)-1;
+                Segment * const segment = block->used;
+
+                assert(block->used);
+                assert(Owns(segment,addr));
+
+                block->used = 0;
+
+                return segment;
+            }
+
         }
     }
 
