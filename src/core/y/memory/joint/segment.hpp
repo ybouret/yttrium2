@@ -43,6 +43,7 @@ namespace Yttrium
 
                 static void      Display(const Segment * const,std::ostream &);
 
+				Segment();
             };
         }
     }
