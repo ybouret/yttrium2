@@ -105,6 +105,12 @@ namespace Yttrium
                  */
                 void   release(void * const blockAddr, const size_t blockSize) noexcept;
 
+                //! get/create specific arena
+                /**
+                 \warning must lock arena before call to its methods
+                 \param blockSize requested block size
+                 \return arena with blockSize
+                 */
                 Arena & getArenaFor(const size_t blockSize);
 
             private:

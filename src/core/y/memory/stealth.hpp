@@ -130,6 +130,11 @@ namespace Yttrium
                 return static_cast<T *>(Zero(address,sizeof(T)));
             }
 
+            //! clean destruction
+            /**
+             \param  obj a valid object
+             \return clean and destructed object
+             */
             template <typename T>
             static inline T * DestructedAndZeroed( T * const obj ) noexcept
             {

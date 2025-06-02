@@ -12,18 +12,43 @@ namespace Yttrium
     namespace Memory
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Memory management of blank memory space for a given type
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class Zombified
         {
         public:
-            inline explicit Zombified() : provider(sizeof(T)) {}
-            inline virtual ~Zombified() noexcept {}
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            inline explicit Zombified() : provider(sizeof(T)) {}  //!< initialize internal provider
+            inline virtual ~Zombified() noexcept              {}  //!< cleanup
+
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! summon a new zombi \return clear memory block
             inline T *  summon()
             {
                 return static_cast<T *>(provider.acquireBlock());
             }
 
+            //! banish a summoned zombi \param zombi previously acquired block
             inline void banish( T * const zombi ) noexcept
             {
                 assert(0!=zombi);
@@ -31,8 +56,8 @@ namespace Yttrium
             }
 
         private:
-            Y_Disable_Copy_And_Assign(Zombified);
-            Object::Guild provider;
+            Y_Disable_Copy_And_Assign(Zombified); //!< discaeding
+            Object::Guild provider;               //!< alias to memory
         };
     }
 
