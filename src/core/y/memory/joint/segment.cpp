@@ -4,6 +4,7 @@
 #include "y/decimal.hpp"
 #include "y/system/exception.hpp"
 #include "y/memory/stealth.hpp"
+#include "y/memory/sentinel.hpp"
 
 #include <iostream>
 
@@ -53,6 +54,13 @@ namespace Yttrium
 
             void Segment:: Display(const Segment * const segment, std::ostream &os)
             {
+                assert(0!=segment);
+#if !defined(NDEBUG)
+                volatile Sentinel sentinel1(*segment);
+                volatile Sentinel sentinel2(*segment->head);
+                volatile Sentinel sentinel3(*segment->tail);
+#endif
+
                 os << '[';
                 for(const Block *block=segment->head;block!=segment->tail;block=block->next)
                 {
@@ -78,13 +86,15 @@ namespace Yttrium
                 assert(0!=segment);
                 for(const Block *block=segment->head;block!=segment->tail;block=block->next)
                 {
-                    if(block->used)
-                    {
+                    if(block->used) {
                         assert(segment==block->used);
-                        continue;
+                        continue; // used blocks
                     }
+
                     if(block->size<blockSize)
-                        continue;
+                        continue; // block is too small
+
+                    
 
                 }
                 return 0;
