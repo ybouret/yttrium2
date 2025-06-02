@@ -184,6 +184,7 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
 
             Segment * Segment:: Release(void *const addr) noexcept
             {
+                // get block from address
                 assert(0!=addr);
                 Block *   const block   = static_cast<Block *>(addr)-1;
                 Segment * const segment = block->used;
@@ -191,7 +192,45 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                 assert(block->used);
                 assert(Owns(segment,addr));
 
-                block->used = 0;
+                // check situation
+                static const unsigned MERGE_NONE = 0x00;
+                static const unsigned MERGE_PREV = 0x01;
+                static const unsigned MERGE_NEXT = 0x02;
+                static const unsigned MERGE_BOTH = MERGE_PREV | MERGE_NEXT;
+
+                unsigned      flags = MERGE_NONE;
+                Block * const prev  = block->prev;
+                Block * const next  = block->next; assert(0!=next);
+                if(prev && !prev->used) { flags |= MERGE_PREV; assert(segment->head!=block); }
+                if(!next->used)         { flags |= MERGE_NEXT; assert(segment->tail!=block); }
+
+                switch(flags)
+                {
+                    case MERGE_PREV: {
+                        std::cerr << "should merge prev" << std::endl;
+                        exit(1);
+                    } break;
+
+                    case MERGE_NEXT: {
+                        std::cerr << "should merge next" << std::endl;
+                        Block * const after = next->next; assert(0!=after);
+                        block->next = after;
+                        after->prev = block;
+                        block->size = (static_cast<size_t>(after-block)-1) << BlockLog2;
+                        assert(IsValid(segment) || Die("MERGE_NEXT") );
+                    } break;
+
+                    case MERGE_BOTH:
+                        std::cerr << "should merge both" << std::endl;
+                        exit(1);
+                        break;
+
+                    default:
+                        assert(MERGE_NONE==flags);
+                        block->used = 0;
+                        assert(IsValid(segment) || Die("MERGE_NONE") );
+                }
+
 
                 return segment;
             }
