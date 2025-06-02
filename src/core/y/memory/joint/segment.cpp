@@ -37,11 +37,12 @@ namespace Yttrium
                 assert(0!=segment);
                 assert(0==segment->next);
                 assert(0==segment->prev);
+
                 Coerce(segment->head) = static_cast<Block *>(Stealth::Incr(entry, SegmentBytes));
                 Coerce(segment->tail) = segment->head + (numBlocks-1);
-                segment->head->next = segment->tail;
-                segment->tail->prev = segment->head;
-                segment->head->size = sizeof(Block) * (numBlocks-2);
+                segment->head->next   = segment->tail;
+                segment->tail->prev   = segment->head;
+                segment->head->size   = sizeof(Block) * (numBlocks-2);
 
                 return segment;
             }
@@ -50,9 +51,19 @@ namespace Yttrium
             void Segment:: Display(const Segment * const segment, std::ostream &os)
             {
                 os << '[';
-                for(const Block *block=segment->head;block->next!=segment->tail;block=block->next)
+                for(const Block *block=segment->head;block!=segment->tail;block=block->next)
                 {
-                    
+                    if(block->link!=0)
+                    {
+                        assert(segment==block->link);
+                        // used
+                        os << '*';
+                    }
+                    else
+                    {
+                        os << '#';
+                    }
+                    os << block->size;
                 }
                 os << ']' << std::endl;
             }

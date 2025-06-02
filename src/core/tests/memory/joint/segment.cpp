@@ -21,8 +21,9 @@ Y_UTEST(memory_joint_segment)
     Y_PRINTV(Memory::Joint::Segment::MinDataBytes);
 
     void *wksp[30];
-    Memory::Joint::Segment::Format(wksp,sizeof(wksp));
+    Memory::Joint::Segment *segment = Memory::Joint::Segment::Format(wksp,sizeof(wksp));
 
+    Memory::Joint::Segment::Display(segment,std::cerr);
 
 }
 Y_UDONE()
