@@ -45,6 +45,17 @@ namespace Yttrium
 
                 return segment;
             }
+
+
+            void Segment:: Display(const Segment * const segment, std::ostream &os)
+            {
+                os << '[';
+                for(const Block *block=segment->head;block->next!=segment->tail;block=block->next)
+                {
+                    
+                }
+                os << ']' << std::endl;
+            }
         }
 
     }

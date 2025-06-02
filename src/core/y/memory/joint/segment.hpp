@@ -41,6 +41,8 @@ namespace Yttrium
                 static Segment * Format(void * const  entry,
                                         const  size_t bytes);
 
+                static void      Display(const Segment * const,std::ostream &);
+
             };
         }
     }
