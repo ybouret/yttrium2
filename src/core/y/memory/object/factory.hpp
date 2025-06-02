@@ -6,6 +6,7 @@
 #include "y/singleton.hpp"
 #include "y/concurrent/singleton/broad-lock-policy.hpp"
 #include "y/memory/object/factory/api.hpp"
+#include "y/calculus/integer-log2.hpp"
 
 namespace Yttrium
 {
@@ -34,8 +35,11 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
-                static const size_t PAGE_BYTES = 1000; //!< default page size
-
+                static const size_t   DEFAULT_PAGE_BYTES = 1024; //!< default page size
+                static const unsigned DEFAULT_PAGE_SHIFT = IntegerLog2<DEFAULT_PAGE_BYTES>::Value;
+                static const size_t   LIMIT_OBJECT_BYTES = 512;
+                static const unsigned LIMIT_OBJECT_SHIFT = IntegerLog2<LIMIT_OBJECT_BYTES>::Value;
+                
                 //______________________________________________________________
                 //
                 //

@@ -24,7 +24,7 @@ namespace Yttrium
         inline explicit AliasLockPolicy() : access( SINGLETON::Instance().access ) {}
 
         //! cleanup
-        inline virtual ~AliasLockPolicy() noexcept;
+        inline virtual ~AliasLockPolicy() noexcept {}
 
         Lockable &access; //!< for aliased access
 

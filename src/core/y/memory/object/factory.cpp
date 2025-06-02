@@ -2,6 +2,7 @@
 #include "y/memory/object/factory.hpp"
 #include "y/xml/attribute.hpp"
 #include "y/memory/object/blocks.hpp"
+#include "y/check/static.hpp"
 #include <iostream>
 
 namespace Yttrium
@@ -16,7 +17,7 @@ namespace Yttrium
             }
 
             Factory:: Factory() :
-            FactoryAPI(PAGE_BYTES)
+            FactoryAPI(DEFAULT_PAGE_BYTES)
             {
             }
 
