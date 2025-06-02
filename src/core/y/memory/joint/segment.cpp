@@ -1,6 +1,7 @@
 
 #include "y/memory/joint/segment.hpp"
 #include "y/check/usual.hpp"
+#include "y/check/crc32.hpp"
 #include "y/decimal.hpp"
 #include "y/system/exception.hpp"
 #include "y/memory/stealth.hpp"
@@ -162,6 +163,17 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                 return 0;
             }
 
+
+            uint32_t Segment:: CRC(const Segment * segment) noexcept
+            {
+                assert(IsValid(segment));
+                uint32_t crc = 0;
+                for(const Block *block=segment->head;block;block=block->next)
+                {
+                    CRC32::Run(crc, block, sizeof(Block));
+                }
+                return crc;
+            }
         }
     }
 

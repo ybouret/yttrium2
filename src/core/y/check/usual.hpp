@@ -37,6 +37,7 @@ namespace Yttrium
     bool Die(const char * const) noexcept;
 
 #if !defined(NDEBUG)
+    //! insert optional debug code
 #define Y_Debug(CODE) CODE
 #else
 #define Y_Debug(CODE)

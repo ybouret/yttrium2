@@ -32,6 +32,11 @@ namespace
                 b.size=0;
                 break;
             }
+
+            const uint32_t crc = Memory::Joint::Segment::CRC(segment);
+            ran.fill(b.addr,b.size);
+            Y_ASSERT(Memory::Joint::Segment::CRC(segment) == crc);
+
         }
     }
 
