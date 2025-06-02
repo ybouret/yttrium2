@@ -7,7 +7,7 @@
 
 namespace Yttrium
 {
-    Y_Shallow_Decl(Procedural);
+    Y_Shallow_Decl(Procedural); //!< helper for [Procedural]
 }
 
 #endif

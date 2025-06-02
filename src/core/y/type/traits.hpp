@@ -16,7 +16,7 @@ namespace Yttrium
     template <class T, class U>
     struct IsSameType
     {
-        enum { Value = false };  //!< general case
+        enum { Value = false /*!< general case */ };
     };
 
     //__________________________________________________________________________
@@ -28,7 +28,7 @@ namespace Yttrium
     template <class T>
     struct IsSameType<T,T>
     {
-        enum { Value = true }; //!< in particular
+        enum { Value = true /*!< particular case */ }; 
     };
 
     namespace TL
@@ -56,7 +56,9 @@ namespace Yttrium
         typedef  T Type; //!< original type
 
     private:
-        TypeTraits(); ~TypeTraits(); Y_Disable_Copy_And_Assign(TypeTraits);
+        TypeTraits();  //!< disabled
+        ~TypeTraits(); //!< disabled
+        Y_Disable_Copy_And_Assign(TypeTraits); //!< disabled
 
         //______________________________________________________________________
         //

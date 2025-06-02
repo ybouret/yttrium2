@@ -13,62 +13,105 @@ namespace Yttrium
 {
     namespace Memory
     {
-
+        //______________________________________________________________________
+        //
+        //
+        //! helper to build workspace
+        //
+        //______________________________________________________________________
 #define Y_Cxx_Workspace(CODE) do {\
 size_t built = 0;\
 try { while(built<Capacity) { CODE; ++built; } } \
 catch(...) { releaseUpTo(built); throw; } \
 } while(false)
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! static workspace
+        //
+        //
+        //______________________________________________________________________
         template <typename T, size_t N=1>
         class CxxWorkspace : public Workspace<T,N>, public Writable<T>
         {
         public:
-            typedef Workspace<T,N> WorkspaceType;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef Workspace<T,N> WorkspaceType; //!< alias
+            Y_ARGS_DECL(T,Type);                  //!< aliases
             using WorkspaceType::Capacity;
             using WorkspaceType::data;
             using WorkspaceType::item;
 
-            Y_ARGS_DECL(T,Type);
 
-
-            //! default
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            //! setup with default constructor
             inline explicit CxxWorkspace() : WorkspaceType()
             {
                 Y_Cxx_Workspace( new (Coerce(data+built)) Type() );
             }
 
+            //! setup with a specific constructor
+            /**
+             \param create must construct T at given address
+             */
             template <typename CREATE>
             inline explicit CxxWorkspace(const Procedural_ &, CREATE &create)
             {
                 Y_Cxx_Workspace(create(data+built));
             }
 
+            //! setup with procedural constructor
+            /**
+             \param create must construct T at given address with offset argument
+             \param offset initial offset, increased after each built item
+             */
             template <typename CREATE>
             inline explicit CxxWorkspace(const Procedural_ &, CREATE &create, size_t offset)
             {
                 Y_Cxx_Workspace(create(data+built,offset);++offset);
             }
 
-            
-
-            inline virtual size_t size() const noexcept { return Capacity; }
-
-
-
+            //! cleanup
             inline virtual ~CxxWorkspace() noexcept
             {
                 release();
             }
 
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
+            inline virtual size_t size() const noexcept { return Capacity; }
+
+
+
+
+
         private:
-            Y_Disable_Copy_And_Assign(CxxWorkspace);
+            Y_Disable_Copy_And_Assign(CxxWorkspace); //!< disarding
+
+            //! partial release \param built up to currently built
             inline void releaseUpTo(size_t built) noexcept
             {
                 while(built>0)
                     Coerce( data[--built] ).~MutableType();
             }
 
+            //! full release
             inline void release() noexcept
             {
                 releaseUpTo(Capacity);

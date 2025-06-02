@@ -12,7 +12,7 @@ namespace Yttrium
 {
     namespace Memory
     {
-        typedef AliasLockPolicy<Object::Factory> DyadsLockPolicy;
+        typedef AliasLockPolicy<Object::Factory> DyadsLockPolicy; //!< policy alias
 
         //______________________________________________________________________
         //
@@ -35,34 +35,36 @@ namespace Yttrium
             static const Longevity    LifeTime = LifeTimeOf:: MemoryDyads; //!< life time
 
 
-            static const unsigned     MaxFactoryShift = Object::Factory::LIMIT_OBJECT_SHIFT;
-            static const unsigned     MaxAllowedShift = Limits::MaxBlockShift;
-            static const unsigned     NumFactoryShift = MaxFactoryShift+1;               //!< [0..MaxFactoryShift]
-            static const unsigned     NumGreaterShift = MaxAllowedShift-MaxFactoryShift; //! [MaxFactoryShift+1..MaxAllowedShift]
+            static const unsigned     MaxFactoryShift = Object::Factory::LIMIT_OBJECT_SHIFT; //!< alias
+            static const unsigned     MaxAllowedShift = Limits::MaxBlockShift;               //!< alias
+            static const unsigned     NumFactoryShift = MaxFactoryShift+1;                   //!< [0..MaxFactoryShift]
+            static const unsigned     NumGreaterShift = MaxAllowedShift-MaxFactoryShift;     //!< [MaxFactoryShift+1..MaxAllowedShift]
 
             class Code;
 
             //__________________________________________________________________
             //
             //
-            // Manager interface
+            //! Manager interface
             //
             //__________________________________________________________________
             class Manager
             {
             protected:
+                //! initialize \param blockShift blocSize=2^blockShift
                 explicit Manager(const unsigned blockShift) noexcept;
             public:
+                //! cleanup
                 virtual ~Manager() noexcept;
 
-                virtual void * acquire() = 0;
-                virtual void   release(void * const) noexcept = 0;
+                virtual void * acquire()                      = 0;  //!< \return a new block
+                virtual void   release(void * const) noexcept = 0;  //!< release a previously acquired block
 
-                const unsigned shift;
-                const size_t   bytes;
-                
+                const unsigned shift; //!< shift
+                const size_t   bytes; //!< 2^shift
+
             private:
-                Y_Disable_Copy_And_Assign(Manager);
+                Y_Disable_Copy_And_Assign(Manager); //!< discarding
             };
 
 
@@ -72,8 +74,7 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
-            virtual void display(std::ostream &os,
-                                 size_t        indentation) const;
+            virtual void display(std::ostream &,size_t) const;
 
 
             //__________________________________________________________________
@@ -82,7 +83,19 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
+
+            //! acquire a power of two large block
+            /**
+             \param blockShift block shift
+             \return 2^blockShift bytes memory area
+             */
             void *acquireDyadic(const unsigned blockShift);
+
+            //! release a previously acquired block
+            /**
+             \param blockAddr block address
+             \param blockShift block is 2^blockShift bytes
+             */
             void  releaseDyadic(void * const blockAddr, const unsigned blockShift) noexcept;
 
         private:

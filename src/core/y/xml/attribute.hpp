@@ -107,6 +107,7 @@ namespace Yttrium
 
         };
 
+        //! helper for self explaining attributes
 #define Y_XML_Attr(NAME) XML::Attribute(#NAME,NAME)
     }
 

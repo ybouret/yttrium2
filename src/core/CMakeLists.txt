@@ -22,6 +22,7 @@ Y_CreateLibrary(y
     y/memory/object
     y/memory/object/book
     y/memory/object/factory
+    y/memory/joint
     y/utest
     y/hashing
     y/xml
