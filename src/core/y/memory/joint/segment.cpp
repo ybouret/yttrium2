@@ -29,13 +29,12 @@ namespace Yttrium
             {
                 // sanity check
                 assert( Good(entry,bytes) );
-                if(bytes<MinDataBytes||bytes<MaxDataBytes)
-                    throw Specific::Exception(CallSign,"bytes=%snot in %s:%s", Decimal(bytes).c_str(), Decimal(MinDataBytes).c_str(), Decimal(MaxDataBytes).c_str());
-
-
+                if(bytes<MinDataBytes||bytes>MaxDataBytes)
+                    throw Specific::Exception(CallSign,"bytes=%s not in %s:%s", Decimal(bytes).c_str(), Decimal(MinDataBytes).c_str(), Decimal(MaxDataBytes).c_str());
 
                 assert(0!=entry);
                 assert(bytes>=MinDataBytes);
+                assert(bytes<=MaxDataBytes);
 
                 const size_t numBlocks = (bytes - SegmentBytes) / BlockSize; assert(numBlocks>=MinNumBlocks);
                 if(numBlocks*BlockSize+SegmentBytes!=bytes)
@@ -58,8 +57,10 @@ namespace Yttrium
                 segment->head->size   = (numBlocks-2) << BlockLog2;
                 segment->tail->used   = segment;
 
+                // parameters
                 segment->param.bytes  = bytes;
                 segment->param.nextPowerOfTwo  = NextPowerOfTwo(segment->param.bytes, segment->param.shift);
+                segment->param.isDyadic = ( segment->param.bytes ==  segment->param.nextPowerOfTwo );
                 assert(IsValid(segment));
 
                 return segment;
@@ -261,12 +262,7 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
             }
 
 
-            size_t Segment:: Bytes(const Segment *const segment)  noexcept
-            {
-                assert( IsValid(segment) );
-                const ptrdiff_t diff = Stealth::Diff(segment,segment->tail+1);
-                return static_cast<size_t>(diff);
-            }
+
 
         }
     }

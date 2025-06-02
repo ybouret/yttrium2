@@ -100,9 +100,7 @@ namespace Yttrium
                 //! check empty \return true iff unused head whose next is tail
                 static bool      IsEmpy(const Segment *const) noexcept;
 
-                //! retrieve formated memory size \return original block size
-                static size_t    Bytes(const Segment *const)  noexcept;
-
+                
                 //! releasing and address
                 /**
                  \param addr previousluy acquired

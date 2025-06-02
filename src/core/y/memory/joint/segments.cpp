@@ -32,9 +32,9 @@ namespace Yttrium
                 assert(Dyadic::Exists());
 
                 // check errors ?
-                const size_t    bytes = Segment::Bytes(segment); assert(IsPowerOfTwo(bytes));
-                const unsigned  shift = Base2<size_t>::ExactLog(bytes);
-                dyadic.releaseDyadic(segment,shift);
+                Segment::Param &param = segment->param;
+                assert(param.isDyadic);
+                dyadic.releaseDyadic(segment,param.shift);
             }
 
 

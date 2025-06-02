@@ -84,10 +84,7 @@ Y_UTEST(memory_joint_segment)
     }
     emptySeg(0,segment,ran);
     Y_CHECK( Memory::Joint::Segment::IsEmpy(segment));
-
-    Y_PRINTV(sizeof(wksp));
-    Y_PRINTV( Memory::Joint::Segment::Bytes(segment) );
-    Y_CHECK( Memory::Joint::Segment::Bytes(segment) == sizeof(wksp) );
+    Y_CHECK( segment->param.bytes == sizeof(wksp) );
 
 }
 Y_UDONE()
