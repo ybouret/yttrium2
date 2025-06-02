@@ -26,7 +26,7 @@ namespace {
 
         }
 
-        virtual void display(std::ostream &os, const size_t indent) const
+        virtual void display(std::ostream &os, size_t indent) const
         {
             initEpilog( initProlog(os,indent), true ) << std::endl;
         }

@@ -84,7 +84,7 @@ namespace Yttrium
 
 
 
-            void  Pages:: display(std::ostream &os, const size_t indent) const
+            void  Pages:: display(std::ostream &os,size_t indent) const
             {
                 initProlog(os,indent);
                 os << XML::Attribute("bytes",bytes,8);

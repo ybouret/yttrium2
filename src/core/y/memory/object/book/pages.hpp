@@ -88,8 +88,8 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
-                virtual void         release() noexcept; //! safe (locked) release
-                virtual void         display(std::ostream &, const size_t) const; //!< display info
+                virtual void         release() noexcept; 
+                virtual void         display(std::ostream &,size_t) const; 
                 virtual const char * callSign() const noexcept;
 
                 //______________________________________________________________
