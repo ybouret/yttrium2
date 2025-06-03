@@ -108,7 +108,8 @@ namespace Yttrium
 
                 //! releasing and address
                 /**
-                 \param addr previousluy acquired
+                 \param blockAddr previously acquired
+                 \param blockSize its size, checked for consistency
                  \return owning segment
                  */
                 static Segment * Release(void * const blockAddr,
