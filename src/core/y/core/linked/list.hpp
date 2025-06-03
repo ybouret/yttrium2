@@ -429,7 +429,7 @@ namespace Yttrium
              \return address order
              */
             static inline SignType CompareAddresses(const NODE * const lhs,
-                                                        const NODE * const rhs) noexcept
+                                                    const NODE * const rhs) noexcept
             {
                 return Sign::Of(lhs,rhs);
             }

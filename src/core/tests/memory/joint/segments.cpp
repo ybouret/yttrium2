@@ -3,6 +3,7 @@
 #include "y/system/rand.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/utest/run.hpp"
+#include "y/memory/object/book.hpp"
 
 using namespace Yttrium;
 
@@ -14,7 +15,7 @@ namespace {
         size_t size;
     };
 
-    static const size_t MaxBlocks = 10;
+    static const size_t MaxBlocks = 500;
     static Block        blocks[MaxBlocks];
     static size_t       count = 0;
 
@@ -55,14 +56,25 @@ namespace {
 Y_UTEST(memory_joint_segments)
 {
     System::Rand            ran;
-    Memory::Joint::Segments segments;
     Y_SIZEOF(Memory::Joint::Segments::Slot);
 
     Y_Memory_BZero(blocks);
 
-    fillWith(segments,ran);
+    {
+        Memory::Joint::Segments segments;
+        fillWith(segments,ran);
+        for(size_t iter=0;iter<10;++iter)
+        {
+            emptyWith(count>>1,segments,ran);
+            fillWith(segments,ran);
+        }
 
-    emptyWith(0,segments,ran);
+        emptyWith(0,segments,ran);
+
+        Memory::Object::Book::Instance().display(std::cerr,0);
+    }
+
+    Memory::Object::Book::Instance().display(std::cerr,0);
 
 }
 Y_UDONE()

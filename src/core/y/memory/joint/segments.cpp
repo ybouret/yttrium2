@@ -14,13 +14,13 @@ namespace Yttrium
         namespace Joint
         {
 
-            Segments:: Slot:: Slot() noexcept : ListType(), reserved(0)
+            Segments:: Slot:: Slot() noexcept : ListType(), alreadyEmpty(0)
             {
             }
 
             Segments:: Slot:: ~Slot() noexcept
             {
-                
+                alreadyEmpty = 0;
             }
 
             const unsigned Segments:: MinShift = Object::Factory::DEFAULT_PAGE_SHIFT;
@@ -55,11 +55,12 @@ namespace Yttrium
 
             Segments:: ~Segments() noexcept
             {
-                for(unsigned bs=MinShift;bs<=MaxShift;++bs)
+                for(unsigned bs=MaxShift;bs>=MinShift;--bs)
                 {
                     Slot &slot = table[bs];
                     while(slot.size)
                         unload( slot.popTail() );
+                    slot.~Slot();
                 }
                 book.store(tableShift, table+MinShift);
                 Coerce(table)      = 0;
@@ -73,13 +74,15 @@ namespace Yttrium
                 assert(0==segment->next);
                 assert(0==segment->prev);
 
-                // check errors ?
+                //--------------------------------------------------------------
+                // check errors
+                //--------------------------------------------------------------
                 if(!segment->isEmpty())
-                {
                     segment->display(std::cerr << "*** " << Segment::CallSign << "[" << std::setw(6) << segment->param.bytes << "] : ");
-                }
 
+                //--------------------------------------------------------------
                 // return to book pages
+                //--------------------------------------------------------------
                 book.store(segment->param.shift,segment);
             }
 
@@ -87,10 +90,32 @@ namespace Yttrium
             void Segments:: release(void * const blockAddr) noexcept
             {
                 assert(0!=blockAddr);
-                Segment * const segment = Segment::Release(blockAddr);
-                assert(0!=segment);
-                Slot & slot = table[segment->param.shift];
-                assert(slot.owns(segment));
+                Segment * const segment = Segment::Release(blockAddr); assert(0!=segment);
+                if(segment->isEmpty())
+                {
+                    Slot &          slot    = table[segment->param.shift]; assert(slot.owns(segment));
+                    Segment * const another = slot.alreadyEmpty;
+                    if(another)
+                    {
+                        assert(another->isEmpty());
+
+                        if(another<segment)
+                        {
+                            // keep another
+                            unload( slot.pop(segment) );
+                        }
+                        else
+                        {
+                            // keep segment
+                            unload( slot.pop(another) );
+                            slot.alreadyEmpty = segment;
+                        }
+                    }
+                    else
+                    {
+                        slot.alreadyEmpty = segment;
+                    }
+                }
 
             }
 
@@ -110,12 +135,19 @@ namespace Yttrium
                         {
                             assert(segment->param.maxSize>=blockSize);
                             void * const addr = segment->acquire(blockSize);
-                            if(0!=addr) return addr;
+                            if(0!=addr)
+                            {
+                                if(segment==slot->alreadyEmpty)
+                                    slot->alreadyEmpty = 0;
+                                
+                                return addr;
+                            }
                         }
                     }
                 }
 
                 // need to create a new slot in primary
+                assert(0== primary->alreadyEmpty);
                 try
                 {
                     Segment * const segment = primary->insertOderedByAddresses( Segment::Format( book.query(shift), shift) );
