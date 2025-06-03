@@ -78,6 +78,28 @@ namespace Yttrium
                 template <typename T> inline
                 void releaseBlockFor( T * const zombi ) { releaseBlock(zombi,sizeof(T)); }
 
+                template <typename T> inline
+                T * createBlockAs() {
+                    void * const p = acquireBlock(sizeof(T));
+                    try {
+                        return new (p) T();
+                    }
+                    catch(...)
+                    {
+                        releaseBlock(p,sizeof(T));
+                        throw;
+                    }
+                }
+
+                template <typename T> inline
+                void deleteBlockAs(T * &object) noexcept
+                {
+                    assert(0!=object);
+                    object->~T();
+                    releaseBlock(object,sizeof(object));
+                    object = 0;
+                }
+
 
 
             private:
