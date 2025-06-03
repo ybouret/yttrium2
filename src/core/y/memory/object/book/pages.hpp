@@ -22,7 +22,7 @@ namespace Yttrium
             //
             //
             //
-            //! Local Pages of the same power-of-two size Global Dyadic alloc
+            //! Local Pages of the same power-of-two size using Dyadic allocator
             //
             //
             //__________________________________________________________________

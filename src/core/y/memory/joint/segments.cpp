@@ -1,7 +1,9 @@
 
 
 #include "y/memory/joint/segments.hpp"
-#include "y/memory/allocator/dyadic.hpp"
+#include "y/memory/object/book.hpp"
+#include "y/memory/object/factory.hpp"
+#include "y/core/utils.hpp"
 
 namespace Yttrium
 {
@@ -10,11 +12,22 @@ namespace Yttrium
         namespace Joint
         {
 
+            Segments:: Slot:: Slot() noexcept : ListType(), reserved(0)
+            {
+            }
+
+            Segments:: Slot:: ~Slot() noexcept
+            {
+                
+            }
+
+            const unsigned Segments:: MinShift = Object::Factory::DEFAULT_PAGE_SHIFT;
+
             namespace
             {
                 static inline unsigned computeTableShift() noexcept
                 {
-                    const unsigned numSlots = Segment::MaxDataShift - Segment::MinDataShift + 1;
+                    const unsigned numSlots = Segments::MaxShift- Segments::MinShift + 1;
                     unsigned       theShift = 0;
                     const size_t   numBytes = NextPowerOfTwo(numSlots * sizeof(Segments::Slot), theShift);
                     (void)numBytes;
@@ -25,24 +38,30 @@ namespace Yttrium
 
             Segments:: Segments() :
             table(0),
+            lastSlot(0),
             tableShift( computeTableShift() ),
-            dyadic( Dyadic::Instance() )
+            book( Object::Book::Instance() )
             {
-                Coerce(table) = static_cast<Slot*>( dyadic.acquireDyadic(tableShift) )-Segment::MinDataShift;
+                Coerce(table) = static_cast<Slot*>( book.query(tableShift) )-MinShift;
+                for(unsigned bs=MinShift;bs<=MaxShift;++bs)
+                {
+                    new (table+bs) Slot();
+                }
+                Coerce(lastSlot) = table+ (MaxShift+1);
             }
 
 
             Segments:: ~Segments() noexcept
             {
 #if 0
-                for(unsigned bs=Segment::MinDataShift;bs<=Segment::MaxDataShift;++bs)
+                for(unsigned bs=MinShift;bs<=MaxShift;++bs)
                 {
                     Slot &slot = table[bs];
                     while(slot.size)
                         unload( slot.popTail() );
                 }
 #endif
-                dyadic.releaseDyadic(table+Segment::MinDataShift,tableShift);
+                book.store(tableShift, table+MinShift);
                 Coerce(table)      = 0;
                 Coerce(tableShift) = 0;
             }
@@ -53,11 +72,11 @@ namespace Yttrium
                 assert(0!=segment);
                 assert(0==segment->next);
                 assert(0==segment->prev);
-                assert(Dyadic::Exists());
 
                 // check errors ?
-                Segment::Param &param = segment->param;
-                dyadic.releaseDyadic(segment,param.shift);
+
+                // return to book pages
+                book.store(segment->param.shift,segment);
             }
 
 
@@ -66,13 +85,51 @@ namespace Yttrium
                 assert(0!=blockAddr);
                 Segment * const segment = Segment::Release(blockAddr);
                 assert(0!=segment);
-                if( segment->isEmpty() )
-                {
-                    
-                }
+                Slot & slot = table[segment->param.shift];
+                assert(slot.owns(segment));
+
             }
 
- 
+            void * Segments:: acquire(size_t &blockSize)
+            {
+                const unsigned shift = MaxOf(Segment::ShiftFor(blockSize),MinShift);
+                assert(shift>=MinShift);
+                assert(shift<=MaxShift);
+
+                // look for accepting slot with big enough shift
+                Slot * const       primary = &table[shift];
+                {
+                    const Slot * const end = lastSlot;
+                    for(Slot *slot = primary; slot < end; ++slot)
+                    {
+                        for(Segment *segment=slot->head;segment;segment=segment->next)
+                        {
+                            assert(segment->param.maxSize>=blockSize);
+                            void * const addr = segment->acquire(blockSize);
+                            if(0!=addr) return addr;
+                        }
+                    }
+                }
+
+                // need to create a new slot in primary
+                try
+                {
+                    Segment * const segment = Segment::Format( book.query(shift), shift);
+                    assert(0!=segment);
+                    assert(segment->param.maxSize>=blockSize);
+                    assert(segment->head->used==0);
+                    assert(segment->head->size==segment->param.maxSize);
+                    void * const addr = segment->acquire(blockSize);
+                    assert(0!=addr);
+                    return addr;
+                }
+                catch(...)
+                {
+                    blockSize = 0;
+                    throw;
+                }
+
+            }
 
         }
 

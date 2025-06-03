@@ -12,7 +12,10 @@ namespace Yttrium
 {
     namespace Memory
     {
-        class Dyadic;
+        namespace Object
+        {
+            class Book;
+        }
 
         namespace Joint
         {
@@ -28,6 +31,9 @@ namespace Yttrium
             class Segments
             {
             public:
+                static const unsigned MinShift; //!< from object factor default page shift
+                static const unsigned MaxShift = Segment::MaxDataShift;
+                
                 typedef Core::ListOf<Segment> ListType; //!< alias
 
                 class Slot : public ListType
@@ -35,7 +41,8 @@ namespace Yttrium
                 public:
                     explicit Slot() noexcept;
                     virtual ~Slot() noexcept;
-                    
+                    void * reserved;
+
                 private:
                     Y_Disable_Copy_And_Assign(Slot);
                 };
@@ -65,9 +72,9 @@ namespace Yttrium
                 void unload(Segment * const segment) noexcept;
 
                 Slot * const           table;
+                const Slot * const     lastSlot;
                 const unsigned         tableShift;
-                Dyadic               & dyadic;
-
+                Object::Book         & book;
             };
 
         }
