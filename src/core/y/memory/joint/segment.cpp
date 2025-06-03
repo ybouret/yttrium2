@@ -79,7 +79,8 @@ namespace Yttrium
 
             void Segment:: display(std::ostream &os) const
             {
-
+                assert(IsValid(this));
+                
                 os << '[';
                 for(const Block *block=head;block!=tail;block=block->next)
                 {
@@ -236,15 +237,19 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
 
 
 
-            Segment * Segment:: Release(void *const addr) noexcept
+            Segment * Segment:: Release(void *const blockAddr, const size_t blockSize) noexcept
             {
                 // get block from address
-                assert(0!=addr);
-                Block *   const block   = GetBlockOf(addr);
+                assert(0!=blockAddr);
+                Block *   const block   = GetBlockOf(blockAddr); assert(0!=block);
                 Segment * const segment = block->used;
 
-                assert(block->used);
-                assert(segment->owns(addr));
+                assert(0!=segment);
+                assert(segment->owns(blockAddr));
+                assert(IsValid(segment));
+
+                if(blockSize!=block->size)
+                    Libc::Error::Critical(EINVAL, "%s::Release(block sizes mismatch)", CallSign);
 
                 // check situation
                 static const unsigned MERGE_NONE = 0x00;
@@ -294,7 +299,7 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                         break;
                 }
 
-
+                assert(IsValid(segment));
                 return segment;
             }
 

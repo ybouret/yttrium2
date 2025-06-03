@@ -50,7 +50,7 @@ namespace
         while(count>to)
         {
             Block &b = blocks[--count];
-            Memory::Joint::Segment * const s = Memory::Joint::Segment::Release(b.addr);
+            Memory::Joint::Segment * const s = Memory::Joint::Segment::Release(b.addr,b.size);
             Y_ASSERT(s==segment);
             if(s->isEmpty())
             {

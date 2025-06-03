@@ -45,7 +45,7 @@ namespace {
         while(count>target)
         {
             Block &b = blocks[--count];
-            segments.release(b.addr);
+            segments.release(b.addr,b.size);
             Y_Memory_VZero(b);
         }
     }

@@ -111,7 +111,8 @@ namespace Yttrium
                  \param addr previousluy acquired
                  \return owning segment
                  */
-                static Segment * Release(void * const addr)   noexcept;
+                static Segment * Release(void * const blockAddr,
+                                         const size_t blockSize) noexcept;
 
                 //! shift to build a segment able to hold request
                 /**

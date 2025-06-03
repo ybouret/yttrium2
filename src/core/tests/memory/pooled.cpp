@@ -24,7 +24,7 @@ Y_UTEST(memory_pooled)
     allocator.display(std::cerr,0);
 
 
-#if 0
+#if 1
     Block        blocks[1000];
     const size_t numBlocks = sizeof(blocks)/sizeof(blocks[0]);
     for(size_t i=0;i<numBlocks;++i)

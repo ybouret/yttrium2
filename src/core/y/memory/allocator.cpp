@@ -29,6 +29,7 @@ namespace Yttrium
             }
             else
             {
+                
                 // keep requested bytes
                 const size_t requested = blockSize;
 

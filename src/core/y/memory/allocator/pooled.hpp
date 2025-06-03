@@ -14,7 +14,9 @@ namespace Yttrium
     namespace Memory
     {
 
-        class Pooled : public Singleton<Pooled,BroadLockPolicy>
+        class Pooled :
+        public Singleton<Pooled,BroadLockPolicy>,
+        public Allocator
         {
         public:
             static const char * const CallSign; //!< "Memory::Pooled"
@@ -31,6 +33,10 @@ namespace Yttrium
 
             explicit Pooled();
             virtual ~Pooled() noexcept;
+
+            virtual void * acquireBlock(size_t &blockSize);
+            virtual void   releaseBlock(void * const blockAddr,
+                                        const size_t blockSize) noexcept;
         };
 
     }

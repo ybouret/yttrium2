@@ -5,6 +5,8 @@
 #include "y/memory/object/factory.hpp"
 #include "y/core/utils.hpp"
 #include "y/xml/syntax.hpp"
+
+#include "y/system/error.hpp"
 #include <iomanip>
 
 namespace Yttrium
@@ -25,7 +27,7 @@ namespace Yttrium
 
             void  Segments:: Slot:: show(std::ostream &os,size_t indent) const
             {
-                for(const Segment *s=head;s!=tail;++s)
+                for(const Segment *s=head;s;s=s->next)
                 {
                     s->display(XML::Indent(os,indent) << '@' << (const void *)s << ' ');
                 }
@@ -42,7 +44,7 @@ namespace Yttrium
                     unsigned       theShift = 0;
                     const size_t   numBytes = NextPowerOfTwo(numSlots * sizeof(Segments::Slot), theShift);
                     (void)numBytes;
-                    std::cerr << "numSlots=" << numSlots << " => " << numBytes << " = 2^" << theShift << std::endl;
+                    //std::cerr << "numSlots=" << numSlots << " => " << numBytes << " = 2^" << theShift << std::endl;
                     return theShift;
                 }
             }
@@ -83,6 +85,8 @@ namespace Yttrium
                 assert(0==segment->next);
                 assert(0==segment->prev);
 
+                assert( Segment::IsValid(segment) );
+                
                 //--------------------------------------------------------------
                 // check errors
                 //--------------------------------------------------------------
@@ -96,16 +100,17 @@ namespace Yttrium
             }
 
 
-            void Segments:: release(void * const blockAddr) noexcept
+            void Segments:: release(void * const blockAddr, const size_t blockSize) noexcept
             {
                 assert(0!=blockAddr);
-                Segment * const segment = Segment::Release(blockAddr); assert(0!=segment);
+                Segment * const segment = Segment::Release(blockAddr,blockSize); assert(0!=segment);
                 if(segment->isEmpty())
                 {
                     Slot &          slot    = table[segment->param.shift]; assert(slot.owns(segment));
                     Segment * const another = slot.alreadyEmpty;
                     if(another)
                     {
+                        assert(slot.size>=2);
                         assert(another->isEmpty());
 
                         if(another<segment)
@@ -122,8 +127,10 @@ namespace Yttrium
                     }
                     else
                     {
+                        assert(slot.size>=1);
                         slot.alreadyEmpty = segment;
                     }
+                    assert(slot.size>0);
                 }
 
             }

@@ -54,7 +54,7 @@ namespace Yttrium
                     virtual ~Slot() noexcept; //!< cleanup
                     Segment * alreadyEmpty;   //!< bookkeeping
                     void show(std::ostream &os,size_t indent) const;
-                    
+
                 private:
                     Y_Disable_Copy_And_Assign(Slot); //!< discarding
                 };
@@ -92,7 +92,8 @@ namespace Yttrium
                  - check no multiple alreadyEmpty in matching slot
                  \param blockAddr address of acquired block
                  */
-                void     release(void * const blockAddr) noexcept;
+                void     release(void * const blockAddr,
+                                 const size_t blockSize) noexcept;
 
                 uint32_t crc32() const noexcept; //!< full crc \return crc of chained segments
 

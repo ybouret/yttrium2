@@ -34,6 +34,8 @@ namespace Yttrium
         }
 
         Pooled:: Pooled() :
+        Singleton<Pooled, BroadLockPolicy>(),
+        Allocator(CallSign),
         code( new (Y_Memory_BZero(codeWorkspace)) Code() )
         {
         }
@@ -59,7 +61,8 @@ namespace Yttrium
                 if(slot.size>0)
                 {
                     hasData = true;
-                    XML::Indent(os,indent) << '<' << '2' << '^' << bs <<  '>' << std::endl;
+                    XML::Indent(os,indent) << "<2^"<< bs <<  " = " << ( size_t(1) << bs ) << "> #" << slot.size << std::endl;
+                    slot.show(os,indent+1);
                 }
 
             }
@@ -68,6 +71,20 @@ namespace Yttrium
             quit(os,indent);
         }
 
+
+        void * Pooled:: acquireBlock(size_t &blockSize)
+        {
+            assert(0!=code);
+            Y_Lock(access);
+            return code->acquire(blockSize);
+        }
+
+        void Pooled:: releaseBlock(void *const blockAddr, const size_t blockSize) noexcept
+        {
+            assert(0!=code);
+            Y_Lock(access);
+            code->release(blockAddr,blockSize);
+        }
     }
 
 }
