@@ -77,21 +77,15 @@ namespace Yttrium
             }
 
 
-            void Segment:: Display(const Segment * const segment, std::ostream &os)
+            void Segment:: display(std::ostream &os) const
             {
-                assert(0!=segment);
-#if !defined(NDEBUG)
-                volatile Sentinel sentinel1(*segment);
-                volatile Sentinel sentinel2(*segment->head);
-                volatile Sentinel sentinel3(*segment->tail);
-#endif
 
                 os << '[';
-                for(const Block *block=segment->head;block!=segment->tail;block=block->next)
+                for(const Block *block=head;block!=tail;block=block->next)
                 {
                     if(block->used)
                     {
-                        assert(segment==block->used);
+                        assert(this==block->used);
                         // used
                         os << '*';
                     }

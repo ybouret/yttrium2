@@ -70,7 +70,7 @@ namespace Yttrium
                                         const unsigned shift);
 
                 //! Display, mostly for debug
-                static void      Display(const Segment * const,std::ostream &);
+                void      display(std::ostream &) const;
 
                 //! check validity, mostly for debug \return true iff valid
                 static bool      IsValid(const Segment * const) noexcept;

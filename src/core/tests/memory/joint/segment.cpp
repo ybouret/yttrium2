@@ -39,8 +39,8 @@ namespace
             ran.fill(b.addr,b.size);
             Y_ASSERT(Memory::Joint::Segment::CRC(segment) == crc);
         }
-        Memory::Joint::Segment::Display(segment,std::cerr);
-
+        segment->display(std::cerr);
+        
     }
 
     static inline
@@ -53,7 +53,7 @@ namespace
             Memory::Joint::Segment * const s = Memory::Joint::Segment::Release(b.addr);
             Y_ASSERT(s==segment);
         }
-        Memory::Joint::Segment::Display(segment,std::cerr);
+       segment->display(std::cerr);
     }
 
 }
@@ -74,7 +74,7 @@ Y_UTEST(memory_joint_segment)
 
 
 
-    Memory::Joint::Segment::Display(segment,std::cerr);
+    segment->display(std::cerr);
 
     fillSeg(segment,ran);
     for(int iter=0;iter<10;++iter)
