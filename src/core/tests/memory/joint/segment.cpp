@@ -35,9 +35,9 @@ namespace
             }
 
             ++count;
-            const uint32_t crc = Memory::Joint::Segment::CRC(segment);
+            const uint32_t crc = segment->crc32();
             ran.fill(b.addr,b.size);
-            Y_ASSERT(Memory::Joint::Segment::CRC(segment) == crc);
+            Y_ASSERT(segment->crc32() == crc);
         }
         segment->display(std::cerr);
         

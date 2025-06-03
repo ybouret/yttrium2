@@ -177,11 +177,11 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
             }
 
 
-            uint32_t Segment:: CRC(const Segment * segment) noexcept
+            uint32_t Segment:: crc32() const noexcept
             {
-                assert(IsValid(segment));
+                assert(IsValid(this));
                 uint32_t crc = 0;
-                for(const Block *block=segment->head;block;block=block->next)
+                for(const Block *block=head;block;block=block->next)
                 {
                     CRC32::Run(crc, block, sizeof(Block));
                 }

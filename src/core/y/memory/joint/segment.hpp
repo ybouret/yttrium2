@@ -84,10 +84,9 @@ namespace Yttrium
 
                 //! CRC32 of markers
                 /**
-                 \param segment a valid segment
                  \return crc of all blocks
                  */
-                static uint32_t CRC(const Segment * segment) noexcept;
+                uint32_t crc32() const noexcept;
 
                 //! (fast) check of ownership
                 /**
