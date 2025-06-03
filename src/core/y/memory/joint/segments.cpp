@@ -43,7 +43,10 @@ namespace Yttrium
                 Segment * const segment = Segment::Release(blockAddr);
                 assert(0!=segment);
                 assert(list.owns(segment));
-
+                if( segment->isEmpty() )
+                {
+                    
+                }
             }
 
 

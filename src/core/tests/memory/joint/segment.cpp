@@ -52,6 +52,10 @@ namespace
             Block &b = blocks[--count];
             Memory::Joint::Segment * const s = Memory::Joint::Segment::Release(b.addr);
             Y_ASSERT(s==segment);
+            if(s->isEmpty())
+            {
+                Y_ASSERT(0==count);
+            }
         }
        segment->display(std::cerr);
     }
