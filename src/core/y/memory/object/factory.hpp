@@ -96,7 +96,7 @@ namespace Yttrium
                 {
                     assert(0!=object);
                     object->~T();
-                    releaseBlock(object,sizeof(object));
+                    releaseBlock(object,sizeof(T));
                     object = 0;
                 }
 

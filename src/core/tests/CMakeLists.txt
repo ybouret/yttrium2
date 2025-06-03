@@ -48,6 +48,7 @@ Y_UTEST(calculus:gcd)
 Y_UTEST(concurrent:nucleus)
 Y_UTEST(concurrent:giant_lock)
 Y_UTEST(concurrent:life_time)
+Y_UTEST(concurrent:mutex)
 
 #memory
 Y_UTEST(memory:system)

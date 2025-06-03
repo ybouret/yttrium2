@@ -32,6 +32,8 @@ Y_UTEST_DECL(64)
     Y_UTEST(concurrent_nucleus);
     Y_UTEST(concurrent_giant_lock);
     Y_UTEST(concurrent_life_time);
+    Y_UTEST(concurrent_mutex);
+
 
     Y_UTEST(memory_system);
     Y_UTEST(memory_dyadic);
