@@ -27,7 +27,7 @@ namespace
         {
             Block &b = blocks[count];
             b.size   = ran.leq(100);
-            b.addr   = Memory::Joint::Segment::Acquire(segment,b.size);
+            b.addr   = segment->acquire(b.size);
             if(!b.addr)
             {
                 b.size=0;

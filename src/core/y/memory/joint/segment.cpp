@@ -126,17 +126,17 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
 
 
 
-            void * Segment:: Acquire(Segment * const segment,
-                                     size_t &        request) noexcept
+            void * Segment:: acquire(size_t & request) noexcept
             {
-                assert(IsValid(segment));
+                assert(IsValid(this));
 
-                for(Block *block=segment->head;block!=segment->tail;block=block->next)
+                const Block * const end = tail;
+                for(Block *block=head;block!=end;block=block->next)
                 {
 
                     // check if block is used
                     if(block->used) {
-                        assert(segment==block->used);
+                        assert(this==block->used);
                         continue; // used blocks
                     }
 
@@ -163,12 +163,12 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                             next->prev  = slit;
                             block->next = slit;
                             block->size = aligned;
-                            assert(IsValid(segment));
+                            assert(IsValid(this));
                         }
                     }
 
-                    block->used = segment;
-                    assert(IsValid(segment));
+                    block->used = this;
+                    assert(IsValid(this));
                     return memset(block+1,0,request = block->size);
                 }
 

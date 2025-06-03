@@ -70,19 +70,17 @@ namespace Yttrium
                                         const unsigned shift);
 
                 //! Display, mostly for debug
-                void      display(std::ostream &) const;
+                void display(std::ostream &) const;
 
                 //! check validity, mostly for debug \return true iff valid
                 static bool      IsValid(const Segment * const) noexcept;
 
                 //! try to acquire a new block with blockSize>=request
                 /**
-                 \param segment formatted segment
                  \param request minimal bytes to get, updated upon success
                  \return 0 if not found and request is untouched, address and request otherwise
                  */
-                static void *    Acquire(Segment * const segment,
-                                         size_t &        request) noexcept;
+                void * acquire(size_t & request) noexcept;
 
                 //! CRC32 of markers
                 /**
