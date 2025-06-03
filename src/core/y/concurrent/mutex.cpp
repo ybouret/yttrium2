@@ -76,5 +76,24 @@ namespace Yttrium
             Memory::Object::Factory::Location().deleteBlockAs( Coerce(code) );
         }
 
+        void Mutex:: doLock() noexcept
+        {
+            assert(0!=code);
+            code->lock();
+        }
+
+        void Mutex:: doUnlock() noexcept
+        {
+            assert(0!=code);
+            code->unlock();
+        }
+
+        bool Mutex:: doTryLock() noexcept
+        {
+            assert(0!=code);
+            return code->tryLock();
+        }
+
+
     }
 }
