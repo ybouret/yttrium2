@@ -44,7 +44,7 @@ namespace Yttrium
                 //______________________________________________________________
                 //
                 //
-                //! slot for table: list of ordered segments
+                //! slot for table: list of segments (odered by memory)
                 //
                 //______________________________________________________________
                 class Slot : public ListType
@@ -74,8 +74,25 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
+
+                //! acquire a new memory block
+                /**
+                 - look into acceptable slots
+                 - create the tighest one if not possible
+                 - take care of slot.alreadyEmpty
+                 \param  blockSize block size
+                 \return a new memory with updated blockSize
+                 */
                 void *   acquire(size_t &blockSize);
+
+                //! release an old memory block
+                /**
+                 - find the owner's
+                 - check no multiple alreadyEmpty in matching slot
+                 \param blockAddr address of acquired block
+                 */
                 void     release(void * const blockAddr) noexcept;
+
                 uint32_t crc32() const noexcept; //!< full crc \return crc of chained segments
 
             private:
