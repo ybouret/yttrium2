@@ -5,7 +5,7 @@
 #define Y_Concurrent_Nucleus_Included 1
 
 #include "y/concurrent/singulet.hpp"
-
+#include "y/system/platform.hpp"
 
 namespace Yttrium
 {
@@ -68,6 +68,11 @@ namespace Yttrium
              \return persistent lockable interface  
              */
             Lockable & queryLockable();
+
+
+#if defined(Y_BSD)
+            const void *get_pthread_mutex_attr() const noexcept;
+#endif
 
 
             //! create/get unique instance

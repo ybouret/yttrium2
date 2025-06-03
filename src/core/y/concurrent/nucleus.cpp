@@ -361,6 +361,15 @@ namespace Yttrium
 			quit(os,indent) << std::endl;
         }
 
+
+#if defined(Y_BSD)
+        const void * Nucleus:: get_pthread_mutex_attr() const noexcept
+        {
+            assert(0!=code);
+            return & code->mutexAttributes;
+        }
+#endif
+
     }
 
     Lockable & Lockable:: Giant()
