@@ -4,7 +4,7 @@
 #include "y/memory/object/book.hpp"
 #include "y/memory/object/factory.hpp"
 #include "y/core/utils.hpp"
-
+#include "y/xml/syntax.hpp"
 #include <iomanip>
 
 namespace Yttrium
@@ -22,6 +22,15 @@ namespace Yttrium
             {
                 alreadyEmpty = 0;
             }
+
+            void  Segments:: Slot:: show(std::ostream &os,size_t indent) const
+            {
+                for(const Segment *s=head;s!=tail;++s)
+                {
+                    s->display(XML::Indent(os,indent) << '@' << (const void *)s << ' ');
+                }
+            }
+
 
             const unsigned Segments:: MinShift = Object::Factory::DEFAULT_PAGE_SHIFT;
 
@@ -179,6 +188,13 @@ namespace Yttrium
                     }
                 }
                 return crc;
+            }
+
+            const Segments:: Slot & Segments:: operator[](const unsigned shift) const noexcept
+            {
+                assert(shift>=MinShift);
+                assert(shift<=MaxShift);
+                return table[shift];
             }
 
 

@@ -53,7 +53,8 @@ namespace Yttrium
                     explicit Slot() noexcept; //!< setup
                     virtual ~Slot() noexcept; //!< cleanup
                     Segment * alreadyEmpty;   //!< bookkeeping
-
+                    void show(std::ostream &os,size_t indent) const;
+                    
                 private:
                     Y_Disable_Copy_And_Assign(Slot); //!< discarding
                 };
@@ -94,6 +95,9 @@ namespace Yttrium
                 void     release(void * const blockAddr) noexcept;
 
                 uint32_t crc32() const noexcept; //!< full crc \return crc of chained segments
+
+                const Slot & operator[](const unsigned shift) const noexcept;
+
 
             private:
                 Y_Disable_Copy_And_Assign(Segments); //!< discarding

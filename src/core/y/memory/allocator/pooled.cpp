@@ -47,8 +47,24 @@ namespace Yttrium
 
         void Pooled:: display(std::ostream &os, size_t indent) const
         {
-            init(os,indent);
+            assert(0!=code);
+            const Joint::Segments &seg = *code;
 
+            init(os,indent);
+            ++indent;
+            bool hasData = false;
+            for(unsigned bs=Joint::Segments::MinShift;bs<=Joint::Segments::MaxShift;++bs)
+            {
+                const Joint::Segments::Slot &slot = seg[bs];
+                if(slot.size>0)
+                {
+                    hasData = true;
+                    XML::Indent(os,indent) << '<' << '2' << '^' << bs <<  '>' << std::endl;
+                }
+
+            }
+            if(!hasData) XML::Indent(os,indent) << "Empty " << CallSign << std::endl;
+            --indent;
             quit(os,indent);
         }
 

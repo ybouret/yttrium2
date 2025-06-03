@@ -21,6 +21,8 @@ Y_UTEST(memory_pooled)
     System::Rand        ran;
     Memory::Pooled &    allocator = Memory::Pooled::Instance();
 
+    allocator.display(std::cerr,0);
+
 
 #if 0
     Block        blocks[1000];
