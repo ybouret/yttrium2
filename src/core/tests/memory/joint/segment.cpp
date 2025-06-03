@@ -67,9 +67,9 @@ Y_UTEST(memory_joint_segment)
 
     Y_Memory_BZero(blocks);
 
-    void *wksp[100];
-    Memory::Joint::Segment *segment = Memory::Joint::Segment::Format(wksp,sizeof(wksp));
-    Y_CHECK( Memory::Joint::Segment::IsEmpy(segment));
+    void *wksp[128];
+    Memory::Joint::Segment *segment = Memory::Joint::Segment::Format(wksp,Base2<size_t>::ExactLog(sizeof(wksp)));
+    Y_CHECK( Memory::Joint::Segment::IsEmpy(segment) );
 
 
 

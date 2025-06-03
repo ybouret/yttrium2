@@ -48,26 +48,26 @@ namespace Yttrium
                 static const size_t   BlockSize     = sizeof(Block);               //!< allocation granularity
                 static const unsigned BlockLog2    = IntegerLog2For<Block>::Value; //!< ensure power of two
                 static const size_t   SegmentBytes;                                //!< sizeof(SegmentBytes)
+                static const unsigned SegmentShift;                                //!< SegmentBytes = 2^SegmentShift
                 static const size_t   MinNumBlocks = 3;                            //!< head+free block+tail
                 static const size_t   MinDataBytes;                                //!< SegmentBytes + MinNumBlocks * BlockSize
-                static const size_t   MaxDataBytes = Base2<size_t>::MaxBytes;
-
+                static const unsigned MinDataShift;
+                static const unsigned MaxDataShift = Base2<size_t>::MaxShift;
                 struct Param
                 {
-                    size_t   bytes;
                     unsigned shift;
-                    size_t   nextPowerOfTwo;
-                    bool     isDyadic;
+                    size_t   bytes;
                 };
 
 
                 //! format a segment
                 /**
-                 \param entry valid memory
-                 \param bytes bytes >= MinDataBytes and bytes <= Base2::MaxBytes
+                 \param entry valid dyadic memory
+                 \param shift shift >= MinDataShift, shift  <= Base2::MaxShift
                  \return a formatted segment
                  */
-                static Segment * Format(void * const entry, const size_t bytes);
+                static Segment * Format(void * const   entry,
+                                        const unsigned shift);
 
                 //! Display, mostly for debug
                 static void      Display(const Segment * const,std::ostream &);
@@ -121,7 +121,7 @@ namespace Yttrium
                 Block * const head; //!< head marker
                 Block * const tail; //!< tail marker
                 union {
-                    Block _;
+                    Block bogus;
                     Param param;
                 };
 

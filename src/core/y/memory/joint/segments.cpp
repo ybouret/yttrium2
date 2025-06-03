@@ -33,7 +33,6 @@ namespace Yttrium
 
                 // check errors ?
                 Segment::Param &param = segment->param;
-                assert(param.isDyadic);
                 dyadic.releaseDyadic(segment,param.shift);
             }
 

@@ -20,30 +20,38 @@ namespace Yttrium
 
             const char * const Segment:: CallSign = "Memory::Joint::Segment";
             const size_t       Segment:: SegmentBytes = sizeof(Segment);
+            const unsigned     Segment:: SegmentShift = IntegerLog2<SegmentBytes>::Value;
             const size_t       Segment:: MinNumBlocks;
             const size_t       Segment:: MinDataBytes = SegmentBytes + MinNumBlocks * BlockSize;
-            const size_t       Segment:: MaxDataBytes;
+            const unsigned     Segment:: MinDataShift = Base2<size_t>::ExactLog( NextPowerOfTwo(MinDataBytes) );
+            const unsigned     Segment:: MaxDataShift;
 
-            Segment * Segment:: Format(void * const  entry,
-                                       const  size_t bytes)
+            Segment * Segment:: Format(void * const   entry,
+                                       const  unsigned shift)
             {
+                //--------------------------------------------------------------
+                //
                 // sanity check
-                assert( Good(entry,bytes) );
-                if(bytes<MinDataBytes||bytes>MaxDataBytes)
-                    throw Specific::Exception(CallSign,"bytes=%s not in %s:%s", Decimal(bytes).c_str(), Decimal(MinDataBytes).c_str(), Decimal(MaxDataBytes).c_str());
+                //
+                //--------------------------------------------------------------
+                assert( 0!=entry );
+                if(shift<MinDataShift || shift>MaxDataShift)
+                    throw Specific::Exception(CallSign,"shift=%s not in %s:%s", Decimal(shift).c_str(), Decimal(MinDataShift).c_str(), Decimal(MaxDataShift).c_str());
 
-                assert(0!=entry);
+                const size_t bytes = size_t(1) << shift;
                 assert(bytes>=MinDataBytes);
-                assert(bytes<=MaxDataBytes);
 
                 const size_t numBlocks = (bytes - SegmentBytes) / BlockSize; assert(numBlocks>=MinNumBlocks);
-                if(numBlocks*BlockSize+SegmentBytes!=bytes)
-                    throw Specific::Exception(CallSign,"unaligned bytes=%s", Decimal(bytes).c_str());;
+                assert(numBlocks*BlockSize+SegmentBytes==bytes);
 
+                //--------------------------------------------------------------
+                //
                 // prepare segment
+                //
+                //--------------------------------------------------------------
                 Segment * const segment = static_cast<Segment *>( Stealth::Zero(entry,bytes) );
 
-                // check and perform various links
+                // check
                 assert(0!=segment);
                 assert(0==segment->next);
                 assert(0==segment->prev);
@@ -59,10 +67,10 @@ namespace Yttrium
                 segment->head->size = (numBlocks-2) << BlockLog2;
                 segment->tail->used = segment;
 
-                // parameters
-                segment->param.bytes           = bytes;
-                segment->param.nextPowerOfTwo  = NextPowerOfTwo(segment->param.bytes, segment->param.shift);
-                segment->param.isDyadic        = ( segment->param.bytes ==  segment->param.nextPowerOfTwo );
+                // fill shift
+                segment->param.shift = shift;
+                segment->param.bytes = bytes;
+
                 assert(IsValid(segment));
 
                 return segment;
