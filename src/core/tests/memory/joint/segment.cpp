@@ -90,6 +90,16 @@ Y_UTEST(memory_joint_segment)
     Y_CHECK( segment->isEmpty() );
     Y_CHECK( segment->param.bytes == sizeof(wksp) );
 
+
+    {
+        Y_PRINTV( Memory::Joint::Segment::MaxRequest );
+        Y_PRINTV( Memory::Joint::Segment::ShiftFor(0) );
+        Y_PRINTV( Memory::Joint::Segment::ShiftFor(1000) );
+        Y_PRINTV( Memory::Joint::Segment::MinDataShift );
+        Y_PRINTV( Memory::Joint::Segment::MaxDataShift );
+
+    }
+
 }
 Y_UDONE()
 

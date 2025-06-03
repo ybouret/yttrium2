@@ -28,7 +28,10 @@ Y_UTEST(memory_object_book)
     }
 
     book.display(std::cerr,0);
-    
+
+    Y_PRINTV(  Memory::Object::Book::MinPageShift );
+    Y_PRINTV(  Memory::Object::Book::MaxPageShift );
+
 
 }
 Y_UDONE()

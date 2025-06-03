@@ -10,17 +10,41 @@ namespace Yttrium
         namespace Joint
         {
 
+            namespace
+            {
+                static inline unsigned computeTableShift() noexcept
+                {
+                    const unsigned numSlots = Segment::MaxDataShift - Segment::MinDataShift + 1;
+                    unsigned       theShift = 0;
+                    const size_t   numBytes = NextPowerOfTwo(numSlots * sizeof(Segments::Slot), theShift);
+                    (void)numBytes;
+                    std::cerr << "numSlots=" << numSlots << " => " << numBytes << " = 2^" << theShift << std::endl;
+                    return theShift;
+                }
+            }
+
             Segments:: Segments() :
-            acquiring(0),
-            list(),
+            table(0),
+            tableShift( computeTableShift() ),
             dyadic( Dyadic::Instance() )
             {
+                Coerce(table) = static_cast<Slot*>( dyadic.acquireDyadic(tableShift) )-Segment::MinDataShift;
             }
 
 
             Segments:: ~Segments() noexcept
             {
-                while(list.size) unload( list.popTail() );
+#if 0
+                for(unsigned bs=Segment::MinDataShift;bs<=Segment::MaxDataShift;++bs)
+                {
+                    Slot &slot = table[bs];
+                    while(slot.size)
+                        unload( slot.popTail() );
+                }
+#endif
+                dyadic.releaseDyadic(table+Segment::MinDataShift,tableShift);
+                Coerce(table)      = 0;
+                Coerce(tableShift) = 0;
             }
 
             void Segments:: unload(Segment * const segment) noexcept
@@ -42,13 +66,13 @@ namespace Yttrium
                 assert(0!=blockAddr);
                 Segment * const segment = Segment::Release(blockAddr);
                 assert(0!=segment);
-                assert(list.owns(segment));
                 if( segment->isEmpty() )
                 {
                     
                 }
             }
 
+ 
 
         }
 

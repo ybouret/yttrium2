@@ -17,22 +17,57 @@ namespace Yttrium
         namespace Joint
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Segments on dyadic allocator
+            //
+            //
+            //__________________________________________________________________
             class Segments
             {
             public:
-                explicit Segments();
-                virtual ~Segments() noexcept;
+                typedef Core::ListOf<Segment> ListType; //!< alias
 
-                void release(void * const blockAddr) noexcept;
+                class Slot : public ListType
+                {
+                public:
+                    explicit Slot() noexcept;
+                    virtual ~Slot() noexcept;
+                    
+                private:
+                    Y_Disable_Copy_And_Assign(Slot);
+                };
+
+
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+                explicit Segments();          //!< initialize
+                virtual ~Segments() noexcept; //!< cleanup
+
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+                void * acquire(size_t &blockSize);
+                void   release(void * const blockAddr) noexcept;
 
             private:
-                Y_Disable_Copy_And_Assign(Segments);
+                Y_Disable_Copy_And_Assign(Segments); //!< discarding
 
                 void unload(Segment * const segment) noexcept;
 
-                Segment *              acquiring;
-                Core::ListOf<Segment>  list;
+                Slot * const           table;
+                const unsigned         tableShift;
                 Dyadic               & dyadic;
+
             };
 
         }

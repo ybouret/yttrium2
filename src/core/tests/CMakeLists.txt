@@ -62,6 +62,7 @@ Y_UTEST(memory:object:factory)
 Y_UTEST(memory:object:guild)
 Y_UTEST(memory:dyads)
 Y_UTEST(memory:joint:segment)
+Y_UTEST(memory:joint:segments)
 
 
 #hashing

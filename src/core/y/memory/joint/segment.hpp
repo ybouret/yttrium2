@@ -14,7 +14,6 @@ namespace Yttrium
         namespace Joint
         {
 
-
             //__________________________________________________________________
             //
             //
@@ -50,13 +49,18 @@ namespace Yttrium
                 static const size_t   SegmentBytes;                                //!< sizeof(SegmentBytes)
                 static const unsigned SegmentShift;                                //!< SegmentBytes = 2^SegmentShift
                 static const size_t   MinNumBlocks = 3;                            //!< head+free block+tail
-                static const size_t   MinDataBytes;                                //!< SegmentBytes + MinNumBlocks * BlockSize
-                static const unsigned MinDataShift;
-                static const unsigned MaxDataShift = Base2<size_t>::MaxShift;
+                static const size_t   MinDataBytes;                                //!< NextPowerOfTwo(SegmentBytes + MinNumBlocks * BlockSize)
+                static const unsigned MinDataShift;                                //!< Log2(MinDataBytes)
+                static const unsigned MaxDataShift = Base2<size_t>::MaxShift;      //!< alias
+                static const size_t   MaxDataBytes = Base2<size_t>::MaxBytes;      //!< alias
+                static const size_t   MaxRequest;                                  //!< MaxDataBytes - SegmentBytes - 2 * BlockSize
+
+                //! internal parameters
                 struct Param
                 {
-                    unsigned shift;
-                    size_t   bytes;
+                    unsigned     shift;   //!< allocated shift
+                    size_t       bytes;   //!< allocated bytes
+                    size_t       maxSize; //!< max request size when empty
                 };
 
 
@@ -97,7 +101,11 @@ namespace Yttrium
                 //! check empty \return true iff unused head whose next is tail
                 bool isEmpty() const noexcept;
 
-                
+
+                //! look for block owning address
+                /** \param addr acquired address \return its block */
+                static Block *GetBlockOf(const void * const addr) noexcept;
+
                 //! releasing and address
                 /**
                  \param addr previousluy acquired
@@ -105,7 +113,12 @@ namespace Yttrium
                  */
                 static Segment * Release(void * const addr)   noexcept;
 
-                static size_t BytesFor(const size_t blockSize);
+                //! shift to build a segment able to hold request
+                /**
+                 \param request user request in bytes
+                 \return shift such that segment->param.maxSize > request
+                 */
+                static unsigned  ShiftFor(const size_t request);
 
                 //______________________________________________________________
                 //

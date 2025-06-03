@@ -45,6 +45,7 @@ Y_UTEST_DECL(64)
     Y_UTEST(memory_object_guild);
     Y_UTEST(memory_dyads);
     Y_UTEST(memory_joint_segment);
+    Y_UTEST(memory_joint_segments);
 
     Y_UTEST(hashing_mix64);
     Y_UTEST(hashing_hash32);

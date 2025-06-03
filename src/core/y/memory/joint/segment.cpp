@@ -18,7 +18,7 @@ namespace Yttrium
         namespace Joint
         {
 
-            const char * const Segment:: CallSign = "Memory::Joint::Segment";
+            const char * const Segment:: CallSign     = "Memory::Joint::Segment";
             const size_t       Segment:: SegmentBytes = sizeof(Segment);
             const unsigned     Segment:: SegmentShift = IntegerLog2<SegmentBytes>::Value;
             const size_t       Segment:: MinNumBlocks;
@@ -67,10 +67,10 @@ namespace Yttrium
                 segment->head->size = (numBlocks-2) << BlockLog2;
                 segment->tail->used = segment;
 
-                // fill shift
-                segment->param.shift = shift;
-                segment->param.bytes = bytes;
-
+                // fill parameters
+                segment->param.shift   = shift;
+                segment->param.bytes   = bytes;
+                segment->param.maxSize = segment->head->size;
                 assert(IsValid(segment));
 
                 return segment;
@@ -130,24 +130,41 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
             {
                 assert(IsValid(this));
 
+                //--------------------------------------------------------------
+                //
+                // check possibility
+                //
+                //--------------------------------------------------------------
+                if(request>param.maxSize) return 0;
+
+                //--------------------------------------------------------------
+                //
+                // loop over free blocks
+                //
+                //--------------------------------------------------------------
                 const Block * const end = tail;
                 for(Block *block=head;block!=end;block=block->next)
                 {
 
+                    //----------------------------------------------------------
                     // check if block is used
+                    //----------------------------------------------------------
                     if(block->used) {
                         assert(this==block->used);
                         continue; // used blocks
                     }
 
+                    //----------------------------------------------------------
                     // check if block can accept request
+                    //----------------------------------------------------------
                     if(block->size<request)
                         continue; // block is too small
 
+                    //----------------------------------------------------------
                     // using alignment
-                    const size_t aligned = Alignment::To<Block>::Ceil( MaxOf(request,BlockSize) );
-                    assert(aligned<=block->size);
+                    //----------------------------------------------------------
                     {
+                        const size_t aligned = Alignment::To<Block>::Ceil( MaxOf(request,BlockSize) ); assert(aligned<=block->size);
                         const size_t remains = block->size - aligned; assert(0==remains%BlockSize);
                         if(remains>=2*BlockSize)
                         {
@@ -167,12 +184,19 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                         }
                     }
 
+                    //----------------------------------------------------------
+                    // update and return
+                    //----------------------------------------------------------
                     block->used = this;
                     assert(IsValid(this));
                     return memset(block+1,0,request = block->size);
                 }
 
+                //--------------------------------------------------------------
+                //
                 // not found, leave request untouched
+                //
+                //--------------------------------------------------------------
                 return 0;
             }
 
@@ -202,11 +226,22 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
             }
 
 
+            Segment::Block * Segment:: GetBlockOf(const void * const addr) noexcept
+            {
+                assert(0!=addr);
+                const Block *   const block   = static_cast<const Block *>(addr)-1;
+                assert(0!=block);
+                assert(block->used);
+                return (Block *)block;
+            }
+
+
+
             Segment * Segment:: Release(void *const addr) noexcept
             {
                 // get block from address
                 assert(0!=addr);
-                Block *   const block   = static_cast<Block *>(addr)-1;
+                Block *   const block   = GetBlockOf(addr);
                 Segment * const segment = block->used;
 
                 assert(block->used);
@@ -264,12 +299,18 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                 return segment;
             }
 
-#if 0
-            size_t Segment:: BytesFor(const size_t blockSize)
+            const size_t Segment:: MaxRequest = MaxDataBytes - (SegmentBytes+2*BlockSize);
+
+            unsigned  Segment:: ShiftFor(const size_t request)
             {
-                
+                if(request>MaxRequest) throw Specific::Exception(CallSign,"request=%s>%s",Decimal(request).c_str(),Decimal(MaxRequest).c_str());
+                const size_t raw   = SegmentBytes + 2*BlockSize + request;
+                unsigned     shift = 0;
+                (void) NextPowerOfTwo( MaxOf(raw,MinDataBytes), shift);
+                assert(shift>=MinDataShift);
+                assert(shift<=MaxDataShift);
+                return shift;
             }
-#endif
 
 
         }
