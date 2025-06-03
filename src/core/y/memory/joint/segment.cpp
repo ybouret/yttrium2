@@ -195,11 +195,10 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                 return addr >= (const void *)(head+1) && addr < (const void *)(tail);
             }
 
-            bool Segment:: IsEmpy(const Segment *const segment) noexcept
+            bool Segment:: isEmpty() const noexcept
             {
-                assert(IsValid(segment));
-                Block * const head = segment->head;
-                return !head->used && segment->tail == head->next;
+                assert(IsValid(this));
+                return (!head->used) && (tail == head->next);
             }
 
 

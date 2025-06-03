@@ -95,7 +95,7 @@ namespace Yttrium
                 bool owns(const void * const) const noexcept;
 
                 //! check empty \return true iff unused head whose next is tail
-                static bool      IsEmpy(const Segment *const) noexcept;
+                bool isEmpty() const noexcept;
 
                 
                 //! releasing and address
