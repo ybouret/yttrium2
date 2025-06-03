@@ -90,7 +90,7 @@ namespace Yttrium
                 /**
                  \return crc of all blocks
                  */
-                uint32_t crc32() const noexcept;
+                uint32_t crc32(const uint32_t = 0) const noexcept;
 
                 //! (fast) check of ownership
                 /**

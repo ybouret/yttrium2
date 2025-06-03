@@ -157,6 +157,10 @@ namespace Yttrium
     //! helper to zero a local block of memory
 #define Y_Memory_BZero(BLOCK) Memory::Stealth::Zero(BLOCK,sizeof(BLOCK))
 
+    //! helper to zero a local variable
+#define Y_Memory_VZero(VAR) Memory::Stealth::Zero(&VAR,sizeof(VAR))
+
+
 }
 
 #endif

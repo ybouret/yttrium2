@@ -5,6 +5,8 @@
 #include "y/memory/object/factory.hpp"
 #include "y/core/utils.hpp"
 
+#include <iomanip>
+
 namespace Yttrium
 {
     namespace Memory
@@ -53,14 +55,12 @@ namespace Yttrium
 
             Segments:: ~Segments() noexcept
             {
-#if 0
                 for(unsigned bs=MinShift;bs<=MaxShift;++bs)
                 {
                     Slot &slot = table[bs];
                     while(slot.size)
                         unload( slot.popTail() );
                 }
-#endif
                 book.store(tableShift, table+MinShift);
                 Coerce(table)      = 0;
                 Coerce(tableShift) = 0;
@@ -74,6 +74,10 @@ namespace Yttrium
                 assert(0==segment->prev);
 
                 // check errors ?
+                if(!segment->isEmpty())
+                {
+                    segment->display(std::cerr << "*** " << Segment::CallSign << "[" << std::setw(6) << segment->param.bytes << "] : ");
+                }
 
                 // return to book pages
                 book.store(segment->param.shift,segment);
@@ -114,7 +118,7 @@ namespace Yttrium
                 // need to create a new slot in primary
                 try
                 {
-                    Segment * const segment = Segment::Format( book.query(shift), shift);
+                    Segment * const segment = primary->insertOderedByAddresses( Segment::Format( book.query(shift), shift) );
                     assert(0!=segment);
                     assert(segment->param.maxSize>=blockSize);
                     assert(segment->head->used==0);
@@ -130,6 +134,21 @@ namespace Yttrium
                 }
 
             }
+
+            uint32_t Segments:: crc32() const noexcept
+            {
+                uint32_t crc = 0;
+                for(unsigned bs=MinShift;bs<=MaxShift;++bs)
+                {
+                    const Slot &slot = table[bs];
+                    for(const Segment *seg=slot.head;seg;seg=seg->next)
+                    {
+                        crc = seg->crc32(crc);
+                    }
+                }
+                return crc;
+            }
+
 
         }
 

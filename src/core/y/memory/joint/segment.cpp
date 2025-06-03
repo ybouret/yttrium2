@@ -201,13 +201,12 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
             }
 
 
-            uint32_t Segment:: crc32() const noexcept
+            uint32_t Segment:: crc32(uint32_t crc) const noexcept
             {
                 assert(IsValid(this));
-                uint32_t crc = 0;
                 for(const Block *block=head;block;block=block->next)
                 {
-                    CRC32::Run(crc, block, sizeof(Block));
+                    crc = CRC32::Run(crc, block, sizeof(Block));
                 }
                 return crc;
             }

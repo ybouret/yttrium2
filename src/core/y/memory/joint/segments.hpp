@@ -63,8 +63,9 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
-                void * acquire(size_t &blockSize);
-                void   release(void * const blockAddr) noexcept;
+                void *   acquire(size_t &blockSize);
+                void     release(void * const blockAddr) noexcept;
+                uint32_t crc32() const noexcept;
 
             private:
                 Y_Disable_Copy_And_Assign(Segments); //!< discarding
