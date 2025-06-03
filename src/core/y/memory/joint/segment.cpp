@@ -188,11 +188,11 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                 return crc;
             }
 
-            bool Segment:: Owns(const Segment * const segment, void * const addr) noexcept
+            bool Segment:: owns(const void * const addr) const noexcept
             {
                 assert(0!=addr);
-                assert( IsValid(segment) );
-                return addr >= (const void *)(segment->head+1) && addr < (const void *)(segment->tail);
+                assert( IsValid(this) );
+                return addr >= (const void *)(head+1) && addr < (const void *)(tail);
             }
 
             bool Segment:: IsEmpy(const Segment *const segment) noexcept
@@ -211,7 +211,7 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                 Segment * const segment = block->used;
 
                 assert(block->used);
-                assert(Owns(segment,addr));
+                assert(segment->owns(addr));
 
                 // check situation
                 static const unsigned MERGE_NONE = 0x00;

@@ -92,7 +92,7 @@ namespace Yttrium
                 /**
                  \return true iff address between head an tail
                  */
-                static bool      Owns(const Segment * const, void * const) noexcept;
+                bool owns(const void * const) const noexcept;
 
                 //! check empty \return true iff unused head whose next is tail
                 static bool      IsEmpy(const Segment *const) noexcept;
