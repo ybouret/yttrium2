@@ -45,7 +45,7 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //
-            //! Manager interface
+            //! Manager interface for given bytes=2^shift
             //
             //__________________________________________________________________
             class Manager

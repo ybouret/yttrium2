@@ -31,19 +31,21 @@ namespace Yttrium
 
         namespace
         {
-            class ObjectManager :
+
+
+            class SmallManager :
             public Quanta::Manager,
             public Object::Guild
             {
             public:
-                inline explicit ObjectManager(const unsigned blockShift) :
+                inline explicit SmallManager(const unsigned blockShift) :
                 Quanta::Manager(blockShift),
                 Object::Guild(bytes)
                 {
                     std::cerr << "[+] " << bytes << std::endl;
                 }
 
-                inline virtual ~ObjectManager() noexcept
+                inline virtual ~SmallManager() noexcept
                 {
                 }
 
@@ -59,13 +61,14 @@ namespace Yttrium
                 }
 
 
+                //! for procedural creation
                 static void Create(void * const addr, const size_t blockShift)
                 {
-                    new (addr) ObjectManager(unsigned(blockShift));
+                    new (addr) SmallManager(unsigned(blockShift));
                 }
 
             private:
-                Y_Disable_Copy_And_Assign(ObjectManager);
+                Y_Disable_Copy_And_Assign(SmallManager);
             };
 
             
@@ -74,17 +77,17 @@ namespace Yttrium
 
         namespace
         {
-            class DyadicManager : public Quanta::Manager
+            class LargeManager : public Quanta::Manager
             {
             public:
-                inline explicit DyadicManager(const unsigned blockShift) :
+                inline explicit LargeManager(const unsigned blockShift) :
                 Quanta::Manager(blockShift),
                 dyadic( Dyadic::Instance() )
                 {
                     std::cerr << "[+] " << bytes << std::endl;
                 }
 
-                inline virtual ~DyadicManager() noexcept {}
+                inline virtual ~LargeManager() noexcept {}
 
                 inline virtual void *acquire()
                 {
@@ -99,13 +102,13 @@ namespace Yttrium
 
                 static void Create(void * const addr, const size_t blockShift)
                 {
-                    new (addr) DyadicManager(unsigned(blockShift));
+                    new (addr) LargeManager(unsigned(blockShift));
                 }
 
                 Memory::Dyadic &dyadic;
 
             private:
-                Y_Disable_Copy_And_Assign(DyadicManager);
+                Y_Disable_Copy_And_Assign(LargeManager);
             };
 
 
@@ -118,20 +121,20 @@ namespace Yttrium
         public:
             explicit Code() :
             manager(),
-            objectManager(Procedural,ObjectManager::Create,0),
-            dyadicManager(Procedural,DyadicManager::Create,NumFactoryShift)
+            smallManager(Procedural,SmallManager::Create,0),
+            largeManager(Procedural,LargeManager::Create,NumFactoryShift)
             {
                 Y_Memory_BZero(manager);
 
                 for(unsigned i=0;i<=MaxFactoryShift;++i)
                 {
-                    manager[i] = &objectManager[i+1];
+                    manager[i] = &smallManager[i+1];
                     assert(i==manager[i]->shift);
                 }
 
                 for(unsigned i=0;i<NumGreaterShift;++i)
                 {
-                    manager[i+NumFactoryShift] = &dyadicManager[i+1];
+                    manager[i+NumFactoryShift] = &largeManager[i+1];
                     assert(i+NumFactoryShift==manager[i+NumFactoryShift]->shift);
                 }
 
@@ -142,14 +145,15 @@ namespace Yttrium
             }
 
             Manager *                                   manager[MaxAllowedShift+1];
-            CxxWorkspace<ObjectManager,NumFactoryShift> objectManager;
-            CxxWorkspace<DyadicManager,NumGreaterShift> dyadicManager;
+            CxxWorkspace<SmallManager,NumFactoryShift>  smallManager;
+            CxxWorkspace<LargeManager,NumGreaterShift>  largeManager;
 
         private:
             Y_Disable_Copy_And_Assign(Code);
         };
 
-        namespace {
+        namespace
+        {
             static void * codeWorkspace[ Alignment::WordsFor<Quanta::Code>::Count ];
         }
 
