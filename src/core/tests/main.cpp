@@ -35,6 +35,7 @@ Y_UTEST_DECL(64)
     Y_UTEST(concurrent_mutex);
 
 
+    Y_UTEST(memory_gc);
     Y_UTEST(memory_system);
     Y_UTEST(memory_dyadic);
     Y_UTEST(memory_pooled);

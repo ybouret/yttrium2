@@ -51,6 +51,7 @@ Y_UTEST(concurrent:life_time)
 Y_UTEST(concurrent:mutex)
 
 #memory
+Y_UTEST(memory:gc)
 Y_UTEST(memory:system)
 Y_UTEST(memory:dyadic)
 Y_UTEST(memory:pooled)
