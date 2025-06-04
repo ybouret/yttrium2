@@ -38,6 +38,7 @@ Y_UTEST(system:rand)
 
 # type
 Y_UTEST(type:ints)
+Y_UTEST(type:moniker)
 
 #calculus
 Y_UTEST(calculus:integer_log2)
