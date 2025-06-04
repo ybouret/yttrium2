@@ -69,15 +69,7 @@ namespace Yttrium
                  */
                 void   releaseBlock(void * const blockAddr, const size_t blockSize) noexcept;
 
-                //! alias to acquire a zombi block \return memory for one 'T'
-                template <typename T> inline
-                T *acquireBlockFor() { return static_cast<T *>(acquireBlock(sizeof(T))); }
-
-
-                //! alias to release a zombi block \param zombi previously acquired block
-                template <typename T> inline
-                void releaseBlockFor( T * const zombi ) { releaseBlock(zombi,sizeof(T)); }
-
+                
                 template <typename T> inline
                 T * createBlockAs() {
                     void * const p = acquireBlock(sizeof(T));

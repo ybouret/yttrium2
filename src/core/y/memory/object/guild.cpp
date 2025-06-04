@@ -32,14 +32,14 @@ namespace Yttrium
                 Code * Create(const size_t blockSize)
                 {
                     Factory &    F = Factory::Instance();
-                    Code * const p = F.acquireBlockFor<Code>();
+                    void * const p = F.acquireBlock( sizeof(Code) );
                     try
                     {
                         return new (p) Code(F.access,F.blocks.getArenaFor(blockSize));
                     }
                     catch(...)
                     {
-                        F.releaseBlockFor(p);
+                        F.releaseBlock(p,sizeof(Code));
                         throw;
                     }
                 }
@@ -63,7 +63,7 @@ namespace Yttrium
             {
                 assert( 0!= code);
                 assert( Factory::Exists() );
-                Factory::Location().releaseBlockFor( Stealth::DestructedAndZeroed(code) );
+                Factory::Location().releaseBlock( Stealth::DestructedAndZeroed(code), sizeof(Code) );
             }
 
             size_t Guild:: blockSize() const noexcept
