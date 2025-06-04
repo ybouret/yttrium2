@@ -6,7 +6,7 @@
 
 #include "y/core/linked/list.hpp"
 #include "y/calculus/base2.hpp"
-#include "y/ability/releasable.hpp"
+#include "y/ability/collectable.hpp"
 #include "y/memory/page.hpp"
 #include "y/xml/element.hpp"
 
@@ -29,7 +29,7 @@ namespace Yttrium
              */
             //
             //__________________________________________________________________
-            class Pages : public Releasable, public XML::Element
+            class Pages : public Collectable, public XML::Element
             {
             public:
                 //______________________________________________________________
@@ -94,6 +94,7 @@ namespace Yttrium
                 virtual void         release() noexcept; 
                 virtual void         display(std::ostream &,size_t) const; 
                 virtual const char * callSign() const noexcept;
+                virtual void         gc(const uint8_t) noexcept;
 
                 //______________________________________________________________
                 //
@@ -110,7 +111,7 @@ namespace Yttrium
                 
             private:
                 Y_Disable_Copy_And_Assign(Pages); //!< discarding
-                void   release_() noexcept;       //!< release all existing pages
+                void   release_(const size_t toNewSize) noexcept;       //!< release all existing pages
             };
             
         }

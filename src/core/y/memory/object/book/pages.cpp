@@ -38,16 +38,17 @@ namespace Yttrium
             }
 
 
-            void Pages:: release_() noexcept
+            void Pages:: release_(const size_t newSize) noexcept
             {
+                assert(newSize<=plist.size);
                 Y_Lock(memIO.access);
-                while(plist.size>0)
+                while(plist.size>newSize)
                     memIO.releaseUnlockedDyadic(plist.popTail(),shift);
             }
 
             Pages:: ~Pages() noexcept
             {
-                release_();
+                release_(0);
             }
 
 
@@ -55,7 +56,12 @@ namespace Yttrium
 
             void Pages:: release() noexcept
             {
-                release_();
+                release_(0);
+            }
+
+            void Pages:: gc(const uint8_t amount) noexcept
+            {
+                release_( NewSize(amount,plist.size) );
             }
 
 

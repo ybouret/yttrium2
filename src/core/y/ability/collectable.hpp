@@ -48,10 +48,28 @@ namespace Yttrium
         //______________________________________________________________________
         virtual void gc(const uint8_t amount) noexcept = 0;
 
-        static size_t Mul(const uint8_t amount, const size_t total) noexcept;
-
         //! gc(All)
         virtual void release() noexcept;
+
+
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+
+        //! compute amount of total
+        /**
+         \return (amount*total)/255
+         */
+        static size_t Take(const uint8_t amount, const size_t total) noexcept;
+
+        
+        static size_t NewSize(const uint8_t amount, const size_t oldSize) noexcept;
+
+
+
 
     private:
         Y_Disable_Copy_And_Assign(Collectable); //!< discarding

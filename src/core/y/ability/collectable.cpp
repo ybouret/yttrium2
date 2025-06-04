@@ -33,7 +33,7 @@ namespace Yttrium
         }
     }
 
-    size_t Collectable:: Mul(const uint8_t amount, const size_t total) noexcept
+    size_t Collectable:: Take(const uint8_t amount, const size_t total) noexcept
     {
 
         static const unsigned width = sizeof(size_t);
@@ -75,6 +75,11 @@ namespace Yttrium
     void Collectable:: release() noexcept
     {
         gc(All);
+    }
+
+    size_t Collectable:: NewSize(const uint8_t amount, const size_t oldSize) noexcept
+    {
+        return oldSize - Take(amount,oldSize);
     }
 
 
