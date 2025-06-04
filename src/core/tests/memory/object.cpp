@@ -28,8 +28,8 @@ namespace
         while(count<MaxBlock)
         {
             Block & b = blocks[count];
-            b.len =  ran.leq(Memory::Object::Factory::MEDIUM_LIMIT_BYTES);
-            b.ptr = F.acquire(b.len);
+            b.len     = ran.leq(Memory::Object::Factory::MEDIUM_LIMIT_BYTES);
+            b.ptr     = F.acquire(b.len);
             ++count;
         }
     }

@@ -198,6 +198,14 @@ namespace Yttrium
             return code->manager[blockShift]->acquire();
         }
 
+        void Quanta:: releaseDyadic(const unsigned int blockShift, void *const blockAddr) noexcept
+        {
+            assert(0!=blockAddr);
+            assert(blockShift<=MaxAllowedShift);
+            assert(blockShift==code->manager[blockShift]->shift);
+            code->manager[blockShift]->release(blockAddr);
+        }
+
         const size_t Quanta::MaxAllowedBytes;
 
         void * Quanta:: acquireBlock(size_t &blockSize)

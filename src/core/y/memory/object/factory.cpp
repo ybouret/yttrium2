@@ -5,6 +5,7 @@
 #include "y/memory/object/book.hpp"
 #include "y/check/static.hpp"
 #include "y/memory/allocator/pooled.hpp"
+#include "y/memory/allocator/quanta.hpp"
 #include "y/memory/joint/segment.hpp"
 
 #include "y/exception.hpp"
@@ -31,8 +32,7 @@ namespace Yttrium
             Factory:: Factory() :
             FactoryAPI(DEFAULT_PAGE_BYTES),
             condensation( static_cast<size_t *>(Y_Memory_BZero(Condensation))-1 ),
-            pooled( Memory::Pooled::Instance() ),
-            book(    Book::Instance()   )
+            pooled( Memory::Pooled::Instance() )
             {
                 for(size_t i=1;i<=LIMIT_OBJECT_BYTES;++i)
                 {
@@ -50,7 +50,7 @@ namespace Yttrium
                 ++indent;
                 blocks.display(os,indent);
                 pooled.display(os,indent);
-                book.display(os,indent);
+                Quanta::Instance().display(os,indent);
                 --indent;
                 quit(os,indent);
             }
@@ -91,6 +91,25 @@ namespace Yttrium
             }
 
 
+            void * Factory:: acquireQuanta(const unsigned shift)
+            {
+                assert(shift<=Quanta::MaxAllowedShift);
+                static Quanta * Q  = 0;
+                Y_Lock(access);
+                if(!Q)
+                    Q = & Quanta::Instance();
+                return Q->acquireDyadic(shift);
+            }
+
+            void Factory:: releaseQuanta(const unsigned shift, void * const entry) noexcept
+            {
+                assert(shift<=Quanta::MaxAllowedShift);
+                assert(0!=entry);
+                assert( Quanta::Exists() );
+                static Quanta &Q = Quanta::Location();
+                Q.releaseDyadic(shift,entry);
+            }
+
 
             void * Factory:: acquire(const size_t blockSize)
             {
@@ -101,16 +120,21 @@ namespace Yttrium
                 // small
                 assert(blockSize>0);
                 if(blockSize<=LIMIT_OBJECT_BYTES)
+                {
+
                     return acquireBlock( condensation[blockSize] );
+                }
 
                 // medium
                 assert(blockSize>LIMIT_OBJECT_BYTES);
-
                 if(blockSize<=MEDIUM_LIMIT_BYTES)
                 {
-                    // TODO: check power of two
+                    if( IsPowerOfTwo(blockSize) )
+                        return acquireQuanta( ExactLog2(blockSize) );
                     return acquireJoint(blockSize);
                 }
+
+
 
 
                 throw Exception("Not Implemented");
@@ -119,6 +143,7 @@ namespace Yttrium
 
             void Factory:: release(void * const blockAddr, const size_t blockSize) noexcept
             {
+                // zero size
                 if(blockSize<=0)
                 {
                     assert(0==blockAddr);
@@ -127,17 +152,18 @@ namespace Yttrium
 
                 assert(blockSize>0);
                 if(blockSize<=LIMIT_OBJECT_BYTES)
+                {
                     return releaseBlock(blockAddr,condensation[blockSize]);
+                }
 
                 assert(blockSize>LIMIT_OBJECT_BYTES);
                 if(blockSize<=MEDIUM_LIMIT_BYTES)
                 {
-                    // TODO: check power of two
+                    if(IsPowerOfTwo(blockSize))
+                        return releaseQuanta( ExactLog2(blockSize), blockAddr);
                     return releaseJoint(blockAddr,blockSize);
                 }
-
-
-
+                
 
             }
 

@@ -20,7 +20,7 @@ namespace Yttrium
         //
         //! produce all possible, reusable power-of-two blocks
         /**
-         - uses Object::Factory for small blocks
+         - uses Object::Factory::Instance for small blocks (via Guild)
          - uses Object::Book    for large blocks
          - this is both an allocator and a low-level cache
          - but shoudln't be used as a cache per se, since pages are always sorted
@@ -104,7 +104,7 @@ namespace Yttrium
              \param blockAddr  block address
              \param blockShift block is 2^blockShift bytes
              */
-            void  releaseDyadic(void * const blockAddr, const unsigned blockShift) noexcept;
+            void  releaseDyadic(const unsigned blockShift, void * const blockAddr) noexcept;
 
         private:
             Y_Disable_Copy_And_Assign(Quanta); //!< discarding

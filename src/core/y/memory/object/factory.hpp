@@ -18,7 +18,6 @@ namespace Yttrium
         {
 
             class Guild;
-            class Book;
 
             //__________________________________________________________________
             //
@@ -89,9 +88,13 @@ namespace Yttrium
                 void   releaseJoint(void * const blockAddr, const size_t blockSize) noexcept;
 
 
+                void * acquireQuanta(const unsigned shift);
+                void   releaseQuanta(const unsigned shift, void * const entry) noexcept;
 
                 void * acquire(const size_t blockSize);
                 void   release(void * const blockAddr, const size_t blockSize) noexcept;
+
+
 
                 //! helper to generate no-arg object in two stages
                 /**
@@ -141,7 +144,9 @@ namespace Yttrium
                 friend class Guild;
                 const size_t * const condensation;
                 Pooled &             pooled;
-                Book   &             book;
+
+
+
             };
         }
     }
