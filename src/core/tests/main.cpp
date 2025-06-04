@@ -38,6 +38,7 @@ Y_UTEST_DECL(64)
     Y_UTEST(memory_system);
     Y_UTEST(memory_dyadic);
     Y_UTEST(memory_pooled);
+    Y_UTEST(memory_quanta);
     Y_UTEST(memory_workspace);
     Y_UTEST(memory_object_chunk);
     Y_UTEST(memory_object_pages);
@@ -46,7 +47,6 @@ Y_UTEST_DECL(64)
     Y_UTEST(memory_object_blocks);
     Y_UTEST(memory_object_factory);
     Y_UTEST(memory_object_guild);
-    Y_UTEST(memory_dyads);
     Y_UTEST(memory_joint_segment);
     Y_UTEST(memory_joint_segments);
 

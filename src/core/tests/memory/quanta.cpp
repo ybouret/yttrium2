@@ -1,6 +1,6 @@
 
 
-#include "y/memory/dyads.hpp"
+#include "y/memory/allocator/quanta.hpp"
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
 
@@ -15,7 +15,7 @@ namespace
     };
 }
 
-Y_UTEST(memory_dyads)
+Y_UTEST(memory_quanta)
 {
     Concurrent::Singulet::Verbose  = true;
     System::Rand        ran;

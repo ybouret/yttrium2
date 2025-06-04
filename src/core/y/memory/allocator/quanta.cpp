@@ -1,5 +1,5 @@
 
-#include "y/memory/dyads.hpp"
+#include "y/memory/allocator/quanta.hpp"
 #include "y/memory/object/factory.hpp"
 #include "y/memory/object/guild.hpp"
 #include "y/memory/allocator/dyadic.hpp"

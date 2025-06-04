@@ -1,8 +1,8 @@
 
 //! \file
 
-#ifndef Y_Memory_Dyads_Included
-#define Y_Memory_Dyads_Included 1
+#ifndef Y_Memory_Quanta_Included
+#define Y_Memory_Quanta_Included 1
 
 #include "y/memory/object/factory.hpp"
 #include "y/memory/limits.hpp"
