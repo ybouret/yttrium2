@@ -94,6 +94,11 @@ namespace Yttrium
         abort();
     }
 
+#if defined(_MSC_VER)
+    // unreachable va_end(ap)
+#pragma warning ( disable : 4702 )
+#endif
+
     namespace Libc
     {
         void Error::Critical(const Type errorCode, const char * const fmt,...) noexcept
