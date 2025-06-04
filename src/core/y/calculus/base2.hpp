@@ -31,23 +31,7 @@ namespace Yttrium
         static const unsigned MaxShift   = SignedType ? (Bits-2) : (Bits-1); //!< max shift
         static const Type     MaxBytes   = One << MaxShift;                  //!< max value
 
-        //! compute log2 of an exact power of two
-        /**
-         \param powerOfTwo = 2^p
-         \return p
-         */
-        static unsigned ExactLog(const T powerOfTwo) noexcept
-        {
-            assert(IsPowerOfTwo(powerOfTwo));
-            unsigned shift = 0;
-            T        value = 1;
-            while(value!=powerOfTwo)
-            {
-                value <<= 1;
-                ++shift;
-            }
-            return shift;
-        }
+
 
     };
 
@@ -86,6 +70,40 @@ namespace Yttrium
         }
         assert( Base2<T>::One << p == n);
         return n;
+    }
+
+    //! compute log2 of an exact power of two
+    /**
+     \param powerOfTwo = 2^p
+     \return p
+     */
+    template <typename T> inline
+    unsigned ExactLog2(const T powerOfTwo) noexcept
+    {
+        assert(IsPowerOfTwo(powerOfTwo));
+        unsigned shift = 0;
+        T        value = 1;
+        while(value!=powerOfTwo)
+        {
+            value <<= 1;
+            ++shift;
+        }
+        return shift;
+    }
+
+    template <typename T> inline
+    unsigned CeilLog2(const T x) noexcept
+    {
+        assert( x <= Base2<T>::MaxBytes );
+        T        n = Base2<T>::One;
+        unsigned p = 0;
+        while(n<x)
+        {
+            n <<= 0x1;
+            ++p;
+        }
+        assert( Base2<T>::One << p == n);
+        return p;
     }
 
     //! Find previous power of two

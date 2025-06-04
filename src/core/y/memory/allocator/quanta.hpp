@@ -7,6 +7,7 @@
 #include "y/memory/object/factory.hpp"
 #include "y/memory/limits.hpp"
 #include "y/concurrent/singleton/alias-lock-policy.hpp"
+#include "y/memory/allocator.hpp"
 
 namespace Yttrium
 {
@@ -19,10 +20,15 @@ namespace Yttrium
         //
         //
         //! produce all possible, reusable power-of-two blocks
-        //
+        /**
+         - uses Object::Factory for small blocks
+         - uses Object::Book    for large blocks
+         */
         //
         //______________________________________________________________________
-        class Quanta : public Singleton<Quanta,QuantaLockPolicy>
+        class Quanta :
+        public Singleton<Quanta,QuantaLockPolicy>,
+        public Allocator
         {
         public:
             //__________________________________________________________________
@@ -39,6 +45,7 @@ namespace Yttrium
             static const unsigned     MaxAllowedShift = Limits::MaxBlockShift;               //!< alias
             static const unsigned     NumFactoryShift = MaxFactoryShift+1;                   //!< [0..MaxFactoryShift]
             static const unsigned     NumGreaterShift = MaxAllowedShift-MaxFactoryShift;     //!< [MaxFactoryShift+1..MaxAllowedShift]
+            static const size_t       MaxAllowedBytes = Limits::MaxBlockBytes;               //!< alias
 
             class Code;
 
@@ -84,7 +91,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            //! acquire a power of two large block
+            //! acquire any power of two bytes memory area
             /**
              \param blockShift block shift
              \return 2^blockShift bytes memory area
@@ -104,6 +111,10 @@ namespace Yttrium
             virtual ~Quanta() noexcept;        //!< cleanup
             Code * const code;                //!< internal code
             friend class Singleton<Quanta,QuantaLockPolicy>;
+
+            virtual void * acquireBlock(size_t&);
+            virtual void   releaseBlock(void * const, const size_t) noexcept;
+
         };
 
 

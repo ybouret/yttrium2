@@ -6,7 +6,7 @@
 #define Y_Concurrent_Singleton_ClassLockPolicy_Included 1
 
 
-#include "y/concurrent/fake-lock.hpp"
+#include "y/concurrent/mutex.hpp"
 
 namespace Yttrium
 {
@@ -25,7 +25,7 @@ namespace Yttrium
         explicit ClassLockPolicy();
         virtual ~ClassLockPolicy() noexcept;
 
-        Concurrent::FakeLock access; //!< for local access
+        Concurrent::Mutex access; //!< for local access
 
     private:
         Y_Disable_Copy_And_Assign(ClassLockPolicy); //!< disarding

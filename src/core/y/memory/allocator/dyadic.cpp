@@ -88,7 +88,7 @@ namespace Yttrium
         {
             assert(0!=blockAddr);
             assert(IsPowerOfTwo(blockSize));
-            const unsigned blockShift = Base2<size_t>::ExactLog(blockSize);
+            const unsigned blockShift = ExactLog2(blockSize);
             assert(blockShift>=MinBlockShift);
             assert(blockShift<=MaxBlockShift);
 

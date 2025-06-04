@@ -23,7 +23,7 @@ namespace Yttrium
             const unsigned     Segment:: SegmentShift = IntegerLog2<SegmentBytes>::Value;
             const size_t       Segment:: MinNumBlocks;
             const size_t       Segment:: MinDataBytes = SegmentBytes + MinNumBlocks * BlockSize;
-            const unsigned     Segment:: MinDataShift = Base2<size_t>::ExactLog( NextPowerOfTwo(MinDataBytes) );
+            const unsigned     Segment:: MinDataShift = CeilLog2(MinDataBytes);
             const unsigned     Segment:: MaxDataShift;
 
             Segment * Segment:: Format(void * const   entry,

@@ -18,7 +18,7 @@ namespace
         {
             const T p = static_cast<T>(T(1) << shift);
             Y_ASSERT(IsPowerOfTwo(p));
-            Y_ASSERT(shift==Base2<T>::ExactLog(p));
+            Y_ASSERT(shift==ExactLog2(p));
         }
 
         for(size_t iter=0;iter<1000;++iter)
