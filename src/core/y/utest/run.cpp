@@ -25,7 +25,7 @@ namespace Yttrium
             std::cerr << '[' << ' ' << name;
             for(size_t i=nameLength;i<Width;++i) std::cerr << ' ';
 
-            std::cerr << (flag? Core::Success : Core::Failure);
+            std::cerr << ' ' << (flag? Core::Success : Core::Failure);
 
             std::cerr << ' ' << ']' << std::endl;
         }

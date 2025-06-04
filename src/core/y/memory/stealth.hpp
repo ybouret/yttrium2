@@ -85,6 +85,12 @@ namespace Yttrium
                                      void * const rhsBlock,
                                      const size_t blockSize) noexcept;
 
+            template <typename T> static inline
+            void Swap( T &lhs, T &rhs ) noexcept
+            {
+                Swap( &lhs, &rhs, sizeof(T) );
+            }
+
             //! anonymous memory address increase
             /**
              \param addr
@@ -102,6 +108,13 @@ namespace Yttrium
              */
             static void * Decr(void * const addr,
                                const size_t delta) noexcept;
+
+
+            template <typename T> static inline
+            T * Decrease(T * const entry, const size_t delta) noexcept
+            {
+                return Decr(entry,delta*sizeof(T));
+            }
 
             //! alias and cast
             /** \param address \return casted address */

@@ -55,6 +55,8 @@ Y_UTEST_DECL(64)
     Y_UTEST(hashing_hash32);
     
     Y_UTEST(xml_attribute);
+    
+    Y_UTEST(container_algo);
 
 }
 Y_UTEST_EXEC()

@@ -12,6 +12,7 @@ memory/object
 memory/joint
 hashing
 xml
+container
 )
 
 
@@ -74,4 +75,7 @@ Y_UTEST(hashing:hash32)
 
 #xml
 Y_UTEST(xml:attribute)
+
+#container
+Y_UTEST(container:algo)
 

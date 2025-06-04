@@ -1,6 +1,8 @@
 
 #include "y/ability/collectable.hpp"
 #include "y/hexadecimal.hpp"
+#include "y/container/algorithm/reverse.hpp"
+
 #include <iostream>
 
 namespace Yttrium
@@ -13,14 +15,14 @@ namespace Yttrium
     {
     }
 
-    //! w[1..n] = u[1..n]/0xff
+    //! w[0..n-1] = u[0..n-1]/0xff
     static inline
-    void shortDivision(uint8_t        w[],
-                       const uint8_t  u[],
-                       const unsigned n) noexcept
-    //Short division: the unsigned radix 256 integer u[1..n] is divided by the integer iv (in the
-    //                               range 0 ≤ iv ≤ 255), yielding a quotient w[1..n] and a remainder ir (with 0 ≤ ir ≤ 255).
+    void shortDivision(uint8_t        * w,
+                       const uint8_t  * u,
+                       const unsigned   n) noexcept
     {
+        --u;
+        --w;
         const int iv = 0xff;
         int       ir = 0;
         for(unsigned j=1;j<=n;j++) {
@@ -36,43 +38,35 @@ namespace Yttrium
         static const unsigned width = sizeof(size_t);
         static const unsigned n     = width+1;
 
-        // total * amountOf / 0xff
+        // short product
         uint8_t prod[n];
-
-
         {
             const uint16_t factor = amountOf;
             uint16_t       carry = 0;
             for(size_t i=0;i<sizeof(size_t);++i)
             {
                 uint16_t b = (total>> (i*8)) & 0xff;
-                std::cerr << "using b=" << b << std::endl;
                 carry += (b*factor);
                 prod[i] = uint8_t(carry);
                 carry >>= 8;
             }
             prod[sizeof(size_t)] = uint8_t(carry);
-
-            std::cerr << "prod=0x";
-            for(int i=width;i>=0;--i)
-            {
-                std::cerr<< Hexadecimal::LowerByte[prod[i]];
-            }
-            std::cerr << std::endl;
+            Algorithm::Reverse(prod,n,Swap<uint8_t>);
         }
 
-        // divide by 0xff
+        // short division
         uint8_t quot[n];
-        shortDivision(quot-1,prod-1,n);
-        std::cerr << "quot=0x";
-        for(int i=width;i>=0;--i)
+        shortDivision(quot,prod,n);
+        assert(0x00==quot[0]);
+
+        // assemble answer
+        size_t ans = 0;
+        for(unsigned i=1;i<n;++i)
         {
-            std::cerr<< Hexadecimal::LowerByte[quot[i]];
+            ans <<= 8;
+            ans |= quot[i];
         }
-        std::cerr << std::endl;
-
-
-
-        return 0;
+        
+        return ans;
     }
 }
