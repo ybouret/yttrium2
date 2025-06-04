@@ -311,7 +311,8 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                 return segment;
             }
 
-            const size_t Segment:: MaxRequest = MaxDataBytes - (SegmentBytes+2*BlockSize);
+            const size_t Segment:: Reserved   = SegmentBytes+2*BlockSize;
+            const size_t Segment:: MaxRequest = MaxDataBytes - Reserved;
 
             unsigned  Segment:: ShiftFor(const size_t request)
             {
@@ -323,6 +324,14 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                 assert(shift<=MaxDataShift);
                 return shift;
             }
+
+            size_t Segment:: MaxSizeFor(const unsigned shift)
+            {
+                assert(shift>=MinDataShift);
+                assert(shift<=MaxDataShift);
+                return (size_t(1) << shift) - Reserved;
+            }
+
 
 
             size_t Segment::  Aligned(const size_t request)

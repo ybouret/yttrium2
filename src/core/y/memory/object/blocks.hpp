@@ -57,7 +57,7 @@ namespace Yttrium
                     //! cleanup
                     ~Knot() noexcept;
 
-                    Arena arena; //!< actual arena
+                    Arena  arena; //!< actual arena
                     Knot * next; //!< for pool
                 private:
                     Y_Disable_Copy_And_Assign(Knot); //!< discarding

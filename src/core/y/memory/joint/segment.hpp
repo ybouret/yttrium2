@@ -33,8 +33,8 @@ namespace Yttrium
                 //______________________________________________________________
                 Segment(); //!< disable constructor
 
-                static const char * const CallSign;                 //!< "Memory::Joint::Segment"
-                typedef UnsignedIntFor<void*>::Result::Type len_t; //!< alias
+                static const char * const CallSign;                //!< "Memory::Joint::Segment"
+                typedef UnsignedIntFor<void*>::Result::Type len_t; //!< alias for aligned Block
 
                 //! internal block marker
                 struct Block
@@ -54,7 +54,8 @@ namespace Yttrium
                 static const unsigned        MinDataShift;                                //!< Log2(MinDataBytes)
                 static const unsigned        MaxDataShift = Base2<size_t>::MaxShift;      //!< alias
                 static const size_t          MaxDataBytes = Base2<size_t>::MaxBytes;      //!< alias
-                static const size_t          MaxRequest;                                  //!< MaxDataBytes - SegmentBytes - 2 * BlockSize
+                static const size_t          Reserved;                                    //!< SegmentBytes + 2 * BlockSize
+                static const size_t          MaxRequest;                                  //!< MaxDataBytes - Reserved
                 typedef Alignment::To<Block> Aligning;
 
                 //! internal parameters
@@ -79,7 +80,7 @@ namespace Yttrium
                 void display(std::ostream &) const;
 
                 //! check validity, mostly for debug \return true iff valid
-                static bool      IsValid(const Segment * const) noexcept;
+                static bool IsValid(const Segment * const) noexcept;
 
                 //! try to acquire a new block with blockSize>=request
                 /**
@@ -123,6 +124,13 @@ namespace Yttrium
                  \return shift such that segment->param.maxSize > request
                  */
                 static unsigned  ShiftFor(const size_t request);
+
+                //! what can hold in a block with 2^shift bytes
+                /**
+                 \param shift in Min/MaxDataShift
+                 \return available maxSize
+                 */
+                static size_t    MaxSizeFor(const unsigned shift);
 
                 //! get block-aligned request size
                 static size_t  Aligned(const size_t request);

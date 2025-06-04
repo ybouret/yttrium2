@@ -1,4 +1,5 @@
 
+
 #include "y/memory/object/factory.hpp"
 #include "y/system/rand.hpp"
 #include "y/memory/stealth.hpp"
@@ -8,15 +9,10 @@ using namespace Yttrium;
 
 namespace
 {
-    enum How
-    {
-        WithBlock = 0,
-        WithJoint = 1
-    };
+
 
     struct Block
     {
-        How    how;
         void * ptr;
         size_t len;
     };
@@ -32,13 +28,8 @@ namespace
         while(count<MaxBlock)
         {
             Block & b = blocks[count];
-            b.how = How( int(ran.leq(1)));
-            b.len = 1 + ran.leq(100); Y_ASSERT(b.len>0);
-            switch(b.how)
-            {
-                case WithBlock: b.ptr = F.acquireBlock(b.len); break;
-                case WithJoint: b.ptr = F.acquireJoint(b.len); break;
-            }
+            b.len =  ran.leq(Memory::Object::Factory::MEDIUM_LIMIT_BYTES);
+            b.ptr = F.acquire(b.len);
             ++count;
         }
     }
@@ -53,11 +44,7 @@ namespace
         while(count>to)
         {
             Block & b = blocks[--count];
-            switch(b.how)
-            {
-                case WithBlock: F.releaseBlock(b.ptr,b.len); break;
-                case WithJoint: F.releaseJoint(b.ptr,b.len); break;
-            }
+            F.release(b.ptr,b.len);
             Y_Memory_VZero(b);
         }
     }
@@ -66,7 +53,7 @@ namespace
 
 }
 
-Y_UTEST(memory_object_factory)
+Y_UTEST(memory_object)
 {
 
     Concurrent::Singulet::Verbose = true;
@@ -84,7 +71,8 @@ Y_UTEST(memory_object_factory)
     }
     empty(0,F,ran);
 
-    
+    F.display(std::cerr,0);
+
 
 }
 Y_UDONE()

@@ -2,6 +2,7 @@
 #include "y/memory/object/factory.hpp"
 #include "y/xml/attribute.hpp"
 #include "y/memory/object/blocks.hpp"
+#include "y/memory/object/book.hpp"
 #include "y/check/static.hpp"
 #include "y/memory/allocator/pooled.hpp"
 #include "y/memory/joint/segment.hpp"
@@ -17,6 +18,8 @@ namespace Yttrium
         namespace Object
         {
 
+            const size_t   Factory:: MEDIUM_LIMIT_BYTES = Joint::Segment::MaxSizeFor( DEFAULT_PAGE_SHIFT );
+
             Factory:: ~Factory() noexcept
             {
             }
@@ -24,16 +27,19 @@ namespace Yttrium
 
             static size_t Condensation[Factory::LIMIT_OBJECT_BYTES];
 
+
             Factory:: Factory() :
             FactoryAPI(DEFAULT_PAGE_BYTES),
             condensation( static_cast<size_t *>(Y_Memory_BZero(Condensation))-1 ),
-            pooled( Memory::Pooled::Instance() )
+            pooled( Memory::Pooled::Instance() ),
+            book(    Book::Instance()   )
             {
                 for(size_t i=1;i<=LIMIT_OBJECT_BYTES;++i)
                 {
                     Coerce(condensation[i]) = Alignment::OnLog2<CONDENSATION_SHIFT>::Ceil(i);
-                    std::cerr << i << " => " << condensation[i] << std::endl;
+                    //std::cerr << i << " => " << condensation[i] << std::endl;
                 }
+                std::cerr << "MEDIUM_LIMIT_BYTES=" << MEDIUM_LIMIT_BYTES << std::endl;
             }
 
             void Factory:: display(std::ostream &os, size_t indent) const
@@ -41,6 +47,12 @@ namespace Yttrium
                 initProlog(os, indent);
                 os << Attribute("LifeTime",LifeTime);
                 initEpilog(os);
+                ++indent;
+                blocks.display(os,indent);
+                pooled.display(os,indent);
+                book.display(os,indent);
+                --indent;
+                quit(os,indent);
             }
 
             void * Factory:: acquireBlock(const size_t blockSize)
@@ -94,6 +106,12 @@ namespace Yttrium
                 // medium
                 assert(blockSize>LIMIT_OBJECT_BYTES);
 
+                if(blockSize<=MEDIUM_LIMIT_BYTES)
+                {
+                    // TODO: check power of two
+                    return acquireJoint(blockSize);
+                }
+
 
                 throw Exception("Not Implemented");
             }
@@ -109,9 +127,18 @@ namespace Yttrium
 
                 assert(blockSize>0);
                 if(blockSize<=LIMIT_OBJECT_BYTES)
-                    return releaseBlock( blockAddr, condensation[blockSize] );
+                    return releaseBlock(blockAddr,condensation[blockSize]);
 
                 assert(blockSize>LIMIT_OBJECT_BYTES);
+                if(blockSize<=MEDIUM_LIMIT_BYTES)
+                {
+                    // TODO: check power of two
+                    return releaseJoint(blockAddr,blockSize);
+                }
+
+
+
+
             }
 
 

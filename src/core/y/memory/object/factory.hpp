@@ -18,7 +18,7 @@ namespace Yttrium
         {
 
             class Guild;
-
+            class Book;
 
             //__________________________________________________________________
             //
@@ -43,6 +43,7 @@ namespace Yttrium
                 static const unsigned LIMIT_OBJECT_SHIFT = IntegerLog2<LIMIT_OBJECT_BYTES>::Value; //!< ensure power of two
                 static const size_t   CONDENSATION_BYTES = 4;                                      //!< decrease complexity
                 static const unsigned CONDENSATION_SHIFT = IntegerLog2<CONDENSATION_BYTES>::Value; //!< ensure power of two
+                static const size_t   MEDIUM_LIMIT_BYTES;                                          //!< Segment::MaxSizeFor(DEFAULT_PAGE_SHIFT)
 
                 //______________________________________________________________
                 //
@@ -140,7 +141,7 @@ namespace Yttrium
                 friend class Guild;
                 const size_t * const condensation;
                 Pooled &             pooled;
-
+                Book   &             book;
             };
         }
     }
