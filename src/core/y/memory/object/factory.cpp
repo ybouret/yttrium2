@@ -37,9 +37,7 @@ namespace Yttrium
                 for(size_t i=1;i<=LIMIT_OBJECT_BYTES;++i)
                 {
                     Coerce(condensation[i]) = Alignment::OnLog2<CONDENSATION_SHIFT>::Ceil(i);
-                    //std::cerr << i << " => " << condensation[i] << std::endl;
                 }
-                std::cerr << "MEDIUM_LIMIT_BYTES=" << MEDIUM_LIMIT_BYTES << std::endl;
             }
 
             void Factory:: display(std::ostream &os, size_t indent) const
@@ -150,12 +148,14 @@ namespace Yttrium
                     return;
                 }
 
+                // small
                 assert(blockSize>0);
                 if(blockSize<=LIMIT_OBJECT_BYTES)
                 {
                     return releaseBlock(blockAddr,condensation[blockSize]);
                 }
 
+                // medium
                 assert(blockSize>LIMIT_OBJECT_BYTES);
                 if(blockSize<=MEDIUM_LIMIT_BYTES)
                 {
