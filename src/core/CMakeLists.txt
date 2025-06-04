@@ -11,6 +11,7 @@ Y_CreateLibrary(y
     y/core/linked/pool
     y/core/linked/convert
     y/system
+    y/system/wall-time
     y/type
     y/ascii
     y/calculus
