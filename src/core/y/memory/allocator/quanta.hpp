@@ -22,6 +22,8 @@ namespace Yttrium
         /**
          - uses Object::Factory for small blocks
          - uses Object::Book    for large blocks
+         - this is both an allocator and a low-level cache
+         - but shoudln't be used as a cache per se, since pages are always sorted
          */
         //
         //______________________________________________________________________
@@ -99,7 +101,7 @@ namespace Yttrium
 
             //! release a previously acquired block
             /**
-             \param blockAddr block address
+             \param blockAddr  block address
              \param blockShift block is 2^blockShift bytes
              */
             void  releaseDyadic(void * const blockAddr, const unsigned blockShift) noexcept;

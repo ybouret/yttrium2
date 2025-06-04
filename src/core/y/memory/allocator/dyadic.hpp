@@ -25,6 +25,7 @@ namespace Yttrium
         /**
          - calling System::Allocator with power-of-two blocks
          - the possible sizes are limited.
+         - this is not a cache
          */
         //
         //
