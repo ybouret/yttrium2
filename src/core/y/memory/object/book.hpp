@@ -10,6 +10,7 @@
 #include "y/concurrent/life-time.hpp"
 #include "y/ability/releasable.hpp"
 #include "y/concurrent/singleton/broad-lock-policy.hpp"
+#include "y/ability/collectable.hpp"
 
 namespace Yttrium
 {
@@ -33,7 +34,7 @@ namespace Yttrium
             //__________________________________________________________________
             class Book :
             public Singleton<Book,BroadLockPolicy>,
-            public Releasable
+            public Collectable
             {
             public:
                 //__________________________________________________________________
@@ -56,7 +57,7 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
-                virtual void release() noexcept;
+                virtual void gc(const uint8_t) noexcept;
 
                 //______________________________________________________________
                 //

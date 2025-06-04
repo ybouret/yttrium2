@@ -111,7 +111,12 @@ namespace Yttrium
                 
             private:
                 Y_Disable_Copy_And_Assign(Pages); //!< discarding
-                void   release_(const size_t toNewSize) noexcept;       //!< release all existing pages
+
+                //! release pages to reach newSize
+                /**
+                 \param newSize newSize<=plist.size
+                 */
+                void   releaseTo(const size_t newSize) noexcept;
             };
             
         }

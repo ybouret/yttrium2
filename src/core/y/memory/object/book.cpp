@@ -76,12 +76,12 @@ namespace Yttrium
                 bookPages[blockShift].cache(numPages);
             }
 
-            void Book:: release() noexcept
-            {
-                //Y_Lock(access);
-                for(unsigned i=MaxPageShift;i>=MinPageShift;--i) bookPages[i].release();
-            }
 
+            void Book:: gc(const uint8_t amount) noexcept
+            {
+                for(unsigned i=MaxPageShift;i>=MinPageShift;--i) bookPages[i].gc(amount);
+            }
+            
 
         }
     }

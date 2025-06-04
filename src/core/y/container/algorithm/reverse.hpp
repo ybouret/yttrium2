@@ -11,7 +11,12 @@ namespace Yttrium
     namespace Algorithm
     {
 
-
+        //! Generic Reverse Algorithm
+        /**
+         \param curr     current iterator
+         \param size     number of items to reverse
+         \param exchange exchange protocol
+         */
         template <typename ITERATOR, typename EXCHANGE>   inline
         void Reverse(ITERATOR curr, size_t size, EXCHANGE &exchange)
         {

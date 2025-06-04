@@ -33,12 +33,22 @@ namespace Yttrium
         }
     }
 
-    size_t Collectable:: Take(const uint8_t amount, const size_t total) noexcept
+    size_t Collectable:: Portion(const uint8_t amount, const size_t total) noexcept
     {
 
         static const unsigned width = sizeof(size_t);
         static const unsigned n     = width+1;
 
+#if defined(NDEBUG)
+        switch(amount)
+        {
+            case 0:    return 0;
+            case 0xff: return total;
+            default:
+                break;
+        }
+#endif
+        
         // short product
         uint8_t prod[n];
         {
@@ -79,7 +89,7 @@ namespace Yttrium
 
     size_t Collectable:: NewSize(const uint8_t amount, const size_t oldSize) noexcept
     {
-        return oldSize - Take(amount,oldSize);
+        return oldSize - Portion(amount,oldSize);
     }
 
 

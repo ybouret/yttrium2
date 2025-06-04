@@ -85,6 +85,11 @@ namespace Yttrium
                                      void * const rhsBlock,
                                      const size_t blockSize) noexcept;
 
+            //! memory swap
+            /**
+             \param lhs first item
+             \param rhs second item
+             */
             template <typename T> static inline
             void Swap( T &lhs, T &rhs ) noexcept
             {
@@ -110,11 +115,6 @@ namespace Yttrium
                                const size_t delta) noexcept;
 
 
-            template <typename T> static inline
-            T * Decrease(T * const entry, const size_t delta) noexcept
-            {
-                return Decr(entry,delta*sizeof(T));
-            }
 
             //! alias and cast
             /** \param address \return casted address */

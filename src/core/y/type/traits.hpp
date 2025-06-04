@@ -33,12 +33,12 @@ namespace Yttrium
 
     namespace TL
     {
-        typedef TL5(signed char, short, int, long, long long)                                       StandardIntegers; //!< standard signed
-        typedef TL5(unsigned char, unsigned short, unsigned int, unsigned long, unsigned long long) StandardUnsigned; //!< standard unsigned
-        typedef TL4(uint8_t,uint16_t,uint32_t,uint64_t)                                             PlatformIntegers; //!< system unsigned
-        typedef TL4(int8_t,int16_t,int32_t,int64_t)                                                 PlatformUnsigned; //!< system signed
-        typedef TL2(bool,char)                                                                      LanguageIntegers; //!< misc. chart
-        typedef TL3(float,double,long double)                                                       IsoFloatingPoint; //!< floating point
+        typedef TL5(signed char, short, int, long, long long)                                       StandardIntegers; //!< \return standard signed
+        typedef TL5(unsigned char, unsigned short, unsigned int, unsigned long, unsigned long long) StandardUnsigned; //!< \return standard unsigned
+        typedef TL4(uint8_t,uint16_t,uint32_t,uint64_t)                                             PlatformIntegers; //!< \return system unsigned
+        typedef TL4(int8_t,int16_t,int32_t,int64_t)                                                 PlatformUnsigned; //!< \return system signed
+        typedef TL2(bool,char)                                                                      LanguageIntegers; //!< \return misc. chart
+        typedef TL3(float,double,long double)                                                       IsoFloatingPoint; //!< \return floating point
     }
 
 
@@ -149,7 +149,7 @@ namespace Yttrium
         template <typename U, size_t N> struct ArrayTraits<U [N]> { enum { Value = true  }; typedef U        Type; };
 
     public:
-        enum { IsArray = ArrayTraits<T>::Value };
+        enum { IsArray = ArrayTraits<T>::Value /*!< true for array */ };
 
         //! true if T if ITEM [] of ITEM[N]
         template <typename ITEM> struct IsArrayOf {
@@ -167,7 +167,7 @@ namespace Yttrium
         enum { IsArithmetic         = (IsIntegral || IsIsoFloatingPoint) };
         enum { IsFundamental        = (IsArithmetic  || IsSameType<T,void>::Value) };
         enum { IsPointingTo         = (IsPointer     || IsPointerToMember) };
-        enum { IsPrimitive          = (IsFundamental || IsPointingTo) };
+        enum { IsPrimitive          = (IsFundamental || IsPointingTo) /*!< IsPrimitive */ };
 
         typedef typename
         Pick<IsReference,          // T is 'U &' or 'const U &' ?

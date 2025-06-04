@@ -26,7 +26,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
     public:
-        static const uint8_t All = 0xff;
+        static const uint8_t All = 0xff; //!< alias
 
         //______________________________________________________________________
         //
@@ -35,9 +35,9 @@ namespace Yttrium
         //
         //______________________________________________________________________
     protected:
-        explicit Collectable() noexcept;
+        explicit Collectable() noexcept; //!< setup
     public:
-        virtual ~Collectable() noexcept;
+        virtual ~Collectable() noexcept; //!< cleanup
 
 
         //______________________________________________________________________
@@ -46,6 +46,11 @@ namespace Yttrium
         // Interface
         //
         //______________________________________________________________________
+
+        //! garbace collector for amount
+        /**
+         \param amount in  0 (none) to 0xff (all) of content
+         */
         virtual void gc(const uint8_t amount) noexcept = 0;
 
         //! gc(All)
@@ -61,11 +66,18 @@ namespace Yttrium
 
         //! compute amount of total
         /**
+         \param amount in [0x00:0xff]
+         \param total  number of items
          \return (amount*total)/255
          */
-        static size_t Take(const uint8_t amount, const size_t total) noexcept;
+        static size_t Portion(const uint8_t amount, const size_t total) noexcept;
 
-        
+        //! compute new size after garbage collection
+        /**
+         \param amount in [0x00:0xff]
+         \param oldSize number of items
+         \return oldSize - Portion(amount,oldSize)
+         */
         static size_t NewSize(const uint8_t amount, const size_t oldSize) noexcept;
 
 
