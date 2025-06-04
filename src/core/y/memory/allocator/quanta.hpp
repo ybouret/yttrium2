@@ -18,7 +18,7 @@ namespace Yttrium
         //
         //
         //
-        //! produce all possible power-of-two blocks
+        //! produce all possible, reusable power-of-two blocks
         //
         //
         //______________________________________________________________________
