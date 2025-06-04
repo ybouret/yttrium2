@@ -122,6 +122,9 @@ namespace Yttrium
                  */
                 static unsigned  ShiftFor(const size_t request);
 
+                //! get block-aligned request size
+                static size_t  Aligned(const size_t request);
+
                 //______________________________________________________________
                 //
                 //

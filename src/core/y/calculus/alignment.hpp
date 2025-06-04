@@ -34,10 +34,10 @@ namespace Yttrium
         template <unsigned LN2>
         struct OnLog2
         {
-            static const size_t One  = 1;            //!< One
-            static const size_t Byte = One << LN2;   //!< 2^LN2
-            static const size_t Mask = Byte-One;     //!< 2^LN2-1
-            static const size_t Not2 = ~Mask;        //!< 2-complement of Mask
+            static const size_t One      = 1;                                         //!< One
+            static const size_t Byte     = One << LN2;                                //!< 2^LN2
+            static const size_t Mask     = Byte-One;                                  //!< 2^LN2-1
+            static const size_t Not2     = ~Mask;                                     //!< 2-complement of Mask
             static const size_t Maximum  = (IntegerFor<size_t>::Maximum/Byte) * Byte; //!< alias
 
             //! template ceil
@@ -67,7 +67,8 @@ namespace Yttrium
         template <size_t POWER_OF_TWO>
         struct On
         {
-            typedef  OnLog2< IntegerLog2<POWER_OF_TWO>::Value > Inner; //!< alias
+            typedef  OnLog2< IntegerLog2<POWER_OF_TWO>::Value > Inner;   //!< alias
+            static const size_t Maximum = Inner::Maximum;                //!< alias
 
             //! template ceil
             template <size_t N> struct CeilOf
@@ -97,6 +98,7 @@ namespace Yttrium
         struct To
         {
             typedef On<sizeof(T)> Outer; //!< alias
+            static const size_t   Maximum = Outer::Maximum; //!< alias
 
             //! template ceil
             template <size_t N> struct CeilOf

@@ -80,7 +80,8 @@ namespace Yttrium
             void Segment:: display(std::ostream &os) const
             {
                 assert(IsValid(this));
-                
+
+                size_t numUsed = 0;
                 os << '[';
                 for(const Block *block=head;block!=tail;block=block->next)
                 {
@@ -89,6 +90,7 @@ namespace Yttrium
                         assert(this==block->used);
                         // used
                         os << '*';
+                        ++numUsed;
                     }
                     else
                     {
@@ -96,7 +98,7 @@ namespace Yttrium
                     }
                     os << block->size;
                 }
-                os << ']' << std::endl;
+                os << ']' << " / " << numUsed << std::endl;
             }
 
 #define Y_Segment_Check(EXPR) do {\
@@ -121,6 +123,7 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                     Y_Segment_Check(numBlocks>=2);
                     const size_t numBytes  = (numBlocks-1)*BlockSize;
                     Y_Segment_Check(numBytes==block->size);
+                    Y_Segment_Check(Aligned(block->size)==block->size);
                 }
                 return true;
             }
@@ -165,7 +168,7 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                     // using alignment
                     //----------------------------------------------------------
                     {
-                        const size_t aligned = Alignment::To<Block>::Ceil( MaxOf(request,BlockSize) ); assert(aligned<=block->size);
+                        const size_t aligned = Aligned( MaxOf(request,BlockSize) ); assert(aligned<=block->size);
                         const size_t remains = block->size - aligned; assert(0==remains%BlockSize);
                         if(remains>=2*BlockSize)
                         {
@@ -316,6 +319,17 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                 return shift;
             }
 
+
+            size_t Segment::  Aligned(const size_t request)
+            {
+                typedef Alignment::To<Block> Guess;
+                static const size_t          MaxRequest = Guess::Maximum;
+                if(request>MaxRequest)
+                {
+                    throw Specific::Exception(CallSign,"request=%s exceeds %s", Decimal(request).c_str(), Decimal(MaxRequest).c_str());
+                }
+                return Alignment::To<Block>::Ceil(request);
+            }
 
         }
     }

@@ -3,6 +3,7 @@
 #include "y/xml/attribute.hpp"
 #include "y/memory/object/blocks.hpp"
 #include "y/check/static.hpp"
+#include "y/memory/allocator/pooled.hpp"
 #include <iostream>
 
 namespace Yttrium
@@ -17,7 +18,8 @@ namespace Yttrium
             }
 
             Factory:: Factory() :
-            FactoryAPI(DEFAULT_PAGE_BYTES)
+            FactoryAPI(DEFAULT_PAGE_BYTES),
+            pooled( Memory::Pooled::Instance() )
             {
             }
 
@@ -42,6 +44,25 @@ namespace Yttrium
                 Y_Lock(access);
                 blocks.release(blockAddr,blockSize);
             }
+
+            void * Factory:: acquireJoint(const size_t blockSize)
+            {
+                assert(blockSize>0);
+                size_t       size = blockSize;
+                void * const addr = pooled.acquire(size); assert(size>=blockSize);
+                return addr;
+            }
+
+            void Factory:: releaseJoint(void * const blockAddr, const size_t blockSize) noexcept
+            {
+                assert(blockSize>0);
+                assert(0!=blockAddr);
+                void * p = blockAddr;
+                size_t n = blockSize;
+                pooled.release(p,n);
+            }
+
+
 
         }
 

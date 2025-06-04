@@ -12,6 +12,8 @@ namespace Yttrium
 {
     namespace Memory
     {
+        class Pooled;
+
         namespace Object
         {
 
@@ -55,19 +57,32 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-                //! auto-locked acquisition through arena
+                //! auto-locked acquisition through Arena
                 /**
-                 \param blockSize block size
+                 \param blockSize POSITIVE block size
                  \return block address, clean
                  */
                 void * acquireBlock(const size_t blockSize);
 
-                //! auto-locked release through arena
+                //! auto-locked release through Arena
                 /**
                  \param blockAddr  previously acquired memory
                  \param blockSize block size
                  */
                 void   releaseBlock(void * const blockAddr, const size_t blockSize) noexcept;
+
+                //! use pooled allocator
+                /**
+                 \param blockSize POSITIVE block size
+                 */
+                void   * acquireJoint(const size_t blockSize);
+
+                //! use pooled allocator
+                /**
+                 \param blockAddr previously acquired memory
+                 \param blockSize block size
+                 */
+                void   releaseJoint(void * const blockAddr, const size_t blockSize) noexcept;
 
                 //! helper to generate no-arg object in two stages
                 /**
@@ -115,6 +130,8 @@ namespace Yttrium
 
                 friend class Singleton<Factory,BroadLockPolicy>;
                 friend class Guild;
+                Pooled & pooled; 
+
             };
         }
     }
