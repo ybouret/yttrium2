@@ -12,7 +12,7 @@ namespace Yttrium
 {
     namespace Memory
     {
-        typedef AliasLockPolicy<Object::Factory> DyadsLockPolicy; //!< policy alias
+        typedef AliasLockPolicy<Object::Factory> QuantaLockPolicy; //!< policy alias
 
         //______________________________________________________________________
         //
@@ -22,7 +22,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Dyads : public Singleton<Dyads,DyadsLockPolicy>
+        class Quanta : public Singleton<Quanta,QuantaLockPolicy>
         {
         public:
             //__________________________________________________________________
@@ -31,8 +31,8 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            static const char * const CallSign;                            //!< "Memory::Dyads"
-            static const Longevity    LifeTime = LifeTimeOf:: MemoryDyads; //!< life time
+            static const char * const CallSign;                             //!< "Memory::Dyads"
+            static const Longevity    LifeTime = LifeTimeOf:: MemoryQuanta; //!< life time
 
 
             static const unsigned     MaxFactoryShift = Object::Factory::LIMIT_OBJECT_SHIFT; //!< alias
@@ -99,11 +99,11 @@ namespace Yttrium
             void  releaseDyadic(void * const blockAddr, const unsigned blockShift) noexcept;
 
         private:
-            Y_Disable_Copy_And_Assign(Dyads); //!< discarding
-            explicit Dyads();                 //!< setup
-            virtual ~Dyads() noexcept;        //!< cleanup
+            Y_Disable_Copy_And_Assign(Quanta); //!< discarding
+            explicit Quanta();                 //!< setup
+            virtual ~Quanta() noexcept;        //!< cleanup
             Code * const code;                //!< internal code
-            friend class Singleton<Dyads,DyadsLockPolicy>;
+            friend class Singleton<Quanta,QuantaLockPolicy>;
         };
 
 

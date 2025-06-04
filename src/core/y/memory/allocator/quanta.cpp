@@ -2,7 +2,9 @@
 #include "y/memory/allocator/quanta.hpp"
 #include "y/memory/object/factory.hpp"
 #include "y/memory/object/guild.hpp"
+#include "y/memory/object/book.hpp"
 #include "y/memory/allocator/dyadic.hpp"
+
 #include "y/memory/workspace/cxx.hpp"
 #include "y/xml/attribute.hpp"
 
@@ -13,16 +15,16 @@ namespace Yttrium
     namespace Memory
     {
 
-        const char * const Dyads:: CallSign = "Memory::Dyads";
+        const char * const Quanta:: CallSign = "Memory::Quanta";
 
-        Dyads:: Manager:: Manager(const unsigned int blockShift) noexcept :
+        Quanta:: Manager:: Manager(const unsigned int blockShift) noexcept :
         shift( blockShift ),
         bytes( size_t(1) << blockShift )
         {
 
         }
 
-        Dyads:: Manager:: ~Manager() noexcept
+        Quanta:: Manager:: ~Manager() noexcept
         {
 
         }
@@ -30,12 +32,12 @@ namespace Yttrium
         namespace
         {
             class ObjectManager :
-            public Dyads::Manager,
+            public Quanta::Manager,
             public Object::Guild
             {
             public:
                 inline explicit ObjectManager(const unsigned blockShift) :
-                Dyads::Manager(blockShift),
+                Quanta::Manager(blockShift),
                 Object::Guild(bytes)
                 {
                     std::cerr << "[+] " << bytes << std::endl;
@@ -72,11 +74,11 @@ namespace Yttrium
 
         namespace
         {
-            class DyadicManager : public Dyads::Manager
+            class DyadicManager : public Quanta::Manager
             {
             public:
                 inline explicit DyadicManager(const unsigned blockShift) :
-                Dyads::Manager(blockShift),
+                Quanta::Manager(blockShift),
                 dyadic( Dyadic::Instance() )
                 {
                     std::cerr << "[+] " << bytes << std::endl;
@@ -111,7 +113,7 @@ namespace Yttrium
 
 
 
-        class Dyads:: Code
+        class Quanta:: Code
         {
         public:
             explicit Code() :
@@ -148,27 +150,27 @@ namespace Yttrium
         };
 
         namespace {
-            static void * codeWorkspace[ Alignment::WordsFor<Dyads::Code>::Count ];
+            static void * codeWorkspace[ Alignment::WordsFor<Quanta::Code>::Count ];
         }
 
 
-        const unsigned Dyads:: NumFactoryShift;
-        const unsigned Dyads:: NumGreaterShift;
+        const unsigned Quanta:: NumFactoryShift;
+        const unsigned Quanta:: NumGreaterShift;
 
-        Dyads:: Dyads() :
-        Singleton<Dyads, DyadsLockPolicy>(),
+        Quanta:: Quanta() :
+        Singleton<Quanta, QuantaLockPolicy>(),
         code( new (Y_Memory_BZero(codeWorkspace)) Code()  )
         {
         }
 
-        Dyads:: ~Dyads() noexcept
+        Quanta:: ~Quanta() noexcept
         {
             assert(0!=code);
             (void) Stealth::DestructedAndZeroed(code);
             Coerce(code) = 0;
         }
 
-        void Dyads:: display(std::ostream &os, size_t indent) const
+        void Quanta:: display(std::ostream &os, size_t indent) const
         {
             assert(0!=code);
             initProlog(os,indent)
@@ -183,7 +185,7 @@ namespace Yttrium
             quit(os,indent);
         }
 
-        void * Dyads:: acquireDyadic(const unsigned int blockShift)
+        void * Quanta:: acquireDyadic(const unsigned int blockShift)
         {
             assert(blockShift<=MaxAllowedShift);
             assert(blockShift==code->manager[blockShift]->shift);
