@@ -9,18 +9,38 @@ namespace Yttrium
 {
     namespace Concurrent
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! MUTual EXclusion for threads
+        //
+        //
+        //______________________________________________________________________
         class Mutex : public Latch
         {
         public:
             class Code;
 
-            explicit Mutex();
-            virtual ~Mutex() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit Mutex();           //!< initialize
+            virtual ~Mutex() noexcept;  //!< cleanup
 
         private:
-            Y_Disable_Copy_And_Assign(Mutex);
-            Code * const code;
+            Y_Disable_Copy_And_Assign(Mutex); //!< discading
+            Code * const code;                //!< platform specific
 
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             virtual bool doTryLock() noexcept;
             virtual void doLock()    noexcept;
             virtual void doUnlock()  noexcept;

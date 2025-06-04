@@ -69,7 +69,10 @@ namespace Yttrium
                  */
                 void   releaseBlock(void * const blockAddr, const size_t blockSize) noexcept;
 
-                
+                //! helper to generate no-arg object in two stages
+                /**
+                 \return a constructed object from inner arena memory
+                 */
                 template <typename T> inline
                 T * createBlockAs() {
                     void * const p = acquireBlock(sizeof(T));
@@ -83,6 +86,10 @@ namespace Yttrium
                     }
                 }
 
+                //! helper to delete a created object
+                /**
+                 \param object pointer to createdBlockAs<T>(...) object
+                 */
                 template <typename T> inline
                 void deleteBlockAs(T * &object) noexcept
                 {

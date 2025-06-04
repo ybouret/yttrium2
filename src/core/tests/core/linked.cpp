@@ -9,6 +9,7 @@
 #include "y/core/linked/list/raw.hpp"
 
 #include "y/core/linked/convert/pool-to-list.hpp"
+#include "y/core/linked/convert/list-to-pool.hpp"
 
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
@@ -291,7 +292,9 @@ Y_UTEST(core_linked)
             Y_ASSERT(n==list.size);
             Y_ASSERT(0==pool.size);
             std::cerr << "list=" << list << std::endl;
-
+            Core::ListToPool::Convert(pool,list);
+            std::cerr << "pool=" << pool << std::endl;
+            std::cerr << std::endl;
         }
 
 

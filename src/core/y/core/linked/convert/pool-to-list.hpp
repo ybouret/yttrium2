@@ -12,8 +12,25 @@ namespace Yttrium
     namespace Core
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! converting pool to list
+        //
+        //
+        //______________________________________________________________________
         struct PoolToList
         {
+            //__________________________________________________________________
+            //
+            //
+            //! one-pass pool to list
+            /**
+             \param list an empty Linked::LIST
+             \param pool a Linked::POOL
+             */
+            //__________________________________________________________________
             template <typename LIST, typename POOL> static inline
             void Convert(LIST &list, POOL &pool) noexcept
             {
@@ -24,7 +41,7 @@ namespace Yttrium
 
                 switch(pool.size)
                 {
-                    case 0: return;
+                    case 0: assert(0==pool.head); return;
                     case 1:
                         Coerce(list.head) = Coerce(list.tail) = pool.head;
                         Coerce(list.size) = 1;
