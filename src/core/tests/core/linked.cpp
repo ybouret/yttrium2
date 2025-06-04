@@ -7,6 +7,9 @@
 #include "y/core/linked/list/cloneable.hpp"
 #include "y/core/linked/list/cxx.hpp"
 #include "y/core/linked/list/raw.hpp"
+
+#include "y/core/linked/convert/pool-to-list.hpp"
+
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
 
@@ -272,6 +275,27 @@ Y_UTEST(core_linked)
 
     }
 
+
+    {
+        std::cerr << "Converting" << std::endl;
+        const size_t nmax = 10;
+        for(size_t n=0;n<=nmax;++n)
+        {
+            CxxPoolOf<Node> pool;
+            CxxListOf<Node> list;
+            for(size_t i=n;i>0;--i)
+                if( ran.choice() ) pool.store( new Node() ); else pool.stash( new Node() );
+            Y_ASSERT(n==pool.size);
+            std::cerr << "pool=" << pool << std::endl;
+            Core::PoolToList::Convert(list,pool);
+            Y_ASSERT(n==list.size);
+            Y_ASSERT(0==pool.size);
+            std::cerr << "list=" << list << std::endl;
+
+        }
+
+
+    }
 
 }
 Y_UDONE()

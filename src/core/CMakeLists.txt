@@ -9,6 +9,7 @@ Y_CreateLibrary(y
     y/core/linked
     y/core/linked/list
     y/core/linked/pool
+    y/core/linked/convert
     y/system
     y/type
     y/ascii
