@@ -6,7 +6,7 @@ project(zlib C)
 set(VERSION "1.3.1")
 
 if(Y_MSC)
-	string( APPEND CMAKE_C_FLAGS " -wd4820 -wd4668 -wd4710 -wd4242 -wd4244 -wd4127 -wd5045") 
+	string( APPEND CMAKE_C_FLAGS " -wd4820 -wd4668 -wd4710 -wd4242 -wd4244 -wd4127 -wd5045 -wd4061") 
 endif()
 
 option(ZLIB_BUILD_EXAMPLES "Enable Zlib Examples" ON)

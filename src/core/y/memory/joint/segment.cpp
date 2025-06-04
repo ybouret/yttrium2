@@ -172,14 +172,14 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                             // split
                             const size_t requestedBlocks = aligned>>BlockLog2;
                             const size_t remainingBlocks = remains>>BlockLog2;
-                            Block * const next = block->next;
-                            Block * const slit = block+1+requestedBlocks;
-                            slit->used  = 0;
-                            slit->next  = next;
-                            slit->prev  = block;
-                            slit->size  = (remainingBlocks-1) << BlockLog2;
-                            next->prev  = slit;
-                            block->next = slit;
+                            Block * const nxt = block->next;
+                            Block * const cut = block+1+requestedBlocks;
+                            cut->used   = 0;
+                            cut->next   = nxt;
+                            cut->prev   = block;
+                            cut->size   = (remainingBlocks-1) << BlockLog2;
+                            nxt->prev   = cut;
+                            block->next = cut;
                             block->size = aligned;
                             assert(IsValid(this));
                         }

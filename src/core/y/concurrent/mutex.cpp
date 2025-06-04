@@ -10,6 +10,11 @@
 #include <cerrno>
 #endif
 
+#if defined(Y_WIN)
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
+
 namespace Yttrium
 {
     namespace Concurrent
@@ -61,6 +66,39 @@ namespace Yttrium
 
 
 
+        private:
+            Y_Disable_Copy_And_Assign(Code);
+        };
+#endif
+
+#if defined(Y_WIN)
+        class Mutex :: Code : public Memory::Workspace<CRITICAL_SECTION>
+        {
+        public:
+            inline Code() noexcept : Memory::Workspace<CRITICAL_SECTION>()
+            {
+                ::InitializeCriticalSection(data);
+            }
+
+            inline ~Code() noexcept
+            {
+                ::DeleteCriticalSection(data);
+            }
+
+            void lock() noexcept 
+            {
+                ::EnterCriticalSection(data);
+            }
+
+            void unlock() noexcept
+            {
+                ::LeaveCriticalSection(data);
+            }
+
+            bool tryLock() noexcept
+            {
+                return ::TryEnterCriticalSection(data);
+            }
         private:
             Y_Disable_Copy_And_Assign(Code);
         };
