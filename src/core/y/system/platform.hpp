@@ -10,11 +10,13 @@
 #if defined(__linux__)
 #define Y_BSD       1
 #define Y_Platform "Linux"
+#define Y_Linux     1
 #endif
 
 #if defined(__APPLE__)
 #define Y_BSD       1
 #define Y_Platform "Apple"
+#define Y_Darwin    1
 #endif
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -23,13 +25,21 @@
 #endif
 
 #if defined(__FreeBSD__)
-#define Y_BSD 1
+#define Y_BSD       1
 #define Y_Platform "FreeBSD"
+#define Y_FreeBSD   1
+#endif
+
+#if defined(__NetBSD__)
+#define Y_BSD       1
+#define Y_Platform "NetBSD"
+#define Y_NetBSD    1
 #endif
 
 #if defined(__sun__)
-#define Y_BSD 1
-#define Y_Platform "Sun"
+#define Y_BSD       1
+#define Y_Platform "SunOS"
+#define Y_SunOS
 #endif
 
 #if !defined(Y_Platform)
