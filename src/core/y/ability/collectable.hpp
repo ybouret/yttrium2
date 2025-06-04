@@ -5,7 +5,7 @@
 #ifndef Y_Type_Collectable_Included
 #define Y_Type_Collectable_Included 1
 
-#include "y/core/setup.hpp"
+#include "y/ability/releasable.hpp"
 
 namespace Yttrium
 {
@@ -17,8 +17,17 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    class Collectable
+    class Collectable : public Releasable
     {
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+    public:
+        static const uint8_t All = 0xff;
+
         //______________________________________________________________________
         //
         //
@@ -39,7 +48,10 @@ namespace Yttrium
         //______________________________________________________________________
         virtual void gc(const uint8_t amount) noexcept = 0;
 
-        static size_t Mul(const uint8_t amountOf, const size_t total) noexcept;
+        static size_t Mul(const uint8_t amount, const size_t total) noexcept;
+
+        //! gc(All)
+        virtual void release() noexcept;
 
     private:
         Y_Disable_Copy_And_Assign(Collectable); //!< discarding
