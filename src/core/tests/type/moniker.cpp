@@ -9,7 +9,6 @@ Y_UTEST(type_moniker)
 {
 
     Moniker<long double> x = 0.1L;
-
     std::cerr << "x=" << x << std::endl;
 
 }
