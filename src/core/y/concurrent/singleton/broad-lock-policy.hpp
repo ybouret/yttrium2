@@ -24,9 +24,21 @@ namespace Yttrium
     class BroadLockPolicy
     {
     public:
-        explicit BroadLockPolicy();
-        virtual ~BroadLockPolicy() noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+        explicit BroadLockPolicy();            //!< initialize
+        virtual ~BroadLockPolicy() noexcept;   //!< cleanup
 
+        //______________________________________________________________________
+        //
+        //
+        // Policy
+        //
+        //______________________________________________________________________
         Lockable &access; //!< for global access
 
     private:

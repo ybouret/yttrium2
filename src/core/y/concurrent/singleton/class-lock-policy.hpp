@@ -22,13 +22,25 @@ namespace Yttrium
     class ClassLockPolicy
     {
     public:
-        explicit ClassLockPolicy();
-        virtual ~ClassLockPolicy() noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+        explicit ClassLockPolicy();           //!< initialize
+        virtual ~ClassLockPolicy() noexcept;  //!< cleanup
 
+        //______________________________________________________________________
+        //
+        //
+        // Policy
+        //
+        //______________________________________________________________________
         Concurrent::Mutex access; //!< for local access
 
     private:
-        Y_Disable_Copy_And_Assign(ClassLockPolicy); //!< disarding
+        Y_Disable_Copy_And_Assign(ClassLockPolicy); //!< discarding
     };
 
 

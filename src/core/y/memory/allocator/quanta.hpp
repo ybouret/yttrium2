@@ -6,14 +6,13 @@
 
 #include "y/memory/object/factory.hpp"
 #include "y/memory/limits.hpp"
-#include "y/concurrent/singleton/alias-lock-policy.hpp"
+#include "y/concurrent/singleton/class-lock-policy.hpp"
 #include "y/memory/allocator.hpp"
 
 namespace Yttrium
 {
     namespace Memory
     {
-        typedef AliasLockPolicy<Object::Factory> QuantaLockPolicy; //!< policy alias
 
         //______________________________________________________________________
         //
@@ -27,7 +26,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         class Quanta :
-        public Singleton<Quanta,QuantaLockPolicy>,
+        public Singleton<Quanta,ClassLockPolicy>,
         public Allocator
         {
         public:
@@ -110,7 +109,7 @@ namespace Yttrium
             explicit Quanta();                 //!< setup
             virtual ~Quanta() noexcept;        //!< cleanup
             Code * const code;                //!< internal code
-            friend class Singleton<Quanta,QuantaLockPolicy>;
+            friend class Singleton<Quanta,ClassLockPolicy>;
 
             virtual void * acquireBlock(size_t&);
             virtual void   releaseBlock(void * const, const size_t) noexcept;

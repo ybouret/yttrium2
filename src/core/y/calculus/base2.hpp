@@ -91,6 +91,11 @@ namespace Yttrium
         return shift;
     }
 
+    //! compute log2 of an next power of two
+    /**
+     \param x <= 2^p
+     \return p
+     */
     template <typename T> inline
     unsigned CeilLog2(const T x) noexcept
     {

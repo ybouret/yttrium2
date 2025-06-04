@@ -20,9 +20,21 @@ namespace Yttrium
     class GiantLockPolicy
     {
     public:
-        explicit GiantLockPolicy();
-        virtual ~GiantLockPolicy() noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+        explicit GiantLockPolicy();           //!< initialize
+        virtual ~GiantLockPolicy() noexcept;  //!< cleanup
 
+        //______________________________________________________________________
+        //
+        //
+        // Policy
+        //
+        //______________________________________________________________________
         Lockable &access; //!< peristent giant lock
 
     private:

@@ -163,7 +163,7 @@ namespace Yttrium
         const unsigned Quanta:: NumGreaterShift;
 
         Quanta:: Quanta() :
-        Singleton<Quanta, QuantaLockPolicy>(),
+        Singleton<Quanta,ClassLockPolicy>(),
         Allocator(CallSign),
         code( new (Y_Memory_BZero(codeWorkspace)) Code()  )
         {
