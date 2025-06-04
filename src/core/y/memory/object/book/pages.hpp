@@ -23,7 +23,10 @@ namespace Yttrium
             //
             //
             //! Local Pages of the same power-of-two size using Dyadic allocator
-            //
+            /**
+             - acts as a low level cache, not intended to be fast,
+             - kept pages are store in increasing memory
+             */
             //
             //__________________________________________________________________
             class Pages : public Releasable, public XML::Element

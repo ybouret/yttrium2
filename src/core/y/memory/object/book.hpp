@@ -23,6 +23,11 @@ namespace Yttrium
             //
             //
             //!  Book of pages for Arena/Blocks
+            /**
+             - contains re-usable pages of different power-of-two size,
+             with constraints on sizes.
+             - intended for low-level cache
+             */
             //
             //
             //__________________________________________________________________

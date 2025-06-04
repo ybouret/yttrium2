@@ -22,6 +22,10 @@ namespace Yttrium
         //
         //
         //! Dyadic allocator
+        /**
+         - calling System::Allocator with power-of-two blocks
+         - the possible sizes are limited.
+         */
         //
         //
         //______________________________________________________________________

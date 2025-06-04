@@ -20,7 +20,10 @@ namespace Yttrium
         //
         //
         //! calloc/free wrapper
-        //
+        /**
+         simply monitor calloc/free calls for any block size
+         and keep track of total amount of allocated memory
+         */
         //
         //______________________________________________________________________
         class System :
@@ -28,12 +31,31 @@ namespace Yttrium
         public Allocator
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
             static const char * const CallSign;                            //!< "Memory::System"
             static const Longevity    LifeTime = LifeTimeOf::SystemMemory; //!< longevity
-            const uint64_t            allocated;                           //!< currently allocated bytes
 
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             virtual void display(std::ostream &,size_t) const;
-            
+
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const uint64_t            allocated; //!< currently allocated bytes
+
         private:
             friend class Singleton<System,GiantLockPolicy>;
             Y_Disable_Copy_And_Assign(System); //!< discarding
