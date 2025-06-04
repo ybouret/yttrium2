@@ -41,7 +41,9 @@ namespace Yttrium
                 static const unsigned DEFAULT_PAGE_SHIFT = IntegerLog2<DEFAULT_PAGE_BYTES>::Value; //!< ensure power of two
                 static const size_t   LIMIT_OBJECT_BYTES = 512;                                    //!< limit size
                 static const unsigned LIMIT_OBJECT_SHIFT = IntegerLog2<LIMIT_OBJECT_BYTES>::Value; //!< ensure power of two
-                
+                static const size_t   CONDENSATION_BYTES = 4;                                      //!< decrease complexity
+                static const unsigned CONDENSATION_SHIFT = IntegerLog2<CONDENSATION_BYTES>::Value; //!< ensure power of two
+
                 //______________________________________________________________
                 //
                 //
@@ -84,6 +86,11 @@ namespace Yttrium
                  \param blockSize its block size
                  */
                 void   releaseJoint(void * const blockAddr, const size_t blockSize) noexcept;
+
+
+
+                void * acquire(const size_t blockSize);
+                void   release(void * const blockAddr, const size_t blockSize) noexcept;
 
                 //! helper to generate no-arg object in two stages
                 /**
@@ -131,7 +138,8 @@ namespace Yttrium
 
                 friend class Singleton<Factory,BroadLockPolicy>;
                 friend class Guild;
-                Pooled & pooled; 
+                const size_t * const condensation;
+                Pooled &             pooled;
 
             };
         }
