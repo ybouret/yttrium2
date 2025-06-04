@@ -244,6 +244,7 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
             {
                 // get block from address
                 assert(0!=blockAddr);
+                
                 Block *   const block   = GetBlockOf(blockAddr); assert(0!=block);
                 Segment * const segment = block->used;
 
@@ -251,8 +252,12 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                 assert(segment->owns(blockAddr));
                 assert(IsValid(segment));
 
-                if(blockSize!=block->size)
-                    Libc::Error::Critical(EINVAL, "%s::Release(block sizes mismatch)", CallSign);
+                if(blockSize>block->size)
+                    Libc::Error::Critical(EINVAL,
+                                          "%s::Release(blockSize=%s>block->size=%s)",
+                                          CallSign,
+                                          Decimal(blockSize  ).c_str(),
+                                          Decimal(block->size).c_str());
 
                 // check situation
                 static const unsigned MERGE_NONE = 0x00;
@@ -322,13 +327,12 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
 
             size_t Segment::  Aligned(const size_t request)
             {
-                typedef Alignment::To<Block> Guess;
-                static const size_t          MaxRequest = Guess::Maximum;
+                static const size_t MaxRequest = Aligning::Maximum;
                 if(request>MaxRequest)
                 {
                     throw Specific::Exception(CallSign,"request=%s exceeds %s", Decimal(request).c_str(), Decimal(MaxRequest).c_str());
                 }
-                return Alignment::To<Block>::Ceil(request);
+                return Aligning::Ceil(request);
             }
 
         }

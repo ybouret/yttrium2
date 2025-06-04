@@ -6,6 +6,7 @@
 #include "y/calculus/base2.hpp"
 #include "y/type/ints.hpp"
 #include "y/memory/page.hpp"
+#include "y/calculus/alignment.hpp"
 
 namespace Yttrium
 {
@@ -44,16 +45,17 @@ namespace Yttrium
                     Block   * prev; //!< for internal list
                 };
 
-                static const size_t   BlockSize     = sizeof(Block);               //!< allocation granularity
-                static const unsigned BlockLog2    = IntegerLog2For<Block>::Value; //!< ensure power of two
-                static const size_t   SegmentBytes;                                //!< sizeof(SegmentBytes)
-                static const unsigned SegmentShift;                                //!< SegmentBytes = 2^SegmentShift
-                static const size_t   MinNumBlocks = 3;                            //!< head+free block+tail
-                static const size_t   MinDataBytes;                                //!< NextPowerOfTwo(SegmentBytes + MinNumBlocks * BlockSize)
-                static const unsigned MinDataShift;                                //!< Log2(MinDataBytes)
-                static const unsigned MaxDataShift = Base2<size_t>::MaxShift;      //!< alias
-                static const size_t   MaxDataBytes = Base2<size_t>::MaxBytes;      //!< alias
-                static const size_t   MaxRequest;                                  //!< MaxDataBytes - SegmentBytes - 2 * BlockSize
+                static const size_t          BlockSize     = sizeof(Block);               //!< allocation granularity
+                static const unsigned        BlockLog2    = IntegerLog2For<Block>::Value; //!< ensure power of two
+                static const size_t          SegmentBytes;                                //!< sizeof(SegmentBytes)
+                static const unsigned        SegmentShift;                                //!< SegmentBytes = 2^SegmentShift
+                static const size_t          MinNumBlocks = 3;                            //!< head+free block+tail
+                static const size_t          MinDataBytes;                                //!< NextPowerOfTwo(SegmentBytes + MinNumBlocks * BlockSize)
+                static const unsigned        MinDataShift;                                //!< Log2(MinDataBytes)
+                static const unsigned        MaxDataShift = Base2<size_t>::MaxShift;      //!< alias
+                static const size_t          MaxDataBytes = Base2<size_t>::MaxBytes;      //!< alias
+                static const size_t          MaxRequest;                                  //!< MaxDataBytes - SegmentBytes - 2 * BlockSize
+                typedef Alignment::To<Block> Aligning;
 
                 //! internal parameters
                 struct Param

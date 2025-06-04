@@ -4,6 +4,8 @@
 #include "y/memory/object/blocks.hpp"
 #include "y/check/static.hpp"
 #include "y/memory/allocator/pooled.hpp"
+#include "y/memory/joint/segment.hpp"
+
 #include <iostream>
 
 namespace Yttrium
@@ -49,7 +51,9 @@ namespace Yttrium
             {
                 assert(blockSize>0);
                 size_t       size = blockSize;
-                void * const addr = pooled.acquire(size); assert(size>=blockSize);
+                void * const addr = pooled.acquire(size);
+                assert(size>=blockSize);
+                assert( Joint::Segment::Aligning::Ceil(size) == size);
                 return addr;
             }
 
@@ -57,6 +61,7 @@ namespace Yttrium
             {
                 assert(blockSize>0);
                 assert(0!=blockAddr);
+                assert(blockSize<=Joint::Segment::Aligning::Maximum);
                 void * p = blockAddr;
                 size_t n = blockSize;
                 pooled.release(p,n);

@@ -60,7 +60,7 @@ namespace Yttrium
                 //! auto-locked acquisition through Arena
                 /**
                  \param blockSize POSITIVE block size
-                 \return block address, clean
+                 \return memory of EXACT blockSize, clean
                  */
                 void * acquireBlock(const size_t blockSize);
 
@@ -74,13 +74,14 @@ namespace Yttrium
                 //! use pooled allocator
                 /**
                  \param blockSize POSITIVE block size
+                 \return memory with >= blockSize bytes
                  */
                 void   * acquireJoint(const size_t blockSize);
 
                 //! use pooled allocator
                 /**
                  \param blockAddr previously acquired memory
-                 \param blockSize block size
+                 \param blockSize its block size
                  */
                 void   releaseJoint(void * const blockAddr, const size_t blockSize) noexcept;
 

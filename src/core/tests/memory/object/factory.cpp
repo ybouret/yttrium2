@@ -21,7 +21,7 @@ namespace
         size_t len;
     };
 
-    static const size_t MaxBlock = 10;
+    static const size_t MaxBlock = 1000;
     static Block        blocks[MaxBlock];
     static size_t       count = 0;
 
@@ -33,7 +33,7 @@ namespace
         {
             Block & b = blocks[count];
             b.how = How( int(ran.leq(1)));
-            b.len = 1 + ran.leq(100);
+            b.len = 1 + ran.leq(100); Y_ASSERT(b.len>0);
             switch(b.how)
             {
                 case WithBlock: b.ptr = F.acquireBlock(b.len); break;
@@ -42,6 +42,26 @@ namespace
             ++count;
         }
     }
+
+
+    static inline
+    void empty(const size_t              to,
+               Memory::Object::Factory & F,
+               System::Rand &            ran) noexcept
+    {
+        ran.shuffle(blocks,count);
+        while(count>to)
+        {
+            Block & b = blocks[--count];
+            switch(b.how)
+            {
+                case WithBlock: F.releaseBlock(b.ptr,b.len); break;
+                case WithJoint: F.releaseJoint(b.ptr,b.len); break;
+            }
+            Y_Memory_VZero(b);
+        }
+    }
+
 
 }
 
@@ -56,7 +76,12 @@ Y_UTEST(memory_object_factory)
     Y_Memory_BZero(blocks);
 
     fill(F,ran);
-
+    for(size_t iter=0;iter<10;++iter)
+    {
+        empty(count>>1,F,ran);
+        fill(F,ran);
+    }
+    empty(0,F,ran);
 
 }
 Y_UDONE()
