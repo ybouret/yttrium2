@@ -10,7 +10,6 @@ using namespace Yttrium;
 namespace
 {
 
-
     struct Block
     {
         void * ptr;
@@ -21,6 +20,7 @@ namespace
     static Block        blocks[MaxBlock];
     static size_t       count = 0;
 
+#if 0
 
     static inline
     void fill(Memory::Object::Factory &F, System::Rand &ran)
@@ -49,7 +49,8 @@ namespace
         }
     }
 
-
+#endif
+    
 
 }
 
@@ -58,10 +59,12 @@ Y_UTEST(memory_object)
 
     Concurrent::Singulet::Verbose = true;
     System::Rand              ran;
+    Y_Memory_BZero(blocks);
+
+#if 0
     Memory::Object::Factory & F = Memory::Object::Factory::Instance();
     std::cerr << F.callSign() << std::endl;
 
-    Y_Memory_BZero(blocks);
 
     fill(F,ran);
     for(size_t iter=0;iter<10;++iter)
@@ -72,7 +75,7 @@ Y_UTEST(memory_object)
     empty(0,F,ran);
 
     F.display(std::cerr,0);
-
+#endif
 
 }
 Y_UDONE()

@@ -20,9 +20,8 @@ Y_UTEST(memory_quanta)
     Concurrent::Singulet::Verbose  = true;
     System::Rand        ran;
 
-    Memory::Quanta & quanta = Memory::Quanta::Instance();
-
-    quanta.display(std::cerr,0);
+    //Memory::Quanta & quanta = Memory::Quanta::Instance();
+    //quanta.display(std::cerr,0);
 
 }
 Y_UDONE()

@@ -21,6 +21,7 @@ namespace Yttrium
     namespace Concurrent
     {
 
+#if 0
         Mutex:: Mutex() : code( Memory::Object::Factory::Instance().createBlockAs<Code>() )
         {
         }
@@ -30,7 +31,8 @@ namespace Yttrium
             assert(0!=code);
             Memory::Object::Factory::Location().deleteBlockAs( Coerce(code) );
         }
-
+#endif
+        
         void Mutex:: doLock() noexcept
         {
             assert(0!=code);

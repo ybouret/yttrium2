@@ -8,7 +8,7 @@ using namespace Yttrium;
 Y_UTEST(memory_object_guild)
 {
 
-    Memory::Object::Guild guild(18);
+    //Memory::Object::Guild guild(18);
     
 
 }

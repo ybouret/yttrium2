@@ -9,6 +9,7 @@ Y_UTEST(concurrent_mutex)
 {
     Concurrent::Singulet::Verbose = true;
 
+#if 0
     Concurrent::Mutex mutex;
     {
         Y_Lock(mutex);
@@ -18,6 +19,7 @@ Y_UTEST(concurrent_mutex)
             std::cerr << "mutex is locked again" << std::endl;
         }
     }
+#endif
 
 
 }

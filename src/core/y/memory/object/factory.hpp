@@ -17,6 +17,7 @@ namespace Yttrium
         namespace Object
         {
 
+#if 0
             class Guild;
 
             //__________________________________________________________________
@@ -145,9 +146,8 @@ namespace Yttrium
                 const size_t * const condensation;
                 Pooled &             pooled;
 
-
-
             };
+#endif
         }
     }
 }

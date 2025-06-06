@@ -14,6 +14,7 @@ namespace Yttrium
     namespace Memory
     {
 
+#if 0
         //______________________________________________________________________
         //
         //
@@ -117,7 +118,7 @@ namespace Yttrium
             virtual void   releaseBlock(void * const, const size_t) noexcept;
 
         };
-
+#endif
 
     }
 

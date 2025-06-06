@@ -31,6 +31,7 @@ namespace Yttrium
                 static inline
                 Code * Create(const size_t blockSize)
                 {
+#if 0
                     Factory &    F = Factory::Instance();
                     void * const p = F.acquireBlock( sizeof(Code) );
                     try
@@ -42,6 +43,7 @@ namespace Yttrium
                         F.releaseBlock(p,sizeof(Code));
                         throw;
                     }
+#endif
                 }
 
                 Lockable & access;
@@ -62,8 +64,8 @@ namespace Yttrium
             Guild:: ~Guild() noexcept
             {
                 assert( 0!= code);
-                assert( Factory::Exists() );
-                Factory::Location().releaseBlock( Stealth::DestructedAndZeroed(code), sizeof(Code) );
+                //assert( Factory::Exists() );
+                //Factory::Location().releaseBlock( Stealth::DestructedAndZeroed(code), sizeof(Code) );
             }
 
             size_t Guild:: blockSize() const noexcept

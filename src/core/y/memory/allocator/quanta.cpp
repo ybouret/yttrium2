@@ -16,6 +16,7 @@ namespace Yttrium
     namespace Memory
     {
 
+#if 0
         const char * const Quanta:: CallSign = "Memory::Quanta";
 
         Quanta:: Manager:: Manager(const unsigned int blockShift) noexcept :
@@ -226,6 +227,8 @@ namespace Yttrium
             assert(IsPowerOfTwo(blockSize));
             code->manager[ ExactLog2(blockSize) ]->release(blockAddr);
         }
+
+#endif
     }
 
 }

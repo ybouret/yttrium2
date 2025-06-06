@@ -2,7 +2,7 @@
 
 #include "y/memory/joint/segments.hpp"
 #include "y/memory/object/book.hpp"
-#include "y/memory/object/factory.hpp"
+#include "y/memory/object/metrics.hpp"
 #include "y/core/utils.hpp"
 #include "y/xml/syntax.hpp"
 
@@ -34,7 +34,7 @@ namespace Yttrium
             }
 
 
-            const unsigned Segments:: MinShift = Object::Factory::DEFAULT_PAGE_SHIFT;
+            const unsigned Segments:: MinShift = Object::Metrics::DefaultPageShift;
 
             namespace
             {
@@ -44,7 +44,6 @@ namespace Yttrium
                     unsigned       theShift = 0;
                     const size_t   numBytes = NextPowerOfTwo(numSlots * sizeof(Segments::Slot), theShift);
                     (void)numBytes;
-                    //std::cerr << "numSlots=" << numSlots << " => " << numBytes << " = 2^" << theShift << std::endl;
                     return theShift;
                 }
             }

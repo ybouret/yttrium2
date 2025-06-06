@@ -19,6 +19,7 @@ namespace Yttrium
         namespace Object
         {
 
+#if 0
             const size_t   Factory:: MEDIUM_LIMIT_BYTES = Joint::Segment::MaxSizeFor( DEFAULT_PAGE_SHIFT );
 
             Factory:: ~Factory() noexcept
@@ -167,7 +168,8 @@ namespace Yttrium
 
             }
 
-
+#endif
+            
         }
 
     }
