@@ -11,7 +11,7 @@ Y_UTEST(memory_object_guild)
     Concurrent::Singulet::Verbose  = 1;
     Memory::Object::Guild guild(18);
 
-    Y_PRINTV(guild.blockSize());
+    Y_PRINTV(guild.getBlockSize());
 
 }
 Y_UDONE()

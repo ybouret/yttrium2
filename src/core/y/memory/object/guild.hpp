@@ -5,6 +5,7 @@
 #define Y_Memory_Object_Guild_Included 1
 
 #include "y/ability/lockable.hpp"
+#include "y/type/ingress.hpp"
 
 namespace Yttrium
 {
@@ -17,11 +18,11 @@ namespace Yttrium
             //
             //
             //
-            //! dedicated Arena with autolocking from Factory
+            //! dedicated Arena with autolocking from Blocks
             //
             //
             //__________________________________________________________________
-            class Guild
+            class Guild : public Ingress<Lockable>
             {
             public:
                 class Code;
@@ -41,12 +42,17 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
-                size_t blockSize() const noexcept;          //!< \return internal block size
+                size_t getBlockSize() const noexcept;          //!< \return internal block size
                 void * acquireBlock();                      //!< \return a new block
                 void   releaseBlock(void * const) noexcept; //!< release a previously acquired block
 
+                void  *acquireBlockUnlocked();
+                void   releaseBlockUnlocked(void * const) noexcept;
+
+
             private:
                 Y_Disable_Copy_And_Assign(Guild); //!< discarding
+                Y_Ingress_Decl();
                 Code * const code;                //!< access+arena
             };
 

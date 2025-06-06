@@ -65,11 +65,24 @@ namespace Yttrium
                 Blocks::Location().release( Stealth::DestructedAndZeroed(code), sizeof(Code) );
             }
 
-            size_t Guild:: blockSize() const noexcept
+            size_t Guild:: getBlockSize() const noexcept
             {
                 assert( 0 != code);
                 return code->arena.blockSize;
             }
+
+            void * Guild:: acquireBlockUnlocked()
+            {
+                assert(0!=code);
+                return code->arena.acquire();
+            }
+
+            void Guild:: releaseBlockUnlocked(void * const addr) noexcept
+            {
+                assert(0!=code);
+                code->arena.release(addr);
+            }
+
 
             void * Guild:: acquireBlock()
             {
@@ -85,6 +98,7 @@ namespace Yttrium
                 code->arena.release(addr);
             }
 
+            Y_Ingress_Impl(Guild,code->access)
 
 
         }

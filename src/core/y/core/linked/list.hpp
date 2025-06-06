@@ -383,8 +383,10 @@ namespace Yttrium
                         break;
                 }
 
-                assert(size>=2); assert(head!=tail);
-
+                assert(size>=2);
+                assert(head!=tail);
+                assert(0!=head);
+                assert(0!=tail);
                 NODE * lower = head;
                 switch( compareNodes(node,lower) )
                 {
@@ -407,7 +409,7 @@ namespace Yttrium
 
             PROBE:
                 {
-                    NODE * const probe = lower->next;
+                    NODE * const probe = lower->next; assert(0!=probe);
                     if(upper==probe)
                         goto INSERT_AFTER_LOWER;
 
@@ -467,10 +469,7 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(ListOf); //!< discarding
-
-
-
-
+            
             inline virtual const NODE * doFetch(size_t nodeIndex) const noexcept
             {
                 assert(nodeIndex>=1);

@@ -8,7 +8,12 @@ using namespace Yttrium;
 
 Y_UTEST(memory_dead_pool)
 {
-    Y_SIZEOF(Core::PoolOf<Memory::Page>);
-    Y_SIZEOF(Memory::DeadPool);
+
+    Memory::DeadPool pool(12);
+
+
+    pool.cache(10);
+
+
 }
 Y_UDONE()

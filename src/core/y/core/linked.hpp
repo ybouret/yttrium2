@@ -3,7 +3,7 @@
 #ifndef Y_Core_Linked_Included
 #define Y_Core_Linked_Included 1
 
-#include "y/core/setup.hpp"
+#include "y/core/linked/info.hpp"
 #include "y/check/usual.hpp"
 #include "y/type/sign.hpp"
 #include <iostream>
@@ -13,29 +13,7 @@ namespace Yttrium
     namespace Core
     {
 
-        //______________________________________________________________________
-        //
-        //
-        //! common data for Linked structures
-        //
-        //______________________________________________________________________
-        class LinkedInfo
-        {
-
-        public:
-            static const char OwnsNode[]; //!< "owns node!"
-            static const char NullNode[]; //!< "NULL==node"
-            static const char UsedNext[]; //!< "NULL!=next"
-            static const char UsedPrev[]; //!< "NULL!=prev"
-
-            explicit LinkedInfo() noexcept : size(0) {}
-            virtual ~LinkedInfo() noexcept { assert(0==size); }
-
-            const size_t size;
-
-        private:
-            Y_Disable_Copy_And_Assign(LinkedInfo);
-        };
+        
 
         //______________________________________________________________________
         //

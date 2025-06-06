@@ -18,6 +18,12 @@ namespace Yttrium
     public:
         inline virtual ~Ingress() noexcept {}
 
+        inline ConstInterface & operator*() const noexcept { return locus(); }
+        inline Interface &      operator*()       noexcept { return (Interface&)locus(); }
+
+        inline ConstInterface * operator->() const noexcept { return & locus(); }
+        inline Interface      * operator->()       noexcept { return & (Interface&)locus(); }
+
 
     private:
         Y_Disable_Copy_And_Assign(Ingress);
@@ -27,7 +33,7 @@ namespace Yttrium
 #define Y_Ingress_Decl() virtual ConstInterface & locus() const noexcept
     
 #define Y_Ingress_Impl(CLASS,LOCUS) \
-CLASS::ConstInterface CLASS :: locus() const noexcept { return LOCUS; }
+CLASS::ConstInterface  & CLASS :: locus() const noexcept { return LOCUS; }
 
 }
 
