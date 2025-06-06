@@ -2,7 +2,7 @@
 #include "y/system/platform.hpp"
 #include "y/memory/workspace.hpp"
 #include "y/system/exception.hpp"
-#include "y/memory/object/factory.hpp"
+#include "y/memory/object/blocks.hpp"
 
 #if defined(Y_BSD)
 #include "mutex/bsd.hxx"
@@ -21,17 +21,15 @@ namespace Yttrium
     namespace Concurrent
     {
 
-#if 0
-        Mutex:: Mutex() : code( Memory::Object::Factory::Instance().createBlockAs<Code>() )
+        Mutex:: Mutex() : code( Memory::Object::Blocks::Instance().createAs<Code>() )
         {
         }
 
         Mutex:: ~Mutex() noexcept
         {
             assert(0!=code);
-            Memory::Object::Factory::Location().deleteBlockAs( Coerce(code) );
+            Memory::Object::Blocks::Location().deleteAs( Coerce(code) );
         }
-#endif
         
         void Mutex:: doLock() noexcept
         {

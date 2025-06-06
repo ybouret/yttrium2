@@ -4,8 +4,10 @@
 #ifndef Y_Memory_Quanta_Included
 #define Y_Memory_Quanta_Included 1
 
-#include "y/memory/object/factory.hpp"
+#include "y/singleton.hpp"
+#include "y/concurrent/life-time.hpp"
 #include "y/memory/limits.hpp"
+#include "y/memory/object/metrics.hpp"
 #include "y/concurrent/singleton/class-lock-policy.hpp"
 #include "y/memory/allocator.hpp"
 
@@ -14,7 +16,6 @@ namespace Yttrium
     namespace Memory
     {
 
-#if 0
         //______________________________________________________________________
         //
         //
@@ -39,15 +40,13 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            static const char * const CallSign;                             //!< "Memory::Dyads"
-            static const Longevity    LifeTime = LifeTimeOf:: MemoryQuanta; //!< life time
-
-
-            static const unsigned     MaxFactoryShift = Object::Factory::LIMIT_OBJECT_SHIFT; //!< alias
-            static const unsigned     MaxAllowedShift = Limits::MaxBlockShift;               //!< alias
-            static const unsigned     NumFactoryShift = MaxFactoryShift+1;                   //!< [0..MaxFactoryShift]
-            static const unsigned     NumGreaterShift = MaxAllowedShift-MaxFactoryShift;     //!< [MaxFactoryShift+1..MaxAllowedShift]
-            static const size_t       MaxAllowedBytes = Limits::MaxBlockBytes;               //!< alias
+            static const char * const CallSign;                                           //!< "Memory::Dyads"
+            static const Longevity    LifeTime       = LifeTimeOf:: MemoryQuanta;         //!< life time
+            static const unsigned     MaxObjectShift = Object::Metrics::LimitObjectShift; //!< alias
+            static const unsigned     MaxMemoryShift = Limits::MaxBlockShift;             //!< alias
+            static const unsigned     NumObjectShift = MaxObjectShift+1;                  //!< [0..MaxFactoryShift]
+            static const unsigned     NumLargerShift = MaxMemoryShift-MaxObjectShift;     //!< [MaxFactoryShift+1..MaxAllowedShift]
+            static const size_t       MaxMemoryBytes = Limits::MaxBlockBytes;             //!< alias
 
             class Code;
 
@@ -118,7 +117,6 @@ namespace Yttrium
             virtual void   releaseBlock(void * const, const size_t) noexcept;
 
         };
-#endif
 
     }
 

@@ -108,6 +108,38 @@ namespace Yttrium
                  */
                 Arena & getArenaFor(const size_t blockSize);
 
+                //! helper to generate no-arg object in two stages
+                /**
+                 \return a constructed object from inner arena memory
+                 */
+                template <typename T> inline
+                T * createAs() {
+                    void * const p = acquire(sizeof(T));
+                    try {
+                        return new (p) T();
+                    }
+                    catch(...)
+                    {
+                        release(p,sizeof(T));
+                        throw;
+                    }
+                }
+
+                //! helper to delete a created object
+                /**
+                 \param object pointer to createdBlockAs<T>(...) object
+                 */
+                template <typename T> inline
+                void deleteAs(T * &object) noexcept
+                {
+                    assert(0!=object);
+                    object->~T();
+                    release(object,sizeof(T));
+                    object = 0;
+                }
+
+
+
             private:
                 Y_Disable_Copy_And_Assign(Blocks); //!< discarding
                 friend class Singleton<Blocks,BroadLockPolicy>;

@@ -16,7 +16,6 @@ namespace Yttrium
     namespace Memory
     {
 
-#if 0
         const char * const Quanta:: CallSign = "Memory::Quanta";
 
         Quanta:: Manager:: Manager(const unsigned int blockShift) noexcept :
@@ -84,7 +83,7 @@ namespace Yttrium
             public:
                 inline explicit LargeManager(const unsigned blockShift) :
                 Quanta::Manager(blockShift),
-                book( Object::Book::Instance() )
+                ledger( Object::Ledger::Instance() )
                 {
                     std::cerr << "[+] " << bytes << std::endl;
                 }
@@ -93,13 +92,13 @@ namespace Yttrium
 
                 inline virtual void *acquire()
                 {
-                    return book.query(shift);
+                    return ledger.query(shift);
                 }
 
                 inline virtual void   release(void * const addr) noexcept
                 {
                     assert(0!=addr);
-                    book.store(shift,addr);
+                    ledger.store(shift,addr);
                 }
 
                 static void Create(void * const addr, const size_t blockShift)
@@ -107,7 +106,7 @@ namespace Yttrium
                     new (addr) LargeManager(unsigned(blockShift));
                 }
 
-                Memory::Object::Book &book;
+                Memory::Object::Ledger &ledger;
 
             private:
                 Y_Disable_Copy_And_Assign(LargeManager);
@@ -124,20 +123,20 @@ namespace Yttrium
             explicit Code() :
             manager(),
             smallManager(Procedural,SmallManager::Create,0),
-            largeManager(Procedural,LargeManager::Create,NumFactoryShift)
+            largeManager(Procedural,LargeManager::Create,NumObjectShift)
             {
                 Y_Memory_BZero(manager);
 
-                for(unsigned i=0;i<=MaxFactoryShift;++i)
+                for(unsigned i=0;i<=MaxObjectShift;++i)
                 {
                     manager[i] = &smallManager[i+1];
                     assert(i==manager[i]->shift);
                 }
 
-                for(unsigned i=0;i<NumGreaterShift;++i)
+                for(unsigned i=0;i<NumLargerShift;++i)
                 {
-                    manager[i+NumFactoryShift] = &largeManager[i+1];
-                    assert(i+NumFactoryShift==manager[i+NumFactoryShift]->shift);
+                    manager[i+NumObjectShift] = &largeManager[i+1];
+                    assert(i+NumObjectShift==manager[i+NumObjectShift]->shift);
                 }
 
             }
@@ -146,9 +145,9 @@ namespace Yttrium
             {
             }
 
-            Manager *                                   manager[MaxAllowedShift+1];
-            CxxWorkspace<SmallManager,NumFactoryShift>  smallManager;
-            CxxWorkspace<LargeManager,NumGreaterShift>  largeManager;
+            Manager *                                   manager[MaxMemoryShift+1];
+            CxxWorkspace<SmallManager,NumObjectShift>   smallManager;
+            CxxWorkspace<LargeManager,NumLargerShift>   largeManager;
 
         private:
             Y_Disable_Copy_And_Assign(Code);
@@ -160,8 +159,8 @@ namespace Yttrium
         }
 
 
-        const unsigned Quanta:: NumFactoryShift;
-        const unsigned Quanta:: NumGreaterShift;
+        const unsigned Quanta:: NumObjectShift;
+        const unsigned Quanta:: NumLargerShift;
 
         Quanta:: Quanta() :
         Singleton<Quanta,ClassLockPolicy>(),
@@ -181,12 +180,12 @@ namespace Yttrium
         {
             assert(0!=code);
             initProlog(os,indent)
-            << Attribute("NumFactoryShift",NumFactoryShift)
-            << Attribute("NumGreaterShift",NumGreaterShift);
+            << Y_XML_Attr(NumObjectShift)
+            << Y_XML_Attr(NumLargerShift);
             initEpilog(os,false);
 
             ++indent;
-            Memory::Object::Book::Location().display(os,indent);
+            Memory::Object::Ledger::Location().display(os,indent);
             --indent;
 
             quit(os,indent);
@@ -194,7 +193,7 @@ namespace Yttrium
 
         void * Quanta:: acquireDyadic(const unsigned int blockShift)
         {
-            assert(blockShift<=MaxAllowedShift);
+            assert(blockShift<=MaxMemoryShift);
             assert(blockShift==code->manager[blockShift]->shift);
             return code->manager[blockShift]->acquire();
         }
@@ -202,18 +201,18 @@ namespace Yttrium
         void Quanta:: releaseDyadic(const unsigned int blockShift, void *const blockAddr) noexcept
         {
             assert(0!=blockAddr);
-            assert(blockShift<=MaxAllowedShift);
+            assert(blockShift<=MaxMemoryShift);
             assert(blockShift==code->manager[blockShift]->shift);
             code->manager[blockShift]->release(blockAddr);
         }
 
-        const size_t Quanta::MaxAllowedBytes;
+        const size_t Quanta::MaxMemoryBytes;
 
         void * Quanta:: acquireBlock(size_t &blockSize)
         {
             assert(blockSize>0);
-            if(blockSize>=MaxAllowedBytes)
-                throw Specific::Exception(CallSign,"blockSize=%s exceeed %s", Decimal(blockSize).c_str(), Decimal(MaxAllowedBytes).c_str());
+            if(blockSize>=MaxMemoryBytes)
+                throw Specific::Exception(CallSign,"blockSize=%s exceeed %s", Decimal(blockSize).c_str(), Decimal(MaxMemoryBytes).c_str());
 
             unsigned blockShift = 0;
             blockSize = NextPowerOfTwo(blockSize,blockShift);
@@ -228,7 +227,6 @@ namespace Yttrium
             code->manager[ ExactLog2(blockSize) ]->release(blockAddr);
         }
 
-#endif
     }
 
 }

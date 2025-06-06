@@ -9,7 +9,7 @@ Y_UTEST(concurrent_mutex)
 {
     Concurrent::Singulet::Verbose = true;
 
-#if 0
+#if 1
     Concurrent::Mutex mutex;
     {
         Y_Lock(mutex);
