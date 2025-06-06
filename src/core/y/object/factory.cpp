@@ -106,35 +106,7 @@ namespace Yttrium
 #define MEDIUM_LIMIT_BYTES Memory::Object::Metrics::MediumLimitBytes
 
 
-    void * Object:: Factory:: acquireBlock(size_t &blockSize)
-    {
-        assert(blockSize>0);
 
-        // small
-        if(blockSize<=LIMIT_OBJECT_BYTES)
-        {
-            return acquireSingle( blockSize = condensation[blockSize] );
-        }
-
-        // medium
-        assert(blockSize>LIMIT_OBJECT_BYTES);
-        if(blockSize<=MEDIUM_LIMIT_BYTES)
-        {
-            if( IsPowerOfTwo(blockSize) )
-                return acquireQuanta( ExactLog2(blockSize) );
-            return pooled.acquireBlock(blockSize);
-        }
-
-        // quanta
-        assert(blockSize>LIMIT_OBJECT_BYTES);
-        if(blockSize<=Memory::Quanta::MaxLedgerBytes)
-        {
-            return quanta.acquire(blockSize);
-        }
-
-        // bigger ?
-        return sysmem.acquire(blockSize);
-    }
 
     void * Object:: Factory:: query(const size_t blockSize)
     {
@@ -168,6 +140,36 @@ namespace Yttrium
 
         // bigger: aligned blockSize
         return sysmem.acquire( Coerce(blockSize) );
+    }
+
+    void * Object:: Factory:: acquireBlock(size_t &blockSize)
+    {
+        assert(blockSize>0);
+
+        // small
+        if(blockSize<=LIMIT_OBJECT_BYTES)
+        {
+            return acquireSingle( blockSize = condensation[blockSize] );
+        }
+
+        // medium
+        assert(blockSize>LIMIT_OBJECT_BYTES);
+        if(blockSize<=MEDIUM_LIMIT_BYTES)
+        {
+            if( IsPowerOfTwo(blockSize) )
+                return acquireQuanta( ExactLog2(blockSize) );
+            return pooled.acquireBlock(blockSize);
+        }
+
+        // quanta
+        assert(blockSize>LIMIT_OBJECT_BYTES);
+        if(blockSize<=Memory::Quanta::MaxLedgerBytes)
+        {
+            return quanta.acquire(blockSize);
+        }
+
+        // bigger ?
+        return sysmem.acquire(blockSize);
     }
 
 

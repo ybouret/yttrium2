@@ -8,15 +8,9 @@ using namespace Yttrium;
 
 namespace
 {
-    enum How
-    {
-        WithSingle = 0,
-        WithPooled = 1
-    };
 
     struct Block
     {
-        How    how;
         void * ptr;
         size_t len;
     };
@@ -25,20 +19,14 @@ namespace
     static Block        blocks[MaxBlock];
     static size_t       count = 0;
 
-#if 1
     static inline
     void fill(Object::Factory &F, System::Rand &ran)
     {
         while(count<MaxBlock)
         {
             Block & b = blocks[count];
-            b.how = How( int(ran.leq(1)));
-            b.len = 1 + ran.leq(100); Y_ASSERT(b.len>0);
-            switch(b.how)
-            {
-                case WithSingle: b.ptr = F.acquireSingle(b.len); break;
-                case WithPooled: b.ptr = F.acquirePooled(b.len); break;
-            }
+            b.len = ran.leq(30000); if(count<=0) b.len = 0;
+            b.ptr = F.query(b.len);
             ++count;
         }
     }
@@ -53,15 +41,10 @@ namespace
         while(count>to)
         {
             Block & b = blocks[--count];
-            switch(b.how)
-            {
-                case WithSingle: F.releaseSingle(b.ptr,b.len); break;
-                case WithPooled: F.releasePooled(b.ptr,b.len); break;
-            }
+            F.store(b.ptr,b.len);
             Y_Memory_VZero(b);
         }
     }
-#endif
 
 
 }
@@ -73,7 +56,6 @@ Y_UTEST(memory_object_factory)
     System::Rand              ran;
 
     Y_Memory_BZero(blocks);
-#if 1
     Object::Factory & F =  Object::Factory::Instance();
     std::cerr << F.callSign() << std::endl;
 
@@ -84,7 +66,6 @@ Y_UTEST(memory_object_factory)
         fill(F,ran);
     }
     empty(0,F,ran);
-#endif
     F.display(std::cerr,0);
 
 

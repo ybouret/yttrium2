@@ -78,6 +78,7 @@ namespace Yttrium
 
         //! parametric memory store
         /**
+         blockSize sent to allocator is rebuilt from original blockSize
          \param blockAddr from query
          \param blockSize from query
          */
