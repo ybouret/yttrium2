@@ -7,7 +7,9 @@
 #include "y/memory/object/arena.hpp"
 #include "y/core/linked/list.hpp"
 #include "y/core/linked/pool.hpp"
-#include "y/xml/element.hpp"
+#include "y/singleton.hpp"
+#include "y/concurrent/singleton/broad-lock-policy.hpp"
+#include "y/concurrent/life-time.hpp"
 
 namespace Yttrium
 {
@@ -25,7 +27,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Blocks : public XML::Element
+            class Blocks : public Singleton<Blocks,BroadLockPolicy>
             {
             public:
                 //______________________________________________________________
@@ -34,6 +36,7 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
+                static const Longevity      LifeTime = LifeTimeOf::MemoryObjectBlocks; //!< life time
                 static const char * const   CallSign;                              //!< memory object blocks
                 static const unsigned       TableSizeLn2 = 5;                      //!< for hash table
                 static const size_t         TableSize = size_t(1) << TableSizeLn2; //!< alias
@@ -58,19 +61,11 @@ namespace Yttrium
                     ~Knot() noexcept;
 
                     Arena  arena; //!< actual arena
-                    Knot * next; //!< for pool
+                    Knot * next;  //!< for pool
                 private:
                     Y_Disable_Copy_And_Assign(Knot); //!< discarding
                 };
 
-                //______________________________________________________________
-                //
-                //
-                // C++
-                //
-                //______________________________________________________________
-                explicit Blocks(const size_t userPageBytes); //!< setup \param userPageBytes page size hint
-                virtual ~Blocks() noexcept;                  //!< cleanup
 
 
                 //______________________________________________________________
@@ -115,7 +110,8 @@ namespace Yttrium
 
             private:
                 Y_Disable_Copy_And_Assign(Blocks); //!< discarding
-
+                friend class Singleton<Blocks,BroadLockPolicy>;
+                
                 //! return new acquiring
                 /**
                  - use knots to create Knot, stored into kpool
@@ -133,6 +129,18 @@ namespace Yttrium
                  \return proper arena if found, NULL otherwise
                  */
                 Arena *        search(const size_t blockSize) noexcept;
+
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+                explicit Blocks();           //!< setup with Metrics::DefaultPageBytes
+                virtual ~Blocks() noexcept;  //!< cleanup
+
+
+
                 Arena *        acquiring;        //!< last acquiring
                 Arena *        releasing;        //!< last releasing
                 const unsigned pageShift;        //!< computed pageShift

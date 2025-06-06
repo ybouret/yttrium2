@@ -1,6 +1,5 @@
 
 #include "y/memory/object/guild.hpp"
-#include "y/memory/object/factory.hpp"
 #include "y/memory/object/blocks.hpp"
 #include "y/memory/stealth.hpp"
 
@@ -31,19 +30,17 @@ namespace Yttrium
                 static inline
                 Code * Create(const size_t blockSize)
                 {
-#if 0
-                    Factory &    F = Factory::Instance();
-                    void * const p = F.acquireBlock( sizeof(Code) );
+                    Blocks  &    B = Blocks::Instance();
+                    void * const p = B.acquire( sizeof(Code) );
                     try
                     {
-                        return new (p) Code(F.access,F.blocks.getArenaFor(blockSize));
+                        return new (p) Code(B.access,B.getArenaFor(blockSize));
                     }
                     catch(...)
                     {
-                        F.releaseBlock(p,sizeof(Code));
+                        B.release(p,sizeof(Code));
                         throw;
                     }
-#endif
                 }
 
                 Lockable & access;
@@ -64,8 +61,8 @@ namespace Yttrium
             Guild:: ~Guild() noexcept
             {
                 assert( 0!= code);
-                //assert( Factory::Exists() );
-                //Factory::Location().releaseBlock( Stealth::DestructedAndZeroed(code), sizeof(Code) );
+                assert( Blocks::Exists() );
+                Blocks::Location().release( Stealth::DestructedAndZeroed(code), sizeof(Code) );
             }
 
             size_t Guild:: blockSize() const noexcept

@@ -12,7 +12,7 @@ namespace Yttrium
     {
         namespace Object
         {
-
+#if 0
 
             const char * const              FactoryAPI:: CallSign = "Memory::Object::Factory";
             const System::AtExit::Longevity FactoryAPI:: LifeTime;
@@ -81,7 +81,7 @@ namespace Yttrium
 
             }
 
-
+#endif
         }
     }
 }

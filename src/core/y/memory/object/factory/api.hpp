@@ -14,6 +14,7 @@ namespace Yttrium
         namespace Object
         {
 
+#if 0
             class Blocks;
 
             //__________________________________________________________________
@@ -50,7 +51,8 @@ namespace Yttrium
             private:
                 Y_Disable_Copy_And_Assign(FactoryAPI); //!< discading
             };
-
+#endif
+            
         }
     }
 

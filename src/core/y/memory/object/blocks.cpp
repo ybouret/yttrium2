@@ -1,5 +1,7 @@
 #include "y/memory/object/blocks.hpp"
 #include "y/memory/object/ledger.hpp"
+#include "y/memory/object/metrics.hpp"
+
 #include "y/core/utils.hpp"
 #include "y/type/destruct.hpp"
 #include "y/system/exception.hpp"
@@ -30,11 +32,11 @@ namespace Yttrium
             }
 
 
-            Blocks:: Blocks(const size_t userPageBytes) :
+            Blocks:: Blocks() :
             acquiring(0),
             releasing(0),
             pageShift(0),
-            pageBytes( NextPowerOfTwo( Clamp(Ledger::MinPageBytes,userPageBytes,Ledger::MaxPageBytes), Coerce(pageShift))),
+            pageBytes( NextPowerOfTwo( Clamp(Ledger::MinPageBytes,Metrics::DefaultPageBytes,Ledger::MaxPageBytes), Coerce(pageShift))),
             kpool(),
             knots(sizeof(Knot),pageBytes),
             table()

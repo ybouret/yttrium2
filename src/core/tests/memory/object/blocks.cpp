@@ -50,9 +50,9 @@ namespace
 Y_UTEST(memory_object_blocks)
 {
 
-    
+    Concurrent::Singulet::Verbose = true;
     System::Rand           ran;
-    Memory::Object::Blocks blocks(1000);
+    Memory::Object::Blocks & blocks = Memory::Object::Blocks::Instance();
 
 
 #if 0
