@@ -25,7 +25,7 @@ namespace Yttrium
 
         Mutex:: Mutex() : code( Provider::Instance().createAs<Code>() )
         {
-            std::cerr << "sizeof(Mutex::Code)=" << sizeof(Code) << std::endl;
+            //std::cerr << "sizeof(Mutex::Code)=" << sizeof(Code) << std::endl;
         }
 
         Mutex:: ~Mutex() noexcept

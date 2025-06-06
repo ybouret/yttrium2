@@ -19,6 +19,7 @@ Y_CreateLibrary(y
     y/concurrent/windows
     y/concurrent/singleton
     y/concurrent/mutex
+    y/concurrent/thread
     y/container
     y/container/algorithm
     y/memory

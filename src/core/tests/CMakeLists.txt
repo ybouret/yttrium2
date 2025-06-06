@@ -53,6 +53,7 @@ Y_UTEST(concurrent:giant_lock)
 Y_UTEST(concurrent:life_time)
 Y_UTEST(concurrent:mutex)
 Y_UTEST(concurrent:condition)
+Y_UTEST(concurrent:thread)
 
 #memory
 Y_UTEST(memory:gc)
