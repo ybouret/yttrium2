@@ -6,17 +6,16 @@ namespace Yttrium
 	namespace Concurrent
 	{
 
-		class Thread::Code :
-			public ThreadLauncher
+		class Thread::Code : public Thread:: Launcher
 		{
 		public:
 			inline explicit Code(Proc userProc, void* userArgs) :
-				ThreadLauncher(userProc, userArgs),
+				Thread::Launcher(userProc, userArgs),
 				thr(INVALID_HANDLE_VALUE),
 				tid(0)
 			{
 				Y_Giant_Lock();
-				ThreadLauncher* const self = this;
+				Thread::Launcher* const self = this;
 				thr = CreateThread(
 					NULL,        // default security attributes
 					0,           // use default stack size
@@ -43,7 +42,7 @@ namespace Yttrium
 			static DWORD WINAPI Launch(LPVOID param) noexcept
 			{
 				assert(0 != param);
-				static_cast<ThreadLauncher*>(param)->call();
+				static_cast<Thread::Launcher*>(param)->call();
 				return 0;
 			}
 		};

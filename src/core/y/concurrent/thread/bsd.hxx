@@ -8,15 +8,14 @@ namespace Yttrium
     namespace Concurrent
     {
 
-        class Thread :: Code :
-        public ThreadLauncher, Memory::Solitary<pthread_t>
+        class Thread :: Code : public Thread::Launcher, Memory::Solitary<pthread_t>
         {
         public:
             inline explicit Code(Proc userProc, void * userArgs) :
-            ThreadLauncher(userProc,userArgs)
+            Thread::Launcher(userProc,userArgs)
             {
                 Y_Giant_Lock();
-                ThreadLauncher * const self = this;
+                Thread::Launcher * const self = this;
                 const int err = pthread_create(data, 0, Launch, self);
                 if(0!=err) throw Libc::Exception(err,"pthread_create");
             }
@@ -36,7 +35,7 @@ namespace Yttrium
             void * Launch(void *threadLauncher) noexcept
             {
                 assert(0!=threadLauncher);
-                static_cast<ThreadLauncher *>(threadLauncher)->call();
+                static_cast<Thread::Launcher *>(threadLauncher)->call();
                 return 0;
             }
 

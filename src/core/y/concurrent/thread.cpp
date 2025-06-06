@@ -6,48 +6,47 @@
 
 namespace Yttrium
 {
-    namespace Concurrent
-    {
-
-        namespace
-        {
-            class ThreadLauncher : public Object
-            {
-            public:
-                inline explicit ThreadLauncher(Thread::Proc userProc,
-                                               void * const userArgs) noexcept :
-                proc(userProc),
-                args(userArgs)
-                {
-                }
-
-                inline virtual ~ThreadLauncher() noexcept
-                {
-                    Coerce(proc)=0;
-                    Coerce(args)=0;
-                }
-
-                inline void call() noexcept
-                {
-                    try
-                    {
-                        if(proc) proc(args);
-                    }
-                    catch(...)
-                    {
-
-                    }
-                }
+	namespace Concurrent
+	{
 
 
+		class Thread::Launcher : public Object
+		{
+		public:
+			inline explicit Launcher(Thread::Proc userProc,
+				void* const userArgs) noexcept :
+				proc(userProc),
+				args(userArgs)
+			{
+			}
 
-            private:
-                Y_Disable_Copy_And_Assign(ThreadLauncher);
-                Thread::Proc const proc;
-                void * const       args;
-            };
-        }
-    }
+			inline virtual ~Launcher() noexcept
+			{
+				Coerce(proc) = 0;
+				Coerce(args) = 0;
+			}
+
+			inline void call() noexcept
+			{
+				try
+				{
+					if (proc) proc(args);
+				}
+				catch (...)
+				{
+
+				}
+			}
+
+
+
+		private:
+			Y_Disable_Copy_And_Assign(Launcher);
+			Thread::Proc const proc;
+			void* const       args;
+		};
+	}
+
 
 }
 
@@ -64,19 +63,19 @@ namespace Yttrium
 
 namespace Yttrium
 {
-    namespace Concurrent
-    {
-        Thread:: Thread(Proc proc, void * const args) :
-        code( new Code(proc,args) )
-        {
-        }
+	namespace Concurrent
+	{
+		Thread::Thread(Proc proc, void* const args) :
+			code(new Code(proc, args))
+		{
+		}
 
-        Thread:: ~Thread() noexcept
-        {
-            assert(0!=code);
-            Destroy(code);
-        }
+		Thread:: ~Thread() noexcept
+		{
+			assert(0 != code);
+			Destroy(code);
+		}
 
-    }
+	}
 
 }

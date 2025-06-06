@@ -14,6 +14,7 @@ namespace Yttrium
         class Thread
         {
         public:
+            class Launcher;
             class Code;
             typedef void (*Proc)(void * const);
             explicit Thread(Proc proc, void * const args);
