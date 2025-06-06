@@ -15,6 +15,7 @@ namespace Yttrium
             inline explicit Code(Proc userProc, void * userArgs) :
             ThreadLauncher(userProc,userArgs)
             {
+                Y_Giant_Lock();
                 ThreadLauncher * const self = this;
                 const int err = pthread_create(data, 0, Launch, self);
                 if(0!=err) throw Libc::Exception(err,"pthread_create");

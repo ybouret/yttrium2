@@ -2,6 +2,7 @@
 #include "y/system/platform.hpp"
 #include "y/object.hpp"
 #include "y/system/exception.hpp"
+#include "y/ability/lockable.hpp"
 
 namespace Yttrium
 {
