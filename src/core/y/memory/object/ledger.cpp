@@ -79,7 +79,8 @@ namespace Yttrium
 
             void Ledger:: gc(const uint8_t amount) noexcept
             {
-                for(unsigned i=MaxPageShift;i>=MinPageShift;--i) bookPages[i].gc(amount);
+                for(unsigned i=MaxPageShift;i>=MinPageShift;--i)
+                    bookPages[i].gc(amount);
             }
             
 

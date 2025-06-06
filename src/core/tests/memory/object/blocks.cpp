@@ -53,13 +53,7 @@ Y_UTEST(memory_object_blocks)
     Concurrent::Singulet::Verbose = true;
     System::Rand           ran;
     Memory::Object::Blocks & blocks = Memory::Object::Blocks::Instance();
-
-
-#if 0
-    void * p = blocks.acquire(10); std::cerr << "p@" << p << std::endl;
-    blocks.release(p,10);
-#endif
-
+    
 #if 1
     Y_Memory_BZero(blk);
 

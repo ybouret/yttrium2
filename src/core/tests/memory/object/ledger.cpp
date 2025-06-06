@@ -29,6 +29,11 @@ Y_UTEST(memory_object_ledger)
 
     ledger.display(std::cerr,0);
 
+    ledger.gc(100);
+    
+    ledger.display(std::cerr,0);
+
+
     Y_PRINTV(  Memory::Object::Ledger::MinPageShift );
     Y_PRINTV(  Memory::Object::Ledger::MaxPageShift );
 
