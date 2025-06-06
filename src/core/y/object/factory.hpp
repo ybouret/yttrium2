@@ -16,6 +16,7 @@ namespace Yttrium
         namespace Object { class Blocks; }
         class Pooled;
         class Quanta;
+        class System;
     }
 
     //__________________________________________________________________________
@@ -57,17 +58,30 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
-        void * acquireSingle(const size_t blockSize);
-        void   releaseSingle(void * const blockAddr, const size_t blockSize) noexcept;
 
-        void * acquirePooled(const size_t blockSize);
-        void   releasePooled(void * const blockAddr, const size_t blockSize) noexcept;
 
-        void * acquireQuanta(const unsigned shift);
-        void   releaseQuanta(const unsigned shift, void * const entry) noexcept;
+        void * acquireSingle(const size_t);                        //!< \return memory from blocks
+        void   releaseSingle(void * const, const size_t) noexcept; //!< release memory from blocks
 
-        void * acquire(const size_t blockSize);
-        void   release(void * const blockAddr, const size_t blockSize) noexcept;
+        void * acquirePooled(const size_t);                        //!< \return memory from pooled
+        void   releasePooled(void * const, const size_t) noexcept; //!< release memory from pooled
+
+        void * acquireQuanta(const unsigned);                        //!< \return memory from quanta
+        void   releaseQuanta(const unsigned, void * const) noexcept; //!< release memory from quanta
+
+        //! parametric memory query
+        /**
+         \param blockSize const blockSize, from 0 to ...
+         \return memory from selected area
+         */
+        void * query(const size_t blockSize);
+
+        //! parametric memory store
+        /**
+         \param blockAddr from query
+         \param blockSize from query
+         */
+        void   store(void * const blockAddr, const size_t blockSize) noexcept;
 
 
     private:
@@ -98,7 +112,7 @@ namespace Yttrium
         Memory::Object::Blocks & blocks; //!< used for small
         Memory::Pooled &         pooled; //!< used for medium
         Memory::Quanta &         quanta; //!< used for larger and special medium
-       // Memory::System &         other;
+        Memory::System &         sysmem;
     };
 }
 

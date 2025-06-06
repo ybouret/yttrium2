@@ -33,7 +33,6 @@ namespace Yttrium
                 if (!::QueryPerformanceFrequency(&f))
                     throw Windows::Exception(::GetLastError(), "::QueryPerformanceFrequency()");
                 return 1.0L / static_cast<long double>(f.QuadPart);
-
             }
         };
 

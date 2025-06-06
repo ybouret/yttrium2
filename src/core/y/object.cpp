@@ -16,19 +16,19 @@ namespace Yttrium
 
     namespace
     {
-        static inline void * factoryAcquire(const size_t blockSize)
+        static inline void * factoryQuery(const size_t blockSize)
         {
             assert(blockSize>0);
             Object::Factory & factory = Object::Factory::Instance();
-            return factory.acquire(blockSize);
+            return factory.query(blockSize);
         }
 
-        static inline void factoryRelease(void * const blockAddr, const size_t blockSize) noexcept
+        static inline void factoryStore(void * const blockAddr, const size_t blockSize) noexcept
         {
             assert(blockSize>0);
             assert( Object::Factory::Exists() );
             static Object::Factory &factory = Object::Factory::Location();
-            factory.release(blockAddr,blockSize);
+            factory.store(blockAddr,blockSize);
         }
     }
 
@@ -36,28 +36,28 @@ namespace Yttrium
     void * Object:: operator new(const size_t blockSize)
     {
         assert(blockSize>0);
-        return factoryAcquire(blockSize);
+        return factoryQuery(blockSize);
     }
 
     void Object:: operator delete(void * const blockAddr, const size_t blockSize) noexcept
     {
         assert( Good(blockAddr,blockSize) );
         if(blockSize>0)
-            factoryRelease(blockAddr,blockSize);
+            factoryStore(blockAddr,blockSize);
     }
 
 
     void * Object:: operator new[](const size_t blockSize)
     {
         assert(blockSize>0);
-        return factoryAcquire(blockSize);
+        return factoryQuery(blockSize);
     }
 
     void Object:: operator delete[](void * const blockAddr, const size_t blockSize) noexcept
     {
         assert( Good(blockAddr,blockSize) );
         if(blockSize>0)
-            factoryRelease(blockAddr,blockSize);
+            factoryStore(blockAddr,blockSize);
     }
 
     void * Object::operator new(const size_t blockSize, void * const blockAddr) noexcept

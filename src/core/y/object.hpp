@@ -8,6 +8,14 @@
 namespace Yttrium
 {
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! base class for memory allocation
+    //
+    //
+    //__________________________________________________________________________
     class Object
     {
     public:
@@ -21,25 +29,57 @@ namespace Yttrium
         //
         // single object new/delete
         //______________________________________________________________________
-        static void * operator new(const size_t blockSize);                                     //!< new(blockSize)
-        static void   operator delete(void * const blockAddr, const size_t blockSize) noexcept; //!< delete(blockSize)
+
+        //! acquire memory for new()
+        /**
+         \param blockSize POSITIVE block size
+         \return allocated memory
+         */
+        static void * operator new(const size_t blockSize);
+
+        //! release previously acquire memory
+        /**
+         \param blockAddr block address
+         \param blockSize block size
+         */
+        static void   operator delete(void * const blockAddr, const size_t blockSize) noexcept;
 
         //______________________________________________________________________
         //
         // multiple objects new[]/delete[]
         //______________________________________________________________________
-        static void * operator new    [](const size_t blockSize);                                  //!< new[block_size]
-        static void   operator delete [](void * const blockAddr, const size_t blockSize) noexcept; //!< delete[block_size]
+        //! acquire memory for new[]()
+        /**
+         \param blockSize POSITIVE block size
+         \return allocated memory
+         */
+        static void * operator new    [](const size_t blockSize);
+
+        //! release previously acquired memory
+        /**
+         \param blockAddr block address
+         \param blockSize block size
+         */
+        static void   operator delete [](void * const blockAddr, const size_t blockSize) noexcept;
 
         //______________________________________________________________________
         //
         // placement new()/delete()
         //______________________________________________________________________
-        static void *operator new(const size_t blockSize, void * const blockAddr) noexcept; //!< placement new
-        static void  operator delete(void * const , void * const)                  noexcept; //!< placement delete
+
+        //! placement new()
+        /**
+         \param blockSize positive block size
+         \param blockAddr a valid block address
+         \return zeroed blockAddr
+         */
+        static void *operator new(const size_t blockSize, void * const blockAddr) noexcept;
+
+        //! placement delete
+        static void  operator delete(void * const , void * const)                 noexcept; 
 
     private:
-        Y_Disable_Copy_And_Assign(Object);
+        Y_Disable_Copy_And_Assign(Object); //!< discarding
     };
 
 }

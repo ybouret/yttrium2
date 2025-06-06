@@ -9,6 +9,11 @@
 
 namespace Yttrium
 {
+
+    //! delete and set pointer to NULL
+    /**
+     \param obj an object created by 'new T(...)'
+     */
     template <typename T> inline
     void Destroy( T * const & obj ) noexcept
     {

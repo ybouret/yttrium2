@@ -30,7 +30,7 @@ namespace
         while(count<MaxBlock)
         {
             Block & b = blocks[count];
-            b.len     = 1+ran.leq(Memory::Object::Metrics::MediumLimitBytes-1);
+            b.len     = 1+ran.leq(16384);
             b.ptr     = Object:: operator new(b.len);
             ++count;
         }
@@ -99,7 +99,7 @@ Y_UTEST(memory_object)
 
 
     fill(ran);
-    for(size_t iter=0;iter<10;++iter)
+    for(size_t iter=0;iter<20;++iter)
     {
         empty(count>>1,ran);
         fill(ran);

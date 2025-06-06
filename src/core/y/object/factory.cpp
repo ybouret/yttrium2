@@ -5,7 +5,8 @@
 #include "y/memory/object/blocks.hpp"
 #include "y/memory/allocator/quanta.hpp"
 #include "y/memory/allocator/pooled.hpp"
-
+#include "y/memory/allocator/system.hpp"
+#include "y/memory/align.hpp"
 
 #include "y/xml/attribute.hpp"
 
@@ -34,7 +35,8 @@ namespace Yttrium
     condensation( static_cast<size_t *>(Y_Memory_BZero(Condensation))-1 ),
     blocks( Memory::Object::Blocks::Instance() ),
     pooled( Memory::Pooled::Instance() ),
-    quanta( Memory::Quanta::Instance() )
+    quanta( Memory::Quanta::Instance() ),
+    sysmem( Memory::System::Instance() )
     {
         for(size_t i=1;i<=Memory::Object::Metrics::LimitObjectBytes;++i)
             Coerce(condensation[i]) = Alignment::OnLog2<CondensationShift>::Ceil(i);
@@ -108,11 +110,13 @@ namespace Yttrium
     {
         assert(blockSize>0);
 
+        // small
         if(blockSize<=LIMIT_OBJECT_BYTES)
         {
             return acquireSingle( blockSize = condensation[blockSize] );
         }
 
+        // medium
         assert(blockSize>LIMIT_OBJECT_BYTES);
         if(blockSize<=MEDIUM_LIMIT_BYTES)
         {
@@ -121,10 +125,18 @@ namespace Yttrium
             return pooled.acquireBlock(blockSize);
         }
 
-        throw Exception("Not Implemented");
+        // quanta
+        assert(blockSize>LIMIT_OBJECT_BYTES);
+        if(blockSize<=Memory::Quanta::MaxLedgerBytes)
+        {
+            return quanta.acquire(blockSize);
+        }
+
+        // bigger ?
+        return sysmem.acquire(blockSize);
     }
 
-    void * Object:: Factory:: acquire(const size_t blockSize)
+    void * Object:: Factory:: query(const size_t blockSize)
     {
         // zero size
         if(blockSize<=0)
@@ -146,12 +158,20 @@ namespace Yttrium
             return acquirePooled(blockSize);
         }
 
+        // quanta
+        assert(blockSize>LIMIT_OBJECT_BYTES);
+        if(blockSize<=Memory::Quanta::MaxLedgerBytes)
+        {
+            return acquireQuanta( CeilLog2(blockSize) );
+        }
 
-        throw Exception("Not Implemented");
+
+        // bigger: aligned blockSize
+        return sysmem.acquire( Coerce(blockSize) );
     }
 
 
-    void Object:: Factory:: release(void * const blockAddr, const size_t blockSize) noexcept
+    void Object:: Factory:: store(void * const blockAddr, const size_t blockSize) noexcept
     {
         // zero size
         if(blockSize<=0)
@@ -175,6 +195,19 @@ namespace Yttrium
                 return releaseQuanta( ExactLog2(blockSize), blockAddr);
             return releasePooled(blockAddr,blockSize);
         }
+
+        // quanta
+        assert(blockSize>LIMIT_OBJECT_BYTES);
+        if(blockSize<=Memory::Quanta::MaxLedgerBytes)
+        {
+            return releaseQuanta(CeilLog2(blockSize),blockAddr);
+        }
+
+        // bigger ?
+        void * addr = blockAddr;
+        size_t size = Memory::Align::Compute::Ceil(blockSize);
+        return sysmem.release(addr,size);
+
     }
 
     void Object:: Factory:: releaseBlock(void * const blockAddr, const size_t blockSize) noexcept
@@ -195,6 +228,18 @@ namespace Yttrium
                 return releaseQuanta( ExactLog2(blockSize), blockAddr);
             return pooled.releaseBlock(blockAddr,blockSize);
         }
+
+        assert(blockSize>LIMIT_OBJECT_BYTES);
+        if(blockSize<=Memory::Quanta::MaxLedgerBytes)
+        {
+            assert(IsPowerOfTwo(blockSize));
+            return quanta.releaseDyadic(ExactLog2(blockSize), blockAddr);
+        }
+
+        void * addr = blockAddr;
+        size_t size = blockSize; assert( size == Memory::Align::Compute::Ceil(blockSize) );
+
+        return sysmem.release(addr,size);
 
     }
 
