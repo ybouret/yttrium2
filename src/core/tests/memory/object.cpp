@@ -52,6 +52,32 @@ namespace
 
 #endif
     
+    template <size_t N>
+    class Dummy : public Object
+    {
+    public:
+        explicit Dummy() noexcept {}
+        virtual ~Dummy() noexcept {}
+
+        char text[N];
+
+        static inline
+        void Test()
+        {
+            std::cerr << "sizeof(Dummy<" << N << ">) = " << sizeof(Dummy) << std::endl;
+
+            {
+                Dummy *d = new Dummy();
+                delete d;
+            }
+        }
+
+
+
+    private:
+        Y_Disable_Copy_And_Assign(Dummy);
+    };
+
 
 }
 
@@ -73,7 +99,14 @@ Y_UTEST(memory_object)
     empty(0,ran);
 
     Object::Factory::Instance().display(std::cerr, 0);
-    
+
+    Dummy<0>::Test();
+    Dummy<1>::Test();
+    Dummy<2>::Test();
+    Dummy<3>::Test();
+    Dummy<4>::Test();
+    Dummy<10>::Test();
+
 
 }
 Y_UDONE()

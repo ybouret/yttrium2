@@ -49,7 +49,9 @@ namespace Yttrium
         explicit Factory();
         virtual ~Factory() noexcept;
 
-        const size_t * const condensation;
+        const size_t * const    condensation;
+        
+    public:
         Memory::Object::Blocks & blocks; //!< uses for small
         Memory::Pooled &         pooled; //!< used for medium
         Memory::Quanta &         quanta; //!< used for larger and special medium

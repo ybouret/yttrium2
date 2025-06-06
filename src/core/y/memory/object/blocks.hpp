@@ -138,6 +138,8 @@ namespace Yttrium
                     object = 0;
                 }
 
+                //! internal pool sorting by arena size
+                void sort() noexcept;
 
 
             private:
