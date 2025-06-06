@@ -1,6 +1,7 @@
 
 #include "y/concurrent/singulet.hpp"
 #include <iostream>
+#include <iomanip>
 
 namespace Yttrium
 {
@@ -24,7 +25,7 @@ namespace Yttrium
             try
             {
                 if(prefix) std::cerr << prefix;
-                std::cerr << '[' << identifier << '@' << longevity << ']';
+                std::cerr << '[' << std::setw(24) << identifier << ' ' << '@' << std::setw(5) <<  longevity << ' ' << ']';
                 std::cerr << std::endl;
             }
             catch(...)

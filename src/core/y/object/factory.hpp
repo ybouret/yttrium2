@@ -38,6 +38,9 @@ namespace Yttrium
         void * acquireQuanta(const unsigned shift);
         void   releaseQuanta(const unsigned shift, void * const entry) noexcept;
 
+        void * acquire(const size_t blockSize);
+        void   release(void * const blockAddr, const size_t blockSize) noexcept;
+
 
     private:
         Y_Disable_Copy_And_Assign(Factory);

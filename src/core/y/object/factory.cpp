@@ -14,6 +14,8 @@
 #include "y/memory/allocator/quanta.hpp"
 #endif
 
+#include "y/exception.hpp"
+
 namespace Yttrium
 {
 
@@ -96,6 +98,64 @@ namespace Yttrium
         assert(0!=entry);
         return quanta.releaseDyadic(shift,entry);
     }
-    
+
+#define LIMIT_OBJECT_BYTES Memory::Object::Metrics::LimitObjectBytes
+#define MEDIUM_LIMIT_BYTES Memory::Object::Metrics::MediumLimitBytes
+
+    void * Object:: Factory:: acquire(const size_t blockSize)
+    {
+        // zero size
+        if(blockSize<=0)
+            return 0;
+
+        // small
+        assert(blockSize>0);
+        if(blockSize<=LIMIT_OBJECT_BYTES)
+        {
+            return acquireSingle( condensation[blockSize] );
+        }
+
+        // medium
+        assert(blockSize>LIMIT_OBJECT_BYTES);
+        if(blockSize<=MEDIUM_LIMIT_BYTES)
+        {
+            if( IsPowerOfTwo(blockSize) )
+                return acquireQuanta( ExactLog2(blockSize) );
+            return acquirePooled(blockSize);
+        }
+
+
+
+
+        throw Exception("Not Implemented");
+    }
+
+
+    void Object:: Factory:: release(void * const blockAddr, const size_t blockSize) noexcept
+    {
+        // zero size
+        if(blockSize<=0)
+        {
+            assert(0==blockAddr);
+            return;
+        }
+
+        // small
+        assert(blockSize>0);
+        if(blockSize<=LIMIT_OBJECT_BYTES)
+        {
+            return releaseSingle(blockAddr,condensation[blockSize]);
+        }
+
+        // medium
+        assert(blockSize>LIMIT_OBJECT_BYTES);
+        if(blockSize<=MEDIUM_LIMIT_BYTES)
+        {
+            if(IsPowerOfTwo(blockSize))
+                return releaseQuanta( ExactLog2(blockSize), blockAddr);
+            return releasePooled(blockAddr,blockSize);
+        }
+    }
+
 }
 

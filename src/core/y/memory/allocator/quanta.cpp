@@ -43,7 +43,7 @@ namespace Yttrium
                 Quanta::Manager(blockShift),
                 Object::Guild(bytes)
                 {
-                    std::cerr << "[+] " << bytes << std::endl;
+                    //std::cerr << "[+] " << bytes << std::endl;
                 }
 
                 inline virtual ~SmallManager() noexcept
@@ -85,7 +85,7 @@ namespace Yttrium
                 Quanta::Manager(blockShift),
                 ledger( Object::Ledger::Instance() )
                 {
-                    std::cerr << "[+] " << bytes << std::endl;
+                    //std::cerr << "[+] " << bytes << std::endl;
                 }
 
                 inline virtual ~LargeManager() noexcept {}

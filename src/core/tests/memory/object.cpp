@@ -1,9 +1,11 @@
 
 
-#include "y/memory/object/factory.hpp"
+#include "y/object/factory.hpp"
 #include "y/system/rand.hpp"
 #include "y/memory/stealth.hpp"
+#include "y/memory/object/metrics.hpp"
 #include "y/utest/run.hpp"
+#include "y/concurrent/singulet.hpp"
 
 using namespace Yttrium;
 
@@ -20,16 +22,16 @@ namespace
     static Block        blocks[MaxBlock];
     static size_t       count = 0;
 
-#if 0
+#if 1
 
     static inline
-    void fill(Memory::Object::Factory &F, System::Rand &ran)
+    void fill(System::Rand &ran)
     {
         while(count<MaxBlock)
         {
             Block & b = blocks[count];
-            b.len     = ran.leq(Memory::Object::Factory::MEDIUM_LIMIT_BYTES);
-            b.ptr     = F.acquire(b.len);
+            b.len     = 1+ran.leq(Memory::Object::Metrics::MediumLimitBytes-1);
+            b.ptr     = Object:: operator new(b.len);
             ++count;
         }
     }
@@ -37,14 +39,13 @@ namespace
 
     static inline
     void empty(const size_t              to,
-               Memory::Object::Factory & F,
                System::Rand &            ran) noexcept
     {
         ran.shuffle(blocks,count);
         while(count>to)
         {
             Block & b = blocks[--count];
-            F.release(b.ptr,b.len);
+            Object:: operator delete(b.ptr,b.len);
             Y_Memory_VZero(b);
         }
     }
@@ -61,21 +62,18 @@ Y_UTEST(memory_object)
     System::Rand              ran;
     Y_Memory_BZero(blocks);
 
-#if 0
-    Memory::Object::Factory & F = Memory::Object::Factory::Instance();
-    std::cerr << F.callSign() << std::endl;
 
 
-    fill(F,ran);
+    fill(ran);
     for(size_t iter=0;iter<10;++iter)
     {
-        empty(count>>1,F,ran);
-        fill(F,ran);
+        empty(count>>1,ran);
+        fill(ran);
     }
-    empty(0,F,ran);
+    empty(0,ran);
 
-    F.display(std::cerr,0);
-#endif
+    Object::Factory::Instance().display(std::cerr, 0);
+    
 
 }
 Y_UDONE()
