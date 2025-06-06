@@ -10,6 +10,10 @@
 #include "wall-time/darwin.hxx"
 #endif
 
+#if defined(Y_WIN)
+#include "wall-time/win.hxx"
+#endif
+
 namespace Yttrium
 {
     namespace System

@@ -56,7 +56,10 @@ namespace
     class Dummy : public Object
     {
     public:
-        explicit Dummy() noexcept {}
+        explicit Dummy()  : text()
+        {
+            Y_ASSERT(Memory::Stealth::Are0(text, N));
+        }
         virtual ~Dummy() noexcept {}
 
         char text[N];
@@ -105,7 +108,9 @@ Y_UTEST(memory_object)
 
     Object::Factory::Instance().display(std::cerr, 0);
 
+#if !defined(_MSC_VER)
     Dummy<0>::Test();
+#endif
     Dummy<1>::Test();
     Dummy<2>::Test();
     Dummy<3>::Test();

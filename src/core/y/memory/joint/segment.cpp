@@ -336,10 +336,11 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
 
             size_t Segment::  Aligned(const size_t request)
             {
-                static const size_t MaxRequest = Aligning::Maximum;
-                if(request>MaxRequest)
+                // TODO: check with MaxRequest...
+                static const size_t MaxAlignedRequest = Aligning::Maximum;
+                if(request>MaxAlignedRequest)
                 {
-                    throw Specific::Exception(CallSign,"request=%s exceeds %s", Decimal(request).c_str(), Decimal(MaxRequest).c_str());
+                    throw Specific::Exception(CallSign,"request=%s exceeds %s", Decimal(request).c_str(), Decimal(MaxAlignedRequest).c_str());
                 }
                 return Aligning::Ceil(request);
             }

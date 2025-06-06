@@ -16,7 +16,7 @@ namespace Yttrium
             explicit WallTime();
             virtual ~WallTime() noexcept;
 
-            static uint64_t Ticks();
+            static uint64_t Ticks(); //!< unlocked \return system ticks
             long double operator()(const uint64_t) const noexcept;
             long double since(const uint64_t start) const;
 
