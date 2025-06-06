@@ -22,7 +22,7 @@ namespace
     static Block  blk[MaxBlocks];
     static size_t num = 0;
 
-    void fill(  Memory::Object::Blocks &blocks, System::Rand &ran )
+    void fill(  Memory::Small::Blocks &blocks, System::Rand &ran )
     {
         (std::cerr << '+').flush();
         while(num<MaxBlocks)
@@ -34,7 +34,7 @@ namespace
         }
     }
 
-    void empty(const size_t to, Memory::Object::Blocks &blocks, System::Rand &ran)
+    void empty(const size_t to, Memory::Small::Blocks &blocks, System::Rand &ran)
     {
         (std::cerr << '-').flush();
         ran.shuffle(blk,num);
@@ -52,8 +52,8 @@ Y_UTEST(memory_small_blocks)
 
     Concurrent::Singulet::Verbose = true;
     System::Rand           ran;
-    Memory::Object::Blocks & blocks = Memory::Object::Blocks::Instance();
-    
+    Memory::Small::Blocks & blocks = Memory::Small::Blocks::Instance();
+
 #if 1
     Y_Memory_BZero(blk);
 
@@ -70,7 +70,7 @@ Y_UTEST(memory_small_blocks)
 
     blocks.display(std::cerr,0);
 
-    Y_SIZEOF(Memory::Object::Blocks);
+    Y_SIZEOF(Memory::Small::Blocks);
 
 }
 Y_UDONE()

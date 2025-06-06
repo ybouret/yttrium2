@@ -36,12 +36,12 @@ namespace Yttrium
 
             class SmallManager :
             public Quanta::Manager,
-            public Object::Guild
+            public Small::Guild
             {
             public:
                 inline explicit SmallManager(const unsigned blockShift) :
                 Quanta::Manager(blockShift),
-                Object::Guild(bytes)
+                Small::Guild(bytes)
                 {
                     //std::cerr << "[+] " << bytes << std::endl;
                 }
@@ -83,7 +83,7 @@ namespace Yttrium
             public:
                 inline explicit LargeManager(const unsigned blockShift) :
                 Quanta::Manager(blockShift),
-                ledger( Object::Ledger::Instance() )
+                ledger( Small::Ledger::Instance() )
                 {
                     //std::cerr << "[+] " << bytes << std::endl;
                 }
@@ -106,7 +106,7 @@ namespace Yttrium
                     new (addr) LargeManager(unsigned(blockShift));
                 }
 
-                Memory::Object::Ledger &ledger;
+                Memory::Small::Ledger &ledger;
 
             private:
                 Y_Disable_Copy_And_Assign(LargeManager);
@@ -185,7 +185,7 @@ namespace Yttrium
             initEpilog(os,false);
 
             ++indent;
-            Memory::Object::Ledger::Location().display(os,indent);
+            Memory::Small::Ledger::Location().display(os,indent);
             --indent;
 
             quit(os,indent);

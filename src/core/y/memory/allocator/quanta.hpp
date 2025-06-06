@@ -43,7 +43,7 @@ namespace Yttrium
             //__________________________________________________________________
             static const char * const CallSign;                                           //!< "Memory::Dyads"
             static const Longevity    LifeTime       = LifeTimeOf:: MemoryQuanta;         //!< life time
-            static const unsigned     MaxBlocksShift = Object::Metrics::LimitObjectShift; //!< for small memory manager
+            static const unsigned     MaxBlocksShift = Small::Metrics::LimitObjectShift;  //!< for small memory manager
             static const unsigned     MaxLedgerShift = Limits::MaxBlockShift;             //!< alias
             static const unsigned     NumBlocksShift = MaxBlocksShift+1;                  //!< alias
             static const unsigned     NumLargerShift = MaxLedgerShift-MaxBlocksShift;     //!< alias

@@ -15,10 +15,10 @@ namespace Yttrium
     namespace Memory
     {
 
-        namespace Object
+        namespace Small
         {
 
-            const char * const Blocks:: CallSign = "Memory::Object::Blocks";
+            const char * const Blocks:: CallSign = "Memory::Small::Blocks";
 
             Blocks:: Knot:: Knot(const size_t blockSize, const size_t pageBytes) :
             arena(blockSize,pageBytes),

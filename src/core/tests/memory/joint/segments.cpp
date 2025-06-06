@@ -71,10 +71,10 @@ Y_UTEST(memory_joint_segments)
 
         emptyWith(0,segments,ran);
 
-        Memory::Object::Ledger::Instance().display(std::cerr,0);
+        Memory::Small::Ledger::Instance().display(std::cerr,0);
     }
 
-    Memory::Object::Ledger::Instance().display(std::cerr,0);
+    Memory::Small::Ledger::Instance().display(std::cerr,0);
 
 }
 Y_UDONE()

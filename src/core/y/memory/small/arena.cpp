@@ -14,7 +14,7 @@ namespace Yttrium
 {
     namespace Memory
     {
-        namespace Object
+        namespace Small
         {
 
             size_t Arena:: Hash(const size_t bs) noexcept
@@ -23,7 +23,7 @@ namespace Yttrium
                 return CRC32::Run(w);;
             }
 
-            const char * const Arena:: CallSign = "Memory::Object::Arena";
+            const char * const Arena:: CallSign = "Memory::Small::Arena";
             static const char  ErrorHeader[]    = "*** [FAILED] ";
 
 #define Y_Arena_Check(EXPR) do { if ( !(EXPR) ) { std::cerr << ErrorHeader << #EXPR << std::endl;  return false; } } while(false)
@@ -200,7 +200,7 @@ namespace Yttrium
     namespace Memory
     {
 
-        namespace Object
+        namespace Small
         {
             //------------------------------------------------------------------
             //
@@ -347,7 +347,7 @@ namespace Yttrium
     namespace Memory
     {
 
-        namespace Object
+        namespace Small
         {
             namespace
             {

@@ -11,7 +11,7 @@ namespace Yttrium
     namespace Memory
     {
 
-        namespace Object
+        namespace Small
         {
             //__________________________________________________________________
             //

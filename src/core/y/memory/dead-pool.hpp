@@ -34,7 +34,7 @@ namespace Yttrium
             Y_Ingress_Decl();
             Core::PoolOf<Page>    zpool;
             const size_t          bytes;
-            Memory::Object::Guild guild;
+            Memory::Small::Guild  guild;
 
 
         };

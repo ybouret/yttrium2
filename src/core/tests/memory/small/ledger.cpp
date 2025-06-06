@@ -19,12 +19,12 @@ Y_UTEST(memory_small_ledger)
     System::Rand  ran;
 
 
-    Memory::Object::Ledger & ledger = Memory::Object::Ledger::Instance();
+    Memory::Small::Ledger & ledger = Memory::Small::Ledger::Instance();
     std::cerr << "ready for " << ledger.callSign() << std::endl;
 
     for(size_t i=10+ran.leq(10);i>0;--i)
     {
-        ledger.cache( unsigned(Memory::Object::Ledger::MinPageShift + ran.leq(Memory::Object::Ledger::NumPageShift/5)), ran.leq(5));
+        ledger.cache( unsigned(Memory::Small::Ledger::MinPageShift + ran.leq(Memory::Small::Ledger::NumPageShift/5)), ran.leq(5));
     }
 
     ledger.display(std::cerr,0);
@@ -34,8 +34,8 @@ Y_UTEST(memory_small_ledger)
     ledger.display(std::cerr,0);
 
 
-    Y_PRINTV(  Memory::Object::Ledger::MinPageShift );
-    Y_PRINTV(  Memory::Object::Ledger::MaxPageShift );
+    Y_PRINTV(  Memory::Small::Ledger::MinPageShift );
+    Y_PRINTV(  Memory::Small::Ledger::MaxPageShift );
 
 
 }

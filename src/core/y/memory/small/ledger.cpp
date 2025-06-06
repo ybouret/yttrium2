@@ -9,10 +9,10 @@ namespace Yttrium
 {
     namespace Memory
     {
-        namespace Object
+        namespace Small
         {
 
-            const char * const Ledger:: CallSign = "Memory::Object::Ledger";
+            const char * const Ledger:: CallSign = "Memory::Small::Ledger";
             const unsigned     Ledger:: NumPageShift;
 
             namespace

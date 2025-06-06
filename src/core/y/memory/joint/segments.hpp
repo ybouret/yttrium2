@@ -12,7 +12,7 @@ namespace Yttrium
 {
     namespace Memory
     {
-        namespace Object
+        namespace Small
         {
             class Ledger;
         }
@@ -117,7 +117,7 @@ namespace Yttrium
                 Slot * const           table;      //!< table of list of segments
                 const Slot * const     lastSlot;   //!< first invalid slot address
                 const unsigned         tableShift; //!< memory shift to hild table
-                Object::Ledger       & ledger;     //!< memory cache for segments
+                Small::Ledger        & ledger;     //!< memory cache for segments
             };
 
         }

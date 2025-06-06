@@ -12,9 +12,9 @@ namespace Yttrium
 {
     namespace Memory
     {
-        namespace Object
+        namespace Small
         {
-            const char * const Pages:: CallSign = "Memory::Object::Pages";
+            const char * const Pages:: CallSign = "Memory::Small::Pages";
 
             const char * Pages:: callSign() const noexcept
             {

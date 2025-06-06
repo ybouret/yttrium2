@@ -7,7 +7,7 @@ namespace Yttrium
     namespace Memory
     {
 
-        namespace Object
+        namespace Small
         {
 
             const size_t Metrics:: MediumLimitBytes = Joint::Segment::MaxSizeFor(DefaultPageShift);

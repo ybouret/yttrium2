@@ -21,14 +21,14 @@ namespace Yttrium
     namespace Concurrent
     {
 
-        Mutex:: Mutex() : code( Memory::Object::Blocks::Instance().createAs<Code>() )
+        Mutex:: Mutex() : code( Memory::Small::Blocks::Instance().createAs<Code>() )
         {
         }
 
         Mutex:: ~Mutex() noexcept
         {
             assert(0!=code);
-            Memory::Object::Blocks::Location().deleteAs( Coerce(code) );
+            Memory::Small::Blocks::Location().deleteAs( Coerce(code) );
         }
         
         void Mutex:: doLock() noexcept

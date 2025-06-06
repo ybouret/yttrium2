@@ -13,7 +13,7 @@ namespace Yttrium
 
     namespace Memory
     {
-        namespace Object { class Blocks; }
+        namespace Small { class Blocks; }
         class Pooled;
         class Quanta;
         class System;
@@ -110,7 +110,7 @@ namespace Yttrium
         const size_t * const    condensation; //!< [1..LimitObjectBytes]
 
     public:
-        Memory::Object::Blocks & blocks; //!< used for small
+        Memory::Small::Blocks &  blocks; //!< used for small
         Memory::Pooled &         pooled; //!< used for medium
         Memory::Quanta &         quanta; //!< used for larger and special medium
         Memory::System &         sysmem;

@@ -34,7 +34,7 @@ namespace Yttrium
             }
 
 
-            const unsigned Segments:: MinShift = Object::Metrics::DefaultPageShift;
+            const unsigned Segments:: MinShift = Small::Metrics::DefaultPageShift;
 
             namespace
             {
@@ -52,7 +52,7 @@ namespace Yttrium
             table(0),
             lastSlot(0),
             tableShift( computeTableShift() ),
-            ledger( Object::Ledger::Instance() )
+            ledger( Small::Ledger::Instance() )
             {
                 Coerce(table) = static_cast<Slot*>( ledger.query(tableShift) )-MinShift;
                 for(unsigned bs=MinShift;bs<=MaxShift;++bs)

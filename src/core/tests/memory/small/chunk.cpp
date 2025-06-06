@@ -13,7 +13,7 @@ using namespace Yttrium;
 namespace
 {
     static inline
-    void fill( void * addr[], size_t &size , Memory::Object::Chunk &chunk, const size_t blockSize, System::Rand &ran) noexcept
+    void fill( void * addr[], size_t &size , Memory::Small::Chunk &chunk, const size_t blockSize, System::Rand &ran) noexcept
     {
         while(true)
         {
@@ -24,7 +24,7 @@ namespace
     }
 
     static inline
-    void empty( const size_t target, void * addr[], size_t &size, Memory::Object::Chunk &chunk, const size_t blockSize)
+    void empty( const size_t target, void * addr[], size_t &size, Memory::Small::Chunk &chunk, const size_t blockSize)
     {
         while(size>target)
         {
@@ -50,7 +50,7 @@ Y_UTEST(memory_small_chunk)
             if(0==blockAddr) throw Exception("no memory");
             for(size_t blockSize=1;blockSize<=256;++blockSize)
             {
-                Memory::Object::Chunk chunk(blockAddr, Memory::Object::Chunk::NumBlocksFor(blockSize,userBytes), blockSize);
+                Memory::Small::Chunk chunk(blockAddr, Memory::Small::Chunk::NumBlocksFor(blockSize,userBytes), blockSize);
                 //std::cerr << "\tblockSize=" << blockSize << " / numBlocks=" << (int)chunk.userBlocks << std::endl;
                 memset(addr,0,sizeof(addr));
                 size = 0;
@@ -76,9 +76,9 @@ Y_UTEST(memory_small_chunk)
         std::cerr << "blockSize=" << std::setw(3) << blockSize; //<< std::endl;
         unsigned     userShift = 0;
         uint8_t      numBlocks = 0;
-        const size_t userBytes = Memory::Object::Chunk::UserBytesFor(blockSize,4096,userShift,numBlocks);
+        const size_t userBytes = Memory::Small::Chunk::UserBytesFor(blockSize,4096,userShift,numBlocks);
         Y_ASSERT(size_t(1)<<userShift == userBytes);
-        Y_ASSERT(Memory::Object::Chunk::NumBlocksFor(blockSize,userBytes) == numBlocks);
+        Y_ASSERT(Memory::Small::Chunk::NumBlocksFor(blockSize,userBytes) == numBlocks);
         std::cerr << " | numBlocks = " << std::setw(3) << int(numBlocks);
         std::cerr << " | userBytes = " << std::setw(8) << userBytes;
         std::cerr << std::endl;
@@ -86,8 +86,8 @@ Y_UTEST(memory_small_chunk)
 
 
 
-    Y_SIZEOF(Memory::Object::Chunk);
-    Y_CHECK(IsPowerOfTwo( sizeof(Memory::Object::Chunk)) );
+    Y_SIZEOF(Memory::Small::Chunk);
+    Y_CHECK(IsPowerOfTwo( sizeof(Memory::Small::Chunk)) );
 }
 Y_UDONE()
 

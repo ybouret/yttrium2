@@ -16,7 +16,7 @@ namespace Yttrium
     {
         class Dyadic;
 
-        namespace Object
+        namespace Small
         {
             //__________________________________________________________________
             //

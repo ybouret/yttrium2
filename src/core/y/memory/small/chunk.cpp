@@ -12,7 +12,7 @@ namespace Yttrium
 {
     namespace Memory
     {
-        namespace Object
+        namespace Small
         {
             uint8_t Chunk:: NumBlocksFor(const size_t blockSize,
                                          const size_t userBytes) noexcept

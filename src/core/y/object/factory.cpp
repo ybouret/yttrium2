@@ -24,20 +24,20 @@ namespace Yttrium
     }
 
     const char * const              Object:: Factory:: CallSign = "Object::Factory";
-    const System::AtExit::Longevity Object:: Factory::LifeTime;
+    const System::AtExit::Longevity Object:: Factory:: LifeTime;
 
-    static size_t Condensation[Memory::Object::Metrics::LimitObjectBytes];
+    static size_t Condensation[Memory::Small::Metrics::LimitObjectBytes];
 
     Object:: Factory:: Factory() :
     Singleton<Factory, ClassLockPolicy>(),
     Memory::Allocator(CallSign),
     condensation( static_cast<size_t *>(Y_Memory_BZero(Condensation))-1 ),
-    blocks( Memory::Object::Blocks::Instance() ),
+    blocks( Memory::Small::Blocks::Instance() ),
     pooled( Memory::Pooled::Instance() ),
     quanta( Memory::Quanta::Instance() ),
     sysmem( Memory::System::Instance() )
     {
-        for(size_t i=1;i<=Memory::Object::Metrics::LimitObjectBytes;++i)
+        for(size_t i=1;i<=Memory::Small::Metrics::LimitObjectBytes;++i)
             Coerce(condensation[i]) = Alignment::OnLog2<CondensationShift>::Ceil(i);
     }
 
@@ -101,8 +101,8 @@ namespace Yttrium
         return quanta.releaseDyadic(shift,entry);
     }
 
-#define LIMIT_OBJECT_BYTES Memory::Object::Metrics::LimitObjectBytes
-#define MEDIUM_LIMIT_BYTES Memory::Object::Metrics::MediumLimitBytes
+#define LIMIT_OBJECT_BYTES Memory::Small::Metrics::LimitObjectBytes
+#define MEDIUM_LIMIT_BYTES Memory::Small::Metrics::MediumLimitBytes
 
 
 
