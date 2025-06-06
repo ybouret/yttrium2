@@ -9,6 +9,8 @@ namespace Yttrium
 {
     namespace Concurrent
     {
+        class Condition;
+
         //______________________________________________________________________
         //
         //
@@ -35,6 +37,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Mutex); //!< discading
             Code * const code;                //!< platform specific
 
+            friend class Condition;
             //__________________________________________________________________
             //
             //

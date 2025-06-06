@@ -50,7 +50,9 @@ namespace Yttrium
 
                 inline virtual ~PThreadMutexAttribute() noexcept
                 {
-                    pthread_mutexattr_destroy(data);
+                    const int err = pthread_mutexattr_destroy(data);
+                    if(0!=err) Libc::Error::Critical(err,"pthread_mutexattr_destroy");
+
                 }
 
                 const pthread_mutexattr_t * operator()(void) const noexcept { return data; }
@@ -76,7 +78,8 @@ namespace Yttrium
 
                 inline virtual ~PThreadMutex() noexcept
                 {
-                    pthread_mutex_destroy(data);
+                    const int err = pthread_mutex_destroy(data);
+                    if(0!=err) Libc::Error::Critical(err,"pthread_mutex_destroy");
                 }
 
 

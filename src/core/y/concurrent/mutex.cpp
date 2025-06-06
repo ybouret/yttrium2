@@ -1,4 +1,4 @@
-#include "y/concurrent/mutex.hpp"
+#include "y/concurrent/condition.hpp"
 #include "y/system/platform.hpp"
 #include "y/memory/workspace.hpp"
 #include "y/system/exception.hpp"
@@ -21,14 +21,17 @@ namespace Yttrium
     namespace Concurrent
     {
 
-        Mutex:: Mutex() : code( Memory::Small::Blocks::Instance().createAs<Code>() )
+        typedef Memory::Small::Blocks Provider;
+
+        Mutex:: Mutex() : code( Provider::Instance().createAs<Code>() )
         {
+            std::cerr << "sizeof(Mutex::Code)=" << sizeof(Code) << std::endl;
         }
 
         Mutex:: ~Mutex() noexcept
         {
             assert(0!=code);
-            Memory::Small::Blocks::Location().deleteAs( Coerce(code) );
+            Provider::Location().deleteAs( Coerce(code) );
         }
         
         void Mutex:: doLock() noexcept
@@ -52,3 +55,37 @@ namespace Yttrium
 
     }
 }
+
+
+namespace Yttrium
+{
+    namespace Concurrent
+    {
+
+        Condition:: Condition() : code( Provider::Instance().createAs<Code>() )
+        {
+            std::cerr << "sizeof(Condition::Code)=" << sizeof(Code) << std::endl;
+        }
+
+        Condition:: ~Condition() noexcept
+        {
+            assert(0!=code);
+            Provider::Location().deleteAs( Coerce(code) );
+        }
+
+        void Condition:: wait(Mutex &mutex) noexcept
+        {
+            assert(0!=code);
+            code->wait(mutex);
+        }
+
+        void Condition:: signal() noexcept
+        {
+            assert(0!=code);
+            code->signal();
+        }
+
+
+    }
+}
+
