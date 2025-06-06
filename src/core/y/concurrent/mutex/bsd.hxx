@@ -1,5 +1,4 @@
 #include "y/concurrent/nucleus.hpp"
-#include "y/memory/workspace/solitary.hpp"
 #include <pthread.h>
 
 

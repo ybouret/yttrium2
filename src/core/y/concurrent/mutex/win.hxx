@@ -6,10 +6,10 @@ namespace Yttrium
 {
     namespace Concurrent
     {
-        class Mutex :: Code : public Memory::Workspace<CRITICAL_SECTION>
+        class Mutex :: Code : public Memory:: Solitary<CRITICAL_SECTION>
         {
         public:
-            inline Code() noexcept : Memory::Workspace<CRITICAL_SECTION>()
+            inline Code() noexcept : Memory::Solitary<CRITICAL_SECTION>()
             {
                 ::InitializeCriticalSection(data);
             }
@@ -41,3 +41,39 @@ namespace Yttrium
 }
 
 
+
+
+namespace Yttrium
+{
+    namespace Concurrent
+    {
+        class Condition::Code
+        {
+        public:
+            inline explicit Code()
+            {
+
+            }
+
+            inline virtual ~Code() noexcept
+            {
+            }
+
+            inline void wait(Mutex& mutex) noexcept
+            {
+
+            }
+
+            inline void signal() noexcept
+            {
+            }
+
+            inline void broadcast() noexcept
+            {
+
+            }
+        private:
+            Y_Disable_Copy_And_Assign(Code);
+        };
+    }
+}

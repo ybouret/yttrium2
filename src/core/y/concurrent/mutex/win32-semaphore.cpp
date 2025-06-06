@@ -1,16 +1,15 @@
-#include "y/concurrent/win32-semaphore.hpp"
+#include "y/concurrent/mutex/win32-semaphore.hpp"
 #include "y/system/exception.hpp"
-#include "y/system/error.hpp"
 
 namespace Yttrium {
 
-	namespace Win32
+	namespace Windows
 	{
 		Semaphore:: ~Semaphore() noexcept
 		{
 #if defined(Y_WIN)
 			assert(0 != sem_);
-			::CloseHandle(sem_); 
+			::CloseHandle(sem_);
 			sem_ = 0;
 #endif
 		}
@@ -19,7 +18,7 @@ namespace Yttrium {
 #if defined(Y_WIN)
 			: sem_(::CreateSemaphore(0, lMinCount, lMaxCount, 0))
 		{
-			if (!sem_) throw Win32::Exception(::GetLastError(), "::CreateSemaphore");
+			if (!sem_) throw Windows::Exception(::GetLastError(), "::CreateSemaphore");
 		}
 #else
 		{
@@ -33,7 +32,7 @@ namespace Yttrium {
 #if defined(Y_WIN)
 			assert(0 != sem_);
 			const DWORD res = ::WaitForSingleObject(sem_, INFINITE);
-			if (res != WAIT_OBJECT_0) CriticalError(::GetLastError(), "::WaitForSingleObject( SEMAPHORE )");
+			if (res != WAIT_OBJECT_0) Error::Critical(::GetLastError(), "::WaitForSingleObject( SEMAPHORE )");
 #endif
 		}
 
@@ -41,7 +40,7 @@ namespace Yttrium {
 		{
 #if defined(Y_WIN)
 			assert(0 != sem_);
-			if (!::ReleaseSemaphore(sem_, 1, NULL)) CriticalError(::GetLastError(), "::ReleaseSemaphore");
+			if (!::ReleaseSemaphore(sem_, 1, NULL)) Error::Critical(::GetLastError(), "::ReleaseSemaphore");
 #endif
 		}
 

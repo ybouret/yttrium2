@@ -3,7 +3,8 @@
 #ifndef Y_Concurrent_WIN32_Semaphore_Included
 #define Y_Concurrent_WIN32_Semaphore_Included 1
 
-#include "y/config/starting.hpp"
+#include "y/core/setup.hpp"
+#include "y/system/platform.hpp"
 
 #if defined(Y_WIN)
 #define WIN32_LEAN_AND_MEAN
@@ -13,7 +14,7 @@
 namespace Yttrium
 {
 
-    namespace Win32
+    namespace Windows
     {
         //______________________________________________________________________
         //
@@ -58,7 +59,7 @@ namespace Yttrium
 #if defined(Y_WIN)
             HANDLE sem_;
 #endif
-            Y_DISABLE_COPY_AND_ASSIGN(Semaphore);
+            Y_Disable_Copy_And_Assign(Semaphore);
         };
     }
 
