@@ -13,7 +13,7 @@ namespace
 
 }
 
-Y_UTEST(memory_object_ledger)
+Y_UTEST(memory_small_ledger)
 {
     Concurrent::Singulet::Verbose = true;
     System::Rand  ran;

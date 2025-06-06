@@ -5,7 +5,7 @@
 
 using namespace Yttrium;
 
-Y_UTEST(memory_object_guild)
+Y_UTEST(memory_small_guild)
 {
 
     Concurrent::Singulet::Verbose  = 1;

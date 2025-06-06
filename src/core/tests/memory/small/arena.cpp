@@ -33,7 +33,7 @@ namespace
 
 }
 
-Y_UTEST(memory_object_arena)
+Y_UTEST(memory_small_arena)
 {
 	System::Rand ran;
 	Y_SIZEOF(Memory::Object::Arena);

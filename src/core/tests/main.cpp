@@ -43,15 +43,15 @@ Y_UTEST_DECL(64)
     Y_UTEST(memory_pooled);
     Y_UTEST(memory_quanta);
     Y_UTEST(memory_workspace);
-    Y_UTEST(memory_object_chunk);
-    Y_UTEST(memory_object_pages);
-    Y_UTEST(memory_object_ledger);
-    Y_UTEST(memory_object_arena);
-    Y_UTEST(memory_object_blocks);
-    Y_UTEST(memory_object_factory);
-    Y_UTEST(memory_object_guild);
+    Y_UTEST(memory_small_chunk);
+    Y_UTEST(memory_small_pages);
+    Y_UTEST(memory_small_ledger);
+    Y_UTEST(memory_small_arena);
+    Y_UTEST(memory_small_blocks);
+    Y_UTEST(memory_small_guild);
     Y_UTEST(memory_joint_segment);
     Y_UTEST(memory_joint_segments);
+    Y_UTEST(memory_object_factory);
     Y_UTEST(memory_object);
     Y_UTEST(memory_dead_pool);
 

@@ -47,7 +47,7 @@ namespace
 
 }
 
-Y_UTEST(memory_object_blocks)
+Y_UTEST(memory_small_blocks)
 {
 
     Concurrent::Singulet::Verbose = true;
