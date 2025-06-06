@@ -16,6 +16,7 @@ Y_CreateLibrary(y
     y/ascii
     y/calculus
     y/concurrent
+    y/concurrent/windows
     y/concurrent/singleton
     y/concurrent/mutex
     y/container

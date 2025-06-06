@@ -1,4 +1,4 @@
-#include "y/concurrent/mutex/win32-semaphore.hpp"
+#include "y/concurrent/windows/semaphore.hpp"
 #include "y/system/exception.hpp"
 
 namespace Yttrium {
