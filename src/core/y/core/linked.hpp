@@ -19,12 +19,22 @@ namespace Yttrium
         //! common data for Linked structures
         //
         //______________________________________________________________________
-        struct LinkedInfo
+        class LinkedInfo
         {
+
+        public:
             static const char OwnsNode[]; //!< "owns node!"
             static const char NullNode[]; //!< "NULL==node"
             static const char UsedNext[]; //!< "NULL!=next"
             static const char UsedPrev[]; //!< "NULL!=prev"
+
+            explicit LinkedInfo() noexcept : size(0) {}
+            virtual ~LinkedInfo() noexcept { assert(0==size); }
+
+            const size_t size;
+
+        private:
+            Y_Disable_Copy_And_Assign(LinkedInfo);
         };
 
         //______________________________________________________________________
@@ -36,7 +46,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename NODE>
-        class Linked
+        class Linked  : public LinkedInfo
         {
         public:
             //__________________________________________________________________
@@ -53,8 +63,8 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            inline explicit Linked() noexcept : size(0), head(0) {} //!< initialize
-            inline virtual ~Linked() noexcept {}                    //!< cleanup
+            inline explicit Linked() noexcept : LinkedInfo(), head(0) {} //!< initialize
+            inline virtual ~Linked() noexcept {}                         //!< cleanup
 
 
 
@@ -165,7 +175,6 @@ namespace Yttrium
             // Members
             //
             //__________________________________________________________________
-            const size_t size; //!< current size
             NODE *       head; //!< current head
 
         protected:

@@ -70,6 +70,7 @@ Y_UTEST(memory:object:guild)
 Y_UTEST(memory:joint:segment)
 Y_UTEST(memory:joint:segments)
 Y_UTEST(memory:object)
+Y_UTEST(memory:dead_pool)
 
 
 #hashing
