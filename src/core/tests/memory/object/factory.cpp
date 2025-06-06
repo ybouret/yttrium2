@@ -1,5 +1,5 @@
 
-#include "y/memory/object/factory.hpp"
+#include "y/object/factory.hpp"
 #include "y/system/rand.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/utest/run.hpp"
@@ -10,8 +10,8 @@ namespace
 {
     enum How
     {
-        WithBlock = 0,
-        WithJoint = 1
+        WithSingle = 0,
+        WithPooled = 1
     };
 
     struct Block
@@ -25,9 +25,9 @@ namespace
     static Block        blocks[MaxBlock];
     static size_t       count = 0;
 
-#if 0
+#if 1
     static inline
-    void fill(Memory::Object::Factory &F, System::Rand &ran)
+    void fill(Object::Factory &F, System::Rand &ran)
     {
         while(count<MaxBlock)
         {
@@ -36,8 +36,8 @@ namespace
             b.len = 1 + ran.leq(100); Y_ASSERT(b.len>0);
             switch(b.how)
             {
-                case WithBlock: b.ptr = F.acquireBlock(b.len); break;
-                case WithJoint: b.ptr = F.acquireJoint(b.len); break;
+                case WithSingle: b.ptr = F.acquireSingle(b.len); break;
+                case WithPooled: b.ptr = F.acquirePooled(b.len); break;
             }
             ++count;
         }
@@ -46,7 +46,7 @@ namespace
 
     static inline
     void empty(const size_t              to,
-               Memory::Object::Factory & F,
+               Object::Factory         & F,
                System::Rand &            ran) noexcept
     {
         ran.shuffle(blocks,count);
@@ -55,8 +55,8 @@ namespace
             Block & b = blocks[--count];
             switch(b.how)
             {
-                case WithBlock: F.releaseBlock(b.ptr,b.len); break;
-                case WithJoint: F.releaseJoint(b.ptr,b.len); break;
+                case WithSingle: F.releaseSingle(b.ptr,b.len); break;
+                case WithPooled: F.releasePooled(b.ptr,b.len); break;
             }
             Y_Memory_VZero(b);
         }
@@ -73,10 +73,9 @@ Y_UTEST(memory_object_factory)
     System::Rand              ran;
 
     Y_Memory_BZero(blocks);
-#if 0
-    Memory::Object::Factory & F = Memory::Object::Factory::Instance();
+#if 1
+    Object::Factory & F =  Object::Factory::Instance();
     std::cerr << F.callSign() << std::endl;
-
 
     fill(F,ran);
     for(size_t iter=0;iter<10;++iter)
@@ -86,7 +85,8 @@ Y_UTEST(memory_object_factory)
     }
     empty(0,F,ran);
 #endif
-    
+    F.display(std::cerr,0);
+
 
 }
 Y_UDONE()
