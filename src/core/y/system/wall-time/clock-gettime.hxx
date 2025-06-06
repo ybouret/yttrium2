@@ -16,7 +16,7 @@ namespace Yttrium
 
         class WallTime :: Code : public Object
         {
-            public:
+        public:
             inline explicit Code() : Object(), freq( Calibrate() )
             {}
 
@@ -25,14 +25,14 @@ namespace Yttrium
 
             }
 
-            inline long double convert(const uint64_t ticks) const noexcept 
+            inline long double convert(const uint64_t ticks) const noexcept
             {
                 return freq * static_cast<long double>(ticks);
             }
 
             const long double freq;
 
-            private:
+        private:
             Y_Disable_Copy_And_Assign(Code);
             static inline long double Calibrate()
             {
