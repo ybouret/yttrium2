@@ -5,6 +5,7 @@
 #include "y/system/platform.hpp"
 #include "y/type/moniker.hpp"
 #include "y/system/exception.hpp"
+#include "y/ability/lockable.hpp"
 
 #if defined(Y_Darwin)
 #include "wall-time/darwin.hxx"
@@ -12,6 +13,10 @@
 
 #if defined(Y_WIN)
 #include "wall-time/win.hxx"
+#endif
+
+#if defined(Y_Linux) || defined(Y_FreeBSD) || defined(Y_SunOS) || defined(Y_OpenBSD)
+#include "wall-time/clock-gettime.hxx"
 #endif
 
 namespace Yttrium
