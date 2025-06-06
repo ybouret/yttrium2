@@ -1,5 +1,5 @@
 
-#include "y/memory/object/book/pages.hpp"
+#include "y/memory/object/ledger/pages.hpp"
 #include "y/memory/allocator/dyadic.hpp"
 #include "y/check/static.hpp"
 #include "y/system/exception.hpp"

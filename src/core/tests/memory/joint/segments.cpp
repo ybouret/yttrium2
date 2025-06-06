@@ -3,7 +3,7 @@
 #include "y/system/rand.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/utest/run.hpp"
-#include "y/memory/object/book.hpp"
+#include "y/memory/object/ledger.hpp"
 
 using namespace Yttrium;
 

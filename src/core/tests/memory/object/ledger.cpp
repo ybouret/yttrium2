@@ -1,6 +1,6 @@
 
 
-#include "y/memory/object/book.hpp"
+#include "y/memory/object/ledger.hpp"
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
 
@@ -13,7 +13,7 @@ namespace
 
 }
 
-Y_UTEST(memory_object_book)
+Y_UTEST(memory_object_ledger)
 {
     Concurrent::Singulet::Verbose = true;
     System::Rand  ran;

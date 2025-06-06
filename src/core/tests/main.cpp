@@ -44,7 +44,7 @@ Y_UTEST_DECL(64)
     Y_UTEST(memory_workspace);
     Y_UTEST(memory_object_chunk);
     Y_UTEST(memory_object_pages);
-    Y_UTEST(memory_object_book);
+    Y_UTEST(memory_object_ledger);
     Y_UTEST(memory_object_arena);
     Y_UTEST(memory_object_blocks);
     Y_UTEST(memory_object_factory);

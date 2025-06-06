@@ -1,6 +1,6 @@
 
-#include "y/memory/object/book.hpp"
-#include "y/memory/object/book/pages.hpp"
+#include "y/memory/object/ledger.hpp"
+#include "y/memory/object/ledger/pages.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/type/destruct.hpp"
 #include "y/xml/attribute.hpp"

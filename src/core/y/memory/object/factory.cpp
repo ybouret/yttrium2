@@ -2,7 +2,7 @@
 #include "y/memory/object/factory.hpp"
 #include "y/xml/attribute.hpp"
 #include "y/memory/object/blocks.hpp"
-#include "y/memory/object/book.hpp"
+#include "y/memory/object/ledger.hpp"
 #include "y/check/static.hpp"
 #include "y/memory/allocator/pooled.hpp"
 #include "y/memory/allocator/quanta.hpp"

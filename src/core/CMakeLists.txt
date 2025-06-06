@@ -24,7 +24,7 @@ Y_CreateLibrary(y
     y/memory/workspace
     y/memory/allocator
     y/memory/object
-    y/memory/object/book
+    y/memory/object/ledger
     y/memory/object/factory
     y/memory/joint
     y/utest

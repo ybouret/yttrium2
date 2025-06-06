@@ -4,7 +4,7 @@
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
 #include "y/check/usual.hpp"
-#include "y/memory/object/book.hpp"
+#include "y/memory/object/ledger.hpp"
 
 #include <cstring>
 
