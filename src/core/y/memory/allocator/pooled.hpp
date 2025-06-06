@@ -44,6 +44,11 @@ namespace Yttrium
             //
             //__________________________________________________________________
             virtual void display(std::ostream &,size_t) const;
+            
+            virtual void * acquireBlock(size_t &blockSize);
+            virtual void   releaseBlock(void * const blockAddr,
+                                        const size_t blockSize) noexcept;
+
 
         private:
             Y_Disable_Copy_And_Assign(Pooled); //!< discarding
@@ -54,9 +59,7 @@ namespace Yttrium
             virtual ~Pooled() noexcept;  //!< cleanup
 
 
-            virtual void * acquireBlock(size_t &blockSize);
-            virtual void   releaseBlock(void * const blockAddr,
-                                        const size_t blockSize) noexcept;
+
         };
 
     }

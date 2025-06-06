@@ -436,6 +436,7 @@ namespace Yttrium
                 return insertOrderedBy(CompareAddresses,node);
             }
 
+            //! sort by increasing address of nodes
             inline void sortByIncreasingAddress() noexcept
             {
                 sort( CompareAddresses );

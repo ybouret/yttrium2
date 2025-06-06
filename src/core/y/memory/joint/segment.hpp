@@ -56,7 +56,7 @@ namespace Yttrium
                 static const size_t          MaxDataBytes = Base2<size_t>::MaxBytes;      //!< alias
                 static const size_t          Reserved;                                    //!< SegmentBytes + 2 * BlockSize
                 static const size_t          MaxRequest;                                  //!< MaxDataBytes - Reserved
-                typedef Alignment::To<Block> Aligning;
+                typedef Alignment::To<Block> Aligning;                                    //!< alias
 
                 //! internal parameters
                 struct Param
@@ -133,6 +133,10 @@ namespace Yttrium
                 static size_t    MaxSizeFor(const unsigned shift);
 
                 //! get block-aligned request size
+                /**
+                 \param request 0<=request<=MaxRequest
+                 \return aligned-to-block bytes matching request
+                 */
                 static size_t  Aligned(const size_t request);
 
                 //______________________________________________________________

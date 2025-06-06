@@ -210,6 +210,7 @@ namespace Yttrium
                 }
             }
 
+            //! sort by increasing address of nodes
             inline void sortByIncreasingAddress() noexcept
             {
                 sort( CompareAddresses );

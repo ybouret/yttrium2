@@ -13,16 +13,21 @@ namespace Yttrium
 
         namespace Object
         {
-
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! pre-computed metric for Object::Factory and Quanta
+            //
+            //
+            //__________________________________________________________________
             struct Metrics
             {
-                static const size_t   DefaultPageBytes = 4096;                                   //!< default page size
+                static const size_t   DefaultPageBytes = 4096;                                 //!< default page size
                 static const unsigned DefaultPageShift = IntegerLog2<DefaultPageBytes>::Value; //!< ensure power of two
-                static const size_t   LimitObjectBytes = 512;                                    //!< limit size
+                static const size_t   LimitObjectBytes = 512;                                  //!< limit size for small objects
                 static const unsigned LimitObjectShift = IntegerLog2<LimitObjectBytes>::Value; //!< ensure power of two
-                //static const size_t   CONDENSATION_BYTES = 4;                                      //!< decrease complexity
-               // static const unsigned CONDENSATION_SHIFT = IntegerLog2<CONDENSATION_BYTES>::Value; //!< ensure power of two
-                static const size_t   MediumLimitBytes;                                          //!< Segment::MaxSizeFor(DefaultPageShift)
+                static const size_t   MediumLimitBytes;                                        //!< Segment::MaxSizeFor(DefaultPageShift)
             };
             
         }

@@ -6,6 +6,7 @@
 #include "y/object.hpp"
 #include "y/singleton.hpp"
 #include "y/concurrent/life-time.hpp"
+#include "y/memory/allocator.hpp"
 
 namespace Yttrium
 {
@@ -16,19 +17,46 @@ namespace Yttrium
         class Pooled;
         class Quanta;
     }
-    
-    class Object::Factory : public Singleton<Factory,ClassLockPolicy>
+
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Factory for global Object allocation
+    //
+    //
+    //__________________________________________________________________________
+    class Object::Factory :
+    public Singleton<Factory,ClassLockPolicy>,
+    public Memory:: Allocator
     {
     public:
-        static const char * const CallSign; //!< "Object::Factory"
-        static const Longevity    LifeTime = LifeTimeOf::ObjectFactory;
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        static const char * const CallSign;                                                  //!< "Object::Factory"
+        static const Longevity    LifeTime = LifeTimeOf::ObjectFactory;                      //!< life time
         static const size_t       CondensationBytes = 4;                                     //!< decrease complexity
         static const unsigned     CondensationShift = IntegerLog2<CondensationBytes>::Value; //!< ensure power of two
 
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
         virtual void display(std::ostream &,size_t) const;
 
 
-
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
         void * acquireSingle(const size_t blockSize);
         void   releaseSingle(void * const blockAddr, const size_t blockSize) noexcept;
 
@@ -43,16 +71,31 @@ namespace Yttrium
 
 
     private:
-        Y_Disable_Copy_And_Assign(Factory);
+        Y_Disable_Copy_And_Assign(Factory);  //!< discarding
         friend class Singleton<Factory,ClassLockPolicy>;
 
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
         explicit Factory();
         virtual ~Factory() noexcept;
 
-        const size_t * const    condensation;
-        
+        virtual void * acquireBlock(size_t &);
+        virtual void   releaseBlock(void * const,const size_t) noexcept;
+
+        //______________________________________________________________________
+        //
+        //
+        // Members
+        //
+        //______________________________________________________________________
+        const size_t * const    condensation; //!< [1..LimitObjectBytes]
+
     public:
-        Memory::Object::Blocks & blocks; //!< uses for small
+        Memory::Object::Blocks & blocks; //!< used for small
         Memory::Pooled &         pooled; //!< used for medium
         Memory::Quanta &         quanta; //!< used for larger and special medium
        // Memory::System &         other;

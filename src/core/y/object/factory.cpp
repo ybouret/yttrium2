@@ -30,6 +30,7 @@ namespace Yttrium
 
     Object:: Factory:: Factory() :
     Singleton<Factory, ClassLockPolicy>(),
+    Memory::Allocator(CallSign),
     condensation( static_cast<size_t *>(Y_Memory_BZero(Condensation))-1 ),
     blocks( Memory::Object::Blocks::Instance() ),
     pooled( Memory::Pooled::Instance() ),
@@ -102,6 +103,27 @@ namespace Yttrium
 #define LIMIT_OBJECT_BYTES Memory::Object::Metrics::LimitObjectBytes
 #define MEDIUM_LIMIT_BYTES Memory::Object::Metrics::MediumLimitBytes
 
+
+    void * Object:: Factory:: acquireBlock(size_t &blockSize)
+    {
+        assert(blockSize>0);
+
+        if(blockSize<=LIMIT_OBJECT_BYTES)
+        {
+            return acquireSingle( blockSize = condensation[blockSize] );
+        }
+
+        assert(blockSize>LIMIT_OBJECT_BYTES);
+        if(blockSize<=MEDIUM_LIMIT_BYTES)
+        {
+            if( IsPowerOfTwo(blockSize) )
+                return acquireQuanta( ExactLog2(blockSize) );
+            return pooled.acquireBlock(blockSize);
+        }
+
+        throw Exception("Not Implemented");
+    }
+
     void * Object:: Factory:: acquire(const size_t blockSize)
     {
         // zero size
@@ -123,8 +145,6 @@ namespace Yttrium
                 return acquireQuanta( ExactLog2(blockSize) );
             return acquirePooled(blockSize);
         }
-
-
 
 
         throw Exception("Not Implemented");
@@ -156,6 +176,30 @@ namespace Yttrium
             return releasePooled(blockAddr,blockSize);
         }
     }
+
+    void Object:: Factory:: releaseBlock(void * const blockAddr, const size_t blockSize) noexcept
+    {
+        assert(0!=blockAddr);
+        assert(blockSize>0);
+
+        if(blockSize<=LIMIT_OBJECT_BYTES)
+        {
+            assert( condensation[blockSize] == blockSize );
+            return releaseSingle(blockAddr,blockSize);
+        }
+
+        assert(blockSize>LIMIT_OBJECT_BYTES);
+        if(blockSize<=MEDIUM_LIMIT_BYTES)
+        {
+            if(IsPowerOfTwo(blockSize))
+                return releaseQuanta( ExactLog2(blockSize), blockAddr);
+            return pooled.releaseBlock(blockAddr,blockSize);
+        }
+
+    }
+
+
+
 
 }
 
