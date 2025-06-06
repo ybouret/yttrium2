@@ -34,6 +34,7 @@ namespace Yttrium
             using Linked<NODE>::owns;
             using Linked<NODE>::size;
             using Linked<NODE>::warning;
+            using Linked<NODE>::CompareAddresses;
 
             //__________________________________________________________________
             //
@@ -157,6 +158,61 @@ namespace Yttrium
                 swapPoolFor(rhs);
                 assert(0==size);
                 assert(lhs.size+rhs.size==oldSize);
+            }
+
+            //! (slow) fusion of two sorted pool
+            /**
+             \param lhs first sorted list
+             \param rhs second sorted list
+             \param compareNodes comparison function
+             */
+            template <typename POOL, typename COMPARE_NODES> inline
+            void fusion(POOL &lhs, POOL &rhs, COMPARE_NODES &compareNodes) noexcept
+            {
+                assert(0==size);
+                assert(lhs.isOrderedBy(compareNodes,Sign::LooselyIncreasing));
+                assert(rhs.isOrderedBy(compareNodes,Sign::LooselyIncreasing));
+#if !defined(NDEBUG)
+                const size_t oldSize = lhs.size+rhs.size;
+#endif
+
+#if 1
+                while(lhs.size>0 && rhs.size>0)
+                {
+                    switch( compareNodes(lhs.head,rhs.head) )
+                    {
+                        case Negative:
+                        case __Zero__: stash( lhs.query() ); continue;
+                        case Positive: stash( rhs.query() ); continue;
+                    }
+                }
+                while(lhs.size) stash( lhs.query() );
+                while(rhs.size) stash( rhs.query() );
+#endif
+                assert(oldSize==size);
+                assert(this->isOrderedBy(compareNodes,Sign::LooselyIncreasing));
+            }
+
+
+            //! (slow) recursive merge sort
+            /**
+             \param compareNodes comparison function
+             */
+            template <typename COMPARE_NODES> inline
+            void sort(COMPARE_NODES &compareNodes) noexcept
+            {
+                if(size>1) {
+                    PoolOf lhs, rhs;
+                    split(lhs,rhs);
+                    lhs.sort(compareNodes);
+                    rhs.sort(compareNodes);
+                    fusion(lhs,rhs,compareNodes);
+                }
+            }
+
+            inline void sortByIncreasingAddress() noexcept
+            {
+                sort( CompareAddresses );
             }
 
 

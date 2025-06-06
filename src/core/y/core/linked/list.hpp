@@ -35,6 +35,7 @@ namespace Yttrium
             using Linked<NODE>::owns;
             using Linked<NODE>::size;
             using Linked<NODE>::warning;
+            using Linked<NODE>::CompareAddresses;
 
             //__________________________________________________________________
             //
@@ -422,17 +423,7 @@ namespace Yttrium
                 return insertAfter(lower,node);
             }
 
-            //! compare nodes by address
-            /**
-             \param lhs first node
-             \param rhs second node
-             \return address order
-             */
-            static inline SignType CompareAddresses(const NODE * const lhs,
-                                                    const NODE * const rhs) noexcept
-            {
-                return Sign::Of(lhs,rhs);
-            }
+            
 
 
             //! insert using address comparison
@@ -443,6 +434,11 @@ namespace Yttrium
             inline NODE * insertOderedByAddresses(NODE * const node) noexcept
             {
                 return insertOrderedBy(CompareAddresses,node);
+            }
+
+            inline void sortByIncreasingAddress() noexcept
+            {
+                sort( CompareAddresses );
             }
 
 

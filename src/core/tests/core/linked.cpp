@@ -184,7 +184,7 @@ Y_UTEST(core_linked)
     }
 
     {
-        std::cerr << "Sorting..." << std::endl;
+        std::cerr << "Sorting List.." << std::endl;
         CxxListOf<Node> list;
         for(size_t i=10+ran.leq(10);i>0;--i)
         {
@@ -194,6 +194,19 @@ Y_UTEST(core_linked)
         list.sort(Node::Compare);
         std::cerr << list << std::endl;
     }
+
+    {
+        std::cerr << "Sorting Pool (slow).." << std::endl;
+        CxxPoolOf<Node> pool;
+        for(size_t i=10+ran.leq(10);i>0;--i)
+        {
+            if( ran.choice() ) pool.store( new Node() ); else pool.stash( new Node() );
+        }
+        std::cerr << pool  << std::endl;
+        pool.sort(Node::Compare);
+        std::cerr << pool  << std::endl;
+    }
+
 
     {
         std::cerr << "Pop" << std::endl;
@@ -260,7 +273,7 @@ Y_UTEST(core_linked)
 
 
     {
-        std::cerr << "By addresses" << std::endl;
+        std::cerr << "By addresses for List" << std::endl;
         CxxListOf<Node> list;
         for(size_t i=10+ran.leq(10);i>0;--i)
         {
@@ -275,6 +288,9 @@ Y_UTEST(core_linked)
         }
 
     }
+
+
+
 
 
     {
