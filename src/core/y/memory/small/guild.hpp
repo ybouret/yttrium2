@@ -42,17 +42,17 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
-                size_t getBlockSize() const noexcept;          //!< \return internal block size
-                void * acquireBlock();                      //!< \return a new block
-                void   releaseBlock(void * const) noexcept; //!< release a previously acquired block
+                size_t getBlockSize() const noexcept;       //!< \return internal block size
+                void * acquireBlock();                      //!< locked \return a new block
+                void   releaseBlock(void * const) noexcept; //!< unlocked release of a previous block
 
-                void  *acquireBlockUnlocked();
-                void   releaseBlockUnlocked(void * const) noexcept;
+                void  *acquireBlockUnlocked();                      //!< unlocked \return new block
+                void   releaseBlockUnlocked(void * const) noexcept; //!< unlocked release of a previous block
 
 
             private:
                 Y_Disable_Copy_And_Assign(Guild); //!< discarding
-                Y_Ingress_Decl();
+                Y_Ingress_Decl();                 //!< interface
                 Code * const code;                //!< access+arena
             };
 

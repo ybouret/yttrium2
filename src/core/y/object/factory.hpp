@@ -98,8 +98,14 @@ namespace Yttrium
         explicit Factory();
         virtual ~Factory() noexcept;
 
-        virtual void * acquireBlock(size_t &);
-        virtual void   releaseBlock(void * const,const size_t) noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
+        virtual void * acquireBlock(size_t &); //!< [Allocator] \return heuristic block
+        virtual void   releaseBlock(void * const,const size_t) noexcept; //!< [Allocator]
 
         //______________________________________________________________________
         //
@@ -113,7 +119,7 @@ namespace Yttrium
         Memory::Small::Blocks &  blocks; //!< used for small
         Memory::Pooled &         pooled; //!< used for medium
         Memory::Quanta &         quanta; //!< used for larger and special medium
-        Memory::System &         sysmem;
+        Memory::System &         sysmem; //!< system memory when needed
     };
 }
 

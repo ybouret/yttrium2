@@ -8,30 +8,63 @@
 namespace Yttrium
 {
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! reveal a part of a class
+    //
+    //
+    //__________________________________________________________________________
     template <typename T>
     class Ingress
     {
     public:
-        Y_ARGS_EXPOSE(T,Interface);
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        Y_ARGS_EXPOSE(T,Interface); //!< aliases
+
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
     protected:
-        inline explicit Ingress() noexcept {}
+        inline explicit Ingress() noexcept {} //!< initialize
     public:
-        inline virtual ~Ingress() noexcept {}
+        inline virtual ~Ingress() noexcept {} //!< cleanup
 
-        inline ConstInterface & operator*() const noexcept { return locus(); }
-        inline Interface &      operator*()       noexcept { return (Interface&)locus(); }
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+        inline ConstInterface & operator*()  const noexcept { return locus(); }               //!< access \return const interface
+        inline Interface &      operator*()        noexcept { return (Interface&)locus(); }   //!< access \return interface
+        inline ConstInterface * operator->() const noexcept { return & locus(); }             //!< access \return const interface address
+        inline Interface      * operator->()       noexcept { return & (Interface&)locus(); } //!< access \return interface address
 
-        inline ConstInterface * operator->() const noexcept { return & locus(); }
-        inline Interface      * operator->()       noexcept { return & (Interface&)locus(); }
-
-
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
     private:
-        Y_Disable_Copy_And_Assign(Ingress);
-        virtual ConstInterface & locus() const noexcept = 0;
+        Y_Disable_Copy_And_Assign(Ingress);                  //!< discarding
+        virtual ConstInterface & locus() const noexcept = 0; //!< interface \return its location
     };
 
+    //! helper to declare Ingress
 #define Y_Ingress_Decl() virtual ConstInterface & locus() const noexcept
-    
+
+    //! helper to implement Ingress
 #define Y_Ingress_Impl(CLASS,LOCUS) \
 CLASS::ConstInterface  & CLASS :: locus() const noexcept { return LOCUS; }
 

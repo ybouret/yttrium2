@@ -25,13 +25,13 @@ namespace Yttrium
             static const char UsedNext[]; //!< "NULL!=next"
             static const char UsedPrev[]; //!< "NULL!=prev"
 
-            explicit LinkedInfo() noexcept;
-            virtual ~LinkedInfo() noexcept;
+            explicit LinkedInfo() noexcept; //!< setup
+            virtual ~LinkedInfo() noexcept; //!< cleanup
 
-            const size_t size;
+            const size_t size; //!< number of nodes
 
         private:
-            Y_Disable_Copy_And_Assign(LinkedInfo);
+            Y_Disable_Copy_And_Assign(LinkedInfo); //!< discard
         };
     }
 

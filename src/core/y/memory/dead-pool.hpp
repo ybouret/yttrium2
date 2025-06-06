@@ -14,27 +14,50 @@ namespace Yttrium
     namespace Memory
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! pool of zombified blocks
+        //
+        //
+        //______________________________________________________________________
         class DeadPool : public Collectable, public Ingress<const Core::LinkedInfo>
         {
         public:
-            explicit DeadPool(const size_t blockSize);
-            virtual ~DeadPool() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit DeadPool(const size_t blockSize); //!< setup \param blockSize block size
+            virtual ~DeadPool() noexcept;              //!< cleanup
 
-
+            //__________________________________________________________________
+            //
+            //
             // Interface
+            //
+            //__________________________________________________________________
             virtual void   gc(const uint8_t) noexcept;
 
+            //__________________________________________________________________
+            //
+            //
             // Methods
-            void * query();
-            void   store(void * const zombi) noexcept;
-            void   cache(size_t n);
+            //
+            //__________________________________________________________________
+            void * query();                            //!< \return a cached/new block
+            void   store(void * const zombi) noexcept; //!< store block \param zombi previously acquired
+            void   cache(size_t n);                    //!< fast caching new blocks \param n blocks to cache
 
         private:
-            Y_Disable_Copy_And_Assign(DeadPool);
-            Y_Ingress_Decl();
-            Core::PoolOf<Page>    zpool;
-            const size_t          bytes;
-            Memory::Small::Guild  guild;
+            Y_Disable_Copy_And_Assign(DeadPool); //!< discarding
+            Y_Ingress_Decl();                    //!< interface
+            Core::PoolOf<Page>    zpool;         //!< zombi blocks
+            const size_t          bytes;         //!< bytes per block
+            Memory::Small::Guild  guild;         //!< memory I/O
 
 
         };
