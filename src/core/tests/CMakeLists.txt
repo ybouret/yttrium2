@@ -8,7 +8,7 @@ system
 calculus
 concurrent
 memory
-memory/object
+memory/small
 memory/joint
 hashing
 xml

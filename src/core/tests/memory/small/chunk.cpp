@@ -1,5 +1,5 @@
 
-#include "y/memory/object/chunk.hpp"
+#include "y/memory/small/chunk.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"

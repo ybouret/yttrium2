@@ -2,7 +2,7 @@
 #include "y/system/platform.hpp"
 #include "y/memory/workspace.hpp"
 #include "y/system/exception.hpp"
-#include "y/memory/object/blocks.hpp"
+#include "y/memory/small/blocks.hpp"
 
 #if defined(Y_BSD)
 #include "mutex/bsd.hxx"

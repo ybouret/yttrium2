@@ -4,7 +4,7 @@
 #ifndef Y_Memory_Blocks_Included
 #define Y_Memory_Blocks_Included 1
 
-#include "y/memory/object/arena.hpp"
+#include "y/memory/small/arena.hpp"
 #include "y/core/linked/list.hpp"
 #include "y/core/linked/pool.hpp"
 #include "y/singleton.hpp"

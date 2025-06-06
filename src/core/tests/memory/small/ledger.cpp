@@ -1,6 +1,6 @@
 
 
-#include "y/memory/object/ledger.hpp"
+#include "y/memory/small/ledger.hpp"
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
 

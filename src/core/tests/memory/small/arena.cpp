@@ -1,10 +1,10 @@
 
-#include "y/memory/object/arena.hpp"
+#include "y/memory/small/arena.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
 #include "y/check/usual.hpp"
-#include "y/memory/object/ledger.hpp"
+#include "y/memory/small/ledger.hpp"
 
 #include <cstring>
 

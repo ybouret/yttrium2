@@ -6,7 +6,7 @@
 #include "y/type/ingress.hpp"
 #include "y/memory/page.hpp"
 #include "y/core/linked/pool.hpp"
-#include "y/memory/object/guild.hpp"
+#include "y/memory/small/guild.hpp"
 #include "y/ability/collectable.hpp"
 
 namespace Yttrium
@@ -17,7 +17,6 @@ namespace Yttrium
         class DeadPool : public Collectable, public Ingress<const Core::LinkedInfo>
         {
         public:
-            static const unsigned WordsForPool = 4;
             explicit DeadPool(const size_t blockSize);
             virtual ~DeadPool() noexcept;
 

@@ -1,6 +1,6 @@
 
 #include "y/concurrent/singulet.hpp"
-#include "y/memory/object/guild.hpp"
+#include "y/memory/small/guild.hpp"
 #include "y/utest/run.hpp"
 
 using namespace Yttrium;

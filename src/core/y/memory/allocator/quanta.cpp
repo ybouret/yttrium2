@@ -1,8 +1,8 @@
 
 #include "y/memory/allocator/quanta.hpp"
 #include "y/object/factory.hpp"
-#include "y/memory/object/guild.hpp"
-#include "y/memory/object/ledger.hpp"
+#include "y/memory/small/guild.hpp"
+#include "y/memory/small/ledger.hpp"
 
 #include "y/memory/workspace/cxx.hpp"
 #include "y/xml/attribute.hpp"

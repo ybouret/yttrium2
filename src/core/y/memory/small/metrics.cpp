@@ -1,5 +1,5 @@
 
-#include "y/memory/object/metrics.hpp"
+#include "y/memory/small/metrics.hpp"
 #include "y/memory/joint/segment.hpp"
 
 namespace Yttrium

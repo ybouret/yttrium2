@@ -7,7 +7,7 @@
 #include "y/singleton.hpp"
 #include "y/concurrent/life-time.hpp"
 #include "y/memory/limits.hpp"
-#include "y/memory/object/metrics.hpp"
+#include "y/memory/small/metrics.hpp"
 #include "y/concurrent/singleton/class-lock-policy.hpp"
 #include "y/memory/allocator.hpp"
 

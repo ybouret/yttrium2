@@ -3,7 +3,7 @@
 #include "y/object/factory.hpp"
 #include "y/system/rand.hpp"
 #include "y/memory/stealth.hpp"
-#include "y/memory/object/metrics.hpp"
+#include "y/memory/small/metrics.hpp"
 #include "y/utest/run.hpp"
 #include "y/concurrent/singulet.hpp"
 

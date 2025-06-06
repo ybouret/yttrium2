@@ -1,8 +1,7 @@
 
 #include "y/object/factory.hpp"
-#include "y/memory/object/metrics.hpp"
-
-#include "y/memory/object/blocks.hpp"
+#include "y/memory/small/metrics.hpp"
+#include "y/memory/small/blocks.hpp"
 #include "y/memory/allocator/quanta.hpp"
 #include "y/memory/allocator/pooled.hpp"
 #include "y/memory/allocator/system.hpp"

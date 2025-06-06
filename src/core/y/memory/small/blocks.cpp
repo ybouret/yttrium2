@@ -1,6 +1,6 @@
-#include "y/memory/object/blocks.hpp"
-#include "y/memory/object/ledger.hpp"
-#include "y/memory/object/metrics.hpp"
+#include "y/memory/small/blocks.hpp"
+#include "y/memory/small/ledger.hpp"
+#include "y/memory/small/metrics.hpp"
 
 #include "y/core/utils.hpp"
 #include "y/type/destruct.hpp"

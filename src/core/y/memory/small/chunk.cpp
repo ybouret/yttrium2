@@ -1,4 +1,4 @@
-#include "y/memory/object/chunk.hpp"
+#include "y/memory/small/chunk.hpp"
 #include "y/check/usual.hpp"
 #include "y/calculus/base2.hpp"
 #include "y/calculus/gcd.hpp"
@@ -7,9 +7,6 @@
 
 #include <cstring>
 #include <cstdlib>
-
-//#include <iostream>
-//#include <iomanip>
 
 namespace Yttrium
 {

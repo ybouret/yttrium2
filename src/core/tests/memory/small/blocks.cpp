@@ -1,5 +1,5 @@
 
-#include "y/memory/object/blocks.hpp"
+#include "y/memory/small/blocks.hpp"
 #include "y/system/rand.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/utest/run.hpp"
