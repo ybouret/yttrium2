@@ -12,17 +12,17 @@ namespace Yttrium
         namespace Object
         {
 
-            const char * const Book:: CallSign = "Memory::Object::Book";
-            const unsigned     Book:: NumPageShift;
+            const char * const Ledger:: CallSign = "Memory::Object::Ledger";
+            const unsigned     Ledger:: NumPageShift;
 
             namespace
             {
-                static const unsigned Requested   = sizeof(Pages) * Book::NumPageShift;
+                static const unsigned Requested   = sizeof(Pages) * Ledger::NumPageShift;
                 static void *         PagesData[ Alignment::WordsGEQ<Requested>::Count ];
                 static Pages *        bookPages = 0;
             }
 
-            Book:: Book()  : Singleton<Book,BroadLockPolicy>()
+            Ledger:: Ledger()  : Singleton<Ledger,BroadLockPolicy>()
             {
                 assert(0==bookPages);
                 bookPages = static_cast<Pages *>( Y_Memory_BZero(PagesData) ) - MinPageShift;
@@ -30,7 +30,7 @@ namespace Yttrium
                     new (bookPages+i) Pages(i);
             }
 
-            Book:: ~Book() noexcept
+            Ledger:: ~Ledger() noexcept
             {
                 assert(0!=bookPages);
                 for(unsigned i=MaxPageShift;i>=MinPageShift;--i)
@@ -38,7 +38,7 @@ namespace Yttrium
                 bookPages = 0;
             }
 
-            void Book:: display(std::ostream &os, size_t indent) const
+            void Ledger:: display(std::ostream &os, size_t indent) const
             {
                 initProlog(os,indent) << Y_XML_Attr(NumPageShift);
                 initEpilog(os,false);
@@ -52,7 +52,7 @@ namespace Yttrium
                 quit(os,indent);
             }
 
-            void * Book:: query(const unsigned blockShift)
+            void * Ledger:: query(const unsigned blockShift)
             {
                 Y_Lock(access);
                 assert(blockShift>=MinPageShift);
@@ -60,7 +60,7 @@ namespace Yttrium
                 return bookPages[blockShift].query();
             }
 
-            void   Book:: store(const unsigned blockShift, void * const blockAddr) noexcept
+            void   Ledger:: store(const unsigned blockShift, void * const blockAddr) noexcept
             {
                 Y_Lock(access);
                 assert(blockShift>=MinPageShift);
@@ -68,7 +68,7 @@ namespace Yttrium
                 bookPages[blockShift].store(blockAddr);
             }
 
-            void  Book::  cache(const unsigned blockShift, const size_t numPages)
+            void  Ledger::  cache(const unsigned blockShift, const size_t numPages)
             {
                 Y_Lock(access);
                 assert(blockShift>=MinPageShift);
@@ -77,7 +77,7 @@ namespace Yttrium
             }
 
 
-            void Book:: gc(const uint8_t amount) noexcept
+            void Ledger:: gc(const uint8_t amount) noexcept
             {
                 for(unsigned i=MaxPageShift;i>=MinPageShift;--i) bookPages[i].gc(amount);
             }

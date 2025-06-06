@@ -14,7 +14,7 @@ namespace Yttrium
     {
         namespace Object
         {
-            class Book;
+            class Ledger;
         }
 
         namespace Joint
@@ -117,7 +117,7 @@ namespace Yttrium
                 Slot * const           table;      //!< table of list of segments
                 const Slot * const     lastSlot;   //!< first invalid slot address
                 const unsigned         tableShift; //!< memory shift to hild table
-                Object::Book         & book;       //!< memory cache for segments
+                Object::Ledger       & ledger;     //!< memory cache for segments
             };
 
         }

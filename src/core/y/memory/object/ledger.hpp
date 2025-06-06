@@ -23,7 +23,7 @@ namespace Yttrium
             //
             //
             //
-            //!  Book of pages for Arena/Blocks
+            //!  Ledger of pages for Arena/Blocks
             /**
              - contains re-usable pages of different power-of-two size,
              with constraints on sizes.
@@ -32,8 +32,8 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Book :
-            public Singleton<Book,BroadLockPolicy>,
+            class Ledger :
+            public Singleton<Ledger,BroadLockPolicy>,
             public Collectable
             {
             public:
@@ -43,13 +43,13 @@ namespace Yttrium
                 // Definitions
                 //
                 //__________________________________________________________________
-                static const char * const CallSign;                                     //!< "Memory::Object::Book"
-                static const Longevity    LifeTime     = LifeTimeOf:: MemoryObjectBook; //!< LifeTimeOf::MemoryBook
-                static const unsigned     MinPageShift = Limits::MinBlockShift;         //!< alias
-                static const unsigned     MaxPageShift = Limits::MaxBlockShift;         //!< alias
-                static const unsigned     NumPageShift = 1+MaxPageShift - MinPageShift; //!< alias
-                static const size_t       MinPageBytes = Limits::MinBlockBytes;         //!< alias
-                static const size_t       MaxPageBytes = Limits::MaxBlockBytes;         //!< alias
+                static const char * const CallSign;                                       //!< "Memory::Ledger::Book"
+                static const Longevity    LifeTime     = LifeTimeOf:: MemoryObjectLedger; //!< lifetime
+                static const unsigned     MinPageShift = Limits::MinBlockShift;           //!< alias
+                static const unsigned     MaxPageShift = Limits::MaxBlockShift;           //!< alias
+                static const unsigned     NumPageShift = 1+MaxPageShift - MinPageShift;   //!< alias
+                static const size_t       MinPageBytes = Limits::MinBlockBytes;           //!< alias
+                static const size_t       MaxPageBytes = Limits::MaxBlockBytes;           //!< alias
 
                 //______________________________________________________________
                 //
@@ -96,10 +96,10 @@ namespace Yttrium
                 virtual void display(std::ostream &, size_t) const; 
 
             private:
-                Y_Disable_Copy_And_Assign(Book);               //!< discarding
-                friend class Singleton<Book,BroadLockPolicy>;
-                explicit Book();          //!< initialize
-                virtual ~Book() noexcept; //!< cleanup
+                Y_Disable_Copy_And_Assign(Ledger);               //!< discarding
+                friend class Singleton<Ledger,BroadLockPolicy>;
+                explicit Ledger();          //!< initialize
+                virtual ~Ledger() noexcept; //!< cleanup
 
 
             };

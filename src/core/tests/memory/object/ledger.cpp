@@ -19,18 +19,18 @@ Y_UTEST(memory_object_ledger)
     System::Rand  ran;
 
 
-    Memory::Object::Book & book = Memory::Object::Book::Instance();
-    std::cerr << "ready for " << book.callSign() << std::endl;
+    Memory::Object::Ledger & ledger = Memory::Object::Ledger::Instance();
+    std::cerr << "ready for " << ledger.callSign() << std::endl;
 
     for(size_t i=10+ran.leq(10);i>0;--i)
     {
-        book.cache( unsigned(Memory::Object::Book::MinPageShift + ran.leq(Memory::Object::Book::NumPageShift/5)), ran.leq(5));
+        ledger.cache( unsigned(Memory::Object::Ledger::MinPageShift + ran.leq(Memory::Object::Ledger::NumPageShift/5)), ran.leq(5));
     }
 
-    book.display(std::cerr,0);
+    ledger.display(std::cerr,0);
 
-    Y_PRINTV(  Memory::Object::Book::MinPageShift );
-    Y_PRINTV(  Memory::Object::Book::MaxPageShift );
+    Y_PRINTV(  Memory::Object::Ledger::MinPageShift );
+    Y_PRINTV(  Memory::Object::Ledger::MaxPageShift );
 
 
 }

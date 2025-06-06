@@ -67,10 +67,10 @@ namespace Yttrium
                 assert(memShift>0);
                 assert(0==acquiring);
                 assert(0==releasing);
-                assert( Book::Exists() );
-                static Book & book = Book::Location();
+                assert( Ledger::Exists() );
+                static Ledger & ledger = Ledger::Location();
 
-                book.store(memShift,workspace);
+                ledger.store(memShift,workspace);
                 memBytes  = 0;
                 memShift  = 0;
                 capacity  = 0;
@@ -81,8 +81,8 @@ namespace Yttrium
             void Arena:: releaseAllChunks() noexcept
             {
                 assert( isValid() );
-                assert(Book::Exists());
-                static Book & book = Book::Location();
+                assert(Ledger::Exists());
+                static Ledger & ledger = Ledger::Location();
 
                 acquiring = releasing = 0;
                 size_t missing = 0;
@@ -90,7 +90,7 @@ namespace Yttrium
                 {
                     Chunk &current = workspace[--occupied];
                     missing += current.userBlocks-current.freeBlocks;
-                    book.store(userShift,current.data);
+                    ledger.store(userShift,current.data);
                     Memory::Stealth::Zero( &current, sizeof(Chunk) );
                 }
                 if(missing>0)
@@ -108,7 +108,7 @@ namespace Yttrium
             Chunk * Arena:: makeInPlaceChunk(void * const addr)
             {
                 assert(0!=addr);
-                return new (addr) Chunk(Book::Instance().query(userShift),numBlocks,blockSize);
+                return new (addr) Chunk(Ledger::Instance().query(userShift),numBlocks,blockSize);
             }
 
 
@@ -140,10 +140,10 @@ namespace Yttrium
                 //
                 //
                 //--------------------------------------------------------------
-                Y_STATIC_CHECK(Book::MinPageBytes>=sizeof(Chunk), BadMinPageShift);
-                assert(userShift>=Book::MinPageShift);
-                assert(userShift<=Book::MaxPageShift);
-                Book & book = Book::Instance();
+                Y_STATIC_CHECK(Ledger::MinPageBytes>=sizeof(Chunk), BadMinPageShift);
+                assert(userShift>=Ledger::MinPageShift);
+                assert(userShift<=Ledger::MaxPageShift);
+                Ledger & ledger = Ledger::Instance();
 
                 //--------------------------------------------------------------
                 //
@@ -152,8 +152,8 @@ namespace Yttrium
                 //
                 //
                 //--------------------------------------------------------------
-                memBytes  = NextPowerOfTwo(Clamp(Book::MinPageBytes,userPageBytes,Book::MaxPageBytes),memShift);
-                workspace = static_cast<Chunk *>(book.query(memShift));
+                memBytes  = NextPowerOfTwo(Clamp(Ledger::MinPageBytes,userPageBytes,Ledger::MaxPageBytes),memShift);
+                workspace = static_cast<Chunk *>(ledger.query(memShift));
                 capacity  = memBytes / sizeof(Chunk);
 
 
@@ -263,8 +263,8 @@ namespace Yttrium
             {
                 assert(0!=addr);
                 assert(isValid());
-                assert( Book::Exists() );
-                static Book & book = Book::Location();
+                assert( Ledger::Exists() );
+                static Ledger & ledger = Ledger::Location();
 
                 //--------------------------------------------------------------
                 //
@@ -312,7 +312,7 @@ namespace Yttrium
                             assert(available>=numBlocks);
 
                             // return blocks
-                            book.store(userShift,freeChunk->data);
+                            ledger.store(userShift,freeChunk->data);
                             available -= numBlocks;
 
                             // update workspace
@@ -412,7 +412,7 @@ namespace Yttrium
                 {
                     assert(0==freeChunk);
                     if(memShift>=Limits::MaxBlockShift) throw Specific::Exception(CallSign,"workspace too big");
-                    Book & book = Book::Instance();
+                    Ledger & ledger = Ledger::Instance();
 
                     //--------------------------------------------------------------
                     // prepare next metrics
@@ -420,7 +420,7 @@ namespace Yttrium
                     const unsigned nextMemShift  = memShift+1;
                     const size_t   nextMemBytes  = memBytes << 1;
                     const size_t   nextCapacity  = capacity << 1; assert( nextCapacity == nextMemBytes / sizeof(Chunk) );
-                    Chunk * const  nextWorkspace = static_cast<Chunk *>(book.query(nextMemShift));
+                    Chunk * const  nextWorkspace = static_cast<Chunk *>(ledger.query(nextMemShift));
 
                     //--------------------------------------------------------------
                     // transfer
@@ -428,7 +428,7 @@ namespace Yttrium
                     Memory::Stealth::Copy(nextWorkspace,workspace,memBytes);
                     acquiring = nextWorkspace + (acquiring-workspace);
                     releasing = nextWorkspace + (releasing-workspace);
-                    book.store(memShift,workspace);
+                    ledger.store(memShift,workspace);
                     workspace = nextWorkspace;
                     memShift  = nextMemShift;
                     memBytes  = nextMemBytes;

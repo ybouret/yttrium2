@@ -34,7 +34,7 @@ namespace Yttrium
             acquiring(0),
             releasing(0),
             pageShift(0),
-            pageBytes( NextPowerOfTwo( Clamp(Book::MinPageBytes,userPageBytes,Book::MaxPageBytes), Coerce(pageShift))),
+            pageBytes( NextPowerOfTwo( Clamp(Ledger::MinPageBytes,userPageBytes,Ledger::MaxPageBytes), Coerce(pageShift))),
             kpool(),
             knots(sizeof(Knot),pageBytes),
             table()

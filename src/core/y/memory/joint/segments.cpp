@@ -52,9 +52,9 @@ namespace Yttrium
             table(0),
             lastSlot(0),
             tableShift( computeTableShift() ),
-            book( Object::Book::Instance() )
+            ledger( Object::Ledger::Instance() )
             {
-                Coerce(table) = static_cast<Slot*>( book.query(tableShift) )-MinShift;
+                Coerce(table) = static_cast<Slot*>( ledger.query(tableShift) )-MinShift;
                 for(unsigned bs=MinShift;bs<=MaxShift;++bs)
                 {
                     new (table+bs) Slot();
@@ -72,7 +72,7 @@ namespace Yttrium
                         unload( slot.popTail() );
                     slot.~Slot();
                 }
-                book.store(tableShift, table+MinShift);
+                ledger.store(tableShift, table+MinShift);
                 Coerce(table)      = 0;
                 Coerce(tableShift) = 0;
             }
@@ -95,7 +95,7 @@ namespace Yttrium
                 //--------------------------------------------------------------
                 // return to book pages
                 //--------------------------------------------------------------
-                book.store(segment->param.shift,segment);
+                ledger.store(segment->param.shift,segment);
             }
 
 
@@ -165,7 +165,7 @@ namespace Yttrium
                 assert(0== primary->alreadyEmpty);
                 try
                 {
-                    Segment * const segment = primary->insertOderedByAddresses( Segment::Format( book.query(shift), shift) );
+                    Segment * const segment = primary->insertOderedByAddresses( Segment::Format( ledger.query(shift), shift) );
                     assert(0!=segment);
                     assert(segment->param.maxSize>=blockSize);
                     assert(segment->head->used==0);

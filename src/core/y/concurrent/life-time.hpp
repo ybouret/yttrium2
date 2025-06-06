@@ -28,7 +28,7 @@ namespace Yttrium
         enum {
             Y_LifeTime(SystemMemory)        /*!< for Memory::System          */,
             Y_LifeTime(DyadicMemory)        /*!< for Memory::Dyadic          */,
-            Y_LifeTime(MemoryObjectBook)    /*!< for Memory::Object::Book    */,
+            Y_LifeTime(MemoryObjectLedger)  /*!< for Memory::Object::Book    */,
             Y_LifeTime(MemoryObjectFactory) /*!< for Memory::Object::Factory */,
             Y_LifeTime(MemoryQuanta)        /*!< for Memory::Quanta          */,
             Y_LifeTime(PooledMemory)        /*!< for Memory::Pooled          */
