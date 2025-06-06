@@ -284,7 +284,8 @@ Y_UTEST(core_linked)
         while(list.size) {
             target.insertOderedByAddresses( list.popHead() );
             std::cerr << target << std::endl;
-            Y_ASSERT( target.isOrderedBy( CxxListOf<Node>::CompareAddresses, Sign::StriclyIncreasing ) );
+            static const bool ListIsOrdered = target.isOrderedBy( Core::Linked<Node>::CompareAddresses, Sign::StriclyIncreasing );
+            Y_ASSERT(ListIsOrdered);
         }
 
     }

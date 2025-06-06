@@ -25,7 +25,6 @@ Y_CreateLibrary(y
     y/memory/allocator
     y/memory/object
     y/memory/object/ledger
-    y/memory/object/factory
     y/memory/joint
     y/object
     y/utest
