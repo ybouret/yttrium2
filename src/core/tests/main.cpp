@@ -23,6 +23,7 @@ Y_UTEST_DECL(64)
     Y_UTEST(system_error);
     Y_UTEST(system_at_exit);
     Y_UTEST(system_rand);
+    Y_UTEST(system_wall_time);
 
     Y_UTEST(calculus_integer_log2);
     Y_UTEST(calculus_alignment);
@@ -55,9 +56,9 @@ Y_UTEST_DECL(64)
 
     Y_UTEST(hashing_mix64);
     Y_UTEST(hashing_hash32);
-    
+
     Y_UTEST(xml_attribute);
-    
+
     Y_UTEST(container_algo);
 
 }

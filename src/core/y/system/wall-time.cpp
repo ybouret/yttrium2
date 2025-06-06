@@ -1,6 +1,10 @@
 
+#include "y/type/destroy.hpp"
 #include "y/system/wall-time.hpp"
+#include "y/object.hpp"
 #include "y/system/platform.hpp"
+#include "y/type/moniker.hpp"
+#include "y/system/exception.hpp"
 
 #if defined(Y_Darwin)
 #include "wall-time/darwin.hxx"
@@ -12,7 +16,26 @@ namespace Yttrium
     {
         WallTime:: ~WallTime() noexcept
         {
+            assert(0!=code);
+            Destroy( Coerce(code) );
         }
+
+        WallTime:: WallTime() : code( new Code() )
+        {
+        }
+
+        long double WallTime:: operator()(const uint64_t ticks) const noexcept
+        {
+            assert(0!=code);
+            return code->convert(ticks);
+        }
+
+        long double WallTime:: since(const uint64_t start) const
+        {
+            assert(0!=code);
+            return code->convert( Ticks() - start );
+        }
+
     }
 
 }

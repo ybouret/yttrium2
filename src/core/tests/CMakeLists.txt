@@ -35,6 +35,7 @@ Y_UTEST(core:linked)
 Y_UTEST(system:error 1 2)
 Y_UTEST(system:at_exit)
 Y_UTEST(system:rand)
+Y_UTEST(system:walltime)
 
 # type
 Y_UTEST(type:ints)

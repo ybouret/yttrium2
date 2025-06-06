@@ -32,18 +32,7 @@ namespace Yttrium
         Destruct(obj);
         return obj;
     }
-
-    //! in place object destruction and cleanup
-    /**
-     \param obj a valid object, destructed and address is set to NULL
-     */
-    template <typename T> inline
-    void Nullify(T * & obj) noexcept
-    {
-        assert(0!=obj);
-        Destruct(obj);
-        obj = 0;
-    }
+    
 
 }
 

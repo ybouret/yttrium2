@@ -284,7 +284,8 @@ namespace Yttrium
         {
             if(Verbose) Display("~",CallSign,LifeTime);
             assert(0!=code);
-            Nullify(code);
+            Memory::Stealth::DestructedAndZeroed(code);
+            Coerce(code) = 0;
             Y_Memory_BZero(codeWorkspace);
         }
 

@@ -62,6 +62,25 @@ namespace Yttrium
 }
 #endif
 
+#if defined(Y_Darwin)
+#include <mach/mach.h>
+
+namespace Yttrium
+{
+    namespace Mach
+    {
+        char * Error::Format(char * const errorBuffer,
+                             const size_t errorLength,
+                             const Type   errorCode) noexcept
+        {
+            assert(Good(errorBuffer, errorLength));
+            return Core::Text::Copy(errorBuffer, errorLength, mach_error_string(errorCode));
+        }
+    }
+}
+#endif
+
+
 #include <iostream>
 #include <cstdlib>
 #include <cstdarg>
@@ -124,5 +143,22 @@ namespace Yttrium
         }
     }
 
+#if defined(Y_Darwin)
+    namespace Mach
+    {
+
+        void Error:: Critical(const Type errorCode,  const char * const fmt,...) noexcept
+        {
+            assert(0!=fmt);
+            va_list ap;
+            va_start(ap,fmt);
+            OnCritical<Error>(errorCode,fmt,ap);
+            va_end(ap);
+        }
+    }
+
+#endif
+
 }
+
 

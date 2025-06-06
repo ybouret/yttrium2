@@ -16,6 +16,10 @@ namespace Yttrium
             explicit WallTime();
             virtual ~WallTime() noexcept;
 
+            static uint64_t Ticks();
+            long double operator()(const uint64_t) const noexcept;
+            long double since(const uint64_t start) const;
+
         private:
             Y_Disable_Copy_And_Assign(WallTime);
             Code * const code;

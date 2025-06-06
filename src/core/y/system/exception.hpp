@@ -104,6 +104,13 @@ namespace Yttrium
         typedef Core::LegacyException<Windows::Error> Exception; //!< alias
     }
 
+#if defined(Y_Darwin)
+    namespace Mach
+    {
+        typedef Core::LegacyException<Mach::Error> Exception; //!< alias
+    }
+#endif
+
     namespace System
     {
 #if defined(Y_BSD)
