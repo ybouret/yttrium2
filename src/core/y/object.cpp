@@ -3,6 +3,7 @@
 #include "y/check/usual.hpp"
 #include <cstring>
 
+
 namespace Yttrium
 {
     Object:: ~Object() noexcept

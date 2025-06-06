@@ -70,6 +70,11 @@ namespace
                 Dummy *d = new Dummy();
                 delete d;
             }
+
+            {
+                Dummy *d = new Dummy[5];
+                delete []d;
+            }
         }
 
 

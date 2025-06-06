@@ -45,7 +45,7 @@ namespace Yttrium
 
             void Blocks:: sort() noexcept
             {
-                
+                kpool.sortByIncreasingAddress();
             }
 
 
