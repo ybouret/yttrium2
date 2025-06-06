@@ -22,8 +22,8 @@ namespace Yttrium
         //
         //! produce all possible, reusable power-of-two blocks
         /**
-         - uses Object::Factory::Instance for small blocks (via Guild)
-         - uses Object::Book    for large blocks
+         - uses Object::Blocks for small blocks (via Guild)
+         - uses Object::Ledger for large blocks
          - this is both an allocator and a low-level cache
          - but shoudln't be used as a cache per se, since pages are always sorted
          */
@@ -34,6 +34,7 @@ namespace Yttrium
         public Allocator
         {
         public:
+
             //__________________________________________________________________
             //
             //
@@ -42,11 +43,11 @@ namespace Yttrium
             //__________________________________________________________________
             static const char * const CallSign;                                           //!< "Memory::Dyads"
             static const Longevity    LifeTime       = LifeTimeOf:: MemoryQuanta;         //!< life time
-            static const unsigned     MaxObjectShift = Object::Metrics::LimitObjectShift; //!< alias
-            static const unsigned     MaxMemoryShift = Limits::MaxBlockShift;             //!< alias
-            static const unsigned     NumObjectShift = MaxObjectShift+1;                  //!< [0..MaxFactoryShift]
-            static const unsigned     NumLargerShift = MaxMemoryShift-MaxObjectShift;     //!< [MaxFactoryShift+1..MaxAllowedShift]
-            static const size_t       MaxMemoryBytes = Limits::MaxBlockBytes;             //!< alias
+            static const unsigned     MaxBlocksShift = Object::Metrics::LimitObjectShift; //!< for small memory manager
+            static const unsigned     MaxLedgerShift = Limits::MaxBlockShift;             //!< alias
+            static const unsigned     NumBlocksShift = MaxBlocksShift+1;                  //!< alias
+            static const unsigned     NumLargerShift = MaxLedgerShift-MaxBlocksShift;     //!< alias
+            static const size_t       MaxLedgerBytes = Limits::MaxBlockBytes;             //!< alias
 
             class Code;
 

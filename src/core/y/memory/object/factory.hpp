@@ -3,9 +3,9 @@
 #ifndef Y_Memory_Object_Factory_Included
 #define Y_Memory_Object_Factory_Included 1
 
+#include "y/object.hpp"
 #include "y/singleton.hpp"
-#include "y/concurrent/singleton/broad-lock-policy.hpp"
-#include "y/memory/object/factory/api.hpp"
+#include "y/concurrent/singleton/class-lock-policy.hpp"
 #include "y/calculus/integer-log2.hpp"
 
 namespace Yttrium

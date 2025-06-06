@@ -123,11 +123,11 @@ namespace Yttrium
             explicit Code() :
             manager(),
             smallManager(Procedural,SmallManager::Create,0),
-            largeManager(Procedural,LargeManager::Create,NumObjectShift)
+            largeManager(Procedural,LargeManager::Create,NumBlocksShift)
             {
                 Y_Memory_BZero(manager);
 
-                for(unsigned i=0;i<=MaxObjectShift;++i)
+                for(unsigned i=0;i<=MaxBlocksShift;++i)
                 {
                     manager[i] = &smallManager[i+1];
                     assert(i==manager[i]->shift);
@@ -135,8 +135,8 @@ namespace Yttrium
 
                 for(unsigned i=0;i<NumLargerShift;++i)
                 {
-                    manager[i+NumObjectShift] = &largeManager[i+1];
-                    assert(i+NumObjectShift==manager[i+NumObjectShift]->shift);
+                    manager[i+NumBlocksShift] = &largeManager[i+1];
+                    assert(i+NumBlocksShift==manager[i+NumBlocksShift]->shift);
                 }
 
             }
@@ -145,8 +145,8 @@ namespace Yttrium
             {
             }
 
-            Manager *                                   manager[MaxMemoryShift+1];
-            CxxWorkspace<SmallManager,NumObjectShift>   smallManager;
+            Manager *                                   manager[MaxLedgerShift+1];
+            CxxWorkspace<SmallManager,NumBlocksShift>   smallManager;
             CxxWorkspace<LargeManager,NumLargerShift>   largeManager;
 
         private:
@@ -159,7 +159,7 @@ namespace Yttrium
         }
 
 
-        const unsigned Quanta:: NumObjectShift;
+        const unsigned Quanta:: NumBlocksShift;
         const unsigned Quanta:: NumLargerShift;
 
         Quanta:: Quanta() :
@@ -180,7 +180,7 @@ namespace Yttrium
         {
             assert(0!=code);
             initProlog(os,indent)
-            << Y_XML_Attr(NumObjectShift)
+            << Y_XML_Attr(NumBlocksShift)
             << Y_XML_Attr(NumLargerShift);
             initEpilog(os,false);
 
@@ -193,7 +193,7 @@ namespace Yttrium
 
         void * Quanta:: acquireDyadic(const unsigned int blockShift)
         {
-            assert(blockShift<=MaxMemoryShift);
+            assert(blockShift<=MaxLedgerShift);
             assert(blockShift==code->manager[blockShift]->shift);
             return code->manager[blockShift]->acquire();
         }
@@ -201,18 +201,18 @@ namespace Yttrium
         void Quanta:: releaseDyadic(const unsigned int blockShift, void *const blockAddr) noexcept
         {
             assert(0!=blockAddr);
-            assert(blockShift<=MaxMemoryShift);
+            assert(blockShift<=MaxLedgerShift);
             assert(blockShift==code->manager[blockShift]->shift);
             code->manager[blockShift]->release(blockAddr);
         }
 
-        const size_t Quanta::MaxMemoryBytes;
+        const size_t Quanta::MaxLedgerBytes;
 
         void * Quanta:: acquireBlock(size_t &blockSize)
         {
             assert(blockSize>0);
-            if(blockSize>=MaxMemoryBytes)
-                throw Specific::Exception(CallSign,"blockSize=%s exceeed %s", Decimal(blockSize).c_str(), Decimal(MaxMemoryBytes).c_str());
+            if(blockSize>=MaxLedgerBytes)
+                throw Specific::Exception(CallSign,"blockSize=%s exceeed %s", Decimal(blockSize).c_str(), Decimal(MaxLedgerBytes).c_str());
 
             unsigned blockShift = 0;
             blockSize = NextPowerOfTwo(blockSize,blockShift);

@@ -1,7 +1,7 @@
 //! \file
 
-#ifndef Y_IOS_OSTREAM_PROTO_INCLUDED
-#define Y_IOS_OSTREAM_PROTO_INCLUDED 1
+#ifndef Y_OSTREAM_PROTO_INCLUDED
+#define Y_OSTREAM_PROTO_INCLUDED 1
 
 
 #include <iosfwd>
