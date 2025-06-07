@@ -84,4 +84,6 @@ Y_UTEST(xml:attribute)
 
 #container
 Y_UTEST(container:algo)
+Y_UTEST(container:iterator)
+
 

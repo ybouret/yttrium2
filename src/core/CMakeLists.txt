@@ -21,6 +21,7 @@ Y_CreateLibrary(y
     y/concurrent/mutex
     y/concurrent/thread
     y/container
+    y/container/iterator
     y/container/algorithm
     y/memory
     y/memory/workspace
