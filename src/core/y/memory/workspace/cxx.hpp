@@ -13,6 +13,26 @@ namespace Yttrium
 {
     namespace Memory
     {
+
+        template <typename T, size_t N>
+        class CxxWorkspaceProto : public Workspace<T,N>
+        {
+        public:
+            inline virtual ~CxxWorkspaceProto() noexcept {}
+
+        protected:
+            using Workspace<T,N>::data;
+            inline explicit CxxWorkspaceProto() noexcept :
+            Workspace<T,N>(),
+            item( data - 1 )
+            {
+            }
+
+            T * const item;
+        private:
+            Y_Disable_Copy_And_Assign(CxxWorkspaceProto);
+        };
+
         //______________________________________________________________________
         //
         //
@@ -34,7 +54,7 @@ catch(...) { releaseUpTo(built); throw; } \
         //
         //______________________________________________________________________
         template <typename T, size_t N=1>
-        class CxxWorkspace : public Workspace<T,N>, public Writable<T>
+        class CxxWorkspace : public CxxWorkspaceProto<T,N>, public Writable<T>
         {
         public:
             //__________________________________________________________________
@@ -43,7 +63,7 @@ catch(...) { releaseUpTo(built); throw; } \
             // Definitions
             //
             //__________________________________________________________________
-            typedef Workspace<T,N> WorkspaceType; //!< alias
+            typedef CxxWorkspaceProto<T,N> WorkspaceType; //!< alias
             Y_ARGS_DECL(T,Type);                  //!< aliases
             using WorkspaceType::Capacity;
             using WorkspaceType::data;
