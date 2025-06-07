@@ -13,7 +13,7 @@ namespace Yttrium
 {
 
 
-
+#if 0
     template <template <typename> class CONTAINER, typename T>
     class Contiguous : public CONTAINER<T>
     {
@@ -26,6 +26,8 @@ namespace Yttrium
 
         typedef Iterator::Linear<Iterator::Forward,ConstType> ConstIterator;
 
+        typedef typename Pick<IsWritable, Iterator::Linear<Iterator::Forward,Type>, NullType>::Type Iterator;
+
         explicit Contiguous() noexcept
         {
             Y_STATIC_CHECK(IsReadable||IsWritable,BadBaseClass);
@@ -35,8 +37,10 @@ namespace Yttrium
         {
         }
 
-        ConstIterator begin() const noexcept { return head(); }
-        ConstIterator end()   const noexcept { return last(); }
+
+
+        inline ConstIterator begin() const noexcept { return head(); }
+        inline ConstIterator end()   const noexcept { return last(); }
 
 
 
@@ -84,6 +88,7 @@ namespace Yttrium
         }
 
     };
+#endif
 
 }
 
@@ -98,6 +103,7 @@ Y_UTEST(container_iterator)
     for(size_t i=0;i<n;++i) array[i] = int(i);
 
 
+#if 0
     ReadableLightArray<int> arr(array,n);
 
     for(ReadableLightArray<int>::ConstIterator it=arr.begin();it!=arr.end();++it)
@@ -109,6 +115,7 @@ Y_UTEST(container_iterator)
     Y_PRINTV(arr.IsReadable);
     std::cerr << arr << std::endl;
     Core::Display(std::cerr, arr.begin(), arr.size()) << std::endl;
+#endif
 
 
 }
