@@ -6,6 +6,8 @@
 
 #include "y/container.hpp"
 #include "y/type/args.hpp"
+#include <iostream>
+
 namespace Yttrium
 {
 
@@ -41,6 +43,21 @@ namespace Yttrium
     public:
         //! cleanup
         inline virtual ~Readable() noexcept {}
+
+
+        inline
+        friend std::ostream & operator<<(std::ostream &os, const Readable &self)
+        {
+            os << LBRACK;
+            const size_t n = self.size();
+            if(n>0)
+            {
+                os << self[1];
+                for(size_t i=2;i<=n;++i)
+                    os << SEMICOLON << self[i];
+            }
+            return os << RBRACK;
+        }
 
         //______________________________________________________________________
         //
