@@ -83,6 +83,8 @@ namespace Yttrium
         inline ConstIterator begin() const noexcept { return this->head(); }
         inline ConstIterator end()   const noexcept { return this->last(); }
         
+        inline Iterator begin() noexcept { return this->head(); }
+        inline Iterator end()   noexcept { return this->last(); }
 
     public:
         virtual ~WritableContiguous() noexcept
@@ -118,19 +120,48 @@ NullType>::Type
 
 
 
+    template <template <typename> class CONTAINER, typename T>
+    class LightArrayCommon : public Contiguous<CONTAINER,T>
+    {
+    public:
+        Y_ARGS_EXPOSE(T,Type);
+        inline virtual ~LightArrayCommon() noexcept {}
 
 
+    protected:
+        inline  LightArrayCommon(ConstType * const entry,
+                                  const size_t      count) noexcept :
+        bulk(count),
+        item((ConstType *)Memory::Stealth::Address(entry)-1)
+        {
+        }
 
-#if 1
+    public:
+        virtual size_t size() const noexcept { return bulk; }
+
+
+    private:
+        Y_Disable_Copy_And_Assign(LightArrayCommon);
+        const size_t      bulk;
+        ConstType * const item;
+
+        virtual ConstType & getItemAt(const size_t indx) const noexcept
+        {
+            assert(this->bulk>0);
+            assert(0!=this->item);
+            return this->item[indx];
+        }
+    };
+
+
     template <typename T> class ReadableLightArray :
-    public Contiguous<Readable,T>
+    public LightArrayCommon<Readable,T>
     {
     public:
         Y_ARGS_EXPOSE(T,Type);
         inline ReadableLightArray(ConstType * const entry,
                                   const size_t      count) noexcept :
-        bulk(count),
-        item(entry-1)
+        LightArrayCommon<Readable,T>(entry,count)
         {
         }
 
@@ -138,22 +169,32 @@ NullType>::Type
         {
         }
 
-        virtual size_t size() const noexcept { return bulk; }
 
     private:
         Y_Disable_Copy_And_Assign(ReadableLightArray);
-        const size_t      bulk;
-        ConstType * const item;
+    };
 
-        virtual ConstType & getItemAt(const size_t indx) const noexcept
+    template <typename T> class WritableLightArray :
+    public LightArrayCommon<Writable,T>
+    {
+    public:
+        Y_ARGS_EXPOSE(T,Type);
+        inline WritableLightArray(ConstType * const entry,
+                                  const size_t      count) noexcept :
+        LightArrayCommon<Readable,T>(entry,count)
         {
-            assert(bulk>0);
-            assert(0!=item);
-            return item[indx];
         }
 
+        inline virtual ~WritableLightArray() noexcept
+        {
+        }
+
+
+    private:
+        Y_Disable_Copy_And_Assign(WritableLightArray);
     };
-#endif
+
+
 
 }
 
