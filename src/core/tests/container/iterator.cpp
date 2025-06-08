@@ -13,6 +13,40 @@ namespace Yttrium
 {
 
 
+    template <template <typename> class CONTAINER, typename T>
+    class ReadableContiguous : public CONTAINER<T>
+    {
+    public:
+        Y_ARGS_EXPOSE(T,Type);
+        explicit ReadableContiguous() noexcept : CONTAINER<T>()
+        {
+            Y_STATIC_CHECK(Y_Is_SuperSubClass(Readable<T>,CONTAINER<T>),BadBaseClass);
+        }
+
+        virtual ~ReadableContiguous() noexcept
+        {
+        }
+    };
+
+
+    template <template <typename> class CONTAINER, typename T>
+    class WritableContiguous : public CONTAINER<T>
+    {
+    public:
+        Y_ARGS_EXPOSE(T,Type);
+        explicit WritableContiguous() noexcept : CONTAINER<T>()
+        {
+            Y_STATIC_CHECK(Y_Is_SuperSubClass(Writable<T>,CONTAINER<T>),BadBaseClass);
+        }
+
+        virtual ~WritableContiguous() noexcept
+        {
+        }
+    };
+
+
+
+
 #if 0
     template <template <typename> class CONTAINER, typename T>
     class Contiguous : public CONTAINER<T>
