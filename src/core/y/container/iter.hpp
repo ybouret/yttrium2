@@ -8,7 +8,7 @@
 
 namespace Yttrium
 {
-    namespace Iterator
+    namespace Iter
     {
         enum Direction
         {

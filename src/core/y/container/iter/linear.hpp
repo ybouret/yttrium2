@@ -1,15 +1,15 @@
 //! \file
 
-#ifndef Y_Container_Iterator_Linear_Included
-#define Y_Container_Iterator_Linear_Included 1
+#ifndef Y_Container_Iter_Linear_Included
+#define Y_Container_Iter_Linear_Included 1
 
-#include "y/container/iterator.hpp"
+#include "y/container/iter.hpp"
 #include "y/type/args.hpp"
 #include <cassert>
 
 namespace Yttrium
 {
-    namespace Iterator
+    namespace Iter
     {
 
         template <Direction D, typename T>
