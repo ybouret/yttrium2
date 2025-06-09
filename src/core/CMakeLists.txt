@@ -36,6 +36,7 @@ Y_CreateLibrary(y
     y/xml
     y/stream/
     y/stream/io
+    y/stream/io/char
 )
 
 add_subdirectory(tests)

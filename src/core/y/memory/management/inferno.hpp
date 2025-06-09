@@ -7,7 +7,6 @@
 #include "y/singleton.hpp"
 #include "y/memory/management/dead-pool.hpp"
 #include "y/type/args.hpp"
-#include "y/type/destruct.hpp"
 #include "y/xml/attribute.hpp"
 
 namespace Yttrium
@@ -45,7 +44,9 @@ namespace Yttrium
             inline virtual void zombify(T * const object) noexcept
             {
                 Y_Lock(access);
-                deadPool.store( Destructed(object) );
+                assert(0!=object);
+                object->~T();
+                deadPool.store( object );
             }
 
             inline virtual T * reenact(const T &object)
