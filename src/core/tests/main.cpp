@@ -71,6 +71,7 @@ Y_UTEST_DECL(64)
     Y_UTEST(container_iterator);
 
     Y_UTEST(stream_io_codec64);
+    Y_UTEST(stream_io_char);
 }
 Y_UTEST_EXEC()
 

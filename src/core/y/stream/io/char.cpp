@@ -1,4 +1,5 @@
 #include "y/stream/io/char.hpp"
+#include "y/memory/management/inferno.hpp"
 
 namespace Yttrium
 {
@@ -21,6 +22,32 @@ namespace Yttrium
         prev(0),
         code(ch.code)
         {}
+
+        const char * const Char:: CallSign = "IO::Char";
+
+        typedef Memory::Inferno<Char> Manager;
+
+        Char * Char:: New(const uint8_t code)
+        {
+            return Manager::Instance().produce<uint8_t>(code);
+        }
+
+        void Char:: Delete(Char *const ch) noexcept
+        {
+            assert(0!=ch);
+            assert(Manager::Exists());
+            static Manager &mgr = Manager::Location();
+            mgr.zombify(ch);
+        }
+
+        Char * Char:: Copy(const Char * const ch)
+        {
+            assert(0!=ch);
+            assert(Manager::Exists());
+            static Manager &mgr = Manager::Location();
+            return mgr.reenact(*ch);
+        }
+
 
     }
 }

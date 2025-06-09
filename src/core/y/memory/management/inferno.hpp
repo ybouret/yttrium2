@@ -3,7 +3,6 @@
 #ifndef Y_Memory_Inferno_Included
 #define Y_Memory_Inferno_Included 1
 
-#include "y/memory/management/purgatory.hpp"
 #include "y/singleton.hpp"
 #include "y/memory/management/dead-pool.hpp"
 #include "y/type/args.hpp"
@@ -27,36 +26,19 @@ namespace Yttrium
 /**/  }\
 } while(false)
 
-        //!
-        template <typename T,System::AtExit::Longevity LIFE_TIME>
+        //! Thread-Safe allocation
+        template <typename T>
         class Inferno :
-        public Singleton<Inferno<T,LIFE_TIME>,ClassLockPolicy>,
-        public Purgatory<T>
+        public Singleton<Inferno<T>,ClassLockPolicy>
         {
         public:
-            typedef Singleton<Inferno<T,LIFE_TIME>,ClassLockPolicy> SingletonType;
-            static const System::AtExit::Longevity LifeTime = LIFE_TIME;
+            typedef Singleton<Inferno<T>,ClassLockPolicy> SingletonType;
+            static const System::AtExit::Longevity LifeTime = T::LifeTime;
             static const char * const              CallSign;
             using SingletonType::access;
 
 
             // interface
-            inline virtual void zombify(T * const object) noexcept
-            {
-                Y_Lock(access);
-                assert(0!=object);
-                object->~T();
-                deadPool.store( object );
-            }
-
-            inline virtual T * reenact(const T &object)
-            {
-                Y_Inferno_Recover( new (addr) T(object) );
-            }
-
-            inline virtual T * recover() {
-                Y_Inferno_Recover( new (addr) T() );
-            }
 
             virtual void display(std::ostream &os, const size_t indent) const
             {
@@ -84,12 +66,29 @@ namespace Yttrium
             }
 
 
+
             // methods
-            template <typename ARG1> inline
-            T *  rebuild(typename TypeTraits<ARG1>::ParamType arg1) {
-                Y_Inferno_Recover( new (addr) T(arg1) );
+            inline void zombify(T * const object) noexcept
+            {
+                Y_Lock(access);
+                assert(0!=object);
+                object->~T();
+                deadPool.store( object );
             }
 
+            inline T * recover() {
+                Y_Inferno_Recover( new (addr) T() );
+            }
+
+            inline T * reenact(const T &object)
+            {
+                Y_Inferno_Recover( new (addr) T(object) );
+            }
+
+            template <typename ARG1>
+            inline T *  produce(typename TypeTraits<ARG1>::ParamType arg1) {
+                Y_Inferno_Recover( new (addr) T(arg1) );
+            }
 
         private:
             Y_Disable_Copy_And_Assign(Inferno);
@@ -98,23 +97,19 @@ namespace Yttrium
             // C++
             inline explicit Inferno() :
             SingletonType(),
-            Purgatory<T>(),
             deadPool( sizeof(T) )
             {
             }
 
             inline virtual ~Inferno() noexcept {}
 
-
-            inline virtual T * produce( T * (*proc)(void *, void *), void * args)
-            {
-                assert(0!=proc);
-                Y_Inferno_Recover( proc(addr,args) );
-            }
-
             DeadPool deadPool;
-
         };
+
+        template <typename T>
+        const char * const Inferno<T> :: CallSign = T::CallSign;
+
+
     }
 }
 

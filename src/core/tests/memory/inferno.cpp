@@ -13,6 +13,8 @@ namespace
     class Dummy
     {
     public:
+        static const System::AtExit::Longevity LifeTime = 1001;
+        static const char * const CallSign;
         static int Count;
         explicit Dummy() noexcept : value(0)
         {
@@ -40,18 +42,19 @@ namespace
         Y_Disable_Assign(Dummy);
     };
 
-    int Dummy::Count = 0;
+    int                Dummy::Count = 0;
+    const char * const Dummy::CallSign = "Dummy";
 
-    typedef Memory::Inferno<Dummy,0> DummyPurgatory;
+    typedef Memory::Inferno<Dummy> DummyInferno;
 
 
 
     static const size_t     maxi = 1000;
 
-    template <typename T> static inline
-    void fill(T *                    addr[],
+    static inline
+    void fill(Dummy *                addr[],
               size_t &               size,
-              DummyPurgatory &       mmgr,
+              DummyInferno &         mgr,
               System::Rand &         ran)
     {
         while(size<maxi)
@@ -60,17 +63,17 @@ namespace
             switch(choice)
             {
                 case 1:
-                    addr[size] = mmgr.template rebuild<int>( ran.to<uint16_t>() );
+                    addr[size] = mgr.template produce<int>( ran.to<uint16_t>() );
                     break;
 
                 case 2:
                 {
                     const Dummy dummy(007);
-                    addr[size] = mmgr.reenact(dummy);
+                    addr[size] = mgr.reenact(dummy);
                 } break;
 
                 default:
-                    addr[size] = mmgr.recover();
+                    addr[size] = mgr.recover();
                     break;
             }
             ++size;
@@ -78,34 +81,30 @@ namespace
     }
 
 
-    template <typename T> static inline
+    static inline
     void empty(const size_t       to,
-               T *                addr[],
+               Dummy *            addr[],
                size_t &           size,
-               Memory::Purgatory<T> &mmgr,
+               DummyInferno &      mgr,
                System::Rand &      ran)
     {
         ran.shuffle(addr,size);
         while(size>to)
         {
-            mmgr.zombify( addr[--size] );
+            mgr.zombify( addr[--size] );
         }
-        mmgr.gc(0xaa);
+        mgr.gc(0xaa);
     }
 
 }
 
-namespace Yttrium
-{
-    template <> const char * const DummyPurgatory:: CallSign = "DummyPurgatory";
-}
 
 Y_UTEST(memory_inferno)
 {
 
     System::Rand     ran;
-    DummyPurgatory  &mgr = DummyPurgatory::Instance();
-
+    DummyInferno    &mgr = DummyInferno::Instance();
+    //std::cerr << mgr.callSign() << std::endl;
 
     Dummy  *                addr[maxi]; Y_Memory_BZero(addr);
     size_t                  size=0;

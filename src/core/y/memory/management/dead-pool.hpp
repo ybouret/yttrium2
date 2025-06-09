@@ -49,7 +49,7 @@ namespace Yttrium
             //__________________________________________________________________
             void *         query();                            //!< \return a cached/new block
             void           store(void * const zombi) noexcept; //!< store block \param zombi previously acquired
-            size_t         blockSize()      const noexcept; //!< \return retrieved unique block size
+            size_t         blockSize()         const noexcept; //!< \return retrieved unique block size
 
 
         private:
