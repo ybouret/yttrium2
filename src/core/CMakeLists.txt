@@ -24,7 +24,8 @@ Y_CreateLibrary(y
     y/container/iter
     y/container/algorithm
     y/memory
-    y/memory/workspace
+    y/memory/management
+    y/memory/management/workspace
     y/memory/allocator
     y/memory/small
     y/memory/small/ledger

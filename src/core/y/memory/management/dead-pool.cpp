@@ -1,11 +1,12 @@
 
-#include "y/memory/dead-pool.hpp"
+#include "y/memory/management/dead-pool.hpp"
 
 #include "y/memory/page.hpp"
 #include "y/memory/small/guild.hpp"
 
 #include "y/core/utils.hpp"
 #include "y/object.hpp"
+#include "y/core/linked/pool.hpp"
 #include "y/core/linked/list.hpp"
 #include "y/core/linked/convert/pool-to-list.hpp"
 #include "y/core/linked/convert/list-to-pool.hpp"
@@ -17,10 +18,11 @@ namespace Yttrium
     namespace Memory
     {
 
-        
+        //! DeadPool
         class DeadPool :: Code : public Object
         {
         public:
+            //! setup
             explicit Code(const size_t blockSize) :
             zpool(),
             bytes(0),
@@ -29,6 +31,7 @@ namespace Yttrium
                 Coerce(bytes) = guild.getBlockSize();
             }
 
+            //! cleanup
             virtual ~Code() noexcept
             {
                 Y_Lock(*guild);
@@ -43,6 +46,7 @@ namespace Yttrium
                 return (zpool.size>0)  ? Page::Addr(zpool.query(),bytes) : guild.acquireBlock();
             }
 
+            //! put into cache
             inline void  prepare(size_t n)
             {
                 Y_Lock( *guild );
@@ -88,7 +92,6 @@ namespace Yttrium
             std::cerr << "sizeof(Code) = " << sizeof(Code) << std::endl;
         }
 
-        Y_Ingress_Impl(DeadPool,code->zpool)
 
         void * DeadPool:: query()
         {
@@ -107,6 +110,12 @@ namespace Yttrium
         {
             assert(0!=code);
             code->prepare(n);
+        }
+
+        size_t DeadPool:: count() const noexcept
+        {
+            assert(0!=code);
+            return code->zpool.size;
         }
 
         void DeadPool:: gc(const uint8_t amount) noexcept

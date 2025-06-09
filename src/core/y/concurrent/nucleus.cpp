@@ -1,7 +1,7 @@
 #include "y/concurrent/nucleus.hpp"
 #include "y/check/static.hpp"
 #include "y/type/destruct.hpp"
-#include "y/memory/workspace.hpp"
+#include "y/memory/management/workspace.hpp"
 #include "y/system/exception.hpp"
 #include "y/type/ints.hpp"
 #include "y/system/platform.hpp"

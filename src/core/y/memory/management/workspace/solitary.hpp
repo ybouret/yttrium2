@@ -4,7 +4,7 @@
 #ifndef Y_Memory_Workspace_Cxx_Included
 #define Y_Memory_Workspace_Cxx_Included 1
 
-#include "y/memory/workspace.hpp"
+#include "y/memory/management/workspace.hpp"
 #include "y/type/args.hpp"
 
 namespace Yttrium

@@ -1,7 +1,7 @@
 
 #include <pthread.h>
 
-#include "y/memory/workspace/solitary.hpp"
+#include "y/memory/management/workspace/solitary.hpp"
 
 namespace Yttrium
 {

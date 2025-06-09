@@ -1,9 +1,7 @@
-
-
 //! \file
 
-#ifndef Y_Type_Collectable_Included
-#define Y_Type_Collectable_Included 1
+#ifndef Y_Collectable_Included
+#define Y_Collectable_Included 1
 
 #include "y/ability/releasable.hpp"
 
@@ -53,7 +51,7 @@ namespace Yttrium
          */
         virtual void gc(const uint8_t amount) noexcept = 0;
 
-        //! gc(All)
+        //! gc(All), may be overriden
         virtual void release() noexcept;
 
 

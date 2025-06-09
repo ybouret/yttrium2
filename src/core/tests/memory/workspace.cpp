@@ -1,5 +1,5 @@
 
-#include "y/memory/workspace/cxx.hpp"
+#include "y/memory/management/workspace/cxx.hpp"
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
 #include "y/core/display.hpp"

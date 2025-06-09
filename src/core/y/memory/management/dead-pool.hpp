@@ -3,9 +3,7 @@
 #ifndef Y_Memory_Dead_Pool_Included
 #define Y_Memory_Dead_Pool_Included 1
 
-#include "y/type/ingress.hpp"
-#include "y/core/linked/pool.hpp"
-#include "y/ability/collectable.hpp"
+#include "y/ability/caching.hpp"
 
 namespace Yttrium
 {
@@ -20,7 +18,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class DeadPool : public Collectable, public Ingress<const Core::LinkedInfo>
+        class DeadPool : public Caching
         {
         public:
             class Code;
@@ -47,13 +45,12 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            void * query();                            //!< \return a cached/new block
-            void   store(void * const zombi) noexcept; //!< store block \param zombi previously acquired
-            void   cache(const size_t n);              //!< fast caching new blocks \param n blocks to cache
-
+            void *         query();                            //!< \return a cached/new block
+            void           store(void * const zombi) noexcept; //!< store block \param zombi previously acquired
+            virtual void   cache(const size_t n);              //!< fast caching new blocks \param n blocks to cache
+            virtual size_t count() const noexcept;
         private:
             Y_Disable_Copy_And_Assign(DeadPool); //!< discarding
-            Y_Ingress_Decl();                    //!< interface
             Code * const code;
 
 
