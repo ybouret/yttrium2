@@ -19,6 +19,17 @@ namespace
             ++Count;
         }
 
+        explicit Dummy(const int arg) noexcept : value(arg)
+        {
+            ++Count;
+        }
+
+        explicit Dummy(const Dummy &_) noexcept : value(_.value)
+        {
+            ++Count;
+        }
+
+
         virtual ~Dummy() noexcept
         {
             --Count;
@@ -43,7 +54,23 @@ namespace
     {
         while(size<maxi)
         {
-            addr[size] = mmgr.recover();
+            const size_t choice = ran.leq(2);
+            switch(choice)
+            {
+                case 1:
+                    addr[size] = mmgr.template recover<int>( ran.to<uint16_t>() );
+                    break;
+
+                case 2:
+                {
+                    const Dummy dummy(007);
+                    addr[size] = mmgr.reenact(dummy);
+                } break;
+
+                default:
+                    addr[size] = mmgr.recover();
+                    break;
+            }
             ++size;
         }
     }
@@ -82,6 +109,7 @@ Y_UTEST(memory_inferno)
             fill(addr,size,mgr,ran);
         }
         empty(0,addr,size,mgr,ran);
+        Y_CHECK(!Dummy::Count);
     }
 
 

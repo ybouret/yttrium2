@@ -41,9 +41,20 @@ namespace Yttrium
                 deadPool.store( Destructed(object) );
             }
 
+            inline T * reenact(const T &object)
+            {
+                Y_Inferno_Recover( T(object) );
+            }
+
             inline T * recover() {
                 Y_Inferno_Recover( T() );
             }
+
+            template <typename ARG1> inline
+            T * recover(typename TypeTraits<ARG1>::ParamType arg1) {
+                Y_Inferno_Recover( T(arg1) );
+            }
+
 
 
         private:
