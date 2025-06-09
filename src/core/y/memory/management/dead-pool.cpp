@@ -86,8 +86,8 @@ namespace Yttrium
             Destroy(code);
         }
 
-        DeadPool:: DeadPool(const size_t blockSize) :
-        code( new Code(blockSize) )
+        DeadPool:: DeadPool(const size_t userBlockSize) :
+        code( new Code(userBlockSize) )
         {
             assert( 0 != code );
         }
@@ -124,7 +124,11 @@ namespace Yttrium
             code->collect(amount);
         }
 
-
+        size_t DeadPool:: blockSize()      const noexcept
+        {
+            assert(0!=code);
+            return code->guild.getBlockSize();
+        }
 
     }
 

@@ -28,7 +28,7 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            explicit DeadPool(const size_t blockSize); //!< setup \param blockSize block size
+            explicit DeadPool(const size_t userBlockSize); //!< setup \param blockSize block size
             virtual ~DeadPool() noexcept;              //!< cleanup
 
             //__________________________________________________________________
@@ -38,6 +38,8 @@ namespace Yttrium
             //
             //__________________________________________________________________
             virtual void   gc(const uint8_t) noexcept;
+            virtual void   cache(const size_t);
+            virtual size_t count() const noexcept;
 
             //__________________________________________________________________
             //
@@ -47,8 +49,9 @@ namespace Yttrium
             //__________________________________________________________________
             void *         query();                            //!< \return a cached/new block
             void           store(void * const zombi) noexcept; //!< store block \param zombi previously acquired
-            virtual void   cache(const size_t n);              //!< fast caching new blocks \param n blocks to cache
-            virtual size_t count() const noexcept;
+            size_t         blockSize()      const noexcept; //!< \return retrieved unique block size
+
+
         private:
             Y_Disable_Copy_And_Assign(DeadPool); //!< discarding
             Code * const code;

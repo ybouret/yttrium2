@@ -28,7 +28,9 @@ namespace Yttrium
         class Inferno : public Ingress<Caching>
         {
         public:
-            inline explicit Inferno(size_t requested = 0) : deadPool( sizeof(T) )
+            inline explicit Inferno(size_t requested = 0) :
+            deadPool( sizeof(T) ),
+            blockSize( deadPool.blockSize() )
             {
                 deadPool.cache(requested);
             }
@@ -56,12 +58,13 @@ namespace Yttrium
             }
 
 
-
         private:
             Y_Disable_Copy_And_Assign(Inferno);
-            DeadPool deadPool;
-
             inline ConstInterface & locus() const noexcept { return deadPool; }
+
+            DeadPool deadPool;
+        public:
+            const size_t blockSize;
         };
     }
 }
