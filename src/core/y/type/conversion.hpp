@@ -12,12 +12,12 @@ namespace Yttrium
     template <class T,class U>
     class Conversion {
     private:
-        typedef uint8_t SmallType;                      //!< small type alias
-        class           LargeType { uint32_t unused; }; //!< inner large type
+        typedef uint8_t SmallType;                                   //!< small type alias
+        class           LargeType { uint32_t unused; /*!< N/A */ }; //!< inner large type
 
-        static  SmallType Test( U ); //!< returned type for U
-        static  LargeType Test(...); //!< returned type for other U
-        static  T         MakeT();   //!< a prototype for returning T
+        static  SmallType Test( U ); //!< returned type for U         \return SmallType prototype
+        static  LargeType Test(...); //!< returned type for other U   \return LargeType prototoyp
+        static  T         MakeT();   //!< a prototype for returning T \return any prototype
 
     public:
         Conversion(); //!< or some compiler will complain about all private...

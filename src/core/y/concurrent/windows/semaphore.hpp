@@ -59,7 +59,7 @@ namespace Yttrium
 #if defined(Y_WIN)
             HANDLE sem_;
 #endif
-            Y_Disable_Copy_And_Assign(Semaphore);
+            Y_Disable_Copy_And_Assign(Semaphore); //!< discarding
         };
     }
 

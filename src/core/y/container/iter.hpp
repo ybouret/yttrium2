@@ -10,10 +10,11 @@ namespace Yttrium
 {
     namespace Iter
     {
+        //! named direction
         enum Direction
         {
-            Forward,
-            Reverse
+            Forward, //!< alias
+            Reverse  //!< alias
         };
 
         

@@ -24,9 +24,9 @@ namespace Yttrium
         // Definitions
         //
         //______________________________________________________________________
-        static const char LBRACK     = '[';
-        static const char RBRACK     = ']';
-        static const char SEMICOLON  = ';';
+        static const char LBRACK     = '['; //!< alias
+        static const char RBRACK     = ']'; //!< alias
+        static const char SEMICOLON  = ';'; //!< alias
 
         //______________________________________________________________________
         //

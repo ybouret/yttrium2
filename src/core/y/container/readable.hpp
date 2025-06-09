@@ -44,7 +44,7 @@ namespace Yttrium
         //! cleanup
         inline virtual ~Readable() noexcept {}
 
-
+        //! default display as Julia/Octave.. vector
         inline
         friend std::ostream & operator<<(std::ostream &os, const Readable &self)
         {

@@ -12,25 +12,53 @@ namespace Yttrium
     namespace Memory
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! 1-item workspace with access operator
+        /**
+         must be constructed/destructed by derived class
+         */
+        //
+        //______________________________________________________________________
         template <typename T>
         class Solitary : public Workspace<T,1>
         {
         public:
-            Y_ARGS_EXPOSE(T,Type);
-            typedef Workspace<T,1> WorkspaceType;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            Y_ARGS_EXPOSE(T,Type);                //!< aliases
+            typedef Workspace<T,1> WorkspaceType; //!< alias
             using   WorkspaceType::data;
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
         protected:
-            inline explicit Solitary() noexcept : WorkspaceType() {}
+            inline explicit Solitary() noexcept : WorkspaceType() {} //!< setup
         public:
-            inline virtual ~Solitary() noexcept {}
+            inline virtual ~Solitary() noexcept {}                   //!< cleanup
 
-            inline ConstType & operator*() const noexcept { return *data; }
-            inline Type &      operator*()       noexcept { return *data; }
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            inline ConstType & operator*() const noexcept { return *data; } //!< \return CONST content
+            inline Type &      operator*()       noexcept { return *data; } //!< \return content
 
 
         private:
-            Y_Disable_Copy_And_Assign(Solitary);
+            Y_Disable_Copy_And_Assign(Solitary); //!< discarding
         };
 
     }

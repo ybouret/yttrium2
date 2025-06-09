@@ -14,23 +14,33 @@ namespace Yttrium
     namespace Memory
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! prototype for CxxWorkspace
+        //
+        //
+        //______________________________________________________________________
         template <typename T, size_t N>
         class CxxWorkspaceProto : public Workspace<T,N>
         {
         public:
-            inline virtual ~CxxWorkspaceProto() noexcept {}
+            inline virtual ~CxxWorkspaceProto() noexcept {} //!< cleanup
 
         protected:
             using Workspace<T,N>::data;
+
+            //! setup
             inline explicit CxxWorkspaceProto() noexcept :
             Workspace<T,N>(),
             item( data - 1 )
             {
             }
 
-            T * const item;
+            T * const item; //!< to access item[1..size()]
         private:
-            Y_Disable_Copy_And_Assign(CxxWorkspaceProto);
+            Y_Disable_Copy_And_Assign(CxxWorkspaceProto); //!< discarding
         };
 
         //______________________________________________________________________

@@ -10,7 +10,9 @@ namespace Yttrium
 {
     //__________________________________________________________________________
     //
+    //
     //! default type alternative.
+    //
     //__________________________________________________________________________
     template <
     const bool firstFlag,
@@ -19,25 +21,49 @@ namespace Yttrium
     typename   Second,
     typename   Third> struct Alternative;
 
+    //__________________________________________________________________________
+    //
+    //
+    //! Alternative with first flag => First
+    //
+    //__________________________________________________________________________
     template <typename First, typename Second, typename Third>
     struct Alternative<true,First,true,Second,Third> {
-        typedef First Type;
+        typedef First Type; //!< alias
     };
 
+    //__________________________________________________________________________
+    //
+    //
+    //! Alternative with first flag => First
+    //
+    //__________________________________________________________________________
     template <typename First, typename Second, typename Third>
     struct Alternative<true,First,false,Second,Third> {
-        typedef First Type;
+        typedef First Type; //!< alias
     };
 
 
+    //__________________________________________________________________________
+    //
+    //
+    //! Alternative with second flag => Second
+    //
+    //__________________________________________________________________________
     template <typename First, typename Second, typename Third>
     struct Alternative<false,First,true,Second,Third> {
-        typedef Second Type;
+        typedef Second Type; //!< alias
     };
 
+    //__________________________________________________________________________
+    //
+    //
+    //! Alternative with no flag => Third
+    //
+    //__________________________________________________________________________
     template <typename First, typename Second, typename Third>
     struct Alternative<false,First,false,Second,Third> {
-        typedef Third Type;
+        typedef Third Type; //!< alias
     };
 
 
