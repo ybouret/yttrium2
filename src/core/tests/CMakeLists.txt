@@ -13,6 +13,8 @@ memory/joint
 hashing
 xml
 container
+stream
+stream/io
 )
 
 
@@ -87,4 +89,6 @@ Y_UTEST(xml:attribute)
 Y_UTEST(container:algo)
 Y_UTEST(container:iterator)
 
+#stream
+Y_UTEST(stream:io:codec64)
 
