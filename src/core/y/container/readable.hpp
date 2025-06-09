@@ -7,6 +7,7 @@
 #include "y/container.hpp"
 #include "y/type/args.hpp"
 #include <iostream>
+#include <cassert>
 
 namespace Yttrium
 {

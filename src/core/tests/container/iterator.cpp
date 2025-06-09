@@ -1,122 +1,18 @@
 
+#include "y/container/contiguous.hpp"
+
 #include "y/container/iter/linear.hpp"
-#include "y/type/conversion.hpp"
 #include "y/core/display.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/utest/run.hpp"
 
-#include "y/container/writable.hpp"
-#include "y/check/static.hpp"
 #include "y/core/display.hpp"
-#include "y/type/alternative.hpp"
 
 namespace Yttrium
 {
 
 
-    template <template <typename> class CONTAINER, typename T>
-    class ContiguousCommon : public CONTAINER<T>
-    {
-    protected:
-        typedef typename CONTAINER<T>::ConstType ConstType;
-        using CONTAINER<T>::size;
-        inline explicit ContiguousCommon() noexcept : CONTAINER<T>() {}
-
-    public:
-        inline virtual ~ContiguousCommon() noexcept   {}
-
-
-    private:
-        Y_Disable_Copy_And_Assign(ContiguousCommon);
-
-    protected:
-        inline ConstType * head() const noexcept {
-            return (size()>0) ? & (*this)[1] : 0;
-        }
-
-        inline ConstType * last() const noexcept {
-            const size_t sz = size();
-            return  (sz>0) ? & (*this)[1]+sz : 0;
-        }
-    };
-
-    template <template <typename> class CONTAINER, typename T>
-    class ReadableContiguous : public ContiguousCommon<CONTAINER,T>
-    {
-    public:
-        Y_ARGS_EXPOSE(T,Type);
-        typedef Iter::Linear<Iter::Forward,ConstType> ConstIterator;
-
-    protected:
-        explicit ReadableContiguous() noexcept : ContiguousCommon<CONTAINER,T>()
-        {
-            Y_STATIC_CHECK(Y_Is_SuperSubClass(Readable<T>,CONTAINER<T>),BadBaseClass);
-        }
-
-    public:
-        virtual ~ReadableContiguous() noexcept
-        {
-        }
-
-        inline ConstIterator begin() const noexcept { return this->head(); }
-        inline ConstIterator end()   const noexcept { return this->last(); }
-
-    private:
-        Y_Disable_Copy_And_Assign(ReadableContiguous);
-    };
-
-
-    template <template <typename> class CONTAINER, typename T>
-    class WritableContiguous : public ContiguousCommon<CONTAINER,T>
-    {
-    public:
-        Y_ARGS_EXPOSE(T,Type);
-        typedef Iter::Linear<Iter::Forward,ConstType> ConstIterator;
-        typedef Iter::Linear<Iter::Forward,ConstType> Iterator;
-
-    protected:
-        explicit WritableContiguous() noexcept : ContiguousCommon<CONTAINER,T>()
-        {
-            Y_STATIC_CHECK(Y_Is_SuperSubClass(Writable<T>,CONTAINER<T>),BadBaseClass);
-        }
-
-        inline ConstIterator begin() const noexcept { return this->head(); }
-        inline ConstIterator end()   const noexcept { return this->last(); }
-        
-        inline Iterator begin() noexcept { return this->head(); }
-        inline Iterator end()   noexcept { return this->last(); }
-
-    public:
-        virtual ~WritableContiguous() noexcept
-        {
-        }
-
-    private:
-        Y_Disable_Copy_And_Assign(WritableContiguous);
-    };
-
-#define Y_Contiguous_Class() \
-Alternative\
-<\
-Y_Is_SuperSubClass(Writable<T>,CONTAINER<T>),\
-WritableContiguous<CONTAINER,T>,\
-Y_Is_SuperSubClass(Readable<T>,CONTAINER<T>),\
-ReadableContiguous<CONTAINER,T>,\
-NullType>::Type
-
-    template <template <typename> class CONTAINER, typename T>
-    class Contiguous : public Y_Contiguous_Class()
-    {
-    protected:
-        typedef typename Y_Contiguous_Class() ContainerType;
-        explicit Contiguous() noexcept : ContainerType() {}
-
-    public:
-        virtual ~Contiguous() noexcept {}
-        
-    private:
-        Y_Disable_Copy_And_Assign(Contiguous);
-    };
+   
 
 
 
