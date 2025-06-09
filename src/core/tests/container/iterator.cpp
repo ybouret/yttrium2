@@ -111,7 +111,7 @@ namespace
 	};
 
 
-	
+
 
 }
 Y_UTEST(container_iterator)
@@ -140,6 +140,6 @@ Y_UTEST(container_iterator)
 	Core::Display(std::cerr, arr.begin(), arr.size()) << std::endl;
 #endif
 
-	
+
 }
 Y_UDONE()
