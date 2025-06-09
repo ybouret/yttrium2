@@ -16,11 +16,7 @@ namespace Yttrium
 
         Codec64:: Codec64(const uint64_t qw) noexcept : byte()
         {
-            static const uint64_t mask[] =
-            {
-
-            };
-
+           
             const unsigned inputBits   = Calculus::BitsFor::Count(qw);
             const unsigned outputBits  = HeaderBits + inputBits;
             const size_t   outputBytes = Alignment::On<8>::Ceil(outputBits)/8;
@@ -31,7 +27,7 @@ namespace Yttrium
             assert(BitsFor(outputBytes) <= HeaderBits );
 
             // write header
-            byte[0] = static_cast<uint8_t>(outputBytes << HeaderRoll); assert( (byte[0]>>HeaderRoll) == outputBytes );
+            byte[0] = static_cast<uint8_t>(outputBytes << HeaderRoll); assert( unsigned(byte[0]>>HeaderRoll) == outputBytes );
 
             Hexadecimal::Display(std::cerr,byte,1) << std::endl;
 
