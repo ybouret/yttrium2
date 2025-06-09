@@ -14,7 +14,7 @@ namespace Yttrium
         //
         //
         //
-        //! pool of zombified blocks
+        //! pool of zombified blocks with same block size
         //
         //
         //______________________________________________________________________
@@ -29,7 +29,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             explicit DeadPool(const size_t userBlockSize); //!< setup \param blockSize block size
-            virtual ~DeadPool() noexcept;              //!< cleanup
+            virtual ~DeadPool() noexcept;                  //!< cleanup
 
             //__________________________________________________________________
             //

@@ -1,5 +1,5 @@
 
-#include "y/memory/management/inferno.hpp"
+#include "y/memory/management/purgatory/inferno.hpp"
 #include "y/utest/run.hpp"
 #include "y/system/rand.hpp"
 #include "y/memory/stealth.hpp"

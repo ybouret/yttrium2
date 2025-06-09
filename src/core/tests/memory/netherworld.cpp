@@ -1,4 +1,4 @@
-#include "y/memory/management/studio.hpp"
+#include "y/memory/management/purgatory/netherworld.hpp"
 #include "y/utest/run.hpp"
 
 using namespace Yttrium;
@@ -20,7 +20,7 @@ namespace
         Y_Disable_Assign(Foo);
     };
 
-    typedef Memory::Studio<Foo,0> FooStudio;
+    typedef Memory::Netherworld<Foo,0> FooStudio;
 
 
     
@@ -31,16 +31,16 @@ namespace Yttrium
 {
     namespace Memory
     {
-        template <> const char * const FooStudio :: CallSign = "Foo::Studio";
+        template <> const char * const FooStudio :: CallSign = "Foo::Netherworld";
     }
 }
 
-Y_UTEST(memory_studio)
+Y_UTEST(memory_netherworld)
 {
 
-    FooStudio &studio = FooStudio::Instance();
+    //FooStudio &studio = FooStudio::Instance();
 
-    studio.display(std::cerr,0);
+    //studio.display(std::cerr,0);
 
 }
 Y_UDONE()

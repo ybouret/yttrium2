@@ -4,6 +4,7 @@
 #define Y_Memory_Inferno_Included 1
 
 
+#include "y/memory/management/purgatory.hpp"
 #include "y/memory/management/dead-pool.hpp"
 #include "y/type/ingress.hpp"
 #include "y/type/destruct.hpp"
@@ -12,6 +13,7 @@ namespace Yttrium
 {
     namespace Memory
     {
+
 #define Y_Inferno_Recover(BUILD) do { \
 /**/  void * const addr = deadPool.query();\
 /**/    try {\
@@ -24,34 +26,36 @@ namespace Yttrium
 /**/  }\
 } while(false)
 
+        //!
         template <typename T>
-        class Inferno : public Ingress<Caching>
+        class Inferno : public Purgatory<T>, public Ingress<Caching>
         {
         public:
-            inline explicit Inferno(size_t requested = 0) :
-            deadPool( sizeof(T) ),
-            blockSize( deadPool.blockSize() )
+            // C++
+            inline explicit Inferno() :
+            deadPool( sizeof(T) )
             {
-                deadPool.cache(requested);
             }
 
             inline virtual ~Inferno() noexcept {}
 
 
-            inline void zombify(T * const object) noexcept
+            // interface
+            inline virtual void zombify(T * const object) noexcept
             {
                 deadPool.store( Destructed(object) );
             }
 
-            inline T * reenact(const T &object)
+            inline virtual T * reenact(const T &object)
             {
                 Y_Inferno_Recover( T(object) );
             }
 
-            inline T * recover() {
+            inline virtual T * recover() {
                 Y_Inferno_Recover( T() );
             }
 
+            // methods
             template <typename ARG1> inline
             T * recover(typename TypeTraits<ARG1>::ParamType arg1) {
                 Y_Inferno_Recover( T(arg1) );
@@ -61,10 +65,8 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(Inferno);
             inline ConstInterface & locus() const noexcept { return deadPool; }
-
             DeadPool deadPool;
-        public:
-            const size_t blockSize;
+
         };
     }
 }
