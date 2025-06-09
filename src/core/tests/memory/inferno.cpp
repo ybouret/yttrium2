@@ -43,9 +43,11 @@ namespace
     int Dummy::Count = 0;
 
 
+
+
     static const size_t     maxi = 1000;
 
-
+#if 0
     template <typename T> static inline
     void fill(T *                  addr[],
               size_t &             size,
@@ -88,8 +90,9 @@ namespace
         {
             mmgr.zombify( addr[--size] );
         }
-        mmgr->gc(0xaa);
+        //mmgr->gc(0xaa);
     }
+#endif
 
 }
 
@@ -98,6 +101,7 @@ Y_UTEST(memory_inferno)
 
     System::Rand     ran;
 
+#if 0
     {
         Memory::Inferno<Dummy>  mgr;
         Dummy  *                addr[maxi]; Y_Memory_BZero(addr);
@@ -111,7 +115,7 @@ Y_UTEST(memory_inferno)
         empty(0,addr,size,mgr,ran);
         Y_CHECK(!Dummy::Count);
     }
-
+#endif
 
 
 

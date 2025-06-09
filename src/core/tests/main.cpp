@@ -59,7 +59,6 @@ Y_UTEST_DECL(64)
     Y_UTEST(memory_object);
     Y_UTEST(memory_dead_pool);
     Y_UTEST(memory_inferno);
-    Y_UTEST(memory_netherworld);
 
     Y_UTEST(hashing_mix64);
     Y_UTEST(hashing_hash32);

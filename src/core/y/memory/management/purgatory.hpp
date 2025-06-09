@@ -25,18 +25,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Purgatory);
         };
 
-#define Y_Purgatory_Recover(BUILD) do { \
-/**/  void * const addr = deadPool.query();\
-/**/    try {\
-/**/      return new (addr) BUILD;\
-/**/    }\
-/**/    catch(...)\
-/**/    {\
-/**/      deadPool.store(addr);\
-/**/      throw;\
-/**/  }\
-} while(false)
-
+        
     }
 }
 
