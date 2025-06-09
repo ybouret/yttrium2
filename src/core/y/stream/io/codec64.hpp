@@ -14,14 +14,18 @@ namespace Yttrium
         class Codec64
         {
         public:
-            static const unsigned MaxInputBytes = sizeof(uint64_t);
-            static const unsigned MaxInputBits  = 8 * MaxInputBytes;
-            static const unsigned HeaderBits    = IntegerLog2<MaxInputBits>::Value;
+            static const unsigned MaxInputBytes  = sizeof(uint64_t);
+            static const unsigned MaxInputBits   = 8 * MaxInputBytes;
+            static const unsigned MaxOutputBytes = MaxInputBytes+1;
+            static const unsigned HeaderBits     = IntegerLog2<MaxInputBytes>::Value+1;
+            static const unsigned HeaderRoll     = 8-HeaderBits;
+
             Codec64(const uint64_t qw) noexcept;
             ~Codec64() noexcept;
 
         private:
             Y_Disable_Assign(Codec64);
+            uint8_t byte[MaxOutputBytes];
         };
     };
 

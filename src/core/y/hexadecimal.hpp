@@ -9,6 +9,8 @@
 #include "y/calculus/alignment.hpp"
 #include "y/type/ints.hpp"
 #include "y/type/explanation.hpp"
+#include "y/core/display.hpp"
+#include "y/check/usual.hpp"
 
 namespace Yttrium
 {
@@ -84,6 +86,25 @@ namespace Yttrium
         //
         //______________________________________________________________________
         virtual const char * c_str() const noexcept;
+
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+        template <typename T> static inline
+        Hexadecimal Cast(const T &x) noexcept {
+            return Hexadecimal(x);
+        }
+
+        template <typename T> static inline
+        std::ostream & Display(std::ostream &os, const T * const arr, size_t num)
+        {
+            assert(Good(arr,num));
+            return Core::Display(os,arr,num,Cast<T>);
+        }
+
 
     private:
         Y_Disable_Assign(Hexadecimal);           //!< discarding
