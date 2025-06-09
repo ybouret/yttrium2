@@ -26,7 +26,6 @@ Y_CreateLibrary(y
     y/memory
     y/memory/management
     y/memory/management/workspace
-    y/memory/management/purgatory
     y/memory/allocator
     y/memory/small
     y/memory/small/ledger

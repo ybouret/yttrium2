@@ -1,5 +1,5 @@
 
-#include "y/memory/management/purgatory/inferno.hpp"
+#include "y/memory/management/inferno.hpp"
 #include "y/utest/run.hpp"
 #include "y/system/rand.hpp"
 #include "y/memory/stealth.hpp"
@@ -42,17 +42,17 @@ namespace
 
     int Dummy::Count = 0;
 
+    typedef Memory::Inferno<Dummy,0> DummyPurgatory;
 
 
 
     static const size_t     maxi = 1000;
 
-#if 0
     template <typename T> static inline
-    void fill(T *                  addr[],
-              size_t &             size,
-              Memory::Inferno<T> & mmgr,
-              System::Rand &       ran)
+    void fill(T *                    addr[],
+              size_t &               size,
+              DummyPurgatory &       mmgr,
+              System::Rand &         ran)
     {
         while(size<maxi)
         {
@@ -60,7 +60,7 @@ namespace
             switch(choice)
             {
                 case 1:
-                    addr[size] = mmgr.template recover<int>( ran.to<uint16_t>() );
+                    addr[size] = mmgr.template rebuild<int>( ran.to<uint16_t>() );
                     break;
 
                 case 2:
@@ -82,7 +82,7 @@ namespace
     void empty(const size_t       to,
                T *                addr[],
                size_t &           size,
-               Memory::Inferno<T> &mmgr,
+               Memory::Purgatory<T> &mmgr,
                System::Rand &      ran)
     {
         ran.shuffle(addr,size);
@@ -90,32 +90,34 @@ namespace
         {
             mmgr.zombify( addr[--size] );
         }
-        //mmgr->gc(0xaa);
+        mmgr.gc(0xaa);
     }
-#endif
 
+}
+
+namespace Yttrium
+{
+    template <> const char * const DummyPurgatory:: CallSign = "DummyPurgatory";
 }
 
 Y_UTEST(memory_inferno)
 {
 
     System::Rand     ran;
+    DummyPurgatory  &mgr = DummyPurgatory::Instance();
 
-#if 0
+
+    Dummy  *                addr[maxi]; Y_Memory_BZero(addr);
+    size_t                  size=0;
+    fill(addr,size,mgr,ran);
+    for(size_t iter=0;iter<10;++iter)
     {
-        Memory::Inferno<Dummy>  mgr;
-        Dummy  *                addr[maxi]; Y_Memory_BZero(addr);
-        size_t                  size=0;
+        empty(size>>1,addr,size,mgr,ran);
         fill(addr,size,mgr,ran);
-        for(size_t iter=0;iter<10;++iter)
-        {
-            empty(size>>1,addr,size,mgr,ran);
-            fill(addr,size,mgr,ran);
-        }
-        empty(0,addr,size,mgr,ran);
-        Y_CHECK(!Dummy::Count);
     }
-#endif
+    empty(0,addr,size,mgr,ran);
+    Y_CHECK(!Dummy::Count);
+
 
 
 

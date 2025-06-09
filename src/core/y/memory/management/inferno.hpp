@@ -8,16 +8,18 @@
 #include "y/memory/management/dead-pool.hpp"
 #include "y/type/args.hpp"
 #include "y/type/destruct.hpp"
+#include "y/xml/attribute.hpp"
 
 namespace Yttrium
 {
     namespace Memory
     {
 
-#define Y_Inferno_Recover(BUILD) do { \
+#define Y_Inferno_Recover(NEW_AT_ADDR) do { \
+/**/  Y_Lock(access);\
 /**/  void * const addr = deadPool.query();\
 /**/    try {\
-/**/      return new (addr) BUILD;\
+/**/      return NEW_AT_ADDR;\
 /**/    }\
 /**/    catch(...)\
 /**/    {\
@@ -35,7 +37,7 @@ namespace Yttrium
         public:
             typedef Singleton<Inferno<T,LIFE_TIME>,ClassLockPolicy> SingletonType;
             static const System::AtExit::Longevity LifeTime = LIFE_TIME;
-            static const char * const              CallSing;
+            static const char * const              CallSign;
             using SingletonType::access;
 
 
@@ -48,24 +50,50 @@ namespace Yttrium
 
             inline virtual T * reenact(const T &object)
             {
-                Y_Lock(access);
-                Y_Inferno_Recover( T(object) );
+                Y_Inferno_Recover( new (addr) T(object) );
             }
 
             inline virtual T * recover() {
-                Y_Inferno_Recover( T() );
+                Y_Inferno_Recover( new (addr) T() );
             }
+
+            virtual void display(std::ostream &os, const size_t indent) const
+            {
+                Y_Lock( Coerce(access) );
+                this->initProlog(os,indent) << XML::Attribute("in_cache", deadPool.count());
+                this->initEpilog(os,true);
+            }
+
+            virtual void gc(const uint8_t amount) noexcept
+            {
+                Y_Lock(access);
+                deadPool.gc(amount);
+            }
+
+            virtual void cache(const size_t n)
+            {
+                Y_Lock(access);
+                deadPool.cache(n);
+            }
+
+            virtual size_t count() const noexcept
+            {
+                Y_Lock( Coerce(access) );
+                return deadPool.count();
+            }
+
 
             // methods
             template <typename ARG1> inline
-            T * recover(typename TypeTraits<ARG1>::ParamType arg1) {
-                Y_Lock(access);
-                Y_Inferno_Recover( T(arg1) );
+            T *  rebuild(typename TypeTraits<ARG1>::ParamType arg1) {
+                Y_Inferno_Recover( new (addr) T(arg1) );
             }
 
 
         private:
             Y_Disable_Copy_And_Assign(Inferno);
+            friend SingletonType;
+
             // C++
             inline explicit Inferno() :
             SingletonType(),
@@ -75,6 +103,13 @@ namespace Yttrium
             }
 
             inline virtual ~Inferno() noexcept {}
+
+
+            inline virtual T * produce( T * (*proc)(void *, void *), void * args)
+            {
+                assert(0!=proc);
+                Y_Inferno_Recover( proc(addr,args) );
+            }
 
             DeadPool deadPool;
 
