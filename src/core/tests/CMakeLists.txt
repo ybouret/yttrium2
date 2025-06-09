@@ -76,6 +76,7 @@ Y_UTEST(memory:joint:segments)
 Y_UTEST(memory:object:factory)
 Y_UTEST(memory:object)
 Y_UTEST(memory:dead_pool)
+Y_UTEST(memory:inferno)
 
 
 #hashing

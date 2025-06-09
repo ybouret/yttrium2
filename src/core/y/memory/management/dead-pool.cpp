@@ -89,7 +89,7 @@ namespace Yttrium
         DeadPool:: DeadPool(const size_t blockSize) :
         code( new Code(blockSize) )
         {
-            std::cerr << "sizeof(Code) = " << sizeof(Code) << std::endl;
+            assert( 0 != code );
         }
 
 
