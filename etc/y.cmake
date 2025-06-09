@@ -71,7 +71,11 @@ Y_Message("Checking Platforms")
 cmake_print_variables(CMAKE_SYSTEM_NAME)
 
 if( "Linux" STREQUAL "${CMAKE_SYSTEM_NAME}")
-	set(Y_LINUX ON)
+	set(Y_Linux ON)
+endif()
+
+if( "FreeBSD" STREQUAL "${CMAKE_SYSTEM_NAME}")
+	set(Y_FreeBSD ON)
 endif()
 
 ################################################################################
@@ -202,10 +206,10 @@ function(Y_LinkLibraries THE_EXE)
 
 	# forward libraries
 	list( APPEND THE_LIBS ${ARGN} )
-	if(Y_LINUX)
+	if(Y_Linux OR Y_FreeBSD)
 		list( APPEND THE_LIBS "pthread" )
 	endif()
-	if(Y_LINUX)
+	if(Y_Linux)
 		list( APPEND THE_LIBS "rt" )
 	endif()
 	cmake_print_variables(THE_LIBS)
