@@ -13,6 +13,7 @@ Y_UTEST(memory_dead_pool)
 
 
     pool.cache(10);
+    pool.gc(0xaa);
 
 
 }
