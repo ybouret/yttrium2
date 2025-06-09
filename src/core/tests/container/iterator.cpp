@@ -147,9 +147,9 @@ NullType>::Type
 
         virtual ConstType & getItemAt(const size_t indx) const noexcept
         {
-            assert(this->bulk>0);
-            assert(0!=this->item);
-            return this->item[indx];
+            assert(bulk>0);
+            assert(0!=item);
+            return item[indx];
         }
     };
 
