@@ -74,7 +74,7 @@ Y_UTEST(memory_workspace)
 
     {
         Memory::CxxWorkspace<Dummy,7> wksp(Procedural,Dummy::Create2,1);
-        Core::Display(std::cerr,&wksp[1],wksp.size()) << std::endl;
+        Core::Display(std::cerr,wksp.begin(),wksp.size()) << std::endl;
     }
     Y_CHECK(0==Dummy::Count);
 }

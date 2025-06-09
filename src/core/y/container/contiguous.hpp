@@ -18,7 +18,7 @@ namespace Yttrium
     //
     //! user CONTAINER<T> to extract info
     /**
-     CONTAINER<T> must have  size() and operator[](1..size()) methods
+     CONTAINER should be Readable|Writable
      */
     //__________________________________________________________________________
     template <template <typename> class CONTAINER, typename T>
@@ -59,13 +59,15 @@ namespace Yttrium
 
         //! \return first valid address, may be NULL
         inline ConstType * head() const noexcept {
-            return (size()>0) ? & (*this)[1] : 0;
+            const Readable<T> &self = *this;
+            return (size()>0) ? & self[1] : 0;
         }
 
         //! \return first invalid address, may be NULL
         inline ConstType * last() const noexcept {
-            const size_t sz = size();
-            return  (sz>0) ? & (*this)[1]+sz : 0;
+            const Readable<T> &self = *this;
+            const size_t       sz   = self.size();
+            return  (sz>0) ? & self[1]+sz : 0;
         }
     };
 
@@ -138,6 +140,9 @@ namespace Yttrium
         // Definitions
         //
         //______________________________________________________________________
+        using ContiguousCommon<CONTAINER,T>::head;
+        using ContiguousCommon<CONTAINER,T>::last;
+
         Y_ARGS_EXPOSE(T,Type);                                       //!< aliases
         typedef Iter::Linear<Iter::Forward,ConstType> ConstIterator; //!< alias
         typedef Iter::Linear<Iter::Forward,ConstType> Iterator;      //!< alias
@@ -165,10 +170,10 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
-        inline ConstIterator begin() const noexcept { return this->head(); } //!< \return first valid  ConstIterator
-        inline ConstIterator end()   const noexcept { return this->last(); } //!< \return first invalid ConstIterator
-        inline Iterator      begin()       noexcept { return this->head(); } //!< \return first valid   Iterator
-        inline Iterator      end()         noexcept { return this->last(); } //!< \return first invalid Iterator
+        inline ConstIterator begin() const noexcept { return head(); } //!< \return first valid  ConstIterator
+        inline ConstIterator end()   const noexcept { return last(); } //!< \return first invalid ConstIterator
+        inline Iterator      begin()       noexcept { return head(); } //!< \return first valid   Iterator
+        inline Iterator      end()         noexcept { return last(); } //!< \return first invalid Iterator
 
     private:
         Y_Disable_Copy_And_Assign(WritableContiguous); //!< discarding

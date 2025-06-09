@@ -5,9 +5,8 @@
 #define Y_Memory_Workspace_Cxx_Included 1
 
 #include "y/memory/workspace.hpp"
-#include "y/type/args.hpp"
+#include "y/container/contiguous.hpp"
 #include "y/type/procedural.hpp"
-#include "y/container/writable.hpp"
 
 namespace Yttrium
 {
@@ -23,7 +22,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename T, size_t N>
-        class CxxWorkspaceProto : public Workspace<T,N>
+        class CxxWorkspaceProto : public Workspace<T,N>, public Contiguous<Writable,T>
         {
         public:
             inline virtual ~CxxWorkspaceProto() noexcept {} //!< cleanup
@@ -64,7 +63,7 @@ catch(...) { releaseUpTo(built); throw; } \
         //
         //______________________________________________________________________
         template <typename T, size_t N=1>
-        class CxxWorkspace : public CxxWorkspaceProto<T,N>, public Writable<T>
+        class CxxWorkspace : public CxxWorkspaceProto<T,N>
         {
         public:
             //__________________________________________________________________
