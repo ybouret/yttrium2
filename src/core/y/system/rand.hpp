@@ -5,6 +5,7 @@
 #define Y_System_Rand_Included 1
 
 #include "y/core/setup.hpp"
+#include <cassert>
 
 namespace Yttrium
 {
@@ -82,6 +83,19 @@ namespace Yttrium
              \param blockSize bytes to fill
              */
             void fill(void * const blockAddr, const size_t blockSize) noexcept;
+
+            template <typename T> inline
+            T gen(unsigned nbits) noexcept
+            {
+                assert(nbits<=8*sizeof(T));
+                if(nbits<=0) return 0;
+                T res = 1;
+                while(--nbits > 0) {
+                    res <<= 1;
+                    if( choice() ) res |= 1;
+                }
+                return res;
+            }
 
         private:
             Y_Disable_Copy_And_Assign(Rand); //!< discarding

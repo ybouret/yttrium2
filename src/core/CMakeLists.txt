@@ -33,6 +33,8 @@ Y_CreateLibrary(y
     y/utest
     y/hashing
     y/xml
+    y/stream/
+    y/stream/io
 )
 
 add_subdirectory(tests)

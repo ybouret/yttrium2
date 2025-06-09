@@ -29,6 +29,8 @@ Y_UTEST_DECL(64)
     Y_UTEST(calculus_alignment);
     Y_UTEST(calculus_base2);
     Y_UTEST(calculus_gcd);
+    Y_UTEST(calculus_bits_for);
+
 
 
     Y_UTEST(concurrent_nucleus);

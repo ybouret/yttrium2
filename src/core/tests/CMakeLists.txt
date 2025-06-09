@@ -46,6 +46,7 @@ Y_UTEST(calculus:integer_log2)
 Y_UTEST(calculus:alignment)
 Y_UTEST(calculus:base2)
 Y_UTEST(calculus:gcd)
+Y_UTEST(calculus:bits_for)
 
 #concurrent
 Y_UTEST(concurrent:nucleus)
