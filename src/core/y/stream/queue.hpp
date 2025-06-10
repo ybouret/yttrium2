@@ -22,9 +22,7 @@ namespace Yttrium
         virtual void       write(const char);
         virtual void       flush();
         virtual bool       query(char &C);
-        
-
-
+        virtual void       store(const char);
 
     private:
         Y_Disable_Copy_And_Assign(StreamQueue);

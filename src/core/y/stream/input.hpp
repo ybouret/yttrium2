@@ -16,7 +16,8 @@ namespace Yttrium
     public:
         virtual ~InputStream() noexcept;
 
-        virtual bool query(char &C) = 0;
+        virtual bool query(char &C)    = 0;
+        virtual void store(const char) = 0;
 
         void decode64(uint64_t &qw);
 
@@ -39,7 +40,6 @@ namespace Yttrium
         size_t read(uint16_t &w);
         size_t read(uint32_t &w);
         size_t read(uint64_t &w);
-
     };
 }
 

@@ -46,5 +46,9 @@ namespace Yttrium
         }
     }
 
+    void StreamQueue:: store(const char C)
+    {
+        (*this) >> C;
+    }
 
 }
