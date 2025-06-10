@@ -56,6 +56,9 @@ namespace
 
 Y_UTEST(memory_workspace)
 {
+    //int Solitary;
+    //int Multiple;
+
     {
         Memory::CxxWorkspace<Dummy,10> wksp;
         Core::Display(std::cerr,&wksp[1],wksp.size()) << std::endl;
