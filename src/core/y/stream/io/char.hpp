@@ -27,7 +27,7 @@ namespace Yttrium
             static void   Delete(Char * const) noexcept;
             static Char * Copy(const Char * const);
 
-            const uint8_t & operator*() const noexcept { return code; }
+            const Type & operator*() const noexcept { return code; }
 
 
             Char *  next;
@@ -36,7 +36,7 @@ namespace Yttrium
 
         private:
             friend class Concurrent::Inferno<Char>;
-            Char(const uint8_t a) noexcept;
+            Char(const Type  a) noexcept;
             Char(const Char &)    noexcept;
             ~Char() noexcept;
             Y_Disable_Assign(Char);

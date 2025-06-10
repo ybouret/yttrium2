@@ -7,7 +7,7 @@
 #include "y/utest/run.hpp"
 #include "y/system/rand.hpp"
 
-#include "y/concurrent/data/live-pool.hpp"
+#include "y/concurrent/data/zombies.hpp"
 
 namespace Yttrium
 {
