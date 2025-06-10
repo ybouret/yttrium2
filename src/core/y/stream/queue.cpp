@@ -1,16 +1,18 @@
 
-#include "y/stream/output-queue.hpp"
+#include "y/stream/queue.hpp"
 #include "y/hexadecimal.hpp"
 
 namespace Yttrium
 {
-    OutputQueue:: OutputQueue() noexcept : IO::Chars() {}
+    StreamQueue:: StreamQueue() noexcept :
+    OutputStream(),
+    IO::Chars() {}
 
-    OutputQueue:: ~OutputQueue() noexcept
+    StreamQueue:: ~StreamQueue() noexcept
     {
     }
 
-    std::ostream & operator<<(std::ostream &os, const OutputQueue &Q)
+    std::ostream & operator<<(std::ostream &os, const StreamQueue &Q)
     {
         for(const IO::Char *ch=Q->head;ch;ch=ch->next)
         {
@@ -20,12 +22,12 @@ namespace Yttrium
         return os;
     }
 
-    void OutputQueue:: flush()
+    void StreamQueue:: flush()
     {
 
     }
 
-    void OutputQueue:: write(const char c)
+    void StreamQueue:: write(const char c)
     {
         (*this) << c;
     }

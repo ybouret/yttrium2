@@ -19,60 +19,59 @@ namespace Yttrium
 
     size_t OutputStream:: encode64(uint64_t qw)
     {
-        static const unsigned AvailableMask[9] =
+        static const size_t   MaxExtraBytes = 8;
+        static const size_t   HeaderBits    = IntegerLog2<MaxExtraBytes>::Value + 1;
+        static const size_t   HeaderRoll    = 8 - HeaderBits;
+        static const uint64_t HeaderMask    = (1<<HeaderRoll)-1;
+
+        std::cerr << "HeaderBits=" << HeaderBits << std::endl;
+        std::cerr << "HeaderRoll=" << HeaderRoll << std::endl;
+        std::cerr << "HeaderMask=" << HeaderMask << std::endl;
+
+        size_t       inputBits = Calculus::BitsFor::Count(qw);
+        const size_t totalBits = inputBits + HeaderBits;
+        const size_t totalSize = Alignment::On<8>::Ceil(totalBits) >> 3;
+        const size_t extraSize = totalSize-1;
+        assert(totalSize>=1);
+        assert(totalSize<=1+MaxExtraBytes);
+
+        std::cerr << "inputBits = " << inputBits << std::endl;
+        std::cerr << "totalBits = " << totalBits << std::endl;
+        std::cerr << "totalSize = " << totalSize << std::endl;
+
+        if(inputBits<=HeaderRoll)
         {
-            0, 1, 3, 7, 15, 31, 63, 127, 255
-        };
-
-        static const unsigned MaxInputBytes  = sizeof(uint64_t);
-        static const unsigned MaxInputBits   = 8 * MaxInputBytes;
-        static const unsigned MaxOutputBytes = MaxInputBytes+1;
-        static const unsigned HeaderBits     = IntegerLog2<MaxInputBytes>::Value+1;
-        static const unsigned HeaderRoll     = 8-HeaderBits;
-
-        const unsigned inputBits   = Calculus::BitsFor::Count(qw);
-        const unsigned outputBits  = HeaderBits + inputBits;
-        const size_t   outputBytes = Alignment::On<8>::Ceil(outputBits)/8;
-        std::cerr << "inputBits   = " << inputBits << std::endl;
-        std::cerr << "outputBits  = " << outputBits << std::endl;
-        std::cerr << "outputBytes = " << outputBytes << std::endl;
-
-        assert(BitsFor(outputBytes) <= HeaderBits );
-
-        uint8_t b = static_cast<uint8_t>(outputBytes << HeaderRoll); assert( unsigned(b>>HeaderRoll) == outputBytes );
-
-        unsigned  available = HeaderRoll;
-        unsigned  remaining = inputBits;
-
-        if( remaining <= available )
-        {
-            b |= uint8_t(qw);
-            write(b);
+            assert(0==extraSize);
+            write( (uint8_t(extraSize) << HeaderRoll) | uint8_t(qw) );
             return 1;
         }
 
-        throw Exception("not implemented");
+        uint8_t byte[9];
+        byte[0] = (uint8_t(extraSize) << HeaderRoll) | uint8_t(qw&HeaderMask);
 
+        inputBits -= HeaderRoll;
+        qw       >>= HeaderRoll;
+        assert( Calculus::BitsFor::Count(qw) == inputBits );
+        assert( inputBits <= extraSize * 8);
 
-#if 0
-        while(remaining>available)
         {
-            assert(available>0);
-            assert(available<=8);
-            b |= AvailableMask[available] & qw;
-            write(b);
-            ++n;
-            qw       >>= available;
-            remaining -= available;
-            assert( Calculus::BitsFor::Count(qw) == remaining);
-            available  = 8;
-            b          = 0;
+            uint8_t *p = byte;
+            ++p;
+            while(inputBits>=8)
+            {
+                *(p++) = uint8_t(qw);
+                qw       >>= 8;
+                inputBits -= 8;
+            }
+            assert( Calculus::BitsFor::Count(qw) < 8);
+            *p = uint8_t(qw); // may be 0
         }
-#endif
 
-
-
-        return 0;
+        for(size_t i=0;i<totalSize;++i)
+        {
+            write(byte[i]);
+        }
+        return totalSize;
     }
 
 
