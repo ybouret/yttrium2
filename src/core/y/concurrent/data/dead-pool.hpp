@@ -7,7 +7,7 @@
 
 namespace Yttrium
 {
-    namespace Memory
+    namespace Concurrent
     {
 
         //______________________________________________________________________

@@ -1,5 +1,5 @@
 
-#include "y/memory/management/dead-pool.hpp"
+#include "y/concurrent/data/dead-pool.hpp"
 
 #include "y/memory/page.hpp"
 #include "y/memory/small/guild.hpp"
@@ -15,7 +15,7 @@
 
 namespace Yttrium
 {
-    namespace Memory
+    namespace Concurrent
     {
 
         //! DeadPool
@@ -26,7 +26,7 @@ namespace Yttrium
             explicit Code(const size_t blockSize) :
             zpool(),
             bytes(0),
-            guild( MaxOf<size_t>(blockSize,sizeof(Page)) )
+            guild( MaxOf<size_t>(blockSize,sizeof(Memory::Page)) )
             {
                 Coerce(bytes) = guild.getBlockSize();
             }
@@ -43,7 +43,7 @@ namespace Yttrium
             //! fetch pooled/create memory block
             inline void *conjure()
             {
-                return (zpool.size>0)  ? Page::Addr(zpool.query(),bytes) : guild.acquireBlock();
+                return (zpool.size>0)  ? Memory::Page::Addr(zpool.query(),bytes) : guild.acquireBlock();
             }
 
             //! put into cache
@@ -51,13 +51,13 @@ namespace Yttrium
             {
                 Y_Lock( *guild );
                 while( n-- > 0 )
-                    zpool.store( Page::Cast( guild.acquireBlockUnlocked() ) );
+                    zpool.store( Memory::Page::Cast( guild.acquireBlockUnlocked() ) );
             }
 
 
             inline void collect(const uint8_t amount) noexcept
             {
-                Core::ListOf<Page> zlist;
+                Core::ListOf<Memory::Page> zlist;
                 Core::PoolToList::Convert(zlist,zpool);            // encoding
                 zlist.sortByIncreasingAddress();                   // ordering
                 const size_t newSize = NewSize(amount,zlist.size); // garbage
@@ -72,9 +72,9 @@ namespace Yttrium
 
 
 
-            Core::PoolOf<Page>    zpool;         //!< zombi blocks
-            const size_t          bytes;
-            Memory::Small::Guild  guild;         //!< memory I/O
+            Core::PoolOf<Memory::Page> zpool;         //!< zombi blocks
+            const size_t               bytes;
+            Memory::Small::Guild       guild;         //!< memory I/O
 
         private:
             Y_Disable_Copy_And_Assign(Code);
@@ -103,7 +103,7 @@ namespace Yttrium
         {
             assert(0!=code);
             assert(0!=addr);
-            code->zpool.store( Page::Cast(addr) );
+            code->zpool.store( Memory::Page::Cast(addr) );
         }
 
         void DeadPool:: cache(const size_t n)

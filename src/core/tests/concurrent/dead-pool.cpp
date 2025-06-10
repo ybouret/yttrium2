@@ -1,5 +1,5 @@
 
-#include "y/memory/management/dead-pool.hpp"
+#include "y/concurrent/data/dead-pool.hpp"
 #include "y/utest/run.hpp"
 #include "y/system/rand.hpp"
 #include "y/memory/stealth.hpp"
@@ -13,7 +13,7 @@ namespace
     static void *       addr[Maxi];
     static size_t       size = 0;
 
-    static inline void fill(Memory::DeadPool &z)
+    static inline void fill(Concurrent::DeadPool &z)
     {
         while(size<Maxi)
         {
@@ -23,7 +23,7 @@ namespace
     }
 
 
-    static inline void empty(const size_t to, Memory::DeadPool &z, System::Rand &ran)
+    static inline void empty(const size_t to, Concurrent::DeadPool &z, System::Rand &ran)
     {
         ran.shuffle(addr,size);
         while(size>to)
@@ -33,11 +33,11 @@ namespace
 
 }
 
-Y_UTEST(memory_dead_pool)
+Y_UTEST(concurrent_dead_pool)
 {
 
-    System::Rand     ran;
-    Memory::DeadPool pool(12);
+    System::Rand         ran;
+    Concurrent::DeadPool pool(12);
 
     Y_Memory_BZero(addr);
 

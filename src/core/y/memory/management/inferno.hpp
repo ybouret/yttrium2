@@ -4,7 +4,7 @@
 #define Y_Memory_Inferno_Included 1
 
 #include "y/singleton.hpp"
-#include "y/memory/management/dead-pool.hpp"
+#include "y/concurrent/data/dead-pool.hpp"
 #include "y/type/args.hpp"
 #include "y/xml/attribute.hpp"
 
@@ -154,7 +154,7 @@ namespace Yttrium
             // Members
             //
             //__________________________________________________________________
-            DeadPool deadPool; //!< private zombis
+            Concurrent::DeadPool deadPool; //!< private zombis
         };
 
         template <typename T>

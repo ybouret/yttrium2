@@ -20,6 +20,7 @@ Y_CreateLibrary(y
     y/concurrent/singleton
     y/concurrent/mutex
     y/concurrent/thread
+    y/concurrent/data
     y/container
     y/container/iter
     y/container/algorithm
@@ -37,7 +38,6 @@ Y_CreateLibrary(y
     y/xml
     y/stream/
     y/stream/io
-    y/stream/io/char
 )
 
 add_subdirectory(tests)
