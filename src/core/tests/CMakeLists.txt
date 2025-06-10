@@ -45,6 +45,7 @@ Y_UTEST(type:ints)
 
 # static
 Y_UTEST(static:moniker)
+Y_UTEST(static:solitary)
 
 #calculus
 Y_UTEST(calculus:integer_log2)

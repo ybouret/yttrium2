@@ -804,6 +804,7 @@ void ioError ( void )
 static 
 void mySignalCatcher ( IntNative n )
 {
+    (void)n;
    fprintf ( stderr,
              "\n%s: Control-C or similar caught, quitting.\n",
              progName );
@@ -815,6 +816,7 @@ void mySignalCatcher ( IntNative n )
 static 
 void mySIGSEGVorSIGBUScatcher ( IntNative n )
 {
+    (void)n;
    if (opMode == OM_Z)
       fprintf ( 
       stderr,
@@ -1082,6 +1084,7 @@ void applySavedFileAttrToOutputFile ( IntNative fd )
 static 
 Bool containsDubiousChars ( Char* name )
 {
+    (void) name;
 #  if BZ_UNIX
    /* On unix, files can contain any characters and the file expansion
     * is performed by the shell.
