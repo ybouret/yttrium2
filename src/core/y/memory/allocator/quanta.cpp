@@ -43,7 +43,7 @@ namespace Yttrium
                 Quanta::Manager(blockShift),
                 Small::Guild(bytes)
                 {
-                    //std::cerr << "[+] " << bytes << std::endl;
+                    std::cerr << "[+] " << bytes << std::endl;
                 }
 
                 inline virtual ~SmallManager() noexcept
@@ -63,8 +63,13 @@ namespace Yttrium
 
 
                 //! for procedural creation
-                static void Create(void * const addr, const size_t blockShift)
+                static void Create(void * const    addr,
+                                   const size_t    indexx,
+                                   const ptrdiff_t offset)
                 {
+                    assert(indexx>0);
+                    
+                    const size_t blockShift = indexx + offset;
                     new (addr) SmallManager(unsigned(blockShift));
                 }
 
@@ -72,7 +77,7 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(SmallManager);
             };
 
-            
+            static const ptrdiff_t SmallOffset = -1;
 
         }
 
@@ -85,7 +90,7 @@ namespace Yttrium
                 Quanta::Manager(blockShift),
                 ledger( Small::Ledger::Instance() )
                 {
-                    //std::cerr << "[+] " << bytes << std::endl;
+                    std::cerr << "[+] " << bytes << std::endl;
                 }
 
                 inline virtual ~LargeManager() noexcept {}
@@ -101,8 +106,11 @@ namespace Yttrium
                     ledger.store(shift,addr);
                 }
 
-                static void Create(void * const addr, const size_t blockShift)
+                static void Create(void * const    addr,
+                                   const size_t    indexx,
+                                   const ptrdiff_t offset)
                 {
+                    const size_t blockShift=indexx+offset;
                     new (addr) LargeManager(unsigned(blockShift));
                 }
 
@@ -112,7 +120,7 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(LargeManager);
             };
 
-
+            static const ptrdiff_t LargeOffset = Quanta::MaxBlocksShift;
         }
 
 
@@ -121,28 +129,24 @@ namespace Yttrium
         {
         public:
             explicit Code() :
-            manager()
-#if 0
-            ,
-            smallManager(Procedural,SmallManager::Create,0),
-            largeManager(Procedural,LargeManager::Create,NumBlocksShift)
-#endif
+            manager(),
+            smallManager(Procedural,SmallManager::Create,SmallOffset),
+            largeManager(Procedural,LargeManager::Create,LargeOffset)
             {
                 Y_Memory_BZero(manager);
 
-#if 0
                 for(unsigned i=0;i<=MaxBlocksShift;++i)
                 {
                     manager[i] = &smallManager[i+1];
                     assert(i==manager[i]->shift);
                 }
 
+
                 for(unsigned i=0;i<NumLargerShift;++i)
                 {
                     manager[i+NumBlocksShift] = &largeManager[i+1];
                     assert(i+NumBlocksShift==manager[i+NumBlocksShift]->shift);
                 }
-#endif
 
             }
 
@@ -151,8 +155,8 @@ namespace Yttrium
             }
 
             Manager *                                       manager[MaxLedgerShift+1];
-            //Static::Multiple<SmallManager,NumBlocksShift>   smallManager;
-            //Static::Multiple<LargeManager,NumLargerShift>   largeManager;
+            Static::Multiple<SmallManager,NumBlocksShift>   smallManager;
+            Static::Multiple<LargeManager,NumLargerShift>   largeManager;
 
         private:
             Y_Disable_Copy_And_Assign(Code);

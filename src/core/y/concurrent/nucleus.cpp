@@ -163,7 +163,7 @@ namespace Yttrium
                 //! setup with one argument
                 template <typename T>
                 inline explicit InnerLocking(T &arg) :
-                Content(arg),
+                Content(CopyOf,arg),
                 primary(arg),
                 replica(),
                 engaged()

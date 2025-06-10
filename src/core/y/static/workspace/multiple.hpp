@@ -15,6 +15,14 @@ namespace Yttrium
     namespace Static
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Multiple Blocks
+        //
+        //
+        //______________________________________________________________________
         template <typename T,size_t N>
         class MultipleProto :
         public Workspace<T,N>,
@@ -62,11 +70,15 @@ namespace Yttrium
             inline explicit Multiple() : Ops(data,N) {}
 
             template <typename ARG>
-            inline explicit Multiple(ARG &arg) : Ops(CopyOf,arg,data,N) {}
+            inline explicit Multiple(const CopyOf_ & copyOf,
+                                     ARG &          arg) :
+            Ops(copyOf,arg,data,N) {}
 
             template <typename PROC, typename ARGS>
-            inline explicit Multiple(PROC & proc, ARGS & args) :
-            Ops(Procedural,proc,args,data,N)
+            inline explicit Multiple(const Procedural_ & procedural,
+                                     PROC &              proc,
+                                     ARGS &              args) :
+            Ops(procedural,proc,args,data,N)
             {}
 
 

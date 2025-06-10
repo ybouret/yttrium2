@@ -13,15 +13,41 @@ namespace Yttrium
     namespace Memory
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Operating for blocks of T
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class Operating : public Operative
         {
         public:
-            Y_ARGS_EXPOSE(T,Type);
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            Y_ARGS_EXPOSE(T,Type); //!< aliases
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! cleanup
             inline virtual ~Operating() noexcept {}
 
             //! initialize with default constructor
+            /**
+             \param entry address of the with object
+             \param count number of objects to create
+             */
             inline Operating(void * const entry,
                              const size_t count) :
             Operative(entry, count, sizeof(T), Init0, 0, 0, Quit)
@@ -30,6 +56,12 @@ namespace Yttrium
 
 
             //! initialize with same parameter
+            /**
+             call new (target) T(arg) for each object
+             \param arg the argument
+             \param entry address of first object
+             \param count number of objects to build
+             */
             template <typename ARG>
             inline Operating(const CopyOf_  &,
                              ARG &          arg,
@@ -40,10 +72,12 @@ namespace Yttrium
 
             }
 
-            //!
+            //! initialize with procedure
             /**
-             \param proc proc(target,indexx,args)
+             \param proc proc(target,indexx,args) create a procedural object @ target
              \param args argument for proc
+             \param entry address of first object
+             \param count number of objects to build
              */
             template <typename PROC, typename ARGS>
             inline Operating(const Procedural_ &,
@@ -57,11 +91,19 @@ namespace Yttrium
             }
 
 
-
-
-
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
         private:
-            Y_Disable_Copy_And_Assign(Operating);
+            Y_Disable_Copy_And_Assign(Operating); //!< discardin
+
+            //! simple constructor
+            /**
+             \param target address to place the new object
+             */
             static inline
             void Init0(void * const target,
                        void * const,
@@ -72,6 +114,12 @@ namespace Yttrium
                 new (target) Type();
             }
 
+            //! constructor with one argument
+            /**
+             new (target) Type(arg)
+             \param target address to place the new object
+             \param source address of the argument
+             */
             template <typename ARG> static inline
             void Init1(void * const target,
                        void * const source,
@@ -84,6 +132,14 @@ namespace Yttrium
                 new (target) Type(arg);
             }
 
+            //! procedural constructor
+            /**
+             proc(target,indexx,args)
+             \param target address to place the new object
+             \param source address of the procedure
+             \param indexx [1..count] indexing
+             \param params address of the argument
+             */
             template <typename PROC, typename ARGS> static inline
             void Init2(void * const target,
                        void * const source,
@@ -98,6 +154,10 @@ namespace Yttrium
                 proc(target,indexx,args);
             }
 
+            //! destructor wrapper
+            /**
+             \param addr address of internal object
+             */
             static inline
             void Quit(void * const addr) noexcept
             {

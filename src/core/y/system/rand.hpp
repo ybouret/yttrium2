@@ -84,6 +84,11 @@ namespace Yttrium
              */
             void fill(void * const blockAddr, const size_t blockSize) noexcept;
 
+            //! generate unsigned integer with exact bit count
+            /**
+             \param nbits number of bits
+             \return random unsigned with nbit bits
+             */
             template <typename T> inline
             T gen(unsigned nbits) noexcept
             {

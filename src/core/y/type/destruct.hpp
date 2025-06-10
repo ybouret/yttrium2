@@ -20,6 +20,10 @@ namespace Yttrium
         obj->~T();
     }
 
+    //! in-place destruction with case
+    /**
+     \param addr address of the object to destruct
+     */
     template <typename T> inline
     void DestructAs(void * const addr) noexcept
     {
