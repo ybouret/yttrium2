@@ -42,7 +42,8 @@ namespace Yttrium
         uint8_t byte[9];
 
         // write header
-        byte[0] = (uint8_t(extraSize) << HeaderRoll) | uint8_t(qw&HeaderMask);
+        byte[0]  = uint8_t(uint8_t(extraSize) << HeaderRoll);
+        byte[0] |= uint8_t(qw & HeaderMask);
 
         // update qw
         inputBits -= HeaderRoll;
@@ -65,46 +66,46 @@ namespace Yttrium
         }
 
         for(size_t i=0;i<totalSize;++i)
-            write(byte[i]);
+            write( char(byte[i]) );
 
         return totalSize;
     }
 
     size_t OutputStream:: emit(const uint8_t &x)
     {
-        write(x);
+        write(char(x));
         return 1;
     }
 
     size_t OutputStream:: emit(const uint16_t &x)
     {
         uint16_t w = x;
-        write(uint8_t(w)); w >>= 8;
-        write(uint8_t(w));
+        write(char(uint8_t(w))); w >>= 8;
+        write(char(uint8_t(w)));
         return 2;
     }
 
     size_t OutputStream:: emit(const uint32_t &x)
     {
         uint32_t w = x;
-        write(uint8_t(w)); w >>= 8;
-        write(uint8_t(w)); w >>= 8;
-        write(uint8_t(w)); w >>= 8;
-        write(uint8_t(w));
+        write(char(uint8_t(w))); w >>= 8;
+        write(char(uint8_t(w))); w >>= 8;
+        write(char(uint8_t(w))); w >>= 8;
+        write(char(uint8_t(w)));
         return 4;
     }
 
     size_t OutputStream:: emit(const uint64_t &x)
     {
         uint64_t w = x;
-        write(uint8_t(w)); w >>= 8;
-        write(uint8_t(w)); w >>= 8;
-        write(uint8_t(w)); w >>= 8;
-        write(uint8_t(w)); w >>= 8;
-        write(uint8_t(w)); w >>= 8;
-        write(uint8_t(w)); w >>= 8;
-        write(uint8_t(w)); w >>= 8;
-        write(uint8_t(w));
+        write(char(uint8_t(w))); w >>= 8;
+        write(char(uint8_t(w))); w >>= 8;
+        write(char(uint8_t(w))); w >>= 8;
+        write(char(uint8_t(w))); w >>= 8;
+        write(char(uint8_t(w))); w >>= 8;
+        write(char(uint8_t(w))); w >>= 8;
+        write(char(uint8_t(w))); w >>= 8;
+        write(char(uint8_t(w)));
         return 8;
     }
 

@@ -29,7 +29,7 @@ namespace Yttrium
 
     void StreamQueue:: write(const char c)
     {
-        (*this) << c;
+        (*this) << uint8_t(c);
     }
 
     bool StreamQueue:: query(char &C)
@@ -37,7 +37,7 @@ namespace Yttrium
         LiveList &self = *this;
         if(self->size>0)
         {
-            C = pullHead();
+            C = char(pullHead());
             return true;
         }
         else
@@ -48,7 +48,7 @@ namespace Yttrium
 
     void StreamQueue:: store(const char C)
     {
-        (*this) >> C;
+        (*this) >> uint8_t(C);
     }
 
 }

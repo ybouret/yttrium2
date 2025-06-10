@@ -29,7 +29,7 @@ namespace Yttrium
 
         uint8_t header = 0;
         if(!query((char&)header) )throw Specific::Exception(fn,"missing header");
-        const size_t  extraBytes = (header>>HeaderRoll);
+        const size_t  extraBytes = size_t(header>>HeaderRoll);
 
         if(extraBytes>MaxExtraBytes)
             throw Specific::Exception(fn,"extraBytes=%s>%s", Decimal(extraBytes).c_str(), Decimal(MaxExtraBytes).c_str());

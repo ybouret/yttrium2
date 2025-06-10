@@ -65,7 +65,7 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
-            virtual void display(std::ostream &os, const size_t indent) const
+            virtual void display(std::ostream &os, size_t indent) const
             {
                 Y_Lock( Coerce(access) );
                 this->initProlog(os,indent) << XML::Attribute("in_cache", deadPool.count());
