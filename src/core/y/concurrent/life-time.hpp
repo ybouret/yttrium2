@@ -32,8 +32,8 @@ namespace Yttrium
             Y_LifeTime(MemoryObjectBlocks ) /*!< for Memory::Object::Blocks  */,
             Y_LifeTime(MemoryQuanta)        /*!< for Memory::Quanta          */,
             Y_LifeTime(PooledMemory)        /*!< for Memory::Pooled          */,
-            Y_LifeTime(ObjectFactory)       /*!< for Object::Factory         */
-
+            Y_LifeTime(ObjectFactory)       /*!< for Object::Factory         */,
+            Y_LifeTime(IOChars)             /*!< for IO::Char                */
         };
     };
 }

@@ -28,6 +28,20 @@ namespace Yttrium
             explicit LiveList() noexcept : CoreListAPI(), my() {}
             virtual ~LiveList() noexcept { release_(); }
 
+            inline LiveList(const LiveList &other) : CoreListAPI(), my()
+            {
+                try {
+                    for(const NodeType *node=other->head;node;node=node->next)
+                    {
+                        my.pushTail( NodeType::Copy(node) );
+                    }
+                }
+                catch(...)
+                {
+                    release_(); throw;
+                }
+            }
+
             virtual void release() noexcept
             {
                 release_();

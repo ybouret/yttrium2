@@ -20,7 +20,7 @@ namespace Yttrium
         public:
             typedef uint8_t Type;
 
-            static const System::AtExit::Longevity LifeTime = 1000;
+            static const System::AtExit::Longevity LifeTime = LifeTimeOf::IOChars;
             static const char * const              CallSign;
             
             static Char * New(const Type code);

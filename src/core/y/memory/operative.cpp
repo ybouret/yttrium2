@@ -3,7 +3,6 @@
 #include "y/check/usual.hpp"
 #include "y/memory/stealth.hpp"
 
-#include <iostream>
 namespace Yttrium
 {
     namespace Memory
@@ -26,7 +25,6 @@ namespace Yttrium
             assert(0!=quit);
             assert(0!=onInit);
 
-            std::cerr << "Building " << count << std::endl;
             try {
                 uint8_t * ptr = workspace;
                 while(numBlocks<count)
