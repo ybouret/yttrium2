@@ -1,7 +1,7 @@
 #include "y/concurrent/nucleus.hpp"
 #include "y/check/static.hpp"
 #include "y/type/destruct.hpp"
-#include "y/memory/management/workspace.hpp"
+#include "y/static/workspace.hpp"
 #include "y/system/exception.hpp"
 #include "y/type/ints.hpp"
 #include "y/system/platform.hpp"
@@ -28,10 +28,10 @@ namespace Yttrium
         namespace
         {
 #if defined(Y_BSD)
-            class PThreadMutexAttribute : public Memory::Workspace<pthread_mutexattr_t>
+            class PThreadMutexAttribute : public Static::Workspace<pthread_mutexattr_t>
             {
             public:
-                inline explicit PThreadMutexAttribute() : Memory::Workspace<pthread_mutexattr_t>()
+                inline explicit PThreadMutexAttribute() : Static::Workspace<pthread_mutexattr_t>()
                 {
                     {
                         const int err = pthread_mutexattr_init(data);
@@ -62,13 +62,13 @@ namespace Yttrium
             };
 
             class PThreadMutex :
-            public Memory::Workspace<pthread_mutex_t>,
+            public Static::Workspace<pthread_mutex_t>,
             public Lockable,
             public Core::DoublyLinked<PThreadMutex>
             {
             public:
                 inline explicit PThreadMutex(const PThreadMutexAttribute &attr) :
-                Memory::Workspace<pthread_mutex_t>(),
+                Static::Workspace<pthread_mutex_t>(),
                 Lockable(),
                 Core::DoublyLinked<PThreadMutex>()
                 {
@@ -105,7 +105,7 @@ namespace Yttrium
 
 #if defined(Y_WIN)
             class WindowsMutex :
-            public Memory::Workspace<CRITICAL_SECTION>,
+            public Static::Workspace<CRITICAL_SECTION>,
             public Lockable,
             public Core::DoublyLinked<WindowsMutex>
 
@@ -141,10 +141,10 @@ namespace Yttrium
 
             //! holds a few mutexes
             template <typename MUTEX, size_t N>
-            class InnerLocking : public Memory::Workspace<MUTEX,N>
+            class InnerLocking : public Static::Workspace<MUTEX,N>
             {
             public:
-                typedef Memory::Workspace<MUTEX,N> Content; //!< alias
+                typedef Static::Workspace<MUTEX,N> Content; //!< alias
                 using Content::data;
 
 #if defined(Y_WIN)

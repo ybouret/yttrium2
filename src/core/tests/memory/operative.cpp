@@ -42,7 +42,7 @@ namespace {
 
         static inline
         void Create(void * const       target,
-                    const void * const source,
+                      void * const     source,
                     const size_t       indexx)
         {
             Y_ASSERT(0==source);
@@ -52,7 +52,7 @@ namespace {
 
         static inline
         void Create2(void * const       target,
-                     const void * const source,
+                     void * const       source,
                      const size_t       indexx)
         {
             Y_ASSERT(0==source);
@@ -62,7 +62,7 @@ namespace {
 
         static inline
         void Create3(void * const       target,
-                     const void * const source,
+                     void * const       source,
                      const size_t       indexx)
         {
             Y_ASSERT(0!=source);

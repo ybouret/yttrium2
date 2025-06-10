@@ -17,7 +17,7 @@ namespace Yttrium
         //
         //
         //
-        //! inline workspace for given type
+        //! inline blank workspace for given type
         //
         //
         //______________________________________________________________________
@@ -25,14 +25,6 @@ namespace Yttrium
         class Workspace
         {
         public:
-            //__________________________________________________________________
-            //
-            //
-            // Definitions
-            //
-            //__________________________________________________________________
-            static const size_t Capacity = N; //!< alias
-
             //__________________________________________________________________
             //
             //

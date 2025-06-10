@@ -14,9 +14,9 @@ namespace Yttrium
         class Operative
         {
         public:
-            typedef void (*InitProc)(void       * const target,
-                                     const void * const source,
-                                     const size_t       indexx);
+            typedef void (*InitProc)(void * const target,
+                                     void * const source,
+                                     const size_t indexx);
 
             typedef void (*QuitProc)(void * const target);
 
@@ -24,7 +24,7 @@ namespace Yttrium
                                const size_t       count,
                                const size_t       width,
                                InitProc const     _init,
-                               const void * const _args,
+                               void * const        _args,
                                QuitProc const     _quit);
 
             virtual ~Operative() noexcept;

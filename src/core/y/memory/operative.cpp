@@ -13,7 +13,7 @@ namespace Yttrium
                               const size_t       count,
                               const size_t       width,
                               InitProc const     _init,
-                              const void * const _args,
+                              void * const       _args,
                               QuitProc const     _quit) :
         workspace( static_cast<uint8_t *>(entry) ),
         numBlocks( 0 ),
