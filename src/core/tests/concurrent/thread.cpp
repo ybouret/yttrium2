@@ -6,7 +6,6 @@
 #include "y/utest/run.hpp"
 
 
-#define Y_Thread_Message(MSG) do { Y_Giant_Lock(); (std::cerr << MSG << std::endl).flush(); } while(false)
 
 
 using namespace Yttrium;

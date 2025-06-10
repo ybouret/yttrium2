@@ -11,33 +11,29 @@
 namespace Yttrium
 {
 
-
-
-
-
-
-	template <typename T, template <typename> class CONTAINER>
-	class LightArrayCommon : public Contiguous<CONTAINER, T>
+	template < template <typename> class CONTAINER, typename T>
+	class LightArray : public Contiguous<CONTAINER, T>
 	{
 	public:
 		Y_ARGS_EXPOSE(T, Type);
-		inline virtual ~LightArrayCommon() noexcept {}
 
 
-	protected:
-		inline  LightArrayCommon(ConstType * const entry,
+		inline  LightArray(ConstType * const entry,
 			const size_t      count) noexcept :
 			bulk(count),
 			item((ConstType *)Memory::Stealth::Address(entry) - 1)
 		{
 		}
 
+		inline virtual ~LightArray() noexcept {}
+
+
 	public:
 		virtual size_t size() const noexcept { return bulk; }
 
 
 	private:
-		Y_Disable_Copy_And_Assign(LightArrayCommon);
+		Y_Disable_Copy_And_Assign(LightArray);
 		const size_t      bulk;
 		ConstType * const item;
 
@@ -49,15 +45,18 @@ namespace Yttrium
 		}
 	};
 
+
+
 #if 0
 	template <typename T> class ReadableLightArray :
-		public LightArrayCommon<T, Readable>
+		public LightArrayCommon<Readable,T>
 	{
 	public:
 		Y_ARGS_EXPOSE(T, Type);
+		typedef LightArrayCommon<Readable, T> Toto;
 		inline ReadableLightArray(ConstType * const entry,
 			const size_t      count) noexcept :
-			LightArrayCommon<T, Readable>(entry, count)
+			Totot(entry, count)
 		{
 		}
 
@@ -70,7 +69,9 @@ namespace Yttrium
 		Y_Disable_Copy_And_Assign(ReadableLightArray);
 	};
 
+#endif
 
+#if 0
 	template <typename T> class WritableLightArray :
 		public LightArrayCommon<T, Writable>
 	{
@@ -110,6 +111,11 @@ namespace
 	{
 	};
 
+	template <typename T>
+	class Z : public Y<X,T>
+	{
+
+	};
 
 
 
@@ -121,16 +127,20 @@ Y_UTEST(container_iterator)
 	Y<X, int> y;
 	(void)y;
 
+	Z<int> z;
+	(void)z;
+
 	int array[10];
 
 	const size_t n = sizeof(array) / sizeof(array[0]);
 	for (size_t i = 0; i < n; ++i) array[i] = int(i);
 
+	typedef LightArray<Readable, int> ReadOnlyArray;
 
-#if 0
-	ReadableLightArray<int> arr(array, n);
+#if 1
+	ReadOnlyArray arr(array, n);
 
-	for (ReadableLightArray<int>::ConstIterator it = arr.begin(); it != arr.end(); ++it)
+	for (ReadOnlyArray::ConstIterator it = arr.begin(); it != arr.end(); ++it)
 	{
 		std::cerr << *it << std::endl;
 	}

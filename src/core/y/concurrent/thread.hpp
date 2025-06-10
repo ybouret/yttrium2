@@ -9,12 +9,16 @@ namespace Yttrium
 {
     namespace Concurrent
     {
+
+#define Y_Thread_Message(MSG) do { Y_Giant_Lock(); (std::cerr << MSG << std::endl).flush(); } while(false)
+
         //______________________________________________________________________
         //
         //
         //
         //! Thread Execution wraper
-
+        //
+        // 
         //______________________________________________________________________
         class Thread
         {
