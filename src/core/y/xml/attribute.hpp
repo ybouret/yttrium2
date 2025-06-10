@@ -6,6 +6,7 @@
 
 #include "y/xml/syntax.hpp"
 #include "y/ostream-proto.hpp"
+#include <iostream>
 #include <iomanip>
 #include <cassert>
 
