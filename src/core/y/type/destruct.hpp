@@ -20,6 +20,14 @@ namespace Yttrium
         obj->~T();
     }
 
+    template <typename T> inline
+    void DestructAs(void * const addr) noexcept
+    {
+        assert(0!=addr);
+        Destruct( static_cast<T *>(addr) );
+    }
+
+
     //! in place object destruction
     /**
      \param obj a valid object

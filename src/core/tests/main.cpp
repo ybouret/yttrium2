@@ -49,7 +49,6 @@ Y_UTEST_DECL(64)
     Y_UTEST(memory_dyadic);
     Y_UTEST(memory_pooled);
     Y_UTEST(memory_quanta);
-    Y_UTEST(memory_workspace);
     Y_UTEST(memory_small_chunk);
     Y_UTEST(memory_small_pages);
     Y_UTEST(memory_small_ledger);
@@ -62,7 +61,6 @@ Y_UTEST_DECL(64)
     Y_UTEST(memory_object);
     Y_UTEST(memory_dead_pool);
     Y_UTEST(memory_inferno);
-    Y_UTEST(memory_netherworld);
     Y_UTEST(memory_operative);
 
 

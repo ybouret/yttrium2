@@ -1,8 +1,8 @@
 #include "y/concurrent/condition.hpp"
 #include "y/system/platform.hpp"
-#include "y/memory/management/workspace/solitary.hpp"
 #include "y/system/exception.hpp"
 #include "y/memory/small/blocks.hpp"
+#include "y/static/workspace/solitary.hpp"
 
 #if defined(Y_BSD)
 #include "mutex/bsd.hxx"

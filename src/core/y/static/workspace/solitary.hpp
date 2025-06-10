@@ -7,7 +7,6 @@
 
 #include "y/static/workspace.hpp"
 #include "y/type/args.hpp"
-#include "y/type/destruct.hpp"
 
 namespace Yttrium
 {
@@ -45,23 +44,17 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
+        protected:
             //! setup with default
             inline explicit Solitary()  :
             WorkspaceType()
             {
-                new (data) MutableType();
             }
 
-            template <typename ARG>
-            inline explicit Solitary(ARG &arg) :
-            WorkspaceType()
-            {
-                new (data) MutableType(arg);
-            }
 
+        public:
             inline virtual ~Solitary() noexcept
             {
-                Destruct(data);
             }
 
             inline friend std::ostream & operator<<(std::ostream &os, const Solitary &self)

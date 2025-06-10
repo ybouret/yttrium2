@@ -6,10 +6,10 @@ namespace Yttrium
 {
     namespace Concurrent
     {
-        class Mutex::Code : public Memory::Solitary<pthread_mutex_t>
+        class Mutex::Code : public Static::Solitary<pthread_mutex_t>
         {
         public:
-            inline Code() : Memory::Solitary<pthread_mutex_t>()
+            inline Code() : Static::Solitary<pthread_mutex_t>()
             {
                 const pthread_mutexattr_t * const attr = static_cast<const pthread_mutexattr_t *>(Nucleus::Instance().get_pthread_mutex_attr());
                 const int err = pthread_mutex_init(data,attr);
@@ -54,10 +54,10 @@ namespace Yttrium
     namespace Concurrent
     {
 
-        class Condition :: Code : Memory::Workspace<pthread_cond_t>
+        class Condition :: Code : Static::Workspace<pthread_cond_t>
         {
         public:
-            explicit Code() : Memory::Workspace<pthread_cond_t>()
+            explicit Code() : Static::Workspace<pthread_cond_t>()
             {
                 const int err = pthread_cond_init(data,0);
                 if(0!=err) throw Libc::Exception(err,"pthread_cond_init");

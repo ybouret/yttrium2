@@ -1,14 +1,12 @@
-
 #include <pthread.h>
-
-#include "y/memory/management/workspace/solitary.hpp"
+#include "y/static/workspace.hpp"
 
 namespace Yttrium
 {
     namespace Concurrent
     {
 
-        class Thread :: Code : public Thread::Launcher, Memory::Solitary<pthread_t>
+        class Thread :: Code : public Thread::Launcher, Static::Workspace<pthread_t>
         {
         public:
             inline explicit Code(Proc userProc, void * userArgs) :

@@ -4,7 +4,7 @@
 #include "y/memory/small/guild.hpp"
 #include "y/memory/small/ledger.hpp"
 
-#include "y/memory/management/workspace/cxx.hpp"
+#include "y/static/workspace/multiple.hpp"
 #include "y/xml/attribute.hpp"
 #include "y/system/exception.hpp"
 #include "y/decimal.hpp"
