@@ -15,8 +15,10 @@ namespace Yttrium
         //
         //
         //! pool of zombified blocks with same block size
-        //
-        //
+        /**
+         the internal acquire/release of blocks is thread safe,
+         protected by a Guild
+        */
         //______________________________________________________________________
         class DeadPool : public Caching
         {
@@ -28,7 +30,7 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            explicit DeadPool(const size_t userBlockSize); //!< setup \param blockSize block size
+            explicit DeadPool(const size_t userBlockSize); //!< setup \param userBlockSize minimal block size
             virtual ~DeadPool() noexcept;                  //!< cleanup
 
             //__________________________________________________________________
@@ -54,7 +56,7 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(DeadPool); //!< discarding
-            Code * const code;
+            Code * const code;                   //!< internal code
 
 
         };
