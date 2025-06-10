@@ -22,19 +22,22 @@ add_library(y-bz2 STATIC ${SRCS})
 add_executable(bzip2 bzip2.c)
 target_link_libraries(bzip2 y-bz2)
 
-if(OFF)
-
-set(Y_Shell "$ENV{SHELL}")
-cmake_print_variables(Y_Shell)
-get_filename_component(Y_SID "${Y_Shell}" NAME_WE)
-cmake_print_variables(Y_SID)
-
-add_custom_command(TARGET bzip2
-POST_BUILD
-USES_TERMINAL
-COMMAND "${SHELL}" ARGS "-c '$<TARGET_NAME:bzip2> -1  < sample1.ref > sample1.rb2'"
+add_custom_target(test-bzip2 ALL
+DEPENDS bzip2
+COMMAND bzip2  -1  < sample1.ref > sample1.rb2
+COMMAND bzip2  -2  < sample2.ref > sample2.rb2
+COMMAND bzip2  -3  < sample3.ref > sample3.rb2
+COMMAND bzip2  -d  < sample1.bz2 > sample1.tst
+COMMAND bzip2  -d  < sample2.bz2 > sample2.tst
+COMMAND bzip2  -ds < sample3.bz2 > sample3.tst
+COMMAND ${CMAKE_COMMAND} -E compare_files sample1.bz2 sample1.rb2 
+COMMAND ${CMAKE_COMMAND} -E compare_files sample2.bz2 sample2.rb2
+COMMAND ${CMAKE_COMMAND} -E compare_files sample3.bz2 sample3.rb2
+COMMAND ${CMAKE_COMMAND} -E compare_files sample1.tst sample1.ref
+COMMAND ${CMAKE_COMMAND} -E compare_files sample2.tst sample2.ref
+COMMAND ${CMAKE_COMMAND} -E compare_files sample3.tst sample3.ref
+COMMAND ${CMAKE_COMMAND} -E rm -f sample1.rb2 sample2.rb2 sample3.rb2
+COMMAND ${CMAKE_COMMAND} -E rm -f sample1.tst sample2.tst sample3.tst
 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-COMMENT "Testing bzip2"
-VERBATIM
-)
-endif()
+COMMENT           "Testing bzip2"
+VERBATIM)

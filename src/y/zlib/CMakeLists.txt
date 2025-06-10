@@ -220,7 +220,7 @@ if(ZLIB_BUILD_EXAMPLES)
 
     add_custom_target(test-zlib ALL
     COMMAND example
-    COMMENT "testing zlib"
+    COMMENT "Testing zlib"
     )
 
     if(OFF)
