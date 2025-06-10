@@ -13,6 +13,9 @@ set(SRCS
 )
 
 add_definitions(-D_FILE_OFFSET_BITS=64)
+if(Y_MSC)
+	string( APPEND CMAKE_C_FLAGS " -wd4820 -wd4668 -wd4127 -wd4242 -wd4244 -wd4267 -wd4996 -wd5045 -wd4100 -wd4701 -wd4703")
+endif()
 
 add_library(y-bz2 STATIC ${SRCS})
 

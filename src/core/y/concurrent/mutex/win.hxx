@@ -6,10 +6,10 @@ namespace Yttrium
 {
 	namespace Concurrent
 	{
-		class Mutex::Code : public Memory::Solitary<CRITICAL_SECTION>
+		class Mutex::Code : public Static::Solitary<CRITICAL_SECTION>
 		{
 		public:
-			inline Code() noexcept : Memory::Solitary<CRITICAL_SECTION>()
+			inline Code() noexcept : Static::Solitary<CRITICAL_SECTION>()
 			{
 				::InitializeCriticalSection(data);
 			}
