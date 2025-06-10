@@ -5,7 +5,7 @@ namespace Yttrium
 {
     namespace IO
     {
-        Char:: Char(const uint8_t a) noexcept :
+        Char:: Char(const Type a) noexcept :
         next(0),
         prev(0),
         code(a)

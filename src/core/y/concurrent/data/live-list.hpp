@@ -13,25 +13,50 @@ namespace Yttrium
     namespace Concurrent
     {
 
+        //! dynamic New/Delete/Copy...
         template <typename NODE>
         class LiveList :
-        public Ingress<const Core::ListOf<NODE> >,
+        public Ingress< Core::ListOf<NODE> >,
         public Releasable
         {
         public:
-            typedef Core::ListOf<NODE>      CoreList;
-            typedef Ingress<const CoreList> CoreListAPI;
+            typedef Core::ListOf<NODE> CoreList;
+            typedef Ingress<CoreList>  CoreListAPI;
+            typedef NODE NodeType;
+            Y_ARGS_DECL(typename NodeType::Type,Type);
 
             explicit LiveList() noexcept : CoreListAPI(), my() {}
             virtual ~LiveList() noexcept { release_(); }
+
+            virtual void release() noexcept
+            {
+                release_();
+            }
+
+            inline LiveList & operator<<(ParamType value) {
+                (void) my.pushTail( NodeType::New(value) );
+                return *this;
+            }
+
+            inline LiveList & operator>>(ParamType value) {
+                (void) my.pushHead( NodeType::New(value) );
+                return *this;
+            }
+
 
         private:
             Y_Disable_Assign(LiveList);
             CoreList my;
 
+            typename CoreListAPI::ConstInterface & locus() const noexcept { return my; }
+
             inline void release_() noexcept
             {
-                
+                while(my.size>0)
+                {
+                    NodeType::Delete(my.popTail());
+                }
+
             }
         };
 

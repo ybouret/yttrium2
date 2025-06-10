@@ -18,16 +18,21 @@ namespace Yttrium
         class Char
         {
         public:
+            typedef uint8_t Type;
+
             static const System::AtExit::Longevity LifeTime = 1000;
             static const char * const              CallSign;
             
-            static Char * New(const uint8_t code);
+            static Char * New(const Type code);
             static void   Delete(Char * const) noexcept;
             static Char * Copy(const Char * const);
 
+            const uint8_t & operator*() const noexcept { return code; }
+
+
             Char *  next;
             Char *  prev;
-            uint8_t code;
+            Type    code;
 
         private:
             friend class Concurrent::Inferno<Char>;
