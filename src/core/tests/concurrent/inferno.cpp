@@ -1,5 +1,5 @@
 
-#include "y/memory/management/inferno.hpp"
+#include "y/concurrent/data/inferno.hpp"
 #include "y/utest/run.hpp"
 #include "y/system/rand.hpp"
 #include "y/memory/stealth.hpp"
@@ -45,7 +45,7 @@ namespace
     int                Dummy::Count = 0;
     const char * const Dummy::CallSign = "Dummy";
 
-    typedef Memory::Inferno<Dummy> DummyInferno;
+    typedef Concurrent::Inferno<Dummy> DummyInferno;
 
 
 
@@ -99,7 +99,7 @@ namespace
 }
 
 
-Y_UTEST(memory_inferno)
+Y_UTEST(concurrent_inferno)
 {
 
     System::Rand     ran;

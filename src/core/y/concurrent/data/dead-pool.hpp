@@ -1,7 +1,7 @@
 //! \file
 
-#ifndef Y_Memory_Dead_Pool_Included
-#define Y_Memory_Dead_Pool_Included 1
+#ifndef Y_Concurrent_Dead_Pool_Included
+#define Y_Concurrent_Dead_Pool_Included 1
 
 #include "y/ability/caching.hpp"
 

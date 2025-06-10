@@ -1,5 +1,5 @@
 #include "y/stream/io/char.hpp"
-#include "y/memory/management/inferno.hpp"
+#include "y/concurrent/data/inferno.hpp"
 
 namespace Yttrium
 {
@@ -25,7 +25,7 @@ namespace Yttrium
 
         const char * const Char:: CallSign = "IO::Char";
 
-        typedef Memory::Inferno<Char> Manager;
+        typedef Concurrent::Inferno<Char> Manager;
 
         Char * Char:: New(const uint8_t code)
         {

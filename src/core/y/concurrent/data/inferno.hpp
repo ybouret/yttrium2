@@ -1,7 +1,7 @@
 //! \file
 
-#ifndef Y_Memory_Inferno_Included
-#define Y_Memory_Inferno_Included 1
+#ifndef Y_Concurrent_Inferno_Included
+#define Y_Concurrent_Inferno_Included 1
 
 #include "y/singleton.hpp"
 #include "y/concurrent/data/dead-pool.hpp"
@@ -10,7 +10,7 @@
 
 namespace Yttrium
 {
-    namespace Memory
+    namespace Concurrent
     {
 
         //______________________________________________________________________

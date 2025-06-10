@@ -43,6 +43,7 @@ Y_UTEST_DECL(64)
     Y_UTEST(concurrent_condition);
     Y_UTEST(concurrent_thread);
     Y_UTEST(concurrent_dead_pool);
+    Y_UTEST(concurrent_inferno);
 
 
     Y_UTEST(memory_gc);
@@ -60,7 +61,6 @@ Y_UTEST_DECL(64)
     Y_UTEST(memory_joint_segments);
     Y_UTEST(memory_object_factory);
     Y_UTEST(memory_object);
-    Y_UTEST(memory_inferno);
     Y_UTEST(memory_operative);
 
 

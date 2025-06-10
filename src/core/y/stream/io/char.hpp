@@ -8,7 +8,7 @@
 
 namespace Yttrium
 {
-    namespace Memory
+    namespace Concurrent
     {
         template <typename> class Inferno;
     }
@@ -30,7 +30,7 @@ namespace Yttrium
             uint8_t code;
 
         private:
-            friend class Memory::Inferno<Char>;
+            friend class Concurrent::Inferno<Char>;
             Char(const uint8_t a) noexcept;
             Char(const Char &)    noexcept;
             ~Char() noexcept;
