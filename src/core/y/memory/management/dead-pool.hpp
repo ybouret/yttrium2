@@ -18,7 +18,7 @@ namespace Yttrium
         /**
          the internal acquire/release of blocks is thread safe,
          protected by a Guild
-        */
+         */
         //______________________________________________________________________
         class DeadPool : public Caching
         {

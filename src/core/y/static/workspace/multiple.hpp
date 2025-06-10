@@ -54,9 +54,9 @@ namespace Yttrium
             inline virtual ~MultipleProto() noexcept {} //!< cleanup
 
         protected:
+            using Workspace<T,N>::data;
 
             //! setup item from workspace
-            using Workspace<T,N>::data;
             inline explicit MultipleProto() noexcept :
             Workspace<T,N>(),
             item( data - 1 )
