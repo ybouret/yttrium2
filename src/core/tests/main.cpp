@@ -21,6 +21,7 @@ Y_UTEST_DECL(64)
 
     Y_UTEST(static_moniker);
     Y_UTEST(static_solitary);
+    Y_UTEST(static_multiple);
 
     Y_UTEST(system_error);
     Y_UTEST(system_at_exit);

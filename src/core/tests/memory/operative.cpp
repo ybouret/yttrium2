@@ -25,6 +25,11 @@ namespace {
             std::cerr << "[+] Dummy#" << indx << std::endl;
         }
 
+        Dummy(const Dummy &other) noexcept : indx(other.indx)
+        {
+            ++Count;
+            std::cerr << "[*] Dummy#" << indx << std::endl;
+        }
 
 
         ~Dummy() noexcept
@@ -56,6 +61,17 @@ namespace {
         }
 
         static inline
+        void Create3(void * const       target,
+                     const void * const source,
+                     const size_t       indexx)
+        {
+            Y_ASSERT(0!=source);
+            Y_ASSERT(indexx>0);
+            const Dummy * const dum = static_cast<const Dummy *>(source)-1;
+            new (target) Dummy( dum[indexx] );
+        }
+
+        static inline
         void Delete(void * const addr) noexcept
         {
             assert(0!=addr);
@@ -63,7 +79,7 @@ namespace {
         }
 
     private:
-        Y_Disable_Copy_And_Assign(Dummy);
+        Y_Disable_Assign(Dummy);
     };
 
     int Dummy:: Count = 0;
@@ -73,7 +89,8 @@ namespace {
 Y_UTEST(memory_operative)
 {
 
-    void *       wksp[ 10 ];
+    static const size_t numWords = 10;
+    void *       wksp[ numWords ];
     const size_t wlen = sizeof(wksp);
 
     {
@@ -83,6 +100,7 @@ Y_UTEST(memory_operative)
                              0,
                              Dummy::Delete);
     }
+    Y_ASSERT(!Dummy::Count);
 
     {
         Y_Memory_BZero(wksp);
@@ -90,7 +108,19 @@ Y_UTEST(memory_operative)
                              Dummy::Create2,
                              0,
                              Dummy::Delete);
+
+
+        void *wksp2[numWords];
+        Y_Memory_BZero(wksp2);
+        Memory::Operative op2(wksp2,wlen/sizeof(Dummy),sizeof(Dummy),
+                              Dummy::Create3,
+                              wksp,
+                              Dummy::Delete);
+
     }
+    Y_ASSERT(!Dummy::Count);
+
+
 
 
 
