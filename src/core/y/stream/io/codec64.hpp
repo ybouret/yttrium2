@@ -11,6 +11,7 @@ namespace Yttrium
 
     namespace IO
     {
+        //! Metrics for Codec64
         struct Codec64
         {
             static const size_t   MaxExtraBytes  = sizeof(uint64_t);

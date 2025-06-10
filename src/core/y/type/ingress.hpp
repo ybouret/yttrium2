@@ -51,6 +51,12 @@ namespace Yttrium
         inline Interface      * operator->()       noexcept { return & (Interface&)locus(); } //!< access \return interface address
 
 
+        //! forward display to locus()
+        /**
+         \param os output stream
+         \param self this
+         \return os << self.locus()
+         */
         inline friend std::ostream & operator<<(std::ostream &os, const Ingress &self)
         {
             return os << self.locus();
