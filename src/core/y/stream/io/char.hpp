@@ -22,22 +22,6 @@ namespace Yttrium
             static const System::AtExit::Longevity LifeTime = LifeTimeOf::IOChars;
             static const char * const              CallSign;
 
-#if 0
-            class Pointer
-            {
-            public:
-                Pointer(Char * const) noexcept;
-                ~Pointer() noexcept;
-
-                uint8_t operator*() const noexcept;
-
-            private:
-                Y_Disable_Copy_And_Assign(Pointer);
-                Char * const pointee;
-            };
-#endif
-
-
             static Char * New(const Type code);
             static void   Delete(Char * const) noexcept;
             static Char * Copy(const Char * const);

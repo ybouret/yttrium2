@@ -38,13 +38,14 @@ namespace Yttrium
         //
         //
         //
-        //! Top-Down Thread-Safe allocation of given type
+        //! Top-Down Thread-Safe allocation of given type with cache
         //
         //
         //______________________________________________________________________
         template <typename T>
         class Inferno :
-        public Singleton<Inferno<T>,ClassLockPolicy>
+        public Singleton<Inferno<T>,ClassLockPolicy>,
+        public Caching
         {
         public:
             //__________________________________________________________________
