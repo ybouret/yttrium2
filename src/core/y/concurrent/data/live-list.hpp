@@ -57,6 +57,36 @@ namespace Yttrium
                 return *this;
             }
 
+            inline void cutHead() noexcept
+            {
+                assert(my.size>0);
+                NodeType::Delete( my.popHead() );
+            }
+
+            inline void cutTail() noexcept
+            {
+                assert(my.size>0);
+                NodeType::Delete( my.popTail() );
+            }
+
+            inline ConstType pullHead()
+            {
+                assert(my.size>0);
+                ConstType ans = **(my.head);
+                cutHead();
+                return ans;
+            }
+
+
+            inline ConstType pullTail()
+            {
+                assert(my.size>0);
+                ConstType ans = **(my.tail);
+                cutTail();
+                return ans;
+            }
+
+
 
         private:
             Y_Disable_Assign(LiveList);

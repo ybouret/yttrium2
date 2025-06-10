@@ -5,6 +5,27 @@ namespace Yttrium
 {
     namespace IO
     {
+#if 0
+        Char:: Pointer:: Pointer(Char * const ch) noexcept :
+        pointee(ch)
+        {
+            assert(0!=ch);
+        }
+
+        Char:: Pointer:: ~Pointer() noexcept
+        {
+            assert(0!=pointee);
+            Char::Delete(pointee);
+            Coerce(pointee) = 0;
+        }
+
+        uint8_t Char::Pointer:: operator*() const noexcept
+        {
+            assert(0!=pointee);
+            return pointee->code;
+        }
+#endif
+
         Char:: Char(const Type a) noexcept :
         next(0),
         prev(0),

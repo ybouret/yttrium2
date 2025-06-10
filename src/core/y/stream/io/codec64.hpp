@@ -11,21 +11,12 @@ namespace Yttrium
 
     namespace IO
     {
-        class Codec64
+        struct Codec64
         {
-        public:
-            static const unsigned MaxInputBytes  = sizeof(uint64_t);
-            static const unsigned MaxInputBits   = 8 * MaxInputBytes;
-            static const unsigned MaxOutputBytes = MaxInputBytes+1;
-            static const unsigned HeaderBits     = IntegerLog2<MaxInputBytes>::Value+1;
-            static const unsigned HeaderRoll     = 8-HeaderBits;
-
-            Codec64(const uint64_t qw) noexcept;
-            ~Codec64() noexcept;
-
-        private:
-            Y_Disable_Assign(Codec64);
-            uint8_t byte[MaxOutputBytes];
+            static const size_t   MaxExtraBytes  = sizeof(uint64_t);
+            static const size_t   HeaderBits     = IntegerLog2<MaxExtraBytes>::Value+1;
+            static const size_t   HeaderRoll     = 8-HeaderBits;
+            static const uint64_t HeaderMask     = (1<<HeaderRoll)-1;
         };
     };
 

@@ -31,4 +31,20 @@ namespace Yttrium
     {
         (*this) << c;
     }
+
+    bool StreamQueue:: query(char &C)
+    {
+        LiveList &self = *this;
+        if(self->size>0)
+        {
+            C = pullHead();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
 }

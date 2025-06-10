@@ -22,8 +22,19 @@ namespace Yttrium
 
         size_t encode64(const uint64_t qw);
 
+        template <typename T>
+        size_t emitVBR(const T &value)
+        {
+            return encode64( value );
+        }
+
     private:
         Y_Disable_Copy_And_Assign(OutputStream);
+        size_t emit(const uint8_t  &);
+        size_t emit(const uint16_t &);
+        size_t emit(const uint32_t &);
+        size_t emit(const uint64_t &);
+
     };
 }
 
