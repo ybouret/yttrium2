@@ -45,7 +45,7 @@ namespace Yttrium
             //__________________________________________________________________
 
         protected:
-            //! setup with default
+            //! setup  blank
             inline explicit Solitary()  :
             WorkspaceType()
             {
@@ -53,10 +53,17 @@ namespace Yttrium
 
 
         public:
+            //! cleanup
             inline virtual ~Solitary() noexcept
             {
             }
 
+            //! display
+            /**
+             \param os output stream
+             \param self from derived class
+             \return os
+             */
             inline friend std::ostream & operator<<(std::ostream &os, const Solitary &self)
             {
                 return os << *self.data;

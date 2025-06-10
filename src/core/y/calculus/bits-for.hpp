@@ -10,16 +10,29 @@ namespace Yttrium
 {
     namespace Calculus
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! low-level BitsFor computation
+        //
+        //
+        //______________________________________________________________________
         struct BitsFor
         {
-            static const unsigned Table[256];
-            static unsigned Count(const uint8_t  &) noexcept;
-            static unsigned Count(const uint16_t &) noexcept;
-            static unsigned Count(const uint32_t &) noexcept;
-            static unsigned Count(const uint64_t &) noexcept;
+            static const unsigned Table[256];                 //!< precomputed for uint8_t
+            static unsigned Count(const uint8_t  &) noexcept; //!< \return bits for argument
+            static unsigned Count(const uint16_t &) noexcept; //!< \return bits for argument
+            static unsigned Count(const uint32_t &) noexcept; //!< \return bits for argument
+            static unsigned Count(const uint64_t &) noexcept; //!< \return bits for argument
         };
     }
 
+    //! generic bits for integral argument
+    /**
+     \param x integrgal value
+     \return number of bits to hold x
+     */
     template <typename T> inline
     unsigned BitsFor(const T &x) noexcept
     {

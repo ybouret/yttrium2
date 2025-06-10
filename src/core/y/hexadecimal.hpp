@@ -93,11 +93,25 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
+
+        //! inline casting
+        /**
+         \param x acceptable value
+         \return x as Hexadecimal
+         */
         template <typename T> static inline
         Hexadecimal Cast(const T &x) noexcept {
             return Hexadecimal(x);
         }
 
+
+        //! alias to display vector of hexadecimal values
+        /**
+         \param os output stream
+         \param arr first item address
+         \param num number of items
+         \return os
+         */
         template <typename T> static inline
         std::ostream & Display(std::ostream &os, const T * const arr, size_t num)
         {

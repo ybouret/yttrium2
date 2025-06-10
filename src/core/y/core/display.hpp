@@ -47,7 +47,6 @@ namespace Yttrium
          \param os        output stream
          \param iter      any valid iterator with '++' and '*' operators
          \param n         number of items to display
-         \param transform transform value before printing
          \return output stream
          */
         //______________________________________________________________________
