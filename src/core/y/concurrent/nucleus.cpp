@@ -190,6 +190,7 @@ namespace Yttrium
 
             private:
                 Y_Disable_Copy_And_Assign(InnerLocking);
+                
                 inline void setup() noexcept
                 {
                     for(size_t i=0;i<N;++i)
@@ -199,7 +200,6 @@ namespace Yttrium
                 inline void cleanup() noexcept {
                     replica.reset();
                     engaged.reset();
-                    //while(built>0) Destruct(&data[--built]);
                 }
             };
 
