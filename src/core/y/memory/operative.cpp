@@ -1,24 +1,46 @@
 
 #include "y/memory/operative.hpp"
 #include "y/check/usual.hpp"
+#include "y/memory/stealth.hpp"
 
+#include <iostream>
 namespace Yttrium
 {
     namespace Memory
     {
 
-        Operative:: Operative(void * const entry,
-                              const size_t count,
-                              const size_t width,
-                              QuitProc     _quit) :
+        Operative:: Operative(void * const       entry,
+                              const size_t       count,
+                              const size_t       width,
+                              InitProc const     _init,
+                              const void * const _args,
+                              QuitProc const     _quit) :
         workspace( static_cast<uint8_t *>(entry) ),
-        numBlocks( count ),
+        numBlocks( 0 ),
         blockSize( width ),
         quit( _quit )
         {
-            assert(Good(workspace,numBlocks));
+            assert(Good(entry,count) );
             assert(blockSize>0);
             assert(0!=quit);
+            assert(0!=_init);
+
+            std::cerr << "Building " << count << std::endl;
+            try {
+                uint8_t * ptr = workspace;
+                while(numBlocks<count)
+                {
+                    const size_t indexx = numBlocks+1;
+                    assert( Stealth::Are0(ptr,blockSize) );
+                    _init(ptr,_args,indexx);
+                    ptr      += blockSize;
+                    numBlocks = indexx;
+                }
+            }
+            catch(...)
+            {
+                release_();
+            }
         }
 
         Operative:: ~Operative() noexcept
@@ -37,7 +59,7 @@ namespace Yttrium
             {
                 --numBlocks;
                 ptr -= blockSize;
-                quit(ptr);
+                try { quit(ptr); } catch(...) { }
             }
 
         }

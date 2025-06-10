@@ -1,0 +1,99 @@
+
+#include "y/memory/operative.hpp"
+#include "y/type/destruct.hpp"
+#include "y/memory/stealth.hpp"
+#include "y/utest/run.hpp"
+
+using namespace Yttrium;
+
+namespace {
+
+    class Dummy
+    {
+    public:
+        static int Count;
+
+        Dummy() : indx(0)
+        {
+            ++Count;
+            std::cerr << "[+] Dummy" << std::endl;
+        }
+
+        Dummy(size_t i) : indx(i)
+        {
+            ++Count;
+            std::cerr << "[+] Dummy#" << indx << std::endl;
+        }
+
+
+
+        ~Dummy() noexcept
+        {
+            --Count;
+            std::cerr << "[-] Dummy" << std::endl;
+        }
+
+        const size_t indx;
+
+        static inline
+        void Create(void * const       target,
+                    const void * const source,
+                    const size_t       indexx)
+        {
+            Y_ASSERT(0==source);
+            Y_ASSERT(indexx>0);
+            new (target) Dummy();
+        }
+
+        static inline
+        void Create2(void * const       target,
+                     const void * const source,
+                     const size_t       indexx)
+        {
+            Y_ASSERT(0==source);
+            Y_ASSERT(indexx>0);
+            new (target) Dummy(indexx);
+        }
+
+        static inline
+        void Delete(void * const addr) noexcept
+        {
+            assert(0!=addr);
+            Destruct( static_cast<Dummy *>(addr) );
+        }
+
+    private:
+        Y_Disable_Copy_And_Assign(Dummy);
+    };
+
+    int Dummy:: Count = 0;
+
+}
+
+Y_UTEST(memory_operative)
+{
+
+    void *       wksp[ 10 ];
+    const size_t wlen = sizeof(wksp);
+
+    {
+        Y_Memory_BZero(wksp);
+        Memory::Operative op(wksp,wlen/sizeof(Dummy),sizeof(Dummy),
+                             Dummy::Create,
+                             0,
+                             Dummy::Delete);
+    }
+
+    {
+        Y_Memory_BZero(wksp);
+        Memory::Operative op(wksp,wlen/sizeof(Dummy),sizeof(Dummy),
+                             Dummy::Create2,
+                             0,
+                             Dummy::Delete);
+    }
+
+
+
+}
+Y_UDONE()
+

@@ -82,7 +82,7 @@ Y_UTEST(memory:object)
 Y_UTEST(memory:dead_pool)
 Y_UTEST(memory:inferno)
 Y_UTEST(memory:netherworld)
-
+Y_UTEST(memory:operative)
 
 
 #hashing

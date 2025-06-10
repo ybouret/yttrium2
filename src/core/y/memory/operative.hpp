@@ -14,22 +14,31 @@ namespace Yttrium
         class Operative
         {
         public:
-            typedef void (*QuitProc)(void *);
+            typedef void (*InitProc)(void       * const target,
+                                     const void * const source,
+                                     const size_t       indexx);
 
-            explicit Operative(void * const entry,
-                               const size_t count,
-                               const size_t width,
-                               QuitProc     _quit);
+            typedef void (*QuitProc)(void * const target);
+
+            explicit Operative(void * const       entry,
+                               const size_t       count,
+                               const size_t       width,
+                               InitProc const     _init,
+                               const void * const _args,
+                               QuitProc const     _quit);
 
             virtual ~Operative() noexcept;
 
+        protected:
             uint8_t * const workspace;
             size_t          numBlocks;
+            
+        public:
             const size_t    blockSize;
-            QuitProc const  quit;
 
         private:
             Y_Disable_Copy_And_Assign(Operative);
+            QuitProc const  quit;
             void release_() noexcept;
 
         };
