@@ -1,10 +1,20 @@
 
 
+
 #include "y/stream/io/chars.hpp"
 #include "y/hexadecimal.hpp"
 
 #include "y/utest/run.hpp"
 #include "y/system/rand.hpp"
+
+#include "y/concurrent/data/live-pool.hpp"
+
+namespace Yttrium
+{
+    
+}
+
+
 
 using namespace Yttrium;
 
