@@ -28,6 +28,18 @@ namespace Yttrium
             return encode64( value );
         }
 
+        template <typename T>
+        size_t emitCBR(const T &value)
+        {
+            union
+            {
+                T x;
+                typename UnsignedIntFor<T>::Result::Type y;
+            } alias = { value };
+            return emit(alias.y);
+        }
+
+
     private:
         Y_Disable_Copy_And_Assign(OutputStream);
         size_t emit(const uint8_t  &);

@@ -17,26 +17,20 @@ namespace Yttrium
 
     size_t OutputStream:: encode64(uint64_t qw)
     {
-        static const size_t   MaxExtraBytes = IO::Codec64::MaxExtraBytes;
+
         static const size_t   HeaderBits    = IO::Codec64::HeaderBits;
         static const size_t   HeaderRoll    = IO::Codec64::HeaderRoll;
         static const uint64_t HeaderMask    = IO::Codec64::HeaderMask;
-
-        //std::cerr << "HeaderBits=" << HeaderBits << std::endl;
-        //std::cerr << "HeaderRoll=" << HeaderRoll << std::endl;
-        //std::cerr << "HeaderMask=" << HeaderMask << std::endl;
 
         size_t       inputBits = Calculus::BitsFor::Count(qw);
         const size_t totalBits = inputBits + HeaderBits;
         const size_t totalSize = Alignment::On<8>::Ceil(totalBits) >> 3;
         const size_t extraSize = totalSize-1;
         assert(totalSize>=1);
-        assert(totalSize<=1+MaxExtraBytes);
+        assert(totalSize<=1+IO::Codec64::MaxExtraBytes);
 
-       // std::cerr << "inputBits = " << inputBits << std::endl;
-       // std::cerr << "totalBits = " << totalBits << std::endl;
-       // std::cerr << "totalSize = " << totalSize << std::endl;
 
+        // special case
         if(inputBits<=HeaderRoll)
         {
             assert(0==extraSize);
@@ -44,14 +38,19 @@ namespace Yttrium
             return 1;
         }
 
+        // fill bytes
         uint8_t byte[9];
+
+        // write header
         byte[0] = (uint8_t(extraSize) << HeaderRoll) | uint8_t(qw&HeaderMask);
 
+        // update qw
         inputBits -= HeaderRoll;
         qw       >>= HeaderRoll;
         assert( Calculus::BitsFor::Count(qw) == inputBits );
         assert( inputBits <= extraSize * 8);
 
+        // remaining
         {
             uint8_t *p = byte;
             ++p;
@@ -66,9 +65,8 @@ namespace Yttrium
         }
 
         for(size_t i=0;i<totalSize;++i)
-        {
             write(byte[i]);
-        }
+
         return totalSize;
     }
 
@@ -84,6 +82,30 @@ namespace Yttrium
         write(uint8_t(w)); w >>= 8;
         write(uint8_t(w));
         return 2;
+    }
+
+    size_t OutputStream:: emit(const uint32_t &x)
+    {
+        uint32_t w = x;
+        write(uint8_t(w)); w >>= 8;
+        write(uint8_t(w)); w >>= 8;
+        write(uint8_t(w)); w >>= 8;
+        write(uint8_t(w));
+        return 4;
+    }
+
+    size_t OutputStream:: emit(const uint64_t &x)
+    {
+        uint64_t w = x;
+        write(uint8_t(w)); w >>= 8;
+        write(uint8_t(w)); w >>= 8;
+        write(uint8_t(w)); w >>= 8;
+        write(uint8_t(w)); w >>= 8;
+        write(uint8_t(w)); w >>= 8;
+        write(uint8_t(w)); w >>= 8;
+        write(uint8_t(w)); w >>= 8;
+        write(uint8_t(w));
+        return 8;
     }
 
 

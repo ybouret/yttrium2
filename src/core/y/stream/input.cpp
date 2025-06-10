@@ -47,6 +47,70 @@ namespace Yttrium
     }
 
 
+    size_t InputStream:: read(uint8_t &b)
+    {
+        return query( (char&)b )  ? 1 : 0;
+    }
+
+    size_t InputStream:: read(uint16_t &w)
+    {
+        uint8_t b = 0;
+        if(!read(b)) return 0;
+        w = b;
+        if(!read(b)) return 1;
+        w |= uint16_t(b) << 8;
+        return 2;
+    }
+
+    size_t InputStream:: read(uint32_t &w)
+    {
+        uint8_t b = 0;
+        if(!read(b)) return 0;
+        w = b;
+
+        if(!read(b)) return 1;
+        w |= uint32_t(b) << 8;
+
+        if(!read(b)) return 2;
+        w |= uint32_t(b) << 16;
+
+        if(!read(b)) return 3;
+        w |= uint32_t(b) << 24;
+        
+        return 4;
+    }
+
+    size_t InputStream:: read(uint64_t &w)
+    {
+        uint8_t b = 0;
+        if(!read(b)) return 0;
+        w = b;
+
+        if(!read(b)) return 1;
+        w |= uint64_t(b) << 8;
+
+        if(!read(b)) return 2;
+        w |= uint64_t(b) << 16;
+
+        if(!read(b)) return 3;
+        w |= uint64_t(b) << 24;
+
+        if(!read(b)) return 4;
+        w |= uint64_t(b) << 32;
+
+        if(!read(b)) return 5;
+        w |= uint64_t(b) << 40;
+
+        if(!read(b)) return 6;
+        w |= uint64_t(b) << 48;
+
+        if(!read(b)) return 7;
+        w |= uint64_t(b) << 56;
+
+        return 8;
+    }
+
+
 
 }
 
