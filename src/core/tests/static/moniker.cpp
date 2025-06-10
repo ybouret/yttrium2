@@ -1,14 +1,14 @@
 
-#include "y/type/moniker.hpp"
+#include "y/static/moniker.hpp"
 #include "y/utest/run.hpp"
 
 using namespace Yttrium;
 
 
-Y_UTEST(type_moniker)
+Y_UTEST(static_moniker)
 {
 
-    Moniker<long double> x = 0.1L;
+    Static::Moniker<long double> x = 0.1L;
     std::cerr << "x=" << x << std::endl;
 
 }

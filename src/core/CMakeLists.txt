@@ -23,6 +23,7 @@ Y_CreateLibrary(y
     y/container
     y/container/iter
     y/container/algorithm
+    y/static
     y/memory
     y/memory/management
     y/memory/management/workspace

@@ -4,6 +4,7 @@
 Y_CreateTest(test-core
 core
 type
+static
 system
 calculus
 concurrent
@@ -41,7 +42,9 @@ Y_UTEST(system:wall_time)
 
 # type
 Y_UTEST(type:ints)
-Y_UTEST(type:moniker)
+
+# static
+Y_UTEST(static:moniker)
 
 #calculus
 Y_UTEST(calculus:integer_log2)

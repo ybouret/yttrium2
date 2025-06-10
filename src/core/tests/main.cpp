@@ -18,7 +18,8 @@ Y_UTEST_DECL(64)
     Y_UTEST(core_linked);
 
     Y_UTEST(type_ints);
-    Y_UTEST(type_moniker);
+
+    Y_UTEST(static_moniker);
 
     Y_UTEST(system_error);
     Y_UTEST(system_at_exit);
