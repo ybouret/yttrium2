@@ -60,6 +60,9 @@ namespace Yttrium
             
             inline explicit Multiple() : Ops(data,N) {}
 
+            template <typename ARG>
+            inline explicit Multiple(ARG &arg) : Ops(CopyOf,arg,data,N) {}
+
             inline virtual ~Multiple() noexcept {}
 
         private:

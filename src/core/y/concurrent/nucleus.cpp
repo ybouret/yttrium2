@@ -1,7 +1,7 @@
 #include "y/concurrent/nucleus.hpp"
 #include "y/check/static.hpp"
 #include "y/type/destruct.hpp"
-#include "y/static/workspace.hpp"
+#include "y/static/workspace/multiple.hpp"
 #include "y/system/exception.hpp"
 #include "y/type/ints.hpp"
 #include "y/system/platform.hpp"
@@ -141,10 +141,10 @@ namespace Yttrium
 
             //! holds a few mutexes
             template <typename MUTEX, size_t N>
-            class InnerLocking : public Static::Workspace<MUTEX,N>
+            class InnerLocking : public Static::Multiple<MUTEX,N>
             {
             public:
-                typedef Static::Workspace<MUTEX,N> Content; //!< alias
+                typedef Static::Multiple<MUTEX,N> Content; //!< alias
                 using Content::data;
 
 #if defined(Y_WIN)
@@ -155,18 +155,6 @@ namespace Yttrium
                 replica(),
                 engaged()
                 {
-                    size_t built = 0;
-                    try {
-                        while(built<N) {
-                            new (data+built) MUTEX();
-                            ++built;
-                        }
-                    }
-                    catch(...)
-                    {
-                        free(built);
-                        throw;
-                    }
                     setup();
                 }
 #endif
@@ -175,29 +163,17 @@ namespace Yttrium
                 //! setup with one argument
                 template <typename T>
                 inline explicit InnerLocking(T &arg) :
-                Content(),
+                Content(arg),
                 primary(arg),
                 replica(),
                 engaged()
                 {
-                    size_t built = 0;
-                    try {
-                        while(built<N) {
-                            new (data+built) MUTEX(arg);
-                            ++built;
-                        }
-                    }
-                    catch(...)
-                    {
-                        free(built);
-                        throw;
-                    }
                     setup();
                 }
 #endif
 
                 //! cleanup
-                inline virtual ~InnerLocking() noexcept { free(N); }
+                inline virtual ~InnerLocking() noexcept { cleanup();  }
 
                 //! query an available replica
                 inline Lockable & query()
@@ -220,10 +196,10 @@ namespace Yttrium
                         replica.insertOderedByAddresses( &data[i] );
                 }
 
-                inline void free(size_t built) noexcept {
+                inline void cleanup() noexcept {
                     replica.reset();
                     engaged.reset();
-                    while(built>0) Destruct(&data[--built]);
+                    //while(built>0) Destruct(&data[--built]);
                 }
             };
 

@@ -34,7 +34,7 @@ namespace Yttrium
                              ARG &          arg,
                              void * const   entry,
                              const  size_t  count) :
-            Operative(entry, count, sizeof(T), Init1, (void*) &arg, Quit)
+            Operative(entry, count, sizeof(T), Init1<ARG>, (void*) &arg, Quit)
             {
 
             }
