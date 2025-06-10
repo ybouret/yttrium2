@@ -58,10 +58,18 @@ namespace Yttrium
             typedef Memory::Operating<T> Ops;
             using Workspace<T,N>::data;
             
+
             inline explicit Multiple() : Ops(data,N) {}
 
             template <typename ARG>
             inline explicit Multiple(ARG &arg) : Ops(CopyOf,arg,data,N) {}
+
+            template <typename PROC, typename ARGS>
+            inline explicit Multiple(PROC & proc, ARGS & args) :
+            Ops(Procedural,proc,args,data,N)
+            {}
+
+
 
             inline virtual ~Multiple() noexcept {}
 

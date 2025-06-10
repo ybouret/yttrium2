@@ -42,8 +42,9 @@ namespace {
 
         static inline
         void Create(void * const       target,
-                      void * const     source,
-                    const size_t       indexx)
+                    void * const       source,
+                    const size_t       indexx,
+                    void * const)
         {
             Y_ASSERT(0==source);
             Y_ASSERT(indexx>0);
@@ -53,17 +54,20 @@ namespace {
         static inline
         void Create2(void * const       target,
                      void * const       source,
-                     const size_t       indexx)
+                     const size_t       indexx,
+                     void * const       params)
         {
             Y_ASSERT(0==source);
             Y_ASSERT(indexx>0);
-            new (target) Dummy(indexx);
+            Y_ASSERT(0!=params);
+            new (target) Dummy(indexx + *(ptrdiff_t*)params);
         }
 
         static inline
         void Create3(void * const       target,
                      void * const       source,
-                     const size_t       indexx)
+                     const size_t       indexx,
+                     void * const)
         {
             Y_ASSERT(0!=source);
             Y_ASSERT(indexx>0);
@@ -98,15 +102,18 @@ Y_UTEST(memory_operative)
         Memory::Operative op(wksp,wlen/sizeof(Dummy),sizeof(Dummy),
                              Dummy::Create,
                              0,
+                             0,
                              Dummy::Delete);
     }
     Y_ASSERT(!Dummy::Count);
 
     {
+        ptrdiff_t offset = 1;
         Y_Memory_BZero(wksp);
         Memory::Operative op(wksp,wlen/sizeof(Dummy),sizeof(Dummy),
                              Dummy::Create2,
                              0,
+                             &offset,
                              Dummy::Delete);
 
 
@@ -115,6 +122,7 @@ Y_UTEST(memory_operative)
         Memory::Operative op2(wksp2,wlen/sizeof(Dummy),sizeof(Dummy),
                               Dummy::Create3,
                               wksp,
+                              0,
                               Dummy::Delete);
 
     }

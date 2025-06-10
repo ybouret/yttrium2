@@ -121,12 +121,16 @@ namespace Yttrium
         {
         public:
             explicit Code() :
-            manager(),
+            manager()
+#if 0
+            ,
             smallManager(Procedural,SmallManager::Create,0),
             largeManager(Procedural,LargeManager::Create,NumBlocksShift)
+#endif
             {
                 Y_Memory_BZero(manager);
 
+#if 0
                 for(unsigned i=0;i<=MaxBlocksShift;++i)
                 {
                     manager[i] = &smallManager[i+1];
@@ -138,6 +142,7 @@ namespace Yttrium
                     manager[i+NumBlocksShift] = &largeManager[i+1];
                     assert(i+NumBlocksShift==manager[i+NumBlocksShift]->shift);
                 }
+#endif
 
             }
 
@@ -145,9 +150,9 @@ namespace Yttrium
             {
             }
 
-            Manager *                                   manager[MaxLedgerShift+1];
-            CxxWorkspace<SmallManager,NumBlocksShift>   smallManager;
-            CxxWorkspace<LargeManager,NumLargerShift>   largeManager;
+            Manager *                                       manager[MaxLedgerShift+1];
+            //Static::Multiple<SmallManager,NumBlocksShift>   smallManager;
+            //Static::Multiple<LargeManager,NumLargerShift>   largeManager;
 
         private:
             Y_Disable_Copy_And_Assign(Code);

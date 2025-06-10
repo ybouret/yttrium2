@@ -12,18 +12,19 @@ namespace Yttrium
         Operative:: Operative(void * const       entry,
                               const size_t       count,
                               const size_t       width,
-                              InitProc const     _init,
-                              void * const       _args,
-                              QuitProc const     _quit) :
+                              InitProc const     onInit,
+                              void * const       source,
+                              void * const       params,
+                              QuitProc const     onQuit) :
         workspace( static_cast<uint8_t *>(entry) ),
         numBlocks( 0 ),
         blockSize( width ),
-        quit( _quit )
+        quit( onQuit )
         {
             assert(Good(entry,count) );
             assert(blockSize>0);
             assert(0!=quit);
-            assert(0!=_init);
+            assert(0!=onInit);
 
             std::cerr << "Building " << count << std::endl;
             try {
@@ -32,7 +33,7 @@ namespace Yttrium
                 {
                     const size_t indexx = numBlocks+1;
                     assert( Stealth::Are0(ptr,blockSize) );
-                    _init(ptr,_args,indexx);
+                    onInit(ptr,source,indexx,params);
                     ptr      += blockSize;
                     numBlocks = indexx;
                 }
