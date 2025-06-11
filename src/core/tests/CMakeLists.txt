@@ -17,6 +17,7 @@ xml
 container
 stream
 stream/io
+sorting
 )
 
 
@@ -102,4 +103,7 @@ Y_UTEST(container:iterator)
 Y_UTEST(stream:io:codec64)
 Y_UTEST(stream:io:char)
 Y_UTEST(stream:queue)
+
+#sort
+Y_UTEST(sorting:heap)
 

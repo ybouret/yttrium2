@@ -77,6 +77,9 @@ Y_UTEST_DECL(64)
     Y_UTEST(stream_io_codec64);
     Y_UTEST(stream_io_char);
     Y_UTEST(stream_queue);
+
+    Y_UTEST(sorting_heap);
+
 }
 Y_UTEST_EXEC()
 

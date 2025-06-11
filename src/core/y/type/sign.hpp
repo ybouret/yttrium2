@@ -28,6 +28,8 @@ namespace Yttrium
         static bool         LooselyDecreasing(const SignType) noexcept; //!< check \return true for Positive|__Zero__
 
 
+        static SignType Opposite(const SignType) noexcept;
+
         //! natural sign
         /** \param value to be tested \return sign of value againt "0" */
         template <typename T> static inline
@@ -48,19 +50,19 @@ namespace Yttrium
             return (lhs < rhs) ? Negative : ( (rhs<lhs) ? Positive : __Zero__ );
         }
 
-        //! C-style natural comparison for qsort etc...
+        //! Increasing Comparison
         /**
          \param lhs address of left object
          \param rhs address of right object
          \return integer comparison
          */
         template <typename T> static inline
-        int Compare(const void * const lhs, const void * const rhs) noexcept
+        SignType Increasing(const T &lhs, const T rhs) noexcept
         {
-            assert(0!=lhs);
-            assert(0!=rhs);
-            return int(Of(*static_cast<const T *>(lhs),*static_cast<const T *>(rhs)));
+            return Of(lhs,rhs);
         }
+
+
 
     };
 }
