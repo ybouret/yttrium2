@@ -8,24 +8,34 @@
 
 namespace Yttrium
 {
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! no locking for Single-Threaded Classes
+    //
+    //
+    //__________________________________________________________________________
     class SingleThreadedClass
     {
     public:
+
+        //! dummy lock
         class Lock
         {
         public:
-            Lock(const SingleThreadedClass &) noexcept;
-            ~Lock() noexcept;
+            Lock(const SingleThreadedClass &) noexcept; //!< do nothing
+            ~Lock() noexcept;                           //!< do nothing
         private:
-            Y_Disable_Copy_And_Assign(Lock);
+            Y_Disable_Copy_And_Assign(Lock); //!< discarding
         };
 
-        explicit SingleThreadedClass() noexcept;
-        virtual ~SingleThreadedClass() noexcept;
+        explicit SingleThreadedClass() noexcept; //!< setup
+        virtual ~SingleThreadedClass() noexcept; //!< cleanup
 
 
     private:
-        Y_Disable_Copy_And_Assign(SingleThreadedClass);
+        Y_Disable_Copy_And_Assign(SingleThreadedClass); //!< discarding
     };
 }
 

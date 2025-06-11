@@ -18,10 +18,10 @@ Y_UTEST(memory_io_zombies)
 
 
 
-    Memory::Netherworld<int,SingleThreadedClass>                  st_pool;
-    Memory::Netherworld<int,MultiThreadedObject>                  mt_pool;
-    Memory::Netherworld<int,GlobalMultiThreaded>                  sg_pool;
-    Memory::Netherworld<int,MultiThreadedHandle<Memory::System> > ms_pool;
+    Memory::Limbo<int,SingleThreadedClass>                  st_pool;
+    Memory::Limbo<int,MultiThreadedObject>                  mt_pool;
+    Memory::Limbo<int,GlobalMultiThreaded>                  sg_pool;
+    Memory::Limbo<int,MultiThreadedHandle<Memory::System> > ms_pool;
 
 
     int * a = st_pool.conjure(); Memory::TrackDown::Print(std::cerr,a) << std::endl;

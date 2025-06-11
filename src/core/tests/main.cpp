@@ -80,6 +80,9 @@ Y_UTEST_DECL(64)
 
     Y_UTEST(sorting_heap);
 
+    Y_UTEST(sequence_list);
+    Y_UTEST(sequence_vector);
+
 }
 Y_UTEST_EXEC()
 

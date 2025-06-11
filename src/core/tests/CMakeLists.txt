@@ -107,3 +107,7 @@ Y_UTEST(stream:queue)
 #sort
 Y_UTEST(sorting:heap)
 
+#sequence
+Y_UTEST(sequence:list)
+Y_UTEST(sequence:vector)
+
