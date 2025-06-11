@@ -108,7 +108,8 @@ namespace Yttrium
             Chunk * Arena:: makeInPlaceChunk(void * const addr)
             {
                 assert(0!=addr);
-                return new (addr) Chunk(Ledger::Instance().query(userShift),numBlocks,blockSize);
+                static Ledger & ledger = Ledger::Instance();
+                return new (addr) Chunk(ledger.query(userShift),numBlocks,blockSize);
             }
 
 

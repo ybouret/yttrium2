@@ -18,8 +18,8 @@ namespace Yttrium
     {
         static inline void * factoryQuery(const size_t blockSize)
         {
+            static Object::Factory & factory = Object::Factory::Instance();
             assert(blockSize>0);
-            Object::Factory & factory = Object::Factory::Instance();
             return factory.query(blockSize);
         }
 

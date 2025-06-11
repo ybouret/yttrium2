@@ -30,8 +30,8 @@ namespace Yttrium
                 static inline
                 Code * Create(const size_t blockSize)
                 {
-                    Blocks  &    B = Blocks::Instance();
-                    void * const p = B.acquire( sizeof(Code) );
+                    static Blocks & B = Blocks::Instance();
+                    void * const    p = B.acquire( sizeof(Code) );
                     try
                     {
                         return new (p) Code(B.access,B.getArenaFor(blockSize));
@@ -62,7 +62,8 @@ namespace Yttrium
             {
                 assert( 0!= code);
                 assert( Blocks::Exists() );
-                Blocks::Location().release( Stealth::DestructedAndZeroed(code), sizeof(Code) );
+                static Blocks & B =Blocks::Location();
+                B.release( Stealth::DestructedAndZeroed(code), sizeof(Code) );
             }
 
             size_t Guild:: getBlockSize() const noexcept

@@ -21,16 +21,27 @@ namespace Yttrium
     namespace Concurrent
     {
 
-        typedef Memory::Small::Blocks Provider;
+        namespace
+        {
+            typedef Memory::Small::Blocks Provider;
 
-        Mutex:: Mutex() : code( Provider::Instance().createAs<Code>() )
+            static inline Mutex::Code * createMutexCode()
+            {
+                static Provider &provider = Provider::Instance();
+                return provider.createAs<Mutex::Code>();
+            }
+
+        }
+
+        Mutex:: Mutex() : code( createMutexCode() )
         {
         }
 
         Mutex:: ~Mutex() noexcept
         {
             assert(0!=code);
-            Provider::Location().deleteAs( Coerce(code) );
+            static Provider &provider = Provider::Location();
+            provider.deleteAs( Coerce(code) );
         }
         
         void Mutex:: doLock() noexcept
