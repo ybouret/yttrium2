@@ -43,6 +43,12 @@ namespace Yttrium
                 Core::ListToPool::Convert(zpool,zlist);
             }
 
+            inline void * query()
+            {
+                return (zpool.size>0) ? Page::Addr(zpool.query(),bytes) : guild.acquireBlock();
+            }
+
+
             Core::PoolOf<Page> zpool;
             const size_t       bytes;
             Small::Guild       guild;
@@ -83,6 +89,28 @@ namespace Yttrium
             for(size_t i=n;i>0;--i)
                 code->zpool.store( Page::Cast( code->guild.acquireBlockUnlocked() ) );
         }
+
+        size_t Zombies:: blockSize() const noexcept
+        {
+            assert(0!=code);
+            return code->bytes;
+        }
+
+        void * Zombies:: query()
+        {
+            assert(0!=code);
+            return code->query();
+        }
+
+        void  Zombies:: store(void * const addr) noexcept
+        {
+            assert(0!=code);
+            assert(0!=addr);
+            code->zpool.store( Page::Cast(addr) );
+        }
+
+
+
     }
 
 }
