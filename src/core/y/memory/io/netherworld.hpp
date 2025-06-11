@@ -16,52 +16,12 @@ namespace Yttrium
 
     
 
-    namespace Concurrent
-    {
-        template <typename CLASS>
-        class Locker
-        {
-        public:
-            inline  Locker(const CLASS &obj) noexcept : host(Coerce(obj)) { obj.access->lock(); }
-            inline ~Locker() noexcept { host.access->unlock(); }
-        private:
-            CLASS & host;
-        };
-    };
-
-    
-
-    class MultiThreadedObject
-    {
-    public:
-        typedef Concurrent::Locker<MultiThreadedObject> Lock;
-
-        explicit MultiThreadedObject() : access( new Concurrent::Mutex() ) {}
-        virtual ~MultiThreadedObject() noexcept { Destroy(access); }
-
-    private:
-        Y_Disable_Copy_And_Assign(MultiThreadedObject);
-        friend Lock;
-        Lockable * const access;
-    };
 
 
 
 
 
-    template <typename SINGLETON>
-    class MultiThreadedHandle
-    {
-    public:
-        typedef Concurrent::Locker<MultiThreadedHandle> Lock;
 
-        inline explicit MultiThreadedHandle() : access( & SINGLETON::Instance().access ) {}
-        inline virtual ~MultiThreadedHandle() noexcept { Coerce(access) = 0; }
-    private:
-        Y_Disable_Copy_And_Assign(MultiThreadedHandle);
-        friend Lock;
-        Lockable * const access;
-    };
 
 
     namespace Memory

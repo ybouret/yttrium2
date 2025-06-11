@@ -5,6 +5,8 @@
 
 #include "y/threading/single-threaded-class.hpp"
 #include "y/threading/global-multi-threaded.hpp"
+#include "y/threading/multi-threaded-object.hpp"
+#include "y/threading/multi-threaded-handle.hpp"
 
 using namespace Yttrium;
 
