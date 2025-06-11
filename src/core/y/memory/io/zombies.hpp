@@ -32,8 +32,7 @@ namespace Yttrium
             void *query();
             void  store(void * const addr) noexcept;
 
-            void  print() const;
-
+            
         private:
             Y_Disable_Copy_And_Assign(Zombies);
             Code * const code; //!< internal code, pool and metricss

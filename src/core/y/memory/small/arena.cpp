@@ -17,6 +17,7 @@ namespace Yttrium
         namespace Small
         {
 
+
             size_t Arena:: Hash(const size_t bs) noexcept
             {
                 const uint16_t w = uint16_t(bs);
@@ -182,7 +183,6 @@ namespace Yttrium
                 occupied   = 1;
                 available  = numBlocks;
                 acquiring  = releasing = workspace;
-
                 assert( isValid() );
             }
 
@@ -320,6 +320,11 @@ namespace Yttrium
                             Stealth::Move(freeChunk,freeChunk+1,sizeof(Chunk)*(--occupied - static_cast<size_t>(freeChunk-workspace)) );
                             Stealth::Zero(workspace+occupied,sizeof(Chunk));
                             freeChunk = 0;
+#if !defined(NDEBUG)
+                            size_t ready = 0;
+                            for(size_t i=0;i<occupied;++i) ready += workspace[i].freeBlocks;
+                            assert(ready==available);
+#endif
                         }
 
                         //------------------------------------------------------
@@ -408,7 +413,7 @@ namespace Yttrium
             void Arena:: newChunkRequired()
             {
                 assert(isValid());
-
+               // Y_Arena_Print("newChunkRequired");
                 if(occupied>=capacity)
                 {
                     assert(0==freeChunk);

@@ -90,8 +90,7 @@ namespace Yttrium
                 zombies.cache(n);
             }
 
-            inline void print() const { zombies.print(); }
-
+            
 
         private:
             Y_Disable_Copy_And_Assign(Netherworld);

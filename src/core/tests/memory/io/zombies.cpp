@@ -16,12 +16,13 @@ using namespace Yttrium;
 Y_UTEST(memory_io_zombies)
 {
 
-    Concurrent::Singulet::Verbose = 1;
-    
+
+
     Memory::Netherworld<int,SingleThreadedClass>                  st_pool;
     Memory::Netherworld<int,MultiThreadedObject>                  mt_pool;
     Memory::Netherworld<int,GlobalMultiThreaded>                  sg_pool;
     Memory::Netherworld<int,MultiThreadedHandle<Memory::System> > ms_pool;
+
 
     int * a = st_pool.conjure(); Memory::TrackDown::Print(std::cerr,a) << std::endl;
     int * b = mt_pool.conjure(); Memory::TrackDown::Print(std::cerr,b) << std::endl;
@@ -29,22 +30,14 @@ Y_UTEST(memory_io_zombies)
     int * d = ms_pool.conjure(); Memory::TrackDown::Print(std::cerr,d) << std::endl;
 
     st_pool.banish(a);
-    std::cerr << "st:"; st_pool.print();
     mt_pool.banish(b);
-    std::cerr << "st:"; st_pool.print();
-    std::cerr << "mt:"; mt_pool.print();
-    sg_pool.banish(c);
-    std::cerr << "st:"; st_pool.print();
-    std::cerr << "mt:"; mt_pool.print();
-    std::cerr << "sg:"; sg_pool.print();
-    ms_pool.banish(d);
-    std::cerr << "st:"; st_pool.print();
-    std::cerr << "mt:"; mt_pool.print();
-    std::cerr << "sg:"; sg_pool.print();
-    std::cerr << "ms:"; ms_pool.print();
 
-    std::cerr << "End Of Program..." << std::endl;
-    std::cerr << std::endl;
+    sg_pool.banish(c);
+
+    ms_pool.banish(d);
+
+
+
 }
 Y_UDONE()
 

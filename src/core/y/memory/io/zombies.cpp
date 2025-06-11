@@ -9,6 +9,7 @@
 #include "y/type/destroy.hpp"
 
 #include "y/memory/track-down.hpp"
+#include "y/core/utils.hpp"
 
 namespace Yttrium
 {
@@ -21,7 +22,7 @@ namespace Yttrium
             inline Code(const size_t userBlockSize) :
             zpool(),
             bytes(0),
-            guild(userBlockSize)
+            guild( MaxOf<size_t>(userBlockSize,sizeof(Page)) )
             {
                 Coerce(bytes) = guild.getBlockSize();
             }
@@ -29,22 +30,14 @@ namespace Yttrium
             inline ~Code() noexcept
             {
                 Y_Lock(*guild);
-                std::cerr << "Releasing Code @" << (void*)this << std::endl;
                 while(zpool.size>0)
                 {
-                    std::cerr << "zpool.size=" << zpool.size << std::endl;
-                    std::cerr << "zpool.head=" << (void*)zpool.head << std::endl;
-                    std::cerr << "zpool.next=" << (void*)zpool.head->next << std::endl;
                     guild.releaseBlockUnlocked( zpool.query() );
                 }
-                std::cerr << "Released..." << std::endl;
             }
 
             inline void gc(const uint8_t amount) noexcept
             {
-                std::cerr << "Not Authorized Here" << std::endl;
-                exit(1);
-                
                 Core::ListOf<Page> zlist;
                 Core::PoolToList::Convert(zlist,zpool);
                 zlist.sortByIncreasingAddress();
@@ -126,25 +119,11 @@ namespace Yttrium
         {
             assert(0!=code);
             assert(0!=addr);
-            std::cerr << "Store " << addr << " @code=" << (void*)code << std::endl;
-            std::cerr << " head@" << (void*) code->zpool.head << std::endl;
-            const Page * const next = code->zpool.head;
-            Page * const page = Page::Cast(addr); assert(0==page->prev); assert(0==page->next);
-            code->zpool.store( page );
-            assert(next == page->next);
+            code->zpool.store( Page::Cast(addr) );
         }
 
 
-        void  Zombies:: print() const
-        {
-            assert(0!=code);
-            std::cerr << "|zombies|=" << code->zpool.size << ":";
-            for(const Page *page=code->zpool.head;page;page=page->next)
-            {
-                std::cerr << ' ' << (void *) page;
-            }
-            std::cerr << std::endl;
-        }
+        
 
 
 

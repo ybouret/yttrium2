@@ -10,7 +10,6 @@ namespace Yttrium
         const char LinkedInfo:: UsedNext[] = "NULL!=next";
         const char LinkedInfo:: UsedPrev[] = "NULL!=prev";
 
-
     }
 
 }
