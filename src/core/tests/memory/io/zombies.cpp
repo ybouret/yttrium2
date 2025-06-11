@@ -8,6 +8,9 @@
 #include "y/threading/multi-threaded-object.hpp"
 #include "y/threading/multi-threaded-handle.hpp"
 
+#include "y/memory/track-down.hpp"
+
+
 using namespace Yttrium;
 
 Y_UTEST(memory_io_zombies)
@@ -18,12 +21,28 @@ Y_UTEST(memory_io_zombies)
     Memory::Netherworld<int,GlobalMultiThreaded>                  sg_pool;
     Memory::Netherworld<int,MultiThreadedHandle<Memory::System> > ms_pool;
 
-    st_pool.conjure();
-    mt_pool.conjure();
-    sg_pool.conjure();
-    ms_pool.conjure();
+    int * a = st_pool.conjure(); Memory::TrackDown::Print(std::cerr,a) << std::endl;
+    int * b = mt_pool.conjure(); Memory::TrackDown::Print(std::cerr,b) << std::endl;
+    int * c = sg_pool.conjure(); Memory::TrackDown::Print(std::cerr,c) << std::endl;
+    int * d = ms_pool.conjure(); Memory::TrackDown::Print(std::cerr,d) << std::endl;
 
+    st_pool.banish(a);
+    std::cerr << "st:"; st_pool.print();
+    mt_pool.banish(b);
+    std::cerr << "st:"; st_pool.print();
+    std::cerr << "mt:"; mt_pool.print();
+    sg_pool.banish(c);
+    std::cerr << "st:"; st_pool.print();
+    std::cerr << "mt:"; mt_pool.print();
+    std::cerr << "sg:"; sg_pool.print();
+    ms_pool.banish(d);
+    std::cerr << "st:"; st_pool.print();
+    std::cerr << "mt:"; mt_pool.print();
+    std::cerr << "sg:"; sg_pool.print();
+    std::cerr << "ms:"; ms_pool.print();
 
+    std::cerr << "End Of Program..." << std::endl;
+    std::cerr << std::endl;
 }
 Y_UDONE()
 

@@ -80,6 +80,7 @@ namespace Yttrium
 
             void Guild:: releaseBlockUnlocked(void * const addr) noexcept
             {
+                assert(0!=addr); assert(owns(addr));
                 assert(0!=code);
                 code->arena.release(addr);
             }
@@ -95,9 +96,19 @@ namespace Yttrium
             void Guild:: releaseBlock(void * const addr) noexcept
             {
                 assert(0!=code);
+                assert(0!=addr);
+                assert( owns(addr) );
                 Y_Lock(code->access);
                 code->arena.release(addr);
             }
+
+            bool Guild:: owns(const void * const addr) const noexcept
+            {
+                assert(0!=code);
+                Y_Lock(code->access);
+                return code->arena.owns(addr);
+            }
+
 
             Y_Ingress_Impl(Guild,code->access)
 

@@ -29,9 +29,10 @@ namespace Yttrium
             // Methods
             size_t blockSize() const noexcept;
 
-        protected:
             void *query();
             void  store(void * const addr) noexcept;
+
+            void  print() const;
 
         private:
             Y_Disable_Copy_And_Assign(Zombies);

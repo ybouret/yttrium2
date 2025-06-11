@@ -49,6 +49,8 @@ namespace Yttrium
                 void  *acquireBlockUnlocked();                      //!< unlocked \return new block
                 void   releaseBlockUnlocked(void * const) noexcept; //!< unlocked release of a previous block
 
+                bool   owns(const void * const) const noexcept;
+
 
             private:
                 Y_Disable_Copy_And_Assign(Guild); //!< discarding

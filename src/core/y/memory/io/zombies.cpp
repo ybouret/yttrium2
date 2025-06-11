@@ -8,6 +8,8 @@
 #include "y/core/linked/convert/pool-to-list.hpp"
 #include "y/type/destroy.hpp"
 
+#include "y/memory/track-down.hpp"
+
 namespace Yttrium
 {
     namespace Memory
@@ -27,12 +29,22 @@ namespace Yttrium
             inline ~Code() noexcept
             {
                 Y_Lock(*guild);
+                std::cerr << "Releasing Code @" << (void*)this << std::endl;
                 while(zpool.size>0)
+                {
+                    std::cerr << "zpool.size=" << zpool.size << std::endl;
+                    std::cerr << "zpool.head=" << (void*)zpool.head << std::endl;
+                    std::cerr << "zpool.next=" << (void*)zpool.head->next << std::endl;
                     guild.releaseBlockUnlocked( zpool.query() );
+                }
+                std::cerr << "Released..." << std::endl;
             }
 
             inline void gc(const uint8_t amount) noexcept
             {
+                std::cerr << "Not Authorized Here" << std::endl;
+                exit(1);
+                
                 Core::ListOf<Page> zlist;
                 Core::PoolToList::Convert(zlist,zpool);
                 zlist.sortByIncreasingAddress();
@@ -49,6 +61,7 @@ namespace Yttrium
             {
                 return (zpool.size>0) ? Page::Addr(zpool.query(),bytes) : guild.acquireBlock();
             }
+
 
 
             Core::PoolOf<Page> zpool;
@@ -107,11 +120,30 @@ namespace Yttrium
             return code->query();
         }
 
+        
+
         void  Zombies:: store(void * const addr) noexcept
         {
             assert(0!=code);
             assert(0!=addr);
-            code->zpool.store( Page::Cast(addr) );
+            std::cerr << "Store " << addr << " @code=" << (void*)code << std::endl;
+            std::cerr << " head@" << (void*) code->zpool.head << std::endl;
+            const Page * const next = code->zpool.head;
+            Page * const page = Page::Cast(addr); assert(0==page->prev); assert(0==page->next);
+            code->zpool.store( page );
+            assert(next == page->next);
+        }
+
+
+        void  Zombies:: print() const
+        {
+            assert(0!=code);
+            std::cerr << "|zombies|=" << code->zpool.size << ":";
+            for(const Page *page=code->zpool.head;page;page=page->next)
+            {
+                std::cerr << ' ' << (void *) page;
+            }
+            std::cerr << std::endl;
         }
 
 
