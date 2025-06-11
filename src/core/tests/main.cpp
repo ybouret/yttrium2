@@ -13,6 +13,7 @@ Y_UTEST_DECL(64)
     Y_UTEST(hexadecimal);
     Y_UTEST(decimal);
     Y_UTEST(singleton);
+    Y_UTEST(static_init);
 
     Y_UTEST(core_variadic);
     Y_UTEST(core_linked);

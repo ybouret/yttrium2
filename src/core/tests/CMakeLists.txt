@@ -30,6 +30,7 @@ Y_UTEST(exception)
 Y_UTEST(hexadecimal)
 Y_UTEST(decimal)
 Y_UTEST(singleton)
+Y_UTEST(static_init)
 
 # core
 Y_UTEST(core:variadic)
