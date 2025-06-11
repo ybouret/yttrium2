@@ -32,6 +32,7 @@ Y_CreateLibrary(y
     y/memory/small
     y/memory/small/ledger
     y/memory/joint
+    y/memory/io
     y/object
     y/utest
     y/hashing

@@ -62,6 +62,7 @@ Y_UTEST_DECL(64)
     Y_UTEST(memory_object_factory);
     Y_UTEST(memory_object);
     Y_UTEST(memory_operative);
+    Y_UTEST(memory_io_zombies);
 
 
     Y_UTEST(hashing_mix64);

@@ -11,6 +11,7 @@ concurrent
 memory
 memory/small
 memory/joint
+memory/io
 hashing
 xml
 container
@@ -81,8 +82,8 @@ Y_UTEST(memory:joint:segment)
 Y_UTEST(memory:joint:segments)
 Y_UTEST(memory:object:factory)
 Y_UTEST(memory:object)
-
 Y_UTEST(memory:operative)
+Y_UTEST(memory:io:zombies)
 
 
 #hashing
