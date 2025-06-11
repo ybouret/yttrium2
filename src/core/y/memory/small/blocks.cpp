@@ -43,9 +43,18 @@ namespace Yttrium
             {
             }
 
+            static inline SignType CompareKnots(const Blocks::Knot *lhs,
+                                               const Blocks::Knot *rhs) noexcept
+            {
+                assert(0!=lhs);
+                assert(0!=rhs);
+                return Sign::Of(lhs->arena.blockSize,rhs->arena.blockSize);
+            }
+
             void Blocks:: sort() noexcept
             {
-                kpool.sortByIncreasingAddress();
+                //kpool.sortByIncreasingAddress();
+                kpool.sort(CompareKnots);
             }
 
 
@@ -129,7 +138,19 @@ namespace Yttrium
             {
                 initProlog(os,indent);
                 os << Attribute("numArena",kpool.size);
-                initEpilog(os,true);
+                if(kpool.size<=0)
+                {
+                    initEpilog(os,true);
+                    return;
+                }
+                initEpilog(os,false);
+                ++indent;
+                for(const Knot *knot=kpool.head;knot;knot=knot->next)
+                {
+                    knot->arena.display(std::cerr,indent);
+                }
+                --indent;
+                quit(os,indent);
             }
 
 

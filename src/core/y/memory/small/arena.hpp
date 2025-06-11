@@ -5,7 +5,6 @@
 #define Y_Memory_Arena_Included 1
 
 #include "y/core/setup.hpp"
-
 namespace Yttrium
 {
     namespace Memory
@@ -65,6 +64,7 @@ namespace Yttrium
                 void    release(void *) noexcept;                //!< release a prevously acquired block
                 bool    isValid() const noexcept;                //!< \return various validity tests
                 bool    owns(const void * const) const noexcept; //!< \return true if in one chunk
+                void    display(std::ostream&,size_t) const;
 
                 //______________________________________________________________
                 //

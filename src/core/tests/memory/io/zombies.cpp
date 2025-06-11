@@ -16,6 +16,8 @@ using namespace Yttrium;
 Y_UTEST(memory_io_zombies)
 {
 
+    Concurrent::Singulet::Verbose = 1;
+    
     Memory::Netherworld<int,SingleThreadedClass>                  st_pool;
     Memory::Netherworld<int,MultiThreadedObject>                  mt_pool;
     Memory::Netherworld<int,GlobalMultiThreaded>                  sg_pool;

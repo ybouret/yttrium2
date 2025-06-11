@@ -60,10 +60,13 @@ namespace Yttrium
 
             Guild:: ~Guild() noexcept
             {
-                assert( 0!= code);
+                std::cerr << "~Guild[" << getBlockSize() << "]/sizeof(Code)=" << sizeof(Code) << std::endl;
+                assert( 0 != code);
                 assert( Blocks::Exists() );
-                static Blocks & B =Blocks::Location();
+                static Blocks & B = Blocks::Location();
                 B.release( Stealth::DestructedAndZeroed(code), sizeof(Code) );
+                B.sort();
+                B.display(std::cerr,0);
             }
 
             size_t Guild:: getBlockSize() const noexcept

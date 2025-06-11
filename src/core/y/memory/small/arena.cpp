@@ -512,3 +512,31 @@ namespace Yttrium
         }
     }
 }
+
+#include "y/xml/element.hpp"
+#include <iomanip>
+
+namespace Yttrium
+{
+    namespace Memory
+    {
+        namespace Small
+        {
+            void Arena:: display(std::ostream &os, size_t indent) const
+            {
+                XML::Indent(os,indent) << "bs=" << std::setw(4) << blockSize;
+                std::cerr << " #free";
+                for(size_t i=0;i<occupied;++i)
+                {
+                    const Chunk &ch = workspace[i];
+                    os << " " << std::setw(3) << int(ch.freeBlocks) << "/" << std::setw(3) << int(ch.userBlocks);
+                }
+                os << std::endl;
+            }
+
+        }
+
+    }
+
+}
+
