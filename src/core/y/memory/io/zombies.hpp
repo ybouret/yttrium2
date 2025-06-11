@@ -5,7 +5,6 @@
 
 #include "y/memory/page.hpp"
 #include "y/ability/caching.hpp"
-#include "y/type/destruct.hpp"
 
 namespace Yttrium
 {
@@ -22,25 +21,8 @@ namespace Yttrium
             explicit Zombies(const size_t userBlockSize);
             virtual ~Zombies() noexcept;
 
-#if 0
-            template <typename T> inline
-            T * conjure() {
-                void * const addr = query();
-                try { return new (addr) T(); }
-                catch(...) { store(addr); throw; }
-            }
-
-
-            template <typename T> inline
-            void banish(T * const object) noexcept
-            {
-                assert(0!=object);
-                store( Destructed(object) );
-            }
-#endif
-
             // Interface
-            virtual void   gc(uint8_t) noexcept;
+            virtual void   gc(const uint8_t) noexcept;
             virtual size_t count() const noexcept;
             virtual void   cache(const size_t);
 
