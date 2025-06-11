@@ -16,11 +16,13 @@ namespace Yttrium{
             //! arr[width*(0..num-1)]
             static void   Sort(void * const arr,
                                const size_t num,
-                               const size_t width,
+                               const size_t alen,
                                void * const rra,
                                int        (*proc)(const void * const, const void * const, void * const),
                                void * const args
                                );
+
+
 
             template <typename T, typename COMPARE> static inline
             void  Sort(T * const    arr,

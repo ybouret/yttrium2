@@ -1,5 +1,6 @@
 
 #include "y/sorting/heap.hpp"
+#include "y/sorting/test.hpp"
 #include "y/utest/run.hpp"
 #include "y/system/rand.hpp"
 #include "y/core/display.hpp"
@@ -29,6 +30,7 @@ Y_UTEST(sorting_heap)
     Core::Display(std::cerr,arr,num) << std::endl;
     Sorting::Heap::Sort(arr,num,Sign::Increasing<int>);
     Core::Display(std::cerr,arr,num) << std::endl;
-
+    const bool sorted = Sorting::Test::AccordingTo(Sign::Increasing<int>,arr,num);
+    Y_CHECK(sorted);
 }
 Y_UDONE()
