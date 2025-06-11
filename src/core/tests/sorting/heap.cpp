@@ -27,7 +27,7 @@ Y_UTEST(sorting_heap)
     }
     ran.shuffle(arr,num);
     Core::Display(std::cerr,arr,num) << std::endl;
-    Sorting::HeapSort(arr,num,Sign::Increasing<int>);
+    Sorting::Heap::Sort(arr,num,Sign::Increasing<int>);
     Core::Display(std::cerr,arr,num) << std::endl;
 
 }
