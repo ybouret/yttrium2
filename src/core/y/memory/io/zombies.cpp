@@ -26,7 +26,9 @@ namespace Yttrium
 
             inline ~Code() noexcept
             {
-
+                Y_Lock(*guild);
+                while(zpool.size>0)
+                    guild.releaseBlockUnlocked( zpool.query() );
             }
 
             inline void gc(const uint8_t amount) noexcept
@@ -56,6 +58,9 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(Code);
+
+
+
         };
 
         Zombies:: Zombies(const size_t userBlockSize) :
