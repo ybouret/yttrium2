@@ -41,7 +41,7 @@ namespace Yttrium
 
 
             //! fetch pooled/create memory block
-            inline void *conjure()
+            inline void *query()
             {
                 return (zpool.size>0)  ? Memory::Page::Addr(zpool.query(),bytes) : guild.acquireBlock();
             }
@@ -96,7 +96,7 @@ namespace Yttrium
         void * DeadPool:: query()
         {
             assert(0!=code);
-            return code->conjure();
+            return code->query();
         }
 
         void DeadPool:: store(void * const addr) noexcept

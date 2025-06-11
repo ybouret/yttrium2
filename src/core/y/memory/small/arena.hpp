@@ -61,9 +61,10 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-                void  * acquire();                //!< \return a zeroed blockSize
-                void    release(void *) noexcept; //!< release a prevously acquired block
-                bool    isValid() const noexcept; //!< \return various validity tests
+                void  * acquire();                               //!< \return a zeroed blockSize
+                void    release(void *) noexcept;                //!< release a prevously acquired block
+                bool    isValid() const noexcept;                //!< \return various validity tests
+                bool    owns(const void * const) const noexcept; //!< \return true if in one chunk
 
                 //______________________________________________________________
                 //

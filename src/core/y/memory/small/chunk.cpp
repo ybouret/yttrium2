@@ -170,6 +170,7 @@ namespace Yttrium
 
             Ownership Chunk:: whose(const void * const address) const noexcept
             {
+                assert(0!=address);
                 if(address<data)       return OwnedByPrev;
                 if(address>=last)      return OwnedByNext;
                 assert(owns(address)); return OwnedByCurr;

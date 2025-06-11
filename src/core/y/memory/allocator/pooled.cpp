@@ -33,6 +33,13 @@ namespace Yttrium
             static void * codeWorkspace[ Alignment::WordsFor<Pooled::Code>::Count ];
         }
 
+
+        bool Pooled:: owns(const void * const blockAddr, size_t &blockSize) const noexcept
+        {
+            assert(0!=code);
+            return code->owns(blockAddr,blockSize);
+        }
+
         Pooled:: Pooled() :
         Singleton<Pooled, BroadLockPolicy>(),
         Allocator(CallSign),

@@ -491,3 +491,23 @@ namespace Yttrium
     }
 }
 
+namespace Yttrium
+{
+    namespace Memory
+    {
+        namespace Small
+        {
+            bool Arena:: owns(const void * const addr) const noexcept
+            {
+                assert(0!=addr);
+                const Chunk * ch = workspace;
+                for(size_t i=occupied;i>0;--i,++ch)
+                {
+                    if(ch->owns(addr)) return true;
+                }
+                return false;
+            }
+
+        }
+    }
+}

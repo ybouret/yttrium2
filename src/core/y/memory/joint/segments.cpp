@@ -203,6 +203,20 @@ namespace Yttrium
                 return table[shift];
             }
 
+            bool Segments:: owns(const void * const blockAddr,
+                                 size_t           & blockSize) const noexcept
+            {
+
+                for(unsigned shift=MinShift;shift<=MaxShift;++shift)
+                {
+                    for(const Segment *seg=table[shift].head;seg;seg=seg->next)
+                    {
+                        if(seg->owns(blockAddr,blockSize))
+                            return true;
+                    }
+                }
+                return false;
+            }
 
         }
 

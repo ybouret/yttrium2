@@ -24,6 +24,7 @@ Y_CreateLibrary(y
     y/container
     y/container/iter
     y/container/algorithm
+    y/container/sequence
     y/static
     y/static/workspace
     y/memory

@@ -133,6 +133,20 @@ namespace Yttrium
             }
 
 
+            bool Blocks:: owns(const void * const addr, size_t &blockSize) const noexcept
+            {
+                assert(0!=addr);
+                for(const Knot *knot=kpool.head;knot;knot=knot->next)
+                {
+                    const Arena & a = knot->arena;
+                    if(a.owns(addr))
+                    {
+                        blockSize = a.blockSize;
+                        return true;
+                    }
+                }
+                return false;
+            }
 
 
 

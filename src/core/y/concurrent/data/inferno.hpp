@@ -7,11 +7,14 @@
 #include "y/concurrent/data/dead-pool.hpp"
 #include "y/type/args.hpp"
 #include "y/xml/attribute.hpp"
+#include "y/memory/page.hpp"
 
 namespace Yttrium
 {
     namespace Concurrent
     {
+
+        typedef Memory::Page Wraith;
 
         //______________________________________________________________________
         //
@@ -100,6 +103,18 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
+            inline Wraith * conjure()
+            {
+                Y_Lock(access);
+                return Wraith::Cast(deadPool.query());
+            }
+
+            inline void banish(Wraith * const wraith) noexcept
+            {
+                Y_Lock(access);
+                deadPool.store( wraith );
+            }
+
 
 
             //! zombify a live object \param object constructed object

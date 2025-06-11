@@ -107,6 +107,14 @@ namespace Yttrium
                  */
                 const Slot & operator[](const unsigned shift) const noexcept;
 
+                //! look for memory
+                /**
+                 \param blockAddr address of block
+                 \param blockSize updated block size if found
+                 \return true if found in handled memory
+                 */
+                bool owns(const void * const blockAddr,
+                          size_t &           blockSize) const noexcept;
 
             private:
                 Y_Disable_Copy_And_Assign(Segments); //!< discarding

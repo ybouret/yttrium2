@@ -101,6 +101,10 @@ namespace Yttrium
                  */
                 bool owns(const void * const) const noexcept;
 
+
+                //! look in all segments \return true if found
+                bool owns(const void * const, size_t &) const noexcept;
+
                 //! check empty \return true iff unused head whose next is tail
                 bool isEmpty() const noexcept;
 

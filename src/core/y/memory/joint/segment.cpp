@@ -222,6 +222,20 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                 return addr >= (const void *)(head+1) && addr < (const void *)(tail);
             }
 
+            bool Segment:: owns(const void * blockAddr, size_t &blockSize) const noexcept
+            {
+                assert(0!=blockAddr);
+                for(const Block *block = head; block != tail; block=block->next)
+                {
+                    if(block+1==blockAddr)
+                    {
+                        blockSize = block->size;
+                        return true;
+                    }
+                }
+                return false;
+            }
+
             bool Segment:: isEmpty() const noexcept
             {
                 assert(IsValid(this));

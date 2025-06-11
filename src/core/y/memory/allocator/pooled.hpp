@@ -49,6 +49,8 @@ namespace Yttrium
             virtual void   releaseBlock(void * const blockAddr,
                                         const size_t blockSize) noexcept;
 
+            //! forward call to internal segments \return true if found
+            bool owns(const void * const, size_t &) const noexcept;
 
         private:
             Y_Disable_Copy_And_Assign(Pooled); //!< discarding
