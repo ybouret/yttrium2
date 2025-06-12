@@ -21,6 +21,9 @@ namespace Yttrium
             inline  ListNode(ParamType value) : next(0), prev(0), data(value) {}
             inline ~ListNode() noexcept {}
 
+            inline Type &      operator*()       noexcept { return data; }
+            inline ConstType & operator*() const noexcept { return data; }
+
             ListNode *next;
             ListNode *prev;
 
@@ -33,13 +36,64 @@ namespace Yttrium
     }
 
     template <typename T,typename THREADING_POLICY = SingleThreadedClass>
-    class List : public Container
+    class List : public DynamicContainer, public THREADING_POLICY
     {
     public:
-        inline explicit List();
+        Y_ARGS_DECL(T,Type);
+        typedef typename THREADING_POLICY::Lock             Lock;
+        typedef Core::ListNode<Type>                        NodeType;
+        typedef Core::ListOf<NodeType>                      ListType;
+        typedef Memory::Limbo<NodeType,SingleThreadedClass> PoolType;
+
+        inline explicit List() : list(), pool() {}
+
+        inline virtual ~List() noexcept
+        {
+        }
+
+        inline friend std::ostream & operator<<(std::ostream &os, const List &self)
+        {
+            os << self.list;
+            return os;
+        }
+
+        inline virtual size_t size() const noexcept
+        {
+            Y_Memory_Limbo_Lock();
+            return list.size;
+        }
+
+
+        inline virtual size_t capacity() const noexcept
+        {
+            Y_Memory_Limbo_Lock();
+            return list.size + pool.count();
+        }
+
+        inline virtual size_t available() const noexcept
+        {
+            Y_Memory_Limbo_Lock();
+            return pool.count();
+        }
+
+        inline virtual void reserve(const size_t n)
+        {
+            Y_Memory_Limbo_Lock();
+            pool.cache(n);
+        }
+
+        inline void pushTail(ParamType value)
+        {
+            list.pushTail( pool.template conjure<ConstType>(value) );
+        }
+
 
     private:
         Y_Disable_Copy_And_Assign(List);
+        ListType list;
+        PoolType pool;
+
+
     };
 
 }
