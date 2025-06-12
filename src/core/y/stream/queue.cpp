@@ -34,7 +34,7 @@ namespace Yttrium
 
     bool StreamQueue:: query(char &C)
     {
-        LiveList &self = *this;
+        IO::Chars &self = *this;
         if(self->size>0)
         {
             C = char(pullHead());
