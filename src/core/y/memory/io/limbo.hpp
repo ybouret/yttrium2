@@ -24,7 +24,6 @@ namespace Yttrium
 /**/        catch(...) { zombies.store(addr); throw;} \
 /**/    } while(false)
 
-#define Y_Must_Lock() volatile Lock guard(*this)
 
 
         template <typename T, typename THREADING_POLICY = SingleThreadedClass>

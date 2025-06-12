@@ -5,6 +5,7 @@
 #define Y_Threading_Locker_Included 1
 
 #include "y/core/setup.hpp"
+#include "y/threading/must-lock.hpp"
 
 namespace Yttrium
 {

@@ -5,6 +5,7 @@
 #define Y_Single_Threaded_Class_Included 1
 
 #include "y/core/setup.hpp"
+#include "y/threading/must-lock.hpp"
 
 namespace Yttrium
 {
