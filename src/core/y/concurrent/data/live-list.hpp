@@ -12,31 +12,53 @@
 
 namespace Yttrium
 {
+
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! list of live objects
+    //
+    //
+    //__________________________________________________________________________
     template <typename NODE, typename THREADING_POLICY = SingleThreadedClass>
     class LiveList :
     public Container,
+    public Releasable,
     public Ingress< const Core::ListOf<NODE> >,
     public THREADING_POLICY
     {
     public:
-        typedef typename THREADING_POLICY::Lock Lock;
-        typedef Core::ListOf<NODE>              ListType;
-        typedef NODE                            NodeType;
-        typedef Ingress<const ListType>         IngressType;
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        typedef typename THREADING_POLICY::Lock Lock;        //!< alias
+        typedef Core::ListOf<NODE>              ListType;    //!< alias
+        typedef NODE                            NodeType;    //!< alias
+        typedef Ingress<const ListType>         IngressType; //!< alias
+        Y_ARGS_DECL(typename NodeType::Type,Type);           //!< aliases
 
-        Y_ARGS_DECL(typename NodeType::Type,Type);
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
 
+        //! setup emptu
         inline explicit LiveList() :
         Container(),
         IngressType(),
         THREADING_POLICY(),
         list() {}
 
-        inline virtual ~LiveList() noexcept
-        {
-            release_();
-        }
+        //! cleanup
+        inline virtual ~LiveList() noexcept { release_(); }
 
+        //! duplicate with NODE::Copy \param other another list
         inline LiveList(const LiveList &other) :
         Container(),
         IngressType(),
@@ -51,6 +73,7 @@ namespace Yttrium
             catch(...) { release_(); throw; }
         }
 
+        //! assign with copy/swap \param other another list \return *this*
         LiveList & operator=( const LiveList &other )
         {
             volatile Lock self(*this), peer(other);
@@ -60,11 +83,18 @@ namespace Yttrium
         }
 
         //! foward display
+        /**
+         \param os output stream
+         \param self *this
+         \return os << self.list
+         */
         inline friend std::ostream & operator<<(std::ostream &os, const LiveList &self)
         {
             return os << self.list;
         }
 
+
+        //! push tail \param value new appended value \return *this
         inline LiveList & operator<<(ParamType value)
         {
             Y_Must_Lock();
@@ -72,6 +102,7 @@ namespace Yttrium
             return *this;
         }
 
+        //! push head \param value new prepended value \return *this
         inline LiveList & operator>>(ParamType value)
         {
             Y_Must_Lock();
@@ -79,6 +110,8 @@ namespace Yttrium
             return *this;
         }
 
+
+        //! pop and delete head with NODE::Deletes
         inline void cutHead() noexcept
         {
             Y_Must_Lock();
@@ -86,6 +119,7 @@ namespace Yttrium
             NODE::Delete(list.popHead());
         }
 
+        //! pop and delete head \return old head value
         inline ConstType pullHead()
         {
             Y_Must_Lock();
@@ -95,6 +129,7 @@ namespace Yttrium
             return res;
         }
 
+        //! pop and delete tail with NODE::Delete
         inline void cutTail() noexcept
         {
             Y_Must_Lock();
@@ -102,6 +137,7 @@ namespace Yttrium
             NODE::Delete(list.popTail());
         }
 
+        //! pop and delete tail \return old tail value
         inline ConstType pullTail()
         {
             Y_Must_Lock();
@@ -117,10 +153,11 @@ namespace Yttrium
         inline virtual void   release()    noexcept { release_(); }
 
     private:
-        ListType list;
+        ListType list; //!< my list
 
         inline virtual const ListType & locus() const noexcept { return list; }
 
+        //! release all nodes with NODE::Delete
         inline void release_() noexcept
         {
             Y_Must_Lock();

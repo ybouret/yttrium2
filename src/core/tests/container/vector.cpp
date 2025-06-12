@@ -7,6 +7,7 @@ using namespace Yttrium;
 Y_UTEST(sequence_vector)
 {
     Vector<double> v;
+    v.reserve(10);
 }
 Y_UDONE()
 

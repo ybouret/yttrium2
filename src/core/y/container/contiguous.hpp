@@ -70,11 +70,14 @@ namespace Yttrium
             return  (sz>0) ? & self[1]+sz : 0;
         }
 
+        //! \return first invalid reverse address, may be NULL
         inline ConstType * fore() const noexcept {
             const Readable<T> &self = *this;
             return (size()>0) ? (&self[1])-1 : 0;
         }
 
+
+        //! \return first valid revers address, may be NULL
         inline ConstType * tail() const noexcept {
             const Readable<T> &self = *this;
             const size_t       sz   = self.size();

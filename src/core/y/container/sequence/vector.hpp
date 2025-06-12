@@ -4,6 +4,7 @@
 #define Y_Vector_Included 1
 
 #include "y/object/school-of.hpp"
+#include "y/container/sequence.hpp"
 #include "y/container/contiguous.hpp"
 #include "y/threading/single-threaded-class.hpp"
 #include "y/type/args.hpp"
@@ -16,6 +17,7 @@ namespace Yttrium
 
     template <typename T, typename THREADING_POLICY = SingleThreadedClass>
     class Vector :
+    public Sequence<T>,
     public Contiguous<Writable,T>,
     public THREADING_POLICY
     {
@@ -34,10 +36,41 @@ namespace Yttrium
             release_();
         }
 
+        // interface
         virtual size_t size() const noexcept
         {
             Y_Must_Lock();
             return built;
+        }
+
+        virtual size_t capacity() const noexcept
+        {
+            return code ? code->count : 0;
+        }
+
+        virtual size_t available() const noexcept
+        {
+            return code ? code->count-built : 0;
+        }
+
+        virtual void reserve(const size_t n)
+        {
+            if(n>0)
+            {
+                if(0==code)
+                {
+                    code = new Code(n);
+                }
+                else
+                {
+                    // TODO: check overflow
+                    Code * temp = new Code(n+code->count);
+                    assert(temp->count>code->count);
+                    Memory::Stealth::SafeCopy(temp->entry,code->entry,built*sizeof(T));
+                    delete code;
+                    code = temp;
+                }
+            }
         }
 
 

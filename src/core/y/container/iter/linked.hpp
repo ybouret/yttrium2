@@ -11,35 +11,63 @@ namespace Yttrium
 {
     namespace Iter
     {
-
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Linked iterator
+        //
+        //
+        //______________________________________________________________________
         template <Direction D, typename NODE>
         class Linked
         {
         public:
-            typedef IntToType<D> WayType; //!< aliases
-            static const WayType Way;     //!< type selector
-            Y_ARGS_EXPOSE(NODE,NodeType);
-            Y_ARGS_EXPOSE(typename NODE::Type,Type);
-            static const bool IsConst = TypeTraits<NODE>::IsConst;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef IntToType<D> WayType;                          //!< aliases
+            static const WayType Way;                              //!< type selector
+            Y_ARGS_EXPOSE(NODE,NodeType);                          //!< aliases
+            Y_ARGS_EXPOSE(typename NODE::Type,Type);               //!< aliases
+            static const bool IsConst = TypeTraits<NODE>::IsConst; //!< type selector
+            typedef typename Pick<IsConst,ConstType,Type>::Type ResultType;      //!< for normal access
+            typedef ConstType                                   ConstResultType; //!< for const access
 
-            typedef typename Pick<IsConst,ConstType,Type>::Type ResultType;
-            typedef ConstType                                   ConstResultType;
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup \param userNode a doubly linked node
             inline Linked(NODE * const userNode) noexcept :
             node( (MutableNodeType *) userNode )
             {
             }
 
+            //! cleanup
             inline ~Linked() noexcept { node=0; }
+
+            //! copy \param other another iterator
             inline  Linked(const Linked &other) noexcept : node(other.node) {}
+
+            //! assign \param other another iterator \return *this*
             inline  Linked & operator=(const Linked &other) noexcept
             {
                 node = other.node;
                 return *this;
             }
 
-
+            //! normal access \return content
             inline ResultType & operator*()       noexcept { assert(0!=node); return **node; }
+
+            //! const access \return const content
             inline ConstType  & operator*() const noexcept { assert(0!=node); return **node; }
 
             //! test equality
@@ -85,7 +113,7 @@ namespace Yttrium
 
 
         private:
-            MutableNodeType *node;
+            MutableNodeType *node; //!< internal node
 
             //! increase forward
             inline void incr(const IntToType<Forward> &) noexcept

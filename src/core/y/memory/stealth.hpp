@@ -64,6 +64,17 @@ namespace Yttrium
                                      const void * const source,
                                      const size_t       bytes) noexcept;
 
+            //! copy memory blocks and zero source
+            /**
+             \param target target address
+             \param source source address
+             \param bytes  bytes to copy
+             \return target
+             */
+            static void *       SafeCopy(void * const target,
+                                         void * const source,
+                                         const size_t bytes) noexcept;
+
             //! move memory blocks
             /**
              \param target target address

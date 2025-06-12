@@ -52,6 +52,23 @@ namespace Yttrium
             return memcpy(target,source,bytes);
         }
 
+        void * Stealth:: SafeCopy(void * const target,
+                                  void * const source,
+                                  const size_t bytes) noexcept
+        {
+            assert( Good(target,bytes) );
+            assert( Good(source,bytes) );
+            uint8_t * lhs = static_cast<uint8_t *>(target);
+            uint8_t * rhs = static_cast<uint8_t *>(source);
+            for(size_t i=bytes;i>0;--i)
+            {
+                *(lhs++) = *rhs;
+                *(rhs++) = 0;
+            }
+            return target;
+        }
+
+
         void * Stealth:: Move(void * const       target,
                               const void * const source,
                               const size_t       bytes) noexcept

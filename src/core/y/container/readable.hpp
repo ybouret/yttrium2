@@ -20,7 +20,7 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    template <typename T> class Readable : public Container
+    template <typename T> class Readable : public virtual Container
     {
     public:
         //______________________________________________________________________
