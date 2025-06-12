@@ -65,14 +65,11 @@ namespace Yttrium
                                void * const       params,
                                QuitProc const     onQuit);
 
-            //! cleaup
+            //! cleanup
             virtual ~Operative() noexcept;
 
-        protected:
             uint8_t * const workspace; //!< first byte of first object
-            size_t          numBlocks; //!< number of objects
-
-        public:
+            const size_t    numBlocks; //!< number of objects
             const size_t    blockSize; //!< bytes per object
 
         private:

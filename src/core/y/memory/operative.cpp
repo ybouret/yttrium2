@@ -32,8 +32,8 @@ namespace Yttrium
                     const size_t indexx = numBlocks+1;
                     assert( Stealth::Are0(ptr,blockSize) );
                     onInit(ptr,source,indexx,params);
-                    ptr      += blockSize;
-                    numBlocks = indexx;
+                    ptr              += blockSize;
+                    Coerce(numBlocks) = indexx;
                 }
             }
             catch(...)
@@ -56,7 +56,7 @@ namespace Yttrium
             uint8_t * ptr = workspace + (blockSize*numBlocks);
             while(numBlocks>0)
             {
-                --numBlocks;
+                --Coerce(numBlocks);
                 ptr -= blockSize;
                 try { quit(ptr); } catch(...) { }
             }
