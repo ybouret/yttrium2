@@ -45,8 +45,7 @@ namespace Yttrium
 
         const char * const Char:: CallSign = "IO::Char";
 
-        typedef Concurrent::Inferno<Char> Manager;
-
+        
 #if 0
         Char * Char:: New(const uint8_t code)
         {

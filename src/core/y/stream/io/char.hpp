@@ -8,13 +8,9 @@
 
 namespace Yttrium
 {
-    namespace Concurrent
-    {
-        template <typename> class Inferno;
-    }
+
     namespace IO
     {
-
         class Char
         {
         public:
@@ -34,7 +30,7 @@ namespace Yttrium
             Type    code;
 
         private:
-            friend class Concurrent::Inferno<Char>;
+            //friend class Concurrent::Inferno<Char>;
             Char(const Type  a) noexcept;
             Char(const Char &)    noexcept;
             ~Char() noexcept;
