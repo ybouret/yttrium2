@@ -6,6 +6,7 @@
 #define Y_GradualContainer_Included 1
 
 #include "y/container.hpp"
+#include "y/ability/recyclable.hpp"
 
 namespace Yttrium
 {
@@ -17,7 +18,7 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    class GradualContainer : public virtual Container
+    class GradualContainer : public virtual Container, public Recyclable
     {
     protected:
         explicit GradualContainer() noexcept;

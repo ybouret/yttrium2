@@ -5,6 +5,7 @@
 #define Y_DynamicContainer_Included 1
 
 #include "y/container/gradual.hpp"
+#include "y/ability/releasable.hpp"
 
 namespace Yttrium
 {
@@ -16,7 +17,7 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    class DynamicContainer : public GradualContainer
+    class DynamicContainer : public GradualContainer, public Releasable
     {
     protected:
         explicit DynamicContainer() noexcept;

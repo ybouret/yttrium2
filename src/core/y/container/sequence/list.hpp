@@ -151,6 +151,18 @@ namespace Yttrium
             pool.banish(list.popTail());
         }
 
+        inline virtual void free() noexcept
+        {
+            Y_Must_Lock();
+            while(list.size>0) pool.banish(list.popTail());
+        }
+
+        inline virtual void release() noexcept
+        {
+            release_();
+        }
+
+
         inline Iterator             begin()         noexcept { return list.head; } //!< \return iterator
         inline Iterator             end()           noexcept { return 0; }         //!< \return iterator
 

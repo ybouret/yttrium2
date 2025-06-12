@@ -8,7 +8,7 @@ namespace Yttrium
     {
     }
 
-    GradualContainer:: GradualContainer() noexcept : Container()
+    GradualContainer:: GradualContainer() noexcept : Container(), Recyclable()
     {
     }
 
