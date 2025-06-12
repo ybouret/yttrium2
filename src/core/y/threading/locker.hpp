@@ -23,7 +23,7 @@ namespace Yttrium
         class Locker
         {
         public:
-            //! store locked host \param obj object with access member
+            //! store locked host \param obj object with 'access' member
             inline  Locker(const CLASS &obj) noexcept : host(Coerce(obj)) { obj.access->lock(); }
 
             //! unlock host

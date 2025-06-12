@@ -8,18 +8,25 @@
 namespace Yttrium {
 
 
+    //__________________________________________________________________________
+    //
+    //
+    //! Multit-Threaded class using a Singleton's access
+    //
+    //__________________________________________________________________________
     template <typename SINGLETON>
     class MultiThreadedHandle
     {
     public:
-        typedef Threading::Locker<MultiThreadedHandle> Lock;
+        typedef Threading::Locker<MultiThreadedHandle> Lock; //!< alias
 
-        inline explicit MultiThreadedHandle() : access( & SINGLETON::Instance().access ) {}
-        inline virtual ~MultiThreadedHandle() noexcept { Coerce(access) = 0; }
+        inline explicit MultiThreadedHandle() : access( & SINGLETON::Instance().access ) {} //!< setup
+        inline virtual ~MultiThreadedHandle() noexcept { Coerce(access) = 0; }              //!< cleanup
+
     private:
-        Y_Disable_Copy_And_Assign(MultiThreadedHandle);
+        Y_Disable_Copy_And_Assign(MultiThreadedHandle); //!< discardingb
         friend Lock;
-        Lockable * const access;
+        Lockable * const access; //!< & SINGLETON:: access
     };
     
 }
