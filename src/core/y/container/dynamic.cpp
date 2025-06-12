@@ -11,7 +11,11 @@ namespace Yttrium
     {
     }
 
+<<<<<<< HEAD
     DynamicContainer:: DynamicContainer() noexcept : GradualContainer(), Releasable()
+=======
+    DynamicContainer:: DynamicContainer() noexcept : GradualContainer()
+>>>>>>> refs/remotes/origin/main
     {
     }
 
