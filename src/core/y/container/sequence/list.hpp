@@ -49,6 +49,7 @@ namespace Yttrium
 
         inline virtual ~List() noexcept
         {
+            release_();
         }
 
         inline friend std::ostream & operator<<(std::ostream &os, const List &self)
@@ -59,33 +60,42 @@ namespace Yttrium
 
         inline virtual size_t size() const noexcept
         {
-            Y_Memory_Limbo_Lock();
+            Y_Must_Lock();
             return list.size;
         }
 
 
         inline virtual size_t capacity() const noexcept
         {
-            Y_Memory_Limbo_Lock();
+            Y_Must_Lock();
             return list.size + pool.count();
         }
 
         inline virtual size_t available() const noexcept
         {
-            Y_Memory_Limbo_Lock();
+            Y_Must_Lock();
             return pool.count();
         }
 
         inline virtual void reserve(const size_t n)
         {
-            Y_Memory_Limbo_Lock();
+            Y_Must_Lock();
             pool.cache(n);
         }
 
-        inline void pushTail(ParamType value)
+        inline virtual void pushTail(ParamType value)
         {
+            Y_Must_Lock();
             list.pushTail( pool.template conjure<ConstType>(value) );
         }
+
+        inline virtual void popTail() noexcept
+        {
+            assert(list.size>0);
+            Y_Must_Lock();
+            pool.banish(list.popTail());
+        }
+
 
 
     private:
@@ -93,7 +103,10 @@ namespace Yttrium
         ListType list;
         PoolType pool;
 
-
+        inline void release_() noexcept {
+            while(list.size>0) pool.remove(list.popTail());
+            pool.release();
+        }
     };
 
 }

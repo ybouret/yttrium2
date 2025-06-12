@@ -122,6 +122,12 @@ namespace Yttrium
             code->zpool.store( Page::Cast(addr) );
         }
 
+        void  Zombies:: purge(void * const addr) noexcept
+        {
+            assert(0!=code);
+            assert(0!=addr);
+            code->guild.releaseBlock(addr);
+        }
 
         
 

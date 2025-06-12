@@ -68,7 +68,10 @@ namespace Yttrium
             //! store previously acquired block
             void  store(void * const) noexcept;
 
-            
+            //! return to memory
+            void  purge(void * const) noexcept;
+
+
         private:
             Y_Disable_Copy_And_Assign(Zombies); //!< discarding
             Code * const code;                  //!< internal code, pool and metricss
