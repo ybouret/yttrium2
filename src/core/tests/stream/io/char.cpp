@@ -20,6 +20,11 @@ Y_UTEST(stream_io_char)
     IO::Chars chars;
     chars << 'a' >> 'b' << 'c';
     std::cerr << chars << std::endl;
-
+    IO::Chars ccopy = chars;
+    std::cerr << ccopy << std::endl;
+    ccopy.release();
+    std::cerr << ccopy << std::endl;
+    ccopy = chars;
+    std::cerr << ccopy << std::endl;
 }
 Y_UDONE()
