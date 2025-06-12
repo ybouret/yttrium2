@@ -32,7 +32,7 @@ namespace Yttrium
             inline void unlock() noexcept
             {
                 const int err = pthread_mutex_unlock(data);
-                if(0!=err) Libc::Error::Critical(err,"pthread_mutex_lock");
+                if(0!=err) Libc::Error::Critical(err,"pthread_mutex_unlock");
             }
 
             inline bool tryLock() noexcept

@@ -1,12 +1,8 @@
 
-
-
 #include "y/stream/io/chars.hpp"
-#include "y/memory/io/supply-of.hpp"
-#include "y/hexadecimal.hpp"
-
 #include "y/utest/run.hpp"
 #include "y/system/rand.hpp"
+#include "y/concurrent/singulet.hpp"
 
 
 namespace Yttrium
@@ -20,13 +16,12 @@ using namespace Yttrium;
 
 Y_UTEST(stream_io_char)
 {
-    Memory::SupplyOf<IO::Char> &ioc = Memory::SupplyOf<IO::Char>::Instance();
+    Concurrent::Singulet::Verbose = true;
     
-#if 0
+#if 1
     IO::Chars chars;
-
-    chars << 'a' >> 'b' << 'c';
-
+    chars << 'a';
+    //chars << 'a' >> 'b' << 'c';
     std::cerr << chars << std::endl;
 #endif
     

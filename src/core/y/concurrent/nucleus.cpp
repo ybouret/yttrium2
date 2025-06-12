@@ -89,13 +89,13 @@ namespace Yttrium
                 virtual void doLock() noexcept
                 {
                     const int err = pthread_mutex_lock(data);
-                    if(0!=err) Libc::Error::Critical(err,"pthread_mutex_lock");
+                    if(0!=err) Libc::Error::Critical(err,"pthread_mutex_lock/%s",Nucleus::CallSign);
                 }
 
                 virtual void doUnlock() noexcept
                 {
                     const int err = pthread_mutex_unlock(data);
-                    if(0!=err) Libc::Error::Critical(err,"pthread_mutex_lock");
+                    if(0!=err) Libc::Error::Critical(err,"pthread_mutex_unlock/%s",Nucleus::CallSign);
                 }
 
             };

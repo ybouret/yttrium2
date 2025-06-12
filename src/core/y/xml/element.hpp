@@ -59,7 +59,7 @@ namespace Yttrium
              \param standalone true if standalone element
              \return os << std::endl
              */
-            std::ostream & initEpilog(std::ostream &os, const bool standalone=false) const;
+            std::ostream & initEpilog(std::ostream &os, const bool standalone) const;
 
             //! write "<callSign>" with indentation
             /** \return output stream */

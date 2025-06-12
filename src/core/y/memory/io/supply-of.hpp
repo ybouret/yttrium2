@@ -7,6 +7,7 @@
 #include "y/singleton.hpp"
 #include "y/memory/io/limbo.hpp"
 #include "y/threading/multi-threaded-handle.hpp"
+#include "y/xml/attribute.hpp"
 
 namespace Yttrium
 {
@@ -16,7 +17,8 @@ namespace Yttrium
         template <typename T>
         class SupplyOf :
         public Singleton<SupplyOf<T>,ClassLockPolicy>,
-        public Limbo<T, MultiThreadedHandle< SupplyOf<T> > >
+        //public Limbo<T, MultiThreadedHandle< SupplyOf<T> > >
+        public Limbo<T,SingleThreadedClass>
         {
         public:
             static const System::AtExit::Longevity LifeTime = T::LifeTime;
@@ -24,6 +26,9 @@ namespace Yttrium
 
             inline virtual void display(std::ostream &os, size_t indent) const
             {
+                const size_t blockSize = this->zombies.blockSize();
+                this->initProlog(os,indent) << Y_XML_Attr(blockSize);
+                this->initEpilog(os,true);
             }
 
         private:

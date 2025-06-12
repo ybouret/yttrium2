@@ -88,11 +88,11 @@ namespace Yttrium
                 zombies.cache(n);
             }
 
-
-
+        protected:
+            Zombies zombies;
+            
         private:
             Y_Disable_Copy_And_Assign(Limbo);
-            Zombies zombies;
         };
     }
 

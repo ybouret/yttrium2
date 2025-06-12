@@ -46,7 +46,7 @@ namespace Yttrium
     {
         initProlog(os, indent);
         os << Y_XML_Attr(LifeTime);
-        initEpilog(os);
+        initEpilog(os,false);
         ++indent;
         blocks.display(os,indent);
         pooled.display(os,indent);

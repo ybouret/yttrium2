@@ -5,7 +5,7 @@
 namespace Yttrium
 {
     StreamQueue:: StreamQueue() noexcept :
-    OutputStream() //,     IO::Chars()
+    OutputStream(), IO::Chars()
     {}
 
     StreamQueue:: ~StreamQueue() noexcept
@@ -14,7 +14,7 @@ namespace Yttrium
 
     std::ostream & operator<<(std::ostream &os, const StreamQueue &Q)
     {
-#if 0
+#if 1
         for(const IO::Char *ch=Q->head;ch;ch=ch->next)
         {
             const uint8_t c = **ch;
@@ -31,12 +31,12 @@ namespace Yttrium
 
     void StreamQueue:: write(const char c)
     {
-        //(*this) << uint8_t(c);
+        (*this) << uint8_t(c);
     }
 
     bool StreamQueue:: query(char &C)
     {
-#if 0
+#if 1
         IO::Chars &self = *this;
         if(self->size>0)
         {
@@ -52,7 +52,7 @@ namespace Yttrium
 
     void StreamQueue:: store(const char C)
     {
-        //(*this) >> uint8_t(C);
+        (*this) >> uint8_t(C);
     }
 
 }

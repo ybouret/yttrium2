@@ -6,6 +6,7 @@
 
 #include "y/core/setup.hpp"
 #include "y/threading/must-lock.hpp"
+#include <cassert>
 
 namespace Yttrium
 {
@@ -25,10 +26,19 @@ namespace Yttrium
         {
         public:
             //! store locked host \param obj object with 'access' member
-            inline  Locker(const CLASS &obj) noexcept : host(Coerce(obj)) { obj.authorization->lock(); }
+            inline  Locker(const CLASS &obj) noexcept : host(Coerce(obj))
+            {
+                assert(host.authorization);
+                host.authorization->lock();
+            }
 
             //! unlock host
-            inline ~Locker() noexcept { host.authorization->unlock(); }
+            inline ~Locker() noexcept
+            {
+                assert(host.authorization);
+                host.authorization->unlock();
+            }
+            
         private:
             CLASS & host; //!< PERSISTENT host
         };
