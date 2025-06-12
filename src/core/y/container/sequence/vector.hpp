@@ -76,7 +76,7 @@ namespace Yttrium
 
     private:
         Y_Disable_Copy_And_Assign(Vector);
-        size_t built = 0;
+        size_t built;
 
         typedef Memory::SchoolOf<MutableType> SchoolType;
         class Code : public Object, public SchoolType
