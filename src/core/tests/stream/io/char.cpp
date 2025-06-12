@@ -2,6 +2,7 @@
 
 
 #include "y/stream/io/chars.hpp"
+#include "y/memory/io/supply-of.hpp"
 #include "y/hexadecimal.hpp"
 
 #include "y/utest/run.hpp"
@@ -19,7 +20,8 @@ using namespace Yttrium;
 
 Y_UTEST(stream_io_char)
 {
-
+    Memory::SupplyOf<IO::Char> &ioc = Memory::SupplyOf<IO::Char>::Instance();
+    
 #if 0
     IO::Chars chars;
 

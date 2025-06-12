@@ -20,7 +20,7 @@ namespace Yttrium {
     private:
         Y_Disable_Copy_And_Assign(MultiThreadedObject);
         friend class Threading::Locker<MultiThreadedObject>;
-        Lockable * const access;
+        Lockable * const authorization;
     };
 
 }

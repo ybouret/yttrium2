@@ -4,6 +4,6 @@
 
 namespace Yttrium {
 
-    MultiThreadedObject:: MultiThreadedObject() : access( new Concurrent::Mutex() ) {}
-    MultiThreadedObject:: ~MultiThreadedObject() noexcept { Destroy(access); }
+    MultiThreadedObject:: MultiThreadedObject() : authorization( new Concurrent::Mutex() ) {}
+    MultiThreadedObject:: ~MultiThreadedObject() noexcept { Destroy(authorization); }
 }

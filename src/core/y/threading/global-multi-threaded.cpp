@@ -3,6 +3,6 @@
 
 namespace Yttrium {
 
-    GlobalMultiThreaded:: GlobalMultiThreaded() : access( & Lockable::Giant() ) {}
-    GlobalMultiThreaded:: ~GlobalMultiThreaded() noexcept { Coerce(access) = 0; }
+    GlobalMultiThreaded:: GlobalMultiThreaded() : authorization( & Lockable::Giant() ) {}
+    GlobalMultiThreaded:: ~GlobalMultiThreaded() noexcept { Coerce(authorization) = 0; }
 }

@@ -20,13 +20,13 @@ namespace Yttrium {
     public:
         typedef Threading::Locker<MultiThreadedHandle> Lock; //!< alias
 
-        inline explicit MultiThreadedHandle() : access( & SINGLETON::Instance().access ) {} //!< setup
-        inline virtual ~MultiThreadedHandle() noexcept { Coerce(access) = 0; }              //!< cleanup
+        inline explicit MultiThreadedHandle() : authorization( & SINGLETON::Instance().access ) {} //!< setup
+        inline virtual ~MultiThreadedHandle() noexcept { Coerce(authorization) = 0; }              //!< cleanup
 
     private:
         Y_Disable_Copy_And_Assign(MultiThreadedHandle); //!< discardingb
         friend class Threading::Locker<MultiThreadedHandle>;
-        Lockable * const access; //!< & SINGLETON:: access
+        Lockable * const authorization; //!< & SINGLETON:: access
     };
     
 }

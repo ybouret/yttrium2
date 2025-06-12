@@ -15,7 +15,7 @@ namespace Yttrium
         //
         //
         //
-        //! Lightweight locking mechanisment for host with access member
+        //! Lightweight locking mechanisment for host with 'authorization' member
         //
         //
         //______________________________________________________________________
@@ -24,10 +24,10 @@ namespace Yttrium
         {
         public:
             //! store locked host \param obj object with 'access' member
-            inline  Locker(const CLASS &obj) noexcept : host(Coerce(obj)) { obj.access->lock(); }
+            inline  Locker(const CLASS &obj) noexcept : host(Coerce(obj)) { obj.authorization->lock(); }
 
             //! unlock host
-            inline ~Locker() noexcept { host.access->unlock(); }
+            inline ~Locker() noexcept { host.authorization->unlock(); }
         private:
             CLASS & host; //!< PERSISTENT host
         };
