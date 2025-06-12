@@ -41,6 +41,7 @@ Y_CreateLibrary(y
     y/stream/io
     y/sorting
     y/threading
+    y/ptr
 )
 
 add_subdirectory(tests)

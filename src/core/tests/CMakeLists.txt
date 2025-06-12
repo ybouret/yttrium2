@@ -110,3 +110,6 @@ Y_UTEST(sorting:heap)
 Y_UTEST(sequence:list)
 Y_UTEST(sequence:vector)
 
+#ptr
+Y_UTEST(ptr:auto)
+
