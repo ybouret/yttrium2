@@ -22,16 +22,26 @@ namespace Yttrium
         typedef typename THREADING_POLICY::Lock Lock;
         typedef Core::ListOf<NODE>              ListType;
         typedef NODE                            NodeType;
+        typedef Ingress<const ListType>         IngressType;
+
         Y_ARGS_DECL(typename NodeType::Type,Type);
 
-        inline explicit LiveList() : THREADING_POLICY(), list() {}
+        inline explicit LiveList() :
+        Container(),
+        IngressType(),
+        THREADING_POLICY(),
+        list() {}
 
         inline virtual ~LiveList() noexcept
         {
             release_();
         }
 
-        inline LiveList(const LiveList &other) : THREADING_POLICY(), list()
+        inline LiveList(const LiveList &other) :
+        Container(),
+        IngressType(),
+        THREADING_POLICY(),
+        list()
         {
             volatile Lock guard(other);
             try {

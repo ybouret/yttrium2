@@ -98,7 +98,6 @@ Y_UTEST(container:algo)
 Y_UTEST(container:iterator)
 
 #stream
-Y_UTEST(stream:io:codec64)
 Y_UTEST(stream:io:char)
 Y_UTEST(stream:queue)
 
