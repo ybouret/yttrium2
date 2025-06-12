@@ -24,8 +24,7 @@ namespace Yttrium
 
             inline virtual ~SchoolOf() noexcept
             {
-                if(0!=entry)
-                {
+                if(0!=entry) {
                     static Allocator &mgr = Object::AllocatorLocation();
                     mgr.releaseAs<T>(Coerce(entry),Coerce(count),Coerce(bytes));
                 }
