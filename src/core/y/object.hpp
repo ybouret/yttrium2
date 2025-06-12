@@ -7,6 +7,10 @@
 
 namespace Yttrium
 {
+    namespace Memory
+    {
+        class Allocator;
+    }
 
     //__________________________________________________________________________
     //
@@ -78,6 +82,9 @@ namespace Yttrium
         //! placement delete
         static void  operator delete(void * const , void * const)                 noexcept; 
 
+        static Memory::Allocator & AllocatorInstance();
+        static Memory::Allocator & AllocatorLocation() noexcept;
+        
     private:
         Y_Disable_Copy_And_Assign(Object); //!< discarding
     };

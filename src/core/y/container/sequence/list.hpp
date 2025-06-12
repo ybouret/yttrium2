@@ -7,6 +7,8 @@
 #include "y/container/dynamic.hpp"
 #include "y/memory/io/limbo.hpp"
 #include "y/core/linked/list.hpp"
+#include "y/container/iter/linked.hpp"
+#include "y/type/with-at-least.hpp"
 
 namespace Yttrium
 {
@@ -45,7 +47,22 @@ namespace Yttrium
         typedef Core::ListOf<NodeType>                      ListType;
         typedef Memory::Limbo<NodeType,SingleThreadedClass> PoolType;
 
+        typedef Iter::Linked<Iter::Forward,NodeType>       Iterator;
+        typedef Iter::Linked<Iter::Forward,const NodeType> ConstIterator;
+
+
+        typedef Iter::Linked<Iter::Reverse,NodeType>       ReverseIterator;
+        typedef Iter::Linked<Iter::Reverse,const NodeType> ConstReverseIterator;
+
         inline explicit List() : list(), pool() {}
+
+        inline explicit List(const WithAtLeast_ &, const size_t numItems) :
+        list(), pool()
+        {
+            pool.cache(numItems);
+        }
+
+
 
         inline virtual ~List() noexcept
         {
@@ -96,7 +113,18 @@ namespace Yttrium
             pool.banish(list.popTail());
         }
 
+        inline Iterator      begin() noexcept { return list.head; }
+        inline Iterator      end()   noexcept { return 0; }
 
+        inline ConstIterator begin() const noexcept { return list.head; }
+        inline ConstIterator end()   const noexcept { return 0; }
+
+
+        inline ReverseIterator     rbegin() noexcept { return list.tail; }
+        inline ReverseIterator     rend()   noexcept { return 0; }
+
+        inline ConstReverseIterator rbegin() const noexcept { return list.tail; }
+        inline ConstReverseIterator rend()   const noexcept { return 0; }
 
     private:
         Y_Disable_Copy_And_Assign(List);

@@ -69,6 +69,18 @@ namespace Yttrium
             const size_t       sz   = self.size();
             return  (sz>0) ? & self[1]+sz : 0;
         }
+
+        inline ConstType * fore() const noexcept {
+            const Readable<T> &self = *this;
+            return (size()>0) ? (&self[1])-1 : 0;
+        }
+
+        inline ConstType * tail() const noexcept {
+            const Readable<T> &self = *this;
+            const size_t       sz   = self.size();
+            return (sz>0) ? (&self[sz]) : 0;
+        }
+
     };
 
     //__________________________________________________________________________
@@ -91,7 +103,11 @@ namespace Yttrium
         //______________________________________________________________________
         Y_ARGS_EXPOSE(T,Type); //!< aliases
         typedef Iter::Linear<Iter::Forward,ConstType> ConstIterator; //!< alias
-
+        typedef Iter::Linear<Iter::Reverse,ConstType> ConstReverseIterator; //!< alias
+        using ContiguousCommon<CONTAINER,T>::head;
+        using ContiguousCommon<CONTAINER,T>::last;
+        using ContiguousCommon<CONTAINER,T>::tail;
+        using ContiguousCommon<CONTAINER,T>::fore;
     protected:
         //______________________________________________________________________
         //
@@ -115,8 +131,11 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
-        inline ConstIterator begin() const noexcept { return this->head(); } //!< \return first valid ConstIterator
-        inline ConstIterator end()   const noexcept { return this->last(); } //!< \return first invalid ConstIterator
+        inline ConstIterator begin() const noexcept { return head(); } //!< \return first valid ConstIterator
+        inline ConstIterator end()   const noexcept { return last(); } //!< \return first invalid ConstIterator
+
+        inline ConstReverseIterator rbegin() const noexcept { return tail(); } //!< \return first valid ConstReverseIterator
+        inline ConstReverseIterator rend()   const noexcept { return fore(); } //!< \return first invalid ConstReverseIterator
 
     private:
         Y_Disable_Copy_And_Assign(ReadableContiguous); //!< discarding
@@ -142,10 +161,14 @@ namespace Yttrium
         //______________________________________________________________________
         using ContiguousCommon<CONTAINER,T>::head;
         using ContiguousCommon<CONTAINER,T>::last;
+        using ContiguousCommon<CONTAINER,T>::tail;
+        using ContiguousCommon<CONTAINER,T>::fore;
 
-        Y_ARGS_EXPOSE(T,Type);                                       //!< aliases
-        typedef Iter::Linear<Iter::Forward,ConstType> ConstIterator; //!< alias
-        typedef Iter::Linear<Iter::Forward,ConstType> Iterator;      //!< alias
+        Y_ARGS_EXPOSE(T,Type);                                              //!< aliases
+        typedef Iter::Linear<Iter::Forward,Type>      Iterator;             //!< alias
+        typedef Iter::Linear<Iter::Reverse,Type>      ReverseIterator;      //!< alias
+        typedef Iter::Linear<Iter::Forward,ConstType> ConstIterator;        //!< alias
+        typedef Iter::Linear<Iter::Reverse,ConstType> ConstReverseIterator; //!< alias
 
     protected:
         //______________________________________________________________________
@@ -170,10 +193,19 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
-        inline ConstIterator begin() const noexcept { return head(); } //!< \return first valid  ConstIterator
-        inline ConstIterator end()   const noexcept { return last(); } //!< \return first invalid ConstIterator
         inline Iterator      begin()       noexcept { return head(); } //!< \return first valid   Iterator
         inline Iterator      end()         noexcept { return last(); } //!< \return first invalid Iterator
+
+        inline ReverseIterator rbegin()       noexcept { return tail(); } //!< \return first valid   ReverseIterator
+        inline ReverseIterator rend()         noexcept { return fore(); } //!< \return first invalid ReverseIterator
+
+        inline ConstIterator begin() const noexcept { return head(); } //!< \return first valid   ConstIterator
+        inline ConstIterator end()   const noexcept { return last(); } //!< \return first invalid ConstIterator
+
+
+        inline ConstReverseIterator rbegin() const noexcept { return tail(); } //!< \return first valid   ConstReverseIterator
+        inline ConstReverseIterator rend()   const noexcept { return fore(); } //!< \return first invalid ConstReverseIterator
+
 
     private:
         Y_Disable_Copy_And_Assign(WritableContiguous); //!< discarding

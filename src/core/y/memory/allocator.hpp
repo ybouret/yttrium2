@@ -91,6 +91,27 @@ namespace Yttrium
                     return 0;
             }
 
+            template <typename T>
+            inline void releaseAs(T * &    entry,
+                                  size_t & count,
+                                  size_t & bytes) noexcept
+            {
+                if(count<=0)
+                {
+                    assert(0==bytes);
+                    assert(0==entry);
+                    return;
+                }
+
+                {
+                    void * &addr = *(void **)&entry;
+                    release(addr,bytes);
+                }
+                assert(0==entry);
+                assert(0==bytes);
+                count = 0;
+            }
+
 
 
         private:

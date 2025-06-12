@@ -64,6 +64,7 @@ Y_UTEST(container_iterator)
     ReadOnlyArray arr(array, n);
     std::cerr << arr << std::endl;
     Core::Display(std::cerr, arr.begin(), arr.size()) << std::endl;
+    Core::Display(std::cerr, arr.rbegin(), arr.size()) << std::endl;
 
 
 }

@@ -245,6 +245,18 @@ namespace Yttrium
     }
 
 
+    Memory::Allocator & Object:: AllocatorInstance()
+    {
+        static Factory &mgr = Factory::Instance();
+        return mgr;
+    }
+
+    Memory::Allocator & Object:: AllocatorLocation() noexcept
+    {
+        static Factory &mgr = Factory::Location();
+        return mgr;
+    }
+
 
 
 }
