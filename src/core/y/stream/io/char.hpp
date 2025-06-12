@@ -28,14 +28,11 @@ namespace Yttrium
             Char *  next;
             Char *  prev;
             Type    code;
-
-        private:
-            //friend class Concurrent::Inferno<Char>;
+            
             Char(const Type  a) noexcept;
             Char(const Char &)    noexcept;
             ~Char() noexcept;
-            Y_Disable_Assign(Char);
-
+            Char & operator=(const Char &) noexcept;
         };
     }
 
