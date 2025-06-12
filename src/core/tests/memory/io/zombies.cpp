@@ -18,10 +18,10 @@ Y_UTEST(memory_io_zombies)
 
 
 
-    Memory::Limbo<int,SingleThreadedClass>                  st_pool;
-    Memory::Limbo<int,MultiThreadedObject>                  mt_pool;
-    Memory::Limbo<int,GlobalMultiThreaded>                  sg_pool;
-    Memory::Limbo<int,MultiThreadedHandle<Memory::System> > ms_pool;
+    Memory::Limbo<int,SingleThreadedClass> st_pool;
+    Memory::Limbo<int,MultiThreadedObject> mt_pool;
+    Memory::Limbo<int,GlobalMultiThreaded> sg_pool;
+    Memory::Limbo<int,MultiThreadedHandle> ms_pool( Lockable::Giant() );
 
 
     int * a = st_pool.conjure(); Memory::TrackDown::Print(std::cerr,a) << std::endl;

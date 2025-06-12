@@ -16,14 +16,10 @@ using namespace Yttrium;
 
 Y_UTEST(stream_io_char)
 {
-    Concurrent::Singulet::Verbose = true;
-    
-#if 1
+    //Concurrent::Singulet::Verbose = true;
     IO::Chars chars;
-    chars << 'a';
-    //chars << 'a' >> 'b' << 'c';
+    chars << 'a' >> 'b' << 'c';
     std::cerr << chars << std::endl;
-#endif
-    
+
 }
 Y_UDONE()

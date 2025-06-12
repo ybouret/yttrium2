@@ -34,6 +34,10 @@ namespace Yttrium
             typedef typename THREADING_POLICY::Lock Lock;
 
             inline explicit Limbo() : THREADING_POLICY(), zombies( sizeof(T) ) {}
+
+            template <typename ARGS>
+            inline explicit Limbo(ARGS &args) : THREADING_POLICY(args), zombies( sizeof(T) ) {}
+
             inline virtual ~Limbo() noexcept {}
 
             inline Type *conjure() {

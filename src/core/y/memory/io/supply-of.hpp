@@ -17,8 +17,7 @@ namespace Yttrium
         template <typename T>
         class SupplyOf :
         public Singleton<SupplyOf<T>,ClassLockPolicy>,
-        //public Limbo<T, MultiThreadedHandle< SupplyOf<T> > >
-        public Limbo<T,SingleThreadedClass>
+        public Limbo<T,MultiThreadedHandle>
         {
         public:
             static const System::AtExit::Longevity LifeTime = T::LifeTime;
@@ -35,7 +34,9 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(SupplyOf);
             friend class Singleton< SupplyOf<T>, ClassLockPolicy>;
 
-            inline explicit SupplyOf()
+            inline explicit SupplyOf() :
+            Singleton<SupplyOf<T>,ClassLockPolicy>(),
+            Limbo<T,MultiThreadedHandle>( this->access )
             {
             }
 
