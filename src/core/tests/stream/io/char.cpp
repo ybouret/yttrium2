@@ -21,10 +21,13 @@ using namespace Yttrium;
 Y_UTEST(stream_io_char)
 {
 
+#if 0
     IO::Chars chars;
 
     chars << 'a' >> 'b' << 'c';
 
     std::cerr << chars << std::endl;
+#endif
+    
 }
 Y_UDONE()

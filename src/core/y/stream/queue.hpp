@@ -11,7 +11,7 @@
 
 namespace Yttrium
 {
-    class StreamQueue : public InputStream, public OutputStream, public IO::Chars
+    class StreamQueue : public InputStream, public OutputStream //, public IO::Chars
     {
     public:
         explicit StreamQueue() noexcept;

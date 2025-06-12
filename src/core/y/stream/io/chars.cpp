@@ -5,6 +5,7 @@ namespace Yttrium
 {
     namespace IO
     {
+#if 0
         Chars:: ~Chars() noexcept
         {
         }
@@ -12,7 +13,7 @@ namespace Yttrium
         Chars:: Chars() noexcept : Concurrent::LiveList<Char>()
         {
         }
-
+#endif
         
     }
 }
