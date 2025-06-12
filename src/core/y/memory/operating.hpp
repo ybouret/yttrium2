@@ -7,6 +7,7 @@
 #include "y/type/args.hpp"
 #include "y/type/copy-of.hpp"
 #include "y/type/procedural.hpp"
+#include <cassert>
 
 namespace Yttrium
 {
@@ -74,20 +75,28 @@ namespace Yttrium
 
             //! initialize with procedure
             /**
-             \param proc proc(target,indexx,args) create a procedural object @ target
-             \param args argument for proc
+             \param proc  proc(target,indexx,args) create a procedural object @ target
+             \param args  argument for proc
              \param entry address of first object
              \param count number of objects to build
              */
             template <typename PROC, typename ARGS>
             inline Operating(const Procedural_ &,
-                             PROC &proc,
-                             ARGS &args,
+                             PROC &       proc,
+                             ARGS &       args,
                              void * const entry,
                              const size_t count) :
             Operative(entry, count, sizeof(T), Init2<PROC,ARGS>, (void*) &proc, (void *) &args, Quit)
             {
 
+            }
+
+            template <typename U>
+            inline Operating(void    * const entry,
+                             const U * const other,
+                             const size_t    count) :
+            Operative(entry,count,sizeof(T), XCopy<U>, (void*)other, 0, Quit)
+            {
             }
 
 
@@ -153,6 +162,26 @@ namespace Yttrium
                 ARGS & args = *(ARGS *)params;
                 proc(target,indexx,args);
             }
+
+            //! procedural copy
+            /**
+             \param target
+             \param source
+             \param indexx [1..count] indexing
+             \param params
+             */
+            template <typename U> static inline
+            void XCopy(void * const target,
+                       void * const source,
+                       const size_t indexx,
+                       void * const  )
+            {
+                assert(0!=target);
+                assert(0!=source);
+                const U * const src = static_cast<const U *>(source)-1;
+                new (target) Type(src[indexx]);
+            }
+
 
             //! destructor wrapper
             /**

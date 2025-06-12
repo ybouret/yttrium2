@@ -1,8 +1,10 @@
 
-#include "y/memory/operative.hpp"
+#include "y/memory/operating.hpp"
 #include "y/type/destruct.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/utest/run.hpp"
+#include "y/system/rand.hpp"
+#include "y/core/display.hpp"
 
 using namespace Yttrium;
 
@@ -97,6 +99,7 @@ Y_UTEST(memory_operative)
     void *       wksp[ numWords ];
     const size_t wlen = sizeof(wksp);
 
+
     {
         Y_Memory_BZero(wksp);
         Memory::Operative op(wksp,wlen/sizeof(Dummy),sizeof(Dummy),
@@ -128,6 +131,24 @@ Y_UTEST(memory_operative)
     }
     Y_ASSERT(!Dummy::Count);
 
+    std::cerr << "C++" << std::endl;
+    System::Rand ran;
+    {
+        Y_Memory_BZero(wksp);
+        static const size_t numArr = 3;
+        uint16_t            array[numArr];
+        Y_Memory_BZero(array);
+        {
+            Memory::Operating<Dummy> op(wksp,wlen/sizeof(Dummy));
+        }
+
+        {
+            Core::Display(std::cerr,array,numArr) << std::endl;
+            ran.fill(array,sizeof(array));
+            Core::Display(std::cerr,array,numArr) << std::endl;
+            Memory::Operating<Dummy> op(wksp,array,numArr);
+        }
+    }
 
 
 
