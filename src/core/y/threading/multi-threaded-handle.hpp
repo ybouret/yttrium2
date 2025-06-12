@@ -25,7 +25,7 @@ namespace Yttrium {
 
     private:
         Y_Disable_Copy_And_Assign(MultiThreadedHandle); //!< discardingb
-        friend Lock;
+        friend class Threading::Locker<MultiThreadedHandle>;
         Lockable * const access; //!< & SINGLETON:: access
     };
     
