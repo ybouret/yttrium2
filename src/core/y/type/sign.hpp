@@ -27,7 +27,7 @@ namespace Yttrium
         static bool         StriclyDecreasing(const SignType) noexcept; //!< check \return true for Positive
         static bool         LooselyDecreasing(const SignType) noexcept; //!< check \return true for Positive|__Zero__
 
-
+        //! opposite sign \return hard-coded oppositve
         static SignType Opposite(const SignType) noexcept;
 
         //! natural sign

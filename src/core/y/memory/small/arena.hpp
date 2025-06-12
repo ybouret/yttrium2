@@ -64,7 +64,7 @@ namespace Yttrium
                 void    release(void *) noexcept;                //!< release a prevously acquired block
                 bool    isValid() const noexcept;                //!< \return various validity tests
                 bool    owns(const void * const) const noexcept; //!< \return true if in one chunk
-                void    display(std::ostream&,size_t) const;
+                void    display(std::ostream&,size_t) const;     //!< display statistics
 
                 //______________________________________________________________
                 //

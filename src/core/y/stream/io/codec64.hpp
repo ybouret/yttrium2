@@ -14,10 +14,10 @@ namespace Yttrium
         //! Metrics for Codec64
         struct Codec64
         {
-            static const size_t   MaxExtraBytes  = sizeof(uint64_t);
-            static const size_t   HeaderBits     = IntegerLog2<MaxExtraBytes>::Value+1;
-            static const size_t   HeaderRoll     = 8-HeaderBits;
-            static const uint64_t HeaderMask     = (1<<HeaderRoll)-1;
+            static const size_t   MaxExtraBytes  = sizeof(uint64_t);                    //!< 1+MaxExtraBytes in worst case scenario
+            static const size_t   HeaderBits     = IntegerLog2<MaxExtraBytes>::Value+1; //!< bits to store extra bytes count
+            static const size_t   HeaderRoll     = 8-HeaderBits;                        //!< room left in first byte for data bits
+            static const uint64_t HeaderMask     = (1<<HeaderRoll)-1;                   //!< mask of HeaderRoll
         };
     };
 

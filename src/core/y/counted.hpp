@@ -35,12 +35,12 @@ namespace Yttrium
         //
         //______________________________________________________________________
         void   withhold() noexcept;         //!< ++nref
-        bool   liberate() noexcept;         //!< --nref<=0
-        size_t quantity() const noexcept;   //!< nref
+        bool   liberate() noexcept;         //!< \return --nref<=0
+        size_t quantity() const noexcept;   //!< \return nref
 
     private:
-        Y_Disable_Copy_And_Assign(Counted);
-        size_t nref;
+        Y_Disable_Copy_And_Assign(Counted); //!< discarding
+        size_t nref;                        //!< current ref count
     };
 };
 

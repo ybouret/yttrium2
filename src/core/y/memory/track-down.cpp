@@ -13,8 +13,8 @@ namespace Yttrium
     {
 
 
-        Variety TrackDown:: Block(const void * const blockAddr,
-                                  size_t &           blockSize)  
+        Variety TrackDown:: Which(const void * const blockAddr,
+                                  size_t &           blockSize)
         {
             assert(0!=blockAddr);
             blockSize = 0;
@@ -31,7 +31,7 @@ namespace Yttrium
         std::ostream & TrackDown:: Print(std::ostream &os, const void * const blockAddr)
         {
             size_t        blockSize = 0;
-            const Variety variety   = Block(blockAddr,blockSize);
+            const Variety variety   = Which(blockAddr,blockSize);
 
             switch(variety)
             {

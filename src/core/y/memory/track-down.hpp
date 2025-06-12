@@ -23,17 +23,31 @@ namespace Yttrium
             OtherType  //!< larger than previous
         };
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Track Down memory location
+        //
+        //
+        //______________________________________________________________________
         struct TrackDown
         {
-            //! Track down memory location
+            //! try to find which block
             /**
              \param blockAddr a used block address
              \param blockSize updated if found, 0 otherwise
              \return variety according to search
              */
-            static Variety Block(const void * const blockAddr,
-                                        size_t &           blockSize);
+            static Variety Which(const void * const blockAddr,
+                                 size_t &           blockSize);
 
+            //! human readable block findind
+            /**
+             \param os an output stream
+             \param blockAddr a guess address
+             \return os
+             */
             static std::ostream & Print(std::ostream &os, const void * const blockAddr);
         };
 

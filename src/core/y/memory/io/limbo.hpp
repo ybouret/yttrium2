@@ -5,6 +5,7 @@
 #define Y_Memory_Limbo_Included
 
 #include "y/memory/io/zombies.hpp"
+#include "y/threading/single-threaded-class.hpp"
 #include "y/type/args.hpp"
 #include "y/type/destruct.hpp"
 
@@ -26,7 +27,7 @@ namespace Yttrium
 
 #define Y_Memory_Limbo_Lock() volatile Lock guard(*this)
 
-        template <typename T, typename THREADING_POLICY>
+        template <typename T, typename THREADING_POLICY = SingleThreadedClass>
         class Limbo :  public THREADING_POLICY, public Caching
         {
         public:

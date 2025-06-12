@@ -4,9 +4,8 @@
 #ifndef Y_List_Included
 #define Y_List_Included 1
 
-#include "y/container.hpp"
+#include "y/container/dynamic.hpp"
 #include "y/memory/io/limbo.hpp"
-#include "y/threading/single-threaded-class.hpp"
 #include "y/core/linked/list.hpp"
 
 namespace Yttrium

@@ -9,13 +9,21 @@
 
 namespace Yttrium
 {
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Counted Object
+    //
+    //
+    //__________________________________________________________________________
     class CountedObject : public Object, public Counted
     {
     public:
-        explicit CountedObject() noexcept;
-        virtual ~CountedObject() noexcept;
+        explicit CountedObject() noexcept; //!< setup
+        virtual ~CountedObject() noexcept; //!< cleanup
     private:
-        Y_Disable_Copy_And_Assign(CountedObject);
+        Y_Disable_Copy_And_Assign(CountedObject); //!< discarding
     };
 }
 
