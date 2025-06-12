@@ -51,6 +51,7 @@ namespace Yttrium
         //! setup emptu
         inline explicit LiveList() :
         Container(),
+        Releasable(),
         IngressType(),
         THREADING_POLICY(),
         list() {}
@@ -61,6 +62,7 @@ namespace Yttrium
         //! duplicate with NODE::Copy \param other another list
         inline LiveList(const LiveList &other) :
         Container(),
+        Releasable(),
         IngressType(),
         THREADING_POLICY(),
         list()
