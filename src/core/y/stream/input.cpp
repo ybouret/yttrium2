@@ -49,7 +49,7 @@ namespace Yttrium
 
     size_t InputStream:: read(uint8_t &b)
     {
-        return query( (char&)b )  ? 1 : 0;
+        return size_t( query( (char&)b )  ? 1 : 0 );
     }
 
     size_t InputStream:: read(uint16_t &w)
