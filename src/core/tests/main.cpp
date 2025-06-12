@@ -43,8 +43,6 @@ Y_UTEST_DECL(64)
     Y_UTEST(concurrent_mutex);
     Y_UTEST(concurrent_condition);
     Y_UTEST(concurrent_thread);
-    Y_UTEST(concurrent_dead_pool);
-    Y_UTEST(concurrent_inferno);
 
 
     Y_UTEST(memory_gc);

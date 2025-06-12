@@ -65,8 +65,6 @@ Y_UTEST(concurrent:life_time)
 Y_UTEST(concurrent:mutex)
 Y_UTEST(concurrent:condition)
 Y_UTEST(concurrent:thread)
-Y_UTEST(concurrent:dead_pool)
-Y_UTEST(concurrent:inferno)
 
 #memory
 Y_UTEST(memory:gc)

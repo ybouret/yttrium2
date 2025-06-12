@@ -1,5 +1,4 @@
 #include "y/stream/io/char.hpp"
-#include "y/concurrent/data/inferno.hpp"
 
 namespace Yttrium
 {
@@ -48,6 +47,7 @@ namespace Yttrium
 
         typedef Concurrent::Inferno<Char> Manager;
 
+#if 0
         Char * Char:: New(const uint8_t code)
         {
             return Manager::Instance().produce<uint8_t>(code);
@@ -68,7 +68,7 @@ namespace Yttrium
             static Manager &mgr = Manager::Location();
             return mgr.reenact(*ch);
         }
-
+#endif
 
     }
 }
