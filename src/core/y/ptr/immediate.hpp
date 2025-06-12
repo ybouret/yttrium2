@@ -48,7 +48,7 @@ namespace Yttrium
         inline ConstReturnType fetch(const Type *ptr) const noexcept { assert(0!=ptr); return ptr; } //!< proxy for operator->
 
     private:
-        Y_DISABLE_COPY_AND_ASSIGN(Immediate);
+        Y_Disable_Copy_And_Assign(Immediate);
     };
     
 }
