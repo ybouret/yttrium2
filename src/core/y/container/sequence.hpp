@@ -9,11 +9,11 @@
 namespace Yttrium
 {
 
-    template <typename T>
-    class Sequence : public DynamicContainer
+    template <typename T, typename CONTAINER>
+    class Sequence : public CONTAINER
     {
     protected:
-        inline explicit Sequence() noexcept : DynamicContainer() {}
+        inline explicit Sequence() noexcept : CONTAINER() {}
 
     public:
         inline virtual ~Sequence() noexcept {}

@@ -17,7 +17,7 @@ namespace Yttrium
 
     template <typename T, typename THREADING_POLICY = SingleThreadedClass>
     class Vector :
-    public Sequence<T>,
+    public Sequence<T,DynamicContainer>,
     public Contiguous<Writable,T>,
     public THREADING_POLICY
     {
