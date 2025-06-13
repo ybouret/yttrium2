@@ -9,7 +9,7 @@
 
 namespace Yttrium
 {
-    namespace Libc { class File; }
+    namespace Libc { class InputFile; }
 
     class InputFile : public InputStream
     {
@@ -19,9 +19,13 @@ namespace Yttrium
         explicit InputFile(const StdIn_ &);
         virtual ~InputFile() noexcept;
 
+        virtual bool query(char &C);
+        virtual void store(const char C);
+        
+
     private:
         Y_Disable_Copy_And_Assign(InputFile);
-        Libc::File * const file;
+        Libc::InputFile * const file;
     };
 
 }

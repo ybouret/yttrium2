@@ -44,7 +44,18 @@ namespace Yttrium
         assert(0!=file);
         Destroy( Coerce(file) );
     }
-    
+
+    bool InputFile:: query(char &C)
+    {
+        assert(0!=file);
+        return file->query(C);
+    }
+
+    void InputFile:: store(const char C)
+    {
+        file->store(C);
+    }
+
 }
 
 

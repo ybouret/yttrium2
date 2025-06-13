@@ -19,6 +19,9 @@ namespace Yttrium
             explicit InputFile(FILE * const userFile, const bool closeOnQuit);
             virtual ~InputFile() noexcept;
 
+            bool query(char &C);
+            void store(const char C);
+
         private:
             Y_Disable_Copy_And_Assign(InputFile);
             IO::Chars Q;

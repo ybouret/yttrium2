@@ -12,27 +12,32 @@ namespace Yttrium
         {
         }
 
-#if 0
-        namespace
-        {
-            static inline
-            FILE * OpenInputFile(const char * const fileName)
-            {
-                assert(0!=fileName);
-                Y_Giant_Lock();
-                FILE * const fp = fopen(fileName, "rb");
-                if(!fp)
-                    throw Libc::Exception(errno,"fopen(%s)", fileName);
-                return fp;
-            }
-        }
-#endif
 
         InputFile:: InputFile(FILE * const userHandle, const bool closeOnQuit) :
         File(userHandle,closeOnQuit),
         Q()
         {
         }
+
+
+        bool InputFile:: query(char &C)
+        {
+            if(Q.size())
+                return Q.pullHead();
+            Y_Giant_Lock();
+            if( 1 != fread(&C,1, 1,handle) )
+            {
+                if( ferror(handle) ) throw Libc::Exception(errno,"InputFile::query");
+                return false;
+            }
+            return true;
+        }
+
+        void InputFile:: store(const char C)
+        {
+            Q >> C;
+        }
+
 
     }
 
