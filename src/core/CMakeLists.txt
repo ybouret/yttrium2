@@ -39,6 +39,8 @@ Y_CreateLibrary(y
     y/xml
     y/stream/
     y/stream/io
+    y/stream/libc
+    y/stream/libc/file
     y/sorting
     y/threading
     y/ptr
