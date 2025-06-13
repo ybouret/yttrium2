@@ -8,6 +8,7 @@ namespace Yttrium
         const char * const Success = "Success";
         const char * const Failure = "Failure";
         const char * const Unknown = "Unknown";
+        const char * const Nil     = "(nil)";
 
         std::ostream & Indent(std::ostream & os,
                                 size_t       count,

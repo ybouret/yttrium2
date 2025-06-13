@@ -11,10 +11,27 @@ namespace Yttrium
 {
     namespace Memory
     {
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! memory to hold a maximum count of objects
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class SchoolOf
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup \param minimalCapacity minimal value for count
             inline explicit SchoolOf(const size_t minimalCapacity) :
             count(minimalCapacity),
             bytes(0),
@@ -23,6 +40,7 @@ namespace Yttrium
             {
             }
 
+            //! release memory
             inline virtual ~SchoolOf() noexcept
             {
                 if(0!=entry) {
@@ -32,14 +50,23 @@ namespace Yttrium
                 }
             }
 
-            const size_t count;
-            const size_t bytes;
-            T * const    entry;
-            T * const    cxx;
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+
+            const size_t count; //!< maximum numbers of objects to fit in
+            const size_t bytes; //!< enough bytes to hold count objects
+            T * const    entry; //!< base address
+            T * const    cxx;   //!< entry-1 for C++ access
 
         private:
-            Y_Disable_Copy_And_Assign(SchoolOf);
-            T * get() {
+            Y_Disable_Copy_And_Assign(SchoolOf); //!< discarding
+
+            //! \return enough memory for count objects
+            inline T * get() {
                 static Allocator &mgr = Object::AllocatorInstance();
                 return mgr.acquireAs<T>(Coerce(count), Coerce(bytes));
             }
