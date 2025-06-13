@@ -38,7 +38,7 @@ namespace Yttrium
 
 }
 
-
+#if 0
 namespace Yttrium
 {
     namespace Libc
@@ -85,3 +85,6 @@ namespace Yttrium
 
     }
 }
+
+#endif
+

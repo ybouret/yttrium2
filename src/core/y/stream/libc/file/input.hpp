@@ -6,12 +6,13 @@
 
 #include "y/stream/libc/file.hpp"
 #include "y/stream/io/chars.hpp"
+#include "y/stream/libc/file/buffer.hpp"
+
 
 namespace Yttrium
 {
     namespace Libc
     {
-
 
         class InputFile : public File
         {
@@ -32,9 +33,11 @@ namespace Yttrium
         public:
             explicit RegularInputFile(FILE * const fp);
             virtual ~RegularInputFile() noexcept;
-            
+
+
         private:
             Y_Disable_Copy_And_Assign(RegularInputFile);
+            FileBuffer buffer;
         };
 
 

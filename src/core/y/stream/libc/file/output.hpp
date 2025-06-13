@@ -22,6 +22,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(OutputFile);
         };
 
+#if 0
         class StdErrFile : public File
         {
         public:
@@ -41,7 +42,8 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(StdOutFile);
         };
-
+#endif
+        
     }
 
 }
