@@ -30,7 +30,6 @@ Y_UTEST(sorting_index)
     std::cerr << "arr=" << arr << std::endl;
     for(size_t i=1;i<=num;++i)
         std::cerr << "\t" << arr[ idx[i] ] << std::endl;
-
-
+    
 }
 Y_UDONE()
