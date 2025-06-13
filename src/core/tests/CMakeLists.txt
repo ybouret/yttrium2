@@ -106,6 +106,7 @@ Y_UTEST(stream:queue)
 
 #sort
 Y_UTEST(sorting:heap)
+Y_UTEST(sorting:index)
 
 #sequence
 Y_UTEST(sequence:list)

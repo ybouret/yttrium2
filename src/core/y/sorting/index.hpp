@@ -4,7 +4,7 @@
 #ifndef Y_Sorting_Index_Included
 #define Y_Sorting_Index_Included 1
 
-#include "y/sorting/types.hpp"
+#include "y/type/sign.hpp"
 #include "y/container/writable.hpp"
 
 namespace Yttrium{
@@ -15,10 +15,6 @@ namespace Yttrium{
         struct Index
         {
 
-
-
-
-#if 0
             //______________________________________________________________________
             //
             //
@@ -110,8 +106,7 @@ namespace Yttrium{
                 }
                 return true;
             }
-#endif
-
+            
         };
     }
 

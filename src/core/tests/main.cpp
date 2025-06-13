@@ -77,6 +77,7 @@ Y_UTEST_DECL(64)
     Y_UTEST(stream_queue);
 
     Y_UTEST(sorting_heap);
+    Y_UTEST(sorting_index);
 
     Y_UTEST(sequence_list);
     Y_UTEST(sequence_vector);

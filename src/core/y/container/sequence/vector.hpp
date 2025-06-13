@@ -42,6 +42,21 @@ built(0)
         {
         }
 
+        inline explicit Vector(const size_t n, ParamType sameValue) :
+        Y_Vector_Ctor(),
+        code( n>0 ? new Code(n) : 0)
+        {
+            try {
+                for(size_t i=n;i>0;--i) {
+                    new (code->entry+built) T(sameValue);
+                    ++built;
+                }
+
+            }
+            catch(...) { release_(); throw; }
+        }
+
+
         inline virtual ~Vector() noexcept
         {
             release_();
