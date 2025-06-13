@@ -87,6 +87,7 @@ Y_UTEST(memory:object)
 Y_UTEST(memory:operative)
 Y_UTEST(memory:io:zombies)
 Y_UTEST(memory:school_of)
+Y_UTEST(memory:static_buffer)
 
 
 
