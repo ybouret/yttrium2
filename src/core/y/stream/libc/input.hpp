@@ -1,8 +1,8 @@
 
 //! \file
 
-#ifndef Y_Libc_Input_Included
-#define Y_Libc_Input_Included 1
+#ifndef Y_Libc_InputFile_Included
+#define Y_Libc_InputFile_Included 1
 
 #include "y/stream/input.hpp"
 #include "y/stream/libc/types.hpp"

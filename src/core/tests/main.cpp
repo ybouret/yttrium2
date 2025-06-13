@@ -79,6 +79,7 @@ Y_UTEST_DECL(64)
     Y_UTEST(stream_io_char);
     Y_UTEST(stream_queue);
     Y_UTEST(stream_input_file);
+    Y_UTEST(stream_output_file);
 
 
     Y_UTEST(sorting_heap);
