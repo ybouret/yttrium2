@@ -7,12 +7,12 @@ namespace Yttrium{
 
     namespace Sorting
     {
-        void  Heap::Sort(void * const arr,
-                         const size_t num,
-                         const size_t alen,
-                         void * const rra,
-                         int        (*proc)(const void * const, const void * const, void *),
-                         void * const args
+        void  Heap::Sort(void * const  arr,
+                         const size_t  num,
+                         const size_t  alen,
+                         void * const  rra,
+                         Compare const proc,
+                         void * const  args
                          )
         {
             assert( Good(arr,num) );
@@ -69,16 +69,15 @@ namespace Yttrium{
         }
 
 
-        void  Heap:: Sort(void * const arr,
-                          void * const brr,
-                          const size_t num,
-                          const size_t alen,
-                          void * const rra,
-                          const size_t blen,
-                          void * const rrb,
-                          int        (*proc)(const void * const, const void * const, void * const),
-                          void * const args
-                          )
+        void  Heap:: Sort(void * const  arr,
+                          void * const  brr,
+                          const size_t  num,
+                          const size_t  alen,
+                          void * const  rra,
+                          const size_t  blen,
+                          void * const  rrb,
+                          Compare const proc,
+                          void * const  args)
         {
             assert( Good(arr,num) );
             assert( Good(brr,num) );

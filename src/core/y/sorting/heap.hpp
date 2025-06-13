@@ -3,6 +3,7 @@
 #ifndef Y_Sorting_Heap_Included
 #define Y_Sorting_Heap_Included 1
 
+#include "y/sorting/types.hpp"
 #include "y/type/sign.hpp"
 #include "y/check/usual.hpp"
 #include "y/calculus/alignment.hpp"
@@ -14,12 +15,12 @@ namespace Yttrium{
         struct Heap
         {
             //! arr[width*(0..num-1)]
-            static void   Sort(void * const arr,
-                               const size_t num,
-                               const size_t alen,
-                               void * const rra,
-                               int        (*proc)(const void * const, const void * const, void * const),
-                               void * const args
+            static void   Sort(void * const  arr,
+                               const size_t  num,
+                               const size_t  alen,
+                               void * const  rra,
+                               Compare const proc,
+                               void * const  args
                                );
 
 
@@ -30,16 +31,8 @@ namespace Yttrium{
                        COMPARE     &cmp)
             {
                 assert(Good(arr,num));
-                struct Proc {
-                    static inline int Call(const void * const lhs, const void * const rhs, void * const args)
-                    {
-                        assert(0!=lhs); assert(0!=rhs); assert(0!=args);
-                        COMPARE &cmp = *(COMPARE *)args;
-                        return int( cmp( *(const T*)lhs, *(const T*)rhs));
-                    }
-                };
                 void * rra[ Alignment::WordsFor<T>::Count ];
-                Sort(arr, num, sizeof(T), rra, Proc::Call, (void*)&cmp);
+                Sort(arr, num, sizeof(T), rra, CompareWrapper<T,COMPARE>::Call, (void*)&cmp);
             }
 
             static void   Sort(void * const arr,
@@ -62,17 +55,9 @@ namespace Yttrium{
             {
                 assert(Good(arr,num));
                 assert(Good(brr,num));
-                struct Proc {
-                    static inline int Call(const void * const lhs, const void * const rhs, void * const args)
-                    {
-                        assert(0!=lhs); assert(0!=rhs); assert(0!=args);
-                        COMPARE &cmp = *(COMPARE *)args;
-                        return int( cmp( *(const T*)lhs, *(const T*)rhs));
-                    }
-                };
                 void * rra[ Alignment::WordsFor<T>::Count ];
                 void * rrb[ Alignment::WordsFor<U>::Count ];
-                Sort(arr, brr, num, sizeof(T), rra, sizeof(U), rrb, Proc::Call, (void*)&cmp);
+                Sort(arr, brr, num, sizeof(T), rra, sizeof(U), rrb, CompareWrapper<T,COMPARE>::Call, (void*)&cmp);
             }
         };
     }
