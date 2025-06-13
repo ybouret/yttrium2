@@ -33,7 +33,6 @@ Y_UTEST(sorting_heap)
     Core::Display(std::cerr << "a=",arr,num) << std::endl;
     Sorting::Heap::Sort(arr,num,Sign::Increasing<int>);
     Core::Display(std::cerr << "a=",arr,num) << std::endl;
-    //const bool sorted = Sorting::Test::AccordingTo(Sign::Increasing<int>,arr,num);
     Y_CHECK(Sorting::Test::AccordingTo(Sign::Increasing<int>,arr,num));
     std::cerr << std::endl;
 

@@ -128,6 +128,8 @@ namespace Yttrium
         //! cleanup
         virtual ~ReadableContiguous() noexcept {}
 
+        inline ConstType * operator()(void) const noexcept { return head(); }
+
         //______________________________________________________________________
         //
         //
@@ -189,6 +191,10 @@ namespace Yttrium
     public:
         //! cleanup
         virtual ~WritableContiguous() noexcept {}
+
+        inline ConstType * operator()(void) const noexcept { return head(); }
+        inline Type *      operator()(void)       noexcept { return head(); }
+
 
         //______________________________________________________________________
         //
