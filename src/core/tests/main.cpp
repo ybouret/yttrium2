@@ -84,6 +84,7 @@ Y_UTEST_DECL(64)
 
     Y_UTEST(ptr_auto);
 
+    Y_UTEST(info_bwt);
 }
 Y_UTEST_EXEC()
 

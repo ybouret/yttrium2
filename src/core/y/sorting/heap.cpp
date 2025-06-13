@@ -1,33 +1,32 @@
 
 #include "y/sorting/heap.hpp"
-#include "y/check/usual.hpp"
 #include <cstring>
 
-namespace Yttrium{
-
+namespace Yttrium
+{
     namespace Sorting
     {
-        void  Heap::Sort(void * const  arr,
-                         const size_t  num,
-                         const size_t  alen,
-                         void * const  rra,
-                         Compare const proc,
-                         void * const  args
-                         )
+        void  Heap:: Sort(void * const  arr,
+                          const size_t  num,
+                          const size_t  alen,
+                          void * const  rra,
+                          Compare const proc,
+                          void * const  args
+                          )
         {
-            assert( Good(arr,num) );
-            assert(0!=proc);
-            assert(0!=rra);
+            assert( !(NULL==arr && num>0) );
+            assert(NULL!=proc);
+            assert(NULL!=rra);
 
             if (num<2)
                 return;
             else
             {
-                assert(0!=arr);
                 uint8_t * const ra1 = (uint8_t *)arr;
                 uint8_t * const ra  = ra1-alen;
                 size_t          l   = (num>>1)+1;
                 size_t          ir  = num;
+                assert(0!=arr);
                 for(;;)
                 {
                     if(l>1)
@@ -65,19 +64,19 @@ namespace Yttrium{
                         memcpy(&ra[i*alen],rra,alen);
                     }
                 }
+
             }
         }
 
-
-        void  Heap:: Sort(void * const  arr,
-                          void * const  brr,
-                          const size_t  num,
-                          const size_t  alen,
-                          void * const  rra,
-                          const size_t  blen,
-                          void * const  rrb,
-                          Compare const proc,
-                          void * const  args)
+        void Heap:: Sort(void * const  arr,
+                         void * const  brr,
+                         const size_t  num,
+                         const size_t  alen,
+                         void * const  rra,
+                         const size_t  blen,
+                         void * const  rrb,
+                         Compare const proc,
+                         void * const  args)
         {
             assert( Good(arr,num) );
             assert( Good(brr,num) );
@@ -139,5 +138,8 @@ namespace Yttrium{
             }
         }
 
+
     }
+
 }
+

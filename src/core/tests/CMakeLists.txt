@@ -19,6 +19,7 @@ stream
 stream/io
 sorting
 ptr
+information
 )
 
 
@@ -114,4 +115,8 @@ Y_UTEST(sequence:vector)
 
 #ptr
 Y_UTEST(ptr:auto)
+
+#information
+Y_UTEST(info:bwt)
+
 
