@@ -15,13 +15,26 @@
 namespace Yttrium
 {
 
-#define Y_Vector_Ctor() \
+    //__________________________________________________________________________
+    //
+    //
+    //! helper for common vector constructor part
+    //
+    //__________________________________________________________________________
+#define Y_Vector_Ctor()         \
 Sequence<T,DynamicContainer>(), \
-Contiguous<Writable,T>(), \
-THREADING_POLICY(),\
+Contiguous<Writable,T>(),       \
+THREADING_POLICY(),             \
 built(0)
 
-
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Vector of homogeneous objects
+    //
+    //
+    //______________________________________________________________________
     template <typename T, typename THREADING_POLICY = SingleThreadedClass>
     class Vector :
     public Sequence<T,DynamicContainer>,
@@ -29,39 +42,67 @@ built(0)
     public THREADING_POLICY
     {
     public:
-        Y_ARGS_DECL(T,Type);
-        typedef SingleThreadedClass::Lock Lock;
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        Y_ARGS_DECL(T,Type);                    //!< aliases
+        typedef SingleThreadedClass::Lock Lock; //!< alias
 
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+
+        //! setup empty
         inline explicit Vector() noexcept :
         Y_Vector_Ctor(),
         code(0) {}
 
+        //! setup with memory for at least n objects
+        /**
+         \param n minimal objects to be held
+         */
         inline explicit Vector(const WithAtLeast_ &, const size_t n) :
         Y_Vector_Ctor(),
         code( n>0 ? new Code(n) : 0)
         {
         }
 
-        inline explicit Vector(const size_t n, ParamType sameValue) :
+        //! setup with new () T(param)
+        /**
+         \param n      number of objects
+         \param param argument for object constructor
+         */
+        inline explicit Vector(const size_t n, ParamType param) :
         Y_Vector_Ctor(),
         code( n>0 ? new Code(n) : 0)
         {
             try {
                 for(size_t i=n;i>0;--i) {
-                    new (code->entry+built) T(sameValue);
+                    new (code->entry+built) T(param);
                     ++built;
                 }
-
             }
             catch(...) { release_(); throw; }
         }
 
-
-        inline virtual ~Vector() noexcept
-        {
+        //! cleanup
+        inline virtual ~Vector() noexcept {
             release_();
         }
 
+
+        //! forward display to Readable<T>
+        /**
+         \param os output stream
+         \param self *this
+         \return output stream
+         */
         inline friend std::ostream & operator<<(std::ostream &os, const Vector &self)
         {
             volatile Lock guard(self);
@@ -69,25 +110,33 @@ built(0)
             return os << readable;
         }
 
-        // interface
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
         virtual size_t size() const noexcept
         {
             Y_Must_Lock();
             return built;
         }
 
+        //! [GradualContainer] \return capacity
         virtual size_t capacity() const noexcept
         {
             Y_Must_Lock();
             return code ? code->count : 0;
         }
 
+        //! [GradualContainer] \return available
         virtual size_t available() const noexcept
         {
             Y_Must_Lock();
             return code ? code->count-built : 0;
         }
 
+        //! [Dynamic Container] reserve \param n extra room for n objects
         virtual void reserve(const size_t n)
         {
             Y_Must_Lock();
@@ -171,29 +220,33 @@ built(0)
 
 
     private:
-        Y_Disable_Copy_And_Assign(Vector);
-        size_t built;
+        Y_Disable_Copy_And_Assign(Vector); //!< discarding
+        size_t built;                      //!< currently built
 
-        typedef Memory::SchoolOf<MutableType> SchoolType;
+        typedef Memory::SchoolOf<MutableType> SchoolType; //!< alias
 
+        //______________________________________________________________________
+        //
+        //! managing memory
+        //______________________________________________________________________
         class Code : public Object, public SchoolType
         {
         public:
+            //! get memory \param minimalCapacity passed to allocator
             explicit Code(size_t minimalCapacity) :
             Object(), SchoolType(minimalCapacity)
             {
             }
 
-            inline virtual ~Code() noexcept
-            {
-            }
+            inline virtual ~Code() noexcept {}
 
         private:
-            Y_Disable_Copy_And_Assign(Code);
+            Y_Disable_Copy_And_Assign(Code); //!< discarding
         };
         
-        Code * code;
+        Code * code; //!< implementation
 
+        //! build object into new code with minimal capacity \param args constructor argument
         inline void intoNewCode(ConstType &args)
         {
             assert(0==code);
@@ -202,6 +255,7 @@ built(0)
             new (code->entry) T(args);
         }
 
+        //! [Readable] \param indx in [1:built] \return indx-th object
         virtual ConstType & getItemAt(const size_t indx) const noexcept
         {
             Y_Must_Lock();
@@ -212,6 +266,7 @@ built(0)
             return code->cxx[indx];
         }
 
+        //! destruct all objects, keep memory
         inline void free_() noexcept
         {
             Y_Must_Lock();
@@ -221,6 +276,7 @@ built(0)
             }
         }
 
+        //! destruct all objects and all memory
         inline void release_() noexcept
         {
             Y_Must_Lock();

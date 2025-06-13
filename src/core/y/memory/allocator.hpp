@@ -91,6 +91,13 @@ namespace Yttrium
                     return 0;
             }
 
+            //! release memory from desctructed objects
+            /**
+             release and set everything to zero
+             \param entry where objects where
+             \param count how many objects where there
+             \param bytes allocated to hold count objects
+             */
             template <typename T>
             inline void releaseAs(T * &    entry,
                                   size_t & count,

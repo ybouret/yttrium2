@@ -128,6 +128,7 @@ namespace Yttrium
         //! cleanup
         virtual ~ReadableContiguous() noexcept {}
 
+        //! \return CONST base address, may be null
         inline ConstType * operator()(void) const noexcept { return head(); }
 
         //______________________________________________________________________
@@ -192,7 +193,10 @@ namespace Yttrium
         //! cleanup
         virtual ~WritableContiguous() noexcept {}
 
+        //! \return CONST base address, may be null
         inline ConstType * operator()(void) const noexcept { return head(); }
+
+        //! \return base address, may be null
         inline Type *      operator()(void)       noexcept { return head(); }
 
 

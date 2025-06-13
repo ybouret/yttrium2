@@ -16,7 +16,7 @@ namespace Yttrium
     namespace Memory
     {
 
-
+        //! helper for object construction
 #define Y_Memory_Limbo(RETURN_CODE)     \
 /**/    do {                                  \
 /**/        void * const addr = zombies.query();      \

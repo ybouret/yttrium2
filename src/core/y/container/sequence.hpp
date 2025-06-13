@@ -20,7 +20,7 @@ namespace Yttrium
 
 
     private:
-        Y_Disable_Copy_And_Assign(Sequence);
+        Y_Disable_Copy_And_Assign(Sequence); //!< discarding
     };
 
 }
