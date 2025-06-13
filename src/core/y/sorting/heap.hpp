@@ -53,6 +53,27 @@ namespace Yttrium{
                                void * const args
                                );
 
+            //! sorting [0..num-1]
+            template <typename T, typename U, typename COMPARE> static inline
+            void  Sort(T * const    arr,
+                       U * const    brr,
+                       const size_t num,
+                       COMPARE     &cmp)
+            {
+                assert(Good(arr,num));
+                assert(Good(brr,num));
+                struct Proc {
+                    static inline int Call(const void * const lhs, const void * const rhs, void * const args)
+                    {
+                        assert(0!=lhs); assert(0!=rhs); assert(0!=args);
+                        COMPARE &cmp = *(COMPARE *)args;
+                        return int( cmp( *(const T*)lhs, *(const T*)rhs));
+                    }
+                };
+                void * rra[ Alignment::WordsFor<T>::Count ];
+                void * rrb[ Alignment::WordsFor<U>::Count ];
+                Sort(arr, brr, num, sizeof(T), rra, sizeof(U), rrb, Proc::Call, (void*)&cmp);
+            }
         };
     }
 
