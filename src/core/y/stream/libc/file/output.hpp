@@ -5,7 +5,7 @@
 #ifndef Y_Libc_File_Output_Included
 #define Y_Libc_File_Output_Included 1
 
-#include "y/stream/libc/file.hpp"
+#include "y/stream/libc/file/buffer.hpp"
 
 namespace Yttrium
 {
@@ -15,35 +15,48 @@ namespace Yttrium
         class OutputFile : public File
         {
         public:
-            explicit OutputFile(const char * const fileName);
+            explicit OutputFile(FILE * const userFile, const bool closeOnQuit);
             virtual ~OutputFile() noexcept;
+
+            void flush();
+            void write(const char C);
 
         private:
             Y_Disable_Copy_And_Assign(OutputFile);
         };
 
-#if 0
-        class StdErrFile : public File
+
+        class RegularOutputFile : public OutputFile
         {
         public:
-            explicit StdErrFile();
-            virtual ~StdErrFile() noexcept;
+            explicit RegularOutputFile(FILE * const userFile);
+            virtual ~RegularOutputFile() noexcept;
 
         private:
-            Y_Disable_Copy_And_Assign(StdErrFile);
+            Y_Disable_Copy_And_Assign(RegularOutputFile);
+            FileBuffer buffer;
         };
 
-        class StdOutFile : public File
+        class StandardOutputFile : public OutputFile
         {
         public:
-            explicit StdOutFile();
-            virtual ~StdOutFile() noexcept;
+            explicit StandardOutputFile();
+            virtual ~StandardOutputFile() noexcept;
 
         private:
-            Y_Disable_Copy_And_Assign(StdOutFile);
+            Y_Disable_Copy_And_Assign(StandardOutputFile);
         };
-#endif
-        
+
+        class StandardErrorFile : public OutputFile
+        {
+        public:
+            explicit StandardErrorFile();
+            virtual ~StandardErrorFile() noexcept;
+
+        private:
+            Y_Disable_Copy_And_Assign(StandardErrorFile);
+        };
+
     }
 
 }

@@ -1,5 +1,3 @@
-
-
 #include "y/stream/libc/file/output.hpp"
 #include "y/ability/lockable.hpp"
 #include "y/system/exception.hpp"
@@ -13,52 +11,44 @@ namespace Yttrium
         {
         }
 
-        namespace
-        {
-            static inline
-            FILE * OpenOutputFile(const char * const fileName)
-            {
-                assert(0!=fileName);
-                Y_Giant_Lock();
-                FILE * const fp = fopen(fileName, "wb");
-                if(!fp)
-                    throw Libc::Exception(errno,"fopen(%s)", fileName);
-                return fp;
-            }
-        }
 
-        OutputFile:: OutputFile(const char * const fileName) :
-        File( OpenOutputFile(fileName), true)
+
+        OutputFile:: OutputFile( FILE * const userFile, const bool closeOnQuit) :
+        File(userFile, closeOnQuit)
         {
         }
 
+        void OutputFile:: flush()
+        {
+            Y_Giant_Lock();
+            if( !fflush(handle) ) throw Libc::Exception(errno,"OutputFile::flush");
+        }
 
+
+        void OutputFile:: write(const char C)
+        {
+            Y_Giant_Lock();
+            if( 1 != fwrite(&C, 1, 1, handle) ) throw Libc::Exception(errno,"OutputFile::write");
+        }
 
     }
 
 }
 
-#if 0
 namespace Yttrium
 {
     namespace Libc
     {
-        static FILE * GetStdErr()
+        RegularOutputFile:: RegularOutputFile(FILE * const userFile) :
+        OutputFile(userFile,true), buffer()
         {
-            if(!stderr) throw Specific::Exception("Libc::StdErr","stderr was closed");
-            return stderr;
+            buffer(*this);
         }
 
-        StdErrFile:: StdErrFile() :
-        File(GetStdErr(),false)
+        RegularOutputFile:: ~RegularOutputFile() noexcept
         {
-
+            
         }
-
-        StdErrFile:: ~StdErrFile() noexcept
-        {
-        }
-
     }
 }
 
@@ -67,24 +57,45 @@ namespace Yttrium
 {
     namespace Libc
     {
-        static FILE * GetStdOut()
+        static inline
+        FILE * GetStdOut()
         {
             if(!stdout) throw Specific::Exception("Libc::StdOut","stdout was closed");
             return stdout;
         }
 
-        StdOutFile:: StdOutFile() :
-        File(GetStdOut(),false)
-        {
-
-        }
-
-        StdOutFile:: ~StdOutFile() noexcept
+        StandardOutputFile:: StandardOutputFile() :
+        OutputFile( GetStdOut(),false)
         {
         }
 
+        StandardOutputFile:: ~StandardOutputFile() noexcept
+        {
+
+        }
     }
 }
 
-#endif
 
+namespace Yttrium
+{
+    namespace Libc
+    {
+        static inline
+        FILE * GetStdErr()
+        {
+            if(!stderr) throw Specific::Exception("Libc::StdErr","stderr was closed");
+            return stderr;
+        }
+
+        StandardErrorFile:: StandardErrorFile() :
+        OutputFile(GetStdErr(),false)
+        {
+        }
+
+        StandardErrorFile:: ~StandardErrorFile() noexcept
+        {
+
+        }
+    }
+}
