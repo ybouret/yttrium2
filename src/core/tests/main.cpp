@@ -64,6 +64,7 @@ Y_UTEST_DECL(64)
     Y_UTEST(memory_io_zombies);
     Y_UTEST(memory_school_of);
     Y_UTEST(memory_static_buffer);
+    Y_UTEST(memory_buffer_out_of);
 
 
 
