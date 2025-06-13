@@ -104,6 +104,7 @@ Y_UTEST(container:iterator)
 #stream
 Y_UTEST(stream:io:char)
 Y_UTEST(stream:queue)
+Y_UTEST(stream:input:file)
 
 #sort
 Y_UTEST(sorting:heap)

@@ -3,7 +3,7 @@
 #ifndef Y_Libc_File_Included
 #define Y_Libc_File_Included 1
 
-#include "y/core/setup.hpp"
+#include "y/object.hpp"
 #include <cstdio>
 
 namespace Yttrium

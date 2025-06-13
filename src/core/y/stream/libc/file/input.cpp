@@ -12,6 +12,7 @@ namespace Yttrium
         {
         }
 
+#if 0
         namespace
         {
             static inline
@@ -25,14 +26,30 @@ namespace Yttrium
                 return fp;
             }
         }
+#endif
 
-        InputFile:: InputFile(const char * const fileName) :
-        File( OpenInputFile(fileName), true)
+        InputFile:: InputFile(FILE * const userHandle, const bool closeOnQuit) :
+        File(userHandle,closeOnQuit),
+        Q()
         {
         }
 
+    }
 
+}
 
+namespace Yttrium
+{
+    namespace Libc
+    {
+        RegularInputFile:: ~RegularInputFile() noexcept
+        {
+        }
+
+        RegularInputFile:: RegularInputFile(FILE * const fp) :
+        InputFile(fp,true)
+        {
+        }
     }
 
 }
@@ -48,15 +65,16 @@ namespace Yttrium
             return stdin;
         }
 
-        StdInFile:: StdInFile() :
-        File(GetStdIn(),false)
+        StandarInputFile:: StandarInputFile() :
+        InputFile(GetStdIn(),false)
         {
 
         }
 
-        StdInFile:: ~StdInFile() noexcept
+        StandarInputFile:: ~StandarInputFile() noexcept
         {
         }
         
     }
 }
+

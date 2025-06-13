@@ -5,32 +5,45 @@
 #define Y_Libc_File_Input_Included 1
 
 #include "y/stream/libc/file.hpp"
+#include "y/stream/io/chars.hpp"
 
 namespace Yttrium
 {
     namespace Libc
     {
 
+
         class InputFile : public File
         {
         public:
-            explicit InputFile(const char * const fileName);
+            explicit InputFile(FILE * const userFile, const bool closeOnQuit);
             virtual ~InputFile() noexcept;
 
         private:
             Y_Disable_Copy_And_Assign(InputFile);
+            IO::Chars Q;
         };
 
-        class StdInFile : public File
+        class RegularInputFile : public InputFile
         {
         public:
-            explicit StdInFile();
-            virtual ~StdInFile() noexcept;
+            explicit RegularInputFile(FILE * const fp);
+            virtual ~RegularInputFile() noexcept;
             
         private:
-            Y_Disable_Copy_And_Assign(StdInFile);
+            Y_Disable_Copy_And_Assign(RegularInputFile);
         };
 
+
+        class StandarInputFile : public InputFile
+        {
+        public:
+            explicit StandarInputFile();
+            virtual ~StandarInputFile() noexcept;
+
+        private:
+            Y_Disable_Copy_And_Assign(StandarInputFile);
+        };
 
     }
 
