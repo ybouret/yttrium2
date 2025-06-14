@@ -45,7 +45,6 @@ Y_CreateLibrary(y
     y/stream/memory
     y/sorting
     y/threading
-    y/ptr
     y/pointer
     y/information
     y/information/bwt
