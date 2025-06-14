@@ -29,9 +29,40 @@ namespace Yttrium
             if(pointee) { delete pointee; pointee=0; }
         }
 
+        inline AutoPtr(const AutoPtr &other) noexcept :
+        PointerType(other.pointee)
+        {
+            if(0!=pointee) {
+                Coerce(other).pointee = 0;
+            }
+        }
+
+        inline AutoPtr & operator=(const AutoPtr &other) noexcept
+        {
+            if(pointee != other.pointee)
+            {
+                if(pointee) delete pointee;
+                pointee = other.pointee;
+                Coerce(other.pointee) = 0;
+            }
+            return *this;
+        }
+
+        inline friend std::ostream & operator<<(std::ostream &os, const AutoPtr &self)
+        {
+            if(self.pointee) os << *self.pointee; else os << Core::Nil;
+            return os;
+        }
+
+        inline T * yield() noexcept
+        {
+            T * const res = pointee;
+            pointee = 0;
+            return res;
+        }
 
 
-    private:
+
 
     };
 

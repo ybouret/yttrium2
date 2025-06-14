@@ -5,6 +5,7 @@
 
 #include "y/pointer/immediate.hpp"
 #include <cassert>
+#include <iostream>
 
 namespace Yttrium
 {
