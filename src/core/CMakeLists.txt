@@ -46,6 +46,7 @@ Y_CreateLibrary(y
     y/sorting
     y/threading
     y/ptr
+    y/pointer
     y/information
     y/information/bwt
 )
