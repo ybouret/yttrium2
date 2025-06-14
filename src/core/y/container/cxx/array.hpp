@@ -35,8 +35,7 @@ namespace Yttrium
         {
         public:
             using Memory::SchoolOf<T>::entry;
-            //using Memory::Operating<T>::numBlocks;
-
+            
             inline Code(const size_t num, ConstType &arg) :
             Object(),
             Memory::SchoolOf<T>(num),
