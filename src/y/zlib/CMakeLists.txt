@@ -6,7 +6,8 @@ project(zlib C)
 
 set(VERSION "1.3.1")
 
-Y_Message("zlib ${VERSION}")
+Y_Message("Building zlib ${VERSION}")
+Y_ThirdParty(y-z)
 
 if(Y_MSC)
 	string( APPEND CMAKE_C_FLAGS " -wd4820 -wd4668 -wd4710 -wd4242 -wd4244 -wd4127 -wd5045 -wd4061") 

@@ -1,6 +1,6 @@
 project(bzip2 C)
 
-Y_Message("bzip2")
+Y_Message("Building bzip2")
 
 set(SRCS 
     blocksort.c
@@ -18,6 +18,9 @@ if(Y_MSC)
 endif()
 
 add_library(y-bz2 STATIC ${SRCS})
+Y_ThirdParty(y-bz2)
+
+
 
 add_executable(bzip2 bzip2.c)
 target_link_libraries(bzip2 y-bz2)
