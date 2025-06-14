@@ -11,11 +11,12 @@
 namespace Yttrium
 {
 
-    template < template <typename> class CONTAINER, typename T>
-    class LightArray : public Contiguous<CONTAINER, T>
+    template <typename CONTAINER>
+    class LightArray : public Contiguous<CONTAINER>
     {
     public:
-        Y_ARGS_EXPOSE(T, Type);
+        typedef typename CONTAINER::Type      Type;
+        typedef typename CONTAINER::ConstType ConstType;
 
 
         inline  LightArray(ConstType * const entry,
@@ -60,7 +61,7 @@ Y_UTEST(container_iterator)
     const size_t n = sizeof(array) / sizeof(array[0]);
     for (size_t i = 0; i < n; ++i) array[i] = int(i);
 
-    typedef LightArray<Readable, int> ReadOnlyArray;
+    typedef LightArray< Readable<int> > ReadOnlyArray;
     ReadOnlyArray arr(array, n);
     std::cerr << arr << std::endl;
     Core::Display(std::cerr, arr.begin(), arr.size()) << std::endl;

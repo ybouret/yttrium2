@@ -26,7 +26,7 @@ namespace Yttrium
         template <typename T,size_t N>
         class MultipleProto :
         public Workspace<T,N>,
-        public Contiguous<Writable,T>
+        public Contiguous< Writable<T> >
         {
         public:
             //__________________________________________________________________

@@ -16,13 +16,13 @@ namespace Yttrium
     //
     //
     //
-    //! user CONTAINER<T> to extract info
+    //! user CONTAINER to extract info
     /**
      CONTAINER should be Readable|Writable
      */
     //__________________________________________________________________________
-    template <template <typename> class CONTAINER, typename T>
-    class ContiguousCommon : public CONTAINER<T>
+    template <typename CONTAINER>
+    class ContiguousCommon : public CONTAINER
     {
     protected:
         //______________________________________________________________________
@@ -31,8 +31,10 @@ namespace Yttrium
         // Definitions
         //
         //______________________________________________________________________
-        typedef typename CONTAINER<T>::ConstType ConstType; //!< alias
-        using CONTAINER<T>::size;
+        typedef typename CONTAINER::Type      Type;      //!< alias
+        typedef typename CONTAINER::ConstType ConstType; //!< alias
+
+        using CONTAINER::size;
 
         //______________________________________________________________________
         //
@@ -40,7 +42,7 @@ namespace Yttrium
         // C++
         //
         //______________________________________________________________________
-        inline explicit ContiguousCommon() noexcept : CONTAINER<T>() {} //!< setup
+        inline explicit ContiguousCommon() noexcept : CONTAINER() {} //!< setup
 
     public:
         inline virtual ~ContiguousCommon() noexcept {} //!< cleanup
@@ -59,27 +61,27 @@ namespace Yttrium
 
         //! \return first valid address, may be NULL
         inline ConstType * head() const noexcept {
-            const Readable<T> &self = *this;
+            const Readable<Type> &self = *this;
             return (size()>0) ? & self[1] : 0;
         }
 
         //! \return first invalid address, may be NULL
         inline ConstType * last() const noexcept {
-            const Readable<T> &self = *this;
+            const Readable<Type> &self = *this;
             const size_t       sz   = self.size();
             return  (sz>0) ? & self[1]+sz : 0;
         }
 
         //! \return first invalid reverse address, may be NULL
         inline ConstType * fore() const noexcept {
-            const Readable<T> &self = *this;
+            const Readable<Type> &self = *this;
             return (size()>0) ? (&self[1])-1 : 0;
         }
 
 
         //! \return first valid revers address, may be NULL
         inline ConstType * tail() const noexcept {
-            const Readable<T> &self = *this;
+            const Readable<Type> &self = *this;
             const size_t       sz   = self.size();
             return (sz>0) ? (&self[sz]) : 0;
         }
@@ -90,12 +92,12 @@ namespace Yttrium
     //
     //
     //
-    //! Decorate CONTAINER<T> as Readable<T>
+    //! Decorate CONTAINER  as Readable<Type>
     //
     //
     //__________________________________________________________________________
-    template <template <typename> class CONTAINER, typename T>
-    class ReadableContiguous : public ContiguousCommon<CONTAINER,T>
+    template <typename CONTAINER>
+    class ReadableContiguous : public ContiguousCommon<CONTAINER>
     {
     public:
         //______________________________________________________________________
@@ -104,13 +106,15 @@ namespace Yttrium
         // Definitions
         //
         //______________________________________________________________________
-        Y_ARGS_EXPOSE(T,Type); //!< aliases
-        typedef Iter::Linear<Iter::Forward,ConstType> ConstIterator; //!< alias
-        typedef Iter::Linear<Iter::Reverse,ConstType> ConstReverseIterator; //!< alias
-        using ContiguousCommon<CONTAINER,T>::head;
-        using ContiguousCommon<CONTAINER,T>::last;
-        using ContiguousCommon<CONTAINER,T>::tail;
-        using ContiguousCommon<CONTAINER,T>::fore;
+        typedef typename CONTAINER::Type                 Type;                 //!< alias
+        typedef typename CONTAINER::ConstType            ConstType;            //!< alias
+        typedef Iter::Linear<Iter::Forward,ConstType>    ConstIterator;        //!< alias
+        typedef Iter::Linear<Iter::Reverse,ConstType>    ConstReverseIterator; //!< alias
+        using ContiguousCommon<CONTAINER>::head;
+        using ContiguousCommon<CONTAINER>::last;
+        using ContiguousCommon<CONTAINER>::tail;
+        using ContiguousCommon<CONTAINER>::fore;
+
     protected:
         //______________________________________________________________________
         //
@@ -120,8 +124,8 @@ namespace Yttrium
         //______________________________________________________________________
 
         //! initialize
-        explicit ReadableContiguous() noexcept : ContiguousCommon<CONTAINER,T>() {
-            Y_STATIC_CHECK(Y_Is_SuperSubClass(Readable<T>,CONTAINER<T>),BadBaseClass);
+        explicit ReadableContiguous() noexcept : ContiguousCommon<CONTAINER>() {
+            Y_STATIC_CHECK(Y_Is_SuperSubClass(Readable<Type>,CONTAINER),BadBaseClass);
         }
 
     public:
@@ -155,8 +159,8 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    template <template <typename> class CONTAINER, typename T>
-    class WritableContiguous : public ContiguousCommon<CONTAINER,T>
+    template <typename CONTAINER>
+    class WritableContiguous : public ContiguousCommon<CONTAINER>
     {
     public:
         //______________________________________________________________________
@@ -165,12 +169,13 @@ namespace Yttrium
         // Definitions
         //
         //______________________________________________________________________
-        using ContiguousCommon<CONTAINER,T>::head;
-        using ContiguousCommon<CONTAINER,T>::last;
-        using ContiguousCommon<CONTAINER,T>::tail;
-        using ContiguousCommon<CONTAINER,T>::fore;
+        typedef typename CONTAINER::Type         Type;                 //!< alias
+        typedef typename CONTAINER::ConstType    ConstType;            //!< alias
+        using ContiguousCommon<CONTAINER>::head;
+        using ContiguousCommon<CONTAINER>::last;
+        using ContiguousCommon<CONTAINER>::tail;
+        using ContiguousCommon<CONTAINER>::fore;
 
-        Y_ARGS_EXPOSE(T,Type);                                              //!< aliases
         typedef Iter::Linear<Iter::Forward,Type>      Iterator;             //!< alias
         typedef Iter::Linear<Iter::Reverse,Type>      ReverseIterator;      //!< alias
         typedef Iter::Linear<Iter::Forward,ConstType> ConstIterator;        //!< alias
@@ -185,8 +190,8 @@ namespace Yttrium
         //______________________________________________________________________
 
         //! setup
-        explicit WritableContiguous() noexcept : ContiguousCommon<CONTAINER,T>() {
-            Y_STATIC_CHECK(Y_Is_SuperSubClass(Writable<T>,CONTAINER<T>),BadBaseClass);
+        explicit WritableContiguous() noexcept : ContiguousCommon<CONTAINER>() {
+            Y_STATIC_CHECK(Y_Is_SuperSubClass(Writable<Type>,CONTAINER),BadBaseClass);
         }
 
     public:
@@ -226,10 +231,10 @@ namespace Yttrium
 
     //! helper to choose base class for Contiguous
 #define Y_Contiguous_Class   Alternative <           \
-/**/  Y_Is_SuperSubClass(Writable<T>,CONTAINER<T>),  \
-/**/    WritableContiguous<CONTAINER,T>,             \
-/**/ Y_Is_SuperSubClass(Readable<T>,CONTAINER<T>),   \
-/**/   ReadableContiguous<CONTAINER,T>,              \
+/**/  Y_Is_SuperSubClass(Writable<typename CONTAINER::Type>,CONTAINER),  \
+/**/    WritableContiguous<CONTAINER>,             \
+/**/ Y_Is_SuperSubClass(Readable<typename CONTAINER::Type>,CONTAINER),   \
+/**/   ReadableContiguous<CONTAINER>,              \
 /**/   NullType>::Type
 
     //__________________________________________________________________________
@@ -240,7 +245,7 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    template <template <typename> class CONTAINER, typename T>
+    template <typename CONTAINER>
     class Contiguous : public Y_Contiguous_Class
     {
     protected:

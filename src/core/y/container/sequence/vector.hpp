@@ -23,7 +23,7 @@ namespace Yttrium
     //__________________________________________________________________________
 #define Y_Vector_Ctor()         \
 Sequence<T,DynamicContainer>(), \
-Contiguous<Writable,T>(),       \
+Contiguous< Writable<T> >(),    \
 THREADING_POLICY(),             \
 built(0)
 
@@ -38,7 +38,7 @@ built(0)
     template <typename T, typename THREADING_POLICY = SingleThreadedClass>
     class Vector :
     public Sequence<T,DynamicContainer>,
-    public Contiguous<Writable,T>,
+    public Contiguous< Writable<T> >,
     public THREADING_POLICY
     {
     public:
