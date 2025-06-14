@@ -350,7 +350,7 @@ void compressStream ( FILE *stream, FILE *zStream )
    while (True) {
 
       if (myfeof(stream)) break;
-      nIbuf = fread ( ibuf, sizeof(UChar), 5000, stream );
+      nIbuf = (Int32) fread ( ibuf, sizeof(UChar), 5000, stream );
       if (ferror(stream)) goto errhandler_io;
       if (nIbuf > 0) BZ2_bzWrite ( &bzerr, bzf, (void*)ibuf, nIbuf );
       if (bzerr != BZ_OK) goto errhandler;
@@ -506,7 +506,7 @@ Bool uncompressStream ( FILE *zStream, FILE *stream )
       rewind(zStream);
       while (True) {
       	 if (myfeof(zStream)) break;
-      	 nread = fread ( obuf, sizeof(UChar), 5000, zStream );
+      	 nread = (Int32)fread ( obuf, sizeof(UChar), 5000, zStream );
       	 if (ferror(zStream)) goto errhandler_io;
       	 if (nread > 0) fwrite ( obuf, sizeof(UChar), nread, stream );
       	 if (ferror(stream)) goto errhandler_io;
@@ -1112,8 +1112,8 @@ const Char* unzSuffix[BZ_N_SUFFIX_PAIRS]
 static 
 Bool hasSuffix ( Char* s, const Char* suffix )
 {
-   Int32 ns = strlen(s);
-   Int32 nx = strlen(suffix);
+   Int32 ns = (Int32)strlen(s);
+   Int32 nx = (Int32)strlen(suffix);
    if (ns < nx) return False;
    if (strcmp(s + ns - nx, suffix) == 0) return True;
    return False;
@@ -1733,7 +1733,7 @@ Cell *snocString ( Cell *root, Char *name )
 {
    if (root == NULL) {
       Cell *tmp = mkCell();
-      tmp->name = (Char*) myMalloc ( 5 + strlen(name) );
+      tmp->name = (Char*) myMalloc ( (Int32)(5 + strlen(name)) );
       strcpy ( tmp->name, name );
       return tmp;
    } else {
