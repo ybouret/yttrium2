@@ -118,6 +118,9 @@ Y_UTEST(sorting:index)
 Y_UTEST(sequence:list)
 Y_UTEST(sequence:vector)
 
+#ordered
+Y_UTEST(ordered:pqueue)
+
 #ptr
 Y_UTEST(ptr:auto)
 Y_UTEST(ptr:arc)
