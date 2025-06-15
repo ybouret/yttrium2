@@ -38,8 +38,8 @@ namespace Yttrium
         //
         //______________________________________________________________________
 
-        virtual void write(const char) = 0;
-        virtual void flush()           = 0;
+        virtual void write(const char) = 0; //!< write one char
+        virtual void flush()           = 0; //!< flush any internal buffer
 
         //______________________________________________________________________
         //

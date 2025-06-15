@@ -9,8 +9,16 @@ namespace Yttrium{
 
     namespace Sorting
     {
+        //! Testing that a range is sorted
         struct Test
         {
+            //! test sorting with C++ comparison
+            /**
+             \param compare return SignType
+             \param curr    first iterator
+             \param size    range size
+             \return true iff sorted
+             */
             template <typename ITERATOR,typename COMPARE> static inline
             bool AccordingTo(COMPARE &compare, ITERATOR curr, size_t size)
             {

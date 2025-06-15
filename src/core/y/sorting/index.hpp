@@ -12,30 +12,42 @@ namespace Yttrium{
     namespace Sorting
     {
 
+        //_______________________________________________________________________
+        //
+        //
+        //
+        //! Indexing algorithm
+        //
+        //
+        //______________________________________________________________________
         struct Index
         {
 
-            //______________________________________________________________________
+            //__________________________________________________________________
             //
             //
             //! make index using 'SignType compare(lhs,rhs)'
-            //
-            //______________________________________________________________________
+            /**
+             \param idx [1..size()] computed indices
+             \param cmp  comparison function
+             \param arr [1..size()] to index
+             */
+            //__________________________________________________________________
             template <typename T,typename FUNC> static inline
             void Make(Writable<size_t>  & idx,
                       FUNC              & cmp,
                       const Readable<T> & arr) noexcept
             {
-                
-                //------------------------------------------------------------------
+
+                //--------------------------------------------------------------
                 // initialize indices
-                //------------------------------------------------------------------
+                //--------------------------------------------------------------
                 const size_t n = idx.size(); assert( arr.size() == idx.size() );
                 for(size_t i=n;i>0;--i) idx[i] = i;
-                
-                //------------------------------------------------------------------
+
+                //--------------------------------------------------------------
                 // sort routine
-                //------------------------------------------------------------------
+                //--------------------------------------------------------------
                 {
                     size_t   inc = 1;
                     do
@@ -68,7 +80,7 @@ namespace Yttrium{
                     }
                     while( inc > 1 );
                 }
-                
+
 #if 0
                 std::cerr << "idx:";
                 for(unsigned i=1;i<=n;++i)
@@ -77,14 +89,21 @@ namespace Yttrium{
                 }
                 std::cerr << std::endl;
 #endif
-                
+
                 assert( Check(idx,cmp,arr) );
             }
-            
-            //______________________________________________________________________
+
+            //__________________________________________________________________
+            //
             //
             //! check that indexing is valid, mostly to debug
-            //______________________________________________________________________
+            /**
+             \param idx [1..size()] indices
+             \param cmp  comparison function
+             \param arr [1..size()] to index
+             \return true iff idx is valid
+             */
+            //__________________________________________________________________
             template <typename T,typename FUNC> static inline
             bool Check(const Readable<size_t> &idx,
                        FUNC                   &cmp,
@@ -106,7 +125,7 @@ namespace Yttrium{
                 }
                 return true;
             }
-            
+
         };
     }
 
