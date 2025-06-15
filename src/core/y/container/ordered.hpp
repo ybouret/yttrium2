@@ -1,11 +1,13 @@
 
+
 //! \file
 
-#ifndef Y_Sequence_Included
-#define Y_Sequence_Included 1
+#ifndef Y_Ordered_Included
+#define Y_Ordered_Included 1
 
 #include "y/container.hpp"
 #include "y/type/args.hpp"
+
 namespace Yttrium
 {
 
@@ -13,12 +15,12 @@ namespace Yttrium
     //
     //
     //
-    //! Sequence Interface to expand CONTAINER ([Gradual|Dynamic]Container)
+    //! Ordered Interface to expand CONTAINER ([Gradual|Dynamic]Container)
     //
     //
     //__________________________________________________________________________
     template <typename T, typename CONTAINER>
-    class Sequence : public CONTAINER
+    class Ordered : public CONTAINER
     {
     public:
         //______________________________________________________________________
@@ -37,11 +39,11 @@ namespace Yttrium
         //______________________________________________________________________
     protected:
         //! setup
-        inline explicit Sequence() noexcept : CONTAINER() {}
+        inline explicit Ordered() noexcept : CONTAINER() {}
 
     public:
         //! cleanup
-        inline virtual ~Sequence() noexcept {}
+        inline virtual ~Ordered() noexcept {}
 
         //______________________________________________________________________
         //
@@ -49,10 +51,8 @@ namespace Yttrium
         // Interface
         //
         //______________________________________________________________________
-        virtual void pushTail(ParamType) = 0; //!< push object at head of container
-        virtual void pushHead(ParamType) = 0; //!< push object at tail of container
-        virtual void popTail() noexcept  = 0; //!< pop tail object
-        virtual void popHead() noexcept  = 0; //!< pop head object
+        virtual void push(ParamType) = 0; //!< push object into container
+        virtual Type pop()           = 0; //!< remove top object
 
         //______________________________________________________________________
         //
@@ -60,22 +60,8 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
+        Sequence & operator<<(ParamType rhs) { push(rhs); return *this; }
 
-        //! adjust using [pop|push]Tail
-        /**
-         \param newSize new size to reach
-         \param padding default value
-        */
-        inline void adjust(size_t newSize, ParamType padding)
-        {
-            const size_t oldSize = this->size();
-            while(newSize>oldSize) popTail();
-            while(newSize<oldSize) pushTail(padding);
-        }
-
-        Sequence & operator<<(ParamType rhs) { pushTail(rhs); return *this; }
-
-        Sequence& operator>>(ParamType lhs) { pushHead(lhs); return *this; }
 
     private:
         Y_Disable_Copy_And_Assign(Sequence); //!< discarding

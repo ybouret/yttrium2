@@ -5,6 +5,8 @@
 #define Y_List_Included 1
 
 #include "y/container/sequence.hpp"
+#include "y/container/dynamic.hpp"
+
 #include "y/memory/io/limbo.hpp"
 #include "y/core/linked/list.hpp"
 #include "y/container/iter/linked.hpp"

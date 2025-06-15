@@ -5,6 +5,7 @@
 
 #include "y/object/school-of.hpp"
 #include "y/container/sequence.hpp"
+#include "y/container/dynamic.hpp"
 #include "y/container/contiguous.hpp"
 #include "y/threading/single-threaded-class.hpp"
 #include "y/type/args.hpp"
