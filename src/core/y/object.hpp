@@ -82,9 +82,9 @@ namespace Yttrium
         //! placement delete
         static void  operator delete(void * const , void * const)                 noexcept; 
 
-        static Memory::Allocator & AllocatorInstance();
-        static Memory::Allocator & AllocatorLocation() noexcept;
-        
+        static Memory::Allocator & AllocatorInstance();          //!< \return Object::Factory::Instance()
+        static Memory::Allocator & AllocatorLocation() noexcept; //!< \return Object::Factory::Location()
+
     private:
         Y_Disable_Copy_And_Assign(Object); //!< discarding
     };

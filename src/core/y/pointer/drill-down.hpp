@@ -47,11 +47,15 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
-        inline ReturnType      fetch(Type      *ptr)       noexcept { assert(0!=ptr); return *ptr; } //!< proxy for operator->
-        inline ConstReturnType fetch(ConstType *ptr) const noexcept { assert(0!=ptr); return *ptr; } //!< proxy for operator->
+
+        //! \return *ptr \param ptr object with another operator
+        inline ReturnType      fetch(Type      * const ptr)       noexcept { assert(0!=ptr); return *ptr; }
+
+        //! \return const *ptr \param ptr object with another operator
+        inline ConstReturnType fetch(ConstType * const ptr) const noexcept { assert(0!=ptr); return *ptr; }
 
     private:
-        Y_Disable_Copy_And_Assign(DrillDown);
+        Y_Disable_Copy_And_Assign(DrillDown); //!< discarding
     };
 
 }
