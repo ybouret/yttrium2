@@ -4,12 +4,13 @@
 #define Y_PQueue_Included 1
 
 
-#include "y/object.hpp"
+#include "y/core/setup.hpp"
 
 namespace Yttrium
 {
 
-    class PQueue : public Object
+    //! base class for 
+    class PQueue
     {
     public:
         explicit PQueue(const size_t numObjects) noexcept;

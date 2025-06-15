@@ -17,14 +17,14 @@ namespace Yttrium
 {
 
     template <typename T>
-    class PrioQ : public PQueue
+    class PrioQueue : public PQueue
     {
     public:
         Y_ARGS_DECL(T,Type);
 
 
-        inline explicit PrioQ(T * const    workspace,
-                              const size_t numBlocks) noexcept :
+        inline explicit PrioQueue(T * const    workspace,
+                                  const size_t numBlocks) noexcept :
         PQueue(numBlocks),
         tree( workspace )
         {
@@ -33,7 +33,7 @@ namespace Yttrium
         }
 
 
-        virtual ~PrioQ() noexcept
+        virtual ~PrioQueue() noexcept
         {
             assert(Good(tree,size));
             while(size>0)
@@ -42,14 +42,15 @@ namespace Yttrium
             Coerce(capacity) = 0;
         }
 
-        inline friend std::ostream & operator<<(std::ostream &os, const PrioQ &self)
+        inline friend std::ostream & operator<<(std::ostream &os, const PrioQueue &self)
         {
             return Core::Display(os,self.tree,self.size);
         }
 
 
-        inline void steal(PrioQ &q) noexcept
+        inline void steal(PrioQueue &q) noexcept
         {
+            assert(this != &q);
             assert(0==size);
             assert(capacity>=q.size);
             Memory::Stealth::SafeCopy(tree,q.tree, (Coerce(size) = q.size)*sizeof(T) );
@@ -136,7 +137,7 @@ namespace Yttrium
         MutableType * const tree;
 
     private:
-        Y_Disable_Copy_And_Assign(PrioQ);
+        Y_Disable_Copy_And_Assign(PrioQueue);
     };
 
 }

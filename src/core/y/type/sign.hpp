@@ -3,7 +3,7 @@
 #ifndef Y_Type_Sign_Included
 #define Y_Type_Sign_Included 1
 
-#include "y/core/setup.hpp"
+#include "y/type/args.hpp"
 #include <cassert>
 
 namespace Yttrium
@@ -75,6 +75,15 @@ namespace Yttrium
             return Of(rhs,lhs);
         }
 
+        template <typename T>
+        struct Comparator
+        {
+            Y_ARGS_EXPOSE(T,Type);
+            inline SignType operator()(ConstType &lhs, ConstType &rhs) const
+            {
+                return Of(lhs,rhs);
+            }
+        };
 
 
     };

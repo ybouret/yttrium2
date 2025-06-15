@@ -6,7 +6,6 @@ namespace Yttrium
 {
 
     PQueue:: PQueue(const size_t numObjects) noexcept :
-    Object(),
     size(0),
     capacity(numObjects)
     {

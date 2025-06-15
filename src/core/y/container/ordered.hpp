@@ -60,11 +60,11 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
-        Sequence & operator<<(ParamType rhs) { push(rhs); return *this; }
+        Ordered & operator<<(ParamType rhs) { push(rhs); return *this; }
 
 
     private:
-        Y_Disable_Copy_And_Assign(Sequence); //!< discarding
+        Y_Disable_Copy_And_Assign(Ordered); //!< discarding
     };
 
 }
