@@ -11,6 +11,7 @@
 #include "y/type/with-at-least.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/type/destroy.hpp"
+#include "y/type/destruct.hpp"
 
 namespace Yttrium
 {
@@ -113,7 +114,7 @@ built(0)
         //______________________________________________________________________
         //
         //
-        // C++
+        // Interface
         //
         //______________________________________________________________________
         virtual size_t size() const noexcept
@@ -215,6 +216,25 @@ built(0)
             ++built;
         }
 
+        virtual void popTail() noexcept
+        {
+            Y_Must_Lock();
+            popTail_();
+        }
+
+
+        virtual void popHead() noexcept
+        {
+            Y_Must_Lock();
+            assert(0!=code);
+            assert(built>0);
+            T * const target = code->entry;
+            Destruct(target);
+            Memory::Stealth::Move(target,target+1, --built*sizeof(T) );
+            Memory::Stealth::Zero(target+built,sizeof(T));
+        }
+
+
         virtual void free()    noexcept { free_();    }
         virtual void release() noexcept { release_(); }
 
@@ -266,14 +286,18 @@ built(0)
             return code->cxx[indx];
         }
 
+        inline void popTail_() noexcept
+        {
+            assert(0!=code);
+            assert(built>0);
+            Memory::Stealth::DestructedAndZeroed(& code->entry[--built]);
+        }
+
         //! destruct all objects, keep memory
         inline void free_() noexcept
         {
             Y_Must_Lock();
-            while(built>0) {
-                assert(0!=code);
-                Memory::Stealth::DestructedAndZeroed(& code->entry[built--]);
-            }
+            while(built>0) popTail_();
         }
 
         //! destruct all objects and all memory

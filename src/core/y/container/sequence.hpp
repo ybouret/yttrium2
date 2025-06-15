@@ -5,19 +5,67 @@
 #define Y_Sequence_Included 1
 
 #include "y/container/dynamic.hpp"
-
+#include "y/type/args.hpp"
 namespace Yttrium
 {
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Sequence Interface to expand CONTAINER ([Gradual|Dynamic]Container)
+    //
+    //
+    //__________________________________________________________________________
     template <typename T, typename CONTAINER>
     class Sequence : public CONTAINER
     {
+    public:
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        Y_ARGS_DECL(T,Type); //!< aliases
+
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
     protected:
+        //! setup
         inline explicit Sequence() noexcept : CONTAINER() {}
 
     public:
+        //! cleanup
         inline virtual ~Sequence() noexcept {}
 
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
+        virtual void pushTail(ParamType) = 0; //!< push object at head of container
+        virtual void pushHead(ParamType) = 0; //!< push object at tail of container
+        virtual void popTail() noexcept  = 0; //!< pop tail object
+        virtual void popHead() noexcept  = 0; //!< pop head object
+
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+        inline void adjust(size_t newSize, ParamType padding)
+        {
+            const size_t oldSize = this->size();
+            while(newSize>oldSize) popTail();
+            while(newSize<oldSize) pushTail(padding);
+        }
 
     private:
         Y_Disable_Copy_And_Assign(Sequence); //!< discarding

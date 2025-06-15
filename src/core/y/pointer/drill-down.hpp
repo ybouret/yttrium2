@@ -6,6 +6,7 @@
 #define Y_Pointer_Drill_Down_Included 1
 
 #include "y/type/args.hpp"
+#include <cassert>
 
 namespace Yttrium
 {

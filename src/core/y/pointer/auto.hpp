@@ -18,6 +18,7 @@ namespace Yttrium
     {
     public:
         typedef Smart::Pointer<T,Redirect> PointerType;
+        
         using PointerType::pointee;
 
 

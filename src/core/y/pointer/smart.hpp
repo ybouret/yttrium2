@@ -23,6 +23,9 @@ namespace Yttrium
             inline Type      & operator*()       noexcept { assert(0!=pointee); return *pointee; }
             inline ConstType & operator*() const noexcept { assert(0!=pointee); return *pointee; }
 
+            inline typename Redirect<T>::ReturnType      operator->() noexcept       { assert(pointee); return this->fetch(pointee); }
+            inline typename Redirect<T>::ConstReturnType operator->() const noexcept { assert(pointee); return this->fetch(pointee); }
+
 
         protected:
             inline explicit Pointer(T * const ptr) : Redirect<T>(), pointee( (MutableType*) ptr) {}

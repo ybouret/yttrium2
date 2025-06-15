@@ -5,6 +5,7 @@
 #define Y_Pointer_Immediate_Included 1
 
 #include "y/type/args.hpp"
+#include <cassert>
 
 namespace Yttrium
 {

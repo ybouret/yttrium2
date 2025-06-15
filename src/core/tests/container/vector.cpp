@@ -22,6 +22,8 @@ Y_UTEST(sequence_vector)
         v.pushHead(i);
         std::cerr << v << std::endl;
     }
+    v.free();
+    std::cerr << v << std::endl;
 
 
 }

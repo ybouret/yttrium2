@@ -151,6 +151,21 @@ namespace Yttrium
             pool.banish(list.popTail());
         }
 
+
+        inline virtual void pushHead(ParamType value)
+        {
+            Y_Must_Lock();
+            list.pushHead( pool.template conjure<ConstType>(value) );
+        }
+
+        inline virtual void popHead() noexcept
+        {
+            assert(list.size>0);
+            Y_Must_Lock();
+            pool.banish(list.popHead());
+        }
+
+
         inline virtual void free() noexcept
         {
             Y_Must_Lock();

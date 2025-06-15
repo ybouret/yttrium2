@@ -24,6 +24,8 @@ namespace Yttrium
         class FakeLock : public Latch
         {
         public:
+            static bool Trace; //!< tracing, mostly to debug
+
             explicit FakeLock() noexcept;
             virtual ~FakeLock() noexcept;
 

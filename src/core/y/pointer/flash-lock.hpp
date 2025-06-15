@@ -5,6 +5,7 @@
 #define Y_Pointer_FlashLock_Included 1
 
 #include "y/type/args.hpp"
+#include <cassert>
 
 namespace Yttrium
 {
@@ -29,8 +30,16 @@ namespace Yttrium
             return pointee;
         }
 
+        inline LockingProxy(const LockingProxy &other) noexcept :
+        pointee(other.pointee)
+        {
+        }
+
+
+
+
     private:
-        Y_Disable_Copy_And_Assign(LockingProxy);
+        Y_Disable_Assign(LockingProxy);
         MutableType * const pointee;
     };
 
