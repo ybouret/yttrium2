@@ -4,6 +4,7 @@
 #define Y_Memory_Stealth_Included 1
 
 #include "y/core/setup.hpp"
+#include <cassert>
 
 namespace Yttrium
 {
@@ -85,7 +86,7 @@ namespace Yttrium
             static void *       Move(void * const       target,
                                      const void * const source,
                                      const size_t       bytes) noexcept;
-
+            
             //! memory swap
             /**
              \param lhsBlock lhs address

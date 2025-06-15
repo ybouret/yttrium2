@@ -73,6 +73,9 @@ namespace Yttrium
             while(newSize<oldSize) pushTail(padding);
         }
 
+        Sequence & operator<<(ParamType rhs) { pushTail(rhs); return *this; }
+
+
     private:
         Y_Disable_Copy_And_Assign(Sequence); //!< discarding
     };

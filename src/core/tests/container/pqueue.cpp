@@ -11,6 +11,8 @@
 #include "y/check/usual.hpp"
 #include "y/core/display.hpp"
 
+#include "y/container/sequence/vector.hpp"
+
 namespace Yttrium
 {
 
@@ -34,18 +36,52 @@ namespace Yttrium
             assert(Memory::Stealth::Are0(workspace,numBlocks*sizeof(T)));
         }
 
+
+        virtual ~PrioQ() noexcept
+        {
+            assert(Good(tree,size));
+            while(size>0)
+                Destruct( &tree[--Coerce(size)] );
+            Coerce(tree)     = 0;
+            Coerce(capacity) = 0;
+        }
+
+        inline friend std::ostream & operator<<(std::ostream &os, const PrioQ &self)
+        {
+            return Core::Display(os,self.tree,self.size);
+        }
+
+
+        void steal(PrioQ &q) noexcept
+        {
+            assert(0==size);
+            assert(capacity>=q.size);
+            Memory::Stealth::SafeCopy(tree,q.tree, (Coerce(size) = q.size)*sizeof(T) );
+            Coerce(q.size) = 0;
+        }
+
         template <typename COMPARE>
         inline void push(ParamType value, COMPARE &compare)
         {
             assert(size<capacity);
+            assert( Memory::Stealth::Are0(tree+size,sizeof(T)));
+
             new (tree+size) T(value);
-            size_t ipos = size++;
-            size_t ppos = heap_parent(ipos);
-            while( (ipos>0) && Negative == compare(tree[ppos],tree[ipos]) )
+            try
             {
-                Memory::Stealth::Swap(tree[ppos],tree[ipos]);
-                ipos = ppos;
-                ppos = heap_parent(ipos);
+                size_t ipos = Coerce(size)++;
+                size_t ppos = heap_parent(ipos);
+                while( (ipos>0) && Negative == compare(tree[ppos],tree[ipos]) )
+                {
+                    Memory::Stealth::Swap(tree[ppos],tree[ipos]);
+                    ipos = ppos;
+                    ppos = heap_parent(ipos);
+                }
+            }
+            catch(...)
+            {
+                free();
+                throw;
             }
         }
 
@@ -56,27 +92,53 @@ namespace Yttrium
             return tree[0];
         }
 
-        inline friend std::ostream & operator<<(std::ostream &os, const PrioQ &self)
+
+        template <typename COMPARE>
+        inline Type pop(COMPARE &compare)
         {
-            return Core::Display(os,self.tree,self.size);
+            assert(size>0);
+            assert(0!=tree);
+            try
+            {
+                MutableType * const target = tree;
+                ConstType           result = *target;
+                {
+                    MutableType * const source =  &tree[--Coerce(size)];
+                    Memory::Stealth::Move(target,source,sizeof(T));
+                    Memory::Stealth::Zero(source,sizeof(T));
+                }
+                size_t ipos = 0;
+                while(true)
+                {
+                    const size_t lpos = heap_left(ipos);
+                    size_t       mpos = (lpos<size && Negative == compare(target[ipos],target[lpos])) ? lpos : ipos;
+                    const size_t rpos = heap_right(ipos);
+                    if(rpos<size && Negative == compare(target[mpos],target[rpos]) )
+                        mpos = rpos;
+                    if(mpos==ipos) break;
+                    Memory::Stealth::Swap(target[mpos],target[ipos]);
+                    ipos = mpos;
+                }
+                return result;
+            }
+            catch(...)
+            {
+                free();
+                throw;
+            }
         }
 
-        virtual ~PrioQ() noexcept
+
+        //! cleanup with zeroed memory
+        inline void free() noexcept
         {
-            assert(Good(tree,size));
             while(size>0)
-                Destruct( &tree[--size] );
-            Coerce(tree)     = 0;
-            Coerce(capacity) = 0;
+                Memory::Stealth::DestructedAndZeroed( &tree[--Coerce(size)] );
         }
 
-
-
-        T * const    tree;
-        size_t       size;
-        const size_t capacity;
-
-
+        MutableType * const tree;
+        const size_t        size;
+        const size_t        capacity;
 
     private:
         Y_Disable_Copy_And_Assign(PrioQ);
@@ -97,6 +159,12 @@ Y_UTEST(ordered_pqueue)
     pq.push(2, Sign::Decreasing<int> ); std::cerr << pq << std::endl;
     pq.push(7, Sign::Decreasing<int> ); std::cerr << pq << std::endl;
     pq.push(1, Sign::Decreasing<int> ); std::cerr << pq << std::endl;
+
+    Vector<int> vec;
+    while(pq.size) vec << pq.pop( Sign::Decreasing<int> );
+    std::cerr << vec << std::endl;
+
+
 
 }
 Y_UDONE()
