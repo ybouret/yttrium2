@@ -75,6 +75,7 @@ namespace Yttrium
 
         Sequence & operator<<(ParamType rhs) { pushTail(rhs); return *this; }
 
+        Sequence& operator>>(ParamType lhs) { pushHead(lhs); return *this; }
 
     private:
         Y_Disable_Copy_And_Assign(Sequence); //!< discarding

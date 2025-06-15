@@ -22,8 +22,11 @@ namespace Yttrium
 
         bool InputFile:: query(char &C)
         {
-            if(Q.size())
-                return Q.pullHead();
+            if (Q.size())
+            {
+                C = char(Q.pullHead());
+                return true;
+            }
             Y_Giant_Lock();
             if( 1 != fread(&C,1, 1,handle) )
             {
@@ -35,7 +38,7 @@ namespace Yttrium
 
         void InputFile:: store(const char C)
         {
-            Q >> C;
+            Q >> uint8_t(C);
         }
 
 

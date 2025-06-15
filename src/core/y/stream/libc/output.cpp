@@ -6,6 +6,10 @@
 #include "y/ability/lockable.hpp"
 #include <cstring>
 
+#if defined(_MSC_VER)
+#pragma warning ( disable : 4996 )
+#endif
+
 namespace Yttrium
 {
     namespace
