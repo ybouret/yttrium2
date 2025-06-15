@@ -9,18 +9,26 @@ namespace Yttrium {
 
     class Lockable;
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! use a new Mutex as authorization
+    //
+    //
+    //__________________________________________________________________________
     class MultiThreadedObject
     {
     public:
-        typedef Threading::Locker<MultiThreadedObject> Lock;
+        typedef Threading::Locker<MultiThreadedObject> Lock; //!< alias
 
-        explicit MultiThreadedObject();
-        virtual ~MultiThreadedObject() noexcept;
+        explicit MultiThreadedObject();           //!< setup
+        virtual ~MultiThreadedObject() noexcept;  //!< cleanup
 
     private:
-        Y_Disable_Copy_And_Assign(MultiThreadedObject);
         friend class Threading::Locker<MultiThreadedObject>;
-        Lockable * const authorization;
+        Y_Disable_Copy_And_Assign(MultiThreadedObject); //!< discarding
+        Lockable * const authorization;                 //!< new Concurrent::Mutex
     };
 
 }

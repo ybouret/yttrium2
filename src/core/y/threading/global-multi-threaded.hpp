@@ -9,18 +9,26 @@ namespace Yttrium {
 
     class Lockable;
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! use giant lock as authorization
+    //
+    //
+    //__________________________________________________________________________
     class GlobalMultiThreaded
     {
     public:
-        typedef Threading::Locker<GlobalMultiThreaded> Lock;
+        typedef Threading::Locker<GlobalMultiThreaded> Lock; //!< alias
 
-        explicit GlobalMultiThreaded();
-        virtual ~GlobalMultiThreaded() noexcept;
+        explicit GlobalMultiThreaded();           //!< setup
+        virtual ~GlobalMultiThreaded() noexcept;  //!< cleanup
 
     private:
-        Y_Disable_Copy_And_Assign(GlobalMultiThreaded);
         friend class Threading::Locker<GlobalMultiThreaded>;
-        Lockable * const authorization;
+        Y_Disable_Copy_And_Assign(GlobalMultiThreaded);     //!< discarding
+        Lockable * const authorization;                     //!< & Lockable::Giant()
     };
 
 }

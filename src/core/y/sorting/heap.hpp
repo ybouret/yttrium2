@@ -12,9 +12,29 @@ namespace Yttrium{
 
     namespace Sorting
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Heap sort implementation and interfaces
+        //
+        //
+        //______________________________________________________________________
         struct Heap
         {
-            //! arr[width*(0..num-1)]
+            //__________________________________________________________________
+            //
+            //
+            //! heapsort, C-style
+            /**
+             \param arr objects[alen*(0..num-1)]
+             \param num count of objects
+             \param alen bytes per object
+             \param rra  auxiliary space [alen]
+             \param proc legacy comparison
+             \param args legacy arguments
+             */
+            //__________________________________________________________________
             static void   Sort(void * const  arr,
                                const size_t  num,
                                const size_t  alen,
@@ -24,7 +44,18 @@ namespace Yttrium{
                                );
 
 
-            //! sorting [0..num-1]
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Tableau sorting
+            /**
+             \param arr T[0..num-1]
+             \param num number of objects
+             \param cmp object-wise comparator
+             */
+            //
+            //__________________________________________________________________
             template <typename T, typename COMPARE> static inline
             void  Sort(T * const    arr,
                        const size_t num,
@@ -35,6 +66,22 @@ namespace Yttrium{
                 Sort(arr, num, sizeof(T), rra, CompareWrapper<T,COMPARE>::Call, (void*)&cmp);
             }
 
+            //__________________________________________________________________
+            //
+            //
+            //! co-heapsort, C-style
+            /**
+             \param arr primary[alen*(0..num-1)]
+             \param brr replica[blen*(0..num-1)]
+             \param num count of objects
+             \param alen bytes per primary
+             \param rra  auxiliary space [alen]
+             \param blen bytes per replica
+             \param rrb  auxiliary space [blen]
+             \param proc legacy comparison
+             \param args legacy arguments
+             */
+            //__________________________________________________________________
             static void   Sort(void * const arr,
                                void * const brr,
                                const size_t num,
@@ -46,7 +93,19 @@ namespace Yttrium{
                                void * const args
                                );
 
-            //! sorting [0..num-1]
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Tableaux co-sorting
+            /**
+             \param arr T[0..num-1]
+             \param brr U[0..num-1]
+             \param num number of objects
+             \param cmp object-wise comparator
+             */
+            //
+            //__________________________________________________________________
             template <typename T, typename U, typename COMPARE> static inline
             void  Sort(T * const    arr,
                        U * const    brr,

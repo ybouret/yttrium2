@@ -11,7 +11,9 @@ namespace Yttrium {
     //__________________________________________________________________________
     //
     //
+    //
     //! Multit-Threaded class using another lockable
+    //
     //
     //__________________________________________________________________________
     class MultiThreadedHandle
@@ -19,13 +21,13 @@ namespace Yttrium {
     public:
         typedef Threading::Locker<MultiThreadedHandle> Lock; //!< alias
 
-        inline explicit MultiThreadedHandle( Lockable &handle ) noexcept : authorization( &handle)  {} //!< setup
+        inline explicit MultiThreadedHandle( Lockable &handle ) noexcept : authorization( &handle)  {} //!< setup \param handle PERSISTENT lockable
         inline virtual ~MultiThreadedHandle() noexcept { Coerce(authorization) = 0; }         //!< cleanup
 
     private:
-        Y_Disable_Copy_And_Assign(MultiThreadedHandle); //!< discardingb
         friend class Threading::Locker<MultiThreadedHandle>;
-        Lockable * const authorization;
+        Y_Disable_Copy_And_Assign(MultiThreadedHandle); //!< discarding
+        Lockable * const authorization;                 //!< & handle
     };
     
 }
