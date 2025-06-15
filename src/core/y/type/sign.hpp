@@ -63,6 +63,19 @@ namespace Yttrium
         }
 
 
+        //! Decreasing Comparison
+        /**
+         \param lhs address of left object
+         \param rhs address of right object
+         \return integer comparison
+         */
+        template <typename T> static inline
+        SignType Decreasing(const T &lhs, const T rhs) noexcept
+        {
+            return Of(rhs,lhs);
+        }
+
+
 
     };
 }
