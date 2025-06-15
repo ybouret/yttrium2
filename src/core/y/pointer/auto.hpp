@@ -5,31 +5,51 @@
 #define Y_Pointer_Auto_Included 1
 
 #include "y/pointer/immediate.hpp"
-#include "y/pointer/smart.hpp"
+#include "y/pointer/accept-null.hpp"
 
 namespace Yttrium
 {
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! AutoPtr with unique instance
+    //
+    //
+    //__________________________________________________________________________
     template <
     typename T,
     template <typename> class Redirect = Immediate
     >
-    class AutoPtr : public Smart::Pointer<T,Redirect>
+    class AutoPtr : public Smart::AcceptNullPointer<T,Redirect>
     {
     public:
-        typedef Smart::Pointer<T,Redirect> PointerType;
-        
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        typedef Smart::AcceptNullPointer<T,Redirect> PointerType; //!< alias
         using PointerType::pointee;
 
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+        inline AutoPtr(T * const ptr) noexcept : PointerType(ptr) {} //!< setup \param ptr any address
+        inline AutoPtr()              noexcept : PointerType(0)   {} //!< cleanup
 
-        inline AutoPtr(T * const ptr) noexcept : PointerType(ptr) {}
-        inline AutoPtr()              noexcept : PointerType(0)   {}
-
+        //! cleanup
         inline virtual ~AutoPtr() noexcept
         {
             if(pointee) { delete pointee; pointee=0; }
         }
 
+        //! keep only one copy \param other another pointer
         inline AutoPtr(const AutoPtr &other) noexcept :
         PointerType(other.pointee)
         {
@@ -38,6 +58,7 @@ namespace Yttrium
             }
         }
 
+        //! keep only one copy \param other another pointer \return *this
         inline AutoPtr & operator=(const AutoPtr &other) noexcept
         {
             if(pointee != other.pointee)
@@ -49,22 +70,14 @@ namespace Yttrium
             return *this;
         }
 
-        inline friend std::ostream & operator<<(std::ostream &os, const AutoPtr &self)
-        {
-            if(self.pointee) os << *self.pointee; else os << Core::Nil;
-            return os;
-        }
 
-        inline T * yield() noexcept
-        {
+        //! \return pointee
+        inline T * yield() noexcept {
             T * const res = pointee;
             pointee = 0;
             return res;
         }
-
-
-
-
+        
     };
 
 }
