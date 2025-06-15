@@ -11,21 +11,40 @@
 
 namespace Yttrium
 {
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Helper for I/O
+    //
+    //
+    //__________________________________________________________________________
     class StreamQueue : public InputStream, public OutputStream, public IO::Chars
     {
     public:
-        explicit StreamQueue() noexcept;
-        virtual ~StreamQueue() noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+        explicit StreamQueue() noexcept; //!< setup
+        virtual ~StreamQueue() noexcept; //!< cleanup
+        Y_OSTREAM_PROTO(StreamQueue);    //!< display
 
-        Y_OSTREAM_PROTO(StreamQueue);
-
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
         virtual void       write(const char);
         virtual void       flush();
-        virtual bool       query(char &C);
+        virtual bool       query(char &);
         virtual void       store(const char);
 
     private:
-        Y_Disable_Copy_And_Assign(StreamQueue);
+        Y_Disable_Copy_And_Assign(StreamQueue); //!< discard
     };
 
 }
