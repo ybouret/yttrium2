@@ -12,17 +12,37 @@ namespace Yttrium
     namespace Memory
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Read/Write buffer is a writable ReadOnlyBuffer
+        //
+        //
+        //______________________________________________________________________
         class ReadWriteBuffer : public ReadOnlyBuffer
         {
         protected:
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
             explicit ReadWriteBuffer() noexcept;
         public:
             virtual ~ReadWriteBuffer() noexcept;
-            
-            void * rw() noexcept;
+
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            void * rw() noexcept; //!< \return writable current address
 
         private:
-            Y_Disable_Copy_And_Assign(ReadWriteBuffer);
+            Y_Disable_Copy_And_Assign(ReadWriteBuffer); //!< discarding
         };
     }
 

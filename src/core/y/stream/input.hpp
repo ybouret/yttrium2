@@ -8,19 +8,53 @@
 
 namespace Yttrium
 {
+
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Input Stream API
+    //
+    //
+    //__________________________________________________________________________
     class InputStream
     {
     protected:
-        explicit InputStream() noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+        explicit InputStream() noexcept; //!< setup
 
     public:
-        virtual ~InputStream() noexcept;
+        virtual ~InputStream() noexcept; //!< cleanup
 
-        virtual bool query(char &C)    = 0;
-        virtual void store(const char) = 0;
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
+        virtual bool query(char &)     = 0; //!< \return true if one char was read
+        virtual void store(const char) = 0; //!< unread a char
 
-        void decode64(uint64_t &qw);
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
 
+        //! codec64 decoding, throw exception on error
+        void decode64(uint64_t &);
+
+        //! read Constant Bit Rate variable
+        /**
+         \param  value output
+         \return number of read bytes
+         */
         template <typename T> inline
         size_t readCBR(T &value)
         {
@@ -35,11 +69,11 @@ namespace Yttrium
         }
 
     private:
-        Y_Disable_Copy_And_Assign(InputStream);
-        size_t read(uint8_t  &x);
-        size_t read(uint16_t &w);
-        size_t read(uint32_t &w);
-        size_t read(uint64_t &w);
+        Y_Disable_Copy_And_Assign(InputStream); //!< discarding
+        size_t read(uint8_t  &); //!< \return [0:1] and value
+        size_t read(uint16_t &); //!< \return [0:2] and value
+        size_t read(uint32_t &); //!< \return [0:4] and value
+        size_t read(uint64_t &); //!< \return [0:8] and value
     };
 }
 

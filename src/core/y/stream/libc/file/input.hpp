@@ -14,41 +14,85 @@ namespace Yttrium
     namespace Libc
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! low-level input file
+        //
+        //
+        //______________________________________________________________________
         class InputFile : public File
         {
         public:
-            explicit InputFile(FILE * const userFile, const bool closeOnQuit);
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup
+            /**
+             \param userFile    valid FILE
+             \param closeOnQuit if must close
+             */
+            explicit InputFile(FILE * const userFile,
+                               const bool   closeOnQuit);
+
+            //! cleanup
             virtual ~InputFile() noexcept;
 
-            bool query(char &C);
-            void store(const char C);
+            //__________________________________________________________________
+            //
+            //
+            // methods
+            //
+            //__________________________________________________________________
+            bool query(char &C);      //!< \param C char to get \return true iff success
+            void store(const char C); //!< use internal Q to store \param C read character
 
         private:
-            Y_Disable_Copy_And_Assign(InputFile);
-            IO::Chars Q;
+            Y_Disable_Copy_And_Assign(InputFile); //!< discarding
+            IO::Chars Q; //!< local queue for caching
         };
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! File on disk
+        //
+        //
+        //______________________________________________________________________
         class RegularInputFile : public InputFile
         {
         public:
-            explicit RegularInputFile(FILE * const fp);
-            virtual ~RegularInputFile() noexcept;
-
+            explicit RegularInputFile(FILE * const); //!< setup from fopen(...)
+            virtual ~RegularInputFile() noexcept;    //!< fclose
 
         private:
-            Y_Disable_Copy_And_Assign(RegularInputFile);
-            FileBuffer buffer;
+            Y_Disable_Copy_And_Assign(RegularInputFile);//!< discarding
+            FileBuffer buffer; //!< for buffering
         };
 
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! stdin
+        //
+        //
+        //______________________________________________________________________
         class StandarInputFile : public InputFile
         {
         public:
-            explicit StandarInputFile();
-            virtual ~StandarInputFile() noexcept;
+            explicit StandarInputFile();          //!< setup from stdin
+            virtual ~StandarInputFile() noexcept; //!< cleanup
 
         private:
-            Y_Disable_Copy_And_Assign(StandarInputFile);
+            Y_Disable_Copy_And_Assign(StandarInputFile); //!< discarding
         };
 
     }

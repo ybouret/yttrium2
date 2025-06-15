@@ -11,21 +11,42 @@ namespace Yttrium
 {
     namespace Libc { class InputFile; }
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Libc Input Stream
+    //
+    //
+    //__________________________________________________________________________
     class InputFile : public InputStream
     {
     public:
         class Code;
-        explicit InputFile(const char * const fileName);
-        explicit InputFile(const StdIn_ &);
-        virtual ~InputFile() noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+        explicit InputFile(const char * const fileName); //!< setup \param fileName fopen(fileName)
+        explicit InputFile(const StdIn_ &);              //!< setup from stdin
+        virtual ~InputFile() noexcept;                   //!< cleanup
 
+
+        //______________________________________________________________________
+        //
+        //
+        // Interfacae
+        //
+        //______________________________________________________________________
         virtual bool query(char &C);
         virtual void store(const char C);
         
 
     private:
-        Y_Disable_Copy_And_Assign(InputFile);
-        Libc::InputFile * const file;
+        Y_Disable_Copy_And_Assign(InputFile); //!< discarding
+        Libc::InputFile * const file;         //!< low-level file
     };
 
 }

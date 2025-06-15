@@ -21,15 +21,15 @@ namespace Yttrium
     class GradualContainer : public virtual Container, public Recyclable
     {
     protected:
-        explicit GradualContainer() noexcept;
+        explicit GradualContainer() noexcept; //!< setup
     public:
-        virtual ~GradualContainer() noexcept;
+        virtual ~GradualContainer() noexcept; //!< cleanup
 
-        virtual size_t capacity()  const noexcept = 0; //!< current capacity
-        virtual size_t available() const noexcept = 0; //!< current available space
-        
+        virtual size_t capacity()  const noexcept = 0; //!< \return current capacity
+        virtual size_t available() const noexcept = 0; //!< \return available space
+
     private:
-        Y_Disable_Copy_And_Assign(GradualContainer);
+        Y_Disable_Copy_And_Assign(GradualContainer); //!< discarding
     };
 
 }

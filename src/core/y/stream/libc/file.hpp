@@ -11,19 +11,46 @@ namespace Yttrium
     namespace Libc
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! low-level FILE wrapper
+        //
+        //
+        //______________________________________________________________________
         class File
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup
+            /**
+             \param userFile a valid FILE
+             \param closeOnQuit will call fclose iff true
+             */
             explicit File(FILE * const userFile,
                           const bool   closeOnQuit) noexcept;
+
+            //! cleanup
             virtual ~File() noexcept;
 
-            
-            FILE * const handle;
-            const bool   mustClose;
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            FILE * const handle;    //!< valid FILE
+            const bool   mustClose; //!< closing when destructing
 
         private:
-            Y_Disable_Copy_And_Assign(File);
+            Y_Disable_Copy_And_Assign(File); //!< discarding
         };
     }
 }

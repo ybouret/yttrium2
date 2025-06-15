@@ -60,6 +60,12 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
+
+        //! adjust using [pop|push]Tail
+        /**
+         \param newSize new size to reach
+         \param padding default value
+        */
         inline void adjust(size_t newSize, ParamType padding)
         {
             const size_t oldSize = this->size();

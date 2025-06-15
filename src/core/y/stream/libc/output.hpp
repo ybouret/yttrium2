@@ -12,32 +12,66 @@ namespace Yttrium
 {
     namespace Libc { class OutputFile; }
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Output FILE
+    //
+    //
+    //__________________________________________________________________________
     class OutputFile : public OutputStream
     {
     public:
         class Code;
-        explicit OutputFile(const char * const fileName, const bool append=false);
-        explicit OutputFile(const StdOut_ &);
-        explicit OutputFile(const StdErr_ &);
-        virtual ~OutputFile() noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
 
-        virtual void write(const char C);
-        virtual void flush();
+        //! open a disk FILE
+        /**
+         \param fileName file name
+         \param append   in append mode iff true
+         */
+        explicit OutputFile(const char * const fileName, const bool append=false);
+        explicit OutputFile(const StdOut_ &); //!< stdout
+        explicit OutputFile(const StdErr_ &); //!< stdin
+        virtual ~OutputFile() noexcept;       //!< cleanup
+
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
+        virtual void write(const char); //!< write a char
+        virtual void flush();           //!< flush attempt
 
 
     private:
-        Y_Disable_Copy_And_Assign(OutputFile);
-        Libc::OutputFile * const file;
+        Y_Disable_Copy_And_Assign(OutputFile); //!< discarding
+        Libc::OutputFile * const file;         //!< low-level file
     };
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Output File in append mode
+    //
+    //
+    //__________________________________________________________________________
     class AppendFile : public OutputFile
     {
     public:
-        explicit AppendFile(const char * const fileName);
-        virtual ~AppendFile() noexcept;
+        explicit AppendFile(const char * const); //!< setup
+        virtual ~AppendFile() noexcept;          //!< cleanup
 
     private:
-        Y_Disable_Copy_And_Assign(AppendFile);
+        Y_Disable_Copy_And_Assign(AppendFile); //!< discarding
     };
 
 }

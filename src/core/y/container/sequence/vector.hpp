@@ -286,6 +286,7 @@ built(0)
             return code->cxx[indx];
         }
 
+        //! remove existing tail object
         inline void popTail_() noexcept
         {
             assert(0!=code);

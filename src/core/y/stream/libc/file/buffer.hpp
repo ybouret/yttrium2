@@ -12,18 +12,44 @@ namespace Yttrium
 {
     namespace Libc
     {
+        //______________________________________________________________________
+        //
+        //! base class for file buffer
+        //______________________________________________________________________
         typedef Memory::BufferOutOf<Memory::Quanta> FileBufferType;
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Memory to bufferize FILE
+        //
+        //
+        //______________________________________________________________________
         class FileBuffer : public FileBufferType
         {
         public:
-            explicit FileBuffer();
-            virtual ~FileBuffer() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit FileBuffer();          //!< setup
+            virtual ~FileBuffer() noexcept; //!< cleanup
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! use memory to setvbuf
             void operator()(File &) noexcept;
 
         private:
-            Y_Disable_Copy_And_Assign(FileBuffer);
+            Y_Disable_Copy_And_Assign(FileBuffer); //!< discarding
         };
     }
 

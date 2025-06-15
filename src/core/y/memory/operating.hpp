@@ -91,6 +91,12 @@ namespace Yttrium
 
             }
 
+            //! initialize by duplication
+            /**
+             \param entry address of first target object
+             \param other address of first source object
+             \param count objects to build
+             */
             template <typename U>
             inline Operating(void    * const entry,
                              const U * const other,
@@ -168,7 +174,6 @@ namespace Yttrium
              \param target
              \param source
              \param indexx [1..count] indexing
-             \param params
              */
             template <typename U> static inline
             void XCopy(void * const target,
