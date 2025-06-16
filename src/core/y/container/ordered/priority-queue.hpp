@@ -9,10 +9,19 @@
 #include "y/container/ordered/prio-queue.hpp"
 #include "y/object/school-of.hpp"
 #include "y/threading/single-threaded-class.hpp"
+#include "y/calculus/safe-add.hpp"
 
 namespace Yttrium
 {
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Dynamic Priority Queue
+    //
+    //
+    //__________________________________________________________________________
     template <
     typename T,
     typename Comparator      = Sign::Comparator<T>,
@@ -20,21 +29,43 @@ namespace Yttrium
     class PriorityQueue : public Ordered<T,DynamicContainer>, public ThreadingPolicy
     {
     public:
-        typedef Memory::SchoolOf<T> SchoolType;
-        typedef PrioQueue<T>        PQueueType;
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        typedef Memory::SchoolOf<T> SchoolType; //!< alias
+        typedef PrioQueue<T>        PQueueType; //!< alias
+        Y_ARGS_DECL(T,Type);                    //!< aliases
         using typename ThreadingPolicy::Lock;
-        Y_ARGS_DECL(T,Type);
 
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+
+        //! setup empty
         inline explicit PriorityQueue() noexcept : code(0), compare() {}
+
+        //! cleanup
         inline virtual ~PriorityQueue() noexcept { release_(); }
 
-
+        //! duplicate \param other another queue
         inline PriorityQueue(const PriorityQueue &other) : code(0), compare()
         {
             Y_Must_Lock();
             if(other.code && other.code->size) code = new Code( *other.code );
         }
 
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
         inline virtual size_t size()      const noexcept {
             Y_Must_Lock();
             return code ? code->size : 0;
@@ -68,8 +99,7 @@ namespace Yttrium
                 }
                 else
                 {
-                    // TODO: check overflow
-                    Code * temp = new Code(n+code->count);
+                    Code * temp = new Code( Calculus::SafeAdd(n,code->count) );
                     temp->steal(*code);
                     delete code;
                     code = temp;
@@ -107,19 +137,33 @@ namespace Yttrium
             }
         }
 
+        //______________________________________________________________________
+        //
+        //
+        // Members
+        //
+        //______________________________________________________________________
+
     private:
-        class Code; Code * code;
+        class Code; Code * code; //!< internal code
     public:
-        Comparator         compare;
+        Comparator         compare; //!< comparator
 
     private:
-        Y_Disable_Assign(PriorityQueue);
+        Y_Disable_Assign(PriorityQueue); //!< aliases
 
+        //! release code
         inline void release_() noexcept {
             Y_Must_Lock();
             if(code) { delete code; code=0; }
         }
 
+        //______________________________________________________________________
+        //
+        //
+        //! memory+pqueue
+        //
+        //______________________________________________________________________
         class Code : public Object, public SchoolType, public PQueueType
         {
         public:
@@ -147,13 +191,11 @@ namespace Yttrium
                 }
             }
 
-
-
+            //! cleanup
             inline virtual ~Code() noexcept {}
 
-
         private:
-            Y_Disable_Assign(Code);
+            Y_Disable_Assign(Code); //!< discarding
         };
     };
 

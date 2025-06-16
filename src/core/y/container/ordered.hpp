@@ -52,7 +52,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         virtual void push(ParamType) = 0; //!< push object into container
-        virtual Type pop()           = 0; //!< remove top object
+        virtual Type pop()           = 0; //!< remove top object \return top content
 
         //______________________________________________________________________
         //
@@ -60,6 +60,8 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
+
+        //! syntactic helper \param rhs value to insert \return *this
         Ordered & operator<<(ParamType rhs) { push(rhs); return *this; }
 
 

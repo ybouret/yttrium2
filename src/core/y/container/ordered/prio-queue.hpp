@@ -16,13 +16,39 @@
 namespace Yttrium
 {
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Managing objects in given memory with given comparison
+    //
+    //
+    //__________________________________________________________________________
     template <typename T>
     class PrioQueue : public PQueue
     {
     public:
-        Y_ARGS_DECL(T,Type);
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        Y_ARGS_DECL(T,Type); //!< aliases
 
 
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+
+        //! setup from user's memory
+        /**
+         \param workspace zeroed memory space
+         \param numBlocks maximum objects to handle
+         */
         inline explicit PrioQueue(T * const    workspace,
                                   const size_t numBlocks) noexcept :
         PQueue(numBlocks),
@@ -32,7 +58,7 @@ namespace Yttrium
             assert(Memory::Stealth::Are0(workspace,numBlocks*sizeof(T)));
         }
 
-
+        //! cleanup
         virtual ~PrioQueue() noexcept
         {
             assert(Good(tree,size));
@@ -42,12 +68,25 @@ namespace Yttrium
             Coerce(capacity) = 0;
         }
 
+        //! print internal state
+        /**
+         \param os output stream
+         \param self *this
+         \return output stream
+         */
         inline friend std::ostream & operator<<(std::ostream &os, const PrioQueue &self)
         {
             return Core::Display(os,self.tree,self.size);
         }
 
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
 
+        //! steal content \param q stolen queue
         inline void steal(PrioQueue &q) noexcept
         {
             assert(this != &q);
@@ -57,6 +96,11 @@ namespace Yttrium
             Coerce(q.size) = 0;
         }
 
+        //! append value and restore state
+        /**
+         \param value value to insert
+         \param compare SignType compare(lhs,rhs)
+         */
         template <typename COMPARE>
         inline void push(ParamType value, COMPARE &compare)
         {
@@ -82,6 +126,7 @@ namespace Yttrium
             }
         }
 
+        //! \return top object
         inline ConstType peek() const noexcept
         {
             assert(size>0);
@@ -89,7 +134,11 @@ namespace Yttrium
             return tree[0];
         }
 
-
+        //! return and remove top object
+        /**
+         \param compare SignType compare(lhs,rhs)
+         \return top content
+         */
         template <typename COMPARE>
         inline Type pop(COMPARE &compare)
         {
@@ -134,10 +183,16 @@ namespace Yttrium
                 Memory::Stealth::DestructedAndZeroed( &tree[--Coerce(size)] );
         }
 
-        MutableType * const tree;
+        //______________________________________________________________________
+        //
+        //
+        // Members
+        //
+        //______________________________________________________________________
+        MutableType * const tree; //!< internal tree
 
     private:
-        Y_Disable_Copy_And_Assign(PrioQueue);
+        Y_Disable_Copy_And_Assign(PrioQueue); //!< discarding
     };
 
 }

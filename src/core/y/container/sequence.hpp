@@ -73,8 +73,10 @@ namespace Yttrium
             while(newSize<oldSize) pushTail(padding);
         }
 
+        //! syntactic helper \param rhs value to append \return *this
         Sequence & operator<<(ParamType rhs) { pushTail(rhs); return *this; }
 
+        //! syntactic helper \param lhs value to prepend \return *this
         Sequence& operator>>(ParamType lhs) { pushHead(lhs); return *this; }
 
     private:

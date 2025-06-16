@@ -13,6 +13,7 @@
 #include "y/memory/stealth.hpp"
 #include "y/type/destroy.hpp"
 #include "y/type/destruct.hpp"
+#include "y/calculus/safe-add.hpp"
 
 namespace Yttrium
 {
@@ -150,8 +151,8 @@ built(0)
                 }
                 else
                 {
-                    // TODO: check overflow
-                    Code * temp = new Code(n+code->count);  assert(temp->count>code->count);
+                    Code * temp = new Code( Calculus::SafeAdd(n,code->count) );
+                    assert(temp->count>code->count);
                     Memory::Stealth::Copy(temp->entry,code->entry,built*sizeof(T));
                     delete code;
                     code = temp;
@@ -259,6 +260,7 @@ built(0)
             {
             }
 
+            //! cleanup
             inline virtual ~Code() noexcept {}
 
         private:
