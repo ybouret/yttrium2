@@ -7,7 +7,7 @@
 #include <cstring>
 #include <iostream>
 
-Y_UTEST_DECL(64)
+Y_UTEST_DECL(128)
 {
     Y_UTEST(exception);
     Y_UTEST(hexadecimal);
@@ -95,6 +95,7 @@ Y_UTEST_DECL(64)
     Y_UTEST(ptr_arc);
 
     Y_UTEST(info_bwt);
+    Y_UTEST(info_stream);
 }
 Y_UTEST_EXEC()
 

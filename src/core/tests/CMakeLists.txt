@@ -127,5 +127,6 @@ Y_UTEST(ptr:arc)
 
 #information
 Y_UTEST(info:bwt)
+Y_UTEST(info:stream)
 
 

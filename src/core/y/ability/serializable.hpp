@@ -30,7 +30,7 @@ namespace Yttrium
         virtual ~Serializable() noexcept; //!< cleanup
 
         //! portable encoding \return written bytes
-        virtual size_t serialize(OutputStream &) noexcept = 0;
+        virtual size_t serialize(OutputStream &) const = 0;
 
     private:
         Y_Disable_Copy_And_Assign(Serializable); //!< discarding

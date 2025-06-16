@@ -15,6 +15,7 @@ namespace Yttrium
             explicit StreamCipher() noexcept;
             virtual ~StreamCipher() noexcept;
 
+            virtual void    restart()                 noexcept = 0;
             virtual uint8_t operator()(const uint8_t) noexcept = 0;
             
         private:

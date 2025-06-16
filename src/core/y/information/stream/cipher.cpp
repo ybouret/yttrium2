@@ -1,5 +1,5 @@
 
-#include "y/information/stream-cipher.hpp"
+#include "y/information/stream/cipher.hpp"
 
 namespace Yttrium
 {
