@@ -68,7 +68,7 @@ namespace Yttrium
             //! store previously acquired block
             void  store(void * const) noexcept;
 
-            //! return to memory
+            //! return directly to memory
             void  purge(void * const) noexcept;
 
 

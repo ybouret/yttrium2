@@ -4,6 +4,8 @@
 #include "y/memory/small/guild.hpp"
 #include "y/type/destruct.hpp"
 
+#include "y/memory/io/zombies.hpp"
+
 namespace Yttrium
 {
 
@@ -68,19 +70,23 @@ namespace Yttrium
             Y_Disable_Assign(HeavyNode);
         };
 
+
+        //class Direct;
+        //class Warped;
+
         template <typename NODE>
-        class NoCache
+        class DirectCacheOf
         {
         public:
             typedef NODE     NodeType;
             typedef typename NodeType::ParamType ParamType;
 
-            inline NoCache() : guild( sizeof(NODE) )
+            inline DirectCacheOf() : guild( sizeof(NODE) )
             {
                 assert( guild.getBlockSize() >= sizeof(NODE) );
             }
 
-            inline ~NoCache() noexcept
+            inline ~DirectCacheOf() noexcept
             {
             }
 
@@ -95,6 +101,11 @@ namespace Yttrium
                 guild.releaseBlock( Destructed(node) );
             }
 
+            inline void remove(NodeType * const node) noexcept
+            {
+                banish(node);
+            }
+
             inline NodeType * mirror(const NodeType * const node)
             {
                 assert(0!=node);
@@ -103,15 +114,58 @@ namespace Yttrium
                 catch(...) { guild.releaseBlock(addr); throw; }
             }
 
-
-
-
         private:
-            Y_Disable_Copy_And_Assign(NoCache);
+            Y_Disable_Copy_And_Assign(DirectCacheOf);
             Memory::Small::Guild guild;
         };
 
-        // Base : releaseable, no cache
+        template <typename NODE>
+        class WarpedCacheOf
+        {
+        public:
+            typedef NODE     NodeType;
+            typedef typename NodeType::ParamType ParamType;
+
+            inline WarpedCacheOf() : zpool( sizeof(NODE) )
+            {
+            }
+
+            inline ~WarpedCacheOf() noexcept
+            {
+            }
+
+            inline NodeType * summon(ParamType args) {
+                void * const addr = zpool.query();
+                try { return new (addr) NodeType(args); }
+                catch(...) { zpool.store(addr); throw; }
+            }
+
+            inline void banish(NodeType * const node) noexcept
+            {
+                zpool.store( Destructed(node) );
+            }
+
+            inline void remove(NodeType * const node) noexcept
+            {
+                zpool.purge( Destructed(node) );
+            }
+
+            inline NodeType * mirror(const NodeType * const node)
+            {
+                assert(0!=node);
+                void * const addr = zpool.query();
+                try { return new (addr) NodeType(*node); }
+                catch(...) { zpool.store(addr); throw; }
+            }
+
+        private:
+            Memory::Zombies zpool;
+        };
+
+        
+
+
+        // Bare : releaseable, no cache
         // Solo : recyclable, releaseable, own cache
         // Coop : recyclable, releaseable, shared cache
 
@@ -131,7 +185,7 @@ Y_UTEST(protean_list)
 
     typedef Protean::HeavyNode<int> HNode;
 
-    Protean::NoCache<HNode> no_cache;
+    Protean::DirectCacheOf<HNode> no_cache;
 
     HNode *node = no_cache.summon(3);
     std::cerr << **node << std::endl;
