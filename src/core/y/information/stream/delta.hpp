@@ -52,7 +52,7 @@ namespace Yttrium
                 //______________________________________________________________
                 uint8_t      last;               //!< for implementation
             private:
-                Y_Disable_Copy_And_Assign(Common);
+                Y_Disable_Copy_And_Assign(Common); //!< discarding
             };
 
             //__________________________________________________________________
@@ -64,11 +64,12 @@ namespace Yttrium
             class Encoder : public Common
             {
             public:
-                explicit Encoder();
-                virtual ~Encoder() noexcept;
+                explicit Encoder();           //!< setup
+                virtual ~Encoder() noexcept;  //!< cleanup
+
                 virtual uint8_t operator()(const uint8_t ) noexcept;
             private:
-                Y_Disable_Copy_And_Assign(Encoder);
+                Y_Disable_Copy_And_Assign(Encoder); //!< discarding
             };
 
             //__________________________________________________________________
@@ -80,13 +81,13 @@ namespace Yttrium
             class Decoder : public Common
             {
             public:
-                explicit Decoder();
-                virtual ~Decoder() noexcept;
+                explicit Decoder();          //!< setup
+                virtual ~Decoder() noexcept; //!< cleanup
 
                 virtual uint8_t operator()(const uint8_t ) noexcept;
 
             private:
-                Y_Disable_Copy_And_Assign(Decoder);
+                Y_Disable_Copy_And_Assign(Decoder); //!< discarding
             };
         };
 

@@ -9,15 +9,7 @@ namespace Yttrium
     namespace Information
     {
 
-        template <typename CLASS>
-        class Codec
-        {
-        public:
-
-        private:
-            Y_Disable_Copy_And_Assign(Codec);
-        };
-
+        
 
     }
 

@@ -34,29 +34,47 @@ namespace Yttrium
     const uint32_t UTF8::MaxCodePoint  = Table[Count-1].tail;
 
 
-
     UTF8:: Encoding:: Encoding(const uint32_t cp) :
     size(0),
     byte()
     {
         memset( Coerce(byte),0,sizeof(byte));
+
+        //----------------------------------------------------------------------
+        //
+        // look for bytes
+        //
+        //----------------------------------------------------------------------
         for(unsigned i=0;i<Count;++i)
         {
             const CodePoints &code = Table[i];
-            if(cp>code.tail)
-                continue;
 
-            // first byte
+            if(cp>code.tail)
+                continue; // next codepoints
+
+            //------------------------------------------------------------------
+            // encode first byte
+            //------------------------------------------------------------------
             Coerce(byte[0]) = uint8_t( code.infoBits | code.data(0,cp) );
 
-            // bulk bytes
+            //------------------------------------------------------------------
+            // encode bulk bytes
+            //------------------------------------------------------------------
             for(unsigned j=1;j<=i;++j)
                 Coerce(byte[j]) = uint8_t( BulkInfo | code.data(j,cp) );
 
+            //------------------------------------------------------------------
+            // save size
+            //------------------------------------------------------------------
             Coerce(size) = ++i;
             return;
         }
 
+        //----------------------------------------------------------------------
+        //
+        // not possible
+        //
+        //----------------------------------------------------------------------
         assert(cp>MaxCodePoint);
         {
             const Hexadecimal hx(cp,Concise);
@@ -78,10 +96,11 @@ namespace Yttrium
         Coerce(size) = 0;
     }
 
-    //
+}
 
+namespace Yttrium
+{
 
-    
     UTF8::Decoding:: Decoding() noexcept :
     missing(-1),
     decoded(0),
