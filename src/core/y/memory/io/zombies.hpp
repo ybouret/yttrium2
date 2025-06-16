@@ -41,6 +41,9 @@ namespace Yttrium
              */
             explicit Zombies(const size_t userBlockSize);
 
+            //! shared copy
+            Zombies(const Zombies &other) noexcept;
+
             //! cleanup
             virtual ~Zombies() noexcept;
 
@@ -73,7 +76,7 @@ namespace Yttrium
 
 
         private:
-            Y_Disable_Copy_And_Assign(Zombies); //!< discarding
+            Y_Disable_Assign(Zombies); //!< discarding
             Code * const code;                  //!< internal code, pool and metricss
 
         };

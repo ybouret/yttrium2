@@ -1,7 +1,7 @@
 
 #include "y/memory/io/zombies.hpp"
 #include "y/memory/small/guild.hpp"
-#include "y/object.hpp"
+#include "y/object/counted.hpp"
 #include "y/core/linked/pool.hpp"
 #include "y/core/linked/list.hpp"
 #include "y/core/linked/convert/list-to-pool.hpp"
@@ -16,10 +16,11 @@ namespace Yttrium
     namespace Memory
     {
 
-        class Zombies:: Code : public Object
+        class Zombies:: Code : public CountedObject
         {
         public:
             inline Code(const size_t userBlockSize) :
+            CountedObject(),
             zpool(),
             bytes(0),
             guild( MaxOf<size_t>(userBlockSize,sizeof(Page)) )
@@ -70,15 +71,29 @@ namespace Yttrium
         };
 
         Zombies:: Zombies(const size_t userBlockSize) :
+        Caching(),
         code( new Code(userBlockSize) )
         {
-
+            code->withhold();
         }
+
+        Zombies:: Zombies(const Zombies &otherz) noexcept :
+        Caching(),
+        code( otherz.code )
+        {
+            assert(0!=code);
+            code->withhold();
+        }
+
+
+
+
 
         Zombies:: ~Zombies() noexcept
         {
             assert(0!=code);
-            Destroy(code);
+            if(code->liberate())
+                Destroy(code);
         }
 
         void Zombies:: gc(const uint8_t amount) noexcept
