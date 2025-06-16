@@ -163,8 +163,7 @@ namespace Yttrium
         };
 
         
-
-
+        
         // Bare : releaseable, no cache
         // Solo : recyclable, releaseable, own cache
         // Coop : recyclable, releaseable, shared cache
