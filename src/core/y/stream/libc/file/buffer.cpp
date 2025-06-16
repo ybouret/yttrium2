@@ -13,7 +13,7 @@ namespace Yttrium
         {
         }
 
-        void FileBuffer:: operator()(File &f) noexcept
+        void FileBuffer:: bufferize(File &f) noexcept
         {
             (void) setvbuf(f.handle, (char *)rw(), _IOFBF, BUFSIZ);
         }

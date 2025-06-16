@@ -34,6 +34,13 @@ namespace Yttrium
         (*this) << uint8_t(c);
     }
 
+    void StreamQueue:: frame(const void * const addr, const size_t size)
+    {
+        assert( Good(addr,size) );
+        const uint8_t * p = static_cast<const uint8_t *>(addr);
+        for(size_t i=size;i>0;--i) (*this) << *(p++);
+    }
+
     bool StreamQueue:: query(char &C)
     {
 #if 1

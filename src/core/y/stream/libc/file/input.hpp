@@ -65,7 +65,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class RegularInputFile : public InputFile
+        class RegularInputFile : public FileBuffer, public InputFile
         {
         public:
             explicit RegularInputFile(FILE * const); //!< setup from fopen(...)
@@ -73,7 +73,6 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(RegularInputFile);//!< discarding
-            FileBuffer buffer; //!< for buffering
         };
 
 

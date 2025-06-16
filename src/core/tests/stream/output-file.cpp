@@ -9,8 +9,15 @@ using namespace Yttrium;
 
 Y_UTEST(stream_output_file)
 {
-    OutputFile fp("output.dat");
-    
+    {
+        OutputFile fp("output.dat");
+        fp.write('y');
+        fp.frame("hello",5);
+    }
+
+
+
+
 
 }
 Y_UDONE()

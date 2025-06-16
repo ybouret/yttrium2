@@ -55,10 +55,10 @@ namespace Yttrium
         }
 
         RegularInputFile:: RegularInputFile(FILE * const fp) :
-        InputFile(fp,true),
-        buffer()
+        FileBuffer(),
+        InputFile(fp,true)
         {
-            buffer(*this);
+            bufferize(*this);
         }
     }
 

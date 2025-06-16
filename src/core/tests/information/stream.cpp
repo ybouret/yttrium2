@@ -1,5 +1,7 @@
 
 #include "y/information/stream/delta.hpp"
+#include "y/information/stream/move-to-front.hpp"
+
 #include "y/memory/stealth.hpp"
 #include "y/utest/run.hpp"
 
@@ -55,9 +57,13 @@ Y_UTEST(info_stream)
     Information::Delta::Encoder deltaEnc;
     Information::Delta::Decoder deltaDec;
 
+    Information::MoveToFront::Encoder mtfEnc;
+    Information::MoveToFront::Decoder mtfDec;
+
     for(int i=1;i<argc;++i)
     {
-        runCodec("Delta", deltaEnc, deltaDec,argv[i]);
+        runCodec("Delta", deltaEnc, deltaDec, argv[i]);
+        runCodec("MTF",   mtfEnc,    mtfDec,  argv[i]);
     }
 }
 Y_UDONE()

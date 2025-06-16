@@ -40,6 +40,9 @@ namespace Yttrium
         //______________________________________________________________________
         virtual void       write(const char);
         virtual void       flush();
+        virtual void       frame(const void * const, const size_t);
+
+
         virtual bool       query(char &);
         virtual void       store(const char);
 

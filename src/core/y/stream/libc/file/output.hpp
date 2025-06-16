@@ -46,9 +46,9 @@ namespace Yttrium
             // methods
             //
             //__________________________________________________________________
-            void flush();              //!< fflush
-            void write(const char C);  //!< fwrite \param C char to write
-
+            void flush();                               //!< fflush
+            void write(const char);                     //!< fwrite 1 char
+            void frame(const void *const,const size_t); //!< fwrite given frame
         private:
             Y_Disable_Copy_And_Assign(OutputFile); //!< discarding
         };
@@ -62,7 +62,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class RegularOutputFile : public OutputFile
+        class RegularOutputFile : public FileBuffer, public OutputFile
         {
         public:
             explicit RegularOutputFile(FILE * const); //!< setup from fopen
@@ -70,7 +70,6 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(RegularOutputFile); //!< discarding
-            FileBuffer buffer; //!< for FILE buffering
         };
 
         //______________________________________________________________________

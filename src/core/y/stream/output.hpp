@@ -38,8 +38,9 @@ namespace Yttrium
         //
         //______________________________________________________________________
 
-        virtual void write(const char) = 0; //!< write one char
-        virtual void flush()           = 0; //!< flush any internal buffer
+        virtual void write(const char)                       = 0; //!< write one char
+        virtual void flush()                                 = 0; //!< flush any internal buffer
+        virtual void frame(const void * const, const size_t) = 0; //!< write a frame of data
 
         //______________________________________________________________________
         //

@@ -46,7 +46,7 @@ namespace Yttrium
             //__________________________________________________________________
 
             //! use memory to setvbuf
-            void operator()(File &) noexcept;
+            void bufferize(File &) noexcept;
 
         private:
             Y_Disable_Copy_And_Assign(FileBuffer); //!< discarding

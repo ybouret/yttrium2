@@ -49,7 +49,7 @@ namespace Yttrium
         //______________________________________________________________________
         virtual void write(const char); //!< write a char
         virtual void flush();           //!< flush attempt
-
+        virtual void frame(const void * const, const size_t);
 
     private:
         Y_Disable_Copy_And_Assign(OutputFile); //!< discarding

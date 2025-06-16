@@ -24,12 +24,13 @@ namespace Yttrium
 
 
             Y_Giant_Lock();
-            FILE * const fp = fopen(fileName, append ? "ab" : "rb");
+            const char * const how = append ? "ab" : "wb";
+            FILE * const       fp  = fopen(fileName,how);
             if(!fp)
-                throw Libc::Exception(errno,"fopen(%s)", fileName);
+                throw Libc::Exception(errno,"fopen(%s,%s)", fileName,how);
 
             try { return new Libc::RegularOutputFile(fp); }
-            catch(...) { fclose(fp); throw; }
+            catch(...) { (void)fclose(fp); throw; }
         }
     }
 
@@ -62,6 +63,12 @@ namespace Yttrium
     {
         assert(0!=file);
         file->write(C);
+    }
+
+    void OutputFile:: frame(const void * const addr, const size_t size)
+    {
+        assert(0!=file);
+        file->frame(addr,size);
     }
 
     void OutputFile:: flush()
