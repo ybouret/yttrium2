@@ -28,7 +28,7 @@ Y_UTEST(utf8_api)
     }
 
     {
-        const uint32_t cp = 0x20AC; // euro
+        const uint32_t       cp = 0x20AC; // euro
         const UTF8::Encoding enc(cp);
         std::cerr << enc << std::endl;
         Y_CHECK(3==enc.size);
@@ -38,18 +38,22 @@ Y_UTEST(utf8_api)
 
     }
 
+    {
+        const uint32_t       cp = 0x1D11E; // G key
+        const UTF8::Encoding enc(cp);
+        std::cerr << enc << std::endl;
+        Y_CHECK(4==enc.size);
+        Y_CHECK(0xF0==enc.byte[0]);
+        Y_CHECK(0x9D==enc.byte[1]);
+        Y_CHECK(0x84==enc.byte[2]);
+        Y_CHECK(0x9E==enc.byte[3]);
+    }
 
-    return 0;
-    
     for(uint32_t i=0;i<UTF8::MaxCodePoint;++i)
     {
         const UTF8::Encoding enc(i);
     }
-#if 0
-    const uint32_t       euro_cp  = 0x20AC;
-    const UTF8::Encoding euro_utf(euro_cp);
-    std::cerr << (char *)euro_utf.byte << std::endl;
-#endif
+
 
 }
 Y_UDONE()

@@ -13,10 +13,10 @@ namespace Yttrium
 
     const UTF8::CodePoints UTF8::Table[Count] =
     {
-        { 0x0000,   0x007F,   0x80, 0x00, { 0,  0, 0, 0 }, { 0xff, 0,    0, 0 } },
-        { 0x0080,   0x07FF,   0xE0, 0xC0, { 6,  0, 0, 0 }, { 0x1f, 0x3f, 0, 0 } },
-        { 0x0800,   0xFFFF,   0xF0, 0xE0, { 12, 6, 0, 0 }, { 0x0f, 0x3f, 0x3f, 0 }, },
-        { 0x010000, 0x10FFFF, 0xF8, 0xF0, { 0,  0, 0, 0 }, { 0, 0, 0, 0 }, }
+        { 0x0000,   0x007F,   0x80, 0x00, { 0,   0, 0, 0 }, { 0xff, 0x00, 0x00, 0x00 } },
+        { 0x0080,   0x07FF,   0xE0, 0xC0, { 6,   0, 0, 0 }, { 0x1f, 0x3f, 0x00, 0x00 } },
+        { 0x0800,   0xFFFF,   0xF0, 0xE0, { 12,  6, 0, 0 }, { 0x0f, 0x3f, 0x3f, 0x00 }, },
+        { 0x010000, 0x10FFFF, 0xF8, 0xF0, { 18, 12, 6, 0 }, { 0x07, 0x3f, 0x3f, 0x3f }, }
     };
 
     uint8_t  UTF8::CodePoints:: data(const unsigned j, const uint32_t cp) const noexcept
@@ -38,7 +38,6 @@ namespace Yttrium
     size(0),
     byte()
     {
-        std::cerr << "cp=" << Hexadecimal(cp) << std::endl;
         for(unsigned i=0;i<Count;++i)
         {
             const CodePoints &code = Table[i];
