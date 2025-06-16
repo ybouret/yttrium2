@@ -5,7 +5,7 @@
 #define Y_DynamicContainer_Included 1
 
 #include "y/container/gradual.hpp"
-#include "y/ability/releasable.hpp"
+#include "y/ability/collectable.hpp"
 
 namespace Yttrium
 {

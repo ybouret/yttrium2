@@ -127,7 +127,8 @@ namespace Yttrium
         template <
         typename NODE,
         typename CacheThreading>
-        class WarpedCacheOf : public CacheThreading
+        class WarpedCacheOf :
+        public CacheThreading, public Caching
         {
         public:
             typedef NODE     NodeType;
@@ -172,6 +173,24 @@ namespace Yttrium
                 catch(...) { zpool.store(addr); throw; }
             }
 
+            inline virtual void gc(const uint8_t amount) noexcept
+            {
+                Y_Must_Lock();
+                zpool.gc(amount);
+            }
+
+            inline virtual size_t count() const noexcept
+            {
+                Y_Must_Lock();
+                return zpool.count();
+            }
+
+            inline void cache(const size_t n)
+            {
+                Y_Must_Lock();
+                zpool.cache(n);
+            }
+
         private:
             Memory::Zombies zpool;
         };
@@ -186,7 +205,6 @@ namespace Yttrium
 /**/   CONTAINER(),\
 /**/   ThreadingPolicy(),\
 /**/   Ingress< Core::ListOf<NODE> >(),\
-/**/   Releasable(),\
 /**/   list()
 
         template <
@@ -197,8 +215,7 @@ namespace Yttrium
         class ListProto :
         public CONTAINER,
         public ThreadingPolicy,
-        public Ingress< Core::ListOf<NODE> >,
-        public Releasable
+        public Ingress< Core::ListOf<NODE> >
         {
         public:
             typedef Core::ListOf<NODE>             ListType;
@@ -240,7 +257,6 @@ namespace Yttrium
             virtual size_t size() const noexcept { return list.size; }
 
 
-            virtual void release() noexcept { release_(); }
 
         protected:
             inline explicit ListProto() :
@@ -259,12 +275,13 @@ namespace Yttrium
 
             inline virtual typename Entrance::ConstInterface & locus() const noexcept { return list; }
 
+
+        protected:
             inline void release_() noexcept {
                 Y_Must_Lock();
                 while(list.size>0) pool.remove( list.popTail() );
             }
 
-        protected:
             inline void duplicate(const ListProto &other)
             {
                 volatile Lock primary(*this), replica(other);
@@ -288,7 +305,9 @@ namespace Yttrium
         template <
         typename NODE,
         typename ThreadingPolicy>
-        class BareList : public ListProto<NODE,DirectCacheOf<NODE>,Container,ThreadingPolicy>
+        class BareList :
+        public ListProto<NODE,DirectCacheOf<NODE>,Container,ThreadingPolicy>,
+        public Releasable
         {
         public:
             typedef DirectCacheOf<NODE>                                PoolType;
@@ -296,9 +315,11 @@ namespace Yttrium
 
             inline virtual ~BareList() noexcept {}
 
+            inline virtual void release() noexcept { this->release_(); }
+
         protected:
-            inline explicit BareList() : CoreType() {}
-            inline BareList(const BareList &other) : CoreType()
+            inline explicit BareList() : CoreType(), Releasable() {}
+            inline BareList(const BareList &other) : CoreType(), Releasable()
             {
                 this->duplicate(other);
             }
@@ -344,6 +365,78 @@ namespace Yttrium
         };
 
 
+        // the cache access is always behind class lock
+        template <
+        typename NODE,
+        typename ThreadingPolicy>
+        class SoloList :
+        public ListProto<NODE,WarpedCacheOf<NODE,SingleThreadedClass>,DynamicContainer,ThreadingPolicy>
+        {
+        public:
+            typedef WarpedCacheOf<NODE,SingleThreadedClass>                   PoolType;
+            typedef ListProto<NODE,PoolType,DynamicContainer,ThreadingPolicy> CoreType;
+            using CoreType::pool;
+            using CoreType::list;
+            typedef typename CoreType::Lock Lock;
+
+
+            inline virtual ~SoloList() noexcept {}
+
+            inline virtual size_t capacity() const noexcept
+            {
+                Y_Must_Lock();
+                return list.size+pool.count();
+            }
+
+            inline virtual size_t available() const noexcept
+            {
+                Y_Must_Lock();
+                return pool.count();
+            }
+
+            inline virtual void reserve(const size_t n)
+            {
+                Y_Must_Lock();
+                pool.cache(n);
+            }
+
+            inline virtual void free() noexcept
+            {
+                Y_Must_Lock();
+                while(list.size>0)
+                    pool.banish( list.popTail() );
+            }
+
+            inline virtual void release() noexcept { this->release_(); }
+
+
+        protected:
+            inline explicit SoloList() : CoreType() {}
+            inline SoloList(const SoloList &other) : CoreType()
+            {
+                this->duplicate(other);
+            }
+        private:
+            Y_Disable_Assign(SoloList);
+        };
+
+        template <typename T, typename ThreadingPolicy = SingleThreadedClass>
+        class HeavySoloList : public SoloList<HeavyNode<T>,ThreadingPolicy>
+        {
+        public:
+            typedef HeavyNode<T>                       NodeType;
+            typedef SoloList<NodeType,ThreadingPolicy> BaseType;
+
+            inline explicit HeavySoloList() : BaseType() {}
+            inline virtual ~HeavySoloList() noexcept {}
+            inline HeavySoloList(const HeavySoloList &other) : BaseType(other)
+            {
+            }
+
+        private:
+            Y_Disable_Assign(HeavySoloList);
+        };
+
 
 
     }
@@ -369,18 +462,25 @@ Y_UTEST(protean_list)
         no_cache.banish(replica);
     }
 
-    Protean::LightBareList<int> lb;
-    Protean::HeavyBareList<int> hb;
+    {
+        Protean::LightBareList<int> lb;
+        Protean::HeavyBareList<int> hb;
 
-    int arr[3] = { 1, 2, 3 };
+        int arr[3] = { 1, 2, 3 };
 
-    lb.pushTail(arr[0]);
-    lb.pushTail(arr[1]);
-    std::cerr << lb << std::endl;
+        lb.pushTail(arr[0]);
+        lb.pushTail(arr[1]);
+        std::cerr << lb << std::endl;
 
-    hb.pushTail(1);
-    hb.pushHead(2);
-    std::cerr << hb << std::endl;
+        hb.pushTail(1);
+        hb.pushHead(2);
+        std::cerr << hb << std::endl;
+    }
+
+    {
+        Protean::HeavySoloList<int> hb;
+
+    }
 
 
 }
