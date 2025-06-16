@@ -49,9 +49,19 @@ Y_UTEST(utf8_api)
         Y_CHECK(0x9E==enc.byte[3]);
     }
 
+    std::cerr << "Full Encode/Decode" << std::endl;
+    UTF8::Decoding decode;
     for(uint32_t i=0;i<UTF8::MaxCodePoint;++i)
     {
-        const UTF8::Encoding enc(i);
+        decode.restart();
+        const UTF8::Encoding enc(i); Y_ASSERT(enc.size>=1);
+        const size_t         top = enc.size-1;
+        for(size_t i=0;i<top;++i)
+        {
+            Y_ASSERT( ! decode(enc.byte[i]) );
+        }
+        Y_ASSERT( decode(enc.byte[top] ) );
+        Y_ASSERT(i == *decode);
     }
 
 
