@@ -4,7 +4,39 @@
 #include "y/hexadecimal.hpp"
 #include "y/binary.hpp"
 
+#include <cstring>
+
 using namespace Yttrium;
+
+namespace
+{
+
+    
+    class uVec
+    {
+    public:
+        explicit uVec() noexcept : size(1), data()
+        {
+            memset(data,0,sizeof(data));
+        }
+
+        inline ~uVec() noexcept
+        {
+        }
+
+        uint32_t operator*() const
+        {
+            UTF8::Decoding dec;
+            return dec(data,size);
+        }
+
+    private:
+        size_t  size;
+        uint8_t data[4];
+    };
+
+}
+
 
 Y_UTEST(utf8_api)
 {

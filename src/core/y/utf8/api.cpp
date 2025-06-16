@@ -205,4 +205,23 @@ namespace Yttrium
         return decoded;
     }
 
+
+    uint32_t UTF8:: Decoding:: operator()(const uint8_t * byte, size_t size)
+    {
+        assert(0!=byte);
+        assert(size>=1);
+        Decoding &dec = *this;
+        dec.restart();
+        while(--size > 0 )
+        {
+            if( dec(*(byte++)))
+                throw Specific::Exception(CallSign,"decoding premature return");
+        }
+        if( !dec( *byte) )
+            throw Specific::Exception(CallSign,"unfinished decoding");
+        assert(0==missing);
+        return decoded;
+    }
+
+
 }
