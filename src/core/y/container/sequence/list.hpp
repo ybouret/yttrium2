@@ -143,7 +143,7 @@ namespace Yttrium
         inline virtual void pushTail(ParamType value)
         {
             Y_Must_Lock();
-            list.pushTail( pool.template conjure<ConstType>(value) );
+            list.pushTail( pool.template summon<ConstType>(value) );
         }
 
         inline virtual void popTail() noexcept
@@ -157,7 +157,7 @@ namespace Yttrium
         inline virtual void pushHead(ParamType value)
         {
             Y_Must_Lock();
-            list.pushHead( pool.template conjure<ConstType>(value) );
+            list.pushHead( pool.template summon<ConstType>(value) );
         }
 
         inline virtual void popHead() noexcept

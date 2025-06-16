@@ -32,7 +32,7 @@ namespace Yttrium
         Char * Char:: New(const uint8_t code)
         {
             static Manager & mgr = Manager::Instance();
-            return mgr.conjure<uint8_t>(code);
+            return mgr.summon<uint8_t>(code);
         }
 
         void Char:: Delete(Char *const ch) noexcept
@@ -46,7 +46,7 @@ namespace Yttrium
         {
             assert(0!=ch); assert(Manager::Exists());
             static Manager &mgr = Manager::Location();
-            return mgr.recover(*ch);
+            return mgr.mirror(*ch);
         }
 
     }

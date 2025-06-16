@@ -21,6 +21,7 @@ sorting
 ptr
 information
 utf8
+protean
 )
 
 
@@ -132,4 +133,8 @@ Y_UTEST(info:stream)
 
 #utf8
 Y_UTEST(utf8:api)
+
+#protean
+Y_UTEST(protean:list)
+
 

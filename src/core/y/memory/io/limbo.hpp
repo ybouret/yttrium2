@@ -40,13 +40,13 @@ namespace Yttrium
 
             inline virtual ~Limbo() noexcept {}
 
-            inline Type *conjure() {
+            inline Type *summon() {
                 Y_Must_Lock();
                 Y_Memory_Limbo( return new (addr) Type() );
             }
 
             template <typename U>
-            inline Type * conjure( typename TypeTraits<U>::ParamType u )
+            inline Type * summon( typename TypeTraits<U>::ParamType u )
             {
                 Y_Must_Lock();
                 Y_Memory_Limbo( return new (addr) Type(u) );
@@ -67,8 +67,7 @@ namespace Yttrium
 
 
 
-
-            inline Type *recover(ConstType &object)
+            inline Type *mirror(ConstType &object)
             {
                 Y_Must_Lock();
                 Y_Memory_Limbo( return new (addr) Type(object) );

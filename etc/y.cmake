@@ -225,6 +225,7 @@ function(Y_CreateTest THE_TEST)
 	list( APPEND SRC ${src})
 
 	# sub-dir sources
+	list(SORT ARGN)
 	foreach(SUBDIR IN LISTS ARGN)
 		message( STATUS "    [${SUBDIR}]")
 		file( GLOB src "${SUBDIR}/*.cpp")
