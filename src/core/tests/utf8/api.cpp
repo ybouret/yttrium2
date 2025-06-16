@@ -2,6 +2,7 @@
 #include "y/calculus/bits-for.hpp"
 #include "y/utest/run.hpp"
 #include "y/hexadecimal.hpp"
+#include "y/binary.hpp"
 
 using namespace Yttrium;
 
@@ -18,7 +19,7 @@ Y_UTEST(utf8_api)
         const uint32_t cp = 0xC0;
         const UTF8::Encoding enc(cp);
         std::cerr << enc << std::endl;
-
+        std::cerr << Binary(enc.byte[0]) << ' ' << Binary(enc.byte[1]) << std::endl;
     }
 
     return 0;
