@@ -139,7 +139,7 @@ namespace Yttrium
                 // errors
                 //
                 //--------------------------------------------------------------
-            case 0:  throw Specific::Exception(CallSign,"already decoded %s", Hexadecimal(decoded).c_str());
+            case 0:  throw Specific::Exception(CallSign,"already decoded codepoint=%s", Hexadecimal(decoded).c_str());
             default: throw Specific::Exception(CallSign,"corrupted decoding status: missing=%d",missing);
 
                 //--------------------------------------------------------------
@@ -201,7 +201,7 @@ namespace Yttrium
 
     uint32_t UTF8:: Decoding:: operator*() const
     {
-        if(0!=missing) throw Specific::Exception(CallSign,"not decoded");
+        if(0!=missing) throw Specific::Exception(CallSign,"no access when not decoded");
         return decoded;
     }
 
