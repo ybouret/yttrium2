@@ -12,9 +12,18 @@
 namespace Yttrium
 {
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Binary to string representation
+    //
+    //
+    //__________________________________________________________________________
     class Binary : public LegacyString
     {
     public:
+        //! setup \param x integral value setting the bit count
         template <typename T>
         inline Binary(const T &x) noexcept :
         LegacyString(),
@@ -38,17 +47,18 @@ namespace Yttrium
             }
         }
 
-        virtual ~Binary() noexcept;
-        Binary(const Binary &) noexcept;
-        
+        virtual ~Binary() noexcept;      //!< cleanup
+        Binary(const Binary &) noexcept; //!< duplicate
+
         virtual const char * c_str() const noexcept;
 
     private:
-        Y_Disable_Assign(Binary);
-        const size_t count;
-        char         array[64+sizeof(void*)];
+        Y_Disable_Assign(Binary); //!< discarding
+        void ldz() noexcept;      //!< clear array
 
-        void ldz() noexcept;
+        const size_t count;                   //!< bit count
+        char         array[64+sizeof(void*)]; //!< encoded string
+
     };
 }
 
