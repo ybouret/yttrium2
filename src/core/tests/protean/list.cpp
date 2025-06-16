@@ -6,6 +6,12 @@
 
 #include "y/memory/io/zombies.hpp"
 
+#include "y/core/linked/list.hpp"
+#include "y/threading/single-threaded-class.hpp"
+
+#include "y/container.hpp"
+#include "y/container/dynamic.hpp"
+
 namespace Yttrium
 {
 
@@ -71,8 +77,7 @@ namespace Yttrium
         };
 
 
-        //class Direct;
-        //class Warped;
+
 
         template <typename NODE>
         class DirectCacheOf
@@ -119,14 +124,19 @@ namespace Yttrium
             Memory::Small::Guild guild;
         };
 
-        template <typename NODE>
-        class WarpedCacheOf
+        template <
+        typename NODE,
+        typename CacheThreading>
+        class WarpedCacheOf : public CacheThreading
         {
         public:
             typedef NODE     NodeType;
-            typedef typename NodeType::ParamType ParamType;
+            typedef typename NodeType::ParamType  ParamType;
+            typedef typename CacheThreading::Lock Lock;
 
-            inline WarpedCacheOf() : zpool( sizeof(NODE) )
+            inline WarpedCacheOf() :
+            CacheThreading(),
+            zpool( sizeof(NODE) )
             {
             }
 
@@ -135,6 +145,7 @@ namespace Yttrium
             }
 
             inline NodeType * summon(ParamType args) {
+                Y_Must_Lock();
                 void * const addr = zpool.query();
                 try { return new (addr) NodeType(args); }
                 catch(...) { zpool.store(addr); throw; }
@@ -142,16 +153,19 @@ namespace Yttrium
 
             inline void banish(NodeType * const node) noexcept
             {
+                Y_Must_Lock();
                 zpool.store( Destructed(node) );
             }
 
             inline void remove(NodeType * const node) noexcept
             {
+                Y_Must_Lock();
                 zpool.purge( Destructed(node) );
             }
 
             inline NodeType * mirror(const NodeType * const node)
             {
+                Y_Must_Lock();
                 assert(0!=node);
                 void * const addr = zpool.query();
                 try { return new (addr) NodeType(*node); }
@@ -163,10 +177,172 @@ namespace Yttrium
         };
 
         
-        
+
         // Bare : releaseable, no cache
         // Solo : recyclable, releaseable, own cache
         // Coop : recyclable, releaseable, shared cache
+
+#define Y_Protean_List_Proto() \
+/**/   CONTAINER(),\
+/**/   ThreadingPolicy(),\
+/**/   Ingress< Core::ListOf<NODE> >(),\
+/**/   Releasable(),\
+/**/   list()
+
+        template <
+        typename NODE,
+        typename POOL,
+        typename CONTAINER,
+        typename ThreadingPolicy>
+        class ListProto :
+        public CONTAINER,
+        public ThreadingPolicy,
+        public Ingress< Core::ListOf<NODE> >,
+        public Releasable
+        {
+        public:
+            typedef Core::ListOf<NODE>             ListType;
+            typedef POOL                           PoolType;
+            typedef Ingress<ListType>              Entrance;
+            typedef typename NODE::Type            Type;
+            typedef typename NODE::ConstType       ConstType;
+            typedef typename NODE::ParamType       ParamType;
+
+            typedef typename ThreadingPolicy::Lock Lock;
+            inline virtual ~ListProto() noexcept { release_(); }
+
+            inline void pushTail(ParamType args)
+            {
+                Y_Must_Lock();
+                list.pushTail( pool.summon(args) );
+            }
+
+            inline void pushHead(ParamType args)
+            {
+                Y_Must_Lock();
+                list.pushHead( pool.summon(args) );
+            }
+
+            inline void cutHead() noexcept
+            {
+                assert(list.size>0);
+                Y_Must_Lock();
+                pool.banish( list.popHead() );
+            }
+
+            inline void cutTail() noexcept
+            {
+                assert(list.size>0);
+                Y_Must_Lock();
+                pool.banish( list.popTail() );
+            }
+
+            virtual size_t size() const noexcept { return list.size; }
+
+
+            virtual void release() noexcept { release_(); }
+
+        protected:
+            inline explicit ListProto() :
+            Y_Protean_List_Proto(), pool()
+            {}
+
+            inline explicit ListProto(const PoolType &shared) :
+            Y_Protean_List_Proto(), pool(shared)
+            {}
+
+            ListType list;
+            PoolType pool;
+        private:
+            Y_Disable_Copy_And_Assign(ListProto);
+
+
+            inline virtual typename Entrance::ConstInterface & locus() const noexcept { return list; }
+
+            inline void release_() noexcept {
+                Y_Must_Lock();
+                while(list.size>0) pool.remove( list.popTail() );
+            }
+
+        protected:
+            inline void duplicate(const ListProto &other)
+            {
+                volatile Lock primary(*this), replica(other);
+                try {
+                    for(const NODE *node=other->head;node;node=node->next)
+                        list.pushTail( pool.mirror(node) );
+                }
+                catch(...) { release_(); throw; }
+            }
+
+            inline void xch(ListProto &other) noexcept
+            {
+                volatile Lock primary(*this), replica(other);
+                list.swapListFor(other.list);
+            }
+
+        };
+
+
+
+        template <
+        typename NODE,
+        typename ThreadingPolicy>
+        class BareList : public ListProto<NODE,DirectCacheOf<NODE>,Container,ThreadingPolicy>
+        {
+        public:
+            typedef DirectCacheOf<NODE>                                PoolType;
+            typedef ListProto<NODE,PoolType,Container,ThreadingPolicy> CoreType;
+
+            inline virtual ~BareList() noexcept {}
+
+        protected:
+            inline explicit BareList() : CoreType() {}
+            inline BareList(const BareList &other) : CoreType()
+            {
+                this->duplicate(other);
+            }
+        private:
+            Y_Disable_Assign(BareList);
+        };
+
+
+        template <typename T, typename ThreadingPolicy = SingleThreadedClass>
+        class LightBareList : public BareList<LightNode<T>,ThreadingPolicy>
+        {
+        public:
+            typedef LightNode<T>                       NodeType;
+            typedef BareList<NodeType,ThreadingPolicy> BaseType;
+            typedef typename BaseType::Lock            Lock;
+
+            inline explicit LightBareList() : BaseType() {}
+            inline virtual ~LightBareList() noexcept {}
+            inline LightBareList(const LightBareList &other) : BaseType(other)
+            {
+            }
+
+        private:
+            Y_Disable_Assign(LightBareList);
+
+        };
+
+        template <typename T, typename ThreadingPolicy = SingleThreadedClass>
+        class HeavyBareList : public BareList<HeavyNode<T>,ThreadingPolicy>
+        {
+        public:
+            typedef HeavyNode<T>                       NodeType;
+            typedef BareList<NodeType,ThreadingPolicy> BaseType;
+
+            inline explicit HeavyBareList() : BaseType() {}
+            inline virtual ~HeavyBareList() noexcept {}
+            inline HeavyBareList(const HeavyBareList &other) : BaseType(other)
+            {
+            }
+
+        private:
+            Y_Disable_Assign(HeavyBareList);
+        };
+
 
 
 
@@ -182,16 +358,31 @@ using namespace Yttrium;
 Y_UTEST(protean_list)
 {
 
-    typedef Protean::HeavyNode<int> HNode;
+    {
+        typedef Protean::HeavyNode<int> HNode;
+        Protean::DirectCacheOf<HNode> no_cache;
+        HNode *node = no_cache.summon(3);
+        std::cerr << **node << std::endl;
+        HNode *replica = no_cache.mirror(node);
+        Y_ASSERT(**replica==**node);
+        no_cache.banish(node);
+        no_cache.banish(replica);
+    }
 
-    Protean::DirectCacheOf<HNode> no_cache;
+    Protean::LightBareList<int> lb;
+    Protean::HeavyBareList<int> hb;
 
-    HNode *node = no_cache.summon(3);
-    std::cerr << **node << std::endl;
-    HNode *replica = no_cache.mirror(node);
-    Y_ASSERT(**replica==**node);
-    no_cache.banish(node);
-    no_cache.banish(replica);
+    int arr[3] = { 1, 2, 3 };
+
+    lb.pushTail(arr[0]);
+    lb.pushTail(arr[1]);
+    std::cerr << lb << std::endl;
+
+    hb.pushTail(1);
+    hb.pushHead(2);
+    std::cerr << hb << std::endl;
+
+
 }
 Y_UDONE()
 
