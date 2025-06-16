@@ -4,7 +4,7 @@
 #define Y_UTF8_Included 1
 
 
-#include "y/core/setup.hpp"
+#include "y/container/readable.hpp"
 
 namespace Yttrium
 {
@@ -50,6 +50,15 @@ namespace Yttrium
 
         };
 
+        class Decoding
+        {
+        public:
+            Decoding();
+            ~Decoding() noexcept;
+
+        private:
+            uint32_t cp;
+        };
 
     };
 

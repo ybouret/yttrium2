@@ -34,10 +34,13 @@ namespace Yttrium
 
     const uint32_t UTF8::MaxCodePoint  = Table[Count-1].tail;
 
+
+
     UTF8:: Encoding:: Encoding(const uint32_t cp) :
     size(0),
     byte()
     {
+        memset( Coerce(byte),0,sizeof(byte));
         for(unsigned i=0;i<Count;++i)
         {
             const CodePoints &code = Table[i];
