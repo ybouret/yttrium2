@@ -15,13 +15,10 @@ using namespace Yttrium;
 namespace
 {
     static inline
-    void runCipher(Information::StreamCipher &sc, char *target, const char *source, size_t length) noexcept
+    void runCipher(Information::StreamCipher &sc, char *target, const char *source, const size_t length) noexcept
     {
         sc.restart();
-        while(length-- > 0)
-        {
-            *(target++) = sc( *(source++) );
-        }
+        sc.transform(target,source,length);
     }
 
     static inline

@@ -20,6 +20,7 @@ stream/io
 sorting
 ptr
 information
+utf8
 )
 
 
@@ -129,4 +130,6 @@ Y_UTEST(ptr:arc)
 Y_UTEST(info:bwt)
 Y_UTEST(info:stream)
 
+#utf8
+Y_UTEST(utf8:api)
 

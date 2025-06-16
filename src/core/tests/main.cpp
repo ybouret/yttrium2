@@ -96,6 +96,9 @@ Y_UTEST_DECL(128)
 
     Y_UTEST(info_bwt);
     Y_UTEST(info_stream);
+
+    Y_UTEST(utf8_api);
+
 }
 Y_UTEST_EXEC()
 

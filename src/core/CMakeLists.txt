@@ -14,6 +14,7 @@ Y_CreateLibrary(y
     y/system/wall-time
     y/type
     y/ascii
+    y/utf8
     y/calculus
     y/concurrent
     y/concurrent/windows
