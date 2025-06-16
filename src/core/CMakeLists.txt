@@ -50,6 +50,7 @@ Y_CreateLibrary(y
     y/pointer
     y/information
     y/information/bwt
+    y/information/stream-cipher
 )
 
 add_subdirectory(tests)
