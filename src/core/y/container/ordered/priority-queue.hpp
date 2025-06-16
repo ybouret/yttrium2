@@ -25,15 +25,38 @@ namespace Yttrium
         using typename ThreadingPolicy::Lock;
         Y_ARGS_DECL(T,Type);
 
-        explicit PriorityQueue() noexcept : code(0), compare() {}
-        virtual ~PriorityQueue() noexcept { release_(); }
+        inline explicit PriorityQueue() noexcept : code(0), compare() {}
+        inline virtual ~PriorityQueue() noexcept { release_(); }
 
-        inline virtual size_t size()      const noexcept { return code ? code->size : 0; }
-        inline virtual size_t capacity()  const noexcept { return code ? code->capacity : 0; }
-        inline virtual size_t available() const noexcept { return code ? code->capacity - code->size : 0; }
 
-        inline virtual void free()    noexcept { if(code) code->free(); }
+        inline PriorityQueue(const PriorityQueue &other) : code(0), compare()
+        {
+            Y_Must_Lock();
+            if(other.code && other.code->size) code = new Code( *other.code );
+        }
+
+        inline virtual size_t size()      const noexcept {
+            Y_Must_Lock();
+            return code ? code->size : 0;
+        }
+
+        inline virtual size_t capacity()  const noexcept {
+            Y_Must_Lock();
+            return code ? code->capacity : 0;
+        }
+
+        inline virtual size_t available() const noexcept {
+            Y_Must_Lock();
+            return code ? code->capacity - code->size : 0;
+        }
+
+        inline virtual void free()    noexcept {
+            Y_Must_Lock();
+            if(code) code->free();
+        }
+
         inline virtual void release() noexcept { release_(); }
+
         inline virtual void reserve(size_t n)
         {
             Y_Must_Lock();
@@ -90,7 +113,7 @@ namespace Yttrium
         Comparator         compare;
 
     private:
-        Y_Disable_Copy_And_Assign(PriorityQueue);
+        Y_Disable_Assign(PriorityQueue);
 
         inline void release_() noexcept {
             Y_Must_Lock();
@@ -100,18 +123,37 @@ namespace Yttrium
         class Code : public Object, public SchoolType, public PQueueType
         {
         public:
-            inline explicit Code(const size_t minimalCapacity) :
+            using SchoolType::entry;
+            using SchoolType::count;
+            using PQueueType::size;
+
+            //! setup \param minimalCapacity desired capacity
+            inline Code(const size_t minimalCapacity) :
             Object(),
             SchoolType(minimalCapacity),
-            PQueueType(this->entry,this->count)
+            PQueueType(entry,count)
             {
             }
+
+            //! copy using object copy constructor \param other another code
+            inline Code(const Code &other) :
+            Object(),
+            SchoolType(other.size),
+            PQueueType(entry,count)
+            {
+                while(size<other.size) {
+                    new (entry+size) T(other.entry[size]);
+                    ++size;
+                }
+            }
+
+
 
             inline virtual ~Code() noexcept {}
 
 
         private:
-            Y_Disable_Copy_And_Assign(Code);
+            Y_Disable_Assign(Code);
         };
     };
 
