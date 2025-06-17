@@ -12,7 +12,8 @@
 #include "y/container.hpp"
 #include "y/container/dynamic.hpp"
 
-
+#include "y/protean/cache/direct.hpp"
+#include "y/protean/cache/warped.hpp"
 #include "y/protean/node/light.hpp"
 #include "y/protean/node/heavy.hpp"
 
@@ -23,124 +24,7 @@ namespace Yttrium
 
     namespace Protean
     {
-        template <typename NODE>
-        class DirectCacheOf
-        {
-        public:
-            typedef NODE     NodeType;
-            typedef typename NodeType::ParamType ParamType;
-
-            inline DirectCacheOf() : guild( sizeof(NODE) )
-            {
-                assert( guild.getBlockSize() >= sizeof(NODE) );
-            }
-
-            inline ~DirectCacheOf() noexcept
-            {
-            }
-
-            inline NodeType * summon(ParamType args) {
-                void * const addr = guild.acquireBlock();
-                try { return new (addr) NodeType(args); }
-                catch(...) { guild.releaseBlock(addr); throw; }
-            }
-
-            inline void banish(NodeType * const node) noexcept
-            {
-                guild.releaseBlock( Destructed(node) );
-            }
-
-            inline void remove(NodeType * const node) noexcept
-            {
-                banish(node);
-            }
-
-            inline NodeType * mirror(const NodeType * const node)
-            {
-                assert(0!=node);
-                void * const addr = guild.acquireBlock();
-                try { return new (addr) NodeType(*node); }
-                catch(...) { guild.releaseBlock(addr); throw; }
-            }
-
-        private:
-            Y_Disable_Copy_And_Assign(DirectCacheOf);
-            Memory::Small::Guild guild;
-        };
-
-        template <
-        typename NODE,
-        typename CacheThreading>
-        class WarpedCacheOf :
-        public CacheThreading, public Caching
-        {
-        public:
-            typedef NODE     NodeType;
-            typedef typename NodeType::ParamType  ParamType;
-            typedef typename CacheThreading::Lock Lock;
-
-            inline WarpedCacheOf() :
-            CacheThreading(),
-            zpool( sizeof(NODE) )
-            {
-            }
-
-            inline ~WarpedCacheOf() noexcept
-            {
-            }
-
-            inline NodeType * summon(ParamType args) {
-                Y_Must_Lock();
-                void * const addr = zpool.query();
-                try { return new (addr) NodeType(args); }
-                catch(...) { zpool.store(addr); throw; }
-            }
-
-            inline void banish(NodeType * const node) noexcept
-            {
-                Y_Must_Lock();
-                zpool.store( Destructed(node) );
-            }
-
-            inline void remove(NodeType * const node) noexcept
-            {
-                Y_Must_Lock();
-                zpool.purge( Destructed(node) );
-            }
-
-            inline NodeType * mirror(const NodeType * const node)
-            {
-                Y_Must_Lock();
-                assert(0!=node);
-                void * const addr = zpool.query();
-                try { return new (addr) NodeType(*node); }
-                catch(...) { zpool.store(addr); throw; }
-            }
-
-            inline virtual void gc(const uint8_t amount) noexcept
-            {
-                Y_Must_Lock();
-                zpool.gc(amount);
-            }
-
-            inline virtual size_t count() const noexcept
-            {
-                Y_Must_Lock();
-                return zpool.count();
-            }
-
-            inline void cache(const size_t n)
-            {
-                Y_Must_Lock();
-                zpool.cache(n);
-            }
-
-        private:
-            Memory::Zombies zpool;
-        };
-
         
-
         // Bare : releaseable, no cache
         // Solo : recyclable, releaseable, own cache
         // Coop : recyclable, releaseable, shared cache
