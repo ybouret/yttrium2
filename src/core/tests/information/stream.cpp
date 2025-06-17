@@ -1,6 +1,7 @@
 
 #include "y/information/stream/delta.hpp"
 #include "y/information/stream/move-to-front.hpp"
+#include "y/information/stream/arc4.hpp"
 
 #include "y/memory/stealth.hpp"
 #include "y/utest/run.hpp"
@@ -8,6 +9,7 @@
 #include "y/memory/buffer/out-of.hpp"
 #include "y/object/factory.hpp"
 #include "y/hexadecimal.hpp"
+#include "y/system/rand.hpp"
 #include <cstring>
 
 using namespace Yttrium;
@@ -51,16 +53,26 @@ namespace
 
 Y_UTEST(info_stream)
 {
+    System::Rand ran;
+
     Information::Delta::Encoder deltaEnc;
     Information::Delta::Decoder deltaDec;
 
     Information::MoveToFront::Encoder mtfEnc;
     Information::MoveToFront::Decoder mtfDec;
 
+    char buffer[256];
+    const size_t length = ran.in(255);
+    ran.fill(buffer,length);
+    Information::ARC4::Encoder arc4Enc(buffer,length);
+    Information::ARC4::Decoder arc4Dec(buffer,length);
+
     for(int i=1;i<argc;++i)
     {
         runCodec("Delta", deltaEnc, deltaDec, argv[i]);
-        runCodec("MTF",   mtfEnc,    mtfDec,  argv[i]);
+        runCodec("MTF",   mtfEnc,   mtfDec,   argv[i]);
+        runCodec("Arc4",  arc4Enc,  arc4Dec,  argv[i]);
+
     }
 }
 Y_UDONE()
