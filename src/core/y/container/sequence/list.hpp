@@ -61,7 +61,7 @@ namespace Yttrium
     //
     //______________________________________________________________________
     template <typename T,typename THREADING_POLICY = SingleThreadedClass>
-    class List : public Sequence<T,DynamicContainer>, public THREADING_POLICY
+    class List : public Sequence<T,Dynamic<Releasable> >, public THREADING_POLICY
     {
     public:
         //______________________________________________________________________

@@ -26,7 +26,7 @@ namespace Yttrium
     typename T,
     typename Comparator      = Sign::Comparator<T>,
     typename ThreadingPolicy = SingleThreadedClass>
-    class PriorityQueue : public Ordered<T,DynamicContainer>, public ThreadingPolicy
+    class PriorityQueue : public Ordered<T,Dynamic<Releasable> >, public ThreadingPolicy
     {
     public:
         //______________________________________________________________________

@@ -365,16 +365,18 @@ namespace Yttrium
         };
 
 
+        typedef Dynamic<Collectable> BaseContainer;
+
         // the cache access is always behind class lock
         template <
         typename NODE,
         typename ThreadingPolicy>
         class SoloList :
-        public ListProto<NODE,WarpedCacheOf<NODE,SingleThreadedClass>,DynamicContainer,ThreadingPolicy>
+        public ListProto<NODE,WarpedCacheOf<NODE,SingleThreadedClass>,BaseContainer,ThreadingPolicy>
         {
         public:
             typedef WarpedCacheOf<NODE,SingleThreadedClass>                   PoolType;
-            typedef ListProto<NODE,PoolType,DynamicContainer,ThreadingPolicy> CoreType;
+            typedef ListProto<NODE,PoolType,BaseContainer,ThreadingPolicy> CoreType;
             using CoreType::pool;
             using CoreType::list;
             typedef typename CoreType::Lock Lock;
@@ -409,6 +411,11 @@ namespace Yttrium
 
             inline virtual void release() noexcept { this->release_(); }
 
+            inline virtual void gc(const uint8_t amount) noexcept
+            {
+                Y_Must_Lock();
+                pool.gc(amount);
+            }
 
         protected:
             inline explicit SoloList() : CoreType() {}

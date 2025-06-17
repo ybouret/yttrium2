@@ -18,6 +18,8 @@
 namespace Yttrium
 {
 
+    typedef Dynamic<Releasable> VectorContainer;
+
     //__________________________________________________________________________
     //
     //
@@ -25,7 +27,7 @@ namespace Yttrium
     //
     //__________________________________________________________________________
 #define Y_Vector_Ctor()         \
-Sequence<T,DynamicContainer>(), \
+Sequence<T,VectorContainer>(),  \
 Contiguous< Writable<T> >(),    \
 THREADING_POLICY(),             \
 built(0)
@@ -40,7 +42,7 @@ built(0)
     //______________________________________________________________________
     template <typename T, typename THREADING_POLICY = SingleThreadedClass>
     class Vector :
-    public Sequence<T,DynamicContainer>,
+    public Sequence<T,VectorContainer>,
     public Contiguous< Writable<T> >,
     public THREADING_POLICY
     {

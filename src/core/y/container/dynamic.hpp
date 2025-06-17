@@ -5,7 +5,8 @@
 #define Y_DynamicContainer_Included 1
 
 #include "y/container/gradual.hpp"
-#include "y/ability/releasable.hpp"
+#include "y/ability/collectable.hpp"
+#include "y/ability/expandable.hpp"
 
 namespace Yttrium
 {
@@ -13,11 +14,15 @@ namespace Yttrium
     //
     //
     //
-    //! Dynamic Container interface
+    //! Dynamic Container interface, Managment = Releasable | Collectable
     //
     //
     //__________________________________________________________________________
-    class DynamicContainer : public GradualContainer, public Releasable
+    template <typename Management>
+    class Dynamic :
+    public GradualContainer,
+    public Expandable,
+    public Management
     {
         //______________________________________________________________________
         //
@@ -26,19 +31,12 @@ namespace Yttrium
         //
         //______________________________________________________________________
     protected:
-        explicit DynamicContainer() noexcept;
+        inline explicit Dynamic() noexcept : GradualContainer(), Expandable(), Management() {}
     public:
-        virtual ~DynamicContainer() noexcept;
+        inline virtual ~Dynamic() noexcept {}
 
-        //______________________________________________________________________
-        //
-        //
-        // Interface
-        //
-        //______________________________________________________________________
 
-        //! request extra space
-        virtual void   reserve(const size_t) = 0;
+
 
         //______________________________________________________________________
         //
@@ -47,14 +45,10 @@ namespace Yttrium
         //
         //______________________________________________________________________
 
-        //! \param currentCapacity should be size() \return argument for reserve
-        static size_t NextIncrease(const size_t currentCapacity);
-
-        //! \param currentCapacity should be size() \return minimal next capacity
-        static size_t NextCapacity(const size_t currentCapacity);
+     
 
     private:
-        Y_Disable_Copy_And_Assign(DynamicContainer); //!< Discarding
+        Y_Disable_Copy_And_Assign(Dynamic); //!< Discarding
     };
 
 }
