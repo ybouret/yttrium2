@@ -110,7 +110,7 @@ namespace Yttrium
             Y_Protean_List_Proto(), pool()
             {}
 
-            //! setup with shared cache
+            //! setup with shared cache \param shared existing cache
             inline explicit ListProto(const PoolType &shared) :
             Y_Protean_List_Proto(), pool(shared)
             {}
