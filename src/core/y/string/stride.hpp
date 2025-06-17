@@ -6,7 +6,7 @@
 
 #include "y/object.hpp"
 #include <cstring>
-
+#include <cassert>
 
 namespace Yttrium
 {
