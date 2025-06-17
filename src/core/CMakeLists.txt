@@ -57,6 +57,8 @@ Y_CreateLibrary(y
     y/protean/cache
     y/protean/proto
     y/protean/bare
+    y/protean/bare/light
+    y/protean/bare/heavy
     y/string
 )
 

@@ -9,9 +9,9 @@
 #include "y/core/linked/list.hpp"
 #include "y/threading/single-threaded-class.hpp"
 
-//#include "y/container.hpp"
 
-#include "y/protean/bare/list.hpp"
+#include "y/protean/bare/heavy/list.hpp"
+#include "y/protean/bare/light/list.hpp"
 
 #include "y/protean/cache/direct.hpp"
 #include "y/protean/cache/warped.hpp"
@@ -37,42 +37,6 @@ namespace Yttrium
 
 
 
-
-        template <typename T, typename ThreadingPolicy = SingleThreadedClass>
-        class LightBareList : public BareList<LightNode<T>,ThreadingPolicy>
-        {
-        public:
-            typedef LightNode<T>                       NodeType;
-            typedef BareList<NodeType,ThreadingPolicy> BaseType;
-            typedef typename BaseType::Lock            Lock;
-
-            inline explicit LightBareList() : BaseType() {}
-            inline virtual ~LightBareList() noexcept {}
-            inline LightBareList(const LightBareList &other) : BaseType(other)
-            {
-            }
-
-        private:
-            Y_Disable_Assign(LightBareList);
-
-        };
-
-        template <typename T, typename ThreadingPolicy = SingleThreadedClass>
-        class HeavyBareList : public BareList<HeavyNode<T>,ThreadingPolicy>
-        {
-        public:
-            typedef HeavyNode<T>                       NodeType;
-            typedef BareList<NodeType,ThreadingPolicy> BaseType;
-
-            inline explicit HeavyBareList() : BaseType() {}
-            inline virtual ~HeavyBareList() noexcept {}
-            inline HeavyBareList(const HeavyBareList &other) : BaseType(other)
-            {
-            }
-
-        private:
-            Y_Disable_Assign(HeavyBareList);
-        };
 
 
         typedef Dynamic<Collectable> BaseContainer;
@@ -200,8 +164,8 @@ Y_UTEST(protean_list)
     int arr[3] = { 1, 2, 3 };
     
     {
-        Protean::LightBareList<int> lb;
-        Protean::HeavyBareList<int> hb;
+        Protean::BareLightList<int> lb;
+        Protean::BareHeavyList<int> hb;
 
 
         lb.pushTail(arr[0]);
