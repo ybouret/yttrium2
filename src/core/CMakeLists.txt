@@ -56,6 +56,7 @@ Y_CreateLibrary(y
     y/protean/node
     y/protean/cache
     y/protean/proto
+    y/string
 )
 
 add_subdirectory(tests)

@@ -22,6 +22,7 @@ ptr
 information
 utf8
 protean
+string
 )
 
 
@@ -138,4 +139,6 @@ Y_UTEST(utf8:api)
 #protean
 Y_UTEST(protean:list)
 
+#string
+Y_UTEST(string:stride)
 
