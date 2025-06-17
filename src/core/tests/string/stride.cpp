@@ -12,7 +12,8 @@ Y_UTEST(string_stride)
     Y_SIZEOF(Core::Stride<uint32_t>);
 
 
-    AutoPtr< Core::Stride<char> > stride = new Core::Stride<char>(0);
+    AutoPtr< Core::Stride<char> >     stride8  = new Core::Stride<char>(0);
+    AutoPtr< Core::Stride<uint32_t> > stride32 = new Core::Stride<uint32_t>(10);
 
 }
 Y_UDONE()
