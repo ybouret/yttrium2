@@ -7,6 +7,7 @@
 
 #include "y/protean/solo/list.hpp"
 #include "y/protean/node/heavy.hpp"
+#include "y/container/sequence.hpp"
 
 namespace Yttrium
 {
@@ -14,11 +15,11 @@ namespace Yttrium
     {
 
         template <typename T, typename ThreadingPolicy = SingleThreadedClass>
-        class SoloHeavyList : public SoloList<HeavyNode<T>,CommonContainer,ThreadingPolicy>
+        class SoloHeavyList : public SoloList<HeavyNode<T>,Sequence<T,CommonContainer>,ThreadingPolicy>
         {
         public:
             typedef HeavyNode<T>                                       NodeType;
-            typedef SoloList<NodeType,CommonContainer,ThreadingPolicy> BaseType;
+            typedef SoloList<NodeType,Sequence<T,CommonContainer>,ThreadingPolicy> BaseType;
 
             inline explicit SoloHeavyList() : BaseType() {}
             inline virtual ~SoloHeavyList() noexcept {}
