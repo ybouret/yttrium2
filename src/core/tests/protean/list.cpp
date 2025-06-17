@@ -12,73 +12,17 @@
 #include "y/container.hpp"
 #include "y/container/dynamic.hpp"
 
+
+#include "y/protean/node/light.hpp"
+#include "y/protean/node/heavy.hpp"
+
 namespace Yttrium
 {
 
+  
+
     namespace Protean
     {
-        template <typename T>
-        class LightNode
-        {
-        public:
-            Y_ARGS_EXPOSE(T,Type);
-            typedef ConstType & ParamType;
-
-            inline LightNode(ParamType arg) noexcept :
-            next(0), prev(0), data( (MutableType &)arg )
-            {
-            }
-
-            inline ~LightNode() noexcept {}
-
-            inline LightNode(const LightNode &node) noexcept :
-            next(0), prev(0), data(node.data)
-            {
-            }
-
-            inline Type &      operator*()       noexcept { return data; }
-            inline ConstType & operator*() const noexcept { return data; }
-
-
-            LightNode * next;
-            LightNode * prev;
-        private:
-            MutableType &data;
-            Y_Disable_Assign(LightNode);
-        };
-
-        template <typename T>
-        class HeavyNode
-        {
-        public:
-            Y_ARGS_DECL(T,Type);
-
-            inline HeavyNode(ParamType arg) noexcept :
-            next(0), prev(0), data(arg)
-            {
-            }
-
-            inline ~HeavyNode() noexcept {}
-
-            inline HeavyNode(const HeavyNode &node)  :
-            next(0), prev(0), data(node.data)
-            {
-            }
-
-            inline Type &      operator*()       noexcept { return data; }
-            inline ConstType & operator*() const noexcept { return data; }
-
-
-            HeavyNode * next;
-            HeavyNode * prev;
-        private:
-            MutableType data;
-            Y_Disable_Assign(HeavyNode);
-        };
-
-
-
-
         template <typename NODE>
         class DirectCacheOf
         {
