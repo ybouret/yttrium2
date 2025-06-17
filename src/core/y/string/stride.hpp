@@ -95,9 +95,9 @@ namespace Yttrium
             base( static_cast<T *>(address) ),
             item(base-1)
             {
-                assert(other.sanity(sizeof(T)));
+                assert(other.checked());
                 (void) memcpy(base,other.base,(size=other.size)*sizeof(T));
-                assert(sanity(sizeof(T)));
+                assert(checked());
             }
 
             //! cleanup
@@ -113,12 +113,36 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
+
+            inline bool checked() const noexcept
+            {
+                return sanity(sizeof(T));
+            }
+
             inline void copy(const Stride<T> &other) noexcept
             {
                 assert(this!=&other);
                 assert(capacity>=other.size);
-                memcpy(base,other.base,(size=other.size) * sizeof(T));
-                zpad();
+                assert( checked() );
+                assert( other.checked() );
+
+                const size_t newSize = other.size;
+                if(size<=newSize)
+                {
+                    // overwrite free space
+                    memcpy(base,other.base,(size=newSize)*sizeof(T));
+                    assert(checked());
+                }
+                else
+                {
+                    // other is shorted
+                    assert(newSize<size);
+                    memcpy(base,other.base,newSize*sizeof(T));
+                    memset(base+newSize,0,(newSize-size)*sizeof(T));
+                    size = newSize;
+                    assert(checked());
+                }
+
             }
 
             //__________________________________________________________________
