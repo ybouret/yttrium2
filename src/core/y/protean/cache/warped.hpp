@@ -135,7 +135,7 @@ namespace Yttrium
             }
 
         private:
-            Y_Disable_Assign(WarpedCacheOf);
+            Y_Disable_Assign(WarpedCacheOf); //!< discarding
             Memory::Zombies zpool; //!< (shared) local cache
         };
 

@@ -6,7 +6,7 @@
 
 namespace Yttrium
 {
-    Y_Shallow_Decl(CopyOf);
+    Y_Shallow_Decl(CopyOf); //!< alias
 }
 
 #endif

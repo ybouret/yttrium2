@@ -7,7 +7,7 @@
 
 namespace Yttrium
 {
-    Y_Shallow_Decl(WithAtLeast);
+    Y_Shallow_Decl(WithAtLeast); //!< alias
 }
 
 #endif

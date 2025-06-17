@@ -96,6 +96,7 @@ namespace Yttrium
                 catch(...) { guild.releaseBlock(addr); throw; }
             }
 
+            //! compatibility with WarpedCache
             inline void release() noexcept
             {
                 // do nothing
