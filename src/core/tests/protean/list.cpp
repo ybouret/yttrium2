@@ -12,6 +12,8 @@
 #include "y/container.hpp"
 #include "y/container/dynamic.hpp"
 
+
+#include "y/protean/proto/list.hpp"
 #include "y/protean/cache/direct.hpp"
 #include "y/protean/cache/warped.hpp"
 #include "y/protean/node/light.hpp"
@@ -29,104 +31,6 @@ namespace Yttrium
         // Solo : recyclable, releaseable, own cache
         // Coop : recyclable, releaseable, shared cache
 
-#define Y_Protean_List_Proto() \
-/**/   CONTAINER(),\
-/**/   ThreadingPolicy(),\
-/**/   Ingress< Core::ListOf<NODE> >(),\
-/**/   list()
-
-        template <
-        typename NODE,
-        typename POOL,
-        typename CONTAINER,
-        typename ThreadingPolicy>
-        class ListProto :
-        public CONTAINER,
-        public ThreadingPolicy,
-        public Ingress< Core::ListOf<NODE> >
-        {
-        public:
-            typedef Core::ListOf<NODE>             ListType;
-            typedef POOL                           PoolType;
-            typedef Ingress<ListType>              Entrance;
-            typedef typename NODE::Type            Type;
-            typedef typename NODE::ConstType       ConstType;
-            typedef typename NODE::ParamType       ParamType;
-
-            typedef typename ThreadingPolicy::Lock Lock;
-            inline virtual ~ListProto() noexcept { release_(); }
-
-            inline void pushTail(ParamType args)
-            {
-                Y_Must_Lock();
-                list.pushTail( pool.summon(args) );
-            }
-
-            inline void pushHead(ParamType args)
-            {
-                Y_Must_Lock();
-                list.pushHead( pool.summon(args) );
-            }
-
-            inline void cutHead() noexcept
-            {
-                assert(list.size>0);
-                Y_Must_Lock();
-                pool.banish( list.popHead() );
-            }
-
-            inline void cutTail() noexcept
-            {
-                assert(list.size>0);
-                Y_Must_Lock();
-                pool.banish( list.popTail() );
-            }
-
-            virtual size_t size() const noexcept { return list.size; }
-
-
-
-        protected:
-            inline explicit ListProto() :
-            Y_Protean_List_Proto(), pool()
-            {}
-
-            inline explicit ListProto(const PoolType &shared) :
-            Y_Protean_List_Proto(), pool(shared)
-            {}
-
-            ListType list;
-            PoolType pool;
-        private:
-            Y_Disable_Copy_And_Assign(ListProto);
-
-
-            inline virtual typename Entrance::ConstInterface & locus() const noexcept { return list; }
-
-
-        protected:
-            inline void release_() noexcept {
-                Y_Must_Lock();
-                while(list.size>0) pool.remove( list.popTail() );
-            }
-
-            inline void duplicate(const ListProto &other)
-            {
-                volatile Lock primary(*this), replica(other);
-                try {
-                    for(const NODE *node=other->head;node;node=node->next)
-                        list.pushTail( pool.mirror(node) );
-                }
-                catch(...) { release_(); throw; }
-            }
-
-            inline void xch(ListProto &other) noexcept
-            {
-                volatile Lock primary(*this), replica(other);
-                list.swapListFor(other.list);
-            }
-
-        };
 
 
 

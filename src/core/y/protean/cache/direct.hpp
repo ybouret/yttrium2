@@ -96,6 +96,11 @@ namespace Yttrium
                 catch(...) { guild.releaseBlock(addr); throw; }
             }
 
+            inline void release() noexcept
+            {
+                // do nothing
+            }
+
         private:
             Y_Disable_Copy_And_Assign(DirectCacheOf); //!< discarding
             Memory::Small::Guild guild; //!< directly to Small::Blocks
