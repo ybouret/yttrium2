@@ -9,15 +9,16 @@
 #include "y/core/linked/list.hpp"
 #include "y/threading/single-threaded-class.hpp"
 
-#include "y/container.hpp"
-#include "y/container/dynamic.hpp"
+//#include "y/container.hpp"
 
+#include "y/protean/bare/list.hpp"
 
-#include "y/protean/proto/list.hpp"
 #include "y/protean/cache/direct.hpp"
 #include "y/protean/cache/warped.hpp"
 #include "y/protean/node/light.hpp"
 #include "y/protean/node/heavy.hpp"
+
+#include "y/container/dynamic.hpp"
 
 namespace Yttrium
 {
@@ -34,30 +35,7 @@ namespace Yttrium
 
 
 
-        template <
-        typename NODE,
-        typename ThreadingPolicy>
-        class BareList :
-        public ListProto<NODE,DirectCacheOf<NODE>,Container,ThreadingPolicy>,
-        public Releasable
-        {
-        public:
-            typedef DirectCacheOf<NODE>                                PoolType;
-            typedef ListProto<NODE,PoolType,Container,ThreadingPolicy> CoreType;
 
-            inline virtual ~BareList() noexcept {}
-
-            inline virtual void release() noexcept { this->release_(); }
-
-        protected:
-            inline explicit BareList() : CoreType(), Releasable() {}
-            inline BareList(const BareList &other) : CoreType(), Releasable()
-            {
-                this->duplicate(other);
-            }
-        private:
-            Y_Disable_Assign(BareList);
-        };
 
 
         template <typename T, typename ThreadingPolicy = SingleThreadedClass>
