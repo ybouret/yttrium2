@@ -5,9 +5,11 @@
 #define Y_String_Stride_Included 1
 
 #include "y/object.hpp"
+#include <cstring>
+
+
 namespace Yttrium
 {
-
     namespace Core
     {
 
@@ -86,10 +88,33 @@ namespace Yttrium
             {
             }
 
+            inline Stride(const Stride &other) :
+            StrideMetrics(other.size,sizeof(T)),
+            base( static_cast<T *>(address) ),
+            item(base-1)
+            {
+                (void) memcpy(base,other.base,(size=other.size)*sizeof(T));
+            }
+
             //! cleanup
             inline virtual ~Stride() noexcept
             {
                 Coerce(base) = Coerce(item) = 0;
+            }
+
+
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            inline void copy(const Stride<T> &other) noexcept
+            {
+                assert(this!=&other);
+                assert(capacity>=other.size);
+                memcpy(base,other.base,(size=other.size) * sizeof(T));
+                zpad();
             }
 
             //__________________________________________________________________
@@ -102,10 +127,16 @@ namespace Yttrium
             T * const item; //!< [1..size]   access
 
         private:
-            Y_Disable_Copy_And_Assign(Stride); //!< discarding
+            Y_Disable_Assign(Stride); //!< discarding
+            inline void zpad() noexcept
+            {
+                memset(base+size,0,(capacity-size)*sizeof(T));
+                assert(0==base[size]);
+                assert(0==base[capacity]);
+            }
         };
+        
     }
-
 }
 
 #endif
