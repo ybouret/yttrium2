@@ -4,6 +4,7 @@
 #define Y_MultiThreadedObject_Included 1
 
 #include "y/threading/locker.hpp"
+#include "y/ability/lockable.hpp"
 
 namespace Yttrium {
 

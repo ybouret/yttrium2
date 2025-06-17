@@ -5,6 +5,7 @@
 #define Y_Protean_WarpedCache_Included 1
 
 #include "y/memory/io/zombies.hpp"
+#include "y/type/destruct.hpp"
 
 namespace Yttrium
 {

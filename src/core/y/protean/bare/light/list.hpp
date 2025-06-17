@@ -18,8 +18,7 @@ namespace Yttrium
         public:
             typedef LightNode<T>                       NodeType;
             typedef BareList<NodeType,ThreadingPolicy> BaseType;
-            typedef typename BaseType::Lock            Lock;
-
+            
             inline explicit BareLightList() : BaseType() {}
             inline virtual ~BareLightList() noexcept {}
             inline BareLightList(const BareLightList &other) : BaseType(other)
