@@ -18,8 +18,9 @@ namespace Yttrium
         class SoloHeavyList : public SoloList<HeavyNode<T>,Sequence<T,CommonContainer>,ThreadingPolicy>
         {
         public:
-            typedef HeavyNode<T>                                       NodeType;
-            typedef SoloList<NodeType,Sequence<T,CommonContainer>,ThreadingPolicy> BaseType;
+            typedef HeavyNode<T>                                    NodeType;
+            typedef Sequence<T,CommonContainer>                     SequenceType;
+            typedef SoloList<NodeType,SequenceType,ThreadingPolicy> BaseType;
 
             inline explicit SoloHeavyList() : BaseType() {}
             inline virtual ~SoloHeavyList() noexcept {}
