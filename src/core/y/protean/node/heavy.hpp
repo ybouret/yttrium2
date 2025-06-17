@@ -5,7 +5,7 @@
 #ifndef Y_Protean_HeavyNode_Included
 #define Y_Protean_HeavyNode_Included 1
 
-#include "y/core/setup.hpp"
+#include "y/type/args.hpp"
 
 namespace Yttrium
 {
@@ -32,7 +32,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             Y_ARGS_DECL(T,Type); //!< aliases
-
+            
             //__________________________________________________________________
             //
             //

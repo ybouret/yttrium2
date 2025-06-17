@@ -4,7 +4,7 @@
 #ifndef Y_Protean_LightNode_Included
 #define Y_Protean_LightNode_Included 1
 
-#include "y/core/setup.hpp"
+#include "y/type/args.hpp"
 
 namespace Yttrium
 {
