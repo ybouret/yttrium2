@@ -88,9 +88,9 @@ Y_UTEST(utf8_api)
         decode.restart();
         const UTF8::Encoding enc(i); Y_ASSERT(enc.size>=1);
         const size_t         top = enc.size-1;
-        for(size_t i=0;i<top;++i)
+        for(size_t j=0;j<top;++j)
         {
-            Y_ASSERT( ! decode(enc.byte[i]) );
+            Y_ASSERT( ! decode(enc.byte[j]) );
         }
         Y_ASSERT( decode(enc.byte[top] ) );
         Y_ASSERT(i == *decode);
