@@ -12,8 +12,13 @@ Y_UTEST(protean_bare_heavy_list)
 
     Protean::BareHeavyList<int,SingleThreadedClass> st_list;
     Protean::BareHeavyList<int,MultiThreadedObject> mt_list;
-    
-    
+
+    for(int i=0;i<10;++i)
+    {
+        
+    }
+
+
 
 
 

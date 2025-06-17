@@ -22,12 +22,11 @@ Y_UTEST(protean_bare_light_list)
         }
         else
         {
-            st_list.pushTail(array[i]);
             mt_list.pushTail(array[i]);
+            st_list << array[i];
         }
         std::cerr << st_list << std::endl;
         std::cerr << mt_list << std::endl;
-
     }
 
 

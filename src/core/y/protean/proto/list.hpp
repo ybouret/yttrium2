@@ -96,7 +96,18 @@ namespace Yttrium
             //! \return live objects
             virtual size_t size() const noexcept { return list.size; }
 
-            
+            inline ListProto & operator<<(ParamType rhs)
+            {
+                pushTail(rhs);
+                return *this;
+            }
+
+            inline ListProto & operator>>(ParamType lhs)
+            {
+                pushHead(lhs);
+                return *this;
+            }
+
 
             //__________________________________________________________________
             //
