@@ -147,7 +147,7 @@ using namespace Yttrium;
 
 
 
-Y_UTEST(protean_list)
+Y_UTEST(protean_direct_cache)
 {
 
     {

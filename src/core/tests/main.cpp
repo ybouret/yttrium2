@@ -100,8 +100,9 @@ Y_UTEST_DECL(128)
 
     Y_UTEST(utf8_api);
 
-    Y_UTEST(protean_list);
-    
+    Y_UTEST(protean_direct_cache);
+    Y_UTEST(protean_bare_light_list);   
+ 
     Y_UTEST(string_stride);
 }
 Y_UTEST_EXEC()

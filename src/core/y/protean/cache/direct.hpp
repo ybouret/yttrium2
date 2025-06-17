@@ -5,6 +5,7 @@
 #define Y_Protean_DirectCache_Included 1
 
 #include "y/memory/small/guild.hpp"
+#include "y/type/destruct.hpp"
 
 namespace Yttrium
 {

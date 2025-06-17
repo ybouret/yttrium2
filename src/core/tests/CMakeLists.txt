@@ -137,7 +137,9 @@ Y_UTEST(info:arc4)
 Y_UTEST(utf8:api)
 
 #protean
-Y_UTEST(protean:list)
+Y_UTEST(protean:direct_cache)
+Y_UTEST(protean:bare:light:list)
+
 
 #string
 Y_UTEST(string:stride)

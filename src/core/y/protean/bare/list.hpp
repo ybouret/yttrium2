@@ -7,6 +7,7 @@
 #include "y/protean/proto/list.hpp"
 #include "y/protean/cache/direct.hpp"
 #include "y/container.hpp"
+#include "y/ability/releasable.hpp"
 
 namespace Yttrium
 {

@@ -5,6 +5,7 @@
 
 #include "y/protean/bare/list.hpp"
 #include "y/protean/node/light.hpp"
+#include "y/threading/single-threaded-class.hpp"
 
 namespace Yttrium
 {

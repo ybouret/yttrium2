@@ -5,6 +5,9 @@
 #define Y_Protean_ListProto_Included 1
 
 #include "y/core/setup.hpp"
+#include "y/core/linked/list.hpp"
+#include "y/threading/must-lock.hpp"
+#include "y/type/ingress.hpp"
 
 namespace Yttrium
 {
