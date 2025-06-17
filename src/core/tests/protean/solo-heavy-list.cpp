@@ -4,6 +4,7 @@
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
 #include "y/threading/multi-threaded-object.hpp"
+#include "y/container/iter/tests.hpp"
 
 using namespace Yttrium;
 

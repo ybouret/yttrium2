@@ -55,7 +55,10 @@ namespace Yttrium
             typedef typename NODE::ConstType       ConstType; //!< alias
             typedef typename NODE::ParamType       ParamType; //!< alias
             typedef typename ThreadingPolicy::Lock Lock;      //!< alias
-            typedef Iter::Linked<Iter::Forward,NODE> Iterator;
+            typedef Iter::Linked<Iter::Forward,NODE>       Iterator;
+            typedef Iter::Linked<Iter::Forward,const NODE> ConstIterator;
+            typedef Iter::Linked<Iter::Reverse,NODE>       ReverseIterator;
+            typedef Iter::Linked<Iter::Reverse,const NODE> ConstReverseIterator;
 
             //__________________________________________________________________
             //
@@ -110,9 +113,15 @@ namespace Yttrium
                 return *this;
             }
 
-            inline Iterator begin() noexcept { return list.head; }
-            inline Iterator end()   noexcept { return 0;         }
-
+            inline Iterator             begin()  noexcept       { return list.head; }
+            inline Iterator             end()    noexcept       { return 0;         }
+            inline ConstIterator        begin()  const noexcept { return list.head; }
+            inline ConstIterator        end()    const noexcept { return 0;         }
+            inline ReverseIterator      rbegin() noexcept       { return list.tail; }
+            inline ReverseIterator      rend()   noexcept       { return 0;         }
+            inline ConstReverseIterator rbegin() const noexcept { return list.tail; }
+            inline ConstReverseIterator rend()   const noexcept { return 0;         }
+            
             //__________________________________________________________________
             //
             //

@@ -3,6 +3,7 @@
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
 #include "y/threading/multi-threaded-object.hpp"
+#include "y/container/iter/tests.hpp"
 
 using namespace Yttrium;
 
@@ -28,6 +29,8 @@ Y_UTEST(protean_bare_light_list)
         std::cerr << st_list << std::endl;
         std::cerr << mt_list << std::endl;
     }
+
+    Iter::Test::All(st_list);
 
 
 
