@@ -49,7 +49,7 @@ namespace Yttrium
         
         uint8_t Delta:: Encoder:: operator()(const uint8_t x) noexcept
         {
-            const uint8_t res = x - last;
+            const uint8_t res = uint8_t(x - last);
             last = x;
             return res;
         }
@@ -74,7 +74,7 @@ namespace Yttrium
 
         uint8_t Delta:: Decoder:: operator()(const uint8_t x) noexcept
         {
-            const uint8_t res = x + last;
+            const uint8_t res = uint8_t(x + last);
             last = res;
             return res;
         }

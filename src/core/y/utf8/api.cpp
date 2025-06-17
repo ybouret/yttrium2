@@ -123,7 +123,7 @@ namespace Yttrium
         if(BulkInfo != (byte&BulkMask) )
             throw Specific::Exception(CallSign,"invalid byte=%02x while decoding missing=%d/%u", byte, missing, request);
 
-        uint32_t data = (byte&BulkData);
+        uint32_t data = uint32_t(byte&BulkData);
         data <<= (--missing) * 6;
         decoded |= data;
         return !missing;
@@ -187,8 +187,8 @@ namespace Yttrium
         }
 
 
-
-        return false;
+		// never get here
+        // return false;
     }
 
     void UTF8:: Decoding:: restart() noexcept

@@ -88,7 +88,7 @@ namespace Yttrium
 
         inline virtual void release() noexcept { release_(); }
 
-        inline virtual void reserve(size_t n)
+        inline virtual void reserve(const size_t n)
         {
             Y_Must_Lock();
             if(n>0)

@@ -129,7 +129,7 @@ namespace Yttrium
         uint8_t ARC4:: Encoder:: operator()(const uint8_t x) noexcept
         {
             assert(0!=code);
-            return x ^ code->nextByte();
+            return uint8_t(x ^ code->nextByte());
         }
 
         size_t  ARC4::Encoder:: serialize(OutputStream&fp)  const

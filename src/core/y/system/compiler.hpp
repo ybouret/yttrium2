@@ -24,6 +24,9 @@
 #  define Y_Compiler "Microsoft"
 #  define Y_MSC 1
 #  pragma warning ( disable : 4514 4820 4625 4626 5026 5027 4774 4710 4711 4571 5039 5045 4435)
+
+// for virtual base class
+#  pragma warning ( disable : 4589)
 #endif
 
 // detect GNU
