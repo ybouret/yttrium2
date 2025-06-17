@@ -103,6 +103,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(protean_direct_cache);
     Y_UTEST(protean_bare_light_list);
     Y_UTEST(protean_solo_light_list);
+    Y_UTEST(protean_solo_heavy_list);
  
     Y_UTEST(string_stride);
 }

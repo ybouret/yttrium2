@@ -1,6 +1,5 @@
 
 
-//#include "y/protean/solo/list.hpp"
 #include "y/protean/solo/light/list.hpp"
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
