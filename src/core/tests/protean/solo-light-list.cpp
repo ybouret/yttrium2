@@ -29,7 +29,7 @@ Y_UTEST(protean_solo_light_list)
         std::cerr << st_list << std::endl;
         std::cerr << mt_list << std::endl;
     }
-
+    
 
 
 }

@@ -8,6 +8,7 @@
 #include "y/core/linked/list.hpp"
 #include "y/threading/must-lock.hpp"
 #include "y/type/ingress.hpp"
+#include "y/container/iter/linked.hpp"
 
 namespace Yttrium
 {
@@ -54,7 +55,7 @@ namespace Yttrium
             typedef typename NODE::ConstType       ConstType; //!< alias
             typedef typename NODE::ParamType       ParamType; //!< alias
             typedef typename ThreadingPolicy::Lock Lock;      //!< alias
-
+            typedef Iter::Linked<Iter::Forward,NODE> Iterator;
 
             //__________________________________________________________________
             //
@@ -96,6 +97,7 @@ namespace Yttrium
             //! \return live objects
             virtual size_t size() const noexcept { return list.size; }
 
+
             inline ListProto & operator<<(ParamType rhs)
             {
                 pushTail(rhs);
@@ -108,6 +110,8 @@ namespace Yttrium
                 return *this;
             }
 
+            inline Iterator begin() noexcept { return list.head; }
+            inline Iterator end()   noexcept { return 0;         }
 
             //__________________________________________________________________
             //
