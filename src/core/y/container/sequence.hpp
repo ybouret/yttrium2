@@ -13,7 +13,7 @@ namespace Yttrium
     //
     //
     //
-    //! Sequence Interface to expand CONTAINER ([Gradual|Dynamic]Container)
+    //! Sequence Interface to expand CONTAINER ([Gradual|Dynamic<>]Container)
     //
     //
     //__________________________________________________________________________
