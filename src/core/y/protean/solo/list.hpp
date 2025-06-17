@@ -21,9 +21,9 @@ namespace Yttrium
 
         // the cache access is always behind class lock
         template <
-        typename  NODE,
-        typename  CONTAINER,
-        typename  ThreadingPolicy>
+        typename NODE,
+        typename CONTAINER,
+        typename ThreadingPolicy>
         class SoloList :
         public ListProto<NODE,WarpedCacheOf<NODE,SingleThreadedClass>,CONTAINER,ThreadingPolicy>
         {
