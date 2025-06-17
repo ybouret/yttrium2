@@ -12,7 +12,6 @@ namespace Yttrium
     namespace Protean
     {
 
-
         template <typename T, typename ThreadingPolicy = SingleThreadedClass>
         class BareLightList : public BareList<LightNode<T>,ThreadingPolicy>
         {

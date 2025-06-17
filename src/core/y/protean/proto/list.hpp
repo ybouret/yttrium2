@@ -96,6 +96,7 @@ namespace Yttrium
             //! \return live objects
             virtual size_t size() const noexcept { return list.size; }
 
+            
 
             //__________________________________________________________________
             //
@@ -142,21 +143,31 @@ namespace Yttrium
                 pool.release();
             }
 
+
+            inline void duplicateInto(ListType &target, const ListProto &source)
+            {
+                volatile Lock primary(*this), replica(source);
+                assert(0==target.size);
+                try {
+                    for(const NODE *node=source->head;node;node=node->next)
+                        list.pushTail( pool.mirror(node) );
+                }
+                catch(...)
+                {
+                    while(target.size>0) pool.banish( target.popTail() );
+                    throw;
+                }
+            }
+
             inline void duplicate(const ListProto &other)
             {
                 volatile Lock primary(*this), replica(other);
-                try {
-                    for(const NODE *node=other->head;node;node=node->next)
-                        list.pushTail( pool.mirror(node) );
-                }
-                catch(...) { release_(); throw; }
+                assert(0==list.size);
+                try { duplicateInto(list,other); }
+                catch(...) { release_(); throw;  }
             }
 
-            inline void xch(ListProto &other) noexcept
-            {
-                volatile Lock primary(*this), replica(other);
-                list.swapListFor(other.list);
-            }
+
 
         private:
             Y_Disable_Copy_And_Assign(ListProto); //!< discaring

@@ -59,6 +59,9 @@ Y_CreateLibrary(y
     y/protean/bare
     y/protean/bare/light
     y/protean/bare/heavy
+    y/protean/solo
+    y/protean/solo/light
+    y/protean/solo/heavy
     y/string
 )
 

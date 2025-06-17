@@ -139,6 +139,8 @@ Y_UTEST(utf8:api)
 #protean
 Y_UTEST(protean:direct_cache)
 Y_UTEST(protean:bare:light:list)
+Y_UTEST(protean:bare:heavy:list)
+Y_UTEST(protean:solo:light:list)
 
 
 #string
