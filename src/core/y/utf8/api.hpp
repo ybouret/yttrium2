@@ -116,7 +116,8 @@ namespace Yttrium
             bool operator()(const uint8_t); //!< update internal state \return true iff decoded
             uint32_t operator*() const;     //!< only when finished \return decoded
 
-            uint32_t operator()(const uint8_t *,size_t size);
+            //! restart() and check valid 1 to 4 bytes sequence \return decoded codepoint
+            uint32_t operator()(const uint8_t *,size_t);
 
         private:
             int      missing; //!< missing bytes

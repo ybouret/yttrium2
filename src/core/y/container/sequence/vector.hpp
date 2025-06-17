@@ -18,7 +18,7 @@
 namespace Yttrium
 {
 
-    typedef Dynamic<Releasable> VectorContainer;
+    typedef Dynamic<Releasable> VectorContainer; //!< base class for vector
 
     //__________________________________________________________________________
     //

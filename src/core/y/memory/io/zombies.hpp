@@ -41,7 +41,7 @@ namespace Yttrium
              */
             explicit Zombies(const size_t userBlockSize);
 
-            //! shared copy
+            //! shared copy \param other other zombies
             Zombies(const Zombies &other) noexcept;
 
             //! cleanup

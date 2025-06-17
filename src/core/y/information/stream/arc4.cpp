@@ -86,8 +86,6 @@ namespace Yttrium
 
                 // save S into Q
                 for(unsigned i=0;i<256;++i) S[i+256] = S[i];
-
-
             }
         };
     }
@@ -97,6 +95,7 @@ namespace Yttrium
 
 #include "y/core/text.hpp"
 #include "y/stream/output.hpp"
+#include "y/type/destroy.hpp"
 
 namespace Yttrium
 {
@@ -119,8 +118,7 @@ namespace Yttrium
         ARC4:: Encoder:: ~Encoder() noexcept
         {
             assert(0!=code);
-            delete code;
-            code = 0;
+            Destroy(code);
         }
 
         void ARC4:: Encoder:: restart() noexcept
@@ -136,8 +134,11 @@ namespace Yttrium
 
         size_t  ARC4::Encoder:: serialize(OutputStream&fp)  const
         {
-
-            return 0;
+            fp.frame(code->S,Code::Bytes);
+            size_t res = Code::Bytes;
+            res += fp.emitVBR(code->I);
+            res += fp.emitVBR(code->J);
+            return res;
         }
 
     }

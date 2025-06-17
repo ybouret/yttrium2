@@ -119,7 +119,8 @@ namespace Yttrium
             return Core::Display(os,arr,num,Cast<T>);
         }
 
-        static int ToDec(const char c) noexcept;
+        //! \return 0..15 if valid, -1 otherwise
+        static int ToDec(const char) noexcept;
 
     private:
         Y_Disable_Assign(Hexadecimal);           //!< discarding

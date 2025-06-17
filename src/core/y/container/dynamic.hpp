@@ -31,21 +31,11 @@ namespace Yttrium
         //
         //______________________________________________________________________
     protected:
+        //! setup
         inline explicit Dynamic() noexcept : GradualContainer(), Expandable(), Management() {}
     public:
+        //! cleanup
         inline virtual ~Dynamic() noexcept {}
-
-
-
-
-        //______________________________________________________________________
-        //
-        //
-        // Methods
-        //
-        //______________________________________________________________________
-
-     
 
     private:
         Y_Disable_Copy_And_Assign(Dynamic); //!< Discarding

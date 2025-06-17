@@ -26,9 +26,9 @@ namespace Yttrium
         //
         //______________________________________________________________________
     protected:
-        explicit Expandable() noexcept;
+        explicit Expandable() noexcept; //!< setup
     public:
-        virtual ~Expandable() noexcept;
+        virtual ~Expandable() noexcept; //!< cleanup
 
 
         //______________________________________________________________________
@@ -37,7 +37,7 @@ namespace Yttrium
         // Interface
         //
         //______________________________________________________________________
-        virtual void reserve(const size_t) = 0;
+        virtual void reserve(const size_t) = 0; //!< reserve more space
 
         //______________________________________________________________________
         //
