@@ -54,25 +54,7 @@ namespace Yttrium
         };
 #endif
 
-#if 0
-        template <typename T, typename ThreadingPolicy = SingleThreadedClass>
-        class LightSoloList : public SoloList<LightNode<T>,ThreadingPolicy>
-        {
-        public:
-            typedef LightNode<T>                       NodeType;
-            typedef SoloList<NodeType,ThreadingPolicy> BaseType;
-
-            inline explicit LightSoloList() : BaseType() {}
-            inline virtual ~LightSoloList() noexcept {}
-            inline LightSoloList(const LightSoloList &other) : BaseType(other)
-            {
-            }
-
-        private:
-            Y_Disable_Assign(LightSoloList);
-        };
-#endif
-
+        
 
     }
 
@@ -97,8 +79,7 @@ Y_UTEST(protean_direct_cache)
         no_cache.banish(replica);
     }
 
-    int arr[3] = { 1, 2, 3 };
-    
+
 
 
 
