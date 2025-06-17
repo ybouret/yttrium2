@@ -42,6 +42,8 @@ namespace Yttrium
             //! cleanup
             virtual ~StrideMetrics() noexcept;
 
+            bool sanity(const size_t blockSize) const noexcept;
+
             //__________________________________________________________________
             //
             //
@@ -93,7 +95,9 @@ namespace Yttrium
             base( static_cast<T *>(address) ),
             item(base-1)
             {
+                assert(other.sanity(sizeof(T)));
                 (void) memcpy(base,other.base,(size=other.size)*sizeof(T));
+                assert(sanity(sizeof(T)));
             }
 
             //! cleanup

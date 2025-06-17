@@ -23,6 +23,7 @@ namespace Yttrium
             Coerce(address) = mgr.acquire( Coerce(obtained) ); assert( obtained >= numChars * bytesPerChar );
             Coerce(numChars) = obtained / bytesPerChar;
             Coerce(capacity) = numChars - 1;
+            assert( sanity(bytesPerChar) );
         }
 
         StrideMetrics:: ~StrideMetrics() noexcept
@@ -39,6 +40,34 @@ namespace Yttrium
             Coerce(capacity) = 0;
             Coerce(size)     = 0;
         }
+
+    }
+
+}
+
+#include <iostream>
+#include "y/memory/stealth.hpp"
+
+namespace Yttrium
+{
+
+    namespace Core
+    {
+#define SANITY(EXPR) do { if( !(EXPR) ) { std::cerr << "*** " << #EXPR << " failure" << std::endl; return false; } } while(false)
+
+        bool StrideMetrics:: sanity(const size_t blockSize) const noexcept
+        {
+            SANITY(size<=capacity);
+            SANITY(numChars-1==capacity);
+            SANITY(0!=address);
+            const uint8_t * const org = (const uint8_t *)address;
+            const uint8_t * const freeSpace = org + (blockSize*size);
+            const size_t          length    = (numChars-size)*blockSize;
+            SANITY(Memory::Stealth::Are0(freeSpace,length));
+            return true;
+        }
+
+
     }
 
 }
