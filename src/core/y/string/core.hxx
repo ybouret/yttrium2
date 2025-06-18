@@ -54,4 +54,20 @@ String<CH>:: String(const CH * const text, const size_t tlen) : code( new Code(t
 {
     assert( Good(text,tlen) );
     memcpy(code->base,text,(code->size=tlen)*sizeof(CH));
+    assert(code->checked());
+}
+
+template <>
+String<CH>::String(const CH * const lhs, const size_t lhsSize,
+                   const CH * const rhs, const size_t rhsSize) :
+code( 0 )
+{
+    const size_t sum = lhsSize + rhsSize;
+    Coerce(code)     = new Code(sum);
+    assert( Good(lhs,lhsSize) );
+    assert( Good(rhs,rhsSize) );
+    memcpy(code->base,         lhs, lhsSize*sizeof(CH));
+    memcpy(code->base+lhsSize, rhs, rhsSize*sizeof(CH));
+    code->size = sum;
+    assert(code->checked());
 }

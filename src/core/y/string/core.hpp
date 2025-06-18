@@ -25,7 +25,11 @@ namespace Yttrium
             virtual ~String() noexcept;
             String(const T * const);
             String(const T * const, const size_t);
-            
+            String(const T * const lhs, const size_t lhsSize,
+                   const T * const rhs, const size_t rhsSize);
+
+            void add(const T *const, const size_t);
+
         private:
             Code * const code;
         };

@@ -135,15 +135,16 @@ namespace Yttrium
                 }
                 else
                 {
-                    // other is shorted
+                    // other is shorter
                     assert(newSize<size);
                     memcpy(base,other.base,newSize*sizeof(T));
                     memset(base+newSize,0,(newSize-size)*sizeof(T));
                     size = newSize;
                     assert(checked());
                 }
-
             }
+
+            
 
             //__________________________________________________________________
             //
