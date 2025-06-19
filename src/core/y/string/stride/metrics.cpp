@@ -1,4 +1,4 @@
-#include "y/string/stride.hpp"
+#include "y/string/stride/metrics.hpp"
 #include "y/core/utils.hpp"
 #include "y/memory/allocator/pooled.hpp"
 
@@ -62,8 +62,8 @@ namespace Yttrium
             SANITY(0!=address);
             const uint8_t * const org = (const uint8_t *)address;
             const uint8_t * const freeSpace = org + (blockSize*size);
-            const size_t          length    = (numChars-size)*blockSize;
-            SANITY(Memory::Stealth::Are0(freeSpace,length));
+            const size_t          freeBytes  = (numChars-size)*blockSize;
+            SANITY(Memory::Stealth::Are0(freeSpace,freeBytes));
             return true;
         }
 

@@ -64,6 +64,7 @@ Y_CreateLibrary(y
     y/protean/solo/heavy
     y/protean/coop
     y/string
+    y/string/stride
 )
 
 add_subdirectory(tests)
