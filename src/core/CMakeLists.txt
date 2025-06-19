@@ -62,6 +62,7 @@ Y_CreateLibrary(y
     y/protean/solo
     y/protean/solo/light
     y/protean/solo/heavy
+    y/protean/coop
     y/string
 )
 

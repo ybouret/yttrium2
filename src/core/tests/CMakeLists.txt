@@ -142,6 +142,7 @@ Y_UTEST(protean:bare:light:list)
 Y_UTEST(protean:bare:heavy:list)
 Y_UTEST(protean:solo:light:list)
 Y_UTEST(protean:solo:heavy:list)
+Y_UTEST(protean:coop:light:list)
 
 
 #string
