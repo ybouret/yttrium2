@@ -148,4 +148,6 @@ Y_UTEST(protean:coop:heavy:list)
 
 #string
 Y_UTEST(string:stride)
+Y_UTEST(string)
+
 

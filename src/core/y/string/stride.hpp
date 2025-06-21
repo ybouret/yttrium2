@@ -71,13 +71,13 @@ namespace Yttrium
                 return isValidWith(sizeof(T));
             }
 
-            //! copy
+            //! assign
             /**
              \param source valid source
              \param length length <= capacity
              */
-            inline void cpy(const T * const source,
-                            const size_t    length) noexcept
+            inline void assign(const T * const source,
+                               const size_t    length) noexcept
             {
                 assert( Good(source,length) );
                 assert(capacity>=length);
@@ -100,19 +100,48 @@ namespace Yttrium
                 }
             }
 
-            //! cat
+            //! pushTail
             /**
              \param source valid source
              \param length size+length <= capacity
              */
-            inline void cat(const T * const source,
-                            const size_t    length) noexcept
+            inline void pushTail(const T * const source,
+                                 const size_t    length) noexcept
             {
                 assert( Good(source,length) );
                 assert(isValid());
                 assert(capacity>=length+size);
                 memmove(base+size,source,length*sizeof(T));
                 size += length;
+                assert(isValid());
+            }
+
+            inline void pushHead(const T * const source,
+                                 const size_t    length) noexcept
+            {
+                assert( Good(source,length) );
+                assert(isValid());
+                assert(capacity>=length+size);
+                assert(isValid());
+            }
+
+            inline void popHead() noexcept
+            {
+                assert(isValid());
+                assert(size>0);
+                for(size_t i=0;i<size;++i)
+                {
+                    base[i] = item[i];
+                }
+                --size;
+                assert(isValid());
+            }
+
+            inline void popTail() noexcept
+            {
+                assert(isValid());
+                assert(size>0);
+                item[size--] = 0;
                 assert(isValid());
             }
 

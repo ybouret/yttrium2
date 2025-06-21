@@ -3,6 +3,7 @@
 #include "y/type/destroy.hpp"
 #include "y/string/stride.hpp"
 #include "y/string/length.hpp"
+#include "y/type/traits.hpp"
 
 #include <cstring>
 

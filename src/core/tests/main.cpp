@@ -109,6 +109,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(protean_coop_heavy_list);
  
     Y_UTEST(string_stride);
+    Y_UTEST(string);
 }
 Y_UTEST_EXEC()
 

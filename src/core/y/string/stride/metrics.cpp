@@ -41,6 +41,17 @@ namespace Yttrium
             Coerce(size)     = 0;
         }
 
+        const char * StrideMetrics:: asChar(const IntToType<false> &) const noexcept
+        {
+            static const char empty[4] = { 0,0,0,0 };
+            return empty;
+        }
+
+        const char * StrideMetrics:: asChar(const IntToType<true> &) const noexcept
+        {
+            return static_cast<const char *>(address);
+        }
+
     }
 
 }

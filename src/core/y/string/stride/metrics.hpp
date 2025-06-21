@@ -43,6 +43,9 @@ namespace Yttrium
             //! check current sanity \param blockSize sizeof(T) \return true iff alright
             bool isValidWith(const size_t blockSize) const noexcept;
 
+            const char * asChar(const IntToType<false> &) const noexcept; //!< not char
+            const char * asChar(const IntToType<true>  &) const noexcept; //!< is  char
+            
             //__________________________________________________________________
             //
             //
@@ -54,6 +57,8 @@ namespace Yttrium
 
         protected:
             void * const address;  //!< allocated memory
+
+
 
         private:
             Y_Disable_Copy_And_Assign(StrideMetrics); //!< discarding
