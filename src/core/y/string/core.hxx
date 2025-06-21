@@ -1,5 +1,4 @@
 
-#if 0
 template <>
 String<CH>:: ~String() noexcept
 {
@@ -8,7 +7,8 @@ String<CH>:: ~String() noexcept
 }
 
 template <>
-String<CH>:: String() : code( new Code(0) )
+String<CH>:: String() :
+code( new Code(0) )
 {
 }
 
@@ -19,6 +19,19 @@ code( new Code(*other.code) )
 
 }
 
+template <>
+size_t String<CH>:: size() const noexcept
+{
+    assert(0!=code);
+    return code->size;
+}
+
+template <>
+size_t String<CH>:: capacity() const noexcept
+{
+    assert(0!=code);
+    return code->capacity;
+}
 
 template <>
 String<CH> & String<CH>:: operator=( const String &other )
@@ -36,12 +49,12 @@ String<CH> & String<CH>:: operator=( const String &other )
     }
 
     // copy otherwise
-    code->copy(*other.code);
+    code->cpy(other.code->base,other.code->size);
 
     return *this;
 }
 
-
+#if 0
 template <>
 String<CH>:: String(const CH * const text) : code(0)
 {
@@ -49,13 +62,14 @@ String<CH>:: String(const CH * const text) : code(0)
     Coerce(code) = new Code( length );
     memcpy(code->base,text,(code->size=length)*sizeof(CH));
 }
+#endif
 
 template <>
 String<CH>:: String(const CH * const text, const size_t tlen) : code( new Code(tlen) )
 {
     assert( Good(text,tlen) );
     memcpy(code->base,text,(code->size=tlen)*sizeof(CH));
-    assert(code->checked());
+    assert(code->isValid());
 }
 
 template <>
@@ -70,6 +84,6 @@ code( 0 )
     memcpy(code->base,         lhs, lhsSize*sizeof(CH));
     memcpy(code->base+lhsSize, rhs, rhsSize*sizeof(CH));
     code->size = sum;
-    assert(code->checked());
+    assert(code->isValid());
 }
-#endif
+

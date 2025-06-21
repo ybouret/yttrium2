@@ -13,7 +13,7 @@ namespace Yttrium
     namespace Core
     {
 
-       
+
         //______________________________________________________________________
         //
         //
@@ -71,8 +71,8 @@ namespace Yttrium
                 return isValidWith(sizeof(T));
             }
 
-            inline void copy(const T * const source,
-                             const size_t    length) noexcept
+            inline void cpy(const T * const source,
+                            const size_t    length) noexcept
             {
                 assert( Good(source,length) );
                 assert(capacity>=length);
@@ -95,7 +95,18 @@ namespace Yttrium
                 }
             }
 
-            
+            inline void cat(const T * const source,
+                            const size_t    length) noexcept
+            {
+                assert( Good(source,length) );
+                assert(isValid());
+                assert(capacity>=length+size);
+                memmove(base+size,source,length*sizeof(T));
+                size += length;
+                assert(isValid());
+            }
+
+
 
             //__________________________________________________________________
             //
@@ -108,9 +119,9 @@ namespace Yttrium
 
         private:
             Y_Disable_Assign(Stride); //!< discarding
-            
+
         };
-        
+
     }
 }
 

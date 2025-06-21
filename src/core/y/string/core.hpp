@@ -6,6 +6,7 @@
 #define Y_String_Core_Included 1
 
 #include "y/object.hpp"
+#include "y/container.hpp"
 
 namespace Yttrium
 {
@@ -14,7 +15,6 @@ namespace Yttrium
     {
         template <typename> class Stride;
 
-#if 0
         template <typename T>
         class String
         {
@@ -24,17 +24,19 @@ namespace Yttrium
             String(const String &);
             String & operator=( const String & );
             virtual ~String() noexcept;
-            String(const T * const);
-            String(const T * const, const size_t);
-            String(const T * const lhs, const size_t lhsSize,
-                   const T * const rhs, const size_t rhsSize);
 
-            void add(const T *const, const size_t);
+            String(const T * const, const size_t);
+            String(const T * const, const size_t,
+                   const T * const, const size_t);
+
+
+            // Interface
+            virtual size_t size()     const noexcept;
+            virtual size_t capacity() const noexcept;
 
         private:
             Code * const code;
         };
-#endif
         
     }
 
