@@ -18,7 +18,7 @@ namespace Yttrium
         //
         //
         //
-        //! String Inner Data Exposure
+        //! String Inner Data Exposure, low-level
         //
         //
         //______________________________________________________________________
@@ -47,9 +47,9 @@ namespace Yttrium
             base( static_cast<T *>(address) ),
             item(base-1)
             {
-                assert(other.checked());
+                assert(other.isValid());
                 (void) memcpy(base,other.base,(size=other.size)*sizeof(T));
-                assert(checked());
+                assert(isValid());
             }
 
             //! cleanup
@@ -67,35 +67,31 @@ namespace Yttrium
             //__________________________________________________________________
 
             //! \return checked state, mostly for debug
-            inline bool checked() const noexcept
-            {
-                return sanity(sizeof(T));
+            inline bool isValid() const noexcept {
+                return isValidWith(sizeof(T));
             }
 
-
-            //!
-            inline void copy(const Stride<T> &other) noexcept
+            inline void copy(const T * const source,
+                             const size_t    length) noexcept
             {
-                assert(this!=&other);
-                assert(capacity>=other.size);
-                assert( checked() );
-                assert( other.checked() );
+                assert( Good(source,length) );
+                assert(capacity>=length);
+                assert(isValid());
 
-                const size_t newSize = other.size;
-                if(size<=newSize)
+                if(size<=length)
                 {
                     // overwrite free space
-                    memcpy(base,other.base,(size=newSize)*sizeof(T));
-                    assert(checked());
+                    memmove(base,source,(size=length)*sizeof(T));
+                    assert(isValid());
                 }
                 else
                 {
                     // other is shorter
-                    assert(newSize<size);
-                    memcpy(base,other.base,newSize*sizeof(T));
-                    memset(base+newSize,0,(newSize-size)*sizeof(T));
-                    size = newSize;
-                    assert(checked());
+                    assert(length<size);
+                    memmove(base,source,length*sizeof(T));
+                    memset(base+length,0,(length-size)*sizeof(T));
+                    size = length;
+                    assert(isValid());
                 }
             }
 

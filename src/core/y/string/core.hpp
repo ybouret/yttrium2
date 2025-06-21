@@ -14,6 +14,7 @@ namespace Yttrium
     {
         template <typename> class Stride;
 
+#if 0
         template <typename T>
         class String
         {
@@ -33,7 +34,8 @@ namespace Yttrium
         private:
             Code * const code;
         };
-
+#endif
+        
     }
 
 }

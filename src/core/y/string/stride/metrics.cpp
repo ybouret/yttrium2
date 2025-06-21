@@ -11,19 +11,19 @@ namespace Yttrium
 
 
         StrideMetrics:: StrideMetrics(const size_t minimalCapacity,
-                                      const size_t bytesPerChar) noexcept :
+                                      const size_t blockSize) noexcept :
         size(0),
         capacity( MaxOf<size_t>(minimalCapacity,7) ),
         address(0),
         numChars( capacity+1 ),
-        obtained( numChars * bytesPerChar )
+        obtained( numChars * blockSize )
         {
-            assert(bytesPerChar>0);
+            assert(blockSize>0);
             static Memory::Pooled &mgr = Memory::Pooled::Instance();
-            Coerce(address) = mgr.acquire( Coerce(obtained) ); assert( obtained >= numChars * bytesPerChar );
-            Coerce(numChars) = obtained / bytesPerChar;
+            Coerce(address) = mgr.acquire( Coerce(obtained) ); assert( obtained >= numChars * blockSize );
+            Coerce(numChars) = obtained / blockSize;
             Coerce(capacity) = numChars - 1;
-            assert( sanity(bytesPerChar) );
+            assert( isValidWith(blockSize) );
         }
 
         StrideMetrics:: ~StrideMetrics() noexcept
@@ -55,7 +55,7 @@ namespace Yttrium
     {
 #define SANITY(EXPR) do { if( !(EXPR) ) { std::cerr << "*** " << #EXPR << " failure" << std::endl; return false; } } while(false)
 
-        bool StrideMetrics:: sanity(const size_t blockSize) const noexcept
+        bool StrideMetrics:: isValidWith(const size_t blockSize) const noexcept
         {
             SANITY(size<=capacity);
             SANITY(numChars-1==capacity);

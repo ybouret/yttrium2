@@ -41,7 +41,7 @@ namespace Yttrium
             virtual ~StrideMetrics() noexcept;
 
             //! check current sanity \param blockSize sizeof(T) \return true iff alright
-            bool sanity(const size_t blockSize) const noexcept;
+            bool isValidWith(const size_t blockSize) const noexcept;
 
             //__________________________________________________________________
             //

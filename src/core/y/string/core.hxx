@@ -1,4 +1,5 @@
 
+#if 0
 template <>
 String<CH>:: ~String() noexcept
 {
@@ -71,3 +72,4 @@ code( 0 )
     code->size = sum;
     assert(code->checked());
 }
+#endif
