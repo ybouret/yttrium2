@@ -4,7 +4,7 @@
 //! \file
 
 #ifndef Y_Protean_CoopList_Included
-#define Y_Protean_CoppList_Included 1
+#define Y_Protean_CoopList_Included 1
 
 #include "y/protean/proto/list.hpp"
 #include "y/protean/cache/warped.hpp"

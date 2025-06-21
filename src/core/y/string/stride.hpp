@@ -71,6 +71,11 @@ namespace Yttrium
                 return isValidWith(sizeof(T));
             }
 
+            //! copy
+            /**
+             \param source valid source
+             \param length length <= capacity
+             */
             inline void cpy(const T * const source,
                             const size_t    length) noexcept
             {
@@ -95,6 +100,11 @@ namespace Yttrium
                 }
             }
 
+            //! cat
+            /**
+             \param source valid source
+             \param length size+length <= capacity
+             */
             inline void cat(const T * const source,
                             const size_t    length) noexcept
             {

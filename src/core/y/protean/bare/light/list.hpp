@@ -12,21 +12,47 @@ namespace Yttrium
     namespace Protean
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! no cache, light list
+        //
+        //
+        //______________________________________________________________________
         template <typename T, typename ThreadingPolicy = SingleThreadedClass>
         class BareLightList : public BareList<LightNode<T>,ThreadingPolicy>
         {
         public:
-            typedef LightNode<T>                       NodeType;
-            typedef BareList<NodeType,ThreadingPolicy> BaseType;
-            
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef LightNode<T>                       NodeType; //!< alias
+            typedef BareList<NodeType,ThreadingPolicy> BaseType; //!< alias
+
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup empty
             inline explicit BareLightList() : BaseType() {}
+
+            //! cleanup
             inline virtual ~BareLightList() noexcept {}
+
+            //! duplicate \param other another list
             inline BareLightList(const BareLightList &other) : BaseType(other)
             {
             }
 
         private:
-            Y_Disable_Assign(BareLightList);
+            Y_Disable_Assign(BareLightList); //!< discarding
 
         };
     }

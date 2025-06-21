@@ -13,6 +13,15 @@ namespace Yttrium
 {
     namespace Protean
     {
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Bare List interface
+        //
+        //
+        //______________________________________________________________________
         template <
         typename NODE,
         typename ThreadingPolicy>
@@ -21,21 +30,40 @@ namespace Yttrium
         public Releasable
         {
         public:
-            typedef DirectCacheOf<NODE>                                PoolType;
-            typedef ListProto<NODE,PoolType,Container,ThreadingPolicy> CoreType;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef DirectCacheOf<NODE>                                PoolType; //!< alias
+            typedef ListProto<NODE,PoolType,Container,ThreadingPolicy> CoreType; //!< alias
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! cleanup
             inline virtual ~BareList() noexcept {}
 
+            //! [Releasable] release content
             inline virtual void release() noexcept { this->release_(); }
 
         protected:
+            //! setup empty
             inline explicit BareList() : CoreType(), Releasable() {}
+
+            //! duplicate \param other another list
             inline BareList(const BareList &other) : CoreType(), Releasable()
             {
                 this->duplicate(other);
             }
+
         private:
-            Y_Disable_Assign(BareList);
+            Y_Disable_Assign(BareList); //!< discarding
         };
 
     }

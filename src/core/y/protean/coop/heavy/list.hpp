@@ -15,23 +15,49 @@ namespace Yttrium
     namespace Protean
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Cooperative Heavy List
+        //
+        //
+        //______________________________________________________________________
         template <typename T, typename ThreadingPolicy = SingleThreadedClass>
         class CoopHeavyList : public CoopList<HeavyNode<T>,Sequence<T,CommonContainer>,ThreadingPolicy>
         {
         public:
-            typedef HeavyNode<T>                                    NodeType;
-            typedef Sequence<T,CommonContainer>                     SequenceType;
-            typedef CoopList<NodeType,SequenceType,ThreadingPolicy> BaseType;
-            typedef typename BaseType::PoolType                     PoolType;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef HeavyNode<T>                                    NodeType;     //!< aliases
+            typedef Sequence<T,CommonContainer>                     SequenceType; //!< aliases
+            typedef CoopList<NodeType,SequenceType,ThreadingPolicy> BaseType;     //!< aliases
+            typedef typename BaseType::PoolType                     PoolType;     //!< aliases
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setupe empty \param shared shared pool
             inline explicit CoopHeavyList(const PoolType &shared) : BaseType(shared) {}
+
+            //! cleanup
             inline virtual ~CoopHeavyList() noexcept {}
+
+            //! assign cache and duplicate \param other another list
             inline CoopHeavyList(const CoopHeavyList &other) : BaseType(other)
             {
             }
 
         private:
-            Y_Disable_Assign(CoopHeavyList);
+            Y_Disable_Assign(CoopHeavyList); //!< discard
 
         };
     }

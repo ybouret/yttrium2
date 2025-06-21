@@ -11,7 +11,7 @@ namespace Yttrium
 {
     namespace Protean
     {
-        typedef Dynamic<Collectable> CommonContainer;
+        typedef Dynamic<Collectable> CommonContainer; //!< alias for [Solo|Coop] lists
     }
 }
 
