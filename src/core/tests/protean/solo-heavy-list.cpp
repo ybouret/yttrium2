@@ -12,8 +12,8 @@ Y_UTEST(protean_solo_heavy_list)
 {
     System::Rand ran;
 
-    Protean::SoloHeavyList<int,SingleThreadedClass> st_list;
-    Protean::SoloHeavyList<int,MultiThreadedObject> mt_list;
+    List<int,SingleThreadedClass> st_list;
+    List<int,MultiThreadedObject> mt_list;
 
 
     for(int i=1;i<=6;++i)
