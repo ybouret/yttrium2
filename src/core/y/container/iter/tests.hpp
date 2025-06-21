@@ -10,9 +10,11 @@ namespace Yttrium
 {
     namespace Iter
     {
+        //! Tests for Iterator(s)
         struct Test
         {
 
+            //! show all content \param curr first valid \param last first invalid
             template <typename ITERATOR> static inline
             void Run(ITERATOR curr, const ITERATOR last)
             {
@@ -22,6 +24,7 @@ namespace Yttrium
                 }
             }
 
+            //! forward run \param seq a sequence
             template <typename SEQ> static inline
             void Forward( SEQ &seq )
             {
@@ -29,6 +32,7 @@ namespace Yttrium
                 Run(seq.begin(),seq.end());
             }
 
+            //! forward const run \param seq a sequence
             template <typename SEQ> static inline
             void ForwardConst( const SEQ &seq )
             {
@@ -36,6 +40,7 @@ namespace Yttrium
                 Run(seq.begin(),seq.end());
             }
 
+            //! reverse run \param seq a sequence
             template <typename SEQ> static inline
             void Reverse( SEQ &seq )
             {
@@ -43,6 +48,7 @@ namespace Yttrium
                 Run(seq.rbegin(),seq.rend());
             }
 
+            //! reverse const run \param seq a sequence
             template <typename SEQ> static inline
             void ReverseConst( const SEQ &seq )
             {
@@ -50,6 +56,7 @@ namespace Yttrium
                 Run(seq.rbegin(),seq.rend());
             }
 
+            //! all forward runs \param seq a sequence
             template <typename SEQ> static inline
             void AllForward( SEQ &seq )
             {
@@ -57,6 +64,7 @@ namespace Yttrium
                 ForwardConst(seq);
             }
 
+            //! all reverse runs \param seq a sequence
             template <typename SEQ> static inline
             void AllReverse( SEQ &seq )
             {
@@ -64,6 +72,7 @@ namespace Yttrium
                 ReverseConst(seq);
             }
 
+            //! both mutable run forward/reverse \param seq a sequence
             template <typename SEQ> static inline
             void Both(SEQ &seq)
             {
@@ -71,6 +80,7 @@ namespace Yttrium
                 Reverse(seq);
             }
 
+            //! both const run forward/reverse \param seq a sequence
             template <typename SEQ> static inline
             void BothConst(const SEQ &seq)
             {
@@ -78,6 +88,7 @@ namespace Yttrium
                 ReverseConst(seq);
             }
 
+            //! All runs \param seq a sequence
             template <typename SEQ> static inline
             void All(SEQ &seq)
             {

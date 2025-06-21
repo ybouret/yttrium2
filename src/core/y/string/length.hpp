@@ -10,7 +10,11 @@
 namespace Yttrium
 {
 
-
+    //! generic strlen method
+    /**
+     \param s an array of T
+     \return number of contiguous not-zero objects
+     */
     template <typename T>
     inline size_t StringLength(const T * const s) noexcept
     {

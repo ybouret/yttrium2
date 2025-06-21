@@ -314,6 +314,7 @@ built(0)
             free_(); Destroy(code);
         }
 
+        //! [Sequence] \return head iterm
         virtual ConstType & getHead() const noexcept {
             Y_Must_Lock();
             assert(0!=code);
@@ -321,6 +322,7 @@ built(0)
             return code->entry[0];
         }
 
+        //! [Sequence] \return tail item
         virtual ConstType & getTail() const noexcept {
             Y_Must_Lock();
             assert(0!=code);
