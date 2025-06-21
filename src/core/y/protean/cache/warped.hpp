@@ -46,6 +46,7 @@ namespace Yttrium
             //! setup
             inline WarpedCacheOf() :
             CacheThreading(),
+            Caching(),
             zpool( sizeof(NODE) )
             {
             }
@@ -53,6 +54,7 @@ namespace Yttrium
             //! shared copy of zombies \param other another cache
             inline WarpedCacheOf( const WarpedCacheOf &other ) :
             CacheThreading(),
+            Caching(),
             zpool(other.zpool)
             {
 
