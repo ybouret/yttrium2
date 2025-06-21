@@ -1,7 +1,7 @@
 
 
 
-#include "y/protean/coop/list.hpp"
+#include "y/protean/coop/light/list.hpp"
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
 #include "y/threading/multi-threaded-object.hpp"
@@ -12,11 +12,16 @@ using namespace Yttrium;
 Y_UTEST(protean_coop_light_list)
 {
     System::Rand ran;
-    float        array[] = { 1, 2, 3, 4 };
+    double       array[] = { 1, 2, 3, 4, 5, 7, 8 };
 
-#if 0
-    Protean::SoloLightList<float,SingleThreadedClass> st_list;
-    Protean::SoloLightList<float,MultiThreadedObject> mt_list;
+    typedef Protean::CoopLightList<double,SingleThreadedClass> STList;
+    typedef Protean::CoopLightList<double,MultiThreadedObject> MTList;
+
+    STList::PoolType st_pool;
+    MTList::PoolType mt_pool;
+    STList           st_list(st_pool);
+    MTList           mt_list(mt_pool);
+
 
     for(size_t i=0;i<sizeof(array)/sizeof(array[0]);++i)
     {
@@ -34,8 +39,10 @@ Y_UTEST(protean_coop_light_list)
     }
 
     Iter::Test::All(st_list);
-#endif
+    Iter::Test::All(mt_list);
 
+    STList           st_list2(st_list);
+    Iter::Test::All(st_list2);
 
 }
 Y_UDONE()

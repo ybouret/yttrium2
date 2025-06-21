@@ -81,6 +81,7 @@ namespace Yttrium
             template <typename SEQ> static inline
             void All(SEQ &seq)
             {
+                std::cerr << "---- Testing All Iterators ----" << std::endl;
                 AllForward(seq);
                 AllReverse(seq);
             }

@@ -25,11 +25,10 @@ namespace Yttrium
         typename NODE,
         typename CONTAINER,
         typename ThreadingPolicy>
-        class CoopList :
-        public ListProto<NODE,WarpedCacheOf<NODE,ThreadingPolicy>,CONTAINER,ThreadingPolicy>
+        class CoopList : public ListProto<NODE,WarpedCacheOf<NODE,ThreadingPolicy>,CONTAINER,ThreadingPolicy>
         {
         public:
-            typedef WarpedCacheOf<NODE,SingleThreadedClass>            PoolType;
+            typedef WarpedCacheOf<NODE,ThreadingPolicy>                PoolType;
             typedef ListProto<NODE,PoolType,CONTAINER,ThreadingPolicy> CoreType;
             using CoreType::pool;
             using CoreType::list;
