@@ -81,6 +81,10 @@ namespace Yttrium
 
     private:
         Y_Disable_Copy_And_Assign(Sequence); //!< discarding
+
+        virtual ConstType & getHead() const noexcept = 0;
+        virtual ConstType & getTail() const noexcept = 0;
+
     };
 
 }

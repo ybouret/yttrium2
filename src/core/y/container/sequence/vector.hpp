@@ -314,6 +314,19 @@ built(0)
             free_(); Destroy(code);
         }
 
+        virtual ConstType & getHead() const noexcept {
+            Y_Must_Lock();
+            assert(0!=code);
+            assert(built>0);
+            return code->entry[0];
+        }
+
+        virtual ConstType & getTail() const noexcept {
+            Y_Must_Lock();
+            assert(0!=code);
+            assert(built>0);
+            return code->cxx[built];
+        }
 
     };
 

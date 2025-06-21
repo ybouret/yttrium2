@@ -197,6 +197,19 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(ListProto); //!< discaring
             inline virtual typename Entrance::ConstInterface & locus() const noexcept { return list; }
 
+            inline virtual ConstType & getHead() const noexcept
+            {
+                Y_Must_Lock();
+                assert(list.head!=0);
+                return **list.head;
+            }
+
+            inline virtual ConstType & getTail() const noexcept
+            {
+                Y_Must_Lock();
+                assert(list.tail!=0);
+                return **list.tail;
+            }
         };
 
     }
