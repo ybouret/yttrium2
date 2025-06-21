@@ -23,7 +23,8 @@ namespace Yttrium
 
             inline explicit CoopLightList(const PoolType &shared) : BaseType(shared) {}
             inline virtual ~CoopLightList() noexcept {}
-            inline CoopLightList(const CoopLightList &other) : BaseType(other)
+            inline CoopLightList(const CoopLightList &other) :
+            Container(), BaseType(other)
             {
             }
 

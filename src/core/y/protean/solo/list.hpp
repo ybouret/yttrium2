@@ -7,18 +7,14 @@
 
 #include "y/protean/proto/list.hpp"
 #include "y/protean/cache/warped.hpp"
-#include "y/container/dynamic.hpp"
 #include "y/threading/single-threaded-class.hpp"
+#include "y/protean/common-container.hpp"
 
 namespace Yttrium
 {
     namespace Protean
     {
         //! CONTAINER = Dynamic<Collectable> or Sequence< Dynamic<Collectable> >
-        
-
-        typedef Dynamic<Collectable> CommonContainer;
-
         // the cache access is always behind class lock
         template <
         typename NODE,
@@ -72,7 +68,7 @@ namespace Yttrium
 
         protected:
             inline explicit SoloList() : CoreType() {}
-            inline SoloList(const SoloList &other) : CoreType()
+            inline SoloList(const SoloList &other) : Container(), CoreType()
             {
                 this->duplicate(other);
             }

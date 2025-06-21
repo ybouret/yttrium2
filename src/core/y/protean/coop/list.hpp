@@ -8,18 +8,14 @@
 
 #include "y/protean/proto/list.hpp"
 #include "y/protean/cache/warped.hpp"
-#include "y/container/dynamic.hpp"
 #include "y/threading/single-threaded-class.hpp"
+#include "y/protean/common-container.hpp"
 
 namespace Yttrium
 {
     namespace Protean
     {
         //! CONTAINER = Dynamic<Collectable> or Sequence< Dynamic<Collectable> >
-
-
-        typedef Dynamic<Collectable> CommonContainer;
-
         // the cache access is NOT always behind class lock
         template <
         typename NODE,
@@ -72,7 +68,7 @@ namespace Yttrium
 
         protected:
             inline explicit CoopList(const PoolType &shared) : CoreType(shared) {}
-            inline CoopList(const CoopList &other) : CoreType(other.pool)
+            inline CoopList(const CoopList &other) : Container(), CoreType(other.pool)
             {
                 this->duplicate(other);
             }

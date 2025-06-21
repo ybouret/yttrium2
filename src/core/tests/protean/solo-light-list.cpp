@@ -33,6 +33,8 @@ Y_UTEST(protean_solo_light_list)
 
     Iter::Test::All(st_list);
 
+    Protean::SoloLightList<float,SingleThreadedClass> st_list2(st_list);
+    Protean::SoloLightList<float,MultiThreadedObject> mt_list2(mt_list);
 
 }
 Y_UDONE()

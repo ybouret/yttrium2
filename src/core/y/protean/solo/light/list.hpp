@@ -21,7 +21,7 @@ namespace Yttrium
             
             inline explicit SoloLightList() : BaseType() {}
             inline virtual ~SoloLightList() noexcept {}
-            inline SoloLightList(const SoloLightList &other) : BaseType(other)
+            inline SoloLightList(const SoloLightList &other) : Container(), BaseType(other)
             {
             }
 
