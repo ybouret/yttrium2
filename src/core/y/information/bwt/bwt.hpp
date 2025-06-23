@@ -43,9 +43,9 @@ namespace Yttrium
                                   const size_t        size,
                                   size_t      * const indices,
                                   const size_t primary_index);
-            
+
         };
-        
+
     }
 }
 

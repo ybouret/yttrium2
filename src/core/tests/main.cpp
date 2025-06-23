@@ -100,6 +100,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(info_stream);
     Y_UTEST(info_arc4);
     Y_UTEST(info_rle);
+    Y_UTEST(info_bwt_rle);
 
     Y_UTEST(utf8_api);
 

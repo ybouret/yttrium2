@@ -135,6 +135,7 @@ Y_UTEST(info:bwt)
 Y_UTEST(info:stream)
 Y_UTEST(info:arc4)
 Y_UTEST(info:rle)
+Y_UTEST(info:bwt_rle)
 
 #utf8
 Y_UTEST(utf8:api)

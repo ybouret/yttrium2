@@ -202,7 +202,7 @@ namespace Yttrium
         inline ConstType * operator()(void) const noexcept { return head(); }
 
         //! \return base address, may be null
-        inline Type *      operator()(void)       noexcept { return head(); }
+        inline Type *      operator()(void)       noexcept { return (Type*)head(); }
 
 
         //______________________________________________________________________
