@@ -141,8 +141,31 @@ namespace Yttrium
 
     bool InputStream:: gets(Core::String<char> &line)
     {
+        line.free();
+        char c;
 
-        return false;
+        while(query(c))
+        {
+            switch(c)
+            {
+                case LF:
+                    return true;
+
+                case CR:
+                    if(query(c))
+                    {
+                        if(LF!=c) store(c);
+                    }
+                    return true;
+
+                default:
+                    line << c;
+                    continue;
+            }
+        }
+
+        // EOF
+        return line.size()>0;
     }
 
 }

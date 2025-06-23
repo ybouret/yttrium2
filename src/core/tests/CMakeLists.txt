@@ -113,6 +113,7 @@ Y_UTEST(stream:io:char)
 Y_UTEST(stream:queue)
 Y_UTEST(stream:input:file)
 Y_UTEST(stream:output:file)
+Y_UTEST(stream:gets)
 
 #sort
 Y_UTEST(sorting:heap)
