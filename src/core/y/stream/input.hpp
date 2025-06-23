@@ -48,7 +48,7 @@ namespace Yttrium
         //______________________________________________________________________
 
         //! codec64 decoding, throw exception on error
-        void decode64(uint64_t &);
+        void decode64(uint64_t &, const char * const varName = 0);
 
         //! read Constant Bit Rate variable
         /**
@@ -68,12 +68,29 @@ namespace Yttrium
             return res;
         }
 
+        //! read Variable Bit Rate variable
+        /**
+
+         */
+        template <typename T> inline
+        T readVBR(const char * const varName = 0)
+        {
+            static const uint64_t mx = uint64_t(IntegerFor<T>::Maximum);
+            uint64_t qw = 0;
+            decode64(qw);
+            if(qw>mx)
+                throwOverflow(varName,qw,mx);
+            return T(qw);
+        }
+
+
     private:
         Y_Disable_Copy_And_Assign(InputStream); //!< discarding
         size_t read(uint8_t  &); //!< \return [0:1] and value
         size_t read(uint16_t &); //!< \return [0:2] and value
         size_t read(uint32_t &); //!< \return [0:4] and value
         size_t read(uint64_t &); //!< \return [0:8] and value
+        void throwOverflow(const char * const, const uint64_t, const uint64_t) const;
     };
 }
 

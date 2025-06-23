@@ -376,3 +376,45 @@ size_t String<CH>:: serialize(OutputStream &fp) const
     }
     return res;
 }
+
+template <>
+String<CH>:: String(InputStream &      fp,
+                    const char * const var) :
+Y_String(),
+code(0)
+{
+    // make full variable name in uid
+    char              uid[256] = "String.size";
+
+    if(var)
+    {
+        memset(uid,0,sizeof(uid));
+        Core::Text::Copy(uid,sizeof(uid),var);
+        Core::Text::Add(uid,sizeof(uid),".size");
+    }
+
+    // read variable size
+    const size_t numChars = fp.readVBR<size_t>(uid);
+    Coerce(code) = new Code(numChars);
+    try {
+        for(code->size=0;code->size<numChars;++code->size)
+        {
+            assert(code->isValid());
+            if( 1 != fp.readCBR(code->base[code->size]) )
+            {
+                const size_t cidx = code->size+1;
+                Specific::Exception excp("String(InputStream)","missing char %s/%s",
+                                         Decimal(cidx).c_str(),
+                                         Decimal(numChars).c_str());
+                if(var) excp.add(" for %s", var);
+                throw excp;
+            }
+        }
+        assert(code->isValid());
+    }
+    catch(...)
+    {
+        Destroy(code);
+        throw;
+    }
+}

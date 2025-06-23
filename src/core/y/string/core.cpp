@@ -8,6 +8,10 @@
 #include "y/sorting/lexicographic.hpp"
 #include "y/type/traits.hpp"
 #include "y/stream/output.hpp"
+#include "y/stream/input.hpp"
+#include "y/system/exception.hpp"
+#include "y/decimal.hpp"
+#include "y/core/text.hpp"
 
 #include <cstring>
 
@@ -16,7 +20,7 @@ namespace Yttrium
     namespace Core
     {
 
-#define Y_String() Container(), LegacyString(), ContiguousType(), Serializable()
+#define Y_String() Container(), Object(), LegacyString(), ContiguousType(), Serializable()
 
 #undef CH
 #define CH char

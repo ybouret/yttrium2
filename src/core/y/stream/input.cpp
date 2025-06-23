@@ -15,35 +15,58 @@ namespace Yttrium
     }
 
     
+    static const char     fmt[]         = " for %s";
 
     
-    void InputStream:: decode64(uint64_t &qw)
+    void InputStream:: decode64(uint64_t &qw, const char * const varName)
     {
-        static const char fn[] = "InputStream::decode64";
-
+        static const char     fn[]          = "InputStream::decode64";
         static const size_t   MaxExtraBytes = IO::Codec64::MaxExtraBytes;
-        //static const size_t   HeaderBits    = IO::Codec64::HeaderBits;
         static const size_t   HeaderRoll    = IO::Codec64::HeaderRoll;
         static const uint64_t HeaderMask    = IO::Codec64::HeaderMask;
 
 
         uint8_t header = 0;
-        if(!query((char&)header) )throw Specific::Exception(fn,"missing header");
+        if(!query((char&)header) )
+        {
+            Specific::Exception excp(fn,"missing header");
+            if(varName) excp.add(fmt,varName);
+            throw excp;
+        }
         const size_t  extraBytes = size_t(header>>HeaderRoll);
 
         if(extraBytes>MaxExtraBytes)
-            throw Specific::Exception(fn,"extraBytes=%s>%s", Decimal(extraBytes).c_str(), Decimal(MaxExtraBytes).c_str());
+        {
+            Specific::Exception excp(fn,"extraBytes=%s>%s", Decimal(extraBytes).c_str(), Decimal(MaxExtraBytes).c_str());
+            if(varName) excp.add(fmt,varName);
+            throw excp;
+        }
 
         qw = header & HeaderMask;
         unsigned shift = HeaderRoll;
         for(size_t i=1;i<=extraBytes;++i)
         {
             uint8_t extra = 0;
-            if( !query( (char &)extra) ) throw Specific::Exception(fn,"missing extra char %s/%s", Decimal(i).c_str(), Decimal(extraBytes).c_str());
+            if( !query( (char &)extra) )
+            {
+                Specific::Exception excp(fn,"missing extra char %s/%s", Decimal(i).c_str(), Decimal(extraBytes).c_str());
+                if(varName) excp.add(fmt,varName);
+                throw excp;
+            }
             qw |= (uint64_t(extra)<<shift);
             shift += 8;
         }
 
+    }
+
+
+    void InputStream:: throwOverflow(const char * const varName,
+                                     const uint64_t     qw,
+                                     const uint64_t     mx) const
+    {
+        Specific::Exception excp("InputStream::readVBR","read %s bigger than maximum %s", Decimal(qw).c_str(), Decimal(mx).c_str());
+        if(varName) excp.add(fmt,varName);
+        throw excp;
     }
 
 

@@ -49,6 +49,7 @@ namespace Yttrium
         //______________________________________________________________________
         template <typename T>
         class String :
+        public Object,
         public LegacyString,
         public Contiguous< Writable<T> >,
         public Serializable
@@ -62,7 +63,7 @@ namespace Yttrium
             //__________________________________________________________________
             typedef Stride<T> Code; //!< alias
             typedef Contiguous< Writable<T> > ContiguousType;
-            
+
             //__________________________________________________________________
             //
             //
@@ -81,6 +82,8 @@ namespace Yttrium
 
             String & operator=(const T * const);    //!< assing legacy string \return *this
             String & operator=(const T) noexcept;   //!< assign single char   \return *this*
+
+            String(InputStream &, const char * const = 0);
 
             //! output dependending on T \return output stream
             friend std::ostream & operator<< <>(std::ostream &, const String &);
