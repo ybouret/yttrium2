@@ -23,9 +23,9 @@ namespace Yttrium
             virtual bool query(char &C);
             virtual void store(const char C);
 
-        protected:
-            void emit(const uint8_t);
-            
+            void qWrite(const uint8_t);
+            void qClear() noexcept;
+
         private:
             Y_Disable_Copy_And_Assign(QCodec);
             Code * const code;

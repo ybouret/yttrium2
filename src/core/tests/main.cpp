@@ -92,13 +92,14 @@ Y_UTEST_DECL(128)
     Y_UTEST(sequence_vector);
 
     Y_UTEST(ordered_pqueue);
-	
+
     Y_UTEST(ptr_auto);
     Y_UTEST(ptr_arc);
 
     Y_UTEST(info_bwt);
     Y_UTEST(info_stream);
     Y_UTEST(info_arc4);
+    Y_UTEST(info_rle);
 
     Y_UTEST(utf8_api);
 
@@ -109,7 +110,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(protean_solo_heavy_list);
     Y_UTEST(protean_coop_light_list);
     Y_UTEST(protean_coop_heavy_list);
- 
+
     Y_UTEST(string_stride);
     Y_UTEST(string);
 }

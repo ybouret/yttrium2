@@ -3,6 +3,7 @@
 #include "y/information/codec/q.hpp"
 #include "y/protean/solo/heavy/list.hpp"
 #include "y/object.hpp"
+#include "y/type/destroy.hpp"
 
 namespace Yttrium
 {
@@ -30,6 +31,7 @@ namespace Yttrium
 
         QCodec:: ~QCodec() noexcept
         {
+            Destroy(code);
         }
 
         QCodec:: QCodec() noexcept : code( new Code() )
@@ -56,9 +58,14 @@ namespace Yttrium
             code->list.pushHead(C);
         }
 
-        void QCodec:: emit(const uint8_t byte)
+        void QCodec:: qWrite(const uint8_t byte)
         {
             code->list.pushTail(byte);
+        }
+
+        void QCodec:: qClear() noexcept
+        {
+            code->list.free();
         }
 
 

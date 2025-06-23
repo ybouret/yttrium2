@@ -19,6 +19,8 @@ namespace Yttrium
         public:
             virtual ~Codec() noexcept;
 
+            virtual void reset() noexcept = 0;
+
         private:
             Y_Disable_Copy_And_Assign(Codec);
         };

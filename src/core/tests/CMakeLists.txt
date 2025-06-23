@@ -134,6 +134,7 @@ Y_UTEST(ptr:arc)
 Y_UTEST(info:bwt)
 Y_UTEST(info:stream)
 Y_UTEST(info:arc4)
+Y_UTEST(info:rle)
 
 #utf8
 Y_UTEST(utf8:api)
