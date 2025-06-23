@@ -28,5 +28,11 @@ namespace Yttrium
     {
         return currentCapacity+NextIncrease(currentCapacity);
     }
+
+
+    void Expandable:: ensure(const size_t minCapacity)
+    {
+        if(minCapacity>capacity()) reserve(minCapacity-capacity());
+    }
 }
 
