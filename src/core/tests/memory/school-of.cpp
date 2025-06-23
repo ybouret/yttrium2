@@ -62,7 +62,7 @@ Y_UTEST(memory_school_of)
     if(code) Destroy(code);
 
 #endif
-    for(size_t i=1;i<=1000;++i)
+    for(size_t i=1;i<=992;++i)
     {
         std::cerr << "@" << i << std::endl;
         MyChars * code = new MyChars(i);

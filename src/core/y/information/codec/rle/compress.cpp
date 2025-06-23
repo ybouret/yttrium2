@@ -16,7 +16,7 @@ namespace Yttrium
             class Compress:: Proc : public Object
             {
             public:
-                inline explicit Proc()
+                inline explicit Proc() : count(0), match(0), enc64()
                 {
                 }
 
