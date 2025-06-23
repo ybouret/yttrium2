@@ -165,6 +165,7 @@ built(0)
         virtual void pushTail(ParamType args)
         {
             Y_Must_Lock();
+            std::cerr << "push tail when built=" << built << std::endl;
             if(0==code)
                 intoNewCode(args);
             else

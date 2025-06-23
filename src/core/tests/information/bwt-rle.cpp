@@ -6,12 +6,15 @@
 
 #include "y/utest/run.hpp"
 #include "y/container/sequence/vector.hpp"
+#include "y/concurrent/singulet.hpp"
 
 using namespace Yttrium;
 
 Y_UTEST(info_bwt_rle)
 {
-    Information::RLE::Compress rle;
+
+    Concurrent::Singulet::Verbose = true;
+    //Information::RLE::Compress rle;
     Vector<char>               source;
     
     if( argc > 1 )
@@ -24,7 +27,7 @@ Y_UTEST(info_bwt_rle)
         }
 
         {
-            OutputFile fp("rle.dat");
+            //OutputFile fp("rle.dat");
             //fp.frame(source(),source.size());
         }
     }

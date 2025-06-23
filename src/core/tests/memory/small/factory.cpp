@@ -15,7 +15,7 @@ namespace
         size_t len;
     };
 
-    static const size_t MaxBlock = 1000;
+    static const size_t MaxBlock = 2000;
     static Block        blocks[MaxBlock];
     static size_t       count = 0;
 
@@ -25,7 +25,7 @@ namespace
         while(count<MaxBlock)
         {
             Block & b = blocks[count];
-            b.len = ran.leq(30000); if(count<=0) b.len = 0;
+            b.len = ran.leq(100000); if(count<=0) b.len = 0;
             b.ptr = F.query(b.len);
             ++count;
         }
