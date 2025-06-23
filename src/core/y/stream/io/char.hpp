@@ -14,33 +14,59 @@ namespace Yttrium
 
     namespace IO
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! node for Chars, managed by Inventory
+        //
+        //
+        //______________________________________________________________________
         class Char
         {
         public:
-            Y_ARGS_DECL(uint8_t,Type);
-            static const System::AtExit::Longevity LifeTime = LifeTimeOf::IOChars;
-            static const char * const              CallSign;
-            typedef Protean::WarpedCacheOf<Char,MultiThreadedHandle> Cache;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            Y_ARGS_DECL(uint8_t,Type); //!< aliases
+            static const System::AtExit::Longevity                   LifeTime = LifeTimeOf::IOChars; //!< lifetime
+            static const char * const                                CallSign;                       //!< "IO::Char"
+            typedef Protean::WarpedCacheOf<Char,MultiThreadedHandle> Cache;                          //!< alias
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            Char(ParamType)    noexcept;             //!< setup
+            Char(const Char &) noexcept;             //!< duplicate
+            ~Char() noexcept;                        //!< cleanup
+            Char & operator=(const Char &) noexcept; //!< assign
 
-
-            ConstType & operator*() const noexcept { return code; }
-            Type      & operator*()       noexcept { return code; }
-
-
-            Char *  next;
-            Char *  prev;
-
-            Char(ParamType)    noexcept;
-            Char(const Char &) noexcept;
-            ~Char() noexcept;
-            Char & operator=(const Char &) noexcept;
-
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            ConstType    & operator*() const noexcept; //!< \return content
+            Type         & operator*()       noexcept; //!< \return content
             static Cache & CacheInstance();
-            
 
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            Char *      next; //!< for list
+            Char *      prev; //!< for list
         private:
-            MutableType code;
+            MutableType code; //!< content
         };
     }
 

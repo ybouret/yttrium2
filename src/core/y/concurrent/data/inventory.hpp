@@ -14,19 +14,39 @@ namespace Yttrium
 
     namespace Concurrent
     {
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! shared multi-threaded singleton/cache for type
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class Inventory : public Singleton<Inventory<T>, ClassLockPolicy>,
         public Protean::WarpedCacheOf<T,MultiThreadedHandle>
         {
         public:
-            static const System::AtExit::Longevity LifeTime = T::LifeTime;
-            static const char * const              CallSign;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const System::AtExit::Longevity LifeTime = T::LifeTime; //!< forward longevity
+            static const char * const              CallSign;               //!< T::CallSign
 
-            typedef Singleton<Inventory<T>, ClassLockPolicy>      ClassType;
-            typedef Protean::WarpedCacheOf<T,MultiThreadedHandle> CacheType;
+            typedef Singleton<Inventory<T>, ClassLockPolicy>      ClassType; //!< alias
+            typedef Protean::WarpedCacheOf<T,MultiThreadedHandle> CacheType; //!< alias
             using ClassType::access;
 
-
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             virtual void display(std::ostream &os,size_t indent) const
             {
                 this->initProlog(os,indent);
@@ -36,10 +56,13 @@ namespace Yttrium
             }
 
         private:
-            Y_Disable_Copy_And_Assign(Inventory);
+            Y_Disable_Copy_And_Assign(Inventory); //!< discarding
             friend class Singleton<Inventory<T>, ClassLockPolicy>;
 
+            //! setup
             explicit Inventory() : ClassType(), CacheType(access) {}
+
+            //! cleanup
             virtual ~Inventory() noexcept {}
         };
 

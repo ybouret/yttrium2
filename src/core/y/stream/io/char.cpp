@@ -25,7 +25,11 @@ namespace Yttrium
         {}
 
         const char * const Char:: CallSign = "IO::Char";
-        
+
+
+        Char::ConstType & Char:: operator*() const noexcept { return code; }
+        Char::Type      & Char:: operator*()       noexcept { return code; }
+
     }
 
 }
