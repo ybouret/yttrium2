@@ -43,6 +43,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(concurrent_mutex);
     Y_UTEST(concurrent_condition);
     Y_UTEST(concurrent_thread);
+    Y_UTEST(concurrent_inventory);
 
 
     Y_UTEST(memory_gc);

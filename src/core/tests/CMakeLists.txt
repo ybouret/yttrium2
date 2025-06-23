@@ -70,6 +70,7 @@ Y_UTEST(concurrent:life_time)
 Y_UTEST(concurrent:mutex)
 Y_UTEST(concurrent:condition)
 Y_UTEST(concurrent:thread)
+Y_UTEST(concurrent:inventory)
 
 #memory
 Y_UTEST(memory:gc)

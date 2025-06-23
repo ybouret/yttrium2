@@ -5,10 +5,12 @@
 #define Y_Protean_WarpedCache_Included 1
 
 #include "y/memory/io/zombies.hpp"
+#include "y/threading/must-lock.hpp"
 #include "y/type/destruct.hpp"
 
 namespace Yttrium
 {
+    class Lockable;
 
     namespace Protean
     {
@@ -50,6 +52,15 @@ namespace Yttrium
             zpool( sizeof(NODE) )
             {
             }
+
+            //! setup with locking
+            inline WarpedCacheOf(Lockable &handle) :
+            CacheThreading(handle),
+            Caching(),
+            zpool( sizeof(NODE) )
+            {
+            }
+
 
             //! shared copy of zombies \param other another cache
             inline WarpedCacheOf( const WarpedCacheOf &other ) :

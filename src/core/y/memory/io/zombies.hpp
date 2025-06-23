@@ -77,7 +77,7 @@ namespace Yttrium
 
         private:
             Y_Disable_Assign(Zombies); //!< discarding
-            Code * const code;                  //!< internal code, pool and metricss
+            Code * const code;         //!< internal code, pool and metricss
 
         };
 
