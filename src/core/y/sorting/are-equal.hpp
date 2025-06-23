@@ -4,8 +4,8 @@
 #ifndef Y_Sorting_AreEqual_Included
 #define Y_Sorting_AreEqual_Included 1
 
-#include "y/sorting/types.hpp"
-#include "y/type/sign.hpp"
+#include "y/system/compiler.hpp"
+
 
 namespace Yttrium
 {

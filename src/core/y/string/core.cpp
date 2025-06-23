@@ -3,8 +3,9 @@
 #include "y/type/destroy.hpp"
 #include "y/string/stride.hpp"
 #include "y/string/length.hpp"
-#include "y/string/compare.hpp"
 #include "y/sorting/are-equal.hpp"
+#include "y/sorting/are-different.hpp"
+
 #include "y/type/traits.hpp"
 
 #include <cstring>
