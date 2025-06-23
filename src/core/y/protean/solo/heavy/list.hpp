@@ -33,14 +33,13 @@ namespace Yttrium
         typedef Protean::HeavyNode<T>                                    NodeType;     //!< alias
         typedef Sequence<T,Protean::CommonContainer>                     SequenceType; //!< alias
         typedef Protean::SoloList<NodeType,SequenceType,ThreadingPolicy> BaseType;     //!< alias
-        typedef Protean::HeavyNode<T>                                    NodeType;     //!< alias
         using BaseType::pool;
 
 
         //______________________________________________________________________
         //
         //
-        // CC++
+        // C++
         //
         //______________________________________________________________________
         inline explicit List() : BaseType() {} //!< setup emtpy

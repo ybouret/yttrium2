@@ -12,21 +12,43 @@ namespace Yttrium
     namespace Protean
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Light list with its own cache
+        //
+        //
+        //______________________________________________________________________
         template <typename T, typename ThreadingPolicy = SingleThreadedClass>
         class SoloLightList : public SoloList<LightNode<T>,CommonContainer,ThreadingPolicy>
         {
         public:
-            typedef LightNode<T>                                       NodeType;
-            typedef SoloList<NodeType,CommonContainer,ThreadingPolicy> BaseType;
-            
-            inline explicit SoloLightList() : BaseType() {}
-            inline virtual ~SoloLightList() noexcept {}
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef LightNode<T>                                       NodeType; //!< alias
+            typedef SoloList<NodeType,CommonContainer,ThreadingPolicy> BaseType; //!< alias
+
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            inline explicit SoloLightList() : BaseType() {} //!< setup empty
+            inline virtual ~SoloLightList() noexcept {}     //!< cleanup
+
+            //! duplicate with own cache \param other another list
             inline SoloLightList(const SoloLightList &other) : Container(), BaseType(other)
             {
             }
 
         private:
-            Y_Disable_Assign(SoloLightList);
+            Y_Disable_Assign(SoloLightList); //!< discarding
 
         };
     }

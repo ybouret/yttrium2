@@ -136,15 +136,15 @@ namespace Yttrium
                 return *this;
             }
 
-            inline Iterator             begin()  noexcept       { return list.head; }
-            inline Iterator             end()    noexcept       { return 0;         }
-            inline ConstIterator        begin()  const noexcept { return list.head; }
-            inline ConstIterator        end()    const noexcept { return 0;         }
-            inline ReverseIterator      rbegin() noexcept       { return list.tail; }
-            inline ReverseIterator      rend()   noexcept       { return 0;         }
-            inline ConstReverseIterator rbegin() const noexcept { return list.tail; }
-            inline ConstReverseIterator rend()   const noexcept { return 0;         }
-            
+            inline Iterator             begin()  noexcept       { return list.head; } //!< \return matching iterator
+            inline Iterator             end()    noexcept       { return 0;         } //!< \return matching iterator
+            inline ConstIterator        begin()  const noexcept { return list.head; } //!< \return matching iterator
+            inline ConstIterator        end()    const noexcept { return 0;         } //!< \return matching iterator
+            inline ReverseIterator      rbegin() noexcept       { return list.tail; } //!< \return matching iterator
+            inline ReverseIterator      rend()   noexcept       { return 0;         } //!< \return matching iterator
+            inline ConstReverseIterator rbegin() const noexcept { return list.tail; } //!< \return matching iterator
+            inline ConstReverseIterator rend()   const noexcept { return 0;         } //!< \return matching iterator
+
             //__________________________________________________________________
             //
             //
@@ -199,6 +199,11 @@ namespace Yttrium
             }
 
 
+            //! duplicate into agnostic list
+            /**
+             \param target list to fill
+             \param source list to copy
+             */
             inline void duplicateInto(ListType &target, const ListProto &source)
             {
                 volatile Lock primary(*this), replica(source);
@@ -209,17 +214,17 @@ namespace Yttrium
                 }
                 catch(...)
                 {
-                    while(target.size>0) pool.banish( target.popTail() );
+                    while(target.size>0) pool.remove( target.popTail() );
                     throw;
                 }
             }
 
+            //! duplicate \param other another list
             inline void duplicate(const ListProto &other)
             {
                 volatile Lock primary(*this), replica(other);
                 assert(0==list.size);
-                try { duplicateInto(list,other); }
-                catch(...) { releaseList_(); throw;  }
+                duplicateInto(list,other);
             }
 
 
@@ -228,6 +233,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(ListProto); //!< discaring
             inline virtual typename Entrance::ConstInterface & locus() const noexcept { return list; }
 
+            //! [Sequence] \return head value
             inline virtual ConstType & getHead() const noexcept
             {
                 Y_Must_Lock();
@@ -235,6 +241,7 @@ namespace Yttrium
                 return **list.head;
             }
 
+            //! [Sequence] \return tail value
             inline virtual ConstType & getTail() const noexcept
             {
                 Y_Must_Lock();
