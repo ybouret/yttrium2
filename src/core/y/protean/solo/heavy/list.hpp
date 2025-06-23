@@ -2,8 +2,8 @@
 
 //! \file
 
-#ifndef Y_Protean_SoloHeavList_Included
-#define Y_Protean_SoloHeavytList_Included 1
+#ifndef Y_Protean_SoloHeavyList_Included
+#define Y_Protean_SoloHeavyList_Included 1
 
 #include "y/protean/solo/list.hpp"
 #include "y/protean/node/heavy.hpp"

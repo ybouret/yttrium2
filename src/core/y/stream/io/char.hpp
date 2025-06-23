@@ -45,7 +45,7 @@ namespace Yttrium
             Char(ParamType)    noexcept;             //!< setup
             Char(const Char &) noexcept;             //!< duplicate
             ~Char() noexcept;                        //!< cleanup
-            Char & operator=(const Char &) noexcept; //!< assign
+            Char & operator=(const Char &) noexcept; //!< assign \return *this*
 
             //__________________________________________________________________
             //
@@ -55,7 +55,7 @@ namespace Yttrium
             //__________________________________________________________________
             ConstType    & operator*() const noexcept; //!< \return content
             Type         & operator*()       noexcept; //!< \return content
-            static Cache & CacheInstance();
+            static Cache & CacheInstance();            //!< global instant \return Inventory<Char>
 
             //__________________________________________________________________
             //

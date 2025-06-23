@@ -15,18 +15,44 @@ namespace Yttrium
     namespace IO
     {
 
-
+        //______________________________________________________________________
+        //
+        //
+        //! prototype
+        //
+        //______________________________________________________________________
         typedef Protean::ListProto<Char,Char::Cache &,Container,MultiThreadedObject> CharsProto;
 
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! List of Chars with unique shared cache
+        //
+        //
+        //______________________________________________________________________
         class Chars : public CharsProto, public Recyclable
         {
         public:
-            explicit Chars();
-            virtual ~Chars() noexcept;
-            Chars(const Chars & );
-            Chars & operator=(const Chars & );
-            virtual void free() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //______________________________________________________________________
+            explicit Chars();                  //!< setup
+            virtual ~Chars() noexcept;         //!< cleanup
+            Chars(const Chars & );             //!< duplicate
+            Chars & operator=(const Chars & ); //!< assign \return *this
+
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            virtual void free() noexcept; //!< free content
         };
     }
 }

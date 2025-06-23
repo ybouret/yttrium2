@@ -130,18 +130,21 @@ namespace Yttrium
             }
 
 
+            //! [Caching] collect garbage \param amount amout to collect
             inline virtual void gc(const uint8_t amount) noexcept
             {
                 Y_Must_Lock();
                 zpool.gc(amount);
             }
 
+            //! [Caching] \return current store
             inline virtual size_t count() const noexcept
             {
                 Y_Must_Lock();
                 return zpool.count();
             }
 
+            //! [Caching] reserve \param n number of extra objects
             inline void cache(const size_t n)
             {
                 Y_Must_Lock();

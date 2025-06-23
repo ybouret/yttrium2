@@ -25,26 +25,58 @@ namespace Yttrium
 /**/    } while(false)
 
 
-
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! wrapper for Zombies, for any type
+        //
+        //
+        //______________________________________________________________________
         template <typename T, typename THREADING_POLICY = SingleThreadedClass>
         class Limbo :  public THREADING_POLICY, public Caching
         {
         public:
-            Y_ARGS_DECL(T,Type);
-            typedef typename THREADING_POLICY::Lock Lock;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            Y_ARGS_DECL(T,Type);                          //!< aliases
+            typedef typename THREADING_POLICY::Lock Lock; //!< alias
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup with no argument
             inline explicit Limbo() : THREADING_POLICY(), zombies( sizeof(T) ) {}
 
+            //! setup with argument for policy
             template <typename ARGS>
             inline explicit Limbo(ARGS &args) : THREADING_POLICY(args), zombies( sizeof(T) ) {}
 
+            //! cleanup
             inline virtual ~Limbo() noexcept {}
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! create type with no argument \return live object
             inline Type *summon() {
                 Y_Must_Lock();
                 Y_Memory_Limbo( return new (addr) Type() );
             }
 
+            //! create type with one argument \param u parameter \return live object
             template <typename U>
             inline Type * summon( typename TypeTraits<U>::ParamType u )
             {
@@ -52,12 +84,14 @@ namespace Yttrium
                 Y_Memory_Limbo( return new (addr) Type(u) );
             }
 
+            //!  return to zombies \param object live object
             inline void banish(Type * const object) noexcept {
                 Y_Must_Lock();
                 assert(0!=object);
                 zombies.store( Destructed( (MutableType *)object ) );
             }
-            
+
+            //! return to inner Memory::Guild \param object live object
             inline void remove(Type * const object) noexcept
             {
                 Y_Must_Lock();
@@ -66,12 +100,13 @@ namespace Yttrium
             }
 
 
-
+            //! duplicate \param object live object \return duplicate
             inline Type *mirror(ConstType &object)
             {
                 Y_Must_Lock();
                 Y_Memory_Limbo( return new (addr) Type(object) );
             }
+
 
             inline virtual void gc(const uint8_t amount) noexcept
             {
@@ -92,10 +127,10 @@ namespace Yttrium
             }
 
         protected:
-            Zombies zombies;
-            
+            Zombies zombies; //!< inner zombies
+
         private:
-            Y_Disable_Copy_And_Assign(Limbo);
+            Y_Disable_Copy_And_Assign(Limbo); //!< discarding
         };
     }
 

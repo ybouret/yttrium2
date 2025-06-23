@@ -105,7 +105,7 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            void     swapFor(String &) noexcept;
+            void     swapFor(String &) noexcept;               //!< no-throw content exchange
 
             String & pushAtTail(const T *const, const size_t); //!< push legacy block  \return *this
             String & pushAtTail(const T *const);               //!< push legacy string \return *this
