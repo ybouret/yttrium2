@@ -488,3 +488,22 @@ const CH & String<CH>:: getTail() const noexcept
     assert(code->item);
     return code->item[code->size];
 }
+
+template <>
+void String<CH>:: reserve(const size_t n) noexcept
+{
+    assert(0!=code);
+    if(n>0)
+    {
+        Code * const temp = new Code( code->capacity + n );
+        while(temp->size<code->size)
+        {
+            temp->base[temp->size] = code->base[temp->size];
+            code->base[temp->size] = 0;
+            ++temp->size;
+        }
+        Destroy(code);
+        Coerce(code) = temp;
+    }
+}
+

@@ -5,7 +5,7 @@
 #ifndef Y_Expandable_Included
 #define Y_Expandable_Included 1
 
-#include "y/core/setup.hpp"
+#include "y/container/gradual.hpp"
 
 namespace Yttrium
 {
@@ -17,7 +17,7 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    class Expandable
+    class Expandable : public Gradual
     {
         //______________________________________________________________________
         //
@@ -38,7 +38,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         virtual void reserve(const size_t) = 0; //!< reserve more space
-
+        
         //______________________________________________________________________
         //
         //

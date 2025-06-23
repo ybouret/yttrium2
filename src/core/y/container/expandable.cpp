@@ -1,5 +1,5 @@
 
-#include "y/ability/expandable.hpp"
+#include "y/container/expandable.hpp"
 #include "y/type/ints.hpp"
 #include "y/core/utils.hpp"
 #include "y/system/exception.hpp"
@@ -11,7 +11,7 @@ namespace Yttrium
     {
     }
 
-    Expandable:: Expandable() noexcept
+    Expandable:: Expandable() noexcept : Gradual()
     {
     }
 

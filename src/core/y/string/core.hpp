@@ -12,7 +12,7 @@
 #include "y/type/sign.hpp"
 #include "y/ability/serializable.hpp"
 #include "y/container/sequence.hpp"
-#include "y/container/growing.hpp"
+#include "y/container/expandable.hpp"
 
 namespace Yttrium
 {
@@ -54,7 +54,7 @@ namespace Yttrium
         public Object,
         public LegacyString,
         public Contiguous< Writable<T> >,
-        public Sequence<T,Gradual>,
+        public Sequence<T,Expandable>,
         public Serializable
         {
         public:
@@ -108,7 +108,7 @@ namespace Yttrium
             virtual void         pushHead(ParamType);
             virtual void         popTail() noexcept;
             virtual void         popHead() noexcept;
-            //virtual void         reserve(const size_t n) noexcept;
+            virtual void         reserve(const size_t n) noexcept;
 
             //__________________________________________________________________
             //

@@ -4,9 +4,8 @@
 #ifndef Y_DynamicContainer_Included
 #define Y_DynamicContainer_Included 1
 
-#include "y/container/gradual.hpp"
 #include "y/ability/collectable.hpp"
-#include "y/ability/expandable.hpp"
+#include "y/container/expandable.hpp"
 
 namespace Yttrium
 {
@@ -20,7 +19,6 @@ namespace Yttrium
     //__________________________________________________________________________
     template <typename Management>
     class Dynamic :
-    public Gradual,
     public Expandable,
     public Management
     {
@@ -32,7 +30,7 @@ namespace Yttrium
         //______________________________________________________________________
     protected:
         //! setup
-        inline explicit Dynamic() noexcept : Gradual(), Expandable(), Management() {}
+        inline explicit Dynamic() noexcept : Expandable(), Management() {}
     public:
         //! cleanup
         inline virtual ~Dynamic() noexcept {}
