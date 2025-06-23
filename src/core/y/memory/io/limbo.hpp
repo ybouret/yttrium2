@@ -56,7 +56,7 @@ namespace Yttrium
             //! setup with no argument
             inline explicit Limbo() : THREADING_POLICY(), zombies( sizeof(T) ) {}
 
-            //! setup with argument for policy
+            //! setup with argument for policy \param args the argument
             template <typename ARGS>
             inline explicit Limbo(ARGS &args) : THREADING_POLICY(args), zombies( sizeof(T) ) {}
 

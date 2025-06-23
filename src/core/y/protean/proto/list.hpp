@@ -55,10 +55,10 @@ namespace Yttrium
             typedef typename NODE::ConstType       ConstType; //!< alias
             typedef typename NODE::ParamType       ParamType; //!< alias
             typedef typename ThreadingPolicy::Lock Lock;      //!< alias
-            typedef Iter::Linked<Iter::Forward,NODE>       Iterator;
-            typedef Iter::Linked<Iter::Forward,const NODE> ConstIterator;
-            typedef Iter::Linked<Iter::Reverse,NODE>       ReverseIterator;
-            typedef Iter::Linked<Iter::Reverse,const NODE> ConstReverseIterator;
+            typedef Iter::Linked<Iter::Forward,NODE>       Iterator;             //!< alias
+            typedef Iter::Linked<Iter::Forward,const NODE> ConstIterator;        //!< alias
+            typedef Iter::Linked<Iter::Reverse,NODE>       ReverseIterator;      //!< alias
+            typedef Iter::Linked<Iter::Reverse,const NODE> ConstReverseIterator; //!< alias
 
             //__________________________________________________________________
             //
@@ -97,6 +97,7 @@ namespace Yttrium
                 pool.banish( list.popTail() );
             }
 
+            //! remove tail node \return tail value
             inline Type pullTail()
             {
                 assert(list.size>0);
@@ -106,6 +107,7 @@ namespace Yttrium
                 return res;
             }
 
+            //! remove tail node \return head value
             inline Type pullHead()
             {
                 assert(list.size>0);
@@ -120,12 +122,14 @@ namespace Yttrium
             inline virtual size_t size() const noexcept { return list.size; }
             
 
+            //! append \param rhs value \return *this
             inline ListProto & operator<<(ParamType rhs)
             {
                 pushTail(rhs);
                 return *this;
             }
 
+            //! prepend \param lhs value \return *this
             inline ListProto & operator>>(ParamType lhs)
             {
                 pushHead(lhs);

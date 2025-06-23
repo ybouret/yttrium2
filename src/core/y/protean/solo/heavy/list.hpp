@@ -12,23 +12,46 @@
 
 namespace Yttrium
 {
-
-
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! specific Protean List
+    //
+    //
+    //__________________________________________________________________________
     template <typename T, typename ThreadingPolicy = SingleThreadedClass>
     class List : public Protean::SoloList< Protean::HeavyNode<T>,Sequence<T,Protean::CommonContainer>,ThreadingPolicy>
     {
     public:
-        typedef Protean::HeavyNode<T>                                    NodeType;
-        typedef Sequence<T,Protean::CommonContainer>                     SequenceType;
-        typedef Protean::SoloList<NodeType,SequenceType,ThreadingPolicy> BaseType;
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        typedef Protean::HeavyNode<T>                                    NodeType;     //!< alias
+        typedef Sequence<T,Protean::CommonContainer>                     SequenceType; //!< alias
+        typedef Protean::SoloList<NodeType,SequenceType,ThreadingPolicy> BaseType;     //!< alias
+        typedef Protean::HeavyNode<T>                                    NodeType;     //!< alias
         using BaseType::pool;
 
-        inline explicit List() : BaseType() {}
-        inline virtual ~List() noexcept {}
+
+        //______________________________________________________________________
+        //
+        //
+        // CC++
+        //
+        //______________________________________________________________________
+        inline explicit List() : BaseType() {} //!< setup emtpy
+        inline virtual ~List() noexcept {}     //!< cleanup
+
+        //! duplicate \param other another list
         inline List(const List &other) : BaseType(other)
         {
         }
 
+        //! setup with capacity \param n memory for objects
         inline List(const WithAtLeast_ &, const size_t n) : BaseType()
         {
             pool.cache(n);
@@ -36,7 +59,7 @@ namespace Yttrium
 
 
     private:
-        Y_Disable_Assign(List);
+        Y_Disable_Assign(List); //!< discarding
 
     };
  
