@@ -8,12 +8,14 @@ String<CH>:: ~String() noexcept
 
 template <>
 String<CH>:: String() :
+Y_String(),
 code( new Code(0) )
 {
 }
 
 template <>
 String<CH>:: String(const String &other) :
+Y_String(),
 code( new Code(*other.code) )
 {
 
@@ -58,7 +60,9 @@ String<CH> & String<CH>:: operator=( const String &other )
 
 
 template <>
-String<CH>:: String(const CH * const text) : code( 0 )
+String<CH>:: String(const CH * const text) :
+Y_String(),
+code( 0 )
 {
     const size_t tlen = StringLength(text);
     Coerce(code) = new Code(tlen);
@@ -67,7 +71,9 @@ String<CH>:: String(const CH * const text) : code( 0 )
 }
 
 template <>
-String<CH>:: String(const CH * const text, const size_t tlen) : code( new Code(tlen) )
+String<CH>:: String(const CH * const text, const size_t tlen) :
+Y_String(),
+code( new Code(tlen) )
 {
     assert( Good(text,tlen) );
     memcpy(code->base,text,(code->size=tlen)*sizeof(CH));
@@ -75,7 +81,9 @@ String<CH>:: String(const CH * const text, const size_t tlen) : code( new Code(t
 }
 
 template <>
-String<CH>:: String(const CH c) : code( new Code(1) )
+String<CH>:: String(const CH c) :
+Y_String(),
+code( new Code(1) )
 {
     code->base[0] = c;
     code->size    = 1;
@@ -86,6 +94,7 @@ String<CH>:: String(const CH c) : code( new Code(1) )
 template <>
 String<CH>::String(const CH * const lhs, const size_t lhsSize,
                    const CH * const rhs, const size_t rhsSize) :
+Y_String(),
 code( 0 )
 {
     const size_t sum = lhsSize + rhsSize;
@@ -353,4 +362,17 @@ const CH & String<CH>:: getItemAt(const size_t indx) const noexcept
     assert(indx>0);
     assert(indx<=code->size);
     return code->item[indx];
+}
+
+template <>
+size_t String<CH>:: serialize(OutputStream &fp) const
+{
+    assert(0!=code);
+    size_t     num = code->size;
+    size_t     res = fp.emitVBR(num);
+    const CH * ptr = code->base;
+    while(num-- > 0 ) {
+        res += fp.emitCBR(*(ptr++));
+    }
+    return res;
 }

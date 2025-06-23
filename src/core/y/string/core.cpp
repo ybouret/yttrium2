@@ -6,8 +6,8 @@
 #include "y/sorting/are-equal.hpp"
 #include "y/sorting/are-different.hpp"
 #include "y/sorting/lexicographic.hpp"
-
 #include "y/type/traits.hpp"
+#include "y/stream/output.hpp"
 
 #include <cstring>
 
@@ -16,6 +16,7 @@ namespace Yttrium
     namespace Core
     {
 
+#define Y_String() Container(), LegacyString(), ContiguousType(), Serializable()
 
 #undef CH
 #define CH char

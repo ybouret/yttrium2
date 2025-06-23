@@ -12,7 +12,8 @@ namespace Yttrium
 {
 
     class OutputStream;
-
+    class InputStream;
+    
     //__________________________________________________________________________
     //
     //
