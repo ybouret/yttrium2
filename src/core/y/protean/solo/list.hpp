@@ -26,9 +26,9 @@ namespace Yttrium
         public:
             typedef WarpedCacheOf<NODE,SingleThreadedClass>            PoolType;
             typedef ListProto<NODE,PoolType,CONTAINER,ThreadingPolicy> CoreType;
+            typedef typename CoreType::Lock                             Lock;
             using CoreType::pool;
             using CoreType::list;
-            typedef typename CoreType::Lock Lock;
 
 
             inline virtual ~SoloList() noexcept {}
