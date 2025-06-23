@@ -61,8 +61,8 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            typedef Stride<T> Code; //!< alias
-            typedef Contiguous< Writable<T> > ContiguousType;
+            typedef Stride<T>                 Code;           //!< alias
+            typedef Contiguous< Writable<T> > ContiguousType; //!< alias
 
             //__________________________________________________________________
             //
@@ -83,7 +83,7 @@ namespace Yttrium
             String & operator=(const T * const);    //!< assing legacy string \return *this
             String & operator=(const T) noexcept;   //!< assign single char   \return *this*
 
-            String(InputStream &, const char * const = 0);
+            String(InputStream &, const char * const = 0); //!< load from serialized with optional variable name
 
             //! output dependending on T \return output stream
             friend std::ostream & operator<< <>(std::ostream &, const String &);
@@ -105,6 +105,8 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
+            void     swapFor(String &) noexcept;
+
             String & pushAtTail(const T *const, const size_t); //!< push legacy block  \return *this
             String & pushAtTail(const T *const);               //!< push legacy string \return *this
             String & pushAtTail(const String &);               //!< push String        \return *this*

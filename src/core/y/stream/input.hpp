@@ -47,8 +47,8 @@ namespace Yttrium
         //
         //______________________________________________________________________
 
-        //! codec64 decoding, throw exception on error
-        void decode64(uint64_t &, const char * const varName = 0);
+        //! codec64 decoding, throw exception on error, with optional variable name
+        void decode64(uint64_t &, const char * const  = 0);
 
         //! read Constant Bit Rate variable
         /**
@@ -70,7 +70,8 @@ namespace Yttrium
 
         //! read Variable Bit Rate variable
         /**
-
+         \param varName optional variable name
+         \return T checked value
          */
         template <typename T> inline
         T readVBR(const char * const varName = 0)
@@ -90,6 +91,8 @@ namespace Yttrium
         size_t read(uint16_t &); //!< \return [0:2] and value
         size_t read(uint32_t &); //!< \return [0:4] and value
         size_t read(uint64_t &); //!< \return [0:8] and value
+
+        //! throw overflow from readVBR
         void throwOverflow(const char * const, const uint64_t, const uint64_t) const;
     };
 }

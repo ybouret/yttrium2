@@ -43,8 +43,8 @@ namespace Yttrium
             //! check current sanity \param blockSize sizeof(T) \return true iff alright
             bool isValidWith(const size_t blockSize) const noexcept;
 
-            const char * asChar(const IntToType<false> &) const noexcept; //!< not char
-            const char * asChar(const IntToType<true>  &) const noexcept; //!< is  char
+            const char * asChar(const IntToType<false> &) const noexcept; //!< not char \return address
+            const char * asChar(const IntToType<true>  &) const noexcept; //!< is  char \return empty string
             
             //__________________________________________________________________
             //

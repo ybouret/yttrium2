@@ -13,6 +13,14 @@ namespace Yttrium
     namespace Sorting
     {
 
+        //! testing equality
+        /**
+         \param lhs      first iterator
+         \param lhsCount number of available first
+         \param rhs      second iterator
+         \param rhsCount number of available second
+         \return true iff equal ranges
+         */
         template <typename LHS_ITER, typename RHS_ITER>
         inline bool AreEqual(LHS_ITER lhs, const size_t lhsCount,
                              RHS_ITER rhs, const size_t rhsCount)

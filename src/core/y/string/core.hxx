@@ -56,6 +56,11 @@ String<CH> & String<CH>:: operator=( const String &other )
     return *this;
 }
 
+template <>
+void String<CH>:: swapFor(String &other) noexcept
+{
+    CoerceSwap(code,other.code);
+}
 
 
 

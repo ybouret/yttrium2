@@ -116,6 +116,11 @@ namespace Yttrium
                 assert(isValid());
             }
 
+            //! pushHead
+            /**
+             \param source valid source
+             \param length size+length <= capacity
+             */
             inline void pushHead(const T * const source,
                                  const size_t    length) noexcept
             {
@@ -139,6 +144,7 @@ namespace Yttrium
                 assert(isValid());
             }
 
+            //! remove first char
             inline void popHead() noexcept
             {
                 assert(isValid());
@@ -151,6 +157,7 @@ namespace Yttrium
                 assert(isValid());
             }
 
+            //! remove last char
             inline void popTail() noexcept
             {
                 assert(isValid());

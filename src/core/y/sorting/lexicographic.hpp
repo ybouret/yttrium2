@@ -15,6 +15,14 @@ namespace Yttrium
     {
         namespace Inner
         {
+            //! lexicographic order of small range w.r.t large range
+            /**
+             \param small iterator
+             \param smallCount small available number
+             \param large iterator
+             \param largeCount large available number
+             \return comparison over small range and choice
+             */
             template <typename ITERATOR>
             inline SignType Lexicographic(ITERATOR small, const size_t smallCount,
                                           ITERATOR large, const size_t largeCount)
@@ -43,6 +51,14 @@ namespace Yttrium
 
         }
 
+        //! lexicographic comparison
+        /**
+         \param lhs      first iterator
+         \param lhsCount number of available first
+         \param rhs      second iterator
+         \param rhsCount number of available second
+         \return lexicographic ordere
+         */
         template <typename ITERATOR>
         inline SignType Lexicographic(ITERATOR lhs, const size_t lhsCount,
                                       ITERATOR rhs, const size_t rhsCount)
