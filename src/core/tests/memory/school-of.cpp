@@ -64,8 +64,10 @@ Y_UTEST(memory_school_of)
 #endif
     for(size_t i=1;i<=1000;++i)
     {
+        std::cerr << "@" << i << std::endl;
         MyChars * code = new MyChars(i);
         delete code;
+        std::cerr << "done" << std::endl;
     }
 
 
