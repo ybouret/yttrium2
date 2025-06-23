@@ -122,6 +122,20 @@ namespace Yttrium
                 assert( Good(source,length) );
                 assert(isValid());
                 assert(capacity>=length+size);
+
+                {
+                    T * const target = base+length;
+                    for(size_t i=0;i<size;++i)
+                    {
+                        const T temp = source[i];
+                        target[i] = base[i];
+                        base[i]   = temp;
+                    }
+                }
+                for(size_t i=size;i<length;++i)
+                {
+                    base[i] = source[i];
+                }
                 assert(isValid());
             }
 

@@ -260,3 +260,81 @@ String<CH> operator+<CH>(const CH lhs, const String<CH> &rhs)
     return String<CH>(&lhs,1,
                       rhs.code->base,rhs.code->size);
 }
+
+// equality
+
+template <>
+bool operator==<CH>(const String<CH> &lhs, const String<CH> &rhs) noexcept
+{
+    return Sorting::AreEqual(lhs.code->base, lhs.code->size,
+                             rhs.code->base, rhs.code->size);
+}
+
+template <>
+bool operator==<CH>(const String<CH> &lhs, const CH * const rhs) noexcept
+{
+    return Sorting::AreEqual(lhs.code->base, lhs.code->size,
+                             rhs, StringLength(rhs));
+}
+
+template <>
+bool operator==<CH>(const CH * const lhs, const String<CH> &rhs) noexcept
+{
+    return Sorting::AreEqual(lhs, StringLength(lhs),
+                             rhs.code->base, rhs.code->size);
+}
+
+template <>
+bool operator==<CH>(const String<CH> &lhs, const CH rhs) noexcept
+{
+    return Sorting::AreEqual(lhs.code->base, lhs.code->size,
+                             &rhs, 1);
+}
+
+template <>
+bool operator==<CH>(const CH lhs, const String<CH> &rhs) noexcept
+{
+    return Sorting::AreEqual(&lhs, 1,
+                             rhs.code->base, rhs.code->size);
+}
+
+
+
+// differenct
+
+template <>
+bool operator!=<CH>(const String<CH> &lhs, const String<CH> &rhs) noexcept
+{
+    return StringAreDifferent(lhs.code->base, lhs.code->size,
+                              rhs.code->base, rhs.code->size);
+}
+
+
+
+template <>
+bool operator!=<CH>(const String<CH> &lhs, const CH * const rhs) noexcept
+{
+    return StringAreDifferent(lhs.code->base, lhs.code->size,
+                              rhs, StringLength(rhs));
+}
+
+template <>
+bool operator!=<CH>(const CH * const lhs, const String<CH> &rhs) noexcept
+{
+    return StringAreDifferent(lhs, StringLength(lhs),
+                              rhs.code->base, rhs.code->size);
+}
+
+template <>
+bool operator!=<CH>(const String<CH> &lhs, const CH rhs) noexcept
+{
+    return StringAreDifferent(lhs.code->base, lhs.code->size,
+                              &rhs, 1);
+}
+
+template <>
+bool operator!=<CH>(const CH lhs, const String<CH> &rhs) noexcept
+{
+    return StringAreDifferent(&lhs, 1,
+                              rhs.code->base, rhs.code->size);
+}

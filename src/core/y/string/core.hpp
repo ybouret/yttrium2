@@ -22,13 +22,19 @@ namespace Yttrium
         template <typename T> String<T> operator+(const T, const String<T> &);             //!< forward declaration
         template <typename T> String<T> operator+(const T * const, const String<T> &);     //!< forward declaration
 
-#if 0
-        template <typename T> bool      operator==(const T *, const String<T> &) noexcept; //!< forward declaration
-        template <typename T> bool      operator==(const String<T> &, const T *) noexcept; //!< forward declaration
-        template <typename T> bool      operator!=(const T *, const String<T> &) noexcept; //!< forward declaration
-        template <typename T> bool      operator!=(const String<T> &, const T *) noexcept; //!< forward declaration
-#endif
+        template <typename T> bool      operator==(const String<T> &, const String<T> &) noexcept; //!< forward declaration
+        template <typename T> bool      operator==(const T *   const, const String<T> &) noexcept; //!< forward declaration
+        template <typename T> bool      operator==(const String<T> &, const T *   const) noexcept; //!< forward declaration
+        template <typename T> bool      operator==(const String<T> &, const T)           noexcept; //!< forward declaration
+        template <typename T> bool      operator==(const T, const String<T> &)           noexcept; //!< forward declaration
 
+
+        template <typename T> bool      operator!=(const String<T> &, const String<T> &) noexcept; //!< forward declaration
+        template <typename T> bool      operator!=(const T *   const, const String<T> &) noexcept; //!< forward declaration
+        template <typename T> bool      operator!=(const String<T> &, const T *   const) noexcept; //!< forward declaration
+        template <typename T> bool      operator!=(const String<T> &, const T)           noexcept; //!< forward declaration
+        template <typename T> bool      operator!=(const T, const String<T> &)           noexcept; //!< forward declaration
+                                                                                                   //!
         template <typename T>
         class String : public LegacyString
         {
@@ -79,6 +85,17 @@ namespace Yttrium
             friend String<T> operator+<>(const String<T> &, const T);
             friend String<T> operator+<>(const T, const String<T> &);
 
+            friend bool      operator==<>(const String<T> &, const String<T> &) noexcept;
+            friend bool      operator==<>(const String<T> &, const T *   const) noexcept;
+            friend bool      operator==<>(const T *   const, const String<T> &) noexcept;
+            friend bool      operator==<>(const T, const String<T> &) noexcept;
+            friend bool      operator==<>(const String<T> &, const T) noexcept;
+
+            friend bool      operator!=<>(const String<T> &, const String<T> &) noexcept;
+            friend bool      operator!=<>(const String<T> &, const T *   const) noexcept;
+            friend bool      operator!=<>(const T *   const, const String<T> &) noexcept;
+            friend bool      operator!=<>(const T, const String<T> &) noexcept;
+            friend bool      operator!=<>(const String<T> &, const T) noexcept;
 
             // Interface
             virtual size_t       size()     const noexcept;
