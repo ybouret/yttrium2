@@ -16,7 +16,7 @@ namespace Yttrium
     {
         template <typename T>
         class Inventory : public Singleton<Inventory<T>, ClassLockPolicy>,
-        Protean::WarpedCacheOf<T,MultiThreadedHandle>
+        public Protean::WarpedCacheOf<T,MultiThreadedHandle>
         {
         public:
             static const System::AtExit::Longevity LifeTime = T::LifeTime;

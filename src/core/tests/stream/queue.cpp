@@ -14,7 +14,7 @@ namespace
     static inline
     void checkIO(StreamQueue &Q, const uint64_t w64)
     {
-        Q.release();
+        Q.free();
         const size_t nw = Q.encode64(w64);
         Y_ASSERT(Q->size==nw);
         uint64_t r64 = 0;
@@ -43,7 +43,7 @@ Y_UTEST(stream_queue)
     std::cerr << "Check 8-bits" << std::endl;
     for(unsigned i=0;i<256;++i)
     {
-        Q.release();
+        //Q.release();
         const uint8_t b = uint8_t(i);
         Y_ASSERT(1==Q.emitCBR(b));
         uint8_t r = 0;
@@ -54,7 +54,7 @@ Y_UTEST(stream_queue)
     std::cerr << "Check 16-bits" << std::endl;
     for(unsigned i=0;i<65536;++i)
     {
-        Q.release();
+        //Q.release();
         const uint16_t w = uint8_t(i);
         Y_ASSERT(2==Q.emitCBR(w));
         uint16_t r = 0;
@@ -67,7 +67,7 @@ Y_UTEST(stream_queue)
     {
         for(size_t iter=0;iter<1000;++iter)
         {
-            Q.release();
+            //Q.release();
             const uint32_t x = ran.gen<uint32_t>(i);
             Y_ASSERT(4==Q.emitCBR(x));
             uint32_t r = 0;
@@ -81,7 +81,7 @@ Y_UTEST(stream_queue)
     {
         for(size_t iter=0;iter<1000;++iter)
         {
-            Q.release();
+            //Q.release();
             const uint64_t x = ran.gen<uint64_t>(i);
             Y_ASSERT(8==Q.emitCBR(x));
             uint64_t r = 0;

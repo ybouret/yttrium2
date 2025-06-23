@@ -13,6 +13,7 @@
 namespace Yttrium
 {
 
+#if 0
     //__________________________________________________________________________
     //
     //
@@ -166,6 +167,7 @@ namespace Yttrium
             while(list.size>0) NODE::Delete(list.popTail());
         }
     };
+#endif
 }
 
 #endif

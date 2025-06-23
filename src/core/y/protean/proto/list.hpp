@@ -97,9 +97,28 @@ namespace Yttrium
                 pool.banish( list.popTail() );
             }
 
-            //! \return live objects
-            virtual size_t size() const noexcept { return list.size; }
+            inline Type pullTail()
+            {
+                assert(list.size>0);
+                Y_Must_Lock();
+                Type res = **list.tail;
+                pool.banish( list.popTail() );
+                return res;
+            }
 
+            inline Type pullHead()
+            {
+                assert(list.size>0);
+                Y_Must_Lock();
+                Type res = **list.head;
+                pool.banish( list.popHead() );
+                return res;
+            }
+
+
+            //! \return live objects
+            inline virtual size_t size() const noexcept { return list.size; }
+            
 
             inline ListProto & operator<<(ParamType rhs)
             {
@@ -130,7 +149,7 @@ namespace Yttrium
             //__________________________________________________________________
 
             //! cleanup
-            inline virtual ~ListProto() noexcept { release_(); }
+            inline virtual ~ListProto() noexcept { releaseList_(); }
         protected:
 
             //! setup with own cache
@@ -142,6 +161,8 @@ namespace Yttrium
             inline explicit ListProto(const PoolType &shared) :
             Y_Protean_List_Proto(), pool(shared)
             {}
+
+            
 
             //__________________________________________________________________
             //
@@ -160,11 +181,17 @@ namespace Yttrium
             //__________________________________________________________________
         protected:
 
-            //! release all data
-            inline void release_() noexcept {
+            //! free all content into pool
+            inline void freeList_() noexcept
+            {
+                Y_Must_Lock();
+                while( list.size ) pool.banish( list.popTail() );
+            }
+
+            //! release all data thru pool
+            inline void releaseList_() noexcept {
                 Y_Must_Lock();
                 while(list.size>0) pool.remove( list.popTail() );
-                pool.release();
             }
 
 
@@ -188,7 +215,7 @@ namespace Yttrium
                 volatile Lock primary(*this), replica(other);
                 assert(0==list.size);
                 try { duplicateInto(list,other); }
-                catch(...) { release_(); throw;  }
+                catch(...) { releaseList_(); throw;  }
             }
 
 

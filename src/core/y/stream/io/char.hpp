@@ -4,7 +4,10 @@
 #define Y_Stream_IO_Char_Included 1
 
 #include "y/core/setup.hpp"
+#include "y/type/args.hpp"
 #include "y/concurrent/life-time.hpp"
+#include "y/protean/cache/warped.hpp"
+#include "y/threading/multi-threaded-handle.hpp"
 
 namespace Yttrium
 {
@@ -14,25 +17,30 @@ namespace Yttrium
         class Char
         {
         public:
-            typedef uint8_t Type;
+            Y_ARGS_DECL(uint8_t,Type);
             static const System::AtExit::Longevity LifeTime = LifeTimeOf::IOChars;
             static const char * const              CallSign;
+            typedef Protean::WarpedCacheOf<Char,MultiThreadedHandle> Cache;
 
-            static Char * New(const Type code);
-            static void   Delete(Char * const) noexcept;
-            static Char * Copy(const Char * const);
 
-            const Type & operator*() const noexcept { return code; }
-            
+
+            ConstType & operator*() const noexcept { return code; }
+            Type      & operator*()       noexcept { return code; }
+
 
             Char *  next;
             Char *  prev;
-            Type    code;
-            
-            Char(const Type  a) noexcept;
-            Char(const Char &)    noexcept;
+
+            Char(ParamType)    noexcept;
+            Char(const Char &) noexcept;
             ~Char() noexcept;
             Char & operator=(const Char &) noexcept;
+
+            static Cache & CacheInstance();
+            
+
+        private:
+            MutableType code;
         };
     }
 

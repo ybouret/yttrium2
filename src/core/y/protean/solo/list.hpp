@@ -53,12 +53,15 @@ namespace Yttrium
 
             inline virtual void free() noexcept
             {
-                Y_Must_Lock();
-                while(list.size>0)
-                    pool.banish( list.popTail() );
+                this->freeList_();
             }
 
-            inline virtual void release() noexcept { this->release_(); }
+            inline virtual void release() noexcept {
+                Y_Must_Lock();
+                while(list.size>0)
+                    pool.remove( list.popTail() );
+                pool.release();
+            }
 
             inline virtual void gc(const uint8_t amount) noexcept
             {

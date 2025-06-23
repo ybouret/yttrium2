@@ -50,7 +50,7 @@ namespace Yttrium
             inline virtual ~BareList() noexcept {}
 
             //! [Releasable] release content
-            inline virtual void release() noexcept { this->release_(); }
+            inline virtual void release() noexcept { this->releaseList_(); }
 
         protected:
             //! setup empty

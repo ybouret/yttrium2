@@ -1,5 +1,4 @@
 #include "y/stream/io/char.hpp"
-#include "y/memory/io/supply-of.hpp"
 
 namespace Yttrium
 {
@@ -26,28 +25,24 @@ namespace Yttrium
         {}
 
         const char * const Char:: CallSign = "IO::Char";
+        
+    }
 
-        typedef Memory::SupplyOf<Char> Manager;
+}
 
-        Char * Char:: New(const uint8_t code)
+#include "y/concurrent/data/inventory.hpp"
+
+
+namespace Yttrium
+{
+    namespace IO
+    {
+        Char::Cache  & Char:: CacheInstance()
         {
-            static Manager & mgr = Manager::Instance();
-            return mgr.summon<uint8_t>(code);
+            static Cache &cache = Concurrent::Inventory<Char>::Instance();
+            return cache;
         }
 
-        void Char:: Delete(Char *const ch) noexcept
-        {
-            assert(0!=ch); assert(Manager::Exists());
-            static Manager &mgr = Manager::Location();
-            mgr.banish(ch);
-        }
-
-        Char * Char:: Copy(const Char * const ch)
-        {
-            assert(0!=ch); assert(Manager::Exists());
-            static Manager &mgr = Manager::Location();
-            return mgr.mirror(*ch);
-        }
 
     }
 }

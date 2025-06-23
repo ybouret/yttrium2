@@ -1,7 +1,7 @@
 
 
-#ifndef Y_Container_Iter_Linear_Included
-#define Y_Container_Iter_Linear_Included 1
+#ifndef Y_Container_Iter_Linked_Included
+#define Y_Container_Iter_Linked_Included 1
 
 #include "y/container/iter.hpp"
 #include "y/type/args.hpp"

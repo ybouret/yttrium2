@@ -77,13 +77,11 @@ namespace Yttrium
             //! free content, keep memory
             inline virtual void free() noexcept
             {
-                Y_Must_Lock();
-                while(list.size>0)
-                    pool.banish( list.popTail() );
+                free_();
             }
 
-            //! free content, release all shared pool as well
-            inline virtual void release() noexcept { this->release_(); }
+            //! free content
+            inline virtual void release() noexcept { free_(); }
 
             //! collect garbage \param amount amount to collect
             inline virtual void gc(const uint8_t amount) noexcept
@@ -115,6 +113,13 @@ namespace Yttrium
 
         private:
             Y_Disable_Assign(CoopList); //!< discarding
+
+            inline void free_() noexcept
+            {
+                Y_Must_Lock();
+                while(list.size>0)
+                    pool.banish( list.popTail() );
+            }
         };
     }
 
