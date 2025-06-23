@@ -5,6 +5,7 @@
 #define Y_Input_Stream_Included 1
 
 #include "y/stream/io/chars.hpp"
+#include "y/string/fwd.hpp"
 
 namespace Yttrium
 {
@@ -19,6 +20,15 @@ namespace Yttrium
     //__________________________________________________________________________
     class InputStream
     {
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        static const char LF = '\n';
+        static const char CR = '\r';
+
     protected:
         //______________________________________________________________________
         //
@@ -83,6 +93,9 @@ namespace Yttrium
                 throwOverflow(varName,qw,mx);
             return T(qw);
         }
+
+
+        bool gets(Core::String<char> &line);
 
 
     private:

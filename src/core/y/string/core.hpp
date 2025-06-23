@@ -11,6 +11,8 @@
 #include "y/string/fwd.hpp"
 #include "y/type/sign.hpp"
 #include "y/ability/serializable.hpp"
+#include "y/container/sequence.hpp"
+#include "y/container/growing.hpp"
 
 namespace Yttrium
 {
@@ -52,6 +54,7 @@ namespace Yttrium
         public Object,
         public LegacyString,
         public Contiguous< Writable<T> >,
+        public Sequence<T,Gradual>,
         public Serializable
         {
         public:
@@ -63,6 +66,7 @@ namespace Yttrium
             //__________________________________________________________________
             typedef Stride<T>                 Code;           //!< alias
             typedef Contiguous< Writable<T> > ContiguousType; //!< alias
+            typedef const T                   ParamType;
 
             //__________________________________________________________________
             //
@@ -98,6 +102,13 @@ namespace Yttrium
             virtual size_t       capacity() const noexcept; //!< [Container] \return capacity
             virtual const char * c_str()    const noexcept;
             virtual size_t       serialize(OutputStream&) const;
+            virtual void         free()    noexcept;
+            virtual size_t       available() const noexcept;
+            virtual void         pushTail(ParamType);
+            virtual void         pushHead(ParamType);
+            virtual void         popTail() noexcept;
+            virtual void         popHead() noexcept;
+            //virtual void         reserve(const size_t n) noexcept;
 
             //__________________________________________________________________
             //
@@ -158,6 +169,10 @@ namespace Yttrium
 
             //! [Readable] \param indx valid index \return (*this)[indx]
             virtual const T & getItemAt(const size_t indx) const noexcept;
+
+            virtual const T & getHead() const noexcept;
+            virtual const T & getTail() const noexcept;
+
         };
 
     }

@@ -4,11 +4,11 @@
 namespace Yttrium
 {
 
-    GradualContainer:: ~GradualContainer() noexcept
+    Gradual:: ~Gradual() noexcept
     {
     }
 
-    GradualContainer:: GradualContainer() noexcept : Container(), Recyclable()
+    Gradual:: Gradual() noexcept : Container(), Recyclable()
     {
     }
 

@@ -20,7 +20,7 @@ namespace Yttrium
     //__________________________________________________________________________
     template <typename Management>
     class Dynamic :
-    public GradualContainer,
+    public Gradual,
     public Expandable,
     public Management
     {
@@ -32,7 +32,7 @@ namespace Yttrium
         //______________________________________________________________________
     protected:
         //! setup
-        inline explicit Dynamic() noexcept : GradualContainer(), Expandable(), Management() {}
+        inline explicit Dynamic() noexcept : Gradual(), Expandable(), Management() {}
     public:
         //! cleanup
         inline virtual ~Dynamic() noexcept {}

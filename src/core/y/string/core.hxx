@@ -423,3 +423,68 @@ code(0)
         throw;
     }
 }
+
+template <>
+void String<CH>:: free() noexcept
+{
+    assert(0!=code);
+    code->erase();
+}
+
+
+template <>
+size_t String<CH>:: available() const noexcept
+{
+    assert(0!=code);
+    assert(code->isValid());
+    return code->capacity - code->size;
+}
+
+template <>
+void String<CH>:: pushTail(ParamType c)
+{
+    pushAtTail(c);
+}
+
+template <>
+void String<CH>:: pushHead(ParamType c)
+{
+    pushAtHead(c);
+}
+
+
+template <>
+void String<CH>:: popTail() noexcept
+{
+    assert(0!=code);
+    assert(code->size>0);
+    code->popTail();
+}
+
+
+template <>
+void String<CH>:: popHead() noexcept
+{
+    assert(0!=code);
+    assert(code->size>0);
+    code->popHead();
+}
+
+template <>
+const CH & String<CH>:: getHead() const noexcept
+{
+    assert(0!=code);
+    assert(code->size>0);
+    assert(code->base);
+    return code->base[0];
+}
+
+
+template <>
+const CH & String<CH>:: getTail() const noexcept
+{
+    assert(0!=code);
+    assert(code->size>0);
+    assert(code->item);
+    return code->item[code->size];
+}

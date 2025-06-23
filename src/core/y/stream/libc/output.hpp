@@ -7,6 +7,7 @@
 
 #include "y/stream/output.hpp"
 #include "y/stream/libc/types.hpp"
+#include "y/string/fwd.hpp"
 
 namespace Yttrium
 {
@@ -37,6 +38,7 @@ namespace Yttrium
          \param append   in append mode iff true
          */
         explicit OutputFile(const char * const fileName, const bool append=false);
+        explicit OutputFile(const Core::String<char> & , const bool=false); //!< wrapper
         explicit OutputFile(const StdOut_ &); //!< stdout
         explicit OutputFile(const StdErr_ &); //!< stdin
         virtual ~OutputFile() noexcept;       //!< cleanup

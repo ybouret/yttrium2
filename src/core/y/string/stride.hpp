@@ -166,6 +166,13 @@ namespace Yttrium
                 assert(isValid());
             }
 
+            inline void erase() noexcept
+            {
+                assert( isValid() );
+                memset(base,0,size*sizeof(T));
+                size = 0;
+                assert( isValid() );
+            }
 
 
             //__________________________________________________________________

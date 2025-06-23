@@ -6,6 +6,7 @@
 
 #include "y/stream/input.hpp"
 #include "y/stream/libc/types.hpp"
+#include "y/string/fwd.hpp"
 
 namespace Yttrium
 {
@@ -29,7 +30,8 @@ namespace Yttrium
         // C++
         //
         //______________________________________________________________________
-        explicit InputFile(const char * const fileName); //!< setup \param fileName fopen(fileName)
+        explicit InputFile(const char * const         fileName); //!< setup \param fileName fopen(fileName)
+        explicit InputFile(const Core::String<char> & fileName); //!< setup \param fileName fopen(fileName.c_str())
         explicit InputFile(const StdIn_ &);              //!< setup from stdin
         virtual ~InputFile() noexcept;                   //!< cleanup
 

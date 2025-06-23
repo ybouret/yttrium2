@@ -4,6 +4,7 @@
 #include "y/type/destroy.hpp"
 #include "y/system/exception.hpp"
 #include "y/ability/lockable.hpp"
+#include "y/string.hpp"
 #include <cstring>
 
 #if defined(_MSC_VER)
@@ -37,6 +38,12 @@ namespace Yttrium
 
     OutputFile:: OutputFile(const char * const fileName, const bool append) :
     file( CreateFileFrom(fileName,append) ) 
+    {
+
+    }
+
+    OutputFile:: OutputFile(const String &fileName, const bool append) :
+    file( CreateFileFrom(fileName.c_str(),append) )
     {
 
     }

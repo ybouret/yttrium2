@@ -14,10 +14,10 @@ namespace Yttrium
     {
     }
 
-    
+
     static const char     fmt[]         = " for %s";
 
-    
+
     void InputStream:: decode64(uint64_t &qw, const char * const varName)
     {
         static const char     fn[]          = "InputStream::decode64";
@@ -99,7 +99,7 @@ namespace Yttrium
 
         if(!read(b)) return 3;
         w |= uint32_t(b) << 24;
-        
+
         return 4;
     }
 
@@ -133,7 +133,17 @@ namespace Yttrium
         return 8;
     }
 
+}
 
+#include "y/string.hpp"
+namespace Yttrium
+{
+
+    bool InputStream:: gets(Core::String<char> &line)
+    {
+
+        return false;
+    }
 
 }
 

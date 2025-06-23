@@ -18,18 +18,18 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    class GradualContainer : public virtual Container, public Recyclable
+    class Gradual  : public virtual Container, public Recyclable
     {
     protected:
-        explicit GradualContainer() noexcept; //!< setup
+        explicit Gradual() noexcept; //!< setup
     public:
-        virtual ~GradualContainer() noexcept; //!< cleanup
+        virtual ~Gradual() noexcept; //!< cleanup
 
         virtual size_t capacity()  const noexcept = 0; //!< \return current capacity
         virtual size_t available() const noexcept = 0; //!< \return available space
 
     private:
-        Y_Disable_Copy_And_Assign(GradualContainer); //!< discarding
+        Y_Disable_Copy_And_Assign(Gradual); //!< discarding
     };
 
 }

@@ -4,6 +4,7 @@
 #include "y/type/destroy.hpp"
 #include "y/system/exception.hpp"
 #include "y/ability/lockable.hpp"
+#include "y/string.hpp"
 #include <cstring>
 
 #if defined(_MSC_VER)
@@ -36,6 +37,13 @@ namespace Yttrium
     {
 
     }
+
+    InputFile:: InputFile(const String &fileName ):
+    file( CreateFileFrom(fileName.c_str()) )
+    {
+
+    }
+
 
     InputFile:: InputFile(const StdIn_ &) : file( new Libc::StandarInputFile() )
     {
