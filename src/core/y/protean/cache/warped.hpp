@@ -53,7 +53,7 @@ namespace Yttrium
             {
             }
 
-            //! setup with locking
+            //! setup with locking \param handle persistent lockable
             inline WarpedCacheOf(Lockable &handle) :
             CacheThreading(handle),
             Caching(),
