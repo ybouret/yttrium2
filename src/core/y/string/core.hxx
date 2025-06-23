@@ -338,3 +338,19 @@ bool operator!=<CH>(const CH lhs, const String<CH> &rhs) noexcept
     return Sorting::AreDifferent(&lhs, 1,
                                  rhs.code->base, rhs.code->size);
 }
+
+
+template <>
+SignType  String<CH>:: Compare(const String &lhs, const String &rhs) noexcept
+{
+    return Sorting::Lexicographic(lhs.code->base, lhs.code->size, rhs.code->base, rhs.code->size);
+}
+
+template<>
+const CH & String<CH>:: getItemAt(const size_t indx) const noexcept
+{
+    assert(0!=code);
+    assert(indx>0);
+    assert(indx<=code->size);
+    return code->item[indx];
+}

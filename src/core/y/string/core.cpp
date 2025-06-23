@@ -5,6 +5,7 @@
 #include "y/string/length.hpp"
 #include "y/sorting/are-equal.hpp"
 #include "y/sorting/are-different.hpp"
+#include "y/sorting/lexicographic.hpp"
 
 #include "y/type/traits.hpp"
 
@@ -15,6 +16,7 @@ namespace Yttrium
     namespace Core
     {
 
+
 #undef CH
 #define CH char
 #include "core.hxx"
@@ -23,6 +25,20 @@ namespace Yttrium
 #undef CH
 #define CH uint32_t
 #include "core.hxx"
+
+
+        template <>
+        std::ostream & operator<< <char>(std::ostream & os, const String<char> &self)
+        {
+            return os << self.c_str();
+        }
+
+        template <>
+        std::ostream & operator<< <uint32_t>(std::ostream & os, const String<uint32_t> &self)
+        {
+            const Readable<uint32_t> &_ = self;
+            return os << _;
+        }
 
     }
 
