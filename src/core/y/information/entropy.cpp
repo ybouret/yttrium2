@@ -24,9 +24,16 @@ namespace Yttrium
 
         }
 
-        Entropy:: Entropy(const Entropy &other) noexcept : bin()
+        Entropy:: Entropy(const Entropy &other) noexcept :
+        OutputStream(), bin()
         {
             memcpy(bin,other.bin,sizeof(bin));
+        }
+
+        Entropy & Entropy:: operator=(const Entropy &other)
+        {
+            memmove(bin, other.bin, sizeof(bin) );
+            return *this;
         }
 
         void Entropy:: write(const char C)

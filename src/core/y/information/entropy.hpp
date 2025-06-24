@@ -25,7 +25,6 @@ namespace Yttrium
             virtual void frame(const void * const, const size_t);
             
             void ldz() noexcept;
-
             long double operator()(void) const;
 
         private:
