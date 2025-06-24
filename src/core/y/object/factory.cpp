@@ -6,14 +6,8 @@
 #include "y/memory/allocator/pooled.hpp"
 #include "y/memory/allocator/system.hpp"
 #include "y/memory/align.hpp"
-
 #include "y/xml/attribute.hpp"
-
-#if !defined(NDEBUG)
 #include "y/memory/joint/segment.hpp"
-#include "y/memory/allocator/quanta.hpp"
-#endif
-
 #include "y/exception.hpp"
 
 namespace Yttrium
@@ -109,18 +103,24 @@ namespace Yttrium
 
     void * Object:: Factory:: query(const size_t blockSize)
     {
+        //----------------------------------------------------------------------
         // zero size
+        //----------------------------------------------------------------------
         if(blockSize<=0)
             return 0;
 
+        //----------------------------------------------------------------------
         // small
+        //----------------------------------------------------------------------
         assert(blockSize>0);
         if(blockSize<=LIMIT_OBJECT_BYTES)
         {
             return acquireSingle( condensation[blockSize] );
         }
 
+        //----------------------------------------------------------------------
         // medium
+        //----------------------------------------------------------------------
         assert(blockSize>LIMIT_OBJECT_BYTES);
         if(blockSize<=MEDIUM_LIMIT_BYTES)
         {
@@ -129,7 +129,9 @@ namespace Yttrium
             return acquirePooled(blockSize);
         }
 
+        //----------------------------------------------------------------------
         // quanta
+        //----------------------------------------------------------------------
         assert(blockSize>LIMIT_OBJECT_BYTES);
         if(blockSize<=Memory::Quanta::MaxLedgerBytes)
         {
@@ -137,8 +139,59 @@ namespace Yttrium
         }
 
 
+        //----------------------------------------------------------------------
         // bigger: aligned blockSize
+        //----------------------------------------------------------------------
         return sysmem.acquire( Coerce(blockSize) );
+    }
+
+    void Object:: Factory:: store(void * const blockAddr, const size_t blockSize) noexcept
+    {
+        //----------------------------------------------------------------------
+        // zero size
+        //----------------------------------------------------------------------
+        if(blockSize<=0)
+        {
+            assert(0==blockAddr);
+            return;
+        }
+
+        //----------------------------------------------------------------------
+        // small
+        //----------------------------------------------------------------------
+        assert(blockSize>0);
+        if(blockSize<=LIMIT_OBJECT_BYTES)
+        {
+            return releaseSingle(blockAddr,condensation[blockSize]);
+        }
+
+        //----------------------------------------------------------------------
+        // medium
+        //----------------------------------------------------------------------
+        assert(blockSize>LIMIT_OBJECT_BYTES);
+        if(blockSize<=MEDIUM_LIMIT_BYTES)
+        {
+            if(IsPowerOfTwo(blockSize))
+                return releaseQuanta( ExactLog2(blockSize), blockAddr);
+            return releasePooled(blockAddr,blockSize);
+        }
+
+        //----------------------------------------------------------------------
+        // quanta
+        //----------------------------------------------------------------------
+        assert(blockSize>LIMIT_OBJECT_BYTES);
+        if(blockSize<=Memory::Quanta::MaxLedgerBytes)
+        {
+            return releaseQuanta(CeilLog2(blockSize),blockAddr);
+        }
+
+        //----------------------------------------------------------------------
+        // bigger ?
+        //----------------------------------------------------------------------
+        void * addr = blockAddr;
+        size_t size = Memory::Align::Compute::Ceil(blockSize);
+        return sysmem.release(addr,size);
+
     }
 
     void * Object:: Factory:: acquireBlock(size_t &blockSize)
@@ -172,44 +225,7 @@ namespace Yttrium
     }
 
 
-    void Object:: Factory:: store(void * const blockAddr, const size_t blockSize) noexcept
-    {
-        // zero size
-        if(blockSize<=0)
-        {
-            assert(0==blockAddr);
-            return;
-        }
 
-        // small
-        assert(blockSize>0);
-        if(blockSize<=LIMIT_OBJECT_BYTES)
-        {
-            return releaseSingle(blockAddr,condensation[blockSize]);
-        }
-
-        // medium
-        assert(blockSize>LIMIT_OBJECT_BYTES);
-        if(blockSize<=MEDIUM_LIMIT_BYTES)
-        {
-            if(IsPowerOfTwo(blockSize))
-                return releaseQuanta( ExactLog2(blockSize), blockAddr);
-            return releasePooled(blockAddr,blockSize);
-        }
-
-        // quanta
-        assert(blockSize>LIMIT_OBJECT_BYTES);
-        if(blockSize<=Memory::Quanta::MaxLedgerBytes)
-        {
-            return releaseQuanta(CeilLog2(blockSize),blockAddr);
-        }
-
-        // bigger ?
-        void * addr = blockAddr;
-        size_t size = Memory::Align::Compute::Ceil(blockSize);
-        return sysmem.release(addr,size);
-
-    }
 
     void Object:: Factory:: releaseBlock(void * const blockAddr, const size_t blockSize) noexcept
     {

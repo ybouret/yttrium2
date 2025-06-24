@@ -3,6 +3,7 @@
 #include "y/system/rand.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/utest/run.hpp"
+#include "y/memory/small/metrics.hpp"
 
 using namespace Yttrium;
 
@@ -52,21 +53,51 @@ namespace
 Y_UTEST(memory_object_factory)
 {
 
-    Concurrent::Singulet::Verbose = true;
-    System::Rand              ran;
+    //Concurrent::Singulet::Verbose = true;
 
-    Y_Memory_BZero(blocks);
     Object::Factory & F =  Object::Factory::Instance();
-    std::cerr << F.callSign() << std::endl;
 
-    fill(F,ran);
-    for(size_t iter=0;iter<10;++iter)
+    std::cerr << "Random query/store" << std::endl;
     {
-        empty(count>>1,F,ran);
+        System::Rand              ran;
+
+        Y_Memory_BZero(blocks);
+        std::cerr << F.callSign() << std::endl;
+
         fill(F,ran);
+        for(size_t iter=0;iter<10;++iter)
+        {
+            empty(count>>1,F,ran);
+            fill(F,ran);
+        }
+        empty(0,F,ran);
+        F.display(std::cerr,0);
+        std::cerr << std::endl;
     }
-    empty(0,F,ran);
-    F.display(std::cerr,0);
+
+    Y_PRINTV(Memory::Small::Metrics::LimitObjectBytes);
+    Y_PRINTV(Memory::Small::Metrics::MediumLimitBytes);
+
+    std::cerr << std::endl;
+
+    std::cerr << "Systematic query/store" << std::endl;
+    for(size_t blockSize=1;blockSize<=1000;++blockSize)
+    {
+        void * addr = F.query(blockSize);
+        F.store(addr,blockSize);
+    }
+    std::cerr << std::endl;
+
+
+    std::cerr << "Systematic acquire/release" << std::endl;
+    for(size_t blockSize=1;blockSize<=1000;++blockSize)
+    {
+        size_t bs   = blockSize;
+        void * addr = F.acquire(bs);
+        F.release(addr,bs);
+    }
+    std::cerr << std::endl;
+
 
 
 }
