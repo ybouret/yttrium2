@@ -23,6 +23,7 @@ information
 utf8
 protean
 string
+apex
 )
 
 
@@ -153,5 +154,8 @@ Y_UTEST(protean:coop:heavy:list)
 #string
 Y_UTEST(string:stride)
 Y_UTEST(string)
+
+#apex
+Y_UTEST(apex:block)
 
 

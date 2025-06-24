@@ -114,6 +114,8 @@ Y_UTEST_DECL(128)
 
     Y_UTEST(string_stride);
     Y_UTEST(string);
+    
+    Y_UTEST(apex_block);
 }
 Y_UTEST_EXEC()
 
