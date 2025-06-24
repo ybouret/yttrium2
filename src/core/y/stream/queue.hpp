@@ -19,7 +19,7 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    class StreamQueue : public InputStream, public OutputStream, public IO::Chars
+    class StreamQueue : public InputStream, public OutputStream
     {
     public:
         //______________________________________________________________________
@@ -45,6 +45,9 @@ namespace Yttrium
 
         virtual bool       query(char &);
         virtual void       store(const char);
+
+
+        IO::Chars q;
 
     private:
         Y_Disable_Copy_And_Assign(StreamQueue); //!< discard

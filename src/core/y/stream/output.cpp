@@ -110,5 +110,25 @@ namespace Yttrium
     }
 
 
+
 }
 
+
+#include "y/string.hpp"
+#include "y/string/length.hpp"
+
+namespace Yttrium
+{
+    OutputStream & OutputStream:: operator<<( const char c ) { write(c); return *this; }
+
+    OutputStream & OutputStream:: operator<<( const char * const text) {
+        frame( text, StringLength(text) );
+        return *this;
+    }
+
+    OutputStream & OutputStream::  operator<<( const Core::String<char> &s)
+    {
+        frame( s.c_str(), s.size() );
+        return *this;
+    }
+}

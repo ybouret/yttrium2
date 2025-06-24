@@ -5,7 +5,8 @@
 #ifndef Y_Output_Stream_Included
 #define Y_Output_Stream_Included 1
 
-#include "y/stream/io/chars.hpp"
+#include "y/type/ints.hpp"
+#include "y/string/fwd.hpp"
 
 namespace Yttrium
 {
@@ -78,6 +79,10 @@ namespace Yttrium
             } alias = { value };
             return emit(alias.y);
         }
+
+        OutputStream & operator<<( const char );
+        OutputStream & operator<<( const char * const);
+        OutputStream & operator<<( const Core::String<char> & );
 
 
     private:

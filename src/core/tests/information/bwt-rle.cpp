@@ -13,9 +13,8 @@ Y_UTEST(info_bwt_rle)
 {
 
     Information::BWT_Transformer bwt;
-    //Concurrent::Singulet::Verbose = true;
-    Information::RLE::Compress rle;
-    Vector<char>               source;
+    Information::RLE::Compress   rle;
+    Vector<char>                 source;
     
     if( argc > 1 )
     {
@@ -34,7 +33,7 @@ Y_UTEST(info_bwt_rle)
         rle.reset();
         rle.frame(target(),length);
         rle.flush();
-        
+
         {
             OutputFile fp("rle.dat");
             char c;

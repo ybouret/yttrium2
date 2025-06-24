@@ -14,9 +14,9 @@ namespace
     static inline
     void checkIO(StreamQueue &Q, const uint64_t w64)
     {
-        Q.free();
+        Q.q.free();
         const size_t nw = Q.encode64(w64);
-        Y_ASSERT(Q->size==nw);
+        Y_ASSERT(Q.q->size==nw);
         uint64_t r64 = 0;
         Q.decode64(r64);
     }

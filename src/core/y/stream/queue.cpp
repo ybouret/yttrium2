@@ -5,7 +5,7 @@
 namespace Yttrium
 {
     StreamQueue:: StreamQueue() noexcept :
-    OutputStream(), IO::Chars()
+    OutputStream(), q()
     {}
 
     StreamQueue:: ~StreamQueue() noexcept
@@ -14,13 +14,11 @@ namespace Yttrium
 
     std::ostream & operator<<(std::ostream &os, const StreamQueue &Q)
     {
-#if 1
-        for(const IO::Char *ch=Q->head;ch;ch=ch->next)
+        for(const IO::Char *ch=Q.q->head;ch;ch=ch->next)
         {
             const uint8_t c = **ch;
             os << ' ' << Hexadecimal(c).c_str() + 2;
         }
-#endif
         return os;
     }
 
@@ -31,35 +29,32 @@ namespace Yttrium
 
     void StreamQueue:: write(const char c)
     {
-        (*this) << uint8_t(c);
+        q << uint8_t(c);
     }
 
     void StreamQueue:: frame(const void * const addr, const size_t size)
     {
         assert( Good(addr,size) );
         const uint8_t * p = static_cast<const uint8_t *>(addr);
-        for(size_t i=size;i>0;--i) (*this) << *(p++);
+        for(size_t i=size;i>0;--i) q << *(p++);
     }
 
     bool StreamQueue:: query(char &C)
     {
-#if 1
-        IO::Chars &self = *this;
-        if(self->size>0)
+        if(q->size>0)
         {
-            C = char(pullHead());
+            C = char(q.pullHead());
             return true;
         }
         else
         {
             return false;
         }
-#endif
-    }
+        }
 
     void StreamQueue:: store(const char C)
     {
-        (*this) >> uint8_t(C);
+        q >> uint8_t(C);
     }
 
 }
