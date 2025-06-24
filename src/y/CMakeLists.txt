@@ -10,6 +10,8 @@ endmacro()
 
 add_subdirectory(zlib)
 add_subdirectory(bzip2)
+add_subdirectory(lua)
+
 cmake_print_variables(third_party_list)
 
 add_custom_target(third_party

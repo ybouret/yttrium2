@@ -69,6 +69,7 @@ Y_CreateLibrary(y
     y/protean/coop/heavy
     y/string
     y/string/stride
+    y/apex
 )
 
 add_subdirectory(tests)
