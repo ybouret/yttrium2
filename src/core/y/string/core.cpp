@@ -20,7 +20,7 @@ namespace Yttrium
     namespace Core
     {
 
-#define Y_String() Container(), Object(), LegacyString(), ContiguousType(), Serializable()
+#define Y_String() Container(), Object(), LegacyString(), ContiguousType(), SequenceType(), Serializable()
 
 #undef CH
 #define CH char

@@ -507,3 +507,9 @@ void String<CH>:: reserve(const size_t n) noexcept
     }
 }
 
+template <>
+String<CH>:: String(const WithAtLeast_ &, const size_t n, const bool filled) :
+Y_String(), code( new Code(n) )
+{
+    if(filled) code->size = n;
+}

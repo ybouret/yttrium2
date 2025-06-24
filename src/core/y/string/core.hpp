@@ -13,6 +13,7 @@
 #include "y/ability/serializable.hpp"
 #include "y/container/sequence.hpp"
 #include "y/container/expandable.hpp"
+#include "y/type/with-at-least.hpp"
 
 namespace Yttrium
 {
@@ -66,7 +67,8 @@ namespace Yttrium
             //__________________________________________________________________
             typedef Stride<T>                 Code;           //!< alias
             typedef Contiguous< Writable<T> > ContiguousType; //!< alias
-            typedef const T                   ParamType;
+            typedef Sequence<T,Expandable>    SequenceType;   //!< alias
+            typedef const T                   ParamType;      //!< alias
 
             //__________________________________________________________________
             //
@@ -88,6 +90,13 @@ namespace Yttrium
             String & operator=(const T) noexcept;   //!< assign single char   \return *this*
 
             String(InputStream &, const char * const = 0); //!< load from serialized with optional variable name
+
+            //! create a string with some room
+            /**
+             \param n minimal number of chars
+             \param filled if true, set size to n
+             */
+            String(const WithAtLeast_ &, const size_t n, const bool filled);
 
             //! output dependending on T \return output stream
             friend std::ostream & operator<< <>(std::ostream &, const String &);

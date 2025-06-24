@@ -1,6 +1,6 @@
 
 
-#include "y/string.hpp"
+#include "y/string/format.hpp"
 #include "y/utest/run.hpp"
 #include "y/stream/libc/output.hpp"
 #include "y/stream/libc/input.hpp"
@@ -43,7 +43,10 @@ Y_UTEST(string)
         }
     }
 
-
+    {
+        String s = Formatted::Get("%d",__LINE__);
+        std::cerr << s << " / " << __LINE__ - 1 << std::endl;
+    }
 
 }
 Y_UDONE()
