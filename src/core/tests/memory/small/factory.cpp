@@ -57,23 +57,7 @@ Y_UTEST(memory_object_factory)
 
     Object::Factory & F =  Object::Factory::Instance();
 
-    std::cerr << "Random query/store" << std::endl;
-    {
-        System::Rand              ran;
 
-        Y_Memory_BZero(blocks);
-        std::cerr << F.callSign() << std::endl;
-
-        fill(F,ran);
-        for(size_t iter=0;iter<10;++iter)
-        {
-            empty(count>>1,F,ran);
-            fill(F,ran);
-        }
-        empty(0,F,ran);
-        F.display(std::cerr,0);
-        std::cerr << std::endl;
-    }
 
     Y_PRINTV(Memory::Small::Metrics::LimitObjectBytes);
     Y_PRINTV(Memory::Small::Metrics::MediumLimitBytes);
@@ -81,7 +65,7 @@ Y_UTEST(memory_object_factory)
     std::cerr << std::endl;
 
     std::cerr << "Systematic query/store" << std::endl;
-    for(size_t blockSize=1;blockSize<=1000;++blockSize)
+    for(size_t blockSize=1;blockSize<=40000;++blockSize)
     {
         void * addr = F.query(blockSize);
         F.store(addr,blockSize);
@@ -90,7 +74,7 @@ Y_UTEST(memory_object_factory)
 
 
     std::cerr << "Systematic acquire/release" << std::endl;
-    for(size_t blockSize=1;blockSize<=1000;++blockSize)
+    for(size_t blockSize=1;blockSize<=40000;++blockSize)
     {
         size_t bs   = blockSize;
         void * addr = F.acquire(bs);
@@ -98,7 +82,25 @@ Y_UTEST(memory_object_factory)
     }
     std::cerr << std::endl;
 
+    {
+        std::cerr << "Random query/store" << std::endl;
+        {
+            System::Rand              ran;
 
+            Y_Memory_BZero(blocks);
+            std::cerr << F.callSign() << std::endl;
+
+            fill(F,ran);
+            for(size_t iter=0;iter<10;++iter)
+            {
+                empty(count>>1,F,ran);
+                fill(F,ran);
+            }
+            empty(0,F,ran);
+            F.display(std::cerr,0);
+            std::cerr << std::endl;
+        }
+    }
 
 }
 Y_UDONE()

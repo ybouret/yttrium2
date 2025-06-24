@@ -9,6 +9,7 @@
 #include "y/xml/attribute.hpp"
 #include "y/memory/joint/segment.hpp"
 #include "y/exception.hpp"
+#include "y/core/utils.hpp"
 
 namespace Yttrium
 {
@@ -99,8 +100,6 @@ namespace Yttrium
 #define MEDIUM_LIMIT_BYTES Memory::Small::Metrics::MediumLimitBytes
 
 
-
-
     void * Object:: Factory:: query(const size_t blockSize)
     {
         //----------------------------------------------------------------------
@@ -114,9 +113,8 @@ namespace Yttrium
         //----------------------------------------------------------------------
         assert(blockSize>0);
         if(blockSize<=LIMIT_OBJECT_BYTES)
-        {
             return acquireSingle( condensation[blockSize] );
-        }
+
 
         //----------------------------------------------------------------------
         // medium
@@ -124,15 +122,13 @@ namespace Yttrium
         assert(blockSize>LIMIT_OBJECT_BYTES);
         if(blockSize<=MEDIUM_LIMIT_BYTES)
         {
-            if( IsPowerOfTwo(blockSize) )
-                return acquireQuanta( ExactLog2(blockSize) );
             return acquirePooled(blockSize);
         }
 
         //----------------------------------------------------------------------
         // quanta
         //----------------------------------------------------------------------
-        assert(blockSize>LIMIT_OBJECT_BYTES);
+        assert(blockSize>MEDIUM_LIMIT_BYTES);
         if(blockSize<=Memory::Quanta::MaxLedgerBytes)
         {
             return acquireQuanta( CeilLog2(blockSize) );
@@ -170,20 +166,16 @@ namespace Yttrium
         //----------------------------------------------------------------------
         assert(blockSize>LIMIT_OBJECT_BYTES);
         if(blockSize<=MEDIUM_LIMIT_BYTES)
-        {
-            if(IsPowerOfTwo(blockSize))
-                return releaseQuanta( ExactLog2(blockSize), blockAddr);
             return releasePooled(blockAddr,blockSize);
-        }
+
 
         //----------------------------------------------------------------------
         // quanta
         //----------------------------------------------------------------------
-        assert(blockSize>LIMIT_OBJECT_BYTES);
+        assert(blockSize>MEDIUM_LIMIT_BYTES);
         if(blockSize<=Memory::Quanta::MaxLedgerBytes)
-        {
             return releaseQuanta(CeilLog2(blockSize),blockAddr);
-        }
+
 
         //----------------------------------------------------------------------
         // bigger ?
@@ -198,29 +190,35 @@ namespace Yttrium
     {
         assert(blockSize>0);
 
+        //----------------------------------------------------------------------
+        //
         // small
+        //----------------------------------------------------------------------
         if(blockSize<=LIMIT_OBJECT_BYTES)
-        {
             return acquireSingle( blockSize = condensation[blockSize] );
-        }
 
+
+        //----------------------------------------------------------------------
         // medium
+        //----------------------------------------------------------------------
         assert(blockSize>LIMIT_OBJECT_BYTES);
         if(blockSize<=MEDIUM_LIMIT_BYTES)
         {
-            if( IsPowerOfTwo(blockSize) )
-                return acquireQuanta( ExactLog2(blockSize) );
-            return pooled.acquireBlock(blockSize);
+            void * const block = pooled.acquireBlock(blockSize);
+            InSituMin(blockSize,MEDIUM_LIMIT_BYTES); // could be just a little bit bigger
+            return block;
         }
 
+        //----------------------------------------------------------------------
         // quanta
-        assert(blockSize>LIMIT_OBJECT_BYTES);
+        //----------------------------------------------------------------------
+        assert(blockSize>MEDIUM_LIMIT_BYTES);
         if(blockSize<=Memory::Quanta::MaxLedgerBytes)
-        {
             return quanta.acquire(blockSize);
-        }
 
+        //----------------------------------------------------------------------
         // bigger ?
+        //----------------------------------------------------------------------
         return sysmem.acquire(blockSize);
     }
 
@@ -241,12 +239,10 @@ namespace Yttrium
         assert(blockSize>LIMIT_OBJECT_BYTES);
         if(blockSize<=MEDIUM_LIMIT_BYTES)
         {
-            if(IsPowerOfTwo(blockSize))
-                return releaseQuanta( ExactLog2(blockSize), blockAddr);
             return pooled.releaseBlock(blockAddr,blockSize);
         }
 
-        assert(blockSize>LIMIT_OBJECT_BYTES);
+        assert(blockSize>MEDIUM_LIMIT_BYTES);
         if(blockSize<=Memory::Quanta::MaxLedgerBytes)
         {
             assert(IsPowerOfTwo(blockSize));

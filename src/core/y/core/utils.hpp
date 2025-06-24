@@ -61,6 +61,22 @@ namespace Yttrium
     //__________________________________________________________________________
     //
     //
+    //! inline in-situ Min
+    /**
+     \param a target value
+     \param b compared value
+     */
+    //
+    //__________________________________________________________________________
+    template <typename T> inline
+    void InSituMin(T &a, const T b)
+    {
+        if(b<a) a = b;
+    }
+
+    //__________________________________________________________________________
+    //
+    //
     //! Clamp integral values
     /**
      \param a lower bound
