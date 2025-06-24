@@ -7,6 +7,7 @@
 
 #include "y/type/ints.hpp"
 #include "y/string/fwd.hpp"
+#include "y/check/printf.hpp"
 
 namespace Yttrium
 {
@@ -83,7 +84,7 @@ namespace Yttrium
         OutputStream & operator<<( const char );
         OutputStream & operator<<( const char * const);
         OutputStream & operator<<( const Core::String<char> & );
-
+        OutputStream & operator()(const char * const fmt,...) Y_Printf_Check(2,3);
 
     private:
         Y_Disable_Copy_And_Assign(OutputStream); //!< discarding

@@ -116,6 +116,11 @@ namespace Yttrium
 
 #include "y/string.hpp"
 #include "y/string/length.hpp"
+#include "y/core/variadic.hpp"
+#include "y/memory/buffer/out-of.hpp"
+#include "y/system/exception.hpp"
+#include "y/memory/allocator/pooled.hpp"
+#include <cstdarg>
 
 namespace Yttrium
 {
@@ -129,6 +134,35 @@ namespace Yttrium
     OutputStream & OutputStream::  operator<<( const Core::String<char> &s)
     {
         frame( s.c_str(), s.size() );
+        return *this;
+    }
+
+    OutputStream &  OutputStream:: operator()(const char * const fmt,...)
+    {
+        static const char fn[] = "OutputStream(formatted)";
+        assert(0!=fmt);
+        size_t length = 0;
+        int    result = 0;
+        {
+            va_list ap;
+            va_start(ap,fmt);
+            result = Core::Variadic::Format(0, 0, fmt, &ap);
+            if(result<0) throw Specific::Exception(fn,"invalid format");
+            va_end(ap);
+            length = size_t(result);
+        }
+
+        const size_t required = length+1;
+        Memory::BufferOutOf<Memory::Pooled> buffer( required );
+        {
+            va_list ap;
+            va_start(ap,fmt);
+            const int result2 = Core::Variadic::Format( (char *)buffer.rw(), required, fmt, &ap);
+            if(result2!=result) throw Specific::Exception(fn,"corrupted format");
+            va_end(ap);
+        }
+        
+        frame(buffer.ro(),length);
         return *this;
     }
 }

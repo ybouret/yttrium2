@@ -13,6 +13,12 @@ Y_UTEST(stream_output_file)
         OutputFile fp("output.dat");
         fp.write('y');
         fp.frame("hello",5);
+
+        fp << '\n';
+        fp << "World!";
+        fp << '\n';
+        fp("from %s, line=%d\n", program, __LINE__);
+
     }
 
 
