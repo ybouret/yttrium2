@@ -13,5 +13,12 @@ namespace Yttrium
         {
             throw Libc::Exception(EDOM,"Apex::Metrics::Overflow(%s)", Decimal(bytes).c_str());
         }
+
+        size_t Metrics:: BytesFor(size_t bytes, unsigned &shift)
+        {
+            if(bytes>MaxBytes) Overflow(bytes);
+            if(bytes<MinBytes) bytes = MinBytes;
+            return NextPowerOfTwo(bytes,shift);
+        }
     }
 }
