@@ -166,6 +166,7 @@ namespace Yttrium
                 assert(isValid());
             }
 
+            //! erase content
             inline void erase() noexcept
             {
                 assert( isValid() );

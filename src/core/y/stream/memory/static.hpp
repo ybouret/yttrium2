@@ -9,20 +9,20 @@
 namespace Yttrium
 {
 
-
+    //! local buffer for local Memory[Input|Output]
     template <size_t N>
     class MemoryStaticStreamBuffer
     {
     public:
-        inline explicit MemoryStaticStreamBuffer() noexcept : buff() {}
-        inline virtual ~MemoryStaticStreamBuffer() noexcept  {}
+        inline explicit MemoryStaticStreamBuffer() noexcept : buff() {} //!< setup
+        inline virtual ~MemoryStaticStreamBuffer() noexcept  {}         //!< cleanup
 
 
     protected:
-        Memory::StaticBuffer<N> buff;
+        Memory::StaticBuffer<N> buff; //!< local memory
 
     private:
-        Y_Disable_Copy_And_Assign(MemoryStaticStreamBuffer);
+        Y_Disable_Copy_And_Assign(MemoryStaticStreamBuffer); //!< discarding
     };
 
 

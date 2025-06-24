@@ -26,8 +26,8 @@ namespace Yttrium
         // Definitions
         //
         //______________________________________________________________________
-        static const char LF = '\n';
-        static const char CR = '\r';
+        static const char LF = '\n'; //!< alias
+        static const char CR = '\r'; //!< alias
 
     protected:
         //______________________________________________________________________
@@ -94,7 +94,7 @@ namespace Yttrium
             return T(qw);
         }
 
-
+        //! parse line \param line target string \return true if line was found
         bool gets(Core::String<char> &line);
 
 

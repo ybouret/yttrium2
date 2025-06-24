@@ -81,10 +81,12 @@ namespace Yttrium
             return emit(alias.y);
         }
 
-        OutputStream & operator<<( const char );
-        OutputStream & operator<<( const char * const);
-        OutputStream & operator<<( const Core::String<char> & );
-        OutputStream & operator()(const char * const fmt,...) Y_Printf_Check(2,3);
+        OutputStream & operator<< (const char);                                 //!< helper \return *this
+        OutputStream & operator<< (const char * const);                         //!< helper \return *this
+        OutputStream & operator<< (const Core::String<char> &);                 //!< helper \return *this
+
+        //! helper \return *this
+        OutputStream & operator() (const char * const,...) Y_Printf_Check(2,3);
 
     private:
         Y_Disable_Copy_And_Assign(OutputStream); //!< discarding

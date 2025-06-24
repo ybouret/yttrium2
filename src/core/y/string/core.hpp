@@ -113,8 +113,8 @@ namespace Yttrium
             virtual size_t       serialize(OutputStream&) const;
             virtual void         free()    noexcept;
             virtual size_t       available() const noexcept;
-            virtual void         pushTail(ParamType);
-            virtual void         pushHead(ParamType);
+            virtual void         pushTail(ParamType); //!< append char
+            virtual void         pushHead(ParamType); //!< prepend char
             virtual void         popTail() noexcept;
             virtual void         popHead() noexcept;
             virtual void         reserve(const size_t n) noexcept;

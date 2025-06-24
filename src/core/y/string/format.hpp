@@ -11,9 +11,11 @@
 namespace Yttrium
 {
 
+    //! formatted string
     struct Formatted
     {
-        static String Get(const char * const fmt,...) Y_Printf_Check(1,2);
+        //! use snprintf \return formatted string
+        static String Get(const char * const,...) Y_Printf_Check(1,2);
     };
 
 }

@@ -53,11 +53,17 @@ namespace Yttrium
         virtual void write(const char c);
         virtual void flush();
         virtual void frame(const void * const addr, const size_t size);
-        void         reset() noexcept;
 
-        virtual const void * ro()     const noexcept;
-        virtual size_t       length() const noexcept;
+        virtual const void * ro()     const noexcept; //!< \return address
+        virtual size_t       length() const noexcept; //!< \return curr-addr
 
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+        void reset() noexcept; //!< reset state
 
     private:
         Y_Disable_Copy_And_Assign(MemoryOutput); //!< discarding

@@ -47,7 +47,7 @@ namespace Yttrium
         virtual void       store(const char);
 
 
-        IO::Chars q;
+        IO::Chars q; //!< I/O queue
 
     private:
         Y_Disable_Copy_And_Assign(StreamQueue); //!< discard

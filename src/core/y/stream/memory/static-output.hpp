@@ -11,6 +11,7 @@ namespace Yttrium
 {
 
 
+    //! local memory output stream
     template <size_t N>
     class MemoryStaticOutput :
     public MemoryStaticStreamBuffer<N>,
@@ -19,19 +20,21 @@ namespace Yttrium
     public:
         using MemoryStaticStreamBuffer<N>::buff;
 
+        //! setup
         inline explicit MemoryStaticOutput() noexcept :
         MemoryStaticStreamBuffer<N>(),
         MemoryOutput(buff)
         {
         }
 
+        //! cleanup
         inline virtual ~MemoryStaticOutput() noexcept
         {
         }
         
 
     private:
-        Y_Disable_Copy_And_Assign(MemoryStaticOutput);
+        Y_Disable_Copy_And_Assign(MemoryStaticOutput); //!< discarding
     };
 
 
