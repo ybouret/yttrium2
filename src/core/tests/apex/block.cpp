@@ -106,6 +106,11 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
             static const unsigned UnitSize = sizeof(T);
             static const unsigned UnitBits = 8 * UnitSize;
 
+            static inline size_t  SizeFor(const size_t numBits) noexcept
+            {
+                return Alignment::On<UnitBits>::Ceil(numBits) / UnitBits;
+            }
+
             explicit Block(void * const entry,
                            const size_t count) noexcept :
             BlockAPI(count,View),
@@ -143,7 +148,7 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
 
             virtual void resize(const size_t numBits) noexcept
             {
-                size = Alignment::On<UnitBits>::Ceil(numBits) / UnitBits;
+                size = SizeFor(numBits);
             }
 
             T * const data;
@@ -544,11 +549,13 @@ Y_UTEST(apex_block)
         std::cerr << "Using Models" << std::endl;
         Apex::Model m(10,Apex::View64);
 
-        std::cerr << m.get<uint64_t>().maxi << std::endl;
 
         m.get<uint64_t>().data[0] = p64[0];
         m.get<uint64_t>().data[1] = p64[1];
         m.get<uint64_t>().size    = 2;
+        Coerce(m.bits) = m.get<uint64_t>().update();
+        std::cerr << "bits=" << m.bits << std::endl;
+
         Y_ASSERT(m.get<uint64_t>().isValid());
 
         std::cerr << "Printing..." << std::endl;
