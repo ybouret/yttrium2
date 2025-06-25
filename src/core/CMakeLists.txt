@@ -71,6 +71,7 @@ Y_CreateLibrary(y
     y/string/stride
     y/apex
     y/apex/m
+    y/apex/block
 )
 
 add_subdirectory(tests)

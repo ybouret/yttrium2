@@ -3,7 +3,7 @@
 #include "y/core/utils.hpp"
 #include "y/hexadecimal.hpp"
 #include "y/object.hpp"
-#include "y/apex/m/block-api.hpp"
+#include "y/apex/block/api.hpp"
 #include "y/calculus/bits-for.hpp"
 #include "y/type/sign.hpp"
 
@@ -23,60 +23,6 @@ namespace Yttrium
 
 
 
-#define Y_Block_Check(EXPR) do { \
-if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } \
-} while(false)
-
-
-        class BlockAPI
-        {
-        public:
-            static const ViewType VTable[Metrics::Views];
-
-            explicit BlockAPI(const size_t   n,
-                              const ViewType v) :
-            size(0),
-            maxi(n),
-            view(v)
-            {
-            }
-
-            virtual ~BlockAPI() noexcept
-            {
-
-            }
-
-            bool isValid() const noexcept
-            {
-                Y_Block_Check(size<=maxi);
-                return doCheck();
-            }
-
-            friend std::ostream & operator<<(std::ostream &os, const BlockAPI &self)
-            {
-                return self.print(os);
-            }
-
-            virtual size_t update(BlockAPI * const []) noexcept = 0;
-            virtual void   resize(const size_t numBits) noexcept = 0;
-
-
-            size_t         size;
-            const size_t   maxi;
-            const ViewType view;
-
-        private:
-            Y_Disable_Copy_And_Assign(BlockAPI);
-            virtual bool doCheck() const noexcept = 0;
-            virtual void zeroPad()       noexcept = 0;
-            virtual std::ostream & print(std::ostream&) const = 0;
-
-        };
-
-        const ViewType BlockAPI::VTable[] =
-        {
-            View8, View16, View32, View64
-        };
 
 
         template <typename T>
