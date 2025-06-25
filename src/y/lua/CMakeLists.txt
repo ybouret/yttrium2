@@ -25,6 +25,6 @@ Y_ThirdParty(y-lua)
 
 add_executable(lua src/lua.c)
 target_link_libraries(lua y-lua)
-if(Y_Linux OR FreeBSD)
+if(Y_Linux OR Y_FreeBSD)
     target_link_libraries(lua m)
 endif()
