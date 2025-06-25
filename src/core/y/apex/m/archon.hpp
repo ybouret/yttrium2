@@ -14,29 +14,56 @@ namespace Yttrium
 
     namespace Apex
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Cache from Memory::Quanta for blocks I/O
+        //
+        //
+        //______________________________________________________________________
         class Archon : public Singleton<Archon, ClassLockPolicy>
         {
         public:
-            static const char * const          CallSign;
-            static const Longevity             LifeTime  = LifeTimeOf::ApexMemory;
-            static const unsigned              MinShift  = Metrics::MinShift;
-            static const unsigned              MaxShift  = Metrics::MaxShift;
-            static const unsigned              NumShifts = Metrics::MaxShift - Metrics::MinShift + 1;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const char * const          CallSign;                                              //!< "Apex::Archon"
+            static const Longevity             LifeTime  = LifeTimeOf::ApexMemory;                    //!< lifetime
+            static const unsigned              MinShift  = Metrics::MinShift;                         //!< 2^MinShift bytes
+            static const unsigned              MaxShift  = Metrics::MaxShift;                         //!< 2^MaxShift byte
+            static const unsigned              NumShifts = Metrics::MaxShift - Metrics::MinShift + 1; //!< possibilities
             class Slot;
 
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             virtual void display(std::ostream &,size_t) const;
-            void *       query(const unsigned shift);
-            void         store(const unsigned shift, void * const block) noexcept;
+
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            void *       query(const unsigned shift); //!< \param shift valid shift \return 2^shift bytes
+            void         store(const unsigned shift, void * const block) noexcept; //!< store \param shift 2^shift bytes \param block queried
 
         private:
             friend class Singleton<Archon, ClassLockPolicy>;
-            Y_Disable_Copy_And_Assign(Archon);
+            Y_Disable_Copy_And_Assign(Archon); //!< discarding
 
-            explicit Archon();
-            virtual ~Archon() noexcept;
+            explicit Archon();           //!< setup
+            virtual ~Archon() noexcept;  //!< cleanup
 
-            Slot * const     slots;
-            Memory::Quanta  &quanta;
+            Slot * const     slots;      //!< caches
+            Memory::Quanta  &quanta;     //!< lower level memory
 
         };
 

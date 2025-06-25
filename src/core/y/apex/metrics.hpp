@@ -14,15 +14,23 @@ namespace Yttrium
     namespace Apex
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Metrics for Natural
+        //
+        //
+        //______________________________________________________________________
         struct Metrics
         {
-            typedef natural_t      Word;
-            static const unsigned  WordBytes = sizeof(Word);
-            static const unsigned  WordShift = IntegerLog2<WordBytes>::Value;
-            static const size_t    MinBytes  = sizeof(Memory::Page);
-            static const unsigned  MinShift  = IntegerLog2<MinBytes>::Value;
-            static const size_t    MaxBytes  = Base2<size_t>::MaxBytes;
-            static const unsigned  MaxShift  = Base2<size_t>::MaxShift;
+            typedef natural_t      Word;                                      //!< alias
+            static const unsigned  WordBytes = sizeof(Word);                  //!< alias
+            static const unsigned  WordShift = IntegerLog2<WordBytes>::Value; //!< alias
+            static const size_t    MinBytes  = sizeof(Memory::Page);          //!< alias
+            static const unsigned  MinShift  = IntegerLog2<MinBytes>::Value;  //!< alias
+            static const size_t    MaxBytes  = Base2<size_t>::MaxBytes;       //!< alias
+            static const unsigned  MaxShift  = Base2<size_t>::MaxShift;       //!< alias
 
             //!
             /**
