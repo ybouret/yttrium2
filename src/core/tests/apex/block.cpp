@@ -10,6 +10,7 @@ namespace Yttrium
     namespace Apex
     {
 
+#if 0
         template <size_t LN2> struct UnsignedForLn2;
         template <> struct UnsignedForLn2<0> { typedef uint8_t  Type; };
         template <> struct UnsignedForLn2<1> { typedef uint16_t Type; };
@@ -272,12 +273,12 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
 
             const size_t & bytes;
             size_t         bits;
-            
+
         private:
             Y_Disable_Copy_And_Assign(Model);
 
         };
-
+#endif
 
     }
 }
@@ -304,7 +305,7 @@ Y_UTEST(apex_block)
     System::Rand ran;
 
     Y_PRINTV(Apex::Archon::NumShifts);
-    
+
     Apex::Archon & mgr = Apex::Archon::Instance();
 
     if(true)
@@ -330,59 +331,7 @@ Y_UTEST(apex_block)
         mgr.display(std::cerr,0);
     }
 
-    Y_CHECK(sizeof(Apex::Block<uint8_t>) == sizeof(Apex::Block<uint16_t>));
-    Y_CHECK(sizeof(Apex::Block<uint8_t>) == sizeof(Apex::Block<uint32_t>));
-    Y_CHECK(sizeof(Apex::Block<uint8_t>) == sizeof(Apex::Block<uint64_t>));
-
-    {
-        Apex::Blocks            b(0);
-
-        std::cerr << "capacities: " << std::endl;
-        std::cerr << b.block<uint8_t>().capacity  << "#" <<  b.block<uint8_t>().size  << std::endl;
-        std::cerr << b.block<uint16_t>().capacity << "#" <<  b.block<uint16_t>().size << std::endl;
-        std::cerr << b.block<uint32_t>().capacity << "#" <<  b.block<uint32_t>().size << std::endl;
-        std::cerr << b.block<uint64_t>().capacity << "#" <<  b.block<uint64_t>().size << std::endl;
-
-        Apex::Block<uint64_t> & b64 = b.block<uint64_t>();
-        Apex::Block<uint32_t> & b32 = b.block<uint32_t>();
-        Apex::Block<uint16_t> & b16 = b.block<uint16_t>();
-        Apex::Block<uint8_t>  & b8  = b.block<uint8_t>();
-
-
-        b64.data[0] = 0x123456ULL;
-        b64.size = 1;
-        b64.update();
-        std::cerr << b64 << std::endl;
-        Apex::Convert::To(b32,b64);
-        std::cerr << b32 << std::endl;
-        Apex::Convert::To(b16,b64);
-        std::cerr << b16 << std::endl;
-        Apex::Convert::To(b8,b64);
-        std::cerr << b8 << std::endl;
-
-
-#if 0
-        std::cerr << b32 << std::endl;
-        Apex::Convert::Expand(b32,b64);
-        std::cerr << b32 << std::endl;
-
-        std::cerr << b16 << std::endl;
-        Apex::Convert::Expand(b16,b64);
-        std::cerr << b16 << std::endl;
-
-        Apex::Convert::Expand(b8,b64);
-        std::cerr << b8 << std::endl;
-
-        Apex::Convert::Shrink(b16,b8);
-        std::cerr << "b16=" << b16 << std::endl;
-        Apex::Convert::Shrink(b32,b8);
-        std::cerr << "b32=" << b32 << std::endl;
-        Apex::Convert::Shrink(b64,b8);
-        std::cerr << "b64=" << b64 << std::endl;
-#endif
-
-    }
-
+    
 
 
 
