@@ -25,6 +25,16 @@ namespace Yttrium
             View64
         };
 
+        template <ViewType VIEW>
+        struct UnsignedFor;
+
+        template <> struct UnsignedFor<View8>  { typedef uint8_t  Type; };
+        template <> struct UnsignedFor<View16> { typedef uint16_t Type; };
+        template <> struct UnsignedFor<View32> { typedef uint32_t Type; };
+        template <> struct UnsignedFor<View64> { typedef uint64_t Type; };
+
+
+
 
 
 #define Y_Block_Check(EXPR) do { \
@@ -62,6 +72,7 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
             }
 
             virtual size_t update() noexcept = 0;
+            virtual void   resize(const size_t numBits) noexcept = 0;
 
             size_t upgrade() noexcept
             {
@@ -128,6 +139,11 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
             {
                 adjust();
                 return bits();
+            }
+
+            virtual void resize(const size_t numBits) noexcept
+            {
+                size = Alignment::On<UnitBits>::Ceil(numBits) / UnitBits;
             }
 
             T * const data;
@@ -313,9 +329,11 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
         };
 
 
-        class Model : public Object, protected Blocks
+        class Model : public Object, private Blocks
         {
         public:
+            typedef void (Model:: *Change)();
+
             explicit Model(const size_t   userBytes,
                            const ViewType userView) :
             Object(),
@@ -327,12 +345,53 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
 
             }
 
-            
+            explicit Model(const Model &  userModel,
+                           const ViewType userView) :
+            Object(),
+            Blocks( userModel ),
+            view(   userModel.view ),
+            bytes(block<uint8_t>().size),
+            bits(0)
+            {
+                assert( bytes == userModel.bytes );
+                set(userView);
+            }
 
             virtual ~Model() noexcept
             {
-
             }
+
+
+            void set(const ViewType vtgt) noexcept
+            {
+                Change const meth = ChangeTo[vtgt][view];
+                (*this.*meth)();
+                Coerce(view) = vtgt;
+            }
+
+
+            template <typename T>
+            inline const Block<T> & get() const noexcept
+            {
+                assert( BlockAPI::VTable[ IntegerLog2For<T>::Value ] == view );
+                return block<T>();
+            }
+
+
+            template <typename T>
+            inline  Block<T> & get() noexcept
+            {
+                assert( BlockAPI::VTable[ IntegerLog2For<T>::Value ] == view );
+                return block<T>();
+            }
+
+            template <typename T>
+            inline  Block<T> & make() noexcept
+            {
+                set(  BlockAPI::VTable[ IntegerLog2For<T>::Value ] );
+                return block<T>();
+            }
+
 
             const ViewType view;
             const size_t  &bytes;
@@ -340,6 +399,22 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
 
         private:
             Y_Disable_Copy_And_Assign(Model);
+            static Change const ChangeTo[Metrics::Views][Metrics::Views];
+
+            template <typename TARGET, typename SOURCE>
+            inline void To() noexcept {
+                assert( BlockAPI::VTable[ IntegerLog2For<SOURCE>::Value ] == view );
+                Transmogrify::To( block<TARGET>(), block<SOURCE>() );
+            }
+
+        };
+
+#define Y_APM_(TARGET,SOURCE) & Model::To<uint##TARGET##_t,uint##SOURCE##_t>
+#define Y_APM(TARGET) { Y_APM_(TARGET,8), Y_APM_(TARGET,16), Y_APM_(TARGET,32), Y_APM_(TARGET,64) }
+
+        Model::Change const Model:: ChangeTo[Metrics::Views][Metrics::Views] =
+        {
+            Y_APM(8), Y_APM(16), Y_APM(32), Y_APM(64)
         };
 
 
@@ -407,8 +482,9 @@ Y_UTEST(apex_block)
 
     Y_PRINTV( Apex::Blocks::BlockProtoSize );
     Y_SIZEOF( Apex::Blocks );
+
+    const uint64_t p64[2] = { 0xabdc, 0x1234 };
     {
-        const uint64_t p64[2] = { 0xabdc, 0x1234 };
         Apex::Blocks b(0);
 
         Apex::Block<uint64_t> &b64 = b.block<uint64_t>();
@@ -461,7 +537,25 @@ Y_UTEST(apex_block)
         std::cerr << b8 << std::endl;
         Apex::Transmogrify::To(b16,b8);
         std::cerr << b16 << std::endl; Y_ASSERT( 0 == memcmp(b16.data,p16,sizeof(p16)));
+    }
 
+
+    {
+        std::cerr << "Using Models" << std::endl;
+        Apex::Model m(10,Apex::View64);
+
+        std::cerr << m.get<uint64_t>().maxi << std::endl;
+
+        m.get<uint64_t>().data[0] = p64[0];
+        m.get<uint64_t>().data[1] = p64[1];
+        m.get<uint64_t>().size    = 2;
+        Y_ASSERT(m.get<uint64_t>().isValid());
+
+        std::cerr << "Printing..." << std::endl;
+        std::cerr << m.make<uint64_t>() << std::endl;
+        std::cerr << m.make<uint32_t>() << std::endl;
+        std::cerr << m.make<uint16_t>() << std::endl;
+        std::cerr << m.make<uint8_t>() << std::endl;
 
     }
 
