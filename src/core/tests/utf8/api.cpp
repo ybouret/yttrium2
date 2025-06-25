@@ -11,7 +11,7 @@ using namespace Yttrium;
 namespace
 {
 
-    
+#if 0
     class uVec
     {
     public:
@@ -34,7 +34,8 @@ namespace
         size_t  size;
         uint8_t data[4];
     };
-
+#endif
+    
 }
 
 
