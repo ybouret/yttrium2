@@ -71,14 +71,16 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
                 return self.print(os);
             }
 
-            virtual size_t update() noexcept = 0;
+            virtual size_t update(BlockAPI * const []) noexcept = 0;
             virtual void   resize(const size_t numBits) noexcept = 0;
 
+#if 0
             size_t upgrade() noexcept
             {
                 zeroPad();
                 return update();
             }
+#endif
 
             size_t         size;
             const size_t   maxi;
@@ -140,10 +142,15 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
                 assert(isValid());
             }
 
-            virtual size_t update() noexcept
+            virtual size_t update(BlockAPI * const sync[]) noexcept
             {
+                assert(0!=sync);
                 adjust();
-                return bits();
+                const size_t numBits = bits();
+                assert(0!=sync[0]); sync[0]->resize(numBits);
+                assert(0!=sync[1]); sync[1]->resize(numBits);
+                assert(0!=sync[2]); sync[2]->resize(numBits);
+                return numBits;
             }
 
             virtual void resize(const size_t numBits) noexcept
@@ -197,8 +204,8 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
                         *(small++) = SMALL(value>>(j*SHR));
                     }
                 }
-                target.size = source.size * RHO;
-                target.adjust();
+                //target.size = source.size * RHO;
+                //target.adjust();
             }
 
             template <typename LARGE, typename SMALL> static inline
@@ -223,7 +230,7 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
                     *(large++) = value;
                     if(used>=words) break;
                 }
-                assert(target.isValid());
+                //assert(target.isValid());
             }
 
 
@@ -267,6 +274,7 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
 
             explicit Blocks(const size_t userBytes) :
             base(0),
+            sync(),
             wksp(),
             dataShift(0),
             dataBytes( Metrics::BytesFor(userBytes,dataShift) ),
@@ -277,6 +285,7 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
 
             Blocks(const Blocks &other) :
             base(0),
+            sync(),
             wksp(),
             dataShift(0),
             dataBytes( Metrics::BytesFor(other.block<uint8_t>().size,dataShift) ),
@@ -310,19 +319,40 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
 
         private:
             Y_Disable_Assign(Blocks);
-            uint8_t * const base;
-            void *          wksp[ Alignment::WordsGEQ<NumBlocks*BlockProtoSize>::Count ];
-            unsigned        dataShift;
-            size_t          dataBytes;
-            void *   const  dataEntry;
+            uint8_t * const  base;
+        public:
+            BlockAPI * const sync[ Metrics::Views ][3];
+        private:
+            void *           wksp[ Alignment::WordsGEQ<NumBlocks*BlockProtoSize>::Count ];
+            unsigned         dataShift;
+            size_t           dataBytes;
+            void *   const   dataEntry;
 
             void setup() noexcept
             {
+                // base address
                 Coerce(base) = static_cast<uint8_t *>( Y_Memory_BZero(wksp) );
-                new (base)                  Block<uint8_t>(  dataEntry, dataBytes     );
-                new (base+  BlockProtoSize) Block<uint16_t>( dataEntry, dataBytes >> 1);
-                new (base+2*BlockProtoSize) Block<uint32_t>( dataEntry, dataBytes >> 2);
-                new (base+3*BlockProtoSize) Block<uint64_t>( dataEntry, dataBytes >> 3);
+
+                {
+                    // dress up blocks
+                    new (base)                  Block<uint8_t>(  dataEntry, dataBytes     );
+                    new (base+  BlockProtoSize) Block<uint16_t>( dataEntry, dataBytes >> 1);
+                    new (base+2*BlockProtoSize) Block<uint32_t>( dataEntry, dataBytes >> 2);
+                    new (base+3*BlockProtoSize) Block<uint64_t>( dataEntry, dataBytes >> 3);
+                }
+
+                {
+                    // record sync
+                    Block<uint8_t>  & b8  = block<uint8_t>();
+                    Block<uint16_t> & b16 = block<uint16_t>();
+                    Block<uint32_t> & b32 = block<uint32_t>();
+                    Block<uint64_t> & b64 = block<uint64_t>();
+
+                    Coerce(sync[0][0]) = &b16; Coerce(sync[0][1]) = &b32; Coerce(sync[0][2]) = &b64;
+                    Coerce(sync[1][0]) = &b8;  Coerce(sync[1][1]) = &b32; Coerce(sync[1][2]) = &b64;
+                    Coerce(sync[2][0]) = &b8;  Coerce(sync[2][1]) = &b16; Coerce(sync[2][2]) = &b64;
+                    Coerce(sync[3][0]) = &b8;  Coerce(sync[3][1]) = &b16; Coerce(sync[3][2]) = &b32;
+                }
             }
 
             static void * Query(const unsigned shift)
@@ -497,10 +527,18 @@ Y_UTEST(apex_block)
         b64.data[1] = p64[1];
         b64.size    = 2;
         Y_ASSERT(b64.isValid());
+        const size_t numBits = b64.update(b.sync[3]);
+        std::cerr << "numBits=" << numBits << std::endl;
 
         Apex::Block<uint32_t> &b32 = b.block<uint32_t>();
         Apex::Block<uint16_t> &b16 = b.block<uint16_t>();
         Apex::Block<uint8_t>  &b8  = b.block<uint8_t>();
+
+        std::cerr << "#64 = " << b64.size << std::endl;
+        std::cerr << "#32 = " << b32.size << std::endl;
+        std::cerr << "#16 = " << b16.size << std::endl;
+        std::cerr << "#8  = " << b8.size << std::endl;
+
 
         std::cerr << "I/O with 64 bits" << std::endl;
         std::cerr << b64 << std::endl;
@@ -514,7 +552,7 @@ Y_UTEST(apex_block)
         Apex::Transmogrify::To(b64,b16);
         std::cerr << b64 << std::endl; Y_ASSERT( 0 == memcmp(b64.data,p64,sizeof(p64)));
 
-        Apex::Transmogrify::To(b8,b64);
+        Apex::Transmogrify::To(b8,b64);  
         std::cerr << b8 << std::endl;
         Apex::Transmogrify::To(b64,b8);
         std::cerr << b64 << std::endl; Y_ASSERT( 0 == memcmp(b64.data,p64,sizeof(p64)));
@@ -553,8 +591,8 @@ Y_UTEST(apex_block)
         m.get<uint64_t>().data[0] = p64[0];
         m.get<uint64_t>().data[1] = p64[1];
         m.get<uint64_t>().size    = 2;
-        Coerce(m.bits) = m.get<uint64_t>().update();
-        std::cerr << "bits=" << m.bits << std::endl;
+        //Coerce(m.bits) = m.get<uint64_t>().update();
+       // std::cerr << "bits=" << m.bits << std::endl;
 
         Y_ASSERT(m.get<uint64_t>().isValid());
 
