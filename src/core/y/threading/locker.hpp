@@ -28,14 +28,14 @@ namespace Yttrium
             //! store locked host \param obj object with 'access' member
             inline  Locker(const CLASS &obj) noexcept : host(Coerce(obj))
             {
-                assert(host.authorization);
+                assert(0!=host.authorization);
                 host.authorization->lock();
             }
 
             //! unlock host
             inline ~Locker() noexcept
             {
-                assert(host.authorization);
+                assert(0!=host.authorization);
                 host.authorization->unlock();
             }
             
