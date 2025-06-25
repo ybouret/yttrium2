@@ -251,15 +251,34 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
             dataBytes( Metrics::BytesFor(userBytes,dataShift) ),
             dataEntry( Query(dataShift) )
             {
-                Coerce(base) = static_cast<uint8_t *>( Y_Memory_BZero(wksp) );
-                new (base)                  Block<uint8_t>(  dataEntry, dataBytes     );
-                new (base+  BlockProtoSize) Block<uint16_t>( dataEntry, dataBytes >> 1);
-                new (base+2*BlockProtoSize) Block<uint32_t>( dataEntry, dataBytes >> 2);
-                new (base+3*BlockProtoSize) Block<uint64_t>( dataEntry, dataBytes >> 3);
+                setup();
             }
 
+            Blocks(const Blocks &other) :
+            base(0),
+            wksp(),
+            dataShift(0),
+            dataBytes( Metrics::BytesFor(other.block<uint8_t>().size,dataShift) ),
+            dataEntry( Query(dataShift) )
+            {
+                setup();
+                const size_t toCopy =
+                block<uint8_t>() .size = other.block<uint8_t>() .size;
+                block<uint16_t>().size = other.block<uint16_t>().size;
+                block<uint32_t>().size = other.block<uint32_t>().size;
+                block<uint64_t>().size = other.block<uint64_t>().size;
+                memcpy(dataEntry,other.dataEntry,toCopy);
+            }
+
+
+
             template <typename T> inline
-            Block<T>  & block() noexcept { return *(Block<T> *) &base[BlockProtoSize*IntegerLog2For<T>::Value]; }
+            Block<T>  & block() noexcept
+            { return *(Block<T> *) &base[BlockProtoSize*IntegerLog2For<T>::Value]; }
+
+            template <typename T> inline
+            const Block<T>  & block() const noexcept
+            { return *(Block<T> *) &base[BlockProtoSize*IntegerLog2For<T>::Value]; }
 
             virtual ~Blocks() noexcept
             {
@@ -269,13 +288,21 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
 
 
         private:
-            Y_Disable_Copy_And_Assign(Blocks);
+            Y_Disable_Assign(Blocks);
             uint8_t * const base;
             void *          wksp[ Alignment::WordsGEQ<NumBlocks*BlockProtoSize>::Count ];
             unsigned        dataShift;
             size_t          dataBytes;
             void *   const  dataEntry;
 
+            void setup() noexcept
+            {
+                Coerce(base) = static_cast<uint8_t *>( Y_Memory_BZero(wksp) );
+                new (base)                  Block<uint8_t>(  dataEntry, dataBytes     );
+                new (base+  BlockProtoSize) Block<uint16_t>( dataEntry, dataBytes >> 1);
+                new (base+2*BlockProtoSize) Block<uint32_t>( dataEntry, dataBytes >> 2);
+                new (base+3*BlockProtoSize) Block<uint64_t>( dataEntry, dataBytes >> 3);
+            }
 
             static void * Query(const unsigned shift)
             {
@@ -286,9 +313,40 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
         };
 
 
+        class Model : public Object, protected Blocks
+        {
+        public:
+            explicit Model(const size_t   userBytes,
+                           const ViewType userView) :
+            Object(),
+            Blocks(userBytes),
+            view(userView),
+            bytes(block<uint8_t>().size),
+            bits(0)
+            {
+
+            }
+
+            
+
+            virtual ~Model() noexcept
+            {
+
+            }
+
+            const ViewType view;
+            const size_t  &bytes;
+            const size_t   bits;
+
+        private:
+            Y_Disable_Copy_And_Assign(Model);
+        };
 
 
-#
+
+
+
+
     }
 }
 
