@@ -31,8 +31,8 @@ namespace Yttrium
             //__________________________________________________________________
             typedef IntToType<D> WayType;                          //!< aliases
             static const WayType Way;                              //!< type selector
-            Y_ARGS_EXPOSE(NODE,NodeType);                          //!< aliases
-            Y_ARGS_EXPOSE(typename NODE::Type,Type);               //!< aliases
+            Y_Args_Expose(NODE,NodeType);                          //!< aliases
+            Y_Args_Expose(typename NODE::Type,Type);               //!< aliases
             static const bool IsConst = TypeTraits<NODE>::IsConst; //!< type selector
             typedef typename Pick<IsConst,ConstType,Type>::Type ResultType;      //!< for normal access
             typedef ConstType                                   ConstResultType; //!< for const access

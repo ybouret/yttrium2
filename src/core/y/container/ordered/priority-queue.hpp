@@ -35,9 +35,9 @@ namespace Yttrium
         // Definitions
         //
         //______________________________________________________________________
-        typedef Memory::SchoolOf<T> SchoolType; //!< alias
-        typedef PrioQueue<T>        PQueueType; //!< alias
-        Y_ARGS_DECL(T,Type);                    //!< aliases
+        typedef Memory::SchoolOf<T> SchoolType;      //!< alias
+        typedef PrioQueue<T>        PQueueType;      //!< alias
+        Y_Args_Declare(T,Type);                      //!< aliases
         typedef typename ThreadingPolicy::Lock Lock; //!< alias;
 
         //______________________________________________________________________

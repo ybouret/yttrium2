@@ -43,7 +43,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            Y_ARGS_DECL(T,Type);                          //!< aliases
+            Y_Args_Declare(T,Type);                          //!< aliases
             typedef typename THREADING_POLICY::Lock Lock; //!< alias
 
             //__________________________________________________________________

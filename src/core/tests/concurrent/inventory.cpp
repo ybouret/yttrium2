@@ -13,7 +13,7 @@ namespace
     class Char
     {
     public:
-        Y_ARGS_DECL(uint8_t,Type);
+        Y_Args_Declare_Spec(uint8_t,Type);
         static const char * const               CallSign;
         static const  System::AtExit::Longevity LifeTime = 1000;
 
@@ -34,8 +34,6 @@ namespace
 
         Char *next;
         Char *prev;
-
-
 
     private:
         Y_Disable_Assign(Char);

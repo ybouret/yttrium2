@@ -26,7 +26,7 @@ namespace Yttrium
         // Definitions
         //
         //______________________________________________________________________
-        Y_ARGS_EXPOSE(T,Interface); //!< aliases
+        Y_Args_Expose(T,Interface); //!< aliases
 
         //______________________________________________________________________
         //

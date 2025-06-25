@@ -53,7 +53,7 @@ built(0)
         // Definitions
         //
         //______________________________________________________________________
-        Y_ARGS_DECL(T,Type);                    //!< aliases
+        Y_Args_Declare(T,Type);                 //!< aliases
         typedef SingleThreadedClass::Lock Lock; //!< alias
 
         //______________________________________________________________________

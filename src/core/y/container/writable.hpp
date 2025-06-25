@@ -27,7 +27,7 @@ namespace Yttrium
         // Definitions
         //
         //______________________________________________________________________
-        Y_ARGS_EXPOSE(T,Type); //!< aliases
+        Y_Args_Expose(T,Type); //!< aliases
         using Readable<T>::size;
         using Readable<T>::getItemAt;
 

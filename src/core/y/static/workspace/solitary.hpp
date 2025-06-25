@@ -33,7 +33,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            Y_ARGS_EXPOSE(T,Type);                //!< aliases
+            Y_Args_Expose(T,Type);                //!< aliases
             typedef Workspace<T,1> WorkspaceType; //!< alias
             using   WorkspaceType::data;
 

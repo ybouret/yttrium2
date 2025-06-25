@@ -30,7 +30,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            Y_ARGS_EXPOSE(T,Type);        //!< aliases
+            Y_Args_Expose(T,Type);        //!< aliases
             typedef IntToType<D> WayType; //!< aliases
             static const WayType Way;     //!< type selector
 

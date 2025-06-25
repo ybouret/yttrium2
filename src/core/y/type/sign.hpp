@@ -79,7 +79,7 @@ namespace Yttrium
         template <typename T>
         struct Comparator
         {
-            Y_ARGS_EXPOSE(T,Type); //!< aliases
+            Y_Args_Expose(T,Type); //!< aliases
 
             //! \param lhs lhs \param rhs rhs \return natural comparison
             inline SignType operator()(ConstType &lhs, ConstType &rhs) const

@@ -29,7 +29,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            Y_ARGS_EXPOSE(T,Type);         //!< alias
+            Y_Args_Expose(T,Type);         //!< alias
             typedef ConstType & ParamType; //!< alias
 
             //__________________________________________________________________

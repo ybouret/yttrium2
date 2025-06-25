@@ -29,7 +29,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            Y_ARGS_EXPOSE(T,Type); //!< aliases
+            Y_Args_Expose(T,Type); //!< aliases
 
             //__________________________________________________________________
             //
@@ -86,7 +86,7 @@ namespace Yttrium
         // Definitions
         //
         //______________________________________________________________________
-        Y_ARGS_EXPOSE(T,Type);                                  //!< aliases
+        Y_Args_Expose(T,Type);                                  //!< aliases
         typedef Smart::LockingProxy<Type>      ReturnType;      //!< alias
         typedef Smart::LockingProxy<ConstType> ConstReturnType; //!< alias
 
