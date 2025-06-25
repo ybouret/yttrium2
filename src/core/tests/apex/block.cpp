@@ -3,7 +3,7 @@
 #include "y/core/utils.hpp"
 #include "y/hexadecimal.hpp"
 #include "y/object.hpp"
-#include "y/apex/metrics.hpp"
+#include "y/apex/m/block-api.hpp"
 #include "y/calculus/bits-for.hpp"
 #include "y/type/sign.hpp"
 
@@ -17,23 +17,9 @@ namespace Yttrium
     {
 
 
-        enum ViewType
-        {
-            View8,
-            View16,
-            View32,
-            View64
-        };
+       
 
-        template <ViewType VIEW>
-        struct UnsignedFor;
-
-        template <> struct UnsignedFor<View8>  { typedef uint8_t  Type; };
-        template <> struct UnsignedFor<View16> { typedef uint16_t Type; };
-        template <> struct UnsignedFor<View32> { typedef uint32_t Type; };
-        template <> struct UnsignedFor<View64> { typedef uint64_t Type; };
-
-
+        
 
 
 
@@ -391,8 +377,7 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
 
             void set(const ViewType vtgt) noexcept
             {
-                Change const meth = ChangeTo[vtgt][view];
-                (*this.*meth)();
+                (*this.*ChangeTo[vtgt][view])();
                 Coerce(view) = vtgt;
             }
 
