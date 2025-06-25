@@ -73,14 +73,7 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
 
             virtual size_t update(BlockAPI * const []) noexcept = 0;
             virtual void   resize(const size_t numBits) noexcept = 0;
-
-#if 0
-            size_t upgrade() noexcept
-            {
-                zeroPad();
-                return update();
-            }
-#endif
+            
 
             size_t         size;
             const size_t   maxi;
