@@ -404,6 +404,17 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
                 Coerce(view) = vtgt;
             }
 
+            void update() noexcept
+            {
+                switch( view )
+                {
+                    case View8:  block<uint8_t>(). update(sync[0]); break;
+                    case View16: block<uint16_t>().update(sync[1]); break;
+                    case View32: block<uint32_t>().update(sync[2]); break;
+                    case View64: block<uint64_t>().update(sync[3]); break;
+                }
+            }
+
 
             template <typename T>
             inline const Block<T> & get() const noexcept
@@ -552,7 +563,7 @@ Y_UTEST(apex_block)
         Apex::Transmogrify::To(b64,b16);
         std::cerr << b64 << std::endl; Y_ASSERT( 0 == memcmp(b64.data,p64,sizeof(p64)));
 
-        Apex::Transmogrify::To(b8,b64);  
+        Apex::Transmogrify::To(b8,b64);
         std::cerr << b8 << std::endl;
         Apex::Transmogrify::To(b64,b8);
         std::cerr << b64 << std::endl; Y_ASSERT( 0 == memcmp(b64.data,p64,sizeof(p64)));
@@ -591,8 +602,7 @@ Y_UTEST(apex_block)
         m.get<uint64_t>().data[0] = p64[0];
         m.get<uint64_t>().data[1] = p64[1];
         m.get<uint64_t>().size    = 2;
-        //Coerce(m.bits) = m.get<uint64_t>().update();
-       // std::cerr << "bits=" << m.bits << std::endl;
+        m.update();
 
         Y_ASSERT(m.get<uint64_t>().isValid());
 
