@@ -24,17 +24,15 @@ namespace Yttrium
             static const size_t    MaxBytes  = Base2<size_t>::MaxBytes;
             static const unsigned  MaxShift  = Base2<size_t>::MaxShift;
 
+            //!
+            /**
+             \param bytes request
+             \param shift adjusted
+             \return 2^shift >= Max(bytes,MinBytes)
+             */
             static size_t BytesFor(size_t bytes, unsigned &shift);
 
-
-            template <typename T> static inline
-            size_t BytesToBlocksOf(size_t bytes)
-            {
-                if(bytes>MaxBytes) Overflow(bytes);
-                if(bytes<MinBytes) bytes = MinBytes;
-                return NextPowerOfTwo(bytes) / sizeof(T);
-            }
-            
+            //! raise exception on bytes overflow
             static void Overflow(const size_t);
         };
 

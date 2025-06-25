@@ -15,7 +15,7 @@ namespace Yttrium
         }
 
         size_t Metrics:: BytesFor(size_t bytes, unsigned &shift)
-        {
+        { 
             if(bytes>MaxBytes) Overflow(bytes);
             if(bytes<MinBytes) bytes = MinBytes;
             return NextPowerOfTwo(bytes,shift);
