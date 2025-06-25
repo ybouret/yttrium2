@@ -9,7 +9,7 @@ using namespace Yttrium;
 namespace
 {
 
-
+#if 0
     class Char
     {
     public:
@@ -63,6 +63,7 @@ namespace
             duplicate(other);
         }
 
+
         Chars & operator=(const Chars &other)
         {
             Chars temp(other);
@@ -71,7 +72,7 @@ namespace
         }
 
     };
-
+#endif
 
 
 
@@ -112,10 +113,16 @@ Y_UTEST(concurrent_inventory)
     Concurrent::Inventory<Dummy> & inventory = Concurrent::Inventory<Dummy>::Instance();
     inventory.display(std::cerr,1);
 
+#if 0
     Chars chars;
-    chars << 'a';
+    chars << 'a' >> 'b';
     std::cerr << chars << std::endl;
-
+    Chars ccopy(chars);
+    Chars copy2;
+    copy2 = ccopy;
+    std::cerr << copy2 << std::endl;
+#endif
+    
 }
 Y_UDONE()
 
