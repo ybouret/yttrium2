@@ -78,6 +78,10 @@ if( "FreeBSD" STREQUAL "${CMAKE_SYSTEM_NAME}")
 	set(Y_FreeBSD ON)
 endif()
 
+if( "SunOS" STREQUAL "${CMAKE_SYSTEM_NAME}")
+	set(Y_SunOS ON)
+endif()
+
 ################################################################################
 ##
 ##
