@@ -73,7 +73,7 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
 
             virtual size_t update(BlockAPI * const []) noexcept = 0;
             virtual void   resize(const size_t numBits) noexcept = 0;
-            
+
 
             size_t         size;
             const size_t   maxi;
@@ -197,8 +197,7 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
                         *(small++) = SMALL(value>>(j*SHR));
                     }
                 }
-                //target.size = source.size * RHO;
-                //target.adjust();
+                assert(target.isValid());
             }
 
             template <typename LARGE, typename SMALL> static inline
@@ -223,7 +222,7 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
                     *(large++) = value;
                     if(used>=words) break;
                 }
-                //assert(target.isValid());
+                assert(target.isValid());
             }
 
 
