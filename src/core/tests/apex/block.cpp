@@ -7,6 +7,7 @@
 #include "y/calculus/bits-for.hpp"
 
 #include <iostream>
+#include <cstring>
 
 namespace Yttrium
 {
