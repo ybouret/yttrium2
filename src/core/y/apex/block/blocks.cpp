@@ -42,6 +42,12 @@ namespace Yttrium
             archon.store(dataShift,dataEntry);
         }
 
+
+        void Blocks:: zset() noexcept
+        {
+            
+        }
+
         void * Blocks:: Query(const unsigned shift)
         {
             static Archon &archon = Archon::Instance();

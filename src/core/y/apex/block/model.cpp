@@ -29,7 +29,7 @@ namespace Yttrium
             set(userView);
         }
 
-        Model:: Model(const uint64_t n) :
+        Model:: Model(const natural_t n) :
         Object(),
         Blocks( sizeof(n) ),
         view( View64 ),
@@ -39,13 +39,13 @@ namespace Yttrium
             Block<uint64_t> &b64 = block<uint64_t>();
             b64.size    = 1;
             b64.data[0] = n;
-            Coerce(bits) = update();
+            update();
         }
 
 
-        Model:: Model(const uint64_t * const arr, const size_t num) :
+        Model:: Model(const natural_t * const arr, const size_t num) :
         Object(),
-        Blocks( sizeof(uint64_t) * num ),
+        Blocks( sizeof(natural_t) * num ),
         view( View64 ),
         bytes(block<uint8_t>().size),
         bits(0)
@@ -53,7 +53,50 @@ namespace Yttrium
             Block<uint64_t> &b64 = block<uint64_t>();
             b64.size    = num;
             memcpy(b64.data,arr,num*sizeof(uint64_t));
-            Coerce(bits) = update();
+            update();
+        }
+
+        unsigned Model:: BytesPerUnit(const ViewType v) noexcept
+        {
+            static const unsigned one = 1;
+            return one << unsigned(v);
+        }
+
+        namespace
+        {
+            template <typename T> static inline
+            void BlockCopy(T *                target,
+                           const void * const source,
+                           size_t             length) noexcept
+            {
+                assert(Good(target,length));
+                assert(Good(source,length));
+                const T * C = (const T *)source;
+                while(length-- > 0)
+                    *(target++) = *(C++);
+            }
+
+        }
+
+
+        Model:: Model(const void * const entry,
+                      const size_t       count,
+                      const ViewType     tview) :
+        Object(),
+        Blocks(  count * BytesPerUnit(tview)  ),
+        view( tview ),
+        bytes(block<uint8_t>().size),
+        bits(0)
+        {
+            assert( Good(entry,count) );
+            switch(view)
+            {
+                case View8:  BlockCopy( block<uint8_t>().data,  entry, count); break;
+                case View16: BlockCopy( block<uint16_t>().data, entry, count); break;
+                case View32: BlockCopy( block<uint32_t>().data, entry, count); break;
+                case View64: BlockCopy( block<uint64_t>().data, entry, count); break;
+            }
+            update();
         }
 
 
@@ -68,10 +111,15 @@ namespace Yttrium
             Coerce(view) = vtgt;
         }
 
-
-        size_t Model:: update() noexcept
+        void Model:: ldz(const ViewType userType) noexcept
         {
-            return (*this.*Updating[view])();
+            
+        }
+
+
+        void Model:: update() noexcept
+        {
+            Coerce(bits) =  (*this.*Updating[view])();
         }
 
 
@@ -107,3 +155,41 @@ namespace Yttrium
 
 }
 
+#include "y/stream/output.hpp"
+
+
+namespace Yttrium
+{
+    namespace Apex
+    {
+
+        size_t Model:: save(OutputStream &fp)
+        {
+            const Block<uint8_t> &b = make<uint8_t>();
+            size_t res = fp.emitVBR(b.size);
+            fp.frame(b.data,b.size);
+            return res + b.size;
+        }
+    }
+
+}
+
+
+#include "y/stream/input.hpp"
+#include "y/pointer/auto.hpp"
+
+
+namespace Yttrium
+{
+    namespace Apex
+    {
+
+        Model * Model:: Load(InputStream &fp, const ViewType userView)
+        {
+            const size_t   numBytes = fp.readVBR<size_t>();
+            AutoPtr<Model> result   = new Model(numBytes,View8);
+
+        }
+    }
+
+}

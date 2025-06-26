@@ -10,32 +10,88 @@
 
 namespace Yttrium
 {
+    class OutputStream;
+    class InputStream;
+
     namespace Apex
     {
+
+        enum OpsMode
+        {
+            Ops8_16,
+            Ops8_32,
+            Ops8_64,
+            Ops16_32,
+            Ops16_64,
+            Ops32_64
+        };
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Model: Blocks + view and bits
+        //
+        //
+        //______________________________________________________________________
         class Model : public Object, private Blocks
         {
         public:
-            typedef void   (Model:: *Change)();
-            typedef size_t (Model:: *Update)();
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef void   (Model:: *Change)(); //!< alias
+            typedef size_t (Model:: *Update)(); //!< alias
 
+            static unsigned BytesPerUnit(const ViewType) noexcept;
+
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup \param userBytes minimal bytes \param userView initial view
             explicit Model(const size_t   userBytes,
                            const ViewType userView);
 
+            //! duplicate \param userModel source \param userView [new] view
             explicit Model(const Model &  userModel,
                            const ViewType userView);
 
-            explicit Model(const uint64_t n);
-            explicit Model(const uint64_t * const, const size_t );
+            //! setup with natural
+            explicit Model(const natural_t);
 
+            //! setup with array of naturals
+            explicit Model(const natural_t * const, const size_t );
+
+            //! setup with anonymous data
+            explicit Model(const void * const entry,
+                           const size_t       count,
+                           const ViewType     tview);
+
+
+            //! cleanup
             virtual ~Model() noexcept;
 
-            Y_OSTREAM_PROTO(Model);
+            Y_OSTREAM_PROTO(Model); //!< display
 
-            void set(const ViewType vtgt) noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            void   ldz(const ViewType) noexcept;
+            void   set(const ViewType) noexcept; //!< transmogriy to new view
+            void   update() noexcept;            //!< update view, set bits
 
-            size_t update() noexcept; //!< update view and return bits
 
-
+            //! \return get block with matching view
             template <typename T>
             inline const Block<T> & get() const noexcept
             {
@@ -43,7 +99,7 @@ namespace Yttrium
                 return block<T>();
             }
 
-
+            //! \return get block with matching view
             template <typename T>
             inline  Block<T> & get() noexcept
             {
@@ -51,6 +107,7 @@ namespace Yttrium
                 return block<T>();
             }
 
+            //! \return transmogrified block
             template <typename T>
             inline  Block<T> & make() noexcept
             {
@@ -58,22 +115,40 @@ namespace Yttrium
                 return block<T>();
             }
 
+            //__________________________________________________________________
+            //
+            //
+            // Operations
+            //
+            //__________________________________________________________________
+            size_t         save(OutputStream &);
+            static Model * Add(const OpsMode &ops, Model &lhs, Model &rhs);
+            static Model * Load(InputStream &, const ViewType);
 
-            const ViewType view;
-            const size_t  &bytes;
-            const size_t   bits;
+
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const ViewType view;  //!< current view
+            const size_t  &bytes; //!< current bytes
+            const size_t   bits;  //!< curretn bits
 
         private:
-            Y_Disable_Copy_And_Assign(Model);
-            static Change const ChangeTo[Metrics::Views][Metrics::Views];
-            static Update const Updating[Metrics::Views];
+            Y_Disable_Copy_And_Assign(Model); //!< discarding
+            static Change const ChangeTo[Metrics::Views][Metrics::Views]; //!< change table
+            static Update const Updating[Metrics::Views];                 //!< update table
 
+            //! generic transmogrify
             template <typename TARGET, typename SOURCE>
             inline void To() noexcept {
                 assert( BlockAPI::VTable[ IntegerLog2For<SOURCE>::Value ] == view );
                 Transmogrify::To( block<TARGET>(), block<SOURCE>() );
             }
 
+            //! upgrade from current view \return bit count
             template <typename T>
             inline size_t Go() noexcept {
                 static const size_t ViewIndex = IntegerLog2For<T>::Value;
