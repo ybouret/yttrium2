@@ -29,6 +29,35 @@ namespace Yttrium
             set(userView);
         }
 
+        Model:: Model(const uint64_t n) :
+        Object(),
+        Blocks( sizeof(n) ),
+        view( View64 ),
+        bytes(block<uint8_t>().size),
+        bits(0)
+        {
+            Block<uint64_t> &b64 = block<uint64_t>();
+            b64.size    = 1;
+            b64.data[0] = n;
+            Coerce(bits) = update();
+        }
+
+
+        Model:: Model(const uint64_t * const arr, const size_t num) :
+        Object(),
+        Blocks( sizeof(uint64_t) * num ),
+        view( View64 ),
+        bytes(block<uint8_t>().size),
+        bits(0)
+        {
+            Block<uint64_t> &b64 = block<uint64_t>();
+            b64.size    = num;
+            memcpy(b64.data,arr,num*sizeof(uint64_t));
+            Coerce(bits) = update();
+        }
+
+
+
         Model:: ~Model() noexcept
         {
         }
@@ -40,15 +69,9 @@ namespace Yttrium
         }
 
 
-        void Model:: update() noexcept
+        size_t Model:: update() noexcept
         {
-            switch( view )
-            {
-                case View8:  block<uint8_t>(). update(sync[0]); break;
-                case View16: block<uint16_t>().update(sync[1]); break;
-                case View32: block<uint32_t>().update(sync[2]); break;
-                case View64: block<uint64_t>().update(sync[3]); break;
-            }
+            return (*this.*Updating[view])();
         }
 
 
@@ -60,7 +83,26 @@ namespace Yttrium
             Y_APM(8), Y_APM(16), Y_APM(32), Y_APM(64)
         };
 
+        Model::Update const Model:: Updating[Metrics::Views] =
+        {
+            & Model::Go<uint8_t>, & Model::Go<uint16_t>, & Model::Go<uint32_t>, & Model::Go<uint64_t>
+        };
 
+        
+        std::ostream & operator<<(std::ostream &os, const Model &self)
+        {
+            switch(self.view)
+            {
+                case View8:  os << self.block<uint8_t>();  break;
+                case View16: os << self.block<uint16_t>(); break;
+                case View32: os << self.block<uint32_t>(); break;
+                case View64: os << self.block<uint64_t>(); break;
+            }
+            if(View8!=self.view)
+                os << ":byte" << ASCII::Plural::s(self.bytes) << "=" << self.bytes;
+            os     << ":bit"  << ASCII::Plural::s(self.bits)  << "=" << self.bits;
+            return os;
+        }
     }
 
 }

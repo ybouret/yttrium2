@@ -72,6 +72,7 @@ Y_CreateLibrary(y
     y/apex
     y/apex/m
     y/apex/block
+    y/apex/block/model
 )
 
 add_subdirectory(tests)

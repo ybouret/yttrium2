@@ -7,6 +7,7 @@
 #include "y/calculus/bits-for.hpp"
 #include "y/hexadecimal.hpp"
 
+#include "y/ascii/plural.hpp"
 #include <iostream>
 #include <iomanip>
 #include <cstring>
@@ -95,7 +96,7 @@ namespace Yttrium
                 size_t i=size;
                 while(i-- > 0)
                     os << ' ' << Hexadecimal(data[i]);
-                os << ' ' << ']' << '#' << size;
+                os << ' ' << ']' << ":unit" << ASCII::Plural::s(size) << "=" << size;
                 return os;
             }
         };

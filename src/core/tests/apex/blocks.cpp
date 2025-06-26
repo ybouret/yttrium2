@@ -1,25 +1,7 @@
 #include "y/apex/m/archon.hpp"
-#include "y/calculus/alignment.hpp"
-#include "y/core/utils.hpp"
-#include "y/object.hpp"
-#include "y/apex/block/blocks.hpp"
-#include "y/apex/block/transmogrify.hpp"
 #include "y/apex/block/model.hpp"
 
 
-namespace Yttrium
-{
-    namespace Apex
-    {
-        
-
-     
-
-
-
-
-    }
-}
 
 #include "y/utest/run.hpp"
 #include "y/system/rand.hpp"
@@ -38,7 +20,7 @@ namespace
     static Blk          Blks[MaxBlk];
 }
 
-Y_UTEST(apex_block)
+Y_UTEST(apex_blocks)
 {
     System::Rand ran;
 
@@ -144,25 +126,6 @@ Y_UTEST(apex_block)
     }
 
 
-    {
-        std::cerr << "Using Models" << std::endl;
-        Apex::Model m(10,Apex::View64);
-
-
-        m.get<uint64_t>().data[0] = p64[0];
-        m.get<uint64_t>().data[1] = p64[1];
-        m.get<uint64_t>().size    = 2;
-        m.update();
-
-        Y_ASSERT(m.get<uint64_t>().isValid());
-
-        std::cerr << "Printing..." << std::endl;
-        std::cerr << m.make<uint64_t>() << std::endl;
-        std::cerr << m.make<uint32_t>() << std::endl;
-        std::cerr << m.make<uint16_t>() << std::endl;
-        std::cerr << m.make<uint8_t>() << std::endl;
-
-    }
 
 }
 Y_UDONE()

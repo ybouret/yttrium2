@@ -15,7 +15,8 @@ namespace Yttrium
         class Model : public Object, private Blocks
         {
         public:
-            typedef void (Model:: *Change)();
+            typedef void   (Model:: *Change)();
+            typedef size_t (Model:: *Update)();
 
             explicit Model(const size_t   userBytes,
                            const ViewType userView);
@@ -23,11 +24,16 @@ namespace Yttrium
             explicit Model(const Model &  userModel,
                            const ViewType userView);
 
+            explicit Model(const uint64_t n);
+            explicit Model(const uint64_t * const, const size_t );
+
             virtual ~Model() noexcept;
+
+            Y_OSTREAM_PROTO(Model);
 
             void set(const ViewType vtgt) noexcept;
 
-            void update() noexcept;
+            size_t update() noexcept; //!< update view and return bits
 
 
             template <typename T>
@@ -60,12 +66,21 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(Model);
             static Change const ChangeTo[Metrics::Views][Metrics::Views];
+            static Update const Updating[Metrics::Views];
 
             template <typename TARGET, typename SOURCE>
             inline void To() noexcept {
                 assert( BlockAPI::VTable[ IntegerLog2For<SOURCE>::Value ] == view );
                 Transmogrify::To( block<TARGET>(), block<SOURCE>() );
             }
+
+            template <typename T>
+            inline size_t Go() noexcept {
+                static const size_t ViewIndex = IntegerLog2For<T>::Value;
+                assert( BlockAPI::VTable[ ViewIndex ] == view );
+                return block<T>().update( sync[ViewIndex] );
+            }
+
 
         };
 
