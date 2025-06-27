@@ -45,7 +45,11 @@ namespace Yttrium
 
         void Blocks:: zset() noexcept
         {
-            
+            block<uint8_t>() .size = 0;
+            block<uint16_t>().size = 0;
+            block<uint32_t>().size = 0;
+            block<uint64_t>().size = 0;
+            memset(dataEntry,0,dataBytes);
         }
 
         void * Blocks:: Query(const unsigned shift)

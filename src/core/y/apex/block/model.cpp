@@ -105,15 +105,19 @@ namespace Yttrium
         {
         }
 
-        void Model:: set(const ViewType vtgt) noexcept
+        Model & Model:: set(const ViewType vtgt) noexcept
         {
             (*this.*ChangeTo[vtgt][view])();
             Coerce(view) = vtgt;
+            return *this;
         }
 
-        void Model:: ldz(const ViewType userType) noexcept
+        Model & Model:: ldz(const ViewType userView) noexcept
         {
-            
+            zset();
+            Coerce(bits) = 0;
+            Coerce(view) = userView;
+            return *this;
         }
 
 
@@ -177,18 +181,37 @@ namespace Yttrium
 
 #include "y/stream/input.hpp"
 #include "y/pointer/auto.hpp"
-
+#include "y/system/exception.hpp"
+#include "y/decimal.hpp"
 
 namespace Yttrium
 {
     namespace Apex
     {
 
-        Model * Model:: Load(InputStream &fp, const ViewType userView)
+        Model * Model:: Load(InputStream &  fp,
+                             const ViewType userView)
         {
-            const size_t   numBytes = fp.readVBR<size_t>();
-            AutoPtr<Model> result   = new Model(numBytes,View8);
+            const size_t    numBytes = fp.readVBR<size_t>("Model::Load #bytes");
+            AutoPtr<Model>  result   = new Model(numBytes,View8);
 
+            {
+                Block<uint8_t> &target   = result->block<uint8_t>();
+                assert(target.maxi>=numBytes);
+                for(size_t i=0;i<numBytes;++i)
+                {
+                    if( 1 != fp.readCBR<uint8_t>(target.data[i]) )
+                        throw Specific::Exception("Model::Load",
+                                                  "missing byte %s+1/%s",
+                                                  Decimal(i).c_str(),
+                                                  Decimal(numBytes).c_str());
+                }
+                result->update();
+                if(target.size!=numBytes)
+                    throw Specific::Exception("Model::Load","corrupted input");
+            }
+
+            return & result.yield()->set(userView);
         }
     }
 

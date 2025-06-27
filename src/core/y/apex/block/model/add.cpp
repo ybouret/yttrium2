@@ -76,7 +76,7 @@ namespace Yttrium
                 return Compute(L.data,L.size,R.data,R.size);
             }
 
-
+            
         };
 
 

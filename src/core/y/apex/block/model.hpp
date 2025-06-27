@@ -48,6 +48,8 @@ namespace Yttrium
 
             static unsigned BytesPerUnit(const ViewType) noexcept;
 
+            
+
             //__________________________________________________________________
             //
             //
@@ -86,9 +88,9 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            void   ldz(const ViewType) noexcept;
-            void   set(const ViewType) noexcept; //!< transmogriy to new view
-            void   update() noexcept;            //!< update view, set bits
+            Model & ldz(const ViewType) noexcept;
+            Model & set(const ViewType) noexcept; //!< transmogriy to new view
+            void    update() noexcept;            //!< update view, set bits
 
 
             //! \return get block with matching view
