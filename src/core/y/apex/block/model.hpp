@@ -43,8 +43,10 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            typedef void   (Model:: *Change)(); //!< alias
-            typedef size_t (Model:: *Update)(); //!< alias
+            static const unsigned Ops = 6;
+            typedef void         (Model:: *Change)(); //!< alias
+            typedef size_t       (Model:: *Update)(); //!< alias
+            static const ViewType SmallView[Ops];
 
             static unsigned BytesPerUnit(const ViewType) noexcept;
 
@@ -124,9 +126,9 @@ namespace Yttrium
             //
             //__________________________________________________________________
             size_t         save(OutputStream &);
+            static Model * Load(InputStream &, const ViewType, const char * const name);
             static Model * Add(const OpsMode &ops, Model &lhs, Model &rhs);
-            static Model * Load(InputStream &, const ViewType);
-
+            static Model * Add(const OpsMode &ops, Model &lhs, natural_t rhs);
 
             //__________________________________________________________________
             //
@@ -160,6 +162,15 @@ namespace Yttrium
 
 
         };
+
+
+#define Y_Apex_Model_Table(PRE,POST) \
+PRE <uint8_t,uint16_t>  POST,\
+PRE <uint8_t,uint32_t>  POST,\
+PRE <uint8_t,uint64_t>  POST,\
+PRE <uint16_t,uint32_t> POST,\
+PRE <uint16_t,uint64_t> POST,\
+PRE <uint32_t,uint64_t> POST
 
     }
 

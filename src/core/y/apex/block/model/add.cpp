@@ -1,4 +1,5 @@
 #include "y/apex/block/model.hpp"
+#include "y/apex/m/format.hpp"
 
 namespace Yttrium
 {
@@ -76,27 +77,39 @@ namespace Yttrium
                 return Compute(L.data,L.size,R.data,R.size);
             }
 
-            
+            static inline
+            Model * Compute( Model &lhs, natural_t rhs)
+            {
+                Block<SMALL> &      L = lhs.make<SMALL>();
+                size_t              N = 0;
+                const SMALL * const R = UFormatAs<SMALL>(rhs,N);
+                return Compute(L.data,L.size,R,N);
+            }
+
+
         };
+
+
+#define Y_Apex_Model_Add_Table() \
+static AddProc AddTable[Ops] = \
+{\
+ Y_Apex_Model_Table(ModelAdd,::Compute) \
+};\
+return AddTable[ops](lhs,rhs)
 
 
         Model * Model:: Add(const OpsMode &ops, Model &lhs, Model &rhs)
         {
             typedef Model * (*AddProc)(Model&,Model&);
-            static AddProc AddTable[Ops32_64+1] =
-            {
-                ModelAdd<uint8_t,uint16_t>::Compute,
-                ModelAdd<uint8_t,uint32_t>::Compute,
-                ModelAdd<uint8_t,uint64_t>::Compute,
-
-                ModelAdd<uint16_t,uint32_t>::Compute,
-                ModelAdd<uint16_t,uint64_t>::Compute,
-
-                ModelAdd<uint32_t,uint64_t>::Compute
-            };
-
-            return AddTable[ops](lhs,rhs);
+            Y_Apex_Model_Add_Table();
         }
+
+        Model * Model:: Add(const OpsMode &ops, Model &lhs, const natural_t rhs)
+        {
+            typedef Model * (*AddProc)(Model&,natural_t rhs);
+            Y_Apex_Model_Add_Table();
+        }
+
 
     }
 }

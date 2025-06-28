@@ -6,6 +6,13 @@ namespace Yttrium
 {
     namespace Apex
     {
+        const ViewType Model:: SmallView[Ops] =
+        {
+            View8,  View8,  View8,
+            View16, View16,
+            View32
+        };
+
         Model:: Model(const size_t   userBytes,
                       const ViewType userView) :
         Object(),
@@ -189,10 +196,13 @@ namespace Yttrium
     namespace Apex
     {
 
-        Model * Model:: Load(InputStream &  fp,
-                             const ViewType userView)
+        Model * Model:: Load(InputStream &     fp,
+                             const ViewType     userView,
+                             const char * const name)
         {
-            const size_t    numBytes = fp.readVBR<size_t>("Model::Load #bytes");
+            static const char fn[]   = "Apex::Model::Load";
+            static const char fmt[]  = " for %s";
+            const size_t    numBytes = fp.readVBR<size_t>(name);
             AutoPtr<Model>  result   = new Model(numBytes,View8);
 
             {
@@ -201,14 +211,22 @@ namespace Yttrium
                 for(size_t i=0;i<numBytes;++i)
                 {
                     if( 1 != fp.readCBR<uint8_t>(target.data[i]) )
-                        throw Specific::Exception("Model::Load",
-                                                  "missing byte %s+1/%s",
-                                                  Decimal(i).c_str(),
-                                                  Decimal(numBytes).c_str());
+                    {
+                        Specific::Exception excp(fn,
+                                                 "missing byte %s+1/%s",
+                                                 Decimal(i).c_str(),
+                                                 Decimal(numBytes).c_str());
+                        if(name) excp.add(fmt,name);
+                        throw excp;
+                    }
                 }
                 result->update();
                 if(target.size!=numBytes)
-                    throw Specific::Exception("Model::Load","corrupted input");
+                {
+                    Specific::Exception excp(fn,"corrupted input");
+                    if(name) excp.add(fmt,name);
+                    throw excp;
+                }
             }
 
             return & result.yield()->set(userView);

@@ -19,6 +19,13 @@ namespace Yttrium
             View64
         };
 
+        template <ViewType V> struct UnsignedView;
+
+        template <> struct UnsignedView<View8>  { typedef uint8_t  Type; };
+        template <> struct UnsignedView<View16> { typedef uint16_t Type; };
+        template <> struct UnsignedView<View32> { typedef uint32_t Type; };
+        template <> struct UnsignedView<View64> { typedef uint64_t Type; };
+
 
 #define Y_Block_Check(EXPR) do { \
 if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } \

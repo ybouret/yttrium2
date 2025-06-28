@@ -25,10 +25,6 @@ namespace Yttrium
             static const unsigned UnitSize = sizeof(T);
             static const unsigned UnitBits = 8 * UnitSize;
 
-            static inline size_t  SizeFor(const size_t numBits) noexcept
-            {
-                return Alignment::On<UnitBits>::Ceil(numBits) / UnitBits;
-            }
 
             inline explicit Block(void * const entry,
                            const size_t count) noexcept :
@@ -70,7 +66,7 @@ namespace Yttrium
 
             inline virtual void resize(const size_t numBits) noexcept
             {
-                size = SizeFor(numBits);
+                size = SizeFor<T>::From(numBits);
             }
 
             T * const data;
