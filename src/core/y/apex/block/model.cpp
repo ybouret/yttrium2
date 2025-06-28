@@ -203,7 +203,7 @@ namespace Yttrium
         template <typename T> static inline
         void ModelCopy(Model &target, const Model &source) noexcept
         {
-            Block<T>       &to   = target.make<T>();
+            Block<T>       &to   = target.get<T>();
             const Block<T> &from = source.get<T>();
             const size_t    size = from.size; assert(size<=to.maxi);
             memcpy(to.data,from.data, (to.size=size) * sizeof(T) );
@@ -214,6 +214,7 @@ namespace Yttrium
         {
             assert(this!=&other);
             assert(block<uint8_t>().maxi>=other.bytes);
+            ldz(other.view);
             switch(other.view)
             {
                 case View8:  ModelCopy<uint8_t> (*this,other); break;
