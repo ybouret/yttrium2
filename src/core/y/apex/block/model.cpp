@@ -50,6 +50,7 @@ namespace Yttrium
         Blocks(userBytes),
         view(userView),
         bytes(block<uint8_t>().size),
+        space(block<uint8_t>().maxi),
         bits(0)
         {
 
@@ -61,6 +62,7 @@ namespace Yttrium
         Blocks( userModel ),
         view(   userModel.view ),
         bytes(block<uint8_t>().size),
+        space(block<uint8_t>().maxi),
         bits(0)
         {
             assert( bytes == userModel.bytes );
@@ -72,6 +74,7 @@ namespace Yttrium
         Blocks( sizeof(n) ),
         view( View64 ),
         bytes(block<uint8_t>().size),
+        space(block<uint8_t>().maxi),
         bits(0)
         {
             Block<uint64_t> &b64 = block<uint64_t>();
@@ -86,6 +89,7 @@ namespace Yttrium
         Blocks( sizeof(natural_t) * num ),
         view( View64 ),
         bytes(block<uint8_t>().size),
+        space(block<uint8_t>().maxi),
         bits(0)
         {
             Block<uint64_t> &b64 = block<uint64_t>();
@@ -124,6 +128,7 @@ namespace Yttrium
         Blocks(  count * BytesPerUnit(tview)  ),
         view( tview ),
         bytes(block<uint8_t>().size),
+        space(block<uint8_t>().maxi),
         bits(0)
         {
             assert( Good(entry,count) );
@@ -193,6 +198,33 @@ namespace Yttrium
             os     << ":bit"  << ASCII::Plural::s(self.bits)  << "=" << self.bits;
             return os;
         }
+
+
+        template <typename T> static inline
+        void ModelCopy(Model &target, const Model &source) noexcept
+        {
+            Block<T>       &to   = target.make<T>();
+            const Block<T> &from = source.get<T>();
+            const size_t    size = from.size; assert(size<=to.maxi);
+            memcpy(to.data,from.data, (to.size=size) * sizeof(T) );
+            memset(to.data+size,0,(to.maxi-size)*sizeof(T));
+        }
+
+        void Model:: cpy(const Model &other) noexcept
+        {
+            assert(this!=&other);
+            assert(block<uint8_t>().maxi>=other.bytes);
+            switch(other.view)
+            {
+                case View8:  ModelCopy<uint8_t> (*this,other); break;
+                case View16: ModelCopy<uint16_t>(*this,other); break;
+                case View32: ModelCopy<uint32_t>(*this,other); break;
+                case View64: ModelCopy<uint64_t>(*this,other); break;
+            }
+
+        }
+
+
     }
 
 }

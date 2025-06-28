@@ -134,6 +134,7 @@ namespace Yttrium
             static Model * Load(InputStream &, const ViewType, const char * const name);
             static Model * Add(const OpsMode &ops, Model &lhs, Model &rhs);
             static Model * Add(const OpsMode &ops, Model &lhs, natural_t rhs);
+            void           cpy(const Model &other) noexcept;
 
             //__________________________________________________________________
             //
@@ -143,6 +144,7 @@ namespace Yttrium
             //__________________________________________________________________
             const ViewType view;  //!< current view
             const size_t  &bytes; //!< current bytes
+            const size_t  &space; //!< current capacity
             const size_t   bits;  //!< curretn bits
 
         private:

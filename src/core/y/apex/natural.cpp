@@ -51,7 +51,18 @@ namespace Yttrium
 
             if(this != &other)
             {
-                
+                Model &       target = *code;
+                const Model & source = *other.code;
+                if(target.space>=source.bytes)
+                {
+                    target.cpy(source);
+                }
+                else
+                {
+                    Model * temp = new Model(source,Model::SmallView[Ops]);
+                    delete  code;
+                    Coerce(code) = temp;
+                }
             }
             return *this;
         }
