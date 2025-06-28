@@ -6,6 +6,7 @@
 
 #include "y/apex/block/blocks.hpp"
 #include "y/apex/block/transmogrify.hpp"
+#include "y/apex/block/ops.hpp"
 #include "y/object.hpp"
 
 namespace Yttrium
@@ -16,15 +17,7 @@ namespace Yttrium
     namespace Apex
     {
 
-        enum OpsMode
-        {
-            Ops8_16,
-            Ops8_32,
-            Ops8_64,
-            Ops16_32,
-            Ops16_64,
-            Ops32_64
-        };
+       
 
         //______________________________________________________________________
         //
@@ -46,11 +39,23 @@ namespace Yttrium
             static const unsigned Ops = 6;
             typedef void         (Model:: *Change)(); //!< alias
             typedef size_t       (Model:: *Update)(); //!< alias
-            static const ViewType SmallView[Ops];
+            static const ViewType SmallView[Ops];     //!< table of small type for ops
 
-            static unsigned BytesPerUnit(const ViewType) noexcept;
+            static unsigned BytesPerUnit(const ViewType) noexcept; //!< 2^view
 
-            
+            class Pointer
+            {
+            public:
+                Pointer(Model * const) noexcept;
+                Pointer(const Model &, const ViewType);
+                ~Pointer() noexcept;
+                Model * operator->() noexcept;
+                Model & operator*()  noexcept;
+                
+            private:
+                Y_Disable_Copy_And_Assign(Pointer);
+                Model * const host;
+            };
 
             //__________________________________________________________________
             //

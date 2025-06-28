@@ -4,17 +4,6 @@
 #include "y/utest/run.hpp"
 #include "y/system/rand.hpp"
 
-namespace Yttrium
-{
-    namespace Apex
-    {
-
-
-
-
-    }
-}
-
 using namespace Yttrium;
 
 

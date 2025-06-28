@@ -5,7 +5,8 @@
 #ifndef Y_Apex_Format_Included
 #define Y_Apex_Format_Included 1
 
-#include "y/apex/types.hpp"
+#include "y/apex/m/size-for.hpp"
+#include <cassert>
 
 namespace Yttrium
 {

@@ -118,6 +118,8 @@ Y_UTEST_DECL(128)
     
     Y_UTEST(apex_blocks);
     Y_UTEST(apex_model);
+    Y_UTEST(apex_n);
+
 }
 Y_UTEST_EXEC()
 

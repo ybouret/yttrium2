@@ -1,11 +1,42 @@
 
 #include "y/apex/block/model.hpp"
-
+#include "y/type/destroy.hpp"
 
 namespace Yttrium
 {
     namespace Apex
     {
+
+
+        Model:: Pointer:: Pointer(Model * const model) noexcept :
+        host(model)
+        { assert(0!=host); }
+
+        Model:: Pointer:: ~Pointer() noexcept
+        {
+            assert(host);
+            Destroy(host);
+        }
+
+        Model:: Pointer:: Pointer(const Model &source, const ViewType target) :
+        host( new Model(source,target) )
+        {
+            assert( target == host->view );
+        }
+
+        Model * Model:: Pointer:: operator->() noexcept
+        {
+            assert(0!=host);
+            return host;
+        }
+
+        Model & Model:: Pointer:: operator*() noexcept
+        {
+            assert(0!=host);
+            return *host;
+        }
+
+
         const ViewType Model:: SmallView[Ops] =
         {
             View8,  View8,  View8,

@@ -4,7 +4,7 @@
 #define Y_Apex_Block_Included 1
 
 #include "y/apex/block/api.hpp"
-#include "y/calculus/bits-for.hpp"
+#include "y/apex/m/size-for.hpp"
 #include "y/hexadecimal.hpp"
 
 #include "y/ascii/plural.hpp"
