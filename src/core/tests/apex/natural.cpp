@@ -21,8 +21,14 @@ Y_UTEST(apex_n)
         std::cerr << n << std::endl;
         n = 0xabcde;
         std::cerr << n << std::endl;
-
     }
+
+    for(size_t p=0;p<=80;++p)
+    {
+        Apex::Natural n(TwoToThePowerOf,p);
+        std::cerr << n << std::endl;
+    }
+
 
 }
 Y_UDONE()

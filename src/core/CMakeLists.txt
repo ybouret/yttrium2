@@ -73,6 +73,7 @@ Y_CreateLibrary(y
     y/apex/m
     y/apex/block
     y/apex/block/model
+    y/apex/n
     y/mkl
 )
 

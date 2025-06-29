@@ -4,6 +4,7 @@
 #include "y/type/destroy.hpp"
 #include "y/string.hpp"
 #include "y/hexadecimal.hpp"
+#include "y/pointer/auto.hpp"
 
 namespace Yttrium
 {
@@ -20,6 +21,13 @@ namespace Yttrium
         code( new Model(n) )
         {
 
+        }
+
+        Natural:: Natural(Model * const model) noexcept :
+        Number(),
+        code( model )
+        {
+            assert(0!=model);
         }
 
 
@@ -50,15 +58,9 @@ namespace Yttrium
         size_t Natural:: serialize(OutputStream &fp) const
         {
             assert(0!=code);
-            if(View8==code->view)
-            {
-                return saveModel(*code,fp);
-            }
-            else
-            {
-                Model::Pointer m(*code,View8);
-                return saveModel(*m,fp);
-            }
+            AutoPtr<Model> p;
+            Model *        m = Coerce(code); if(View8!=code->view) { m = new Model(*m,View8); p = m; }
+            return saveModel(*m,fp);
         }
 
         Natural:: Natural(const Natural &other) :
@@ -106,7 +108,7 @@ namespace Yttrium
 
         namespace
         {
-            static inline std::ostream & BlockPrintHex(std::ostream &os, const Model &model)
+            static inline String BlockHexString(const Model &model)
             {
                 String res;
                 assert(View8==model.view);
@@ -114,7 +116,7 @@ namespace Yttrium
                 size_t                i = b.size;
                 if(i<=0)
                 {
-                    res = "0x0";
+                    res = '0';
                 }
                 else
                 {
@@ -127,26 +129,29 @@ namespace Yttrium
                     {
                         res.popHead();
                     }
-                    res >> "0x";
                 }
-                return os << res;
+                return  res;
             }
         }
 
-        std::ostream & Natural:: printHex(std::ostream &os) const
+        String Natural:: hexString() const
         {
-            if(code->view == View8)
-                return BlockPrintHex(os,*code);
-            else
-            {
-                const Model::Pointer temp(*code,View8);
-                return BlockPrintHex(os,*temp);
-            }
+            AutoPtr<Model> p;
+            Model *        m = Coerce(code); if(View8!=code->view) { m = new Model(*m,View8); p = m; }
+            return BlockHexString(*m);
         }
 
         std::ostream & operator<<(std::ostream &os, const Natural &n)
         {
-            return n.printHex(os);
+            const String s = n.hexString();
+            return os << s;
+        }
+
+
+        Natural & Natural:: xch(Natural &other) noexcept
+        {
+            CoerceSwap(code,other.code);
+            return *this;
         }
 
 
