@@ -75,6 +75,7 @@ Y_CreateLibrary(y
     y/apex/block/model
     y/apex/n
     y/mkl
+    y/random
 )
 
 add_subdirectory(tests)
