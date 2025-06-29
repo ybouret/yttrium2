@@ -31,8 +31,7 @@ namespace Yttrium
 
             virtual ~Blocks() noexcept;
 
-            void zset() noexcept;
-
+            
         private:
             Y_Disable_Assign(Blocks);
             uint8_t * const  base;

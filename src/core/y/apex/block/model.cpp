@@ -157,7 +157,13 @@ namespace Yttrium
 
         Model & Model:: ldz(const ViewType userView) noexcept
         {
-            zset();
+            switch(view)
+            {
+                case View8:  block<uint8_t>().naught(sync[View8]);   break;
+                case View16: block<uint16_t>().naught(sync[View16]); break;
+                case View32: block<uint32_t>().naught(sync[View32]); break;
+                case View64: block<uint64_t>().naught(sync[View64]); break;
+            }
             Coerce(bits) = 0;
             Coerce(view) = userView;
             return *this;
@@ -207,7 +213,8 @@ namespace Yttrium
             const Block<T> &from = source.get<T>();
             const size_t    size = from.size; assert(size<=to.maxi);
             memcpy(to.data,from.data, (to.size=size) * sizeof(T) );
-            memset(to.data+size,0,(to.maxi-size)*sizeof(T));
+            //memset(to.data+size,0,(to.maxi-size)*sizeof(T));
+            
         }
 
         void Model:: cpy(const Model &other) noexcept

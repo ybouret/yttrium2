@@ -19,13 +19,6 @@ namespace Yttrium
             View64
         };
 
-        template <ViewType V> struct UnsignedView;
-
-        template <> struct UnsignedView<View8>  { typedef uint8_t  Type; };
-        template <> struct UnsignedView<View16> { typedef uint16_t Type; };
-        template <> struct UnsignedView<View32> { typedef uint32_t Type; };
-        template <> struct UnsignedView<View64> { typedef uint64_t Type; };
-
 
 #define Y_Block_Check(EXPR) do { \
 if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } \
@@ -43,7 +36,8 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
             Y_OSTREAM_PROTO(BlockAPI);
 
 
-            virtual size_t update(BlockAPI * const []) noexcept = 0;
+            virtual size_t update(BlockAPI * const [])  noexcept = 0;
+            virtual void   naught(BlockAPI * const [])  noexcept = 0;
             virtual void   resize(const size_t numBits) noexcept = 0;
             bool           isValid() const noexcept;
 
@@ -56,7 +50,6 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
         private:
             Y_Disable_Copy_And_Assign(BlockAPI);
             virtual bool           doCheck()   const noexcept = 0;
-            virtual void           zeroPad()         noexcept = 0;
             virtual std::ostream & print(std::ostream&) const = 0;
 
         };

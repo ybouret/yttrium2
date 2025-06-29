@@ -64,6 +64,18 @@ namespace Yttrium
                 return numBits;
             }
 
+            inline virtual void   naught(BlockAPI * const sync[])  noexcept
+            {
+                assert( isValid() );
+                while(size>0)
+                    data[--size] = 0;
+                assert( isValid() );
+                assert(0!=sync[0]); sync[0]->size=0;
+                assert(0!=sync[1]); sync[1]->size=0;
+                assert(0!=sync[2]); sync[2]->size=0;
+            }
+
+
             inline virtual void resize(const size_t numBits) noexcept
             {
                 size = SizeFor<T>::From(numBits);
@@ -72,11 +84,7 @@ namespace Yttrium
             T * const data;
         private:
             Y_Disable_Copy_And_Assign(Block);
-
             
-            virtual void zeroPad() noexcept {
-                memset(data+size,0,(maxi-size) * sizeof(T));
-            }
 
             inline virtual bool doCheck() const noexcept
             {
