@@ -154,6 +154,13 @@ namespace Yttrium
             return *this;
         }
 
+        Natural:: Natural(InputStream &fp, const char * const varName) :
+        Number(),
+        code( Model::Load(fp, Model::SmallView[Ops], varName) )
+        {
+
+        }
+
 
     }
     

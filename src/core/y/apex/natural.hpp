@@ -44,6 +44,7 @@ Natural & operator OP##=(const natural_t rhs) { Natural res( CALL(*this,rhs) ); 
             Natural & operator=(const natural_t) noexcept;
 
             Natural(const TwoToThePowerOf_ &, const size_t n);
+            Natural(InputStream &, const char * const varName);
             Y_OSTREAM_PROTO(Natural);
 
             String hexString() const;

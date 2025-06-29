@@ -84,13 +84,14 @@ namespace Yttrium
          \return T checked value
          */
         template <typename T> inline
-        T readVBR(const char * const varName = 0)
+        T readVBR(const char * const varName = 0,
+                  const char * const varPart = 0)
         {
             static const uint64_t mx = uint64_t(IntegerFor<T>::Maximum);
             uint64_t qw = 0;
             decode64(qw);
             if(qw>mx)
-                throwOverflow(varName,qw,mx);
+                throwOverflow(varName,varPart,qw,mx);
             return T(qw);
         }
 
@@ -106,7 +107,10 @@ namespace Yttrium
         size_t read(uint64_t &); //!< \return [0:8] and value
 
         //! throw overflow from readVBR
-        void throwOverflow(const char * const, const uint64_t, const uint64_t) const;
+        void throwOverflow(const char * const,
+                           const char * const,
+                           const uint64_t,
+                           const uint64_t) const;
     };
 }
 

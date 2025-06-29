@@ -61,11 +61,13 @@ namespace Yttrium
 
 
     void InputStream:: throwOverflow(const char * const varName,
+                                     const char * const varPart,
                                      const uint64_t     qw,
                                      const uint64_t     mx) const
     {
         Specific::Exception excp("InputStream::readVBR","read %s bigger than maximum %s", Decimal(qw).c_str(), Decimal(mx).c_str());
         if(varName) excp.add(fmt,varName);
+        if(varPart) excp.add(".%s",varPart);
         throw excp;
     }
 

@@ -258,7 +258,7 @@ namespace Yttrium
         {
             static const char fn[]   = "Apex::Model::Load";
             static const char fmt[]  = " for %s";
-            const size_t    numBytes = fp.readVBR<size_t>(name);
+            const size_t    numBytes = fp.readVBR<size_t>(name,"bytes");
             AutoPtr<Model>  result   = new Model(numBytes,View8);
 
             {
