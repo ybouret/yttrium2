@@ -128,19 +128,9 @@ namespace Yttrium
                 assert(isValid());
                 assert(capacity>=length+size);
 
-                {
-                    T * const target = base+length;
-                    for(size_t i=0;i<size;++i)
-                    {
-                        const T temp = source[i];
-                        target[i] = base[i];
-                        base[i]   = temp;
-                    }
-                }
-                for(size_t i=size;i<length;++i)
-                {
-                    base[i] = source[i];
-                }
+                memmove(base+length,base,size*sizeof(T));
+                memmove(base,source,length);
+                size += length;
                 assert(isValid());
             }
 
@@ -149,11 +139,11 @@ namespace Yttrium
             {
                 assert(isValid());
                 assert(size>0);
-                for(size_t i=0;i<size;++i)
+                for(size_t i=1;i<=size;++i)
                 {
-                    base[i] = item[i];
+                    item[i] = base[i];
                 }
-                --size;
+                base[--size] = 0;
                 assert(isValid());
             }
 

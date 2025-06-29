@@ -13,6 +13,15 @@ Y_UTEST(apex_n)
 
     {
         Apex::Natural n;
+        std::cerr << n << std::endl;
+    }
+
+    {
+        Apex::Natural n = 0x234;
+        std::cerr << n << std::endl;
+        n = 0xabcde;
+        std::cerr << n << std::endl;
+
     }
 
 }

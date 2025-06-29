@@ -49,9 +49,10 @@ namespace Yttrium
                 Pointer(Model * const) noexcept;
                 Pointer(const Model &, const ViewType);
                 ~Pointer() noexcept;
-                Model * operator->() noexcept;
-                Model & operator*()  noexcept;
-                
+                Model *       operator->()       noexcept;
+                Model &       operator*()        noexcept;
+                const Model & operator*()  const noexcept;
+
             private:
                 Y_Disable_Copy_And_Assign(Pointer);
                 Model * const host;

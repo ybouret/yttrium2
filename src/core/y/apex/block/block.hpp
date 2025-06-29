@@ -27,7 +27,7 @@ namespace Yttrium
 
 
             inline explicit Block(void * const entry,
-                           const size_t count) noexcept :
+                                  const size_t count) noexcept :
             BlockAPI(count,View),
             data( static_cast<T*>(entry) )
             {
@@ -84,7 +84,7 @@ namespace Yttrium
             T * const data;
         private:
             Y_Disable_Copy_And_Assign(Block);
-            
+
 
             inline virtual bool doCheck() const noexcept
             {

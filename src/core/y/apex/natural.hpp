@@ -7,6 +7,8 @@
 #include "y/apex/types.hpp"
 #include "y/apex/number.hpp"
 #include "y/apex/block/ops.hpp"
+#include "y/mkl/two-to-the-power-of.hpp"
+#include "y/ostream-proto.hpp"
 
 namespace Yttrium
 {
@@ -22,7 +24,20 @@ namespace Yttrium
             virtual ~Natural() noexcept;
             Natural(const Natural &);
             Natural & operator=(const Natural &);
-            
+
+            Natural(const natural_t);
+            Natural & operator=(const natural_t) noexcept;
+
+            Natural(const TwoToThePowerOf_ &, const size_t n);
+            Y_OSTREAM_PROTO(Natural);
+
+            std::ostream & printHex(std::ostream &) const;
+
+
+            // addition
+            Natural operator+() const; //!< \return duplicate
+
+
             // interface
             virtual size_t serialize(OutputStream &fp) const;
             

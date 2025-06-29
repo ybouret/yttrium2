@@ -36,6 +36,13 @@ namespace Yttrium
             return *host;
         }
 
+        const Model & Model:: Pointer:: operator*() const noexcept
+        {
+            assert(0!=host);
+            return *host;
+        }
+
+
 
         const ViewType Model:: SmallView[Ops] =
         {
@@ -56,6 +63,36 @@ namespace Yttrium
 
         }
 
+
+
+
+        template <typename T> static inline
+        void ModelCopy(Model &target, const Model &source) noexcept
+        {
+            Block<T>       &to   = target.get<T>(); assert(0==to.size); assert( to.isValid() );
+            const Block<T> &from = source.get<T>(); assert( from.isValid() );
+            const size_t    size = from.size; assert(size<=to.maxi);
+            memcpy(to.data,from.data, (to.size=size) * sizeof(T) );
+            assert(to.isValid());
+        }
+
+
+
+        void Model:: cpy(const Model &other) noexcept
+        {
+            assert(this!=&other);
+            assert(block<uint8_t>().maxi>=other.bytes);
+
+            switch(ldz(other.view).view)
+            {
+                case View8:  ModelCopy<uint8_t> (*this,other); break;
+                case View16: ModelCopy<uint16_t>(*this,other); break;
+                case View32: ModelCopy<uint32_t>(*this,other); break;
+                case View64: ModelCopy<uint64_t>(*this,other); break;
+            }
+            Coerce(bits) = other.bits;
+        }
+
         Model:: Model(const Model &  userModel,
                       const ViewType userView) :
         Object(),
@@ -63,9 +100,9 @@ namespace Yttrium
         view(   userModel.view ),
         bytes(block<uint8_t>().size),
         space(block<uint8_t>().maxi),
-        bits(0)
+        bits(userModel.bits)
         {
-            assert( bytes == userModel.bytes );
+            // transmogrify
             set(userView);
         }
 
@@ -82,6 +119,7 @@ namespace Yttrium
             b64.data[0] = n;
             update();
         }
+
 
 
         Model:: Model(const natural_t * const arr, const size_t num) :
@@ -104,6 +142,7 @@ namespace Yttrium
             return one << unsigned(v);
         }
 
+#if 0
         namespace
         {
             template <typename T> static inline
@@ -142,6 +181,7 @@ namespace Yttrium
             update();
         }
 
+#endif
 
 
         Model:: ~Model() noexcept
@@ -168,6 +208,7 @@ namespace Yttrium
             Coerce(view) = userView;
             return *this;
         }
+
 
 
         void Model:: update() noexcept
@@ -206,30 +247,8 @@ namespace Yttrium
         }
 
 
-        template <typename T> static inline
-        void ModelCopy(Model &target, const Model &source) noexcept
-        {
-            Block<T>       &to   = target.get<T>();
-            const Block<T> &from = source.get<T>();
-            const size_t    size = from.size; assert(size<=to.maxi);
-            memcpy(to.data,from.data, (to.size=size) * sizeof(T) );
-            //memset(to.data+size,0,(to.maxi-size)*sizeof(T));
-            
-        }
 
-        void Model:: cpy(const Model &other) noexcept
-        {
-            assert(this!=&other);
-            assert(block<uint8_t>().maxi>=other.bytes);
-            switch(ldz(other.view).view)
-            {
-                case View8:  ModelCopy<uint8_t> (*this,other); break;
-                case View16: ModelCopy<uint16_t>(*this,other); break;
-                case View32: ModelCopy<uint32_t>(*this,other); break;
-                case View64: ModelCopy<uint64_t>(*this,other); break;
-            }
 
-        }
 
 
     }
