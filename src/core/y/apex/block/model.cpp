@@ -221,8 +221,7 @@ namespace Yttrium
         {
             assert(this!=&other);
             assert(block<uint8_t>().maxi>=other.bytes);
-            ldz(other.view);
-            switch(other.view)
+            switch(ldz(other.view).view)
             {
                 case View8:  ModelCopy<uint8_t> (*this,other); break;
                 case View16: ModelCopy<uint16_t>(*this,other); break;
