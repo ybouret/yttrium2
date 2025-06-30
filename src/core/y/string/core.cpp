@@ -33,15 +33,15 @@ namespace Yttrium
 
 
         template <>
-        std::ostream & operator<< <char>(std::ostream & os, const String<char> &self)
+        std::ostream & String<char>::print(std::ostream & os) const
         {
-            return os << self.c_str();
+            return os <<  c_str();
         }
 
         template <>
-        std::ostream & operator<< <uint32_t>(std::ostream & os, const String<uint32_t> &self)
+        std::ostream & String<uint32_t>::print(std::ostream & os) const
         {
-            const Readable<uint32_t> &_ = self;
+            const Readable<uint32_t> &_ = *this;
             return os << _;
         }
 

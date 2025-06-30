@@ -40,7 +40,6 @@ namespace Yttrium
         template <typename T> bool      operator!=(const String<T> &, const T *   const) noexcept; //!< forward declaration
         template <typename T> bool      operator!=(const String<T> &, const T)           noexcept; //!< forward declaration
         template <typename T> bool      operator!=(const T, const String<T> &)           noexcept; //!< forward declaration
-        template <typename T> std::ostream & operator<<(std::ostream &, const String<T> &);
 
         //______________________________________________________________________
         //
@@ -68,7 +67,7 @@ namespace Yttrium
             typedef Stride<T>                 Code;           //!< alias
             typedef Contiguous< Writable<T> > ContiguousType; //!< alias
             typedef Sequence<T,Expandable>    SequenceType;   //!< alias
-            typedef const T                   ParamType;      //!< alias
+            Y_Args_Declare(T,Type);
 
             //__________________________________________________________________
             //
@@ -99,7 +98,10 @@ namespace Yttrium
             String(const WithAtLeast_ &, const size_t n, const bool filled);
 
             //! output dependending on T \return output stream
-            friend std::ostream & operator<<(std::ostream &, const String &);
+            inline friend std::ostream & operator<<(std::ostream &os, const String &self)
+            {
+                return self.print(os);
+            }
 
             //__________________________________________________________________
             //
@@ -181,6 +183,7 @@ namespace Yttrium
 
             virtual const T & getHead() const noexcept;
             virtual const T & getTail() const noexcept;
+            std::ostream &    print(std::ostream &) const;
 
         };
 
