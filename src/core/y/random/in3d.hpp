@@ -5,7 +5,7 @@
 
 #include "y/random/bits.hpp"
 #include "y/mkl/numeric.hpp"
-#include "y/type/utils.hpp"
+#include "y/core/utils.hpp"
 
 namespace Yttrium
 {
@@ -16,17 +16,18 @@ namespace Yttrium
         template <typename T> inline
         void OnSphere(T &x, T &y, T &z, Random::Bits &ran)
         {
-            static const T one = 1;
-            T x1 = ran.symm<T>();
-            T x2 = ran.symm<T>();
-            T sq = x1*x1 + x2*x2;
+            typedef typename Alea<T>::Type CoreType;
+            static const CoreType one = 1;
+            CoreType x1 = ran.symm<CoreType>();
+            CoreType x2 = ran.symm<CoreType>();
+            CoreType sq = x1*x1 + x2*x2;
             while( sq >= one)
             {
-                x1 = ran.symm<T>();
-                x2 = ran.symm<T>();
+                x1 = ran.symm<CoreType>();
+                x2 = ran.symm<CoreType>();
                 sq = x1*x1 + x2*x2;
             }
-            const T fac = std::sqrt(one-sq);
+            const CoreType fac = std::sqrt(one-sq);
             x = Twice( x1*fac );
             y = Twice( x2*fac );
             z = one - Twice(sq);

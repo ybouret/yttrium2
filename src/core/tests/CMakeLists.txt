@@ -168,6 +168,8 @@ Y_UTEST(apex:n)
 #random
 Y_UTEST(random:bits)
 Y_UTEST(random:gaussian)
+Y_UTEST(random:in2d)
+Y_UTEST(random:in3d)
 
 #mkl
 Y_UTEST(mkl:numeric)

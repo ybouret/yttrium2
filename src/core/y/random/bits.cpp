@@ -21,8 +21,8 @@ namespace Yttrium
             nbits( BitsFor(upper) ),
             midst( upper >> 1 )
             {
-                std::cerr << "upper=" << Hexadecimal(upper) << std::endl;
-                std::cerr << "nbits=" << nbits << std::endl;
+                //std::cerr << "upper=" << Hexadecimal(upper) << std::endl;
+                //std::cerr << "nbits=" << nbits << std::endl;
             }
 
             virtual ~Metrics() noexcept {}
