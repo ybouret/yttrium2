@@ -53,8 +53,8 @@ Natural & operator OP##=(const natural_t rhs) { Natural res( CALL(*this,rhs) ); 
             Natural(Random::Bits &ran, const size_t numBits);
 
             String hexString() const;
-            
 
+            void      relax()        noexcept;
             Natural & xch(Natural &) noexcept;
 
 

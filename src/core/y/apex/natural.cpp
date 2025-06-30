@@ -20,14 +20,21 @@ namespace Yttrium
         Natural:: Natural(const natural_t n) : Number(),
         code( new Model(n) )
         {
-
+            relax();
         }
+
+        void Natural:: relax() noexcept
+        {
+            code->set( Model::SmallView[Ops] );
+        }
+
 
         Natural:: Natural(Model * const model) noexcept :
         Number(),
         code( model )
         {
             assert(0!=model);
+            relax();
         }
 
 
@@ -40,6 +47,7 @@ namespace Yttrium
                 b64.size    = 1;
             }
             code->update();
+            relax();
             return (*this);
         }
 
@@ -80,6 +88,7 @@ namespace Yttrium
                 if(target.space>=source.bytes)
                 {
                     target.cpy(source);
+                    relax();
                 }
                 else
                 {
@@ -104,6 +113,7 @@ namespace Yttrium
                 blk.size = msb+1;
             }
             code->update();
+            relax();
         }
 
         namespace
@@ -151,6 +161,7 @@ namespace Yttrium
         Natural & Natural:: xch(Natural &other) noexcept
         {
             CoerceSwap(code,other.code);
+            relax();
             return *this;
         }
 
@@ -186,6 +197,7 @@ namespace Yttrium
                     ptr[msb] = ran.to<uint8_t>(numBits - (msb<<3));
                 }
                 code->update();
+                relax();
                 assert(numBits==code->bits);
             }
             else
