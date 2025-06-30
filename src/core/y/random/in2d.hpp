@@ -10,12 +10,14 @@ namespace Yttrium
 {
     namespace Random
     {
-        
+
+
         //! random (x,y) on the unit circle
         template <typename T>   inline
         void OnCircle(T &x, T &y, Random::Bits &ran) noexcept
         {
-            const T theta = MKL::Numeric<T>::PI * ran.symm<float>();
+            typedef typename Alea<T>::Type CoreType;
+            const CoreType theta = MKL::Numeric<T>::PI * ran.symm<CoreType>();
             x = std::cos(theta);
             y = std::sin(theta);
         }
