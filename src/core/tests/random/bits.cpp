@@ -126,6 +126,10 @@ namespace {
             std::cerr << ran.leq(10) << std::endl;
         }
 
+        std::cerr << ran.to< XReal<float> >() << std::endl;
+        std::cerr << ran.to< XReal<double> >() << std::endl;
+        std::cerr << ran.to< XReal<long double> >() << std::endl;
+
     }
 }
 

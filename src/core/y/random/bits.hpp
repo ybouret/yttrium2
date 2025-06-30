@@ -5,7 +5,7 @@
 
 #include "y/ability/serializable.hpp"
 #include "y/ability/identifiable.hpp"
-
+#include "y/mkl/xreal.hpp"
 #include "y/type/alternative.hpp"
 #include "y/type/traits.hpp"
 #include "y/type/is-signed.hpp"
@@ -37,6 +37,9 @@ namespace Yttrium
             class               Metrics;
             typedef long double Real;     //!< alias
 
+            typedef TL6(float,double,long double,XReal<float>,XReal<double>,XReal<long double>) FPList;
+
+            //enum { IsIsoFloatingPoint   = ( TL::IndexOf<TL::IsoFloatingPoint,T>::Value >= 0 ) };
         protected:
             //! setup \param highest32 higest reached 32-bits value
             explicit Bits(const uint32_t highest32) noexcept;
@@ -78,12 +81,10 @@ namespace Yttrium
             }
 
         private:
-            //! return type selection
-            enum ReturnType
+            enum IntrinsicType
             {
-                ReturnR, //!< return floating point
-                ReturnU, //!< return unsigned integer
-                ReturnS  //!< return signed   integer
+                Floating,
+                Integral
             };
 
         public:
@@ -92,12 +93,10 @@ namespace Yttrium
             template <typename T>
             T to() noexcept
             {
-                static const  typename Alternative<
-                TypeTraits<T>::IsIsoFloatingPoint , IntToType<ReturnR>,
-                IsSigned<T>::Value,                 IntToType<ReturnS>,
-                /* unsigned integral */             IntToType<ReturnU> >::Type Choice = {};
-                return to<T>(Choice);
+                static const typename Pick<TL::IndexOf<FPList,T>::Value >= 0 , IntToType<Floating>, IntToType<Integral> >::Type Choice = {};
+                return intrinsic<T>(Choice);
             }
+
 
 
             //! \param nbit bit count \return unsigned with exact bit count
@@ -145,9 +144,20 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Bits); //!< discarding
             Metrics * const metrics;         //!< internal metrics
 
-            template <typename T> inline T to( const IntToType<ReturnR> & ) noexcept { return toR<T>(); } //!< \return floating point
-            template <typename T> inline T to( const IntToType<ReturnU> & ) noexcept { return toU<T>(); } //!< \return unsigned
-            template <typename T> inline T to( const IntToType<ReturnS> & ) noexcept { return toS<T>(); } //!< \return signed
+            template <typename T> inline
+            T intrinsic( const IntToType<Floating> & ) noexcept
+            {
+                return toR<T>();
+            }
+
+            template <typename T> inline
+            T intrinsic( const IntToType<Integral> & ) noexcept
+            {
+                static const IntToType< IsSigned<T>::Value > Choice = {};
+                return to<T>( Choice );
+            }
+            template <typename T> inline T to( const IntToType<false> & ) noexcept { return toU<T>(); } //!< \return unsigned
+            template <typename T> inline T to( const IntToType<true>  & ) noexcept { return toS<T>(); } //!< \return signed
 
         };
 

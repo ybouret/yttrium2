@@ -25,6 +25,7 @@ protean
 string
 apex
 random
+mkl
 )
 
 
@@ -166,5 +167,8 @@ Y_UTEST(apex:n)
 
 #random
 Y_UTEST(random:bits)
+
+#mkl
+Y_UTEST(mkl:numeric)
 
 

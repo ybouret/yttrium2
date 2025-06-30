@@ -123,6 +123,8 @@ Y_UTEST_DECL(128)
     Y_UTEST(apex_n);
 
     Y_UTEST(random_bits);
+    
+    Y_UTEST(mkl_numeric);
 }
 Y_UTEST_EXEC()
 
