@@ -40,7 +40,7 @@ namespace Yttrium
             }
             
         private:
-            Y_Disable_Copy_And_Assign(Locker);
+            Y_Disable_Copy_And_Assign(Locker); //!< discarding
             CLASS & host; //!< PERSISTENT host
         };
     }

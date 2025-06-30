@@ -22,17 +22,36 @@ namespace Yttrium
         class ParkMiller : public Bits
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
             static const char * const CallSign; //!< "ParkMiller"
 
-            explicit         ParkMiller(const int32_t seed) noexcept; //!< setup with seed
-            explicit         ParkMiller();                            //!< setup with system seed
-            virtual         ~ParkMiller()                    noexcept; //!< cleanup
-            virtual uint32_t next32()                        noexcept; //!< get next dword
-            virtual const char * callSign() const noexcept; //!< CallSign
-            
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit         ParkMiller(const int32_t) noexcept; //!< setup with seed
+            explicit         ParkMiller();                       //!< setup with system seed
+            virtual         ~ParkMiller() noexcept;              //!< cleanup
+
+            //__________________________________________________________________
+            //
+            //
+            // Inteface
+            //
+            //__________________________________________________________________
+            virtual uint32_t     next32()         noexcept;
+            virtual const char * callSign() const noexcept;
+
         private:
-            Y_Disable_Copy_And_Assign(ParkMiller);
-            int32_t state;
+            Y_Disable_Copy_And_Assign(ParkMiller); //!< discarding
+            int32_t state; //!< internal state
         };
     }
 

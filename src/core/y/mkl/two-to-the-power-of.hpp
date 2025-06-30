@@ -7,7 +7,7 @@
 
 namespace Yttrium
 {
-    Y_Shallow_Decl(TwoToThePowerOf);
+    Y_Shallow_Decl(TwoToThePowerOf); //!< alias
 }
 #endif
 

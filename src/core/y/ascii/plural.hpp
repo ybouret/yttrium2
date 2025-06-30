@@ -15,8 +15,8 @@ namespace Yttrium
         //! plural if needed
         struct Plural
         {
-            static const char * s(const size_t) noexcept;
-            static const char * S(const size_t) noexcept;
+            static const char * s(const size_t) noexcept; //!< \return lower-case optional "s"
+            static const char * S(const size_t) noexcept; //!< \return upper-case option "S"
         };
 
     }

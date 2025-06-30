@@ -12,23 +12,49 @@ namespace Yttrium
     namespace Information
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Entropy computation
+        //
+        //
+        //______________________________________________________________________
         class Entropy : public OutputStream
         {
         public:
-            Entropy() noexcept;
-            virtual ~Entropy() noexcept;
-            Entropy(const Entropy &) noexcept;
-            Entropy & operator=(const Entropy &);
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            Entropy() noexcept;                    //!< setup
+            virtual ~Entropy() noexcept;           //!< cleanup
+            Entropy(const Entropy &) noexcept;     //!< duplicate
+            Entropy & operator=(const Entropy &);  //!< assign \return *this
 
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             virtual void write(const char C);
             virtual void flush();
             virtual void frame(const void * const, const size_t);
-            
-            void ldz() noexcept;
-            long double operator()(void) const;
+
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            void        ldz() noexcept; //!< reset
+            long double operator()(void) const noexcept; //!< \return current entropy
 
         private:
-            uint64_t bin[256];
+            uint64_t bin[256]; //!< count of each byte
         };
     }
 

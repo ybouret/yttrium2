@@ -54,7 +54,7 @@ namespace Yttrium
                 ++bin[ *(p++) ];
         }
 
-        long double Entropy:: operator()(void) const
+        long double Entropy:: operator()(void) const noexcept
         {
 
 
@@ -71,16 +71,14 @@ namespace Yttrium
                     const long double p = ((long double)n) / sum;
                     const long double q =  -p * std::log(p);
                     pq << q;
-                    //std::cerr << pq << "@" << pq->peek() << std::endl;
                 }
             }
             assert(pq->size>0);
             while(pq->size>1)
             {
-                const long double first = pq.pop();
+                const long double first   = pq.pop();
                 const long double second = pq.pop();
                 pq << (first+second);
-               // std::cerr << pq << "@" << pq->peek() << std::endl;
             }
             return pq.pop();
 

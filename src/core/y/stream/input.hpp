@@ -81,6 +81,7 @@ namespace Yttrium
         //! read Variable Bit Rate variable
         /**
          \param varName optional variable name
+         \param varPart optional variable part
          \return T checked value
          */
         template <typename T> inline

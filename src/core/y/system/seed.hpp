@@ -12,8 +12,10 @@ namespace Yttrium
         //! computing seeds from system
         struct Seed
         {
-            static void Fill(void * const entry, const size_t count);
+            //! fill memory with system random bytes
+            static void Fill(void * const, const size_t);
 
+            //! get by filling bytes \return random integral seed
             template <typename T> static inline
             T Get()
             {
