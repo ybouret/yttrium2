@@ -13,14 +13,17 @@ namespace Yttrium
 {
     namespace Apex
     {
-        
+
+        //! compute words to hold bits
         template <typename T>
         struct SizeFor
         {
-            static const unsigned Bits = 8*sizeof(T);
+            static const unsigned BitsPerWord = 8*sizeof(T); //!< alias
+
+            //! \param numBits computed bits \return words to hold numBits
             static inline size_t  From(const size_t numBits) noexcept
             {
-                return Alignment::On<Bits>::Ceil(numBits) / Bits;
+                return Alignment::On<BitsPerWord>::Ceil(numBits) / BitsPerWord;
             }
         };
     }

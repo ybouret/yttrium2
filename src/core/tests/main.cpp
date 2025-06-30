@@ -92,6 +92,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(sequence_vector);
 
     Y_UTEST(ordered_pqueue);
+    Y_UTEST(ordered_static_pqueue);
 
     Y_UTEST(ptr_auto);
     Y_UTEST(ptr_arc);

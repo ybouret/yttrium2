@@ -36,12 +36,11 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            static const unsigned Ops = 6;
+            static const unsigned Ops = 6;            //!< alias
             typedef void         (Model:: *Change)(); //!< alias
             typedef size_t       (Model:: *Update)(); //!< alias
             static const ViewType SmallView[Ops];     //!< table of small type for ops
-
-            static unsigned BytesPerUnit(const ViewType) noexcept; //!< 2^view
+            static unsigned BytesPerUnit(const ViewType) noexcept; //!< \return 2^view
 
             
 
@@ -67,6 +66,11 @@ namespace Yttrium
             explicit Model(const natural_t * const, const size_t );
 
             //! setup with anonymous data
+            /**
+             \param entry first bytes of data matching tview
+             \param count number of data matching tview
+             \param tview view type of data
+             */
             explicit Model(const void * const entry,
                            const size_t       count,
                            const ViewType     tview);
@@ -74,7 +78,6 @@ namespace Yttrium
 
             //! cleanup
             virtual ~Model() noexcept;
-
             Y_OSTREAM_PROTO(Model); //!< display
 
             //__________________________________________________________________
@@ -83,8 +86,8 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            Model & ldz(const ViewType) noexcept;
-            Model & set(const ViewType) noexcept; //!< transmogriy to new view
+            Model & ldz(const ViewType) noexcept; //!< set to zero             \return *this
+            Model & set(const ViewType) noexcept; //!< transmogriy to new view \return *this
             void    update() noexcept;            //!< update view, set bits
 
 
@@ -118,11 +121,13 @@ namespace Yttrium
             // Operations
             //
             //__________________________________________________________________
-            size_t         save(OutputStream &);
-            static Model * Load(InputStream &, const ViewType, const char * const name);
-            static Model * Add(const OpsMode &ops, Model &lhs, Model &rhs);
-            static Model * Add(const OpsMode &ops, Model &lhs, natural_t rhs);
-            void           cpy(const Model &other) noexcept;
+            size_t         save(OutputStream &); //!< effective serialization \return written bytes
+            static Model * Load(InputStream &, const ViewType, const char * const); //!< reload with variable name \return read model
+
+            void           cpy(const Model & ) noexcept; //!< copy when capacity is enought
+
+            static Model * Add(const OpsMode &, Model &, Model &);   //!< addition \return resulting model
+            static Model * Add(const OpsMode &, Model &, natural_t); //!< addition \return resulting model
 
             //__________________________________________________________________
             //
@@ -158,7 +163,7 @@ namespace Yttrium
 
         };
 
-
+        //! helper to define tables
 #define Y_Apex_Model_Table(PRE,POST) \
 PRE <uint8_t,uint16_t>  POST,\
 PRE <uint8_t,uint32_t>  POST,\
