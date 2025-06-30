@@ -71,7 +71,7 @@ namespace Yttrium
             rctx()
             {
                 clear();
-                for(size_t i=0;i<RANDSIZ;++i) rctx.randrsl[i] = SystemSeed::Get();
+                for(size_t i=0;i<RANDSIZ;++i) rctx.randrsl[i] = System::Seed::Get<ub4>();
                 randinit(&rctx,true);
             }
 
@@ -132,7 +132,7 @@ namespace Yttrium
             }
 
         private:
-            Y_DISABLE_COPY_AND_ASSIGN(ISAAC);
+            Y_Disable_Copy_And_Assign(ISAAC);
             randctx rctx;
             inline void clear() noexcept { memset(&rctx,0,sizeof(rctx)); }
 

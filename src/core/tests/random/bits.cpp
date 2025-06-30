@@ -1,3 +1,4 @@
+#include "y/random/isaac.hpp"
 #include "y/random/mt19937.hpp"
 #include "y/random/park-miller.hpp"
 #include "y/system/seed.hpp"
@@ -137,8 +138,10 @@ Y_UTEST(random_bits)
 
     Random::ParkMiller ranParkMiller;
     Random::MT19937    ranMT19937;
+    Random::ISAAC<4>   ranISAAC4;
+    Random::ISAAC<8>   ranISAAC8;
 
-    Random::Bits * ran[] = { & ranParkMiller, & ranMT19937 };
+    Random::Bits * ran[] = { & ranParkMiller, & ranMT19937, & ranISAAC4, & ranISAAC8 };
     size_t n = 1000;
     for(size_t i=0;i<sizeof(ran)/sizeof(ran[0]);++i)
     {
