@@ -45,6 +45,12 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
+
+            //! setup with pre-allocated memory
+            /**
+             \param entry available memory
+             \param count number of words
+             */
             inline explicit Block(void * const entry,
                                   const size_t count) noexcept :
             BlockAPI(count,View),
@@ -53,6 +59,7 @@ namespace Yttrium
                 assert(0!=data);
             }
 
+            //! cleanup
             inline virtual ~Block() noexcept
             {
             }
