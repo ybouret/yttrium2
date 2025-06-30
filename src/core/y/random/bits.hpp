@@ -9,6 +9,8 @@
 #include "y/type/alternative.hpp"
 #include "y/type/traits.hpp"
 #include "y/type/is-signed.hpp"
+#include <cassert>
+#include <cmath>
 
 namespace Yttrium
 {
@@ -98,8 +100,45 @@ namespace Yttrium
             }
 
 
+            //! \param nbit bit count \return unsigned with exact bit count
+            template <typename T>
+            T to(const size_t nbit) noexcept
+            {
+                assert(nbit<=sizeof(T)*8);
+                assert(!IsSigned<T>::Value);
+                static const T one = 1;
+                if(nbit<=0) return 0;
+                T res = one;
+                for(size_t i=nbit-1;i>0;--i)
+                {
+                    res <<= 1;
+                    if( choice() ) res |= one;
+                }
+                return res;
+            }
 
+            //! return uniform in [0:n] \param n >= 0
+            template <typename T> inline
+            T leq(const T n) noexcept
+            {
+                static const Real half(0.5);
+                return static_cast<T>(std::floor( Real(n) * real32() + half ));
+            }
 
+            //! return uniform in [0:n-1] \param n > 0
+            template <typename T> inline
+            T lt(const T n) noexcept
+            {
+                assert(n>0);
+                return leq(n-1);
+            }
+
+            template <typename T> inline
+            T in(const T a, const T b) noexcept
+            {
+                assert(b>=a);
+                return a + leq(b-a);
+            }
 
 
         private:

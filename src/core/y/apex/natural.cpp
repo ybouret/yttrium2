@@ -165,3 +165,35 @@ namespace Yttrium
     }
     
 }
+
+#include "y/random/bits.hpp"
+namespace Yttrium
+{
+    namespace Apex
+    {
+        Natural:: Natural(Random::Bits &ran, const size_t numBits) :
+        Number(),
+        code(0)
+        {
+            if(numBits>0)
+            {
+                {
+                    const size_t     size = SizeFor<uint8_t>::From(numBits); assert(size>0);
+                    Block<uint8_t> & blk  = (Coerce(code) = new Model(size,View8))->get<uint8_t>();
+                    const size_t     msb  = (blk.size=size)-1;
+                    uint8_t * const  ptr  = blk.data;
+                    for(size_t i=0;i<size;++i) ptr[i] = ran.to<uint8_t>(8);
+                    ptr[msb] = ran.to<uint8_t>(numBits - (msb<<3));
+                }
+                code->update();
+                assert(numBits==code->bits);
+            }
+            else
+            {
+                Coerce(code) = new Model(0, Model::SmallView[Ops] );
+            }
+        }
+
+    }
+}
+

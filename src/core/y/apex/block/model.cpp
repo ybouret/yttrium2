@@ -109,7 +109,7 @@ namespace Yttrium
             return one << unsigned(v);
         }
 
-#if 0
+#if 1
         namespace
         {
             template <typename T> static inline
@@ -221,6 +221,43 @@ namespace Yttrium
     }
 
 }
+
+#if 0
+
+#include "y/random/bits.hpp"
+
+namespace Yttrium
+{
+    namespace Apex
+    {
+        Model:: Model(Random::Bits &ran, const size_t numBits) :
+        Object(),
+        Blocks( SizeFor<uint8_t>::From(numBits) ),
+        view(View8),
+        bytes(block<uint8_t>().size),
+        space(block<uint8_t>().maxi),
+        bits(0)
+        {
+            if(numBits>0)
+            {
+                Block<uint8_t> &blk = block<uint8_t>();
+                blk.size = SizeFor<uint8_t>::From(numBits); assert(blk.size>0);
+                const size_t    m = blk.size-1;
+                uint8_t * const p = blk.data;
+                for(size_t i=0;i<=m;++i)
+                {
+                    p[i] = ran.to<uint8_t>();
+                }
+                p[m] = ran.to<uint8_t>(numBits-(m<<3));
+                update();
+            }
+            assert(bits==numBits);
+        }
+
+    }
+
+}
+#endif
 
 #include "y/stream/output.hpp"
 

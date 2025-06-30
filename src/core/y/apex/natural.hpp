@@ -13,6 +13,9 @@
 
 namespace Yttrium
 {
+
+    namespace Random { class Bits; }
+
     namespace Apex
     {
         class Model;
@@ -46,6 +49,8 @@ Natural & operator OP##=(const natural_t rhs) { Natural res( CALL(*this,rhs) ); 
             Natural(const TwoToThePowerOf_ &, const size_t n);
             Natural(InputStream &, const char * const varName);
             Y_OSTREAM_PROTO(Natural);
+
+            Natural(Random::Bits &ran, const size_t numBits);
 
             String hexString() const;
             

@@ -14,6 +14,7 @@ namespace Yttrium
     class OutputStream;
     class InputStream;
 
+    
     namespace Apex
     {
 
@@ -74,6 +75,8 @@ namespace Yttrium
             explicit Model(const void * const entry,
                            const size_t       count,
                            const ViewType     tview);
+
+            //explicit Model(Random::Bits &ran, const size_t numBits);
 
 
             //! cleanup

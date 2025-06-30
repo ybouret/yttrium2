@@ -4,6 +4,7 @@
 #include "y/hexadecimal.hpp"
 #include "y/container/sequence/vector.hpp"
 #include <cmath>
+#include "y/calculus/bits-for.hpp"
 
 using namespace Yttrium;
 
@@ -125,6 +126,22 @@ Y_UTEST(random_bits)
 
     size_t n = 1000;
     Stats(ran,n);
+
+    std::cerr << "Checking partial" << std::endl;
+    for(size_t nbit=0;nbit<=64;++nbit)
+    {
+        for(size_t i=0;i<100;++i)
+        {
+            const uint64_t u = ran.to<uint64_t>(nbit);
+            Y_ASSERT( BitsFor(u) == nbit );
+        }
+    }
+
+    for(size_t i=0;i<10;++i)
+    {
+        std::cerr << ran.leq(10) << std::endl;
+    }
+
 
 }
 Y_UDONE()
