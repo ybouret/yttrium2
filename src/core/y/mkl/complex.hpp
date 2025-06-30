@@ -149,7 +149,7 @@ namespace Yttrium
         inline friend Complex operator*(const Complex &z, const T x) noexcept
         { return Complex(z.re*x,z.im*x); }
 
-        //! x*z*
+        //! x*z
         inline friend Complex operator*(const T x, const Complex &z) noexcept
         { return Complex(z.re*x,z.im*x); }
 
