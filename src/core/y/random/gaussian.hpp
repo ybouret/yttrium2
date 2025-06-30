@@ -12,12 +12,7 @@ namespace Yttrium
 {
     namespace Random
     {
-        namespace Alea
-        {
-            template <typename T> struct CoreGaussian;
-            template <typename T> struct CoreGaussian< XReal<T> > { typedef T Type; };
-            template <typename T> struct CoreGaussian             { typedef T Type; };
-        }
+
 
         //______________________________________________________________________
         //
@@ -37,7 +32,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            typedef typename Alea::CoreGaussian<T>::Type CoreType;
+            typedef typename Alea<T>::Type CoreType;
 
             //__________________________________________________________________
             //

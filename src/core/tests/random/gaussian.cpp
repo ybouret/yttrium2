@@ -42,8 +42,8 @@ namespace {
 
 Y_UTEST(random_gaussian)
 {
-    typedef Random::Alea::CoreGaussian<float>::Type           floatType;
-    typedef Random::Alea::CoreGaussian< XReal<double> >::Type XDoubleType;
+    typedef Random::Alea<float>::Type           floatType;
+    typedef Random::Alea< XReal<double> >::Type XDoubleType;
 
     std::cerr << typeid(floatType).name()   << std::endl;
     std::cerr << typeid(XDoubleType).name() << std::endl;

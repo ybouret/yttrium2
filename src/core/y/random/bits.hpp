@@ -19,6 +19,12 @@ namespace Yttrium
     namespace Random
     {
 
+
+        template <typename T> struct Alea;
+        template <typename T> struct Alea< XReal<T> > { typedef T Type; };
+        template <typename T> struct Alea             { typedef T Type; };
+
+
         //______________________________________________________________________
         //
         //
