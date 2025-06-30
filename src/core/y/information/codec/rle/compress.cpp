@@ -54,7 +54,7 @@ namespace Yttrium
 
                 inline void write(const char c, QCodec &q)
                 {
-                    const uint8_t b = c;
+                    const uint8_t b = uint8_t(c);
                     if(count<=0)
                     {
                         init(b);

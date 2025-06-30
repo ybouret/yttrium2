@@ -60,7 +60,7 @@ namespace Yttrium
 
         void QCodec:: qWrite(const uint8_t byte)
         {
-            code->list.pushTail(byte);
+            code->list.pushTail( char(byte) );
         }
 
         void QCodec:: qClear() noexcept

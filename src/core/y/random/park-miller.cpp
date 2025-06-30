@@ -41,7 +41,7 @@ namespace Yttrium
             const int32_t k = state/IQ;
             state = IA*(state-k*IQ)-IR*k;
             if (state < 0) state += IM;
-            const uint32_t res(state);
+            const uint32_t res = uint32_t(state);
             state ^= MASK;
             return res;
         }
