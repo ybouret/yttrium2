@@ -11,7 +11,7 @@ Y_UTEST(ordered_static_pqueue)
 {
     System::Rand    ran;
 
-
+    StaticPriorityQueue<int,8> pq;
 
 }
 Y_UDONE()
