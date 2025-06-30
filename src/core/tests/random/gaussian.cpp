@@ -26,6 +26,14 @@ namespace {
         for(size_t i=1;i<=n;++i) sum += data[i];
         const T ave = sum / T(n);
         std::cerr << "\tave=" << ave << std::endl;
+        T var = 0;
+        for(size_t i=1;i<=n;++i)
+        {
+            const T del = data[i] - ave;
+            var += del * del;
+        }
+        var /= n;
+        std::cerr << "\tvar=" << var << std::endl;
 
     }
 
