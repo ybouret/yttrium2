@@ -91,6 +91,7 @@ namespace Yttrium
             //__________________________________________________________________
             Model & ldz(const ViewType) noexcept; //!< set to zero             \return *this
             Model & set(const ViewType) noexcept; //!< transmogriy to new view \return *this
+            void    cpy(const Model & ) noexcept; //!< copy when capacity is enough
             void    update() noexcept;            //!< update view, set bits
 
 
@@ -118,6 +119,7 @@ namespace Yttrium
                 return block<T>();
             }
 
+
             //__________________________________________________________________
             //
             //
@@ -127,10 +129,12 @@ namespace Yttrium
             size_t         save(OutputStream &); //!< effective serialization \return written bytes
             static Model * Load(InputStream &, const ViewType, const char * const); //!< reload with variable name \return read model
 
-            void           cpy(const Model & ) noexcept; //!< copy when capacity is enought
 
             static Model * Add(const OpsMode &, Model &, Model &);   //!< addition \return resulting model
             static Model * Add(const OpsMode &, Model &, natural_t); //!< addition \return resulting model
+
+            static SignType Compare(Model &, Model &) noexcept;
+
 
             //__________________________________________________________________
             //

@@ -12,6 +12,7 @@ Y_UTEST(apex_n)
     Random::ParkMiller ran;
 
     {
+        std::cerr << "Default" << std::endl;
         Apex::Natural n;
         std::cerr << n << std::endl;
     }
