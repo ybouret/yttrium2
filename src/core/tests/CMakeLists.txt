@@ -24,6 +24,7 @@ utf8
 protean
 string
 apex
+random
 )
 
 
@@ -163,5 +164,7 @@ Y_UTEST(apex:blocks)
 Y_UTEST(apex:model)
 Y_UTEST(apex:n)
 
+#random
+Y_UTEST(random:bits)
 
 

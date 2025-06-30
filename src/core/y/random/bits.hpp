@@ -4,13 +4,14 @@
 #define Y_Random_Bits_Included 1
 
 #include "y/ability/serializable.hpp"
+#include "y/ability/identifiable.hpp"
 
 namespace Yttrium
 {
     namespace Random
     {
 
-        class Bits
+        class Bits : public Identifiable
         {
         public:
             class               Metrics;
