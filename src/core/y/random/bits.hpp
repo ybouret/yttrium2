@@ -33,6 +33,14 @@ namespace Yttrium
                 return static_cast<T>( fill64(sizeof(T)*8) );
             }
 
+            template <typename T> inline T toS() noexcept
+            {
+                const T u = static_cast<T>( fill64(sizeof(T)*8-1) );
+                return choice() ? -u : u;
+            }
+
+
+
         private:
             Y_Disable_Copy_And_Assign(Bits);
             Metrics * const metrics;

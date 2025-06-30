@@ -80,6 +80,7 @@ namespace Yttrium
                     assert(remaining>available);
                     result <<= available;
                     result  |= dword;
+                    remaining -= available;
                 }
             }
             return result;
