@@ -68,6 +68,11 @@ namespace Yttrium
             return pq.pop(compare);
         }
 
+        //! clear data
+        inline void free() noexcept
+        {
+            pq.free();
+        }
 
 
     private:

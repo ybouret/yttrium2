@@ -139,6 +139,7 @@ Y_UTEST(info:arc4)
 Y_UTEST(info:rle)
 Y_UTEST(info:bwt_rle)
 Y_UTEST(info:bwt_mtf)
+Y_UTEST(info:entropy)
 
 #utf8
 Y_UTEST(utf8:api)

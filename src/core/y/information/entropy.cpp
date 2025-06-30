@@ -1,4 +1,5 @@
 #include "y/information/entropy.hpp"
+#include "y/container/ordered/static-priority-queue.hpp"
 #include "y/check/usual.hpp"
 #include <cstring>
 #include <cmath>
@@ -55,21 +56,34 @@ namespace Yttrium
 
         long double Entropy:: operator()(void) const
         {
+
+
             uint64_t sum = 0;
             for(size_t i=0;i<256;++i) sum += bin[i];
             if(sum<=0) return 0;
 
-            long double res = 0;
+            StaticPriorityQueue<long double,256, Sign::DecreasingComparator<long double> > pq;
             for(size_t i=0;i<256;++i)
             {
                 const uint64_t n = bin[i];
                 if(n>0)
                 {
                     const long double p = ((long double)n) / sum;
-                    res -= p * std::log(p);
+                    const long double q =  -p * std::log(p);
+                    pq << q;
+                    //std::cerr << pq << "@" << pq->peek() << std::endl;
                 }
             }
-            return res;
+            assert(pq->size>0);
+            while(pq->size>1)
+            {
+                const long double first = pq.pop();
+                const long double second = pq.pop();
+                pq << (first+second);
+               // std::cerr << pq << "@" << pq->peek() << std::endl;
+            }
+            return pq.pop();
+
         }
 
 

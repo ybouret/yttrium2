@@ -103,6 +103,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(info_rle);
     Y_UTEST(info_bwt_rle);
     Y_UTEST(info_bwt_mtf);
+    Y_UTEST(info_entropy);
 
     Y_UTEST(utf8_api);
 
