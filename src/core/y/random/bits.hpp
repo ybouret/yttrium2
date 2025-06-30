@@ -6,6 +6,8 @@
 #include "y/ability/serializable.hpp"
 #include "y/ability/identifiable.hpp"
 
+#include "y/type/traits.hpp"
+
 namespace Yttrium
 {
     namespace Random
@@ -38,6 +40,7 @@ namespace Yttrium
                 const T u = static_cast<T>( fill64(sizeof(T)*8-1) );
                 return choice() ? -u : u;
             }
+
 
 
 

@@ -3,6 +3,7 @@
 #include "y/utest/run.hpp"
 #include "y/hexadecimal.hpp"
 #include "y/container/sequence/vector.hpp"
+#include <cmath>
 
 using namespace Yttrium;
 
