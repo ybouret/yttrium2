@@ -6,12 +6,19 @@
 
 #include "y/random/bits.hpp"
 #include "y/mkl/numeric.hpp"
-#include "y/type/utils.hpp"
+#include "y/core/utils.hpp"
 
 namespace Yttrium
 {
     namespace Random
     {
+        namespace Alea
+        {
+            template <typename T> struct CoreGaussian;
+            template <typename T> struct CoreGaussian< XReal<T> > { typedef T Type; };
+            template <typename T> struct CoreGaussian             { typedef T Type; };
+        }
+
         //______________________________________________________________________
         //
         //
@@ -24,6 +31,14 @@ namespace Yttrium
         class Gaussian : public SharedBits
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef typename Alea::CoreGaussian<T>::Type CoreType;
+
             //__________________________________________________________________
             //
             //
@@ -57,7 +72,7 @@ namespace Yttrium
                 else
                 {
                     i0 = true;
-                    const T g = g1;
+                    const CoreType g = g1;
                     BoxMuller();
                     return g;
                 }
@@ -65,18 +80,18 @@ namespace Yttrium
 
 
         private:
-            Y_DISABLE_COPY_AND_ASSIGN(Gaussian);
-            bool i0;
-            T    g0,g1;
+            Y_Disable_Copy_And_Assign(Gaussian);
+            bool       i0;
+            CoreType   g0,g1;
 
             //! compute two succesive values
             inline void BoxMuller() noexcept
             {
                 Random::Bits &ran = **this;
-                T r = ran.to<T>();
-                while(r <= MKL::Numeric<T>::EPSILON ) r = ran.to<T>();
-                const T theta = MKL::Numeric<T>::PI * ran.symm<T>();
-                const T ampli = std::sqrt(-Twice( std::log(r) ));
+                CoreType r = ran.to<CoreType>();
+                while(r <= MKL::Numeric<CoreType>::EPSILON ) r = ran.to<CoreType>();
+                const CoreType theta = MKL::Numeric<T>::PI * ran.symm<CoreType>();
+                const CoreType ampli = std::sqrt(-Twice( std::log(r) ));
                 g0 = ampli * std::sin(theta);
                 g1 = ampli * std::cos(theta);
             }

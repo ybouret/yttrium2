@@ -9,6 +9,8 @@
 #include "y/type/alternative.hpp"
 #include "y/type/traits.hpp"
 #include "y/type/is-signed.hpp"
+#include "y/object/counted.hpp"
+#include "y/pointer/arc.hpp"
 #include <cassert>
 #include <cmath>
 
@@ -25,7 +27,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Bits : public Identifiable
+        class Bits : public CountedObject, public Identifiable
         {
         public:
             //__________________________________________________________________
@@ -37,9 +39,9 @@ namespace Yttrium
             class               Metrics;
             typedef long double Real;     //!< alias
 
+            //! \return list of usable floating point types
             typedef TL6(float,double,long double,XReal<float>,XReal<double>,XReal<long double>) FPList;
 
-            //enum { IsIsoFloatingPoint   = ( TL::IndexOf<TL::IsoFloatingPoint,T>::Value >= 0 ) };
         protected:
             //! setup \param highest32 higest reached 32-bits value
             explicit Bits(const uint32_t highest32) noexcept;
@@ -61,6 +63,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             Real             real32() noexcept;                  //!< convert uint32_t \return floating point in ]0:1[
+            Real             symm32() noexcept;                  //!< convert uint32_t \return floting point int ]-1:1[
             uint64_t         fill64(const size_t nbit) noexcept; //!< \param nbit number of bits \return truncated uint64_t with nbit
             bool             choice() noexcept;                  //!< \return equiprobable choice
 
@@ -80,11 +83,18 @@ namespace Yttrium
                 return choice() ? -u : u;
             }
 
+            template <typename T> inline T symm() noexcept
+            {
+                return static_cast<T>( symm32() );
+            }
+
+
         private:
+            //! Intrinsic Type selection
             enum IntrinsicType
             {
-                Floating,
-                Integral
+                Floating, //!< float,...,XReal<long double>>
+                Integral  //!< char,...,uint64_t
             };
 
         public:
@@ -116,7 +126,7 @@ namespace Yttrium
                 return res;
             }
 
-            //! return uniform in [0:n] \param n >= 0
+            //!  \param n >= 0 \return uniform in [0:n]
             template <typename T> inline
             T leq(const T n) noexcept
             {
@@ -124,7 +134,7 @@ namespace Yttrium
                 return static_cast<T>(std::floor( Real(n) * real32() + half ));
             }
 
-            //! return uniform in [0:n-1] \param n > 0
+            //! \param n > 0 \return uniform in [0:n-1]
             template <typename T> inline
             T lt(const T n) noexcept
             {
@@ -132,6 +142,12 @@ namespace Yttrium
                 return leq(n-1);
             }
 
+            //! uniform in integral segement
+            /**
+             \param a lower bound
+             \param b upper bound
+             \return uniform([a:b])
+             */
             template <typename T> inline
             T in(const T a, const T b) noexcept
             {
@@ -144,23 +160,26 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Bits); //!< discarding
             Metrics * const metrics;         //!< internal metrics
 
-            template <typename T> inline
-            T intrinsic( const IntToType<Floating> & ) noexcept
+            //! \return random floating point
+            template <typename T> inline T intrinsic( const IntToType<Floating> & ) noexcept
             {
                 return toR<T>();
             }
 
+            //! \return random integral point
             template <typename T> inline
             T intrinsic( const IntToType<Integral> & ) noexcept
             {
                 static const IntToType< IsSigned<T>::Value > Choice = {};
                 return to<T>( Choice );
             }
+
             template <typename T> inline T to( const IntToType<false> & ) noexcept { return toU<T>(); } //!< \return unsigned
             template <typename T> inline T to( const IntToType<true>  & ) noexcept { return toS<T>(); } //!< \return signed
 
         };
 
+        typedef ArcPtr<Bits> SharedBits;
 
 
     }

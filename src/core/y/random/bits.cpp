@@ -53,6 +53,14 @@ namespace Yttrium
             return ( static_cast<Real>( next32() ) + half ) / metrics->denom;
         }
 
+        Bits::Real Bits:: symm32() noexcept
+        {
+            static const Real half(0.5);
+            const Real x = real32() - half;
+            return x+x;
+        }
+
+
         bool Bits:: choice() noexcept
         {
             return next32() <= metrics->midst;

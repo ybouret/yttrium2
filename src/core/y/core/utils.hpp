@@ -92,7 +92,11 @@ namespace Yttrium
         return MinOf( MaxOf(a,b), c );
     }
 
-    
+    template <typename T> inline
+    T Twice(const T a)
+    {
+        return a+a;
+    }
 
 }
 
