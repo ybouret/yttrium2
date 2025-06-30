@@ -11,46 +11,90 @@ namespace Yttrium
 {
     namespace Apex
     {
+        //______________________________________________________________________
+        //
+        //
+        //! internal big-endian representation
+        //
+        //______________________________________________________________________
         enum ViewType
         {
-            View8,
-            View16,
-            View32,
-            View64
+            View8,  //!< as uint8_t
+            View16, //!< as uint16_t
+            View32, //!< as uint32_t
+            View64  //!< as uint64_t
         };
 
 
+        //! helper to build debug functions
 #define Y_Block_Check(EXPR) do { \
 if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } \
 } while(false)
 
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Base class for concrete Block(s)
+        //
+        //
+        //______________________________________________________________________
         class BlockAPI
         {
+        public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const ViewType VTable[Metrics::Views]; //!< integer to view table
+
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
         protected:
+            //! initialize
+            /**
+             \param n maxi
+             \param v view
+             */
             explicit BlockAPI(const size_t   n,
                               const ViewType v);
 
         public:
-            virtual ~BlockAPI() noexcept;
-            Y_OSTREAM_PROTO(BlockAPI);
+            virtual ~BlockAPI() noexcept; //!< cleanup
+            Y_OSTREAM_PROTO(BlockAPI);    //!< display by print()
 
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
+            virtual size_t update(BlockAPI * const [])  noexcept = 0;   //!< update, sync  \return bits
+            virtual void   naught(BlockAPI * const [])  noexcept = 0;   //!< set to zero with sync
+            virtual void   resize(const size_t numBits) noexcept = 0;   //!< set size \param numBits computed bits
+            bool           isValid()              const noexcept;       //!< full check, mostly for debug \return validity
 
-            virtual size_t update(BlockAPI * const [])  noexcept = 0;
-            virtual void   naught(BlockAPI * const [])  noexcept = 0;
-            virtual void   resize(const size_t numBits) noexcept = 0;
-            bool           isValid() const noexcept;
-
-            size_t         size;
-            const size_t   maxi;
-            const ViewType view;
-
-            static const ViewType VTable[Metrics::Views];
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            size_t                size; //!< current size <= maxi
+            const size_t          maxi; //!< capacity
+            const ViewType        view; //!< assigned view
 
         private:
-            Y_Disable_Copy_And_Assign(BlockAPI);
-            virtual bool           doCheck()   const noexcept = 0;
-            virtual std::ostream & print(std::ostream&) const = 0;
+            Y_Disable_Copy_And_Assign(BlockAPI); //!< discarding
+            virtual bool           doCheck()   const noexcept = 0; //!< full check \return validity
+            virtual std::ostream & print(std::ostream&) const = 0; //!< display \return output stream
 
         };
 

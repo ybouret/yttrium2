@@ -31,7 +31,7 @@ namespace Yttrium
             static const unsigned  MinShift  = IntegerLog2<MinBytes>::Value;  //!< alias
             static const size_t    MaxBytes  = Base2<size_t>::MaxBytes;       //!< alias
             static const unsigned  MaxShift  = Base2<size_t>::MaxShift;       //!< alias
-            static const unsigned  Views     = WordShift+1;
+            static const unsigned  Views     = WordShift+1;                   //!< alias
             
             //!
             /**

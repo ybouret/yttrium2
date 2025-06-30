@@ -17,15 +17,34 @@ namespace Yttrium
     namespace Apex
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Concrete Block
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class Block : public BlockAPI
         {
         public:
-            static const ViewType View     = ViewType( IntegerLog2For<T>::Value );
-            static const unsigned UnitSize = sizeof(T);
-            static const unsigned UnitBits = 8 * UnitSize;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const ViewType View     = ViewType( IntegerLog2For<T>::Value ); //!< alias
+            static const unsigned UnitSize = sizeof(T);                            //!< bytes per T
+            static const unsigned UnitBits = 8 * UnitSize;                         //!< bits per T
 
-
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
             inline explicit Block(void * const entry,
                                   const size_t count) noexcept :
             BlockAPI(count,View),
@@ -38,21 +57,12 @@ namespace Yttrium
             {
             }
 
-            size_t bits() const noexcept
-            {
-                if(size<=0) return 0;
-                const size_t msw = size-1;
-                assert(0!=data[msw]);
-                return msw * UnitBits + Calculus::BitsFor::Count(data[msw]);
-            }
-
-            inline  void adjust() noexcept
-            {
-                while( (size>0) && (0 == data[size-1]) )
-                    --size;
-                assert(isValid());
-            }
-
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             inline virtual size_t update(BlockAPI * const sync[]) noexcept
             {
                 assert(0!=sync);
@@ -81,9 +91,41 @@ namespace Yttrium
                 size = SizeFor<T>::From(numBits);
             }
 
-            T * const data;
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! compute bits from current state \return computed bits
+            size_t bits() const noexcept
+            {
+                assert(isValid());
+                if(size<=0) return 0;
+                const size_t msw = size-1;
+                assert(0!=data[msw]);
+                return msw * UnitBits + Calculus::BitsFor::Count(data[msw]);
+            }
+
+            //! adjust assuming msb could be zero
+            inline  void adjust() noexcept
+            {
+                while( (size>0) && (0 == data[size-1]) )
+                    --size;
+                assert(isValid());
+            }
+
+
+            //__________________________________________________________________
+            //
+            //
+            // members
+            //
+            //__________________________________________________________________
+            T * const data; //!< big-endian data
         private:
-            Y_Disable_Copy_And_Assign(Block);
+            Y_Disable_Copy_And_Assign(Block); //!< discarding
 
 
             inline virtual bool doCheck() const noexcept

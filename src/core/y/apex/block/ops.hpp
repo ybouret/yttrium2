@@ -10,14 +10,22 @@ namespace Yttrium
 {
     namespace Apex
     {
+        //______________________________________________________________________
+        //
+        //
+        //! internal operations mode
+        //
+        //______________________________________________________________________
         enum OpsMode
         {
-            Ops8_16,
-            Ops8_32,
-            Ops8_64,
-            Ops16_32,
-            Ops16_64,
-            Ops32_64
+            Ops8_16,  //!< inner:  8-bits outer: 16-bits
+            Ops8_32,  //!< inner:  8-bits outer: 32-bits
+            Ops8_64,  //!< inner:  8-bits outer: 64-bits
+
+            Ops16_32, //!< inner: 16-bits outer: 32-bits
+            Ops16_64, //!< inner: 16-bits outer: 64-bits
+
+            Ops32_64  //!< inner: 32-bits outer: 64-bits
         };
     }
 

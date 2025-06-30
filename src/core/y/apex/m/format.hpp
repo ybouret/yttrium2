@@ -13,11 +13,16 @@ namespace Yttrium
 
     namespace Apex
     {
-
-     
+        //! convert natural_t into big-endian, in place words
         template <typename U>
         struct UFormat
         {
+            //! conversion of natural_t into T[]
+            /**
+             \param data original value, final workspace
+             \param size pre-computed number of words
+             \return workspace ready for Model ops
+             */
             static inline
             U * Make(natural_t &data, const size_t size) noexcept
             {
@@ -34,6 +39,12 @@ namespace Yttrium
 
         };
 
+        //! transform natural_t into T[]
+        /**
+         \param data original value, final workspace
+         \param size computed according to data bits
+         \return workspace ready for Model ops
+         */
         template <typename T> inline
         const T * UFormatAs(natural_t &data, size_t &size)
         {
