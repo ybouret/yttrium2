@@ -114,15 +114,8 @@ namespace Yttrium
                 proc->emit(*this);
             }
 
-            void Compress:: frame(const void * const addr, const size_t size)
-            {
-                assert( Good(addr,size) );
-                const char * C = (const char *)addr;
-                for(size_t i=size;i>0;--i)
-                    write( *(C++) );
-            }
-
             
+
         }
     }
 

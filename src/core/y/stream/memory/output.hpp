@@ -52,8 +52,7 @@ namespace Yttrium
         //______________________________________________________________________
         virtual void write(const char c);
         virtual void flush();
-        virtual void frame(const void * const addr, const size_t size);
-
+        
         virtual const void * ro()     const noexcept; //!< \return address
         virtual size_t       length() const noexcept; //!< \return curr-addr
 

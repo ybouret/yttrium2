@@ -48,7 +48,8 @@ namespace Yttrium
             //__________________________________________________________________
             void flush();                               //!< fflush
             void write(const char);                     //!< fwrite 1 char
-            void frame(const void *const,const size_t); //!< fwrite given frame
+            void frame(const void * const, const size_t);
+
         private:
             Y_Disable_Copy_And_Assign(OutputFile); //!< discarding
         };

@@ -46,13 +46,7 @@ namespace Yttrium
         {
         }
 
-        void Entropy:: frame(const void *const entry, const size_t count)
-        {
-            assert( Good(entry,count) );
-            const uint8_t *p = (const uint8_t *)entry;
-            for(size_t i=count;i>0;--i)
-                ++bin[ *(p++) ];
-        }
+        
 
         long double Entropy:: operator()(void) const noexcept
         {

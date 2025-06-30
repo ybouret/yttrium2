@@ -42,8 +42,7 @@ namespace Yttrium
             //__________________________________________________________________
             virtual void write(const char C);
             virtual void flush();
-            virtual void frame(const void * const, const size_t);
-
+            
             //__________________________________________________________________
             //
             //

@@ -25,7 +25,6 @@ namespace Yttrium
                 virtual void reset() noexcept;
                 virtual void write(const char C);
                 virtual void flush();
-                virtual void frame(const void * const, const size_t);
                 
             private:
                 Y_Disable_Copy_And_Assign(Compress);

@@ -41,13 +41,7 @@ namespace Yttrium
 
     }
 
-    void MemoryOutput:: frame(const void *const addr, const size_t size)
-    {
-        assert(Good(addr,size));
-        const char * C = (const char *)addr;
-        for(size_t i=size;i>0;--i) write( *(C++) );
-    }
-
+    
     void MemoryOutput:: reset() noexcept
     {
         curr = addr;

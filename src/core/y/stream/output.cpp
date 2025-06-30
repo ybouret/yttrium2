@@ -109,7 +109,11 @@ namespace Yttrium
         return 8;
     }
 
-
+    void OutputStream:: frame(const void * const entry, const size_t count)
+    {
+        const char * C = static_cast<const char *>( entry );
+        for(size_t i=count;i>0;--i) write( *(C++) );
+    }
 
 }
 
