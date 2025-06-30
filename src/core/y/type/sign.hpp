@@ -88,6 +88,19 @@ namespace Yttrium
             }
         };
 
+        //! default decreasing comparator class
+        template <typename T>
+        struct DecreasingComparator
+        {
+            Y_Args_Expose(T,Type); //!< aliases
+
+            //! \param lhs lhs \param rhs rhs \return opposite natural comparison
+            inline SignType operator()(ConstType &lhs, ConstType &rhs) const
+            {
+                return Of(rhs,lhs);
+            }
+        };
+
 
     };
 }
