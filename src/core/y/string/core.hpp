@@ -99,7 +99,7 @@ namespace Yttrium
             String(const WithAtLeast_ &, const size_t n, const bool filled);
 
             //! output dependending on T \return output stream
-            friend std::ostream & operator<< <>(std::ostream &, const String &);
+            friend std::ostream & operator<<(std::ostream &, const String &);
 
             //__________________________________________________________________
             //
