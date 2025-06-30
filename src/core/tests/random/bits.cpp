@@ -1,3 +1,4 @@
+#include "y/random/mt19937.hpp"
 #include "y/random/park-miller.hpp"
 #include "y/system/seed.hpp"
 #include "y/utest/run.hpp"
@@ -96,6 +97,8 @@ namespace {
 
     static inline void Stats(Random::Bits &ran, const size_t n)
     {
+        std::cerr << std::endl;
+        std::cerr << ran.callSign() << std::endl;
         RStats<float>(ran,n);
         RStats<double>(ran,n);
         RStats<long double>(ran,n);
@@ -108,6 +111,20 @@ namespace {
         SStats<int16_t>(ran,n);
         SStats<int32_t>(ran,n);
 
+        for(size_t nbit=0;nbit<=64;++nbit)
+        {
+            for(size_t i=0;i<100;++i)
+            {
+                const uint64_t u = ran.to<uint64_t>(nbit);
+                Y_ASSERT( BitsFor(u) == nbit );
+            }
+        }
+
+        for(size_t i=0;i<10;++i)
+        {
+            std::cerr << ran.leq(10) << std::endl;
+        }
+
     }
 }
 
@@ -118,29 +135,17 @@ Y_UTEST(random_bits)
         std::cerr << "Seed: " << System::Seed::Get<uint16_t>() << std::endl;
     }
 
-    Random::ParkMiller ran;
-    for(size_t i=0;i<10;++i)
-    {
-        std::cerr << Hexadecimal( ran.next32() ) << std::endl;
-    }
+    Random::ParkMiller ranParkMiller;
+    Random::MT19937    ranMT19937;
 
+    Random::Bits * ran[] = { & ranParkMiller, & ranMT19937 };
     size_t n = 1000;
-    Stats(ran,n);
-
-    std::cerr << "Checking partial" << std::endl;
-    for(size_t nbit=0;nbit<=64;++nbit)
+    for(size_t i=0;i<sizeof(ran)/sizeof(ran[0]);++i)
     {
-        for(size_t i=0;i<100;++i)
-        {
-            const uint64_t u = ran.to<uint64_t>(nbit);
-            Y_ASSERT( BitsFor(u) == nbit );
-        }
+        Stats(*ran[i],n);
     }
 
-    for(size_t i=0;i<10;++i)
-    {
-        std::cerr << ran.leq(10) << std::endl;
-    }
+
 
 
 }
