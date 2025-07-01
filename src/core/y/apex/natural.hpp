@@ -68,7 +68,7 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             // Definitions
             //
             //__________________________________________________________________
-            static OpsMode Ops;
+            static OpsMode Ops; //!< operating mode
 
             //__________________________________________________________________
             //
@@ -76,29 +76,44 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             // C++
             //
             //__________________________________________________________________
-            Natural();
-            virtual ~Natural() noexcept;
-            Natural(const Natural &);
-            Natural & operator=(const Natural &);
+            Natural();                                     //!< setup zero
+            virtual ~Natural() noexcept;                   //!< cleanup
+            Natural(const Natural &);                      //!< duplicate
+            Natural & operator=(const Natural &);          //!< assign \return *this*
+            Natural(const natural_t);                      //!< setup to natural_t
+            Natural & operator=(const natural_t) noexcept; //!< assign \return *this
 
-            Natural(const natural_t);
-            Natural & operator=(const natural_t) noexcept;
+            Natural(const TwoToThePowerOf_ &, const size_t n);  //!< \param n setup to 2^n
+            Natural(InputStream &, const char * const);         //!< load save value
+            Y_OSTREAM_PROTO(Natural);                           //!< display
 
-            Natural(const TwoToThePowerOf_ &, const size_t n);
-            Natural(InputStream &, const char * const varName);
-            Y_OSTREAM_PROTO(Natural);
-
+            //! setup to random bits
+            /**
+             \param ran random bits
+             \param numBits exact number of bits
+             */
             Natural(Random::Bits &ran, const size_t numBits);
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            String    hexString()      const;         //!< \return hexadecimal string
+            size_t    bits()  const noexcept;         //!< \return number of bits
+            size_t    bytes() const noexcept;         //!< \return number of bytes
+            void      relax()        noexcept;        //!< relax to Ops matching view
+            void      alter(const ViewType) noexcept; //!< alter to given viea
+            Natural & xch(Natural &) noexcept;        //!< exchange \return *this
 
-            String    hexString()      const;
-            size_t    bits()  const noexcept;
-            size_t    bytes() const noexcept;
-            void      relax()        noexcept;
-            void      alter(const ViewType) noexcept;
-            Natural & xch(Natural &) noexcept;
-
-            // comparisons
+            //__________________________________________________________________
+            //
+            //
+            // comparison
+            //
+            //__________________________________________________________________
+#if DOXYGEN_SHOULD_SKIP_THIS
             Y_APN_Compare_Impl(==, == __Zero__)
             Y_APN_Compare_Impl(!=, != __Zero__)
             Y_APN_Compare_Impl(<,  == Negative)
@@ -106,14 +121,27 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             Y_APN_Compare_Impl(<=, != Positive)
             Y_APN_Compare_Impl(>=, != Negative)
 
-            // addition
-            Natural operator+() const; //!< \return duplicate
             Y_APN_Operator_Impl(+,Add)
-            Natural & operator++();
-            Natural   operator++(int);
 
-            // interface
-            virtual size_t serialize(OutputStream &fp) const;
+#endif
+
+            //__________________________________________________________________
+            //
+            //
+            // addition
+            //
+            //__________________________________________________________________
+            Natural   operator+() const; //!< \return duplicate
+            Natural & operator++();      //!< prefix  \return increased *this
+            Natural   operator++(int);   //!< postfix \return previous *this*
+
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
+            virtual size_t serialize(OutputStream &) const;
 
             static SignType Compare(const Natural &, const Natural &);
             static SignType Compare(const Natural &, const natural_t) noexcept;

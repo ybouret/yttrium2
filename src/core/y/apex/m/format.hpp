@@ -106,9 +106,7 @@ namespace Yttrium
             };
         };
 
-
-
-
+        
         //! transform natural_t into T[]
         /**
          \param data original value, final workspace
