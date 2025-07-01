@@ -20,6 +20,7 @@ namespace Yttrium
     namespace Apex
     {
         class Model;
+        Y_Shallow_Decl(Attach);
 
 #define Y_APN_Proto_Decl(RETURN,FUNC) \
 RETURN FUNC(const Natural &, const Natural &);\
@@ -27,14 +28,14 @@ RETURN FUNC(const Natural &, const natural_t);\
 RETURN FUNC(const natural_t, const Natural &)
 
 #define Y_APN_Method_Decl(RETURN,FUNC,CALL) \
-inline RETURN FUNC(const Natural & lhs, const Natural & rhs) { return CALL(lhs,rhs); } \
-inline RETURN FUNC(const Natural & lhs, const natural_t rhs) { return CALL(lhs,rhs); } \
-inline RETURN FUNC(const natural_t lhs, const Natural & rhs) { return CALL(lhs,rhs); }
+inline RETURN FUNC(const Natural & lhs, const Natural & rhs) { return Natural(Attach,CALL(lhs,rhs)); } \
+inline RETURN FUNC(const Natural & lhs, const natural_t rhs) { return Natural(Attach,CALL(lhs,rhs)); } \
+inline RETURN FUNC(const natural_t lhs, const Natural & rhs) { return Natural(Attach,CALL(lhs,rhs)); }
 
 #define Y_APN_Operator_Decl(OP,CALL) \
 Y_APN_Method_Decl(friend Natural,operator OP,CALL)\
-inline Natural & operator OP##=(const Natural & rhs) { Natural res( CALL(*this,rhs) ); return xch(res); }\
-inline Natural & operator OP##=(const natural_t rhs) { Natural res( CALL(*this,rhs) ); return xch(res); }
+inline Natural & operator OP##=(const Natural & rhs) { Natural res(Attach,CALL(*this,rhs) ); return xch(res); }\
+inline Natural & operator OP##=(const natural_t rhs) { Natural res(Attach,CALL(*this,rhs) ); return xch(res); }
 
 #define Y_APN_Compare_Decl_(OP,LHS,RHS,RES) \
 inline friend bool operator OP(const LHS lhs, const RHS rhs) { return Compare(lhs,rhs) RES; }
@@ -98,7 +99,7 @@ Y_APN_Compare_Decl_(OP,Natural &,natural_t,RES)
             
         private:
             Model * const code;
-            Natural(Model * const) noexcept;
+            Natural(const Attach_ &, Model * const) noexcept;
 
 
 

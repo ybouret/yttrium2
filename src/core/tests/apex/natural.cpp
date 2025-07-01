@@ -86,7 +86,7 @@ Y_UTEST(apex_n)
     }
 
     {
-        std::cerr << "Add" << std::endl;
+        std::cerr << "Additions" << std::endl;
         for(size_t i=0;i<64;++i)
         {
             for(size_t j=0;j<64;++j)
@@ -112,12 +112,38 @@ Y_UTEST(apex_n)
                             Y_ASSERT(S==s);
                         }
 
+                        {
+                            Apex::Natural lhs = L; Y_ASSERT(lhs==L);
+                            lhs.alter( Apex::ViewType(u)  );
+                            R.alter( Apex::ViewType(v) );
+                            lhs += R;
+                            Y_ASSERT(lhs==s);
+                        }
+
+                        {
+                            Apex::Natural lhs = L; Y_ASSERT(lhs==L);
+                            lhs.alter( Apex::ViewType(u)  );
+                            lhs += r;
+                            Y_ASSERT(lhs==s);
+                        }
                     }
                 }
-
             }
         }
-
+#if 1
+        Apex::Natural n = 0;
+        while(n<10)
+        {
+            std::cerr << ' ' << n++;
+        }
+        std::cerr << std::endl;
+        n=0;
+        while(n<10)
+        {
+            std::cerr << ' ' << ++n;
+        }
+        std::cerr << std::endl;
+#endif
     }
 
 

@@ -36,7 +36,7 @@ namespace Yttrium
 
         void  Natural:: incr()
         {
-            Natural res( Natural::Add(*this,1) );
+            Natural res(Attach,Natural::Add(*this,1) );
             xch(res);
         }
 

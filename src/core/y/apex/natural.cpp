@@ -10,6 +10,8 @@ namespace Yttrium
 {
     namespace Apex
     {
+        Y_Shallow_Impl(Attach);
+
         OpsMode Natural::Ops = Ops32_64;
 
         Natural:: Natural() : Number(),
@@ -50,7 +52,7 @@ namespace Yttrium
 
 
 
-        Natural:: Natural(Model * const model) noexcept :
+        Natural:: Natural(const Attach_&, Model * const model) noexcept :
         Number(),
         code( model )
         {
