@@ -57,6 +57,8 @@ Natural & operator OP##=(const natural_t rhs) { Natural res( CALL(*this,rhs) ); 
             void      relax()        noexcept;
             Natural & xch(Natural &) noexcept;
 
+            // comparisons
+
 
             // addition
             Natural operator+() const; //!< \return duplicate
@@ -71,9 +73,14 @@ Natural & operator OP##=(const natural_t rhs) { Natural res( CALL(*this,rhs) ); 
             Model * const code;
             Natural(Model * const) noexcept;
 
-            Y_APN_Proto_Decl(static Model *,Add);
-            void incr();
-            
+            static SignType Compare(const Natural &, const Natural &);
+            static SignType Compare(const Natural &, const natural_t) noexcept;
+            static SignType Compare(const natural_t, const Natural &) noexcept;
+
+            Y_APN_Proto_Decl(static Model *,Add); //!< addition prototypes
+            void incr();                          //!< increment
+
+
         };
 
 

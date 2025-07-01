@@ -66,6 +66,16 @@ namespace Yttrium
             {
                 return Of(lhs.make<T>(),rhs.make<T>());
             }
+
+            static inline
+            SignType Of(const Model &lhs, natural_t n)
+            {
+                const Block<T> & L = lhs.get<T>();
+                size_t           nr = 0;
+                const T * const  rhs = UFormatAs<T>(n,nr);
+                return Of(L.data,L.size,rhs,nr);
+            }
+
         };
 
 
@@ -91,6 +101,21 @@ namespace Yttrium
             }
             return CmpTable[lhs.view](lhs,rhs);
         }
+
+        SignType Model:: Compare(const Model &m, const natural_t n) noexcept
+        {
+            typedef SignType (*Cmp)(const Model &, natural_t);
+            static  Cmp  const CmpTable[Metrics::Views] =
+            {
+                ModelCmp<uint8_t> ::Of,
+                ModelCmp<uint16_t>::Of,
+                ModelCmp<uint32_t>::Of,
+                ModelCmp<uint64_t>::Of,
+            };
+            return CmpTable[m.view](m,n);
+        }
+
+        
 
     }
 

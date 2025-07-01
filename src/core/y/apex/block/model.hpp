@@ -133,8 +133,13 @@ namespace Yttrium
             static Model * Add(const OpsMode &, Model &, Model &);   //!< addition \return resulting model
             static Model * Add(const OpsMode &, Model &, natural_t); //!< addition \return resulting model
 
-            static SignType Compare(Model &, Model &) noexcept;
+            //! compare by adjusting to biggest view
+            static SignType Compare(Model &, Model &)         noexcept;
 
+            //! compare by formatting natural_t to model view
+            static SignType Compare(const Model &, const natural_t) noexcept;
+
+            
 
             //__________________________________________________________________
             //
