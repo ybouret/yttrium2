@@ -20,40 +20,62 @@ namespace Yttrium
     namespace Apex
     {
         class Model;
-        Y_Shallow_Decl(Attach);
+        Y_Shallow_Decl(Attach); //!< helper for constructor
 
+        //! helper to declare multiple methods
 #define Y_APN_Proto_Decl(RETURN,FUNC) \
 RETURN FUNC(const Natural &, const Natural &);\
 RETURN FUNC(const Natural &, const natural_t);\
 RETURN FUNC(const natural_t, const Natural &)
 
-#define Y_APN_Method_Decl(RETURN,FUNC,CALL) \
+        //! helper to implement multiple methods
+#define Y_APN_Method_Impl(RETURN,FUNC,CALL) \
 inline RETURN FUNC(const Natural & lhs, const Natural & rhs) { return Natural(Attach,CALL(lhs,rhs)); } \
 inline RETURN FUNC(const Natural & lhs, const natural_t rhs) { return Natural(Attach,CALL(lhs,rhs)); } \
 inline RETURN FUNC(const natural_t lhs, const Natural & rhs) { return Natural(Attach,CALL(lhs,rhs)); }
 
-#define Y_APN_Operator_Decl(OP,CALL) \
-Y_APN_Method_Decl(friend Natural,operator OP,CALL)\
+        //! helper to implement multiple operators
+#define Y_APN_Operator_Impl(OP,CALL) \
+Y_APN_Method_Impl(friend Natural,operator OP,CALL)\
 inline Natural & operator OP##=(const Natural & rhs) { Natural res(Attach,CALL(*this,rhs) ); return xch(res); }\
 inline Natural & operator OP##=(const natural_t rhs) { Natural res(Attach,CALL(*this,rhs) ); return xch(res); }
 
-#define Y_APN_Compare_Decl_(OP,LHS,RHS,RES) \
+        //! helper to implement one comparison operator
+#define Y_APN_Compare_Impl_(OP,LHS,RHS,RES) \
 inline friend bool operator OP(const LHS lhs, const RHS rhs) { return Compare(lhs,rhs) RES; }
 
-#define Y_APN_Compare_Decl(OP,RES)              \
-Y_APN_Compare_Decl_(OP,Natural &,Natural &,RES) \
-Y_APN_Compare_Decl_(OP,natural_t,Natural &,RES) \
-Y_APN_Compare_Decl_(OP,Natural &,natural_t,RES)
+        //! helper to implement multiple comparison operators
+#define Y_APN_Compare_Impl(OP,RES)              \
+Y_APN_Compare_Impl_(OP,Natural &,Natural &,RES) \
+Y_APN_Compare_Impl_(OP,natural_t,Natural &,RES) \
+Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
 
 
-
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Natural number
+        //
+        //
+        //______________________________________________________________________
         class Natural : public Number
         {
         public:
+            //__________________________________________________________________
+            //
+            //
             // Definitions
+            //
+            //__________________________________________________________________
             static OpsMode Ops;
 
+            //__________________________________________________________________
+            //
+            //
             // C++
+            //
+            //__________________________________________________________________
             Natural();
             virtual ~Natural() noexcept;
             Natural(const Natural &);
@@ -77,16 +99,16 @@ Y_APN_Compare_Decl_(OP,Natural &,natural_t,RES)
             Natural & xch(Natural &) noexcept;
 
             // comparisons
-            Y_APN_Compare_Decl(==, == __Zero__)
-            Y_APN_Compare_Decl(!=, != __Zero__)
-            Y_APN_Compare_Decl(<,  == Negative)
-            Y_APN_Compare_Decl(>  ,== Positive)
-            Y_APN_Compare_Decl(<=, != Positive)
-            Y_APN_Compare_Decl(>=, != Negative)
+            Y_APN_Compare_Impl(==, == __Zero__)
+            Y_APN_Compare_Impl(!=, != __Zero__)
+            Y_APN_Compare_Impl(<,  == Negative)
+            Y_APN_Compare_Impl(>  ,== Positive)
+            Y_APN_Compare_Impl(<=, != Positive)
+            Y_APN_Compare_Impl(>=, != Negative)
 
             // addition
             Natural operator+() const; //!< \return duplicate
-            Y_APN_Operator_Decl(+,Add)
+            Y_APN_Operator_Impl(+,Add)
             Natural & operator++();
             Natural   operator++(int);
 
