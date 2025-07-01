@@ -26,6 +26,7 @@ namespace Yttrium
 
         void Natural:: alter(const ViewType view) noexcept
         {
+            assert(0!=code);
             code->set( view );
 
         }
@@ -34,6 +35,20 @@ namespace Yttrium
         {
             alter(  Model::SmallView[Ops] );
         }
+
+        size_t Natural:: bytes() const noexcept
+        {
+            assert(0!=code);
+            return code->bytes;
+        }
+
+        size_t Natural:: bits() const noexcept
+        {
+            assert(0!=code);
+            return code->bits;
+        }
+
+
 
         Natural:: Natural(Model * const model) noexcept :
         Number(),

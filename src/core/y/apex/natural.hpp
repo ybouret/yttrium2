@@ -69,7 +69,8 @@ Y_APN_Compare_Decl_(OP,Natural &,natural_t,RES)
 
 
             String hexString() const;
-
+            size_t    bits()  const noexcept;
+            size_t    bytes() const noexcept;
             void      relax()        noexcept;
             void      alter(const ViewType) noexcept;
             Natural & xch(Natural &) noexcept;

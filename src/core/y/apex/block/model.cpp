@@ -1,6 +1,7 @@
 
 #include "y/apex/block/model.hpp"
 #include "y/type/destroy.hpp"
+#include <cstring>
 
 namespace Yttrium
 {
@@ -109,9 +110,9 @@ namespace Yttrium
             return one << unsigned(v);
         }
 
-#if 1
         namespace
         {
+#if 0
             template <typename T> static inline
             void BlockCopy(T *                target,
                            const void * const source,
@@ -123,6 +124,18 @@ namespace Yttrium
                 while(length-- > 0)
                     *(target++) = *(C++);
             }
+#endif
+
+            template <typename T> static inline
+            void BlockCopy(Block<T> &         block,
+                           const void * const source,
+                           const size_t       length) noexcept
+            {
+                assert(Good(source,length));
+                assert(length<=block.maxi);
+                memcpy(block.data,source,(block.size=length)*sizeof(T));
+            }
+
 
         }
 
@@ -140,16 +153,15 @@ namespace Yttrium
             assert( Good(entry,count) );
             switch(view)
             {
-                case View8:  BlockCopy( block<uint8_t>().data,  entry, count); break;
-                case View16: BlockCopy( block<uint16_t>().data, entry, count); break;
-                case View32: BlockCopy( block<uint32_t>().data, entry, count); break;
-                case View64: BlockCopy( block<uint64_t>().data, entry, count); break;
+                case View8:  BlockCopy( block<uint8_t>(),  entry, count); break;
+                case View16: BlockCopy( block<uint16_t>(), entry, count); break;
+                case View32: BlockCopy( block<uint32_t>(), entry, count); break;
+                case View64: BlockCopy( block<uint64_t>(), entry, count); break;
             }
             update();
         }
 
-#endif
-
+        
 
         Model:: ~Model() noexcept
         {

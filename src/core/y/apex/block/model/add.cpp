@@ -20,16 +20,35 @@ namespace Yttrium
                 assert(nbig>=nlit);
                 assert(nlit>0);
                 assert(nbig>0);
-                Model * const result  = new Model(nbig+1,SmallView);
+                assert(lit);
+                assert(big);
+                const size_t  output  = nbig+1;
+                Model * const result  = new Model(output*sizeof(SMALL),SmallView);
                 LARGE         carry   = 0;
-                SMALL *       sum     = result->get<SMALL>().data;
+                Block<SMALL> &blk     = result->get<SMALL>(); assert(blk.maxi>=output);
+                SMALL *       sum     = blk.data;
+
+                // common part
                 for(size_t i=nlit;i>0;--i)
                 {
-                    carry += LARGE( *(lit++) ) + LARGE( *(big++) );
+                    carry   += LARGE( *(lit++) ) + LARGE( *(big++) );
+                    *(sum)++ = SMALL(carry);
+                    carry  >>= SmallBits;
+                }
+
+                // propagate carry to bigger part
+                for(size_t i=nbig-nlit;i>0;--i)
+                {
+                    carry   += LARGE( *(big++) );
                     *(sum)++ = SMALL(carry);
                     carry >>= SmallBits;
                 }
 
+                // store carry in last word
+                *sum     = SMALL(carry);
+
+                // update created model
+                blk.size = output;
                 result->update();
                 return result;
             }
@@ -64,7 +83,7 @@ namespace Yttrium
                     }
                     else
                     {
-                        return n<=m ? Compute_(a,n,b,m) : Compute_(b,m,a,n);
+                        return (n<=m) ? Compute_(a,n,b,m) : Compute_(b,m,a,n);
                     }
                 }
             }
