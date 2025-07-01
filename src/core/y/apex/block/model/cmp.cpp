@@ -1,7 +1,7 @@
 #include "y/apex/block/model.hpp"
 #include "y/apex/m/format.hpp"
 #include "y/check/usual.hpp"
-
+#include "y/pointer/auto.hpp"
 
 namespace Yttrium
 {
@@ -18,6 +18,8 @@ namespace Yttrium
             {
                 assert(Good(lhs,nl));
                 assert(Good(rhs,nr));
+                //Hexadecimal::Display(std::cerr << "cmp: ",lhs,nl);
+                //Hexadecimal::Display(std::cerr,rhs,nr) << std::endl;
 
                 switch( Sign::Of(nl,nr) )
                 {
@@ -56,22 +58,22 @@ namespace Yttrium
             }
 
             static inline
-            SignType Of(const Block<T> &lhs, const Block<T> &rhs) noexcept
+            SignType Of_(const Block<T> &lhs, const Block<T> &rhs) noexcept
             {
                 return Of(lhs.data,lhs.size,rhs.data,rhs.size);
             }
 
             static inline
-            SignType Of(Model &lhs, Model &rhs) noexcept
+            SignType Of(const Model &lhs, const Model &rhs) noexcept
             {
-                return Of(lhs.make<T>(),rhs.make<T>());
+                return Of_( lhs.get<T>(), rhs.get<T>() );
             }
 
             static inline
             SignType Of(const Model &lhs, natural_t n)
             {
-                const Block<T> & L = lhs.get<T>();
-                size_t           nr = 0;
+                const Block<T> & L   = lhs.get<T>();
+                size_t           nr  = 0;
                 const T * const  rhs = UFormatAs<T>(n,nr);
                 return Of(L.data,L.size,rhs,nr);
             }
@@ -81,9 +83,9 @@ namespace Yttrium
 
 
 
-        SignType Model:: Compare(Model &lhs, Model &rhs) noexcept
+        SignType Model:: Compare(const Model &lhs, const Model &rhs)
         {
-            typedef SignType (*Cmp)(Model &, Model &);
+            typedef SignType (*Cmp)(const Model &, const Model &);
             static  Cmp  const CmpTable[Metrics::Views] =
             {
                 ModelCmp<uint8_t> ::Of,
@@ -94,9 +96,19 @@ namespace Yttrium
 
             switch( Sign::Of(lhs.view,rhs.view) )
             {
-                case Negative: return CmpTable[rhs.view](lhs,rhs);
-                case Positive: return CmpTable[lhs.view](lhs,rhs);
-                case __Zero__:
+                case Negative: {
+                    // use rhs.view
+                    const ViewType       v = rhs.view;
+                    const AutoPtr<Model> l = new Model(lhs,v);
+                    return CmpTable[v](*l,rhs);
+                }
+                case Positive: {
+                    // use lhs.view
+                    const ViewType       v = lhs.view;
+                    const AutoPtr<Model> r = new Model(rhs,v);
+                    return CmpTable[v](lhs,*r);
+                }
+                case __Zero__: // same views
                     break;
             }
             return CmpTable[lhs.view](lhs,rhs);

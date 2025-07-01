@@ -23,11 +23,17 @@ namespace Yttrium
             relax();
         }
 
-        void Natural:: relax() noexcept
+
+        void Natural:: alter(const ViewType view) noexcept
         {
-            code->set( Model::SmallView[Ops] );
+            code->set( view );
+
         }
 
+        void Natural:: relax() noexcept
+        {
+            alter(  Model::SmallView[Ops] );
+        }
 
         Natural:: Natural(Model * const model) noexcept :
         Number(),

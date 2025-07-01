@@ -15,6 +15,11 @@ namespace Yttrium
         {
             return Sign::Opposite( Model::Compare(*rhs.code,lhs) );
         }
+
+        SignType Natural:: Compare(const Natural &lhs, const Natural &rhs)
+        {
+            return Model::Compare(*lhs.code,*rhs.code);
+        }
     }
 
 }

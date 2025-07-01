@@ -20,7 +20,7 @@ namespace Yttrium
         struct UFormat<natural_t>
         {
             static inline
-            uint64_t * Make(natural_t &data, const size_t) noexcept
+            const uint64_t * Make(natural_t &data, const size_t) noexcept
             {
                 return &data;
             };
@@ -40,12 +40,13 @@ namespace Yttrium
             U * Make(natural_t &data, size_t size) noexcept
             {
                 assert(size<=sizeof(natural_t)/sizeof(U));
+                static const unsigned shr = 8 * sizeof(U);
                 natural_t  v = data;
-                U        * u = (U *) &data;
-                while(size-- > 0)
+                U * const  u = (U *) &data;
+                for(size_t i=0;i<size;++i)
                 {
-                    *(u++) =   U(v);
-                    v      >>= 8*sizeof(U);
+                    u[i] = U(v);
+                    v  >>= shr;
                 }
                 return u;
             }
@@ -61,7 +62,7 @@ namespace Yttrium
         template <typename T> inline
         const T * UFormatAs(natural_t &data, size_t &size)
         {
-            size          = SizeFor<T>::From( Calculus::BitsFor::Count(data) );
+            size = SizeFor<T>::From( Calculus::BitsFor::Count(data) );
             return UFormat<T>::Make(data,size);
         }
     }
