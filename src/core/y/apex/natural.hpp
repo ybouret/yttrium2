@@ -91,7 +91,7 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             Natural(Random::Bits &ran, const size_t numBits);
 
 
-            String hexString() const;
+            String    hexString()      const;
             size_t    bits()  const noexcept;
             size_t    bytes() const noexcept;
             void      relax()        noexcept;

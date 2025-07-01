@@ -190,7 +190,7 @@ namespace Yttrium
 
         Natural:: Natural(InputStream &fp, const char * const varName) :
         Number(),
-        code( Model::Load(fp, Model::SmallView[Ops], varName) )
+        code( Model::Load(fp,Model::SmallView[Ops],varName) )
         {
 
         }
