@@ -106,7 +106,7 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             void      relax()        noexcept;        //!< relax to Ops matching view
             void      alter(const ViewType) noexcept; //!< alter to given viea
             Natural & xch(Natural &) noexcept;        //!< exchange \return *this
-            uint64_t  ls64()   const noexcept;        //!< least significant 64 bits
+            uint64_t  ls64()   const noexcept;        //!< \return least significant 64 bits
 
             //__________________________________________________________________
             //
@@ -114,7 +114,7 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             // comparison
             //
             //__________________________________________________________________
-#if !DOXYGEN_SHOULD_SKIP_THIS
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
             Y_APN_Compare_Impl(==, == __Zero__)
             Y_APN_Compare_Impl(!=, != __Zero__)
             Y_APN_Compare_Impl(<,  == Negative)
@@ -154,7 +154,7 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             //__________________________________________________________________
             Natural & operator--();      //!< prefix  \return decreased *this
             Natural   operator--(int);   //!< postfix \return previous  *this, decreased
-            void decr();
+            void decr();                 //!< in-place decrease
 
             //__________________________________________________________________
             //
@@ -162,6 +162,12 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             // conversion
             //
             //__________________________________________________________________
+
+            //! try cast to integral value
+            /**
+             \param value target value
+             \return true if compatible
+             */
             template <typename T> inline
             bool tryCast(T &value) const noexcept
             {
@@ -187,7 +193,7 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             Y_APN_Proto_Decl(static Model *,Add); //!< addition prototypes
             Y_APN_Proto_Decl(static Model *,Sub); //!< subtraction prototypes
 
-            //! unsigned try cast
+            //! unsigned try cast \param value unsigned target \return true if possible
             template <typename T> inline
             bool tryCast(T &value, const IntToType<false> &) const noexcept
             {
@@ -197,6 +203,7 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
                 return true;
             }
 
+            //! signed try cast \param value signed target \return true if possible
             template <typename T> inline
             bool tryCast(T &value, const IntToType<true> &) const noexcept
             {
@@ -213,7 +220,7 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
 
     }
 
-    typedef Apex::Natural apn;
+    typedef Apex::Natural apn; //!< alias
 
 }
 

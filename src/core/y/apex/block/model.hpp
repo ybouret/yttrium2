@@ -119,6 +119,7 @@ namespace Yttrium
                 return block<T>();
             }
 
+            //! \return current api
             const BlockAPI & api() const noexcept;
 
 
@@ -140,10 +141,10 @@ namespace Yttrium
             static Model * Sub(const OpsMode, const natural_t, const Model &);   //!< addition \return resulting model
 
 
-            //! compare by adjusting to biggest view
+            //! compare by adjusting to biggest view \return comparison
             static SignType Compare(const Model &, const Model &);
 
-            //! compare by formatting natural_t to model view
+            //! compare by formatting natural_t to model view \return comparison
             static SignType Compare(const Model &, const natural_t) noexcept;
 
             //__________________________________________________________________

@@ -55,7 +55,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            //! setup with seed
+            //! setup with seed \param s seed
             inline explicit ISAAC(const uint32_t s) noexcept :
             Bits(0xffffffff),
             rctx()
@@ -124,7 +124,7 @@ namespace Yttrium
 (r)->randrsl[(r)->randcnt])
 #endif
 
-            //! interface for bits
+            //! [Bits] \return next 32-bits
             inline virtual uint32_t next32() noexcept
             {
                 randctx * const ctx = &rctx;
@@ -132,8 +132,10 @@ namespace Yttrium
             }
 
         private:
-            Y_Disable_Copy_And_Assign(ISAAC);
-            randctx rctx;
+            Y_Disable_Copy_And_Assign(ISAAC); //!< discarding
+            randctx rctx; //!< context
+
+            //! clear context
             inline void clear() noexcept { memset(&rctx,0,sizeof(rctx)); }
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -149,10 +151,13 @@ g^=h<<8;  b+=g; h+=a; \
 h^=a>>9;  c+=h; a+=b; \
 }
 #endif
-            /*
+            //! initialize
+            /**
              ------------------------------------------------------------------------------
              If (flag==TRUE), then use the contents of randrsl[0..RANDSIZ-1] as the seed.
              ------------------------------------------------------------------------------
+             \param ctx context
+             \param flag selector
              */
             static void randinit(randctx * const ctx, const bool flag) noexcept
             {
@@ -219,6 +224,7 @@ a = (a^(mix)) + *(m2++); \
 
 #endif
 
+            //! update \param ctx context
             static inline void isaac(randctx * const ctx)
             {
                 ub4 a,b,x,y,*m,*mm,*m2,*r,*mend;

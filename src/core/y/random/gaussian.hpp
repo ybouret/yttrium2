@@ -32,7 +32,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            typedef typename Alea<T>::Type CoreType;
+            typedef typename Alea<T>::Type CoreType; //!< alias
 
             //__________________________________________________________________
             //
@@ -41,7 +41,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            //! setup
+            //! setup \param sharedBits bits producer
             inline explicit Gaussian(const SharedBits &sharedBits) noexcept :
             SharedBits(sharedBits), i0(true), g0(0), g1(0)
             { BoxMuller(); }
@@ -56,7 +56,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            //! return next Gaussian value
+            //! \return next Gaussian value
             inline T operator()(void) noexcept
             {
                 if(i0)
@@ -75,9 +75,10 @@ namespace Yttrium
 
 
         private:
-            Y_Disable_Copy_And_Assign(Gaussian);
-            bool       i0;
-            CoreType   g0,g1;
+            Y_Disable_Copy_And_Assign(Gaussian); //!< discarding
+            bool       i0;        //!< indicator
+            CoreType   g0;        //!< generated
+            CoreType   g1;        //!< generated
 
             //! compute two succesive values
             inline void BoxMuller() noexcept

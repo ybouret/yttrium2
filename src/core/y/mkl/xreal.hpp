@@ -72,13 +72,13 @@ inline friend bool operator OP (const T      lhs, const XReal &rhs) noexcept { r
         //
         //______________________________________________________________________
         XReal() noexcept;                                //!< zero
-        XReal(const T x);                                //!< decompose
+        XReal(const T);                                  //!< decompose
         XReal(const XReal &) noexcept;                   //!< copy
-        XReal & operator=(const XReal &) noexcept;       //!< assign
-        XReal & operator=(const T);                      //!< decompose/assign
+        XReal & operator=(const XReal &) noexcept;       //!< assign \return *this
+        XReal & operator=(const T);                      //!< decompose/assign \return *this
         ~XReal() noexcept;                               //!< cleanup
-        XReal(const T x, const Raised_ &, const int xp); //!< x * radix^xp
-        
+        XReal(const T x, const Raised_ &, const int xp); //!< set to x * radix^xp \param x real \param xp exponent  
+
         //______________________________________________________________________
         //
         //
@@ -95,14 +95,14 @@ inline friend bool operator OP (const T      lhs, const XReal &rhs) noexcept { r
 
         void               ldz()           noexcept;   //!< in place set to zero
         void               neg()           noexcept;   //!< in place mantissa sign change
-        XReal              abs()     const noexcept;   //!< absolute value
-        XReal              sqrt()             const;   //!< square root
-        T                  log()              const;   //!< log
-        T                  log10()            const;   //!< log10
-        XReal              pow(const T alpha) const;   //!< this^alpha
-        Core::String<char> str()              const;   //!< %.15g
+        XReal              abs()     const noexcept;   //!< \return absolute value
+        XReal              sqrt()             const;   //!< \return square root
+        T                  log()              const;   //!< \return log
+        T                  log10()            const;   //!< \return log10
+        XReal              pow(const T alpha) const;   //!< \param alpha exponent \return this^alpha
+        Core::String<char> str()              const;   //!<  \return "%.15g"
 
-        static Core::String<char> ToString(const XReal &x); //!< return x.str()
+        static Core::String<char> ToString(const XReal &x); //!< \param x xreal \return x.str()
 
 
         //______________________________________________________________________
@@ -119,8 +119,8 @@ inline friend bool operator OP (const T      lhs, const XReal &rhs) noexcept { r
         Y_XREAL_BINARY(-,Sub)
 #endif
 
-        XReal operator+() const noexcept; //!< unary +
-        XReal operator-() const noexcept; //!< unary -
+        XReal operator+() const noexcept; //!< unary + \return   *this
+        XReal operator-() const noexcept; //!< unary - \return - *this
 
 
         //______________________________________________________________________
@@ -129,9 +129,9 @@ inline friend bool operator OP (const T      lhs, const XReal &rhs) noexcept { r
         // comparisons
         //
         //______________________________________________________________________
-        static SignType Compare(const XReal &lhs, const XReal &rhs) noexcept; //!< generic comparison, C++ style
-        static SignType Compare(const XReal &lhs, const T      rhs) noexcept; //!< alias
-        static SignType Compare(const T      lhs, const XReal &rhs) noexcept; //!< alias
+        static SignType Compare(const XReal &, const XReal &) noexcept; //!< \return comparison
+        static SignType Compare(const XReal &, const T      ) noexcept; //!< \return comparison
+        static SignType Compare(const T      , const XReal &) noexcept; //!< \return comparison
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
         Y_XREAL_CMP(==,  == __Zero__ )
@@ -148,8 +148,8 @@ inline friend bool operator OP (const T      lhs, const XReal &rhs) noexcept { r
         // Other
         //
         //______________________________________________________________________
-        T p() const; //!< -log10
-        
+        T p() const; //!< \return -log10(*this)
+
 
         //______________________________________________________________________
         //
@@ -161,12 +161,12 @@ inline friend bool operator OP (const T      lhs, const XReal &rhs) noexcept { r
         const T   mantissa; //!< mantissa
 
     private:
-        explicit XReal(const int, const T) noexcept;
-        static XReal Mul(const XReal &, const XReal &) noexcept;
-        static XReal Div(const XReal &, const XReal &);
-        static XReal Add(const XReal &, const XReal &);
-        static XReal Sub(const XReal &, const XReal &);
-        void   display(std::ostream &) const;
+        explicit XReal(const int, const T) noexcept;             //!< manual setup
+        static XReal Mul(const XReal &, const XReal &) noexcept; //!< \return mutliplication
+        static XReal Div(const XReal &, const XReal &);          //!< \return division
+        static XReal Add(const XReal &, const XReal &);          //!< \return addition
+        static XReal Sub(const XReal &, const XReal &);          //!< \return subtraction
+        void   display(std::ostream &) const;                    //!< display
     };
 
 }

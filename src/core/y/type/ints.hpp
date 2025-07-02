@@ -137,16 +137,32 @@ namespace Yttrium
 
 
     template <unsigned> struct UnsignedSizeOf;
-    template <>         struct UnsignedSizeOf<1> { typedef uint8_t  Type; };
-    template <>         struct UnsignedSizeOf<2> { typedef uint16_t Type; };
-    template <>         struct UnsignedSizeOf<4> { typedef uint32_t Type; };
-    template <>         struct UnsignedSizeOf<8> { typedef uint64_t Type; };
+
+    //! uint8_t selector
+    template <>         struct UnsignedSizeOf<1> { typedef uint8_t  Type; /*!< alias */ };
+
+    //! uint16_t selector
+    template <>         struct UnsignedSizeOf<2> { typedef uint16_t Type; /*!< alias */ };
+
+    //! uint32_t selector
+    template <>         struct UnsignedSizeOf<4> { typedef uint32_t Type; /*!< alias */ };
+
+    //! uint64_t selector
+    template <>         struct UnsignedSizeOf<8> { typedef uint64_t Type; /*!< alias */ };
 
     template <unsigned> struct SignedSizeOf;
-    template <>         struct SignedSizeOf<1> { typedef int8_t  Type; };
-    template <>         struct SignedSizeOf<2> { typedef int16_t Type; };
-    template <>         struct SignedSizeOf<4> { typedef int32_t Type; };
-    template <>         struct SignedSizeOf<8> { typedef int64_t Type; };
+
+    //! int8_t selector
+    template <>         struct SignedSizeOf<1> { typedef int8_t  Type; /*!< alias */ };
+
+    //! int16_t selector
+    template <>         struct SignedSizeOf<2> { typedef int16_t Type; /*!< alias */ };
+
+    //! int32_t selector
+    template <>         struct SignedSizeOf<4> { typedef int32_t Type; /*!< alias */ };
+
+    //! int64_t selector
+    template <>         struct SignedSizeOf<8> { typedef int64_t Type; /*!< alias */ };
 
 
 

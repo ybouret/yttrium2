@@ -11,11 +11,12 @@ namespace Yttrium
 
     namespace Calculus
     {
+        //! integer square root algorithm
         struct IntegerSquareRoot
         {
-            static void throwNegativeArg();
+            static void throwNegativeArg(); //!< error on negative input
 
-            //! unsigned
+            //! unsigned \param s argument \return isqrt
             template <typename T> static inline
             T Compute(const T s, const IntToType<false> &) noexcept
             {
@@ -29,7 +30,7 @@ namespace Yttrium
                 return x0;
             }
 
-            //! signed
+            //! signed \param s argument \return isqrt
             template <typename T> static inline
             T Compute(const T s, const IntToType<true> &) noexcept
             {
@@ -44,7 +45,7 @@ namespace Yttrium
 
     }
 
-    //! integer square root
+    //! integer square root \param s integral value \return isqrt
     template <typename T> inline
     T IntegerSquareRoot(const T s) noexcept
     {

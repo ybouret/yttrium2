@@ -102,22 +102,24 @@ namespace Yttrium
         };
 
 
+        //! PairType naming
         enum PairType
         {
-            NN,
-            NZ,
-            NP,
+            NN, //!< Negative/Negative
+            NZ, //!< Negative/__Zero__
+            NP, //!< Negative/Positive
 
-            ZN,
-            ZZ,
-            ZP,
+            ZN, //!< __Zero__/Negative
+            ZZ, //!< __Zero__/__Zero__
+            ZP, //!< __Zero__/Positive
 
-            PN,
-            PZ,
-            PP
+            PN, //!< Positive/Negative
+            PZ, //!< Positive/__Zero__
+            PP  //!< Positive/Positive
         };
 
-        static PairType Pair(const SignType l, const SignType r) noexcept;
+        //! \return PairType from two signs
+        static PairType Pair(const SignType, const SignType) noexcept;
 
 
     };

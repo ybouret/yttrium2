@@ -21,8 +21,12 @@ namespace Yttrium
 
 
         template <typename T> struct Alea;
-        template <typename T> struct Alea< XReal<T> > { typedef T Type; };
-        template <typename T> struct Alea             { typedef T Type; };
+
+        //! select T for XReal<T>
+        template <typename T> struct Alea< XReal<T> > { typedef T Type; /*!< alias */ };
+
+        //! select T for real T
+        template <typename T> struct Alea             { typedef T Type; /*!< alias */ };
 
 
         //______________________________________________________________________
@@ -89,6 +93,7 @@ namespace Yttrium
                 return choice() ? -u : u;
             }
 
+            //! \return real in ]-1:1[
             template <typename T> inline T symm() noexcept
             {
                 return static_cast<T>( symm32() );
@@ -185,7 +190,7 @@ namespace Yttrium
 
         };
 
-        typedef ArcPtr<Bits> SharedBits;
+        typedef ArcPtr<Bits> SharedBits; //!< alias
 
 
     }

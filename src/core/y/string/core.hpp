@@ -67,7 +67,7 @@ namespace Yttrium
             typedef Stride<T>                 Code;           //!< alias
             typedef Contiguous< Writable<T> > ContiguousType; //!< alias
             typedef Sequence<T,Expandable>    SequenceType;   //!< alias
-            Y_Args_Declare(T,Type);
+            Y_Args_Declare(T,Type);                           //!< aliases
 
             //__________________________________________________________________
             //
@@ -183,7 +183,7 @@ namespace Yttrium
 
             virtual const T & getHead() const noexcept;
             virtual const T & getTail() const noexcept;
-            std::ostream &    print(std::ostream &) const;
+            std::ostream &    print(std::ostream &) const; //!< helper for display \return output stream
 
         };
 

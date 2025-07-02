@@ -68,7 +68,7 @@ if ( !(EXPR) ) { std::cerr << #EXPR << " failure" << std::endl; return false; } 
             virtual void     naught(BlockAPI * const [])  noexcept = 0;   //!< set to zero with sync
             virtual void     build1(BlockAPI * const [])  noexcept = 0;   //!< set to one   with sync
             virtual void     resize(const size_t numBits) noexcept = 0;   //!< set size \param numBits computed bits
-            virtual uint64_t little()               const noexcept = 0;   //!< little 64 bits
+            virtual uint64_t little()               const noexcept = 0;   //!< \return little 64 bits
             bool             isValid()              const noexcept;       //!< full check, mostly for debug \return validity
 
             //__________________________________________________________________

@@ -64,10 +64,15 @@ namespace Yttrium
         {
         }
 
-        Integer & Integer:: operator=(const integer_t z)
+        Integer & Integer:: operator=(const integer_t z) noexcept
         {
-            Integer tmp(z);
-            return xch(tmp);
+            switch( Sign::Of(s) )
+            {
+                case Negative: Coerce(s) = Negative; Coerce(n) = natural_t(-z); break;
+                case __Zero__: ldz(); break;
+                case Positive: Coerce(s) = Positive; Coerce(n) = natural_t(z); break;
+            }
+            return *this;
         }
 
         std::ostream & operator<<(std::ostream &os, const Integer &z)

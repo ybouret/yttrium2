@@ -17,12 +17,13 @@ namespace Yttrium
     namespace Apex
     {
 
+        //! ReadLittle API
         struct ReadLittle
         {
-            static uint64_t From(const uint64_t *, const size_t) noexcept;
-            static uint64_t From(const uint32_t *, const size_t) noexcept;
-            static uint64_t From(const uint16_t *, const size_t) noexcept;
-            static uint64_t From(const uint8_t  *, const size_t) noexcept;
+            static uint64_t From(const uint64_t *, const size_t) noexcept; //!< \return first 64-bits
+            static uint64_t From(const uint32_t *, const size_t) noexcept; //!< \return first 64-bits
+            static uint64_t From(const uint16_t *, const size_t) noexcept; //!< \return first 64-bits
+            static uint64_t From(const uint8_t  *, const size_t) noexcept; //!< \return first 64-bits
         };
 
         //______________________________________________________________________
