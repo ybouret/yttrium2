@@ -41,6 +41,22 @@ namespace Yttrium
         {
         }
 
+        Integer:: Integer(const SignType _s, const Natural & _n) :
+        Number(),
+        s( _s ),
+        n( _n )
+        {
+#if !defined(NDEBUG)
+            switch(s)
+            {
+                case Negative: assert(n.bits() >  0); break;
+                case __Zero__: assert(n.bits() == 0); break;
+                case Positive: assert(n.bits() >  0); break;
+            }
+#endif
+        }
+
+
         Integer:: Integer(const integer_t z) :
         Number(),
         s( Sign::Of(z) ),

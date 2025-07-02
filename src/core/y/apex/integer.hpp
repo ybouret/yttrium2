@@ -54,6 +54,7 @@ Y_APZ_Compare_Impl_(OP,Natural &,Integer &,RES) \
             Integer & xch( Integer &) noexcept;
 
             Y_APZ_Proto_Decl(static SignType,Compare);
+            Y_APZ_Proto_Decl(static Integer,Add);
 
 
 #if !DOXYGEN_SHOULD_SKIP_THIS
@@ -69,6 +70,8 @@ Y_APZ_Compare_Impl_(OP,Natural &,Integer &,RES) \
             const SignType s;
             const Natural  n;
 
+        private:
+            Integer(const SignType, const Natural &);
 
 
         };
