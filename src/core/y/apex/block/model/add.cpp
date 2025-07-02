@@ -118,20 +118,20 @@ static AddProc AddTable[Ops] = \
         
 
 
-        Model * Model:: Add(const OpsMode &ops, const Model &lhs, const Model &rhs)
+        Model * Model:: Add(const OpsMode ops, const Model &lhs, const Model &rhs)
         {
             typedef Model * (*AddProc)(const Model&, const Model&);
             Y_Apex_Model_Add_Table();
             const ViewType view = SmallView[ops];
             AutoPtr<Model> lp,rp;
             Model        * L = & Coerce(lhs); if(view != L->view) { lp = (L=new Model(lhs,view) ); }
-            Model        * R = & Coerce(rhs); if(view != R->view) { rp = (L=new Model(rhs,view) ); }
+            Model        * R = & Coerce(rhs); if(view != R->view) { rp = (R=new Model(rhs,view) ); }
             assert(view==L->view);
             assert(view==R->view);
             return AddTable[ops](*L,*R);
         }
 
-        Model * Model:: Add(const OpsMode &ops, const Model &lhs, const natural_t rhs)
+        Model * Model:: Add(const OpsMode ops, const Model &lhs, const natural_t rhs)
         {
             typedef Model * (*AddProc)(const Model &,natural_t rhs);
             Y_Apex_Model_Add_Table();
@@ -142,6 +142,8 @@ static AddProc AddTable[Ops] = \
             return AddTable[ops](*L,rhs);
         }
 
+
+        
 
     }
 }

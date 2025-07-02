@@ -148,6 +148,22 @@ Y_UTEST(apex_n)
 
 
 
+    {
+        std::cerr << "Subtractions" << std::endl;
+        for(size_t i=0;i<64;++i)
+        {
+            for(size_t j=0;j<64;++j)
+            {
+                const uint64_t l = ran.to<uint64_t>(i);
+                const uint64_t r = ran.to<uint64_t>(j);
+                const uint64_t s = l+r;
+                Apex::Natural  L = l;
+                Apex::Natural  R = r;
+                
+            }
+            
+        }
+    }
 
 
 }

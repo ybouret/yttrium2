@@ -13,6 +13,7 @@ namespace Yttrium
 {
     template <typename T> struct UnsignedInt;
 
+
     //! Metrics for uint8_t
     template <>
     struct UnsignedInt<uint8_t>
@@ -134,6 +135,18 @@ namespace Yttrium
         static  const    T            Maximum = Result::Maximum;          //!< alias
     };
 
+
+    template <unsigned> struct UnsignedSizeOf;
+    template <>         struct UnsignedSizeOf<1> { typedef uint8_t  Type; };
+    template <>         struct UnsignedSizeOf<2> { typedef uint16_t Type; };
+    template <>         struct UnsignedSizeOf<4> { typedef uint32_t Type; };
+    template <>         struct UnsignedSizeOf<8> { typedef uint64_t Type; };
+
+    template <unsigned> struct SignedSizeOf;
+    template <>         struct SignedSizeOf<1> { typedef int8_t  Type; };
+    template <>         struct SignedSizeOf<2> { typedef int16_t Type; };
+    template <>         struct SignedSizeOf<4> { typedef int32_t Type; };
+    template <>         struct SignedSizeOf<8> { typedef int64_t Type; };
 
 
 

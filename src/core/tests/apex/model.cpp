@@ -67,14 +67,7 @@ Y_UTEST(apex_model)
         }
     }
 
-    for(size_t nbit=0;nbit<=130;++nbit)
-    {
-        for(size_t i=0;i<8;++i)
-        {
-            
-        }
-    }
-
+   
 
 
 }
