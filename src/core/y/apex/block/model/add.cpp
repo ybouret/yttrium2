@@ -89,7 +89,7 @@ namespace Yttrium
             }
 
             static inline
-            Model * Compute( Model &lhs, Model &rhs )
+            Model * Compute(Model &lhs, Model &rhs)
             {
                 Block<SMALL> & L = lhs.make<SMALL>();
                 Block<SMALL> & R = rhs.make<SMALL>();

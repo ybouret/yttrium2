@@ -113,7 +113,7 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             // comparison
             //
             //__________________________________________________________________
-#if DOXYGEN_SHOULD_SKIP_THIS
+#if !DOXYGEN_SHOULD_SKIP_THIS
             Y_APN_Compare_Impl(==, == __Zero__)
             Y_APN_Compare_Impl(!=, != __Zero__)
             Y_APN_Compare_Impl(<,  == Negative)
@@ -124,16 +124,25 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             Y_APN_Operator_Impl(+,Add)
 
 #endif
+            //__________________________________________________________________
+            //
+            //
+            // Comparison
+            //
+            //__________________________________________________________________
+            static SignType Compare(const Natural &, const Natural &);          //!< \return comparison
+            static SignType Compare(const Natural &, const natural_t) noexcept; //!< \return comparison
+            static SignType Compare(const natural_t, const Natural &) noexcept; //!< \return comparison
 
             //__________________________________________________________________
             //
             //
-            // addition
+            // Addition
             //
             //__________________________________________________________________
             Natural   operator+() const; //!< \return duplicate
             Natural & operator++();      //!< prefix  \return increased *this
-            Natural   operator++(int);   //!< postfix \return previous *this*
+            Natural   operator++(int);   //!< postfix \return previous  *this
 
             //__________________________________________________________________
             //
@@ -143,13 +152,11 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             //__________________________________________________________________
             virtual size_t serialize(OutputStream &) const;
 
-            static SignType Compare(const Natural &, const Natural &);
-            static SignType Compare(const Natural &, const natural_t) noexcept;
-            static SignType Compare(const natural_t, const Natural &) noexcept;
+
             
         private:
-            Model * const code;
-            Natural(const Attach_ &, Model * const) noexcept;
+            Model * const code; //!< internal representation
+            Natural(const Attach_ &, Model * const) noexcept; //!< setup directly
 
 
 
