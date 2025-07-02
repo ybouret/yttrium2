@@ -134,6 +134,36 @@ inline Integer & operator OP##=(const Natural & rhs) { Integer res( CALL(*this,r
             void incr();
             void decr();
 
+            //! unsigned
+            template <typename T> inline
+            bool tryCast(T &value, const IntToType<false> &) const noexcept
+            {
+                switch(s)
+                {
+                    case Negative: return false;
+                    case __Zero__: value = 0; return false;
+                    case Positive: break;
+                }
+                if( n.bits() > sizeof(T)*8 ) return false;
+                value = T( n.ls64() );
+                return true;
+            }
+
+            //! signed
+            template <typename T> inline
+            bool tryCast(T &value, const IntToType<true> &) const noexcept
+            {
+                if( n.bits() > sizeof(T)*8-1 ) return false;
+                switch(s)
+                {
+                    case __Zero__: value =  0;           break;
+                    case Positive: value =  T(n.ls64()); break;
+                    case Negative: value = -T(n.ls64()); break;
+                }
+                return true;
+            }
+
+
         };
     }
 
