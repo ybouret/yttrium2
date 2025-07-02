@@ -47,10 +47,10 @@ namespace Yttrium
             //
             //__________________________________________________________________
             explicit MT19937();                 //!< setup with system seed
-            explicit MT19937(const uint32_t s); //!< setup with seed
+            explicit MT19937(const uint32_t s); //!< setup with seed \param s user's seed
             virtual ~MT19937()        noexcept; //!< cleanup
 
-            //! setup with array of words
+            //! setup with array of words \param init_key values \param key_length count
             explicit MT19937(const uint32_t init_key[], const size_t key_length)  ;
 
             //__________________________________________________________________
@@ -60,18 +60,18 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            //! generates a random number on [0,0xffffffff]-interval
+            //! \return a random number on [0,0xffffffff]
             virtual uint32_t next32(void) noexcept;
 
-            virtual const char * callSign() const noexcept; //!< CallSign
+            virtual const char * callSign() const noexcept;
 
         private:
-            Y_Disable_Copy_And_Assign(MT19937);
+            Y_Disable_Copy_And_Assign(MT19937); //!< discarding
             size_t   mti;   //!< mti==N+1 means mt[N] is not initialized
             uint32_t mt[N]; //!< the array for the state vector
 
-            void init_genrand(const uint32_t s) noexcept; //!< initializes mt[N] with a seed
-            void init_by_array(const uint32_t init_key[], size_t key_length) noexcept; //!< initialize by an array with array-length
+            void init_genrand(const uint32_t)             noexcept; //!< initializes mt[N] with a seed
+            void init_by_array(const uint32_t [], size_t) noexcept; //!< initialize by an array with array-length
         };
 
     }
