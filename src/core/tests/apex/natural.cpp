@@ -152,17 +152,70 @@ Y_UTEST(apex_n)
         std::cerr << "Subtractions" << std::endl;
         for(size_t i=0;i<64;++i)
         {
-            for(size_t j=0;j<64;++j)
+            for(size_t j=0;j<=i;++j)
             {
-                const uint64_t l = ran.to<uint64_t>(i);
-                const uint64_t r = ran.to<uint64_t>(j);
-                const uint64_t s = l+r;
+                uint64_t l = ran.to<uint64_t>(i);
+                uint64_t r = ran.to<uint64_t>(j);
+                if(r>l) Swap(l,r);
+                Y_ASSERT(l>=r);
+                const uint64_t d = l-r;
                 Apex::Natural  L = l;
                 Apex::Natural  R = r;
-                
+
+                for(unsigned u=0;u<Apex::Metrics::Views;++u)
+                {
+                    for(unsigned v=0;v<Apex::Metrics::Views;++v)
+                    {
+                        L.alter( Apex::ViewType(u) );
+                        R.alter( Apex::ViewType(v) );
+
+                        {
+                            Apex::Natural D = L - R;
+                            Y_ASSERT(D==d);
+                        }
+
+                        {
+                            Apex::Natural D = L - r;
+                            Y_ASSERT(D==d);
+                        }
+
+                        {
+                            Apex::Natural D = l - R;
+                            Y_ASSERT(D==d);
+                        }
+
+                        {
+                            Apex::Natural lhs = L; Y_ASSERT(lhs==L);
+                            lhs.alter( Apex::ViewType(u)  );
+                            R.alter( Apex::ViewType(v) );
+                            lhs -= R;
+                            Y_ASSERT(lhs==d);
+                        }
+
+                        {
+                            Apex::Natural lhs = L; Y_ASSERT(lhs==L);
+                            lhs.alter( Apex::ViewType(u)  );
+                            lhs -= r;
+                            Y_ASSERT(lhs==d);
+                        }
+                    }
+                }
             }
             
         }
+
+        Apex::Natural n = 10;
+        while(n!=0)
+        {
+            std::cerr << ' ' << n--;
+        }
+        std::cerr << std::endl;
+        n = 10;
+        while(n!=0)
+        {
+            std::cerr << ' ' << --n;
+        }
+        std::cerr << std::endl;
     }
 
 

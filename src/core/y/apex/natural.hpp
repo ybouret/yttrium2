@@ -122,7 +122,7 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             Y_APN_Compare_Impl(>=, != Negative)
 
             Y_APN_Operator_Impl(+,Add)
-
+            Y_APN_Operator_Impl(-,Sub)
 #endif
             //__________________________________________________________________
             //
@@ -142,7 +142,16 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             //__________________________________________________________________
             Natural   operator+() const; //!< \return duplicate
             Natural & operator++();      //!< prefix  \return increased *this
-            Natural   operator++(int);   //!< postfix \return previous  *this
+            Natural   operator++(int);   //!< postfix \return previous  *this, increased
+
+            //__________________________________________________________________
+            //
+            //
+            // Subtraction
+            //
+            //__________________________________________________________________
+            Natural & operator--();      //!< prefix  \return decreased *this
+            Natural   operator--(int);   //!< postfix \return previous  *this, decreased
 
             //__________________________________________________________________
             //
@@ -163,7 +172,8 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             Y_APN_Proto_Decl(static Model *,Add); //!< addition prototypes
             void incr();                          //!< increment
 
-
+            Y_APN_Proto_Decl(static Model *,Sub); //!< subtraction prototypes
+            void decr();
         };
 
 

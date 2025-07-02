@@ -130,12 +130,12 @@ namespace Yttrium
             static Model * Load(InputStream &, const ViewType, const char * const); //!< reload with variable name \return read model
 
 
-            static Model * Add(const OpsMode, const Model &, const Model &); //!< addition \return resulting model
-            static Model * Add(const OpsMode, const Model &, const natural_t);     //!< addition \return resulting model
+            static Model * Add(const OpsMode, const Model &, const Model &);   //!< addition \return resulting model
+            static Model * Add(const OpsMode, const Model &, const natural_t); //!< addition \return resulting model
 
-            static Model * Sub(const OpsMode, const Model &,   const Model &); //!< addition \return resulting model
-            static Model * Sub(const OpsMode, const Model &,   const natural_t);     //!< addition \return resulting model
-            static Model * Sub(const OpsMode, const natural_t, const Model &); //!< addition \return resulting model
+            static Model * Sub(const OpsMode, const Model &,   const Model &);   //!< addition \return resulting model
+            static Model * Sub(const OpsMode, const Model &,   const natural_t); //!< addition \return resulting model
+            static Model * Sub(const OpsMode, const natural_t, const Model &);   //!< addition \return resulting model
 
 
             //! compare by adjusting to biggest view
@@ -143,8 +143,6 @@ namespace Yttrium
 
             //! compare by formatting natural_t to model view
             static SignType Compare(const Model &, const natural_t) noexcept;
-
-            
 
             //__________________________________________________________________
             //

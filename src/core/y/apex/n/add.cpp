@@ -1,7 +1,6 @@
 
 #include "y/apex/natural.hpp"
 #include "y/apex/block/model.hpp"
-#include "y/pointer/auto.hpp"
 
 namespace Yttrium
 {
