@@ -14,19 +14,12 @@ namespace Yttrium
 
         Model * Natural:: Add(const Natural &lhs, const Natural &rhs)
         {
-            const ViewType view = Model::SmallView[Ops];
-            AutoPtr<Model> lp,rp;
-            Model * L = Coerce(lhs.code); if(view!=L->view) { L = new Model(*L,view); lp = L; }
-            Model * R = Coerce(rhs.code); if(view!=R->view) { R = new Model(*R,view); rp = R; }
-            return Model::Add(Ops,*L,*R);
+            return Model::Add(Ops,*lhs.code,*rhs.code);
         }
 
         Model * Natural:: Add(const Natural &lhs, const natural_t rhs)
         {
-            const ViewType view = Model::SmallView[Ops];
-            AutoPtr<Model> lp;
-            Model * L = Coerce(lhs.code); if(view!=L->view) { L = new Model(*L,view); lp = L; }
-            return Model::Add(Ops,*L,rhs);
+            return Model::Add(Ops,*lhs.code,rhs);
         }
 
         Model * Natural:: Add(const natural_t lhs, const Natural &rhs)

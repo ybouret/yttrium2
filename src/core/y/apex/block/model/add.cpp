@@ -1,5 +1,6 @@
 #include "y/apex/block/model.hpp"
 #include "y/apex/m/format.hpp"
+#include "y/pointer/auto.hpp"
 
 namespace Yttrium
 {
@@ -89,19 +90,19 @@ namespace Yttrium
             }
 
             static inline
-            Model * Compute(Model &lhs, Model &rhs)
+            Model * Compute(const Model &lhs, const Model &rhs)
             {
-                Block<SMALL> & L = lhs.make<SMALL>();
-                Block<SMALL> & R = rhs.make<SMALL>();
+                const Block<SMALL> & L = lhs.get<SMALL>();
+                const Block<SMALL> & R = rhs.get<SMALL>();
                 return Compute(L.data,L.size,R.data,R.size);
             }
 
             static inline
-            Model * Compute( Model &lhs, natural_t rhs)
+            Model * Compute(const Model &lhs, natural_t rhs)
             {
-                Block<SMALL> &      L = lhs.make<SMALL>();
-                size_t              N = 0;
-                const SMALL * const R = UFormatAs<SMALL>(rhs,N);
+                const Block<SMALL> & L = lhs.get<SMALL>();
+                size_t               N = 0;
+                const SMALL * const  R = UFormatAs<SMALL>(rhs,N);
                 return Compute(L.data,L.size,R,N);
             }
 
@@ -113,20 +114,32 @@ namespace Yttrium
 static AddProc AddTable[Ops] = \
 {\
  Y_Apex_Model_Table(ModelAdd,::Compute) \
-};\
-return AddTable[ops](lhs,rhs)
+}
+        
 
 
-        Model * Model:: Add(const OpsMode &ops, Model &lhs, Model &rhs)
+        Model * Model:: Add(const OpsMode &ops, const Model &lhs, const Model &rhs)
         {
-            typedef Model * (*AddProc)(Model&,Model&);
+            typedef Model * (*AddProc)(const Model&, const Model&);
             Y_Apex_Model_Add_Table();
+            const ViewType view = SmallView[ops];
+            AutoPtr<Model> lp,rp;
+            Model        * L = & Coerce(lhs); if(view != L->view) { lp = (L=new Model(lhs,view) ); }
+            Model        * R = & Coerce(rhs); if(view != R->view) { rp = (L=new Model(rhs,view) ); }
+            assert(view==L->view);
+            assert(view==R->view);
+            return AddTable[ops](*L,*R);
         }
 
-        Model * Model:: Add(const OpsMode &ops, Model &lhs, const natural_t rhs)
+        Model * Model:: Add(const OpsMode &ops, const Model &lhs, const natural_t rhs)
         {
-            typedef Model * (*AddProc)(Model&,natural_t rhs);
+            typedef Model * (*AddProc)(const Model &,natural_t rhs);
             Y_Apex_Model_Add_Table();
+            const ViewType view = SmallView[ops];
+            AutoPtr<Model> lp;
+            Model        * L = & Coerce(lhs); if(view != L->view) { lp = (L=new Model(lhs,view) ); }
+            assert(view==L->view);
+            return AddTable[ops](*L,rhs);
         }
 
 

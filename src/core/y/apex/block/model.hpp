@@ -130,8 +130,8 @@ namespace Yttrium
             static Model * Load(InputStream &, const ViewType, const char * const); //!< reload with variable name \return read model
 
 
-            static Model * Add(const OpsMode &, Model &, Model &);   //!< addition \return resulting model
-            static Model * Add(const OpsMode &, Model &, natural_t); //!< addition \return resulting model
+            static Model * Add(const OpsMode &, const Model &, const Model &); //!< addition \return resulting model
+            static Model * Add(const OpsMode &, const Model &, natural_t);     //!< addition \return resulting model
 
             //! compare by adjusting to biggest view
             static SignType Compare(const Model &, const Model &);
