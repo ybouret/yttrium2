@@ -89,12 +89,12 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            Model & ldz(const ViewType) noexcept; //!< set to zero             \return *this
-            Model & set(const ViewType) noexcept; //!< transmogriy to new view \return *this
-            void    cpy(const Model & ) noexcept; //!< copy when capacity is enough
-            void    update() noexcept;            //!< update view, set bits
-
-
+            Model &  ldz(const ViewType) noexcept; //!< set to zero \return *this
+            Model &  ld1(const ViewType) noexcept; //!< set to 1    \return *this
+            Model &  set(const ViewType) noexcept; //!< transmogriy to new view \return *this
+            void     cpy(const Model & ) noexcept; //!< copy when capacity is enough
+            void     update() noexcept;            //!< update view, set bits
+            
             //! \return get block with matching view
             template <typename T>
             inline const Block<T> & get() const noexcept
@@ -118,6 +118,8 @@ namespace Yttrium
                 set(  BlockAPI::VTable[ IntegerLog2For<T>::Value ] );
                 return block<T>();
             }
+
+            const BlockAPI & api() const noexcept;
 
 
             //__________________________________________________________________

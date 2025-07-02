@@ -188,11 +188,29 @@ namespace Yttrium
             return *this;
         }
 
+        uint64_t Natural:: ls64() const noexcept
+        {
+            return code->api().little();
+        }
+
+
         Natural:: Natural(InputStream &fp, const char * const varName) :
         Number(),
         code( Model::Load(fp,Model::SmallView[Ops],varName) )
         {
 
+        }
+
+       void Natural:: ldz() noexcept
+        {
+            assert(0!=code);
+            (void) code->ldz(Model::SmallView[Ops]);
+        }
+
+        void Natural:: ld1() noexcept
+        {
+            assert(0!=code);
+            (void) code->ld1(Model::SmallView[Ops]);
         }
 
 

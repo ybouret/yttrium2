@@ -95,8 +95,27 @@ namespace Yttrium
 
         void  Integer:: decr()
         {
-            //Natural res(Attach,Natural::Sub(*this,1) );
-            //xch(res);
+            switch(s)
+            {
+                case Negative:
+                    Coerce(n).incr();
+                    break;
+
+                case __Zero__:
+                    Coerce(s) = Negative;
+                    Coerce(n).ld1();
+                    break;
+
+                case Positive:
+                    if(n.bits()<=1)
+                    {
+                        ldz();
+                    }
+                    else
+                    {
+                        Coerce(n).decr();
+                    }
+            }
         }
 
         Integer & Integer:: operator--()

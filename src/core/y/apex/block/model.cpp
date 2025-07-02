@@ -188,6 +188,39 @@ namespace Yttrium
             return *this;
         }
 
+        Model & Model:: ld1(const ViewType userView) noexcept
+        {
+            switch(view)
+            {
+                case View8:  block<uint8_t>(). build1(sync[View8]);   break;
+                case View16: block<uint16_t>().build1(sync[View16]); break;
+                case View32: block<uint32_t>().build1(sync[View32]); break;
+                case View64: block<uint64_t>().build1(sync[View64]); break;
+            }
+            Coerce(bits) = 1;
+            Coerce(view) = userView;
+            return *this;
+        }
+
+
+
+
+
+        const BlockAPI & Model:: api() const noexcept
+        {
+            switch(view)
+            {
+                case View8:  return block<uint8_t>();
+                case View16: return block<uint16_t>();
+                case View32: return block<uint32_t>();
+                case View64:
+                    break;
+            }
+            return block<uint64_t>();
+        }
+
+
+
 
 
         void Model:: update() noexcept

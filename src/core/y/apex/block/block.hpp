@@ -17,6 +17,14 @@ namespace Yttrium
     namespace Apex
     {
 
+        struct ReadLittle
+        {
+            static uint64_t From(const uint64_t *, const size_t) noexcept;
+            static uint64_t From(const uint32_t *, const size_t) noexcept;
+            static uint64_t From(const uint16_t *, const size_t) noexcept;
+            static uint64_t From(const uint8_t  *, const size_t) noexcept;
+        };
+
         //______________________________________________________________________
         //
         //
@@ -92,10 +100,28 @@ namespace Yttrium
                 assert(0!=sync[2]); sync[2]->size=0;
             }
 
+            inline virtual void   build1(BlockAPI * const sync[])  noexcept
+            {
+                assert( isValid() );
+                while(size>1)
+                    data[--size] = 0;
+                data[0] = 1;
+                size    = 1;
+                assert( isValid() );
+                assert(0!=sync[0]); sync[0]->size=1;
+                assert(0!=sync[1]); sync[1]->size=1;
+                assert(0!=sync[2]); sync[2]->size=1;
+            }
+
 
             inline virtual void resize(const size_t numBits) noexcept
             {
                 size = SizeFor<T>::From(numBits);
+            }
+
+            inline virtual uint64_t little() const noexcept
+            {
+                return ReadLittle::From(data,size);
             }
 
             //__________________________________________________________________

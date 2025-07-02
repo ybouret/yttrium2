@@ -106,6 +106,7 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             void      relax()        noexcept;        //!< relax to Ops matching view
             void      alter(const ViewType) noexcept; //!< alter to given viea
             Natural & xch(Natural &) noexcept;        //!< exchange \return *this
+            uint64_t  ls64()   const noexcept;        //!< least significant 64 bits
 
             //__________________________________________________________________
             //
@@ -143,6 +144,7 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             Natural   operator+() const; //!< \return duplicate
             Natural & operator++();      //!< prefix  \return increased *this
             Natural   operator++(int);   //!< postfix \return previous  *this, increased
+            void incr();                          //!< increment
 
             //__________________________________________________________________
             //
@@ -152,6 +154,20 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             //__________________________________________________________________
             Natural & operator--();      //!< prefix  \return decreased *this
             Natural   operator--(int);   //!< postfix \return previous  *this, decreased
+            void decr();
+
+            //__________________________________________________________________
+            //
+            //
+            // conversion
+            //
+            //__________________________________________________________________
+            template <typename T> inline
+            bool tryCast(T &value) const noexcept
+            {
+                static const IntToType< IsSigned<T>::Value > choice = {};
+                return tryCast(value,choice);
+            }
 
             //__________________________________________________________________
             //
@@ -160,20 +176,38 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             //
             //__________________________________________________________________
             virtual size_t serialize(OutputStream &) const;
-
+            virtual void   ldz() noexcept;
+            virtual void   ld1() noexcept;
 
             
         private:
             Model * const code; //!< internal representation
             Natural(const Attach_ &, Model * const) noexcept; //!< setup directly
-
-
-
+            
             Y_APN_Proto_Decl(static Model *,Add); //!< addition prototypes
-            void incr();                          //!< increment
-
             Y_APN_Proto_Decl(static Model *,Sub); //!< subtraction prototypes
-            void decr();
+
+            //! unsigned try cast
+            template <typename T> inline
+            bool tryCast(T &value, const IntToType<false> &) const noexcept
+            {
+                const size_t MaxBits = sizeof(T) * 8;
+                if( bits() > MaxBits ) return false;
+                value = T( ls64() );
+                return true;
+            }
+
+            template <typename T> inline
+            bool tryCast(T &value, const IntToType<true> &) const noexcept
+            {
+                const size_t MaxBits = sizeof(T) * 8-1;
+                if( bits() > MaxBits ) return false;
+                value = T( ls64() );
+                return true;
+            }
+
+
+
         };
 
 

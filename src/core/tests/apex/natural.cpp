@@ -29,12 +29,13 @@ Y_UTEST(apex_n)
             const uint64_t      r = ran.to<uint64_t>( ran.leq(64) );
             Apex::Natural       L = l;
             Apex::Natural       R = r;
+
+
             Y_ASSERT(L==L);
             const SignType      s  = Sign::Of(l,r);
             const SignType      S  = Apex::Natural::Compare(L,R);
             const SignType      s1 = Apex::Natural::Compare(l,R);
             const SignType      s2 = Apex::Natural::Compare(L,r);
-            //std::cerr << Hexadecimal(l) << " / " << Hexadecimal(r) << " : " << s << " / " << s1 << " / " << s2 << std::endl;
             Y_ASSERT(s==S);
             Y_ASSERT(s==s1);
             Y_ASSERT(s==s2);
@@ -60,7 +61,6 @@ Y_UTEST(apex_n)
         for(size_t p=0;p<=80;++p)
         {
             Apex::Natural n(TwoToThePowerOf,p);
-            std::cerr << n << std::endl;
             Y_ASSERT(1+p==n.bits());
             if(p<=63)
             {
@@ -79,7 +79,6 @@ Y_UTEST(apex_n)
             for(size_t i=0;i<4;++i)
             {
                 const Apex::Natural n(ran,p);
-                //std::cerr << n << std::endl;
                 Y_ASSERT(n.bits()==p);
             }
         }
@@ -106,6 +105,10 @@ Y_UTEST(apex_n)
                     {
                         L.alter( Apex::ViewType(u) );
                         R.alter( Apex::ViewType(v) );
+                        const uint64_t l64 = L.ls64();
+                        const uint64_t r64 = R.ls64();
+                        Y_ASSERT( l64  == l);
+                        Y_ASSERT( r64  == r);
 
                         {
                             Apex::Natural S = L + R;
@@ -221,7 +224,6 @@ Y_UTEST(apex_n)
 
     {
         std::cerr << "AddSub" << std::endl;
-
         for(size_t iter=0;iter<10;++iter)
         {
             Apex::Natural l(ran, ran.leq(1000) );
@@ -230,7 +232,6 @@ Y_UTEST(apex_n)
             Y_ASSERT(s-l == r);
             Y_ASSERT(s-r == l);
         }
-
     }
 }
 Y_UDONE()

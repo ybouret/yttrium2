@@ -107,8 +107,30 @@ namespace Yttrium
 
         void  Integer:: incr()
         {
-            //Natural res(Attach,Natural::Add(*this,1) );
-            //xch(res);
+
+            switch(s)
+            {
+                case __Zero__:
+                    ld1();
+                    break;
+
+                case Positive:
+                    Coerce(n).incr();
+                    break;
+
+                case Negative:
+                    assert(n.bits()>0);
+                    if(n.bits()<=1)
+                    {
+                        assert(-1==*this);
+                        ldz();
+                    }
+                    else
+                    {
+                        Coerce(n).decr();
+                        assert(n.bits()>0);
+                    }
+            }
         }
 
         Integer & Integer:: operator++()

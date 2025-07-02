@@ -22,8 +22,33 @@ Y_UTEST(apex_z)
         std::cerr << z << std::endl;
         z    -= 10;
         std::cerr << z << std::endl;
-
     }
+
+    for(apz i=-5;i<=5;)
+    {
+        std::cerr << ' ' << ++i;
+    }
+    std::cerr << std::endl;
+
+    for(apz i=-5;i<=5;)
+    {
+        std::cerr << ' ' << i++;
+    }
+    std::cerr << std::endl;
+
+
+
+    for(apz i=5;i>=-5;)
+    {
+        std::cerr << ' ' << --i;
+    }
+    std::cerr << std::endl;
+
+    for(apz i=5;i>=-5;)
+    {
+        std::cerr << ' ' << i--;
+    }
+    std::cerr << std::endl;
 
 
 }

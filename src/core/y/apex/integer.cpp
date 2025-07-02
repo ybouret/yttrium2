@@ -60,7 +60,7 @@ namespace Yttrium
         Integer:: Integer(const integer_t z) :
         Number(),
         s( Sign::Of(z) ),
-         n( z >= 0 ? natural_t(z) : natural_t(-z) )
+        n( z >= 0 ? natural_t(z) : natural_t(-z) )
         {
         }
 
@@ -76,6 +76,19 @@ namespace Yttrium
             if(z.s==Negative) s << '-';
             s << z.n.hexString();
             return os << s;
+        }
+
+
+        void Integer:: ldz() noexcept
+        {
+            Coerce(s) = __Zero__;
+            Coerce(n).ldz();
+        }
+
+        void Integer:: ld1() noexcept
+        {
+            Coerce(s) = Positive;
+            Coerce(n).ld1();
         }
 
     }

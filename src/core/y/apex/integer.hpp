@@ -69,8 +69,12 @@ inline Integer & operator OP##=(const Natural & rhs) { Integer res( CALL(*this,r
             Integer(const integer_t);
             Integer & operator=(const integer_t);
 
+            // Interface
             virtual size_t serialize(OutputStream&) const;
+            virtual void   ldz() noexcept;
+            virtual void   ld1() noexcept;
 
+            // Methods
             Integer & xch( Integer &) noexcept;
 
             Y_APZ_Proto_Decl(static SignType,Compare);
@@ -107,6 +111,20 @@ inline Integer & operator OP##=(const Natural & rhs) { Integer res( CALL(*this,r
             Integer   operator-() const; //!< \return opposite
             Integer & operator--();      //!< prefix  \return decreased *this
             Integer   operator--(int);   //!< postfix \return previous  *this, decreased
+
+
+            //__________________________________________________________________
+            //
+            //
+            // Conversion
+            //
+            //__________________________________________________________________
+            template <typename T> inline
+            bool tryCast(T &value) const noexcept
+            {
+                static const IntToType< IsSigned<T>::Value > choice = {};
+                return tryCast(value,choice);
+            }
 
             const SignType s;
             const Natural  n;
