@@ -85,6 +85,7 @@ namespace Yttrium
                     case __Zero__: return NZ;
                     case Positive: return NP;
                 }
+                break;
 
             case __Zero__: // prefix Z
                 switch(r)
