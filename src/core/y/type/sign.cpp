@@ -74,5 +74,39 @@ namespace Yttrium
 
     }
 
+    Sign::PairType Sign:: Pair(const SignType l, const SignType r) noexcept
+    {
+        switch(l)
+        {
+            case Negative: // prefix N
+                switch(r)
+                {
+                    case Negative: return NN;
+                    case __Zero__: return NZ;
+                    case Positive: return NP;
+                }
+
+            case __Zero__: // prefix Z
+                switch(r)
+                {
+                    case Negative: return ZN;
+                    case __Zero__: break;
+                    case Positive: return ZP;
+                }
+                break;
+
+            case Positive: // prefix P
+                switch(r)
+                {
+                    case Negative: return PN;
+                    case __Zero__: return PZ;
+                    case Positive: return PP;
+                }
+
+        }
+        assert(__Zero__==l); assert(__Zero__==r);
+        return ZZ;
+    }
+
 }
 

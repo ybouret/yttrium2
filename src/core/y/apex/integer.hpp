@@ -11,6 +11,25 @@ namespace Yttrium
     
     namespace Apex
     {
+#define Y_APZ_Proto_Decl(RET,FUNC) \
+RET FUNC(const Integer &, const Integer &);\
+RET FUNC(const integer_t, const Integer &);\
+RET FUNC(const Integer &, const integer_t);\
+RET FUNC(const Integer &, const Natural &);\
+RET FUNC(const Natural &, const Integer &)
+
+
+        //! helper to implement one comparison operator
+#define Y_APZ_Compare_Impl_(OP,LHS,RHS,RES) \
+inline friend bool operator OP(const LHS lhs, const RHS rhs) { return Compare(lhs,rhs) RES; }
+
+        //! helper to implement multiple comparison operators
+#define Y_APZ_Compare_Impl(OP,RES)              \
+Y_APZ_Compare_Impl_(OP,Integer &,Integer &,RES) \
+Y_APZ_Compare_Impl_(OP,integer_t,Integer &,RES) \
+Y_APZ_Compare_Impl_(OP,Integer &,integer_t,RES) \
+Y_APZ_Compare_Impl_(OP,Integer &,Natural &,RES) \
+Y_APZ_Compare_Impl_(OP,Natural &,Integer &,RES) \
 
         //! Integer = signed natural
         class Integer : public Number
@@ -34,10 +53,24 @@ namespace Yttrium
 
             Integer & xch( Integer &) noexcept;
 
+            Y_APZ_Proto_Decl(static SignType,Compare);
+
+
+#if !DOXYGEN_SHOULD_SKIP_THIS
+            Y_APZ_Compare_Impl(==, == __Zero__)
+            Y_APZ_Compare_Impl(!=, != __Zero__)
+            Y_APZ_Compare_Impl(<,  == Negative)
+            Y_APZ_Compare_Impl(>  ,== Positive)
+            Y_APZ_Compare_Impl(<=, != Positive)
+            Y_APZ_Compare_Impl(>=, != Negative)
+#endif
 
 
             const SignType s;
             const Natural  n;
+
+
+
         };
     }
 

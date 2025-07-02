@@ -102,6 +102,24 @@ namespace Yttrium
         };
 
 
+        enum PairType
+        {
+            NN,
+            NZ,
+            NP,
+
+            ZN,
+            ZZ,
+            ZP,
+
+            PN,
+            PZ,
+            PP
+        };
+
+        static PairType Pair(const SignType l, const SignType r) noexcept;
+
+
     };
 }
 

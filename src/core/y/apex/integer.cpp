@@ -44,7 +44,7 @@ namespace Yttrium
         Integer:: Integer(const integer_t z) :
         Number(),
         s( Sign::Of(z) ),
-        n( z >= 0 ? natural_t(z) : natural_t(-z) )
+         n( z >= 0 ? natural_t(z) : natural_t(-z) )
         {
         }
 
