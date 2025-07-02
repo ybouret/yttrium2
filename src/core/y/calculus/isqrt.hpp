@@ -1,0 +1,59 @@
+//! \file
+
+#ifndef Y_Calculus_IntegerSqrt_Included
+#define Y_Calculus_IntegerSqrt_Included 1
+
+#include "y/type/ints.hpp"
+#include "y/type/is-signed.hpp"
+
+namespace Yttrium
+{
+
+    namespace Calculus
+    {
+        struct IntegerSquareRoot
+        {
+            static void throwNegativeArg();
+
+            //! unsigned
+            template <typename T> static inline
+            T Compute(const T s, const IntToType<false> &) noexcept
+            {
+                if(s<=1) return s;
+                T x0 = s >> 1 ;
+                while(true) {
+                    const T x1 = (x0+s/x0)>>1;
+                    if(x1>=x0) break;
+                    x0 = x1;
+                }
+                return x0;
+            }
+
+            //! signed
+            template <typename T> static inline
+            T Compute(const T s, const IntToType<true> &) noexcept
+            {
+                static const IntToType<false> Converted = {};
+                if(s<0) throwNegativeArg();
+                typedef typename UnsignedIntFor<T>::Result::Type U;
+                return T( Compute<U>( U(s), Converted) );
+            }
+
+        };
+
+
+    }
+
+    //! integer square root
+    template <typename T> inline
+    T IntegerSquareRoot(const T s) noexcept
+    {
+        static const IntToType< IsSigned<T>::Value > Choice = {};
+        return Calculus::IntegerSquareRoot::Compute(s,Choice);
+    }
+
+}
+
+#endif
+
+
