@@ -5,7 +5,11 @@ namespace Yttrium
 
     namespace Apex
     {
-        Integer:: Integer() : s(__Zero__), n() {}
+        Integer:: Integer() :
+        Number(),
+        s(__Zero__),
+        n()
+        {}
 
         Integer:: ~Integer() noexcept {}
 
@@ -18,6 +22,7 @@ namespace Yttrium
         }
 
         Integer:: Integer(const Integer &z) :
+        Number(),
         s(z.s),
         n(z.n)
         {
@@ -30,12 +35,16 @@ namespace Yttrium
         }
 
         Integer:: Integer(const Natural &N) :
-        s( N.bits() > 0 ? Positive : __Zero__), n(N)
+        Number(),
+        s( N.bits() > 0 ? Positive : __Zero__),
+        n(N)
         {
         }
 
         Integer:: Integer(const integer_t z) :
-        s( Sign::Of(z) ), n( z >= 0 ? natural_t(z) : natural_t(-z) )
+        Number(),
+        s( Sign::Of(z) ),
+        n( z >= 0 ? natural_t(z) : natural_t(-z) )
         {
         }
 
