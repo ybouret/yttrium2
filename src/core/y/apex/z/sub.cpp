@@ -43,6 +43,42 @@ namespace Yttrium
             }
             return Integer();
         }
+
+        Integer Integer:: Sub(const Integer &lhs, const integer_t rhs)
+        {
+            const Integer _(rhs);
+            return Sub(lhs,_);
+        }
+
+        Integer Integer::Sub(const integer_t lhs, const Integer &rhs)
+        {
+            return -Sub(rhs,lhs);
+        }
+
+        Integer Integer:: Sub(const Integer &lhs, const Natural &rhs)
+        {
+            switch(lhs.s)
+            {
+                case __Zero__: break; // -rhs
+                case Negative: { const Natural sum = lhs.n + rhs; return Integer(Negative,sum); }
+                case Positive:
+                {
+                    switch( Natural::Compare(lhs.n,rhs) )
+                    {
+                        case __Zero__: return Integer();
+                        case Negative: { const Natural dif = rhs - lhs.n; return Integer(Negative,dif); }
+                        case Positive: { const Natural dif = lhs.n - rhs; return Integer(Positive,dif); }
+                    }
+                }
+            }
+            return rhs.bits() > 0 ? Integer(Negative,rhs) : Integer();
+        }
+
+        Integer Integer:: Sub(const Natural &lhs, const  Integer &rhs)
+        {
+            return -Sub(rhs,lhs);
+        }
+
     }
 
 }

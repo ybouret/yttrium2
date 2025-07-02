@@ -16,5 +16,15 @@ Y_UTEST(apex_z)
         std::cerr << z << std::endl;
     }
 
+    {
+        apz z = 10;
+        z    += 10;
+        std::cerr << z << std::endl;
+        z    -= 10;
+        std::cerr << z << std::endl;
+
+    }
+
+
 }
 Y_UDONE()
