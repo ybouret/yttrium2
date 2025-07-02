@@ -38,7 +38,7 @@ namespace Yttrium
 
         Natural Natural:: operator--(int)
         {
-            Natural saved = *this;
+            const Natural saved = *this;
             decr();
             return saved;
         }

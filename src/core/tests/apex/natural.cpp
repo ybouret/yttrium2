@@ -86,7 +86,7 @@ Y_UTEST(apex_n)
     }
 
     {
-        std::cerr << "Additions" << std::endl;
+        std::cerr << "Additions 64" << std::endl;
         for(size_t i=0;i<64;++i)
         {
             for(size_t j=0;j<64;++j)
@@ -149,7 +149,7 @@ Y_UTEST(apex_n)
 
 
     {
-        std::cerr << "Subtractions" << std::endl;
+        std::cerr << "Subtractions 64" << std::endl;
         for(size_t i=0;i<64;++i)
         {
             for(size_t j=0;j<=i;++j)
@@ -219,5 +219,18 @@ Y_UTEST(apex_n)
     }
 
 
+    {
+        std::cerr << "AddSub" << std::endl;
+
+        for(size_t iter=0;iter<10;++iter)
+        {
+            Apex::Natural l(ran, ran.leq(1000) );
+            Apex::Natural r(ran, ran.leq(1000) );
+            Apex::Natural s = l+r;
+            Y_ASSERT(s-l == r);
+            Y_ASSERT(s-r == l);
+        }
+
+    }
 }
 Y_UDONE()

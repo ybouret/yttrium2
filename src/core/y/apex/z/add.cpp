@@ -46,6 +46,84 @@ namespace Yttrium
             }
             return Integer();
         }
+
+        Integer Integer:: Add(const Integer &lhs, const integer_t rhs)
+        {
+            const Integer _(rhs);
+            return Add(lhs,_);
+        }
+
+        Integer Integer::Add(const integer_t lhs, const Integer &rhs)
+        {
+            return Add(rhs,lhs);
+        }
+
+
+        Integer Integer:: Add(const Integer &lhs, const Natural &rhs)
+        {
+            switch(lhs.s)
+            {
+                case __Zero__: break;
+                case Positive:
+                    if(rhs.bits() <= 0)
+                    {
+                        return lhs;
+                    }
+                    else
+                    {
+                        const Natural sum = lhs.n + rhs;
+                        return Integer(sum);
+                    }
+                case Negative:
+                    switch( Natural::Compare(lhs.n,rhs))
+                    {
+                        case Positive: { const Natural dif = lhs.n-rhs; return Integer(Negative,dif); }
+                        case Negative: { const Natural dif = rhs-lhs.n; return Integer(Positive,dif); }
+                        case __Zero__: return Integer();
+                    }
+            }
+            return Integer(rhs);
+        }
+
+        Integer Integer:: Add(const Natural &lhs, const Integer &rhs)
+        {
+            return Add(rhs,lhs);
+        }
+
+
     }
 
 }
+
+namespace Yttrium
+{
+    namespace Apex
+    {
+
+        Integer Integer:: operator+() const
+        {
+            return *this;
+        }
+
+        void  Integer:: incr()
+        {
+            //Natural res(Attach,Natural::Add(*this,1) );
+            //xch(res);
+        }
+
+        Integer & Integer:: operator++()
+        {
+            incr();
+            return *this;
+        }
+
+        Integer Integer:: operator++(int)
+        {
+            const Integer saved = *this;
+            incr();
+            return saved;
+        }
+    }
+
+}
+
