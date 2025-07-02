@@ -165,6 +165,7 @@ Y_UTEST(string)
 Y_UTEST(apex:blocks)
 Y_UTEST(apex:model)
 Y_UTEST(apex:n)
+Y_UTEST(apex:z)
 
 #random
 Y_UTEST(random:bits)

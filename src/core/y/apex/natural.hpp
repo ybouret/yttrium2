@@ -179,6 +179,8 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
 
     }
 
+    typedef Apex::Natural apn;
+
 }
 
 #endif
