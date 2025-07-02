@@ -26,6 +26,7 @@ string
 apex
 random
 mkl
+antelope
 )
 
 
@@ -175,5 +176,8 @@ Y_UTEST(random:in3d)
 
 #mkl
 Y_UTEST(mkl:numeric)
+
+#antelope
+Y_UTEST(antelope:add)
 
 

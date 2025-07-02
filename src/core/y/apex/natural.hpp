@@ -185,7 +185,16 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             virtual void   ldz() noexcept;
             virtual void   ld1() noexcept;
 
+
+            //__________________________________________________________________
+            //
+            //
+            // other
+            //
+            //__________________________________________________________________
+            Natural abs() const;
             
+
         private:
             Model * const code; //!< internal representation
             Natural(const Attach_ &, Model * const) noexcept; //!< setup directly

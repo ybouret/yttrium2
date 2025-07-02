@@ -76,6 +76,7 @@ Y_CreateLibrary(y
     y/apex/n
     y/apex/z
     y/mkl
+    y/mkl/api
     y/random
 )
 

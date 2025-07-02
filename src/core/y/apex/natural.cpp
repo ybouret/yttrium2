@@ -213,7 +213,10 @@ namespace Yttrium
             (void) code->ld1(Model::SmallView[Ops]);
         }
 
-
+        Natural Natural:: abs() const
+        {
+            return *this;
+        }
     }
     
 }

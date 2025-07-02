@@ -96,6 +96,17 @@ namespace Yttrium
             Coerce(n).ld1();
         }
 
+
+        Integer Integer:: abs() const
+        {
+            switch(s)
+            {
+                case __Zero__: break;
+                case Positive: return *this;
+                case Negative: return -(*this);
+            }
+            return Integer();
+        }
     }
 
 }
