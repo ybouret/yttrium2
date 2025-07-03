@@ -20,11 +20,16 @@ namespace {
 
         Vector<T> data(WithAtLeast,n);
 
-        for(size_t i=0;i<n;++i) data << gran();
+		T denom = 0;
+		for (size_t i = 0; i < n; ++i)
+		{
+			data << gran();
+			denom += 1;
+		}
 
         T sum = 0;
         for(size_t i=1;i<=n;++i) sum += data[i];
-        const T ave = sum / T(n);
+		const T ave = sum / denom;
         std::cerr << "\tave=" << ave << std::endl;
         T var = 0;
         for(size_t i=1;i<=n;++i)
@@ -32,7 +37,7 @@ namespace {
             const T del = data[i] - ave;
             var += del * del;
         }
-        var /= n;
+		var /= denom;
         std::cerr << "\tvar=" << var << std::endl;
 
     }
