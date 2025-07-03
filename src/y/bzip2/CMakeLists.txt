@@ -25,7 +25,7 @@ Y_ThirdParty(y-bz2)
 add_executable(bzip2 bzip2.c)
 target_link_libraries(bzip2 y-bz2)
 
-add_custom_target(test-bzip2 ALL
+add_custom_command(TARGET bzip2 POST_BUILD
 DEPENDS bzip2
 COMMAND bzip2  -1  < sample1.ref > sample1.rb2
 COMMAND bzip2  -2  < sample2.ref > sample2.rb2
