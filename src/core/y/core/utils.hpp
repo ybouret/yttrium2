@@ -99,6 +99,13 @@ namespace Yttrium
         return a+a;
     }
 
+    //! \return a*a \param a any valid type
+    template <typename T> inline
+    T Squared(const T a)
+    {
+        return a*a;
+    }
+
 }
 
 #endif

@@ -6,6 +6,7 @@
 #define Y_MKL_Fabs_Included 1
 
 #include "y/mkl/api/scalar-for.hpp"
+#include <cmath>
 
 namespace Yttrium
 {
@@ -35,8 +36,10 @@ namespace Yttrium
         {
             Y_Args_Declare(T,Type);
             typedef typename ScalarFor<MutableType>::Type ScalarType;
-            static inline ScalarType Of(ParamType x) {
-                return Kernel::Fabs<T,TypeTraits<MutableType>::IsIsoFloatingPoint>(x);
+
+            static inline ScalarType Of(ParamType x)
+            {
+                return Kernel::Fabs<T,TypeTraits<MutableType>::IsIsoFloatingPoint>::Of(x);
             }
         };
 

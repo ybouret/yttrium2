@@ -5,8 +5,8 @@
 #define Y_Type_Complex_Included 1
 
 #include "y/type/sign.hpp"
+#include "y/mkl/api/pythagoras.hpp"
 #include <iostream>
-#include <cmath>
 
 namespace Yttrium
 {
