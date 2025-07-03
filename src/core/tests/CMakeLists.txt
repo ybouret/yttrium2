@@ -172,6 +172,7 @@ Y_UTEST(random:bits)
 Y_UTEST(random:gaussian)
 Y_UTEST(random:in2d)
 Y_UTEST(random:in3d)
+Y_UTEST(random:fill)
 
 #mkl
 Y_UTEST(mkl:numeric)
