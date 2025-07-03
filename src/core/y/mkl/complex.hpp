@@ -72,9 +72,9 @@ namespace Yttrium
             return os;
         }
 
-        inline Complex conj() const noexcept { return Complex(re,-im); } //!< conjugate
-        inline T       mod2() const noexcept { return im*im + re*re;   } //!< |z|^2
-        inline T       abs()  const noexcept { return MKL::Pythagoras(im,re); }
+        inline Complex conj() const noexcept { return Complex(re,-im); }        //!< \return conjugate
+        inline T       mod2() const noexcept { return im*im + re*re;   }        //!< \return |z|^2
+        inline T       abs()  const noexcept { return MKL::Pythagoras(re,im); } //!< \return |z|
 
         //______________________________________________________________________
         //

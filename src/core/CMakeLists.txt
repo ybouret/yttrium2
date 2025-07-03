@@ -52,8 +52,6 @@ Y_CreateLibrary(y
     y/information
     y/information/bwt
     y/information/stream
-    y/information/codec
-    y/information/codec/rle
     y/protean
     y/protean/node
     y/protean/cache
