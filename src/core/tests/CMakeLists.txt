@@ -26,7 +26,7 @@ string
 apex
 random
 mkl
-antelope
+cameo
 )
 
 
@@ -177,7 +177,7 @@ Y_UTEST(random:in3d)
 Y_UTEST(mkl:numeric)
 Y_UTEST(mkl:api)
 
-#antelope
-Y_UTEST(antelope:add)
+#cameo
+Y_UTEST(cameo:add)
 
 

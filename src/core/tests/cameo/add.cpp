@@ -3,12 +3,14 @@
 #include "y/apex/integer.hpp"
 #include "y/utest/run.hpp"
 
+#include "y/check/static.hpp"
+
 using namespace Yttrium;
 
 namespace Yttrium
 {
 
-    namespace AntElOp
+    namespace Cameo
     {
         template <typename T>
         class Summator
@@ -27,7 +29,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Summator);
         };
 
-        //!< ap[n|z|q]
+        //! ap[n|z|q]
         template <typename T>
         class DirectSummator : public Summator<T>
         {
@@ -36,6 +38,7 @@ namespace Yttrium
 
             inline explicit DirectSummator() : Summator<T>(), acc()
             {
+                Y_STATIC_CHECK(Y_Is_SuperSubClass_Strict(Apex::Number,MutableType),NoApexNumber);
             }
 
             inline virtual ~DirectSummator() noexcept
@@ -50,7 +53,29 @@ namespace Yttrium
         };
 
 
-        class AProxySummator; //!< integral types : ap[n|z]
+        template <typename T>
+        class AProxySummator : public Summator<T>
+        {
+        public:
+            typedef typename Pick<IsSigned<T>::Value,apz,apn>::Type CoreType;
+
+            inline AProxySummator() : Summator<T>(), acc()
+            {
+                Y_STATIC_CHECK(TypeTraits<T>::IsIntegral,NoIntegralType);
+            }
+
+            inline ~AProxySummator() noexcept
+            {
+
+            }
+
+            virtual void ldz() noexcept { acc.ldz(); }
+
+
+        private:
+            Y_Disable_Copy_And_Assign(AProxySummator);
+            CoreType acc;
+        };
 
 
 
@@ -59,10 +84,11 @@ namespace Yttrium
 
 }
 
-Y_UTEST(antelope_add)
+Y_UTEST(cameo_add)
 {
 
-    AntElOp::DirectSummator<apz> zsum;
+    Cameo::DirectSummator<apz> zsum;
+    Cameo::DirectSummator<apn> nsum;
 
 
 
