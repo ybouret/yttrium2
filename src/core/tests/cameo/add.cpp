@@ -38,6 +38,10 @@ Y_UTEST(cameo_add)
     Y_SIZEOF(Cameo::FPointSummator<float>::Accumulator);
     Y_SIZEOF(Cameo::FPointSummator< XReal<long double> >::Accumulator);
 
+    Cameo::FPointSummator< float > fsum(5);
+    std::cerr << fsum->capacity() << std::endl;
+    fsum->ensure(10);
+    std::cerr << fsum->capacity() << std::endl;
 
 }
 Y_UDONE()
