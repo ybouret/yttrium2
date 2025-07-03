@@ -14,21 +14,24 @@ namespace Yttrium
 {
     namespace MKL
     {
-        
+
         namespace Kernel
         {
+            //! \param x value \return integer |x|
             template <typename T>
             inline T Fabs(const T x, const IntegralAPI &) noexcept
             {
                 return IntegerAbs(x);
             }
 
+            //! \param x value \return std::fabs(x)
             template <typename T>
             inline T Fabs(const T x, const FloatingAPI &) noexcept
             {
                 return std::fabs(x);
             }
 
+            //! \param x value \return x.abs()
             template <typename T>
             inline typename ScalarFor<T>::Type  Fabs(const T &x, const MustCallAPI &) noexcept
             {

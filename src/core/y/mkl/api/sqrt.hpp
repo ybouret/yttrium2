@@ -15,18 +15,21 @@ namespace Yttrium
 
         namespace Kernel
         {
+            //! \param x value \return integer x^(1/2)
             template <typename T> inline
             T Sqrt(const T x, const IntegralAPI &)
             {
                 return IntegerSquareRoot(x);
             }
 
+            //! \param x value \return   x^(1/2)
             template <typename T> inline
             T Sqrt(const T x, const FloatingAPI &)
             {
                 return std::sqrt(x);
             }
 
+            //! \param x value \return integer x.sqrt()
             template <typename T> inline
             T Sqrt(const T &x, const MustCallAPI &)
             {
