@@ -22,6 +22,7 @@ namespace Yttrium
             inline virtual ~Summator() noexcept {}
 
             virtual void ldz() noexcept = 0;
+            virtual T    sum()          = 0; //!< must reset
 
             inline Summator & operator<<(ParamType value) { add(value); return *this; }
 

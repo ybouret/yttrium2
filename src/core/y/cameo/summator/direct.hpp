@@ -29,6 +29,13 @@ namespace Yttrium
 
             inline virtual void ldz() noexcept { acc.ldz(); }
 
+            inline virtual T    sum() noexcept
+            {
+                ConstType res = acc;
+                acc.ldz();
+                return res;
+            }
+
         private:
             Y_Disable_Copy_And_Assign(DirectSummator);
             MutableType acc;
