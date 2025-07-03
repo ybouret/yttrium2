@@ -142,29 +142,31 @@ namespace Yttrium
             }
 
 
-            inline NODE *incr(size_t n, const IntToType<Forward> &) noexcept
+            inline NODE *incr(size_t n, const IntToType<Forward> &) const noexcept
             {
                 assert(0!=node);
+                NODE *here = (NODE *)node;
                 while(n-- > 0)
                 {
-                    assert(0!=node);
-                    node=node->next;
+                    assert(0!=here);
+                    here=here->next;
                 }
-                assert(0!=node);
-                return (NODE *)node;
+                assert(0!=here);
+                return here;
             }
 
 
-            inline NODE *incr(size_t n, const IntToType<Reverse> &) noexcept
+            inline NODE *incr(size_t n, const IntToType<Reverse> &) const noexcept
             {
                 assert(0!=node);
+                NODE *here = (NODE *)node;
                 while(n-- > 0)
                 {
-                    assert(0!=node);
-                    node=node->prev;
+                    assert(0!=here);
+                    here=here->prev;
                 }
-                assert(0!=node);
-                return (NODE *)node;
+                assert(0!=here);
+                return here;
             }
 
 

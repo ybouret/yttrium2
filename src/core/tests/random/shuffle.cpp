@@ -44,7 +44,7 @@ Y_UTEST(random_shuffle)
 
     Random::Shuffle::Range(ran,v.begin(),v.size());
     std::cerr << "v=" << v << std::endl;
-
+    
     Random::Shuffle::Range(ran,l.begin(),l.size());
     std::cerr << "l=" << l << std::endl;
 
