@@ -25,8 +25,8 @@ Y_UTEST(apex_n)
         std::cerr << "Comparisons" << std::endl;
         for(size_t i=0;i<1000;++i)
         {
-            const uint64_t      l = ran.to<uint64_t>( ran.leq(64) );
-            const uint64_t      r = ran.to<uint64_t>( ran.leq(64) );
+            const uint64_t      l = ran.to<uint64_t>( ran.leq<unsigned>(64) );
+            const uint64_t      r = ran.to<uint64_t>( ran.leq<unsigned>(64) );
             Apex::Natural       L = l;
             Apex::Natural       R = r;
 
@@ -226,8 +226,8 @@ Y_UTEST(apex_n)
         std::cerr << "AddSub" << std::endl;
         for(size_t iter=0;iter<10;++iter)
         {
-            Apex::Natural l(ran, ran.leq(1000) );
-            Apex::Natural r(ran, ran.leq(1000) );
+            Apex::Natural l(ran, ran.leq<unsigned>(1000) );
+            Apex::Natural r(ran, ran.leq<unsigned>(1000) );
             Apex::Natural s = l+r;
             Y_ASSERT(s-l == r);
             Y_ASSERT(s-r == l);

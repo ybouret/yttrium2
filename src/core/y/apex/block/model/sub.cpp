@@ -13,7 +13,7 @@ namespace Yttrium
         struct ModelSub
         {
             static const ViewType SmallView = ViewType( IntegerLog2For<SMALL>::Value );
-            static const unsigned SmallBits = sizeof(SMALL) * 8;
+            static const unsigned SmallBits = sizeof(SMALL) << 3;
 
             static inline
             Model * Compute_(const SMALL *       lw,
@@ -22,7 +22,6 @@ namespace Yttrium
                              const size_t        rn)
             {
                 typedef typename SignedSizeOf< sizeof(LARGE) >::Type CarryType;
-                static const unsigned  SmallBits = sizeof(SMALL) << 3;
                 static const CarryType Radix     = CarryType(1) << SmallBits;
                 assert( Good(lw,ln) );
                 assert( Good(rw,rn) );
