@@ -74,7 +74,6 @@ Y_UTEST(cameo_add)
         Cameo::Addition<unsigned>           usum;
         Cameo::Addition<float>              fsum;
         Cameo::Addition< XReal<double> >    xsum;
-
     }
 
 }
