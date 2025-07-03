@@ -4,7 +4,7 @@
 #ifndef Y_Cameo_AProxySummator_Included
 #define Y_Cameo_AProxySummator_Included 1
 
-#include "y/cameo/summator.hpp"
+#include "y/cameo/summator/api.hpp"
 #include "y/apex/integer.hpp"
 
 namespace Yttrium

@@ -4,7 +4,7 @@
 #ifndef Y_Cameo_FPointSummator_Included
 #define Y_Cameo_FPointSummator_Included 1
 
-#include "y/cameo/summator.hpp"
+#include "y/cameo/summator/api.hpp"
 #include "y/mkl/api/fabs.hpp"
 #include "y/type/sign.hpp"
 #include "y/container/ordered/priority-queue.hpp"
