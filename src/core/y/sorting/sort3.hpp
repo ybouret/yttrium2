@@ -13,7 +13,7 @@ namespace Yttrium
 
     namespace Sorting
     {
-        //! sorting a triplet in ascending order
+        //! sorting a triplet in ascending order \param arr arr[0..2]
         template <typename T> inline
         void Sort3(T arr[])
         {
