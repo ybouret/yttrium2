@@ -59,6 +59,12 @@ Y_UTEST(cameo_add)
     const float x = xsum.sum();
     std::cerr << "x=" << x << std::endl;
 
+    Cameo::FPointSummator< Complex<double> > csum(5);
+    csum << -0.01 << 0.02 << 1 << -1.2;
+    std::cerr << "Computing" << std::endl;
+    const Complex<double> c = csum.sum();
+    std::cerr << "c=" << c << std::endl;
+
 }
 Y_UDONE()
 
