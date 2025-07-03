@@ -217,7 +217,7 @@ function(Y_LinkLibraries THE_EXE)
 	if(Y_Linux)
 		list( APPEND THE_LIBS "rt" )
 	endif()
-	cmake_print_variables(THE_LIBS)
+	#cmake_print_variables(THE_LIBS)
 	target_link_libraries(${THE_EXE} ${THE_LIBS})
 endfunction()
 
