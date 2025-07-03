@@ -12,8 +12,7 @@ namespace
     template <typename T>
     static inline void DisplayAPI()
     {
-        static const typename MKL::API_Select<T>::Choice choice =  {};
-        std::cerr << "Value=" << choice.Value << std::endl;
+        std::cerr << "Value=" << MKL::API_Select<T>::Choice::Value << std::endl;
     }
 }
 
