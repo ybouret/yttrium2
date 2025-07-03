@@ -70,6 +70,13 @@ namespace Yttrium
             if(other.code && other.code->size) code = new Code( *other.code );
         }
 
+        inline friend std::ostream & operator<<(std::ostream &os, const PriorityQueue &self)
+        {
+            if(self.code) os << *self.code; else os << Core::Nil;
+            return os;
+        }
+
+
         //______________________________________________________________________
         //
         //
@@ -145,6 +152,13 @@ namespace Yttrium
                 code = new Code( this->NextCapacity(0) );
                 code->push(args,compare);
             }
+        }
+
+        inline virtual ConstType & peek() const noexcept
+        {
+            assert(0!=code);
+            assert(code->size>0);
+            return code->entry[0];
         }
 
         //______________________________________________________________________

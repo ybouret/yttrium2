@@ -33,9 +33,14 @@ namespace Yttrium
 
                 struct Comparator {
                     inline SignType operator()(const Unit &lhs, const Unit &rhs) {
-                        return Sign::Of(lhs.rank,rhs.rank);
+                        return Sign::Of(rhs.rank,lhs.rank);
                     }
                 };
+
+                inline friend std::ostream & operator<<(std::ostream &os, const Unit &self)
+                {
+                    return os << self.data;
+                }
 
                 ConstType data;
                 RankType  rank;
@@ -64,6 +69,13 @@ namespace Yttrium
             Accumulator acc;
 
             inline virtual const PriorityQueuePolicy & locus() const noexcept { return acc; }
+
+            inline virtual void add(ConstType & x)
+            {
+                acc.push(x);
+                std::cerr << acc.peek() << " @" << acc << std::endl;
+            }
+
         };
 
 

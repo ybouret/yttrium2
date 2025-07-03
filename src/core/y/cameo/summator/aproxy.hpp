@@ -16,6 +16,7 @@ namespace Yttrium
         class AProxySummator : public Summator<T>
         {
         public:
+            Y_Args_Declare(T,Type);
             typedef typename Pick<IsSigned<T>::Value,apz,apn>::Type CoreType;
 
             inline AProxySummator() : Summator<T>(), acc()
@@ -34,6 +35,9 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(AProxySummator);
             CoreType acc;
+
+            inline virtual void add(ConstType & x) { acc += x; }
+
         };
     }
 

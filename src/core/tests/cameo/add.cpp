@@ -43,6 +43,11 @@ Y_UTEST(cameo_add)
     fsum->ensure(10);
     std::cerr << fsum->capacity() << std::endl;
 
+    fsum->release();
+    
+    fsum << -0.01 << 0.02 << 1 << -1.2;
+
+
 }
 Y_UDONE()
 

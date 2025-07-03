@@ -32,6 +32,8 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(DirectSummator);
             MutableType acc;
+
+            inline virtual void add(ConstType & x) { acc += x; }
         };
     }
 }

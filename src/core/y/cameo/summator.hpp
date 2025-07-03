@@ -23,11 +23,13 @@ namespace Yttrium
 
             virtual void ldz() noexcept = 0;
 
+            inline Summator & operator<<(ParamType value) { add(value); return *this; }
 
         private:
             Y_Disable_Copy_And_Assign(Summator);
+            virtual void add(ConstType &) = 0;
         };
-        
+
     }
 }
 
