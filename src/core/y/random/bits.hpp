@@ -78,7 +78,7 @@ namespace Yttrium
             bool             choice() noexcept;                  //!< \return equiprobable choice
 
             //! \return any floating point in ]0:1[
-            template <typename T> inline T toR() noexcept { return static_cast<T>( real32() ); }
+            template <typename T> inline T toR() noexcept { return T( real32() ); }
 
             //! \return any unsigned integral value
             template <typename T> inline T toU() noexcept

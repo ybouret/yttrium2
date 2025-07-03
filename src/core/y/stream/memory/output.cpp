@@ -49,7 +49,7 @@ namespace Yttrium
 
     const void * MemoryOutput:: ro() const noexcept { return addr; }
 
-    size_t MemoryOutput:: length() const noexcept { return curr-addr; }
+    size_t MemoryOutput:: length() const noexcept { return size_t(curr-addr); }
 
 
 }

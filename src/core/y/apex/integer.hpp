@@ -107,7 +107,7 @@ inline Integer & operator OP##=(const Natural & rhs) { Integer res( CALL(*this,r
 
 
 
-#if !DOXYGEN_SHOULD_SKIP_THIS
+#if !defined(DOXYGEN_SHOULD_SKIP_THIS)
             Y_APZ_Proto_Decl(static SignType,Compare);
             Y_APZ_Proto_Decl(static Integer,Add);
             Y_APZ_Proto_Decl(static Integer,Sub);

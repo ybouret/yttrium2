@@ -43,7 +43,7 @@ Y_UTEST(apex_model)
 
         {
             std::cerr << "Using Models" << std::endl;
-            const uint64_t arr[2] = { ran.to<uint64_t>(  ran.leq(30) ), ran.to<uint64_t>(  ran.leq(30) ) };
+            const uint64_t arr[2] = { ran.to<uint64_t>(  ran.leq<unsigned>(30) ), ran.to<uint64_t>(  ran.leq<unsigned>(30) ) };
             Apex::Model m(arr,2);
 
             std::cerr << m << std::endl;
