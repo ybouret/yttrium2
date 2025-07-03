@@ -112,6 +112,18 @@ namespace Yttrium
             }
 
 
+            inline Type & operator[](const size_t indx) noexcept
+            {
+                assert(0!=node);
+                return **incr(indx,Way);
+            }
+
+            inline ConstType & operator[](const size_t indx) const noexcept
+            {
+                assert(0!=node);
+                return **incr(indx,Way);
+            }
+
         private:
             MutableNodeType *node; //!< internal node
 
@@ -128,6 +140,33 @@ namespace Yttrium
                 assert(0!=node);
                 node=node->prev;
             }
+
+
+            inline NODE *incr(size_t n, const IntToType<Forward> &) noexcept
+            {
+                assert(0!=node);
+                while(n-- > 0)
+                {
+                    assert(0!=node);
+                    node=node->next;
+                }
+                assert(0!=node);
+                return (NODE *)node;
+            }
+
+
+            inline NODE *incr(size_t n, const IntToType<Reverse> &) noexcept
+            {
+                assert(0!=node);
+                while(n-- > 0)
+                {
+                    assert(0!=node);
+                    node=node->prev;
+                }
+                assert(0!=node);
+                return (NODE *)node;
+            }
+
 
             //! decrease forward
             inline void decr(const IntToType<Forward> &) noexcept

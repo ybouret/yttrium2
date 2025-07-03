@@ -5,6 +5,7 @@
 #include "y/sorting/heap.hpp"
 #include <cstring>
 #include "y/container/sequence/vector.hpp"
+#include "y/container/sequence/list.hpp"
 
 
 using namespace Yttrium;
@@ -31,12 +32,22 @@ Y_UTEST(random_shuffle)
     }
 
     Vector<size_t> v;
-    for(size_t i=0;i<num;++i) v << i;
+    List<size_t>   l;
+    for(size_t i=0;i<num;++i)
+    {
+        v << i;
+        l << i;
+    }
     std::cerr << "v=" << v << std::endl;
+    std::cerr << "l=" << l << std::endl;
 
 
     Random::Shuffle::Range(ran,v.begin(),v.size());
     std::cerr << "v=" << v << std::endl;
+
+    Random::Shuffle::Range(ran,l.begin(),l.size());
+    std::cerr << "l=" << l << std::endl;
+
 
 }
 Y_UDONE()
