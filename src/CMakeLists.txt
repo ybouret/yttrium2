@@ -20,6 +20,8 @@ set(Y_UnitTests "")
 add_subdirectory(y)
 add_subdirectory(core)
 
+add_subdirectory(cli)
+
 cmake_print_variables(Y_UnitTests)
 if( NOT "" STREQUAL "${Y_UnitTests}")
     add_custom_target(regression 
