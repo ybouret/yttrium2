@@ -47,7 +47,11 @@ Y_UTEST(cameo_add)
 
     fsum << -0.01 << 0.02 << 1 << -1.2;
 
-    
+    //std::cerr << "fsum=" << fsum << std::endl;
+    std::cerr << "Computing" << std::endl;
+    const float s = fsum.sum();
+    std::cerr << "s=" << s << std::endl;
+
 
 
 }

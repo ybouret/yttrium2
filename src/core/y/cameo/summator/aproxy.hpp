@@ -12,6 +12,11 @@ namespace Yttrium
 
     namespace Cameo
     {
+        struct AProxySummatorInfo
+        {
+            static void Overflow();
+        };
+
         template <typename T>
         class AProxySummator : public Summator<T>
         {
@@ -30,6 +35,15 @@ namespace Yttrium
             }
 
             virtual void ldz() noexcept { acc.ldz(); }
+
+            inline virtual T sum()
+            {
+                T result = 0;
+                if(!acc.tryCast(result))
+                    AProxySummatorInfo::Overflow();
+                acc.ldz();
+                return result;
+            }
 
 
         private:

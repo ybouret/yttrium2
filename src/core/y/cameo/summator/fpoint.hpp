@@ -64,6 +64,22 @@ namespace Yttrium
 
             virtual void ldz() noexcept { acc.free(); }
 
+            inline virtual T sum()
+            {
+                if( acc.size() <= 0 ) return 0;
+                while(acc.size()>1)
+                {
+                    const Unit lhs = acc.pop();
+                    const Unit rhs = acc.pop();
+                    ConstType  tmp = lhs.data + rhs.data;
+                    add(tmp);
+                }
+                assert(1==acc.size());
+                ConstType result = acc.pop().data;
+                assert(0==acc.size());
+                return result;
+            }
+
         private:
             Y_Disable_Copy_And_Assign(FPointSummator);
             Accumulator acc;
