@@ -10,6 +10,7 @@
 #include "y/object/school-of.hpp"
 #include "y/threading/single-threaded-class.hpp"
 #include "y/calculus/safe-add.hpp"
+#include "y/type/with-at-least.hpp"
 
 namespace Yttrium
 {
@@ -49,6 +50,13 @@ namespace Yttrium
 
         //! setup empty
         inline explicit PriorityQueue() noexcept : code(0), compare() {}
+
+        //! setup with minimal capacity
+        inline explicit PriorityQueue(const WithAtLeast_ &, const size_t n) :
+        code( n>0 ? new Code(n) :  0 ), compare()
+        {
+        }
+
 
         //! cleanup
         inline virtual ~PriorityQueue() noexcept { release_(); }

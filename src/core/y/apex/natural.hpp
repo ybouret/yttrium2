@@ -69,7 +69,8 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             //
             //__________________________________________________________________
             static OpsMode Ops; //!< operating mode
-
+            static const char * const CallSign; //!< "apn"
+            
             //__________________________________________________________________
             //
             //

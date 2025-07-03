@@ -76,6 +76,8 @@ Y_CreateLibrary(y
     y/mkl
     y/mkl/api
     y/random
+    y/cameo
+    y/cameo/summator
 )
 
 add_subdirectory(tests)

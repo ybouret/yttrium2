@@ -1,0 +1,43 @@
+
+//! \file
+
+#ifndef Y_Cameo_AProxySummator_Included
+#define Y_Cameo_AProxySummator_Included 1
+
+#include "y/cameo/summator.hpp"
+#include "y/apex/integer.hpp"
+
+namespace Yttrium
+{
+
+    namespace Cameo
+    {
+        template <typename T>
+        class AProxySummator : public Summator<T>
+        {
+        public:
+            typedef typename Pick<IsSigned<T>::Value,apz,apn>::Type CoreType;
+
+            inline AProxySummator() : Summator<T>(), acc()
+            {
+                Y_STATIC_CHECK(TypeTraits<T>::IsIntegral,NoIntegralType);
+            }
+
+            inline ~AProxySummator() noexcept
+            {
+
+            }
+
+            virtual void ldz() noexcept { acc.ldz(); }
+
+
+        private:
+            Y_Disable_Copy_And_Assign(AProxySummator);
+            CoreType acc;
+        };
+    }
+
+}
+
+#endif
+

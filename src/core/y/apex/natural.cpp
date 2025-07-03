@@ -14,6 +14,10 @@ namespace Yttrium
 
         OpsMode Natural::Ops = Ops32_64;
 
+
+        const char * const Natural:: CallSign = "apn";
+
+
         Natural:: Natural() : Number(),
         code( new Model(0, Model::SmallView[Ops]) )
         {

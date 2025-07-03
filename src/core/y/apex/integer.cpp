@@ -5,6 +5,9 @@ namespace Yttrium
 
     namespace Apex
     {
+
+        const char * const Integer:: CallSign = "apz";
+
         Integer:: Integer() :
         Number(),
         s(__Zero__),
