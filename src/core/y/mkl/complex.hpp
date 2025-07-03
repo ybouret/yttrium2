@@ -74,7 +74,7 @@ namespace Yttrium
 
         inline Complex conj() const noexcept { return Complex(re,-im); } //!< conjugate
         inline T       mod2() const noexcept { return im*im + re*re;   } //!< |z|^2
-        
+        inline T       abs()  const noexcept { return MKL::Pythagoras(im,re); }
 
         //______________________________________________________________________
         //
