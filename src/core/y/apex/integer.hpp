@@ -168,7 +168,7 @@ inline Integer & operator OP##=(const Natural & rhs) { Integer res( CALL(*this,r
             // other
             //
             //__________________________________________________________________
-            Integer abs() const;
+            Integer abs() const; //!< \return |*this|
 
             //__________________________________________________________________
             //

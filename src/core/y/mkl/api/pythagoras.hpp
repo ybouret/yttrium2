@@ -16,7 +16,12 @@ namespace Yttrium
     namespace MKL
     {
 
-
+        //! |a^2+b^2|^(1/2) with minimal precision loss
+        /**
+         \param a first side
+         \param b second side
+         \return sqrt(a*a+b*b)
+         */
         template <typename T> T Pythagoras(const T a, const T b)
         {
             Y_STATIC_CHECK(IsScalarType<T>::Value,BadType);
@@ -45,6 +50,13 @@ namespace Yttrium
             }
         }
 
+        //! |a^2+b^2+c^2|^(1/2) with minimal precision loss
+        /**
+         \param a first  side
+         \param b second side
+         \param c thirds side
+         \return sqrt(a*a+b*b+c*c*)
+         */
         template <typename T> T Pythagoras(const T a, const T b, const T c)
         {
             T absv[3] = { Fabs<T>::Of(a), Fabs<T>::Of(b), Fabs<T>::Of(c) };

@@ -16,25 +16,31 @@ namespace Yttrium
 
         template <typename T> struct ScalarFor;
 
+        //! select scalar for complex
         template <typename T>
         struct ScalarFor< Complex<T> >
         {
-            typedef T Type;
+            typedef T Type; //!< alias
         };
 
+        //! select scalar for scalar
         template <typename T>
         struct ScalarFor
         {
-            typedef T Type;
+            typedef T Type; //!< alias
         };
 
 
+        //! testing is type is scalar
         template <typename T>
         struct IsScalarType
         {
-            Y_Args_Expose(T,Type);
-            typedef typename ScalarFor<MutableType>::Type ScalarType;
-            enum { Value = IsSameType<MutableType,ScalarType>::Value };
+            Y_Args_Expose(T,Type); //!< aliases
+            typedef typename ScalarFor<MutableType>::Type ScalarType; //!< alias
+            enum
+            {
+                Value = IsSameType<MutableType,ScalarType>::Value //!< true iff scalar
+            };
         };
     }
 

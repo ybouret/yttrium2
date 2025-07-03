@@ -4,21 +4,36 @@
 
 using namespace Yttrium;
 
-namespace
+namespace Yttrium
 {
 
-
-    static int test3()
+    namespace AntElOp
     {
-        int a[] = {10, 12, 5};
+        template <typename T>
+        class Summator
+        {
+        public:
+            Y_Args_Declare(T,Type);
+        protected:
+            inline explicit Summator() noexcept {}
+        public:
+            inline virtual ~Summator() noexcept {}
 
-        Sorting::Sort3(a,Sign::Increasing<int>);
+            virtual void ldz() noexcept = 0;
 
-        for (int i = 0; i < 3; i++)
-            std::cerr << a[i] << " ";
-        std::cerr << std::endl;
-        return 0;
+
+        private:
+            Y_Disable_Copy_And_Assign(Summator);
+        };
+
+        template <typename T>
+        class DirectSummator; //!< ap[n|z|q]
+
+        class AProxySummator; //!< integral types : ap[n|z]
+
     }
+
+
 }
 
 Y_UTEST(antelope_add)
@@ -36,7 +51,6 @@ Y_UTEST(antelope_add)
 
     }
 
-    test3();
 
 
     std::cerr << MKL::Pythagoras<float>(-5,4,-1) << std::endl;

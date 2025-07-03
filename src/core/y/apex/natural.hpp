@@ -192,7 +192,7 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             // other
             //
             //__________________________________________________________________
-            Natural abs() const;
+            Natural abs() const; //!< \return |*this|
             
 
         private:
