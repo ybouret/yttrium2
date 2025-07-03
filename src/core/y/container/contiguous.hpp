@@ -170,6 +170,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         typedef typename CONTAINER::Type         Type;                 //!< alias
+        typedef typename CONTAINER::MutableType  MutableType;          //!< alias
         typedef typename CONTAINER::ConstType    ConstType;            //!< alias
         using ContiguousCommon<CONTAINER>::head;
         using ContiguousCommon<CONTAINER>::last;
@@ -211,11 +212,11 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
-        inline Iterator      begin()       noexcept { return head(); } //!< \return first valid   Iterator
-        inline Iterator      end()         noexcept { return last(); } //!< \return first invalid Iterator
+        inline Iterator      begin()       noexcept { return (MutableType *)head(); } //!< \return first valid   Iterator
+        inline Iterator      end()         noexcept { return (MutableType *)last(); } //!< \return first invalid Iterator
 
-        inline ReverseIterator rbegin()       noexcept { return tail(); } //!< \return first valid   ReverseIterator
-        inline ReverseIterator rend()         noexcept { return fore(); } //!< \return first invalid ReverseIterator
+        inline ReverseIterator rbegin()       noexcept { return (MutableType *)tail(); } //!< \return first valid   ReverseIterator
+        inline ReverseIterator rend()         noexcept { return (MutableType *)fore(); } //!< \return first invalid ReverseIterator
 
         inline ConstIterator begin() const noexcept { return head(); } //!< \return first valid   ConstIterator
         inline ConstIterator end()   const noexcept { return last(); } //!< \return first invalid ConstIterator

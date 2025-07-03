@@ -119,7 +119,18 @@ namespace Yttrium
             //! access \return CONST reference to content
             inline ConstType & operator*() const noexcept { assert(0!=pointee); return *pointee; }
 
-            
+
+            inline Type & operator[](const size_t indx) noexcept
+            {
+                assert(0!=pointee);
+                return *incr(indx,Way);
+            }
+
+            inline ConstType & operator[](const size_t indx) const noexcept
+            {
+                assert(0!=pointee);
+                return *incr(indx,Way);
+            }
 
 
         private:
@@ -138,6 +149,18 @@ namespace Yttrium
                 assert(0!=pointee);
                 --pointee;
             }
+
+            MutableType * incr(const size_t n, const IntToType<Forward> &) const noexcept
+            {
+                return (MutableType *)(pointee+n);
+            }
+
+            MutableType * incr(const size_t n, const IntToType<Reverse> &) const noexcept
+            {
+                return (MutableType *)(pointee-n);
+            }
+
+
 
             //! decrease forward
             inline void decr(const IntToType<Forward> &) noexcept
