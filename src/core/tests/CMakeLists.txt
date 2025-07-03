@@ -173,6 +173,7 @@ Y_UTEST(random:gaussian)
 Y_UTEST(random:in2d)
 Y_UTEST(random:in3d)
 Y_UTEST(random:fill)
+Y_UTEST(random:shuffle)
 
 #mkl
 Y_UTEST(mkl:numeric)

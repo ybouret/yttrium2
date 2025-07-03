@@ -129,6 +129,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(random_in2d);
     Y_UTEST(random_in3d);
     Y_UTEST(random_fill);
+    Y_UTEST(random_shuffle);
     
     Y_UTEST(mkl_numeric);
     Y_UTEST(mkl_api);
