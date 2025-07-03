@@ -3,7 +3,7 @@ include_directories(../core)
 
 macro(Y_CLI progname)
 add_executable(${progname} "${progname}.cpp")
-target_link_libraries(${progname} y)
+Y_LinkLibraries(${progname})
 endmacro()
 
 Y_CLI(y_trunc)
