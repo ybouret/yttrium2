@@ -53,6 +53,11 @@ Y_UTEST(cameo_add)
     std::cerr << "s=" << s << std::endl;
 
 
+    Cameo::FPointSummator< XReal<long double> > xsum(5);
+    xsum << -0.01 << 0.02 << 1 << -1.2;
+    std::cerr << "Computing" << std::endl;
+    const float x = xsum.sum();
+    std::cerr << "x=" << x << std::endl;
 
 }
 Y_UDONE()
