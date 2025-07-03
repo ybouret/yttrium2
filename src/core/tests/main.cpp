@@ -35,6 +35,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(calculus_gcd);
     Y_UTEST(calculus_bits_for);
     Y_UTEST(calculus_isqrt);
+    Y_UTEST(calculus_iabs);
 
 
 

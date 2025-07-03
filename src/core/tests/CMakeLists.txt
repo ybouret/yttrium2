@@ -67,6 +67,7 @@ Y_UTEST(calculus:base2)
 Y_UTEST(calculus:gcd)
 Y_UTEST(calculus:bits_for)
 Y_UTEST(calculus:isqrt)
+Y_UTEST(calculus:iabs)
 
 #concurrent
 Y_UTEST(concurrent:nucleus)
