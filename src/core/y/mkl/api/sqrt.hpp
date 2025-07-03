@@ -4,7 +4,8 @@
 #ifndef Y_MKL_Sqrt_Included
 #define Y_MKL_Sqrt_Included 1
 
-#include "y/type/args.hpp"
+#include "y/mkl/api/selector.hpp"
+#include "y/calculus/isqrt.hpp"
 #include <cmath>
 
 namespace Yttrium
@@ -14,21 +15,26 @@ namespace Yttrium
 
         namespace Kernel
         {
-            template <typename T,bool> struct Sqrt;
-
-            //! sqrt for float,double, long double
-            template <typename T> struct Sqrt<T,true>
+            template <typename T> inline
+            T Sqrt(const T x, const IntegralAPI &)
             {
-                //! \param x value \return sqrt(x)
-                static inline T Of(const T x) noexcept { return std::sqrt(x); }
-            };
+                return IntegerSquareRoot(x);
+            }
 
-            //! sqrt for class
-            template <typename T> struct Sqrt<T,false>
+            template <typename T> inline
+            T Sqrt(const T x, const FloatingAPI &)
             {
-                //! \param x value \return x.sqrt()
-                static inline T Of(const T &x) { return x.sqrt(); }
-            };
+                return std::sqrt(x);
+            }
+
+            template <typename T> inline
+            T Sqrt(const T &x, const MustCallAPI &)
+            {
+                return x.sqrt();
+            }
+
+
+
         }
 
         //! sqrt selector for types
@@ -39,7 +45,8 @@ namespace Yttrium
             //! \param x value \return |x|
             static inline Type Of(ParamType x)
             {
-                return Kernel::Sqrt<T,TypeTraits<MutableType>::IsIsoFloatingPoint>::Of(x);
+                static const typename API_Select<T>::Choice choice = {};
+                return Kernel::Sqrt<T>(x,choice);
             }
         };
 

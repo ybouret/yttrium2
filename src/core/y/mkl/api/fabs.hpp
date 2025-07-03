@@ -5,34 +5,36 @@
 #ifndef Y_MKL_Fabs_Included
 #define Y_MKL_Fabs_Included 1
 
+#include "y/mkl/api/selector.hpp"
 #include "y/mkl/api/scalar-for.hpp"
+#include "y/calculus/iabs.hpp"
 #include <cmath>
 
 namespace Yttrium
 {
     namespace MKL
     {
-
-        // IsoFloatingPoint : std::fabs
-        // XReal<...>  x.abs(), todo for complex
-
+        
         namespace Kernel
         {
-            template <typename T,bool> struct Fabs;
-
-            //! fabs for float,double,long double
-            template <typename T> struct Fabs<T,true>
+            template <typename T>
+            inline T Fabs(const T x, const IntegralAPI &) noexcept
             {
-                //! \param x value \return std::fabs(x)
-                static inline T Of(const T x) noexcept { return std::fabs(x); }
-            };
+                return IntegerAbs(x);
+            }
 
-            //! fabs for classes
-            template <typename T> struct Fabs<T,false>
+            template <typename T>
+            inline T Fabs(const T x, const FloatingAPI &) noexcept
             {
-                //! \param x value \return x.abs()
-                static inline typename ScalarFor<T>::Type Of(const T &x) { return x.abs(); }
-            };
+                return std::fabs(x);
+            }
+
+            template <typename T>
+            inline typename ScalarFor<T>::Type  Fabs(const T &x, const MustCallAPI &) noexcept
+            {
+                return x.abs();
+            }
+
         }
 
         //! wrapper to select fabs()
@@ -44,10 +46,10 @@ namespace Yttrium
             //! \param x value \return |x|
             static inline ScalarType Of(ParamType x)
             {
-                return Kernel::Fabs<T,TypeTraits<MutableType>::IsIsoFloatingPoint>::Of(x);
+                static const typename API_Select<T>::Choice choice = {};
+                return Kernel::Fabs<T>(x,choice);
             }
         };
-
 
     }
 

@@ -175,6 +175,7 @@ Y_UTEST(random:in3d)
 
 #mkl
 Y_UTEST(mkl:numeric)
+Y_UTEST(mkl:api)
 
 #antelope
 Y_UTEST(antelope:add)

@@ -130,6 +130,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(random_in3d);
     
     Y_UTEST(mkl_numeric);
+    Y_UTEST(mkl_api);
 
     Y_UTEST(antelope_add);
 }
