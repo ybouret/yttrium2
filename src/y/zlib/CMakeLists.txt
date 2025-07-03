@@ -219,7 +219,12 @@ if(ZLIB_BUILD_EXAMPLES)
     target_link_libraries(example y-z)
     add_test(example example)
 
-    add_custom_target(test-zlib ALL
+    #add_custom_target(test-zlib ALL
+    #COMMAND example
+    ##COMMENT "Testing zlib"
+    #)
+
+    add_custom_command(TARGET example POST_BUILD
     COMMAND example
     COMMENT "Testing zlib"
     )
