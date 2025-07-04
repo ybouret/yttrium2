@@ -240,7 +240,7 @@ built(0)
 
 
         virtual void free()    noexcept { free_();    }
-        virtual void release() noexcept { release_(); }
+        virtual void release() noexcept { release_(); } //!< [Releasable] release all memory
 
 
     private:

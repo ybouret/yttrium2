@@ -8,11 +8,13 @@
 #include <iostream>
 #include <iomanip>
 
+//! prolog
 #define Y_PROGRAM() \
 /**/    int main(int argc, const char * argv[]) {\
 /**/        (void)argc; const char * const program = argv[0];\
 /**/        try
 
+//! epilog
 #define Y_EXECUTE() \
 /**/        catch(const std::exception &excp) { std::cerr << excp.what() << std::endl; return 2; }\
 /**/        catch(...) { std::cerr << "unhandled exception in " << program << std::endl; return 3; }\

@@ -15,7 +15,7 @@
 namespace Yttrium
 {
 
-    typedef Dynamic<Releasable> PriorityQueuePolicy;
+    typedef Dynamic<Releasable> PriorityQueuePolicy; //!< memory management
 
     //__________________________________________________________________________
     //
@@ -53,7 +53,7 @@ namespace Yttrium
         //! setup empty
         inline explicit PriorityQueue() noexcept : code(0), compare() {}
 
-        //! setup with minimal capacity
+        //! setup with minimal capacity \param n minimal capacity
         inline explicit PriorityQueue(const WithAtLeast_ &, const size_t n) :
         code( n>0 ? new Code(n) :  0 ), compare()
         {
@@ -70,6 +70,7 @@ namespace Yttrium
             if(other.code && other.code->size) code = new Code( *other.code );
         }
 
+        //! display \param os output stream \param self *this \return os
         inline friend std::ostream & operator<<(std::ostream &os, const PriorityQueue &self)
         {
             if(self.code) os << *self.code; else os << Core::Nil;
@@ -103,6 +104,7 @@ namespace Yttrium
             if(code) code->free();
         }
 
+        //! [Releasable] release all memory
         inline virtual void release() noexcept { release_(); }
 
         inline virtual void reserve(const size_t n)
@@ -154,6 +156,7 @@ namespace Yttrium
             }
         }
 
+        //! \return top item
         inline virtual ConstType & peek() const noexcept
         {
             assert(0!=code);

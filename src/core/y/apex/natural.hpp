@@ -165,7 +165,7 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             // Bit shift
             //
             //__________________________________________________________________
-            void shr() noexcept;
+            void shr() noexcept; //!< in place noexcept right shift 1 bit (a.k.a divide by two)
 
             //__________________________________________________________________
             //

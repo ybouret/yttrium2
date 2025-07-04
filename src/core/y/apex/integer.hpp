@@ -69,7 +69,7 @@ inline Integer & operator OP##=(const Natural & rhs) { Integer res( CALL(*this,r
             static const char         Mark__Zero__ = 0x0; //!< marker for zero
             static const char         MarkPositive = 0x1; //!< marker for positive
             static const char         MarkNegative = 0x2; //!< marker for negative
-            static const char * const CallSign;
+            static const char * const CallSign;           //!< "apz"
 
 
             //__________________________________________________________________

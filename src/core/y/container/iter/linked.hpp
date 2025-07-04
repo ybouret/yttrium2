@@ -111,13 +111,14 @@ namespace Yttrium
                 return saved;
             }
 
-
+            //! \param indx \return value from shifted node
             inline Type & operator[](const size_t indx) noexcept
             {
                 assert(0!=node);
                 return **incr(indx,Way);
             }
 
+            //! \param indx \return value from shifted node
             inline ConstType & operator[](const size_t indx) const noexcept
             {
                 assert(0!=node);
@@ -141,7 +142,7 @@ namespace Yttrium
                 node=node->prev;
             }
 
-
+            //! \param n steps to take \return forward shifted node
             inline NODE *incr(size_t n, const IntToType<Forward> &) const noexcept
             {
                 assert(0!=node);
@@ -155,7 +156,7 @@ namespace Yttrium
                 return here;
             }
 
-
+            //! \param n steps to take \return reverse shifted node
             inline NODE *incr(size_t n, const IntToType<Reverse> &) const noexcept
             {
                 assert(0!=node);

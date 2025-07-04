@@ -11,9 +11,11 @@ namespace Yttrium
     namespace Random
     {
 
+        //! fill memory with random bits
         struct Fill
         {
 
+            //! generic fill each byte with given range
             static void Block(Bits &,
                               void * const,
                               const size_t,
@@ -21,9 +23,17 @@ namespace Yttrium
                               const uint8_t= 0xff) noexcept;
 
 
+            //! fill object with random bits
+            /**
+             \param ran   Bits
+             \param arg   the object
+             \param lower lower byte value
+             \param upper upper byte value
+             */
             template <typename T>
             static inline
-            void Variable(Bits &ran, T &arg,
+            void Variable(Bits &        ran,
+                          T &           arg,
                           const uint8_t lower = 0x00,
                           const uint8_t upper = 0xff ) noexcept
             {

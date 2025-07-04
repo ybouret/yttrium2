@@ -12,10 +12,16 @@ namespace Yttrium
     namespace Random
     {
 
+        //! shuffle data
         struct Shuffle
         {
 
             //! Knuth Shuffle
+            /**
+             \param ran Bits
+             \param a   original iterator
+             \param n   number of iterators
+             */
             template <typename ITER> static inline
             void Range(Bits &ran, ITER a, const size_t n)
             {

@@ -10,22 +10,25 @@ namespace Yttrium
     namespace Apex
     {
 
+        //! detecting Mul/Div case
         struct MulOps
         {
+            //! possible cases
             enum Case
             {
-                Case00,
-                Case01,
-                Case0N,
-                Case10,
-                Case11,
-                Case1N,
-                CaseN0,
-                CaseN1,
-                CaseNN
+                Case00, //!< zero / zero
+                Case01, //!< zero / one
+                Case0N, //!< zero /  >one
+                Case10, //!< one  / zero
+                Case11, //!< one  / one
+                Case1N, //!< one  /  >one
+                CaseN0, //!< >one / zero
+                CaseN1, //!< >one / one
+                CaseNN  //!< >one /  >one
             };
 
-            static Case Get(const size_t lhs, const size_t rhs) noexcept;
+            //! \return case according to bits/value
+            static Case Get(const size_t, const size_t) noexcept;
         };
 
 

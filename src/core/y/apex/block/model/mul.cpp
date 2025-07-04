@@ -97,7 +97,6 @@ Y_Apex_Model_Table(ModelMul,::Compute) \
                 case MulOps::Case11: return new Model(CopyOf,1);
                 case MulOps::Case1N: return new Model(rhs,view);
                 case MulOps::CaseN1: return new Model(lhs,view);
-
                 case MulOps::CaseNN:
                     break;
             }
