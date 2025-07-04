@@ -11,24 +11,61 @@ namespace Yttrium
     namespace Cameo
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Summator API
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class Summator
         {
         public:
-            Y_Args_Declare(T,Type);
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            Y_Args_Declare(T,Type); //!< aliases
+
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
         protected:
-            inline explicit Summator() noexcept {}
+            inline explicit Summator() noexcept {} //!< setup
         public:
-            inline virtual ~Summator() noexcept {}
+            inline virtual ~Summator() noexcept {} //!< cleanup
 
-            virtual void ldz() noexcept = 0;
-            virtual T    sum()          = 0; //!< must reset
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
+            virtual void ldz() noexcept = 0; //!< clear
+            virtual T    sum()          = 0; //!< must reset after computation \return sum
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! store/use data \param value data \return *this
             inline Summator & operator<<(ParamType value) { add(value); return *this; }
 
+            
+
         private:
-            Y_Disable_Copy_And_Assign(Summator);
-            virtual void add(ConstType &) = 0;
+            Y_Disable_Copy_And_Assign(Summator); //!< discarding
+            virtual void add(ConstType &) = 0;   //!< store/use data
         };
 
     }

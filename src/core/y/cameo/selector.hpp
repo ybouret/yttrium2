@@ -15,7 +15,14 @@ namespace Yttrium
     namespace Cameo
     {
 
-        //! select matching API
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! select matching API according to type
+        //
+        //
+        //______________________________________________________________________
         template <
         typename T,
         template <typename> class DirectAPI,
@@ -24,9 +31,11 @@ namespace Yttrium
         >
         struct Select
         {
-            Y_Args_Expose(T,Type);
-            static const bool IsApNumber = Y_Is_SuperSubClass_Strict(Apex::Number,MutableType);
-            static const bool IsIntegral = TypeTraits<MutableType>::IsIntegral;
+            Y_Args_Expose(T,Type); //!< aliases
+            static const bool IsApNumber = Y_Is_SuperSubClass_Strict(Apex::Number,MutableType); //!< ap[n|z|q]
+            static const bool IsIntegral = TypeTraits<MutableType>::IsIntegral;                 //!< integral type
+
+            //! default to floating point
             typedef typename Alternative<IsApNumber,DirectAPI<T>,IsIntegral,AProxyAPI<T>,FPointAPI<T>> ::Type API;
         };
     }

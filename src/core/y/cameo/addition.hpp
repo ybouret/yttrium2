@@ -16,15 +16,40 @@ namespace Yttrium
     namespace Cameo
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Addition with API based on type
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class Addition : public Select<T,DirectSummator,AProxySummator,FPointSummator>::API
         {
         public:
-            explicit Addition() noexcept {}
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef typename Select<T,DirectSummator,AProxySummator,FPointSummator>::API SummatorType; //!< alias
+
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            //! setup
+            explicit Addition() noexcept : SummatorType() {}
+
+            //! cleanup
             virtual ~Addition() noexcept {}
             
         private:
-            Y_Disable_Copy_And_Assign(Addition);
+            Y_Disable_Copy_And_Assign(Addition); //!< discarding
         };
 
     }
