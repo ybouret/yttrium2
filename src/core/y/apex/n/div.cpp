@@ -48,14 +48,54 @@ namespace Yttrium
 
             assert(numer>denom);
             const size_t nbits = numer.code->bits; assert(nbits>=dbits);
-            std::cerr << "nbits=" << nbits << " / dbits=" << dbits << std::endl;
             size_t       xp    = nbits-dbits;
-            //Natural      lower(TwoToThePowerOf,xp);
+            Natural      lower(TwoToThePowerOf,xp);
+            {
+                const Natural probe = lower * denom;
+                switch( Compare(probe,numer) )
+                {
+                    case Negative:
+                        ++xp;      // for upper
+                        break;
 
+                    case __Zero__: // exact match
+                        if(Q) Q->xch(lower);
+                        if(R) R->ldz();
+                        return;
 
+                    case Positive:
+                        lower.shr(); // and upper will be 2^xp
+                        break;
+                }
+            }
+            assert(lower*denom<numer);
+            {
+                Natural      upper(TwoToThePowerOf,xp); assert(2*lower==upper);
+                assert(upper*denom>=numer);
 
+                while(true)
+                {
+                    {
+                        Natural       middle = upper+lower; middle.shr();
+                        const Natural probe = middle * denom;
+                        switch( Compare(probe,numer) )
+                        {
+                            case Negative: lower.xch(middle); break;
+                            case Positive: upper.xch(middle); break;
+                            case __Zero__:
+                                if(Q) Q->xch(middle);
+                                if(R) R->ldz();
+                                return;
+                        }
+                    }
+                    const Natural delta = upper-lower;
+                    if(delta.code->bits<=1)
+                        break;
+                }
+            }
 
-
+            if(R) { *R = numer-lower * denom; }
+            if(Q) Q->xch(lower);
 
         }
     }

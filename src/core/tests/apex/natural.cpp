@@ -286,14 +286,14 @@ Y_UTEST(apex_n)
             for(size_t i=0;i<=64;++i)
             {
 
-                //for(size_t iter=0;iter<100;++iter)
+                for(size_t iter=0;iter<10;++iter)
                 {
                     const uint64_t numer = ran.to<uint64_t>(i);
                     const uint64_t denom = ran.to<uint64_t>(j);
                     const uint64_t q     = numer/denom;
                     const uint64_t r     = numer%denom;
 
-                    std::cerr << numer << " = " << q << " * " << denom << " + " << r << std::endl;
+                    //std::cerr << numer << " = " << q << " * " << denom << " + " << r << std::endl;
 
                     const apn N = numer;
                     const apn D = denom;
