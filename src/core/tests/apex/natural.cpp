@@ -248,6 +248,10 @@ Y_UTEST(apex_n)
             std::cerr << n << std::endl;
             Y_ASSERT( 0 == n );
         }
+        apn lhs = 12;
+        lhs += 14;
+        lhs.shr();
+        Y_CHECK(13==lhs);
     }
 
 
