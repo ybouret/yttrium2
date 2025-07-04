@@ -62,31 +62,9 @@ namespace Yttrium
             {
                 assert(0!=a);
                 assert(0!=b);
-                if(n<=0)
-                {
-                    if(m<=0)
-                    {
-                        return new Model(0,SmallView);
-                    }
-                    else
-                    {
-                        assert(0==n);
-                        assert(m>0);
-                        return new Model(b,m,SmallView);
-                    }
-                }
-                else
-                {
-                    assert(n>0);
-                    if(m<=0)
-                    {
-                        return new Model(a,n,SmallView);
-                    }
-                    else
-                    {
-                        return (n<=m) ? Compute_(a,n,b,m) : Compute_(b,m,a,n);
-                    }
-                }
+                assert(n>0);
+                assert(m>0);
+                return (n<=m) ? Compute_(a,n,b,m) : Compute_(b,m,a,n);
             }
 
             static inline
@@ -94,6 +72,8 @@ namespace Yttrium
             {
                 assert(SmallView==lhs.view);
                 assert(SmallView==rhs.view);
+                assert(lhs.bytes>0);
+                assert(rhs.bytes>0);
                 const Block<SMALL> & L = lhs.get<SMALL>();
                 const Block<SMALL> & R = rhs.get<SMALL>();
                 return Compute(L.data,L.size,R.data,R.size);
@@ -102,6 +82,8 @@ namespace Yttrium
             static inline
             Model * Compute(const Model &lhs, natural_t rhs)
             {
+                assert(rhs>0);
+                assert(lhs.bytes>0);
                 const Block<SMALL> & L = lhs.get<SMALL>();
                 size_t               N = 0;
                 const SMALL * const  R = UFormatAs<SMALL>(rhs,N);
@@ -125,12 +107,34 @@ static AddProc AddTable[Ops] = \
             typedef Model * (*AddProc)(const Model&, const Model&);
             Y_Apex_Model_Add_Table();
             const ViewType view = SmallView[ops];
-            AutoPtr<Model> lp,rp;
-            Model        * L = & Coerce(lhs); if(view != L->view) { lp = (L=new Model(lhs,view) ); }
-            Model        * R = & Coerce(rhs); if(view != R->view) { rp = (R=new Model(rhs,view) ); }
-            assert(view==L->view);
-            assert(view==R->view);
-            return AddTable[ops](*L,*R);
+
+            if(lhs.bytes<=0)
+            {
+                if(rhs.bytes<=0)
+                {
+                    return new Model(0,view);
+                }
+                else
+                {
+                    return new Model(rhs,view);
+                }
+            }
+            else
+            {
+                if(rhs.bytes<=0)
+                {
+                    return new Model(lhs,view);
+                }
+                else
+                {
+                    AutoPtr<Model> lp,rp;
+                    Model        * L = & Coerce(lhs); if(view != L->view) { lp = (L=new Model(lhs,view) ); }
+                    Model        * R = & Coerce(rhs); if(view != R->view) { rp = (R=new Model(rhs,view) ); }
+                    assert(view==L->view);
+                    assert(view==R->view);
+                    return AddTable[ops](*L,*R);
+                }
+            }
         }
 
         Model * Model:: Add(const OpsMode ops, const Model &lhs, const natural_t rhs)
@@ -138,10 +142,22 @@ static AddProc AddTable[Ops] = \
             typedef Model * (*AddProc)(const Model &,natural_t rhs);
             Y_Apex_Model_Add_Table();
             const ViewType view = SmallView[ops];
-            AutoPtr<Model> lp;
-            Model        * L = & Coerce(lhs); if(view != L->view) { lp = (L=new Model(lhs,view) ); }
-            assert(view==L->view);
-            return AddTable[ops](*L,rhs);
+            if(lhs.bytes<=0)
+            {
+                return new Model(rhs);
+            }
+            else
+            {
+                if(rhs<=0)
+                    return new Model(lhs,view);
+                else
+                {
+                    AutoPtr<Model> lp;
+                    Model        * L = & Coerce(lhs); if(view != L->view) { lp = (L=new Model(lhs,view) ); }
+                    assert(view==L->view);
+                    return AddTable[ops](*L,rhs);
+                }
+            }
         }
 
 
