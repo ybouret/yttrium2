@@ -159,6 +159,9 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             Natural   operator--(int);   //!< postfix \return previous  *this, decreased
             void decr();                 //!< in-place decrease
 
+            static void Div(Natural * const Q,
+                            Natural * const R, const Natural &numer, const Natural &denom);
+
             //__________________________________________________________________
             //
             //
@@ -195,7 +198,7 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             virtual size_t serialize(OutputStream &) const;
             virtual void   ldz() noexcept;
             virtual void   ld1() noexcept;
-
+            virtual bool   eq0() const noexcept;
 
             //__________________________________________________________________
             //

@@ -217,6 +217,11 @@ namespace Yttrium
             (void) code->ld1(Model::SmallView[Ops]);
         }
 
+        bool Natural:: eq0() const noexcept
+        {
+            return code->bits<=0;
+        }
+
         Natural Natural:: abs() const
         {
             return *this;

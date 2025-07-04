@@ -96,6 +96,7 @@ inline Integer & operator OP##=(const Natural & rhs) { Integer res( CALL(*this,r
             virtual size_t serialize(OutputStream&) const;
             virtual void   ldz() noexcept;
             virtual void   ld1() noexcept;
+            virtual bool   eq0() const noexcept;
 
             //__________________________________________________________________
             //

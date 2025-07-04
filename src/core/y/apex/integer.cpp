@@ -99,6 +99,13 @@ namespace Yttrium
             Coerce(n).ld1();
         }
 
+        bool Integer:: eq0() const noexcept
+        {
+            return __Zero__ == s;
+        }
+
+
+
 
         Integer Integer:: abs() const
         {

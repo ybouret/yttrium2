@@ -202,7 +202,7 @@ Y_UTEST(apex_n)
                     }
                 }
             }
-            
+
         }
 
         Apex::Natural n = 10;
@@ -272,10 +272,39 @@ Y_UTEST(apex_n)
                     Y_ASSERT(P==p);
                     Y_ASSERT(P==r*L);
                     Y_ASSERT(P==R*l);
-                    
-
                 }
             }
+        }
+    }
+
+    {
+        std::cerr << "Div64" << std::endl;
+
+
+        for(size_t j=1;j<=64;++j)
+        {
+            for(size_t i=0;i<=64;++i)
+            {
+
+                //for(size_t iter=0;iter<100;++iter)
+                {
+                    const uint64_t numer = ran.to<uint64_t>(i);
+                    const uint64_t denom = ran.to<uint64_t>(j);
+                    const uint64_t q     = numer/denom;
+                    const uint64_t r     = numer%denom;
+
+                    std::cerr << numer << " = " << q << " * " << denom << " + " << r << std::endl;
+
+                    const apn N = numer;
+                    const apn D = denom;
+                    apn Q,R;
+                    Apex::Natural::Div(&Q,&R,N,D);
+                    Y_ASSERT(q==Q);
+                    Y_ASSERT(r==R);
+                }
+
+            }
+
         }
     }
 

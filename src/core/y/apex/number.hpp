@@ -25,8 +25,9 @@ namespace Yttrium
         public:
             virtual ~Number() noexcept; //!< cleanup
 
-            virtual void   ldz() noexcept = 0; //!< noexcept set to zero
-            virtual void   ld1() noexcept = 0; //!< noexcept set to one
+            virtual void   ldz()       noexcept = 0; //!< noexcept set to zero
+            virtual void   ld1()       noexcept = 0; //!< noexcept set to one
+            virtual bool   eq0() const noexcept = 0;
 
         private:
             Y_Disable_Copy_And_Assign(Number); //!< discarding
