@@ -256,6 +256,23 @@ Y_UTEST(apex_n)
 
     {
         std::cerr << "Mul64" << std::endl;
+        for(size_t i=0;i<=32;++i)
+        {
+            for(size_t j=0;j<=32;++j)
+            {
+                for(size_t iter=0;iter<100;++iter)
+                {
+                    const uint64_t l = ran.to<uint64_t>(i);
+                    const uint64_t r = ran.to<uint64_t>(j);
+                    const uint64_t p = l*r;
+                    const apn      L = l;
+                    const apn      R = r;
+                    const apn      P = L*R;
+                    //std::cerr << Hexadecimal(p,Concise) << " => " << P << std::endl;
+                    Y_ASSERT(P==p);
+                }
+            }
+        }
     }
 
 
