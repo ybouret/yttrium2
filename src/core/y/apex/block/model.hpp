@@ -141,6 +141,9 @@ namespace Yttrium
             static Model * Sub(const OpsMode, const natural_t, const Model &);   //!< addition \return resulting model
 
 
+            static Model * Mul(const OpsMode, const Model &, const Model &);   //!< multiplication \return resulting model
+
+
             //! compare by adjusting to biggest view \return comparison
             static SignType Compare(const Model &, const Model &);
 

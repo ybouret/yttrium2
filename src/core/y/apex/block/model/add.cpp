@@ -92,6 +92,8 @@ namespace Yttrium
             static inline
             Model * Compute(const Model &lhs, const Model &rhs)
             {
+                assert(SmallView==lhs.view);
+                assert(SmallView==rhs.view);
                 const Block<SMALL> & L = lhs.get<SMALL>();
                 const Block<SMALL> & R = rhs.get<SMALL>();
                 return Compute(L.data,L.size,R.data,R.size);
