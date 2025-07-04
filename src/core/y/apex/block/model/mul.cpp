@@ -21,6 +21,17 @@ namespace Yttrium
             {
                 assert(0!=a);
                 assert(0!=b);
+                assert(n>0);
+                assert(m>0);
+                const size_t   p     = n+m;
+                Model *        model = new Model(p,SmallView);
+                Block<SMALL> & block = model->get<SMALL>();
+                
+
+
+                block.size = p;
+                model->update();
+                return model;
             }
 
             static inline
@@ -43,7 +54,7 @@ static MulProc MulTable[Ops] = \
 {\
 Y_Apex_Model_Table(ModelMul,::Compute) \
 }
-        
+
         Model * Model:: Mul(const OpsMode ops, const Model &lhs, const Model &rhs)
         {
             typedef Model * (*MulProc)(const Model&, const Model&);
