@@ -178,6 +178,7 @@ Y_UTEST(random:shuffle)
 #mkl
 Y_UTEST(mkl:numeric)
 Y_UTEST(mkl:api)
+Y_UTEST(mkl:adaptor)
 
 #cameo
 Y_UTEST(cameo:add)

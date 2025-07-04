@@ -86,7 +86,7 @@ namespace Yttrium
 
             inline virtual const PriorityQueuePolicy & locus() const noexcept { return acc; }
 
-            inline virtual void add(ConstType & x)
+            inline virtual void add(ParamType x)
             {
                 acc.push(x);
                 std::cerr << acc.peek() << " @" << acc << std::endl;

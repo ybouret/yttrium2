@@ -50,7 +50,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(AProxySummator);
             CoreType acc;
 
-            inline virtual void add(ConstType & x) { acc += x; }
+            inline virtual void add(ParamType x) { acc += x; }
 
         };
     }
