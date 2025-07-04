@@ -134,6 +134,7 @@ namespace Yttrium
                 {
                     assert(bits()>0);
                     const size_t msb = size-1;
+#if 0
                     T * const    ptr = data;
                     for(size_t i=0;i<msb;++i)
                     {
@@ -143,6 +144,16 @@ namespace Yttrium
                             word |= top;
                     }
                     ptr[msb] >>= 1;
+#else
+                    T * ptr = data;
+                    for(size_t i=msb;i>0;--i)
+                    {
+                        T & word = *(ptr++);
+                        word >>= 1;
+                        if( 0 != (one&*ptr) ) word|=top;
+                    }
+                    *ptr >>= 1;
+#endif
                     return update(sync);
                 }
                 else
