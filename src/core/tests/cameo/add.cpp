@@ -46,7 +46,7 @@ Y_UTEST(cameo_add)
 
         fsum->release();
 
-        fsum << -0.01 << 0.02 << 1 << -1.2;
+        fsum << -0.01f << 0.02f << 1.0f << -1.2f;
 
         //std::cerr << "fsum=" << fsum << std::endl;
         std::cerr << "Computing" << std::endl;
@@ -57,7 +57,7 @@ Y_UTEST(cameo_add)
         Cameo::FPointSummator< XReal<long double> > xsum(5);
         xsum << -0.01 << 0.02 << 1 << -1.2;
         std::cerr << "Computing" << std::endl;
-        const float x = xsum.sum();
+        const  XReal<long double> x = xsum.sum();
         std::cerr << "x=" << x << std::endl;
 
         Cameo::FPointSummator< Complex<double> > csum(5);
