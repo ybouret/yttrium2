@@ -60,6 +60,18 @@ namespace Yttrium
                 return Compute(L.data,L.size,R.data,R.size);
             }
 
+            static inline
+            Model * Compute(const Model &lhs, natural_t rhs)
+            {
+                assert(SmallView==lhs.view);
+                assert(lhs.bytes>0);
+                assert(rhs>0);
+                const Block<SMALL> & L  = lhs.get<SMALL>();
+                size_t               nr = 0;
+                const SMALL * const  pr = UFormatAs<SMALL>(rhs,nr); assert(nr>0);
+                return Compute(L.data,L.size,pr,nr);
+            }
+
         };
 
 
@@ -82,7 +94,7 @@ Y_Apex_Model_Table(ModelMul,::Compute) \
                 case MulOps::Case0N:
                 case MulOps::Case10:
                 case MulOps::CaseN0: return new Model(0,view);
-                case MulOps::Case11: return new Model(1);
+                case MulOps::Case11: return new Model(CopyOf,1);
                 case MulOps::Case1N: return new Model(rhs,view);
                 case MulOps::CaseN1: return new Model(lhs,view);
 
@@ -99,6 +111,35 @@ Y_Apex_Model_Table(ModelMul,::Compute) \
             assert(view==L->view);
             assert(view==R->view);
             return MulTable[ops](*L,*R);
+        }
+
+        Model * Model:: Mul(const OpsMode ops, const Model &lhs, const natural_t rhs)
+        {
+            typedef Model * (*MulProc)(const Model&,natural_t);
+            Y_Apex_Model_Mul_Table();
+            const ViewType view = SmallView[ops];
+
+            switch( MulOps::Get(lhs.bits,rhs) )
+            {
+                case MulOps::Case00:
+                case MulOps::Case01:
+                case MulOps::Case0N:
+                case MulOps::Case10:
+                case MulOps::CaseN0: return new Model(CopyOf,0);
+                case MulOps::Case11: return new Model(CopyOf,1);
+                case MulOps::Case1N: return new Model(CopyOf,rhs);
+                case MulOps::CaseN1: return new Model(lhs,view);
+                case MulOps::CaseNN:
+                    break;
+            }
+
+            assert(lhs.bits>1);
+            assert(rhs>1);
+
+            AutoPtr<Model> lp,rp;
+            Model        * L = & Coerce(lhs); if(view != L->view) { lp = (L=new Model(lhs,view) ); }
+            assert(view==L->view);
+            return MulTable[ops](*L,rhs);
         }
 
     }

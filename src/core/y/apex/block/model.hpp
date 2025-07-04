@@ -8,6 +8,7 @@
 #include "y/apex/block/transmogrify.hpp"
 #include "y/apex/block/ops.hpp"
 #include "y/object.hpp"
+#include "y/type/copy-of.hpp"
 
 namespace Yttrium
 {
@@ -60,7 +61,7 @@ namespace Yttrium
                            const ViewType userView);
 
             //! setup with natural
-            explicit Model(const natural_t);
+            explicit Model(const CopyOf_ &, const natural_t);
 
             //! setup with array of naturals
             explicit Model(const natural_t * const, const size_t );
@@ -141,6 +142,7 @@ namespace Yttrium
 
 
             static Model * Mul(const OpsMode, const Model &, const Model &);   //!< multiplication \return resulting model
+            static Model * Mul(const OpsMode, const Model &, const natural_t); //!< multiplication \return resulting model
 
 
             //! compare by adjusting to biggest view \return comparison

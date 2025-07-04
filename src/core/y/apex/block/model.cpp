@@ -74,7 +74,7 @@ namespace Yttrium
             set(userView);
         }
 
-        Model:: Model(const natural_t n) :
+        Model:: Model(const CopyOf_ &, const natural_t n) :
         Object(),
         Blocks( sizeof(n) ),
         view( View64 ),

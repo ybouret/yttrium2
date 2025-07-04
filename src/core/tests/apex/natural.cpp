@@ -270,6 +270,10 @@ Y_UTEST(apex_n)
                     const apn      P = L*R;
                     //std::cerr << Hexadecimal(p,Concise) << " => " << P << std::endl;
                     Y_ASSERT(P==p);
+                    Y_ASSERT(P==r*L);
+                    Y_ASSERT(P==R*l);
+                    
+
                 }
             }
         }

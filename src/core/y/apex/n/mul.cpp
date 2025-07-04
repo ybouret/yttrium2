@@ -13,7 +13,6 @@ namespace Yttrium
             return Model::Mul(Ops,*lhs.code,*rhs.code);
         }
 
-#if 0
         Model * Natural:: Mul(const Natural &lhs, const natural_t rhs)
         {
             return Model::Mul(Ops,*lhs.code,rhs);
@@ -21,9 +20,8 @@ namespace Yttrium
 
         Model * Natural:: Mul(const natural_t lhs, const Natural &rhs)
         {
-            return Mul(rhs,lhs);
+            return Model::Mul(Ops,*rhs.code,lhs);
         }
-#endif
 
 
 

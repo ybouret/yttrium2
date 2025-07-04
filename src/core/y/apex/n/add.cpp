@@ -23,7 +23,7 @@ namespace Yttrium
 
         Model * Natural:: Add(const natural_t lhs, const Natural &rhs)
         {
-            return Add(rhs,lhs);
+            return Model::Add(Ops,*rhs.code,lhs);
         }
 
         void  Natural:: incr()

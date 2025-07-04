@@ -144,7 +144,7 @@ static AddProc AddTable[Ops] = \
             const ViewType view = SmallView[ops];
             if(lhs.bytes<=0)
             {
-                return new Model(rhs);
+                return new Model(CopyOf,rhs);
             }
             else
             {

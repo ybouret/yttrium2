@@ -24,7 +24,7 @@ namespace Yttrium
         }
 
         Natural:: Natural(const natural_t n) : Number(),
-        code( new Model(n) )
+        code( new Model(CopyOf,n) )
         {
             relax();
         }
