@@ -25,7 +25,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename T>
-        class Addition : public Select<T,DirectSummator,AProxySummator,FPointSummator>::API
+        class Addition : public Select<T,DirectSummator<T>,AProxySummator<T>,FPointSummator<T> >::API
         {
         public:
             //__________________________________________________________________
@@ -34,7 +34,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            //typedef typename Select<T,DirectSummator,AProxySummator,FPointSummator>::API SummatorType; //!< alias
+            typedef typename Select<T,DirectSummator<T>,AProxySummator<T>,FPointSummator<T> >::API SummatorType; //!< alias
 
             //__________________________________________________________________
             //
@@ -43,7 +43,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             //! setup
-            explicit Addition() noexcept  {}
+            explicit Addition() noexcept : SummatorType()  {}
 
             //! cleanup
             virtual ~Addition() noexcept {}

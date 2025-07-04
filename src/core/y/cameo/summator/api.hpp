@@ -61,7 +61,19 @@ namespace Yttrium
             //! store/use data \param value data \return *this
             inline Summator & operator<<(ParamType value) { add(value); return *this; }
 
-            
+            template <typename ITERATOR> inline
+            Summator & load(ITERATOR curr, size_t size)
+            {
+                while(size-- > 0) add( *(curr++) );
+                return *this;
+            }
+
+            template <typename ITERATOR> inline
+            T operator()(ITERATOR curr, const size_t size)
+            {
+                ldz(); return load(curr,size).sum();
+            }
+
 
         private:
             Y_Disable_Copy_And_Assign(Summator); //!< discarding

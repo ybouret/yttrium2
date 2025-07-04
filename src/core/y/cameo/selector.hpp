@@ -25,9 +25,9 @@ namespace Yttrium
         //______________________________________________________________________
         template <
         typename T,
-        template <typename> class DirectAPI,
-        template <typename> class AProxyAPI,
-        template <typename> class FPointAPI
+        class DirectAPI,
+        class AProxyAPI,
+        class FPointAPI
         >
         struct Select
         {
@@ -36,7 +36,7 @@ namespace Yttrium
             static const bool IsIntegral = TypeTraits<MutableType>::IsIntegral;                 //!< integral type
 
             //! default to floating point
-            typedef typename Alternative<IsApNumber,DirectAPI<T>,IsIntegral,AProxyAPI<T>,FPointAPI<T>> ::Type API;
+            typedef typename Alternative<IsApNumber,DirectAPI,IsIntegral,AProxyAPI,FPointAPI>::Type API;
         };
     }
 
