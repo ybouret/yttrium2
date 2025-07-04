@@ -34,7 +34,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            typedef typename Select<T,DirectSummator,AProxySummator,FPointSummator>::API SummatorType; //!< alias
+            //typedef typename Select<T,DirectSummator,AProxySummator,FPointSummator>::API SummatorType; //!< alias
 
             //__________________________________________________________________
             //
@@ -43,7 +43,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             //! setup
-            explicit Addition() noexcept : SummatorType() {}
+            explicit Addition() noexcept  {}
 
             //! cleanup
             virtual ~Addition() noexcept {}
