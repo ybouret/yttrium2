@@ -8,10 +8,10 @@ namespace Yttrium
 {
     namespace Apex
     {
-        void Natural:: Div(Natural * const Q,
-                           Natural * const R,
-                           const Natural  &numer,
-                           const Natural  &denom)
+        void Natural:: Div_(Natural * const Q,
+                            Natural * const R,
+                            const Natural  &numer,
+                            const Natural  &denom)
         {
 
             const size_t dbits = denom.code->bits;
@@ -101,3 +101,21 @@ namespace Yttrium
     }
 
 }
+
+namespace Yttrium
+{
+    namespace Apex
+    {
+        Natural Natural:: Div(const Natural &numer, const Natural &denom)
+        {
+            Natural Q; Div_(&Q, 0, numer, denom); return Q;
+
+        }
+
+        Natural Natural:: Mod(const Natural &numer, const Natural &denom)
+        {
+            Natural R; Div_(0, &R, numer, denom); return R;
+        }
+    }
+}
+

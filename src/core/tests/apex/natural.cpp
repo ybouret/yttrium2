@@ -298,7 +298,7 @@ Y_UTEST(apex_n)
                     const apn N = numer;
                     const apn D = denom;
                     apn Q,R;
-                    Apex::Natural::Div(&Q,&R,N,D);
+                    Apex::Natural::Div_(&Q,&R,N,D);
                     Y_ASSERT(q==Q);
                     Y_ASSERT(r==R);
                 }

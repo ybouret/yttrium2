@@ -50,6 +50,13 @@ Y_APN_Compare_Impl_(OP,Natural &,Natural &,RES) \
 Y_APN_Compare_Impl_(OP,natural_t,Natural &,RES) \
 Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
 
+        //! helper to implement Div/Mod
+#define Y_APN_DivMod_Impl(OP,CALL) \
+inline friend Natural operator OP (const Natural & lhs, const Natural & rhs) { return CALL(lhs,rhs); }                     \
+inline friend Natural operator OP (const Natural & lhs, const natural_t rhs) { const Natural _(rhs); return CALL(lhs,_); } \
+inline friend Natural operator OP (const natural_t lhs, const Natural & rhs) { const Natural _(lhs); return CALL(_,rhs); } \
+inline Natural & operator OP##=(const Natural & rhs) { Natural res = CALL(*this,rhs); return xch(res); } \
+inline Natural & operator OP##=(const natural_t rhs) { const Natural _(rhs); Natural res = CALL(*this,_); return xch(res); } \
 
         //______________________________________________________________________
         //
@@ -126,7 +133,8 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             Y_APN_Operator_Impl(+,Add)
             Y_APN_Operator_Impl(-,Sub)
             Y_APN_Operator_Impl(*,Mul)
-
+            Y_APN_DivMod_Impl(/,Div)
+            Y_APN_DivMod_Impl(%,Mod)
 #endif
             //__________________________________________________________________
             //
@@ -159,8 +167,20 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             Natural   operator--(int);   //!< postfix \return previous  *this, decreased
             void decr();                 //!< in-place decrease
 
-            static void Div(Natural * const Q,
-                            Natural * const R, const Natural &numer, const Natural &denom);
+            //__________________________________________________________________
+            //
+            //
+            // Division
+            //
+            //__________________________________________________________________
+            static void Div_(Natural * const Q,
+                             Natural * const R, const Natural &numer, const Natural &denom);
+
+            static Natural Div(const Natural &numer, const Natural &denom);
+            static Natural Mod(const Natural &numer, const Natural &denom);
+
+
+
 
             //__________________________________________________________________
             //
