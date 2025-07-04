@@ -62,7 +62,7 @@ namespace Yttrium
                 const uint64_t n = bin[i];
                 if(n>0)
                 {
-                    const long double p = ((long double)n) / sum;
+                    const long double p = ((long double)n) / ( (long double)sum );
                     const long double q =  -p * std::log(p);
                     pq << q;
                 }

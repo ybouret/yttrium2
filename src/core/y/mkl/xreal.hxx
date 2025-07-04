@@ -8,13 +8,13 @@ namespace Yttrium
 	{
 	}
 
-	template <> XReal<real_t>::XReal(const XReal &_) noexcept :
+	template <> XReal<real_t>::XReal(const XReal& _) noexcept :
 		exponent(_.exponent),
 		mantissa(_.mantissa)
 	{
 	}
 
-	template <> XReal<real_t> & XReal<real_t>:: operator=(const XReal<real_t> &_) noexcept
+	template <> XReal<real_t>& XReal<real_t>:: operator=(const XReal<real_t>& _) noexcept
 	{
 		Coerce(exponent) = _.exponent;
 		Coerce(mantissa) = _.mantissa;
@@ -50,14 +50,14 @@ namespace Yttrium
 
 	}
 
-	template <> XReal<real_t>::XReal(const real_t x, const Raised_ &, const int xp) :
+	template <> XReal<real_t>::XReal(const real_t x, const Raised_&, const int xp) :
 		exponent(0), mantissa(std::frexp(x, &Coerce(exponent)))
 	{
 		Coerce(exponent) += xp;
 	}
 
 	template <>
-	XReal<real_t> & XReal<real_t>:: operator=(const real_t x)
+	XReal<real_t>& XReal<real_t>:: operator=(const real_t x)
 	{
 		const XReal<real_t> _(x);
 		Coerce(exponent) = _.exponent;
@@ -66,7 +66,7 @@ namespace Yttrium
 	}
 
 	template <>
-	XReal<real_t> XReal<real_t>::Mul(const XReal &lhs, const XReal &rhs) noexcept
+	XReal<real_t> XReal<real_t>::Mul(const XReal& lhs, const XReal& rhs) noexcept
 	{
 		const real_t lm = lhs.mantissa;
 		if (std::fabs(lm) <= 0)
@@ -83,7 +83,7 @@ namespace Yttrium
 			else
 			{
 				const int   xp = lhs.exponent + rhs.exponent;
-				const XReal xr(lm*rm);
+				const XReal xr(lm * rm);
 				Coerce(xr.exponent) += xp;
 				return xr;
 			}
@@ -98,7 +98,7 @@ namespace Yttrium
 
 
 	template <>
-	void XReal<real_t>::display(std::ostream &os) const
+	void XReal<real_t>::display(std::ostream& os) const
 	{
 		static const unsigned radix = MKL::Numeric<real_t>::RADIX;
 		switch (XRealOutput::Mode)
@@ -148,8 +148,8 @@ namespace Yttrium
 	}
 
 	template <>
-	XReal<real_t>  XReal<real_t>::Div(const XReal &numer,
-		const XReal &denom)
+	XReal<real_t>  XReal<real_t>::Div(const XReal& numer,
+		const XReal& denom)
 	{
 		if (std::fabs(denom.mantissa) <= 0)
 			throw Libc::Exception(EDOM, "XReal division by zero");
@@ -194,7 +194,7 @@ namespace Yttrium
 	}
 
 	template <>
-	XReal<real_t> XReal<real_t>::Add(const XReal<real_t> &lhs, const XReal<real_t> &rhs)
+	XReal<real_t> XReal<real_t>::Add(const XReal<real_t>& lhs, const XReal<real_t>& rhs)
 	{
 		if (std::fabs(lhs.mantissa) <= 0) return rhs;
 		if (std::fabs(rhs.mantissa) <= 0) return lhs;
@@ -230,7 +230,7 @@ namespace Yttrium
 	}
 
 	template <>
-	XReal<real_t> XReal<real_t>::Sub(const XReal<real_t> &lhs, const XReal<real_t> &rhs)
+	XReal<real_t> XReal<real_t>::Sub(const XReal<real_t>& lhs, const XReal<real_t>& rhs)
 	{
 		const XReal<real_t> r = -rhs;
 		return Add(lhs, r);
@@ -239,6 +239,7 @@ namespace Yttrium
 	template <>
 	XReal<real_t> XReal<real_t>::sqrt() const
 	{
+		static const real_t radix = (real_t)(MKL::Numeric<real_t>::RADIX);
 		switch (Sign::Of(mantissa))
 		{
 		case Negative: throw Libc::Exception(EDOM, "XReal negative square root");
@@ -250,7 +251,7 @@ namespace Yttrium
 		int    p = exponent;
 		if (0 != (0x1 & p))
 		{
-			m *= MKL::Numeric<real_t>::RADIX;
+			m *= radix;
 			--p;
 		}
 		assert(0 == (0x01 & p));
@@ -261,21 +262,21 @@ namespace Yttrium
 
 
 	template <>
-	SignType XReal<real_t>::Compare(const XReal<real_t> &lhs, const XReal<real_t> &rhs) noexcept
+	SignType XReal<real_t>::Compare(const XReal<real_t>& lhs, const XReal<real_t>& rhs) noexcept
 	{
 		const XReal delta = Sub(lhs, rhs);
 		return Sign::Of(delta.mantissa);
 	}
 
 	template <>
-	SignType XReal<real_t>::Compare(const XReal<real_t> &lhs, const  real_t rhs) noexcept
+	SignType XReal<real_t>::Compare(const XReal<real_t>& lhs, const  real_t rhs) noexcept
 	{
 		const XReal R(rhs);
 		return Compare(lhs, R);
 	}
 
 	template <>
-	SignType XReal<real_t>::Compare(const  real_t lhs, const XReal<real_t> &rhs) noexcept
+	SignType XReal<real_t>::Compare(const  real_t lhs, const XReal<real_t>& rhs) noexcept
 	{
 		const XReal L(lhs);
 		return Compare(L, rhs);
@@ -287,7 +288,8 @@ namespace Yttrium
 		static const real_t radix = (real_t)(MKL::Numeric<real_t>::RADIX);
 		static const real_t l10r = std::log10(radix);
 		if (mantissa <= 0) throw Libc::Exception(EDOM, "XReal::log10()");
-		return std::log10(mantissa) + exponent * l10r;
+		const real_t xp = (real_t)exponent;
+		return std::log10(mantissa) + xp * l10r;
 	}
 
 	template <>
@@ -302,7 +304,8 @@ namespace Yttrium
 		static const real_t radix = (real_t)(MKL::Numeric<real_t>::RADIX);
 		static const real_t lnr = std::log(radix);
 		if (mantissa <= 0) throw Libc::Exception(EDOM, "XReal::log()");
-		return std::log(mantissa) + exponent * lnr;
+		const real_t xp = (real_t)exponent;
+		return std::log(mantissa) + xp * lnr;
 	}
 
 
@@ -316,7 +319,7 @@ namespace Yttrium
 		// (*) (mantissa*r^exponent)^alpha = mantissa^alpha * r*(exponent*alpha)
 		// (*) exponent*alpha = ip + fp
 		const XReal<real_t> ma = std::pow(mantissa, alpha);
-		const real_t        xp = alpha * exponent;
+		const real_t        xp = alpha * (real_t)exponent;
 		const real_t        ip = std::floor(xp);
 		const real_t        fp = xp - ip;
 		const XReal<real_t> ra = std::pow(radix, fp);
@@ -332,7 +335,7 @@ namespace Yttrium
 	}
 
 	template <>
-	String XReal<real_t>::ToString(const XReal &xr)
+	String XReal<real_t>::ToString(const XReal& xr)
 	{
 		return xr.str();
 	}
