@@ -12,24 +12,38 @@ namespace Yttrium
         struct ModelMul
         {
             static const ViewType SmallView = ViewType( IntegerLog2For<SMALL>::Value );
-
+            static const unsigned SmallBits = sizeof(SMALL) * 8;
             static inline
             Model * Compute(const SMALL * const a,
-                            const size_t        n,
-                            const SMALL * const b,
-                            const size_t        m)
+                            const size_t        p,
+                            const SMALL *       b,
+                            const size_t        q)
             {
                 assert(0!=a);
                 assert(0!=b);
-                assert(n>0);
-                assert(m>0);
-                const size_t   p     = n+m;
-                Model *        model = new Model(p,SmallView);
-                Block<SMALL> & block = model->get<SMALL>();
-                
-
-
-                block.size = p;
+                assert(p>0);
+                assert(q>0);
+                const size_t   n     = p+q;
+                Model *        model = new Model(n*sizeof(SMALL),SmallView);
+                {
+                    Block<SMALL> & block = model->get<SMALL>();
+                    {
+                        SMALL *        product = block.data;
+                        for(size_t j=q;j>0;--j,++product)
+                        {
+                            const LARGE B     = static_cast<LARGE>(*(b++));
+                            LARGE       carry = 0;
+                            for(size_t i=0;i<p;++i)
+                            {
+                                carry     += static_cast<LARGE>(product[i]) + static_cast<LARGE>(a[i]) * B;
+                                product[i] = static_cast<SMALL>(carry);
+                                carry >>= SmallBits;
+                            }
+                            product[p] =  static_cast<SMALL>(carry);
+                        }
+                    }
+                    block.size = n;
+                }
                 model->update();
                 return model;
             }

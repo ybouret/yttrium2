@@ -254,6 +254,10 @@ Y_UTEST(apex_n)
         Y_CHECK(13==lhs);
     }
 
+    {
+        std::cerr << "Mul64" << std::endl;
+    }
+
 
 }
 Y_UDONE()

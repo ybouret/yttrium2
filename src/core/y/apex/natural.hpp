@@ -125,6 +125,8 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
 
             Y_APN_Operator_Impl(+,Add)
             Y_APN_Operator_Impl(-,Sub)
+            Y_APN_Operator_Impl(*,Mul)
+
 #endif
             //__________________________________________________________________
             //
@@ -210,6 +212,7 @@ Y_APN_Compare_Impl_(OP,Natural &,natural_t,RES)
             
             Y_APN_Proto_Decl(static Model *,Add); //!< addition prototypes
             Y_APN_Proto_Decl(static Model *,Sub); //!< subtraction prototypes
+            Y_APN_Proto_Decl(static Model *,Mul); //!< multiplication prototypes
 
             //! unsigned try cast \param value unsigned target \return true if possible
             template <typename T> inline
