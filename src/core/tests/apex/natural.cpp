@@ -133,7 +133,6 @@ Y_UTEST(apex_n)
                 }
             }
         }
-#if 1
         Apex::Natural n = 0;
         while(n<10)
         {
@@ -146,7 +145,6 @@ Y_UTEST(apex_n)
             std::cerr << ' ' << ++n;
         }
         std::cerr << std::endl;
-#endif
     }
 
 
@@ -233,5 +231,25 @@ Y_UTEST(apex_n)
             Y_ASSERT(s-r == l);
         }
     }
+
+    {
+        std::cerr << "SHR" << std::endl;
+        for(size_t i=0;i<=80;++i)
+        {
+            Apex::Natural n(TwoToThePowerOf,i);
+            std::cerr << n << " = 2^" << i << std::endl;
+            for(size_t j=1;j<=i;++j)
+            {
+                n.shr();
+                std::cerr << n << "/";
+                Y_ASSERT( n == apn(TwoToThePowerOf,i-j) );
+            }
+            n.shr();
+            std::cerr << n << std::endl;
+            Y_ASSERT( 0 == n );
+        }
+    }
+
+
 }
 Y_UDONE()

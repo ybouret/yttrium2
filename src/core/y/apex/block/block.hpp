@@ -125,6 +125,35 @@ namespace Yttrium
                 return ReadLittle::From(data,size);
             }
 
+            inline virtual size_t shr(BlockAPI * const sync[]) noexcept
+            {
+                static const T one(1);
+                static const T top = one << (sizeof(T)*8-1);
+                assert(isValid());
+                if(size>0)
+                {
+                    assert(bits()>0);
+                    const size_t msb = size-1;
+                    T * const    ptr = data;
+                    for(size_t i=0;i<msb;++i)
+                    {
+                        T &word = ptr[i];
+                        word >>= 1;
+                        if( 0!= (one&ptr[i+1]) )
+                            word |= top;
+                    }
+                    ptr[msb] >>= 1;
+                    return update(sync);
+                }
+                else
+                {
+                    assert(0==bits());
+                    return 0;
+                }
+
+            }
+
+
             //__________________________________________________________________
             //
             //

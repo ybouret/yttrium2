@@ -147,6 +147,9 @@ namespace Yttrium
             //! compare by formatting natural_t to model view \return comparison
             static SignType Compare(const Model &, const natural_t) noexcept;
 
+            void shr() noexcept;
+
+
             //__________________________________________________________________
             //
             //

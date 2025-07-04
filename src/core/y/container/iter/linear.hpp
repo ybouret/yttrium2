@@ -120,12 +120,14 @@ namespace Yttrium
             inline ConstType & operator*() const noexcept { assert(0!=pointee); return *pointee; }
 
 
+            //! \param indx shift \return *(this+indx)
             inline Type & operator[](const size_t indx) noexcept
             {
                 assert(0!=pointee);
                 return *incr(indx,Way);
             }
 
+            //! \param indx shift \return *(this+indx)
             inline ConstType & operator[](const size_t indx) const noexcept
             {
                 assert(0!=pointee);
@@ -150,11 +152,13 @@ namespace Yttrium
                 --pointee;
             }
 
+            //! \param n shift \return increased forward
             MutableType * incr(const size_t n, const IntToType<Forward> &) const noexcept
             {
                 return (MutableType *)(pointee+n);
             }
 
+            //! \param n shift \return increased reverse
             MutableType * incr(const size_t n, const IntToType<Reverse> &) const noexcept
             {
                 return (MutableType *)(pointee-n);
