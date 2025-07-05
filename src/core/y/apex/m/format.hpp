@@ -23,7 +23,7 @@ namespace Yttrium
         {
             //! \param data input \return &data
             static inline
-            const uint64_t * Make(uint64_t &data, const size_t) noexcept
+            uint64_t * Make(uint64_t &data, const size_t) noexcept
             {
                 return &data;
             };
@@ -84,7 +84,7 @@ namespace Yttrium
             static inline
             uint8_t * Make(uint64_t &data, const size_t size) noexcept
             {
-                assert(size<=4);
+                assert(size<=8);
                 uint64_t         v = data;
                 uint8_t * const  u = (uint8_t *) &data;
                 switch(size)
@@ -114,7 +114,7 @@ namespace Yttrium
          \return workspace ready for Model ops
          */
         template <typename T> inline
-        const T * UFormatAs(natural_t &data, size_t &size)
+        T * UFormatAs(uint64_t &data, size_t &size)
         {
             size = SizeFor<T>::From( Calculus::BitsFor::Count(data) );
             return UFormat<T>::Make(data,size);
