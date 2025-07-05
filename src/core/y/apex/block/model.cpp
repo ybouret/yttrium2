@@ -71,6 +71,7 @@ namespace Yttrium
         bits(userModel.bits)
         {
             // transmogrify
+            std::cerr << "Copy/Trans" << userView << std::endl;
             set(userView);
         }
 

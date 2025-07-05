@@ -174,7 +174,12 @@ namespace Yttrium
         String Natural:: hexString() const
         {
             AutoPtr<Model> p;
-            Model *        m = Coerce(code); if(View8!=code->view) { m = new Model(*m,View8); p = m; }
+            Model *        m = Coerce(code);
+            if(View8!=code->view)
+            {
+                std::cerr << "Trans8" << std::endl;
+                m = new Model(*m,View8); p = m;
+            }
             return BlockHexString(*m);
         }
 

@@ -21,8 +21,10 @@ namespace Yttrium
                 case 0: throw Libc::Exception(EDOM,"Apex::Division by zero");
                 case 1:
                     assert(1==denom);
-                    if(Q) *Q = numer;
+                    std::cerr << "division by 1" << std::endl;
+                    if(Q) { *Q = numer; std::cerr << "copied numer" << std::endl; std::cerr << "*Q=" << *Q << std::endl; }
                     if(R)  R->ldz();
+                    std::cerr << "done :)" << std::endl;
                     return;
 
                 default:
@@ -94,7 +96,7 @@ namespace Yttrium
                 }
             }
 
-            if(R) { *R = numer-lower * denom; }
+            if(R) { *R = numer - lower * denom; }
             if(Q) Q->xch(lower);
 
         }

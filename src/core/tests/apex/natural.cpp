@@ -328,5 +328,22 @@ Y_UTEST(apex_n)
         }
     }
 
+    {
+        std::cerr << "Debug..." << std::endl;
+        const apn s  = 2;
+        const apn x0 = 1;
+        const apn rho = s/x0;
+        std::cerr << "rho=" << rho << std::endl;
+        return 0;
+    }
+
+    {
+        std::cerr << "Sqrt" << std::endl;
+        for(apn i=0;i<=100;++i)
+        {
+            std::cerr << i << " => " << i.sqrt() << std::endl;
+        }
+    }
+
 }
 Y_UDONE()

@@ -141,11 +141,14 @@ namespace Yttrium
                         if( 0 != (one&*ptr) ) word|=top;
                     }
                     *ptr >>= 1;
-                    return update(sync);
+                    const size_t numBits = update(sync);
+                    assert(isValid());
+                    return numBits;
                 }
                 else
                 {
                     assert(0==bits());
+                    assert(isValid());
                     return 0;
                 }
             }

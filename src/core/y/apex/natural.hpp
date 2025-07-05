@@ -227,7 +227,7 @@ inline Natural & operator OP##=(const natural_t rhs) { const Natural _(rhs); Nat
             //
             //__________________________________________________________________
             Natural abs() const; //!< \return |*this|
-            
+            Natural sqrt() const; //!< \return integer square root
 
         private:
             Model * const code; //!< internal representation
