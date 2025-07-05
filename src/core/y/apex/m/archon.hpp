@@ -7,6 +7,8 @@
 #include "y/apex/metrics.hpp"
 #include "y/singleton.hpp"
 #include "y/concurrent/life-time.hpp"
+#include "y/apex/m/jmutex.hpp"
+#include "y/core/linked/list/cxx.hpp"
 
 namespace Yttrium
 {
@@ -14,6 +16,7 @@ namespace Yttrium
 
     namespace Apex
     {
+
         //______________________________________________________________________
         //
         //
@@ -22,7 +25,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Archon : public Singleton<Archon, ClassLockPolicy>
+        class Archon : public Singleton<Archon,ClassLockPolicy>
         {
         public:
             //__________________________________________________________________
@@ -55,6 +58,10 @@ namespace Yttrium
             void *       query(const unsigned shift);                              //!< \param shift valid shift \return 2^shift bytes
             void         store(const unsigned shift, void * const block) noexcept; //!< store \param shift 2^shift bytes \param block queried
 
+            JMutex      *queryMutex();
+            void         storeMutex(JMutex * const) noexcept;
+
+
         private:
             friend class Singleton<Archon, ClassLockPolicy>;
             Y_Disable_Copy_And_Assign(Archon); //!< discarding
@@ -62,9 +69,9 @@ namespace Yttrium
             explicit Archon();           //!< setup
             virtual ~Archon() noexcept;  //!< cleanup
 
-            Slot * const     slots;      //!< caches
-            Memory::Quanta  &quanta;     //!< lower level memory
-
+            Slot * const          slots;      //!< caches
+            Memory::Quanta  &     quanta;     //!< lower level memory
+            CxxListOf<JMutex>     jlist;      //!< joint mutexes
         };
 
        

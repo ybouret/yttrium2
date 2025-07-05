@@ -120,6 +120,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(string);
     
     Y_UTEST(apex_blocks);
+    Y_UTEST(apex_parcel);
     Y_UTEST(apex_model);
     Y_UTEST(apex_n);
     Y_UTEST(apex_z);

@@ -163,6 +163,7 @@ Y_UTEST(string)
 
 #apex
 Y_UTEST(apex:blocks)
+Y_UTEST(apex:parcel)
 Y_UTEST(apex:model)
 Y_UTEST(apex:n)
 Y_UTEST(apex:z)

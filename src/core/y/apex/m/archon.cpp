@@ -94,11 +94,14 @@ namespace Yttrium
         {
             static const size_t ArchonBytes_ = sizeof(Archon::Slot) * Archon::NumShifts;
             void *              ArchonSlots_[ Alignment::WordsGEQ<ArchonBytes_>::Count ];
+
+            
         }
 
         Archon:: Archon() :
         slots( static_cast<Slot *>( Y_Memory_BZero(ArchonSlots_)) - MinShift ),
-        quanta( Memory::Quanta::Instance() )
+        quanta( Memory::Quanta::Instance() ),
+        jlist()
         {
             for(unsigned i=MinShift;i<=MaxShift;++i) new (slots+i) Slot(i);
         }
@@ -117,7 +120,22 @@ namespace Yttrium
                     quanta.releaseDyadic(i,slot.query());
                 Memory::Stealth::DestructedAndZeroed(&slot);
             }
+
         }
+
+        JMutex      * Archon:: queryMutex() {
+            Y_Lock(access);
+            return jlist.size ? jlist.popHead() : new JMutex();
+        }
+
+        void Archon:: storeMutex(JMutex * const jmutex) noexcept
+        {
+            Y_Lock(access);
+            assert(0!=jmutex);
+            jlist.pushHead(jmutex);
+        }
+
+
     }
 
 }
