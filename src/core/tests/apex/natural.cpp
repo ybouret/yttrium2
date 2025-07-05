@@ -268,7 +268,6 @@ Y_UTEST(apex_n)
                     const apn      L = l;
                     const apn      R = r;
                     const apn      P = L*R;
-                    //std::cerr << Hexadecimal(p,Concise) << " => " << P << std::endl;
                     Y_ASSERT(P==p);
                     Y_ASSERT(P==r*L);
                     Y_ASSERT(P==R*l);
@@ -316,6 +315,18 @@ Y_UTEST(apex_n)
         std::cerr << "]" << std::endl;
     }
 
+
+    {
+        std::cerr << "MulDiv" << std::endl;
+        for(size_t iter=0;iter<10;++iter)
+        {
+            const Apex::Natural l(ran, 1+ran.leq<unsigned>(1000) );
+            const Apex::Natural r(ran, 1+ran.leq<unsigned>(1000) );
+            const Apex::Natural p = l*r;
+            Y_ASSERT(p/l==r);
+            Y_ASSERT(p/r==l);
+        }
+    }
 
 }
 Y_UDONE()
