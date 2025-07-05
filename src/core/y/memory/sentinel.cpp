@@ -3,7 +3,7 @@
 #include "y/check/usual.hpp"
 #include "y/check/crc32.hpp"
 #include "y/system/error.hpp"
-#include "y/decimal.hpp"
+#include "y/format/decimal.hpp"
 #include <cerrno>
 
 namespace Yttrium

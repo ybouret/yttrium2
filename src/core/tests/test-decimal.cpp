@@ -1,5 +1,5 @@
 
-#include "y/decimal.hpp"
+#include "y/format/decimal.hpp"
 #include "y/utest/run.hpp"
 
 using namespace Yttrium;

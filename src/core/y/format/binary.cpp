@@ -1,5 +1,5 @@
 
-#include "y/binary.hpp"
+#include "y/format/binary.hpp"
 #include <cstring>
 
 namespace Yttrium {

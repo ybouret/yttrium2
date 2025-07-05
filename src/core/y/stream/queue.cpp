@@ -1,6 +1,6 @@
 
 #include "y/stream/queue.hpp"
-#include "y/hexadecimal.hpp"
+#include "y/format/hexadecimal.hpp"
 
 namespace Yttrium
 {

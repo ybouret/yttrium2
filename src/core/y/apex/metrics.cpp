@@ -2,7 +2,7 @@
 #include "y/apex/metrics.hpp"
 #include "y/calculus/alignment.hpp"
 #include "y/system/exception.hpp"
-#include "y/decimal.hpp"
+#include "y/format/decimal.hpp"
 #include <cerrno>
 
 namespace Yttrium

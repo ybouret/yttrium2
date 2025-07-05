@@ -1,8 +1,8 @@
 #include "y/utf8/api.hpp"
 #include "y/calculus/bits-for.hpp"
 #include "y/utest/run.hpp"
-#include "y/hexadecimal.hpp"
-#include "y/binary.hpp"
+#include "y/format/hexadecimal.hpp"
+#include "y/format/binary.hpp"
 
 #include <cstring>
 

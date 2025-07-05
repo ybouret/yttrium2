@@ -6,10 +6,9 @@
 
 #include "y/memory/buffer/out-of.hpp"
 #include "y/object/factory.hpp"
-#include "y/hexadecimal.hpp"
+#include "y/format/hexadecimal.hpp"
 #include <cstring>
 #include "y/memory/allocator/pooled.hpp"
-#include "y/hexadecimal.hpp"
 
 using namespace Yttrium;
 

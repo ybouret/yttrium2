@@ -1,7 +1,7 @@
 
 #include "y/calculus/safe-add.hpp"
 #include "y/system/exception.hpp"
-#include "y/decimal.hpp"
+#include "y/format/decimal.hpp"
 #include "y/type/ints.hpp"
 #include <cerrno>
 

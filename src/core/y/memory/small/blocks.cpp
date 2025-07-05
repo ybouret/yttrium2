@@ -6,7 +6,7 @@
 #include "y/type/destruct.hpp"
 #include "y/system/exception.hpp"
 #include "y/memory/stealth.hpp"
-#include "y/decimal.hpp"
+#include "y/format/decimal.hpp"
 #include "y/xml/attribute.hpp"
 #include <cerrno>
 

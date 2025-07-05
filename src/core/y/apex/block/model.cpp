@@ -292,7 +292,7 @@ namespace Yttrium
 #include "y/stream/input.hpp"
 #include "y/pointer/auto.hpp"
 #include "y/system/exception.hpp"
-#include "y/decimal.hpp"
+#include "y/format/decimal.hpp"
 
 namespace Yttrium
 {

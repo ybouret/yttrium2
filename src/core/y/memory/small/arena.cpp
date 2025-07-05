@@ -345,7 +345,7 @@ namespace Yttrium
 
 
 #include "y/exception.hpp"
-#include "y/decimal.hpp"
+#include "y/format/decimal.hpp"
 #include <cstring>
 
 namespace Yttrium

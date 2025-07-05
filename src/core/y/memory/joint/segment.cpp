@@ -2,7 +2,7 @@
 #include "y/memory/joint/segment.hpp"
 #include "y/check/usual.hpp"
 #include "y/check/crc32.hpp"
-#include "y/decimal.hpp"
+#include "y/format/decimal.hpp"
 #include "y/system/exception.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/memory/sentinel.hpp"

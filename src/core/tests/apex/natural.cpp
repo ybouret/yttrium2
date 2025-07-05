@@ -2,7 +2,7 @@
 #include "y/apex/natural.hpp"
 #include "y/utest/run.hpp"
 #include "y/random/park-miller.hpp"
-#include "y/hexadecimal.hpp"
+#include "y/format/hexadecimal.hpp"
 
 using namespace Yttrium;
 

@@ -3,7 +3,7 @@
 #include "y/apex/block/model.hpp"
 #include "y/type/destroy.hpp"
 #include "y/string.hpp"
-#include "y/hexadecimal.hpp"
+#include "y/format/hexadecimal.hpp"
 #include "y/pointer/auto.hpp"
 
 namespace Yttrium

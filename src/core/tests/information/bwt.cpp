@@ -4,7 +4,7 @@
 #include "y/memory/stealth.hpp"
 #include "y/utest/run.hpp"
 #include "y/core/text.hpp"
-#include "y/hexadecimal.hpp"
+#include "y/format/hexadecimal.hpp"
 #include <cassert>
 #include <cstring>
 

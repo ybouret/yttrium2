@@ -1,7 +1,7 @@
 #include "y/hashing/des64.hpp"
 #include "y/hashing/ibj32.hpp"
 #include "y/hashing/ibj64.hpp"
-#include "y/hexadecimal.hpp"
+#include "y/format/hexadecimal.hpp"
 #include "y/utest/run.hpp"
 
 using namespace Yttrium;

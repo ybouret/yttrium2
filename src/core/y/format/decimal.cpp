@@ -1,5 +1,5 @@
 
-#include "y/decimal.hpp"
+#include "y/format/decimal.hpp"
 #include "y/type/sign.hpp"
 #include <cstring>
 

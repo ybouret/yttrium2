@@ -1,6 +1,6 @@
 
 #include "y/ability/collectable.hpp"
-#include "y/hexadecimal.hpp"
+#include "y/format/hexadecimal.hpp"
 #include "y/container/algorithm/reverse.hpp"
 
 #include <iostream>

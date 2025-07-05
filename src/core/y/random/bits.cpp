@@ -3,7 +3,7 @@
 #include "y/object.hpp"
 #include "y/type/destroy.hpp"
 #include "y/calculus/bits-for.hpp"
-#include "y/hexadecimal.hpp"
+#include "y/format/hexadecimal.hpp"
 #include <cassert>
 
 namespace Yttrium

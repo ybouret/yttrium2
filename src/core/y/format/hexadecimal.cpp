@@ -1,4 +1,4 @@
-#include "y/hexadecimal.hpp"
+#include "y/format/hexadecimal.hpp"
 #include <cstring>
 #include <iostream>
 

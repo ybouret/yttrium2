@@ -3,6 +3,7 @@ include_directories(.)
 
 Y_CreateLibrary(y
     y
+    y/format
     y/check
     y/ability
     y/core

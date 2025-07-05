@@ -2,7 +2,7 @@
 
 #include "y/memory/buffer/out-of.hpp"
 #include "y/utest/run.hpp"
-#include "y/hexadecimal.hpp"
+#include "y/format/hexadecimal.hpp"
 #include "y/memory/allocator/pooled.hpp"
 
 using namespace Yttrium;

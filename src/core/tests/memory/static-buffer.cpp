@@ -1,7 +1,7 @@
 
 #include "y/memory/buffer/static.hpp"
 #include "y/utest/run.hpp"
-#include "y/hexadecimal.hpp"
+#include "y/format/hexadecimal.hpp"
 
 using namespace Yttrium;
 

@@ -3,7 +3,7 @@
 #include "y/system/exception.hpp"
 #include "y/check/usual.hpp"
 #include "y/memory/align.hpp"
-#include "y/decimal.hpp"
+#include "y/format/decimal.hpp"
 #include "y/xml/attribute.hpp"
 
 #include <cstdlib>

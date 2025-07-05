@@ -2,7 +2,7 @@
 #include "y/memory/allocator/dyadic.hpp"
 #include "y/system/exception.hpp"
 #include "y/check/usual.hpp"
-#include "y/decimal.hpp"
+#include "y/format/decimal.hpp"
 #include "y/xml/attribute.hpp"
 
 #include <cstring>

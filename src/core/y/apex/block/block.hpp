@@ -5,7 +5,7 @@
 
 #include "y/apex/block/api.hpp"
 #include "y/apex/m/size-for.hpp"
-#include "y/hexadecimal.hpp"
+#include "y/format/hexadecimal.hpp"
 
 #include "y/ascii/plural.hpp"
 #include <iostream>

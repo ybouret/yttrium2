@@ -3,7 +3,7 @@
 #include "y/random/park-miller.hpp"
 #include "y/system/seed.hpp"
 #include "y/utest/run.hpp"
-#include "y/hexadecimal.hpp"
+#include "y/format/hexadecimal.hpp"
 #include "y/container/sequence/vector.hpp"
 #include <cmath>
 #include "y/calculus/bits-for.hpp"

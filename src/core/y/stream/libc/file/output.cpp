@@ -1,7 +1,7 @@
 #include "y/stream/libc/file/output.hpp"
 #include "y/ability/lockable.hpp"
 #include "y/system/exception.hpp"
-#include "y/decimal.hpp"
+#include "y/format/decimal.hpp"
 #include <cerrno>
 
 

@@ -8,7 +8,7 @@
 
 #include "y/memory/buffer/out-of.hpp"
 #include "y/object/factory.hpp"
-#include "y/hexadecimal.hpp"
+#include "y/format/hexadecimal.hpp"
 #include "y/system/rand.hpp"
 #include <cstring>
 
