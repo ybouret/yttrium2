@@ -286,7 +286,7 @@ Y_UTEST(apex_n)
             for(size_t i=0;i<=64;++i)
             {
 
-                for(size_t iter=0;iter<10;++iter)
+                for(size_t iter=0;iter<4;++iter)
                 {
                     const uint64_t numer = ran.to<uint64_t>(i);
                     const uint64_t denom = ran.to<uint64_t>(j);
@@ -301,6 +301,13 @@ Y_UTEST(apex_n)
                     Apex::Natural::Div_(&Q,&R,N,D);
                     Y_ASSERT(q==Q);
                     Y_ASSERT(r==R);
+
+                    Q = N/D;         Y_ASSERT(q==Q);
+                    R = N%D;         Y_ASSERT(r==R);
+                    Q = N; Q/=D;     Y_ASSERT(q==Q);
+                    Q = N; Q/=denom; Y_ASSERT(q==Q);
+                    R = N; R%=D;     Y_ASSERT(r==R);
+                    R = N; R%=denom; Y_ASSERT(r==R);
                 }
 
             }
