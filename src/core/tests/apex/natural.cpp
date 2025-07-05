@@ -278,11 +278,12 @@ Y_UTEST(apex_n)
     }
 
     {
-        std::cerr << "Div64" << std::endl;
+        std::cerr << "Div64 [";
 
 
         for(size_t j=1;j<=64;++j)
         {
+            (std::cerr << '.').flush();
             for(size_t i=0;i<=64;++i)
             {
 
@@ -309,10 +310,10 @@ Y_UTEST(apex_n)
                     R = N; R%=D;     Y_ASSERT(r==R);
                     R = N; R%=denom; Y_ASSERT(r==R);
                 }
-
             }
 
         }
+        std::cerr << "]" << std::endl;
     }
 
 
