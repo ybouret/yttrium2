@@ -6,6 +6,7 @@
 #include "y/random/fill.hpp"
 #include "y/format/hexadecimal.hpp"
 #include "y/check/static.hpp"
+#include <cstring>
 
 using namespace Yttrium;
 
@@ -145,7 +146,7 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
                 {
                     size_t i=size;
                     while(i>0)
-                        os << '[' << Hexadecimal(data[--i]) << ']';
+                        os << '[' << Hexadecimal(data[--i]).c_str()+2 << ']';
                 }
                 os << ":size=" << size;
                 if(Plan!=Plan8) os << ":bytes=" << size * sizeof(T);
@@ -161,24 +162,45 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
 
         struct Transmute
         {
+
+            //! Expand Parcels with synchronized size
             template <typename SMALL, typename LARGE> static inline
             void Expand(Parcel<SMALL>       &small,
                         const Parcel<LARGE> &large) noexcept
             {
                 Y_STATIC_CHECK(sizeof(SMALL)<sizeof(LARGE),BadType);
+                static const unsigned SmallBits = sizeof(SMALL)*8;
                 SMALL *       tgt = small.data;
                 const LARGE * src = large.data;
                 for(size_t i=large.size;i>0;--i)
                 {
                     LARGE value = *(src++);
+                    for(size_t j=sizeof(LARGE)/sizeof(SMALL);j>0;--j, value>>=SmallBits)
+                        *(tgt++) = SMALL(value);
                 }
+
             }
 
+            //! Shrink Parcels with synchronized size
             template <typename LARGE, typename SMALL> static inline
             void Shrink(Parcel<LARGE>       &large,
                         const Parcel<SMALL> &small) noexcept
             {
-
+                Y_STATIC_CHECK(sizeof(SMALL)<sizeof(LARGE),BadType);
+                static const unsigned SmallBits = sizeof(SMALL)*8;
+                LARGE *       tgt = large.data;
+                const SMALL * src = small.data;
+                for(size_t i=large.size;i>0;--i)
+                {
+                    LARGE value = 0;
+                    for(unsigned j=0;j<sizeof(LARGE)/sizeof(SMALL);++j)
+                    {
+                        LARGE tmp = *(src++);
+                        tmp  <<= SmallBits*j;
+                        value |=  tmp;
+                    }
+                    *(tgt)++ = value;
+                }
             }
 
             template <typename SMALL, typename LARGE> static inline
@@ -233,10 +255,21 @@ namespace
         std::cerr << "\t" << p << std::endl;
         Y_ASSERT( p.bits() == numBits );
     }
+
+    static
+    bool is_little_endian() noexcept
+    {
+        static const uint8_t  byte[2]={0,1};
+        const uint16_t        word = *(uint16_t*)(&(byte[0]));
+        return 0x0100 == word;
+    }
+
 }
 
 Y_UTEST(apex_parcel)
 {
+    Concurrent::Singulet::Verbose = true;
+    
     Y_SIZEOF(Apex::JMutex);
     Random::ParkMiller ran;
 
@@ -270,44 +303,65 @@ Y_UTEST(apex_parcel)
         }
     }
 
-    uint64_t     wksp[2];
-    const size_t wlen = sizeof(wksp);
-    Apex::Parcel<uint8_t>  p8 (wksp,wlen);  std::cerr << "p8 .maxi=" << p8.maxi << std::endl;
-    Apex::Parcel<uint16_t> p16(wksp,wlen); std::cerr << "p16.maxi=" << p16.maxi << std::endl;
-    Apex::Parcel<uint32_t> p32(wksp,wlen); std::cerr << "p32.maxi=" << p32.maxi << std::endl;
-    Apex::Parcel<uint64_t> p64(wksp,wlen); std::cerr << "p64.maxi=" << p64.maxi << std::endl;
+    uint8_t      w8[16];
+    uint16_t     w16[8];
+    uint32_t     w32[4];
+    uint64_t     w64[2];
+    const size_t wlen = sizeof(w64);
+    Apex::Parcel<uint8_t>  p8 (w8,wlen);  std::cerr << "p8 .maxi=" << p8.maxi << std::endl;
+    Apex::Parcel<uint16_t> p16(w16,wlen); std::cerr << "p16.maxi=" << p16.maxi << std::endl;
+    Apex::Parcel<uint32_t> p32(w32,wlen); std::cerr << "p32.maxi=" << p32.maxi << std::endl;
+    Apex::Parcel<uint64_t> p64(w64,wlen); std::cerr << "p64.maxi=" << p64.maxi << std::endl;
+
 
     {
         for(size_t i=0;i<=128;++i)
         {
-            Y_Memory_BZero(wksp);
+            Y_Memory_BZero(w64);
             if(i<=64)
             {
-                wksp[0] = ran.to<uint64_t>( i );
+                w64[0] = ran.to<uint64_t>( i );
+
             }
             else
             {
-                wksp[0] = ran.to<uint64_t>();
-                wksp[1] = ran.to<uint64_t>(i-64);
+                w64[0] = ran.to<uint64_t>();
+                w64[1] = ran.to<uint64_t>(i-64);
             }
+
+            const uint64_t org[2] = { w64[0], w64[1]};
+
 
             p64.size = p64.maxi;
             p64.adjust();
             Y_ASSERT(p64.sanity());
             std::cerr << p64 << std::endl;
             const size_t numBits = p64.bits(); assert(i==numBits);
+
             p8.resize(numBits);
             p16.resize(numBits);
             p32.resize(numBits);
 
-            Apex::Transmute::Expand(p32,p64);
-            Y_ASSERT(p32.sanity());
-            Y_ASSERT(p32.bits() == numBits);
-            std::cerr << p32 << std::endl;
+            Y_Memory_BZero(w8);
+            Apex::Transmute::To(p8,p64);
+            Y_ASSERT(p8.sanity());
+            Y_ASSERT(p8.bits() == numBits);
+            std::cerr << p8 << std::endl;
+
+            Y_Memory_BZero(w64);
+            Apex::Transmute::To(p64,p8);
+            Y_ASSERT(p64.sanity());
+            Y_ASSERT(p64.bits() == numBits);
+            std::cerr << p64 << std::endl;
+            Hexadecimal::Display(std::cerr,p64.data,2) << std::endl;
+            //Hexadecimal::Display(std::cerr,w64,2) << std::endl;
+            Hexadecimal::Display(std::cerr,org,2) << std::endl;
+            Y_ASSERT(0==memcmp(p64.data,org,sizeof(org)));
+            //std::cerr << p8 << std::endl;
         }
     }
 
-
+    std::cerr << "is_little_endian=" << is_little_endian() << std::endl;
 
 }
 Y_UDONE()
