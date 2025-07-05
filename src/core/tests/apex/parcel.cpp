@@ -256,19 +256,12 @@ namespace
         Y_ASSERT( p.bits() == numBits );
     }
 
-    static
-    bool is_little_endian() noexcept
-    {
-        static const uint8_t  byte[2]={0,1};
-        const uint16_t        word = *(uint16_t*)(&(byte[0]));
-        return 0x0100 == word;
-    }
+
 
 }
 
 Y_UTEST(apex_parcel)
 {
-    Concurrent::Singulet::Verbose = true;
 
     Y_SIZEOF(Apex::JMutex);
     Random::ParkMiller ran;
@@ -368,11 +361,20 @@ Y_UTEST(apex_parcel)
             Y_ASSERT(p64.bits() == numBits);
             Y_ASSERT(0==memcmp(p64.data,org,sizeof(org)));
 
+            Y_Memory_BZero(w32);
+            Apex::Transmute::To(p32,p64);
+            Y_ASSERT(p32.sanity());
+            Y_ASSERT(p32.bits() == numBits);
+            std::cerr << p32 << std::endl;
 
+            Y_Memory_BZero(w64);
+            Apex::Transmute::To(p64,p32);
+            Y_ASSERT(p64.sanity());
+            Y_ASSERT(p64.bits() == numBits);
+            Y_ASSERT(0==memcmp(p64.data,org,sizeof(org)));
         }
     }
 
-    std::cerr << "is_little_endian=" << is_little_endian() << std::endl;
 
 }
 Y_UDONE()

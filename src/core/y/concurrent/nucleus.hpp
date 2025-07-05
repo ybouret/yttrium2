@@ -69,6 +69,9 @@ namespace Yttrium
              */
             Lockable & queryLockable();
 
+            static bool LittleEndian() noexcept;
+            static bool BigEndian() noexcept;
+
 
 #if defined(Y_BSD)
             const void *get_pthread_mutex_attr() const noexcept;

@@ -24,6 +24,19 @@ namespace Yttrium
 
     namespace Concurrent
     {
+        bool Nucleus:: LittleEndian() noexcept
+        {
+            static const uint8_t  byte[2]={0,1};
+            const uint16_t        word = *(const uint16_t*)(&(byte[0]));
+            return 0x0100 == word;
+        }
+
+        bool Nucleus:: BigEndian() noexcept
+        {
+            return !LittleEndian();
+        }
+
+
 
         namespace
         {
