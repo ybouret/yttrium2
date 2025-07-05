@@ -269,7 +269,7 @@ namespace
 Y_UTEST(apex_parcel)
 {
     Concurrent::Singulet::Verbose = true;
-    
+
     Y_SIZEOF(Apex::JMutex);
     Random::ParkMiller ran;
 
@@ -342,6 +342,8 @@ Y_UTEST(apex_parcel)
             p16.resize(numBits);
             p32.resize(numBits);
 
+
+
             Y_Memory_BZero(w8);
             Apex::Transmute::To(p8,p64);
             Y_ASSERT(p8.sanity());
@@ -352,12 +354,21 @@ Y_UTEST(apex_parcel)
             Apex::Transmute::To(p64,p8);
             Y_ASSERT(p64.sanity());
             Y_ASSERT(p64.bits() == numBits);
-            std::cerr << p64 << std::endl;
-            Hexadecimal::Display(std::cerr,p64.data,2) << std::endl;
-            //Hexadecimal::Display(std::cerr,w64,2) << std::endl;
-            Hexadecimal::Display(std::cerr,org,2) << std::endl;
             Y_ASSERT(0==memcmp(p64.data,org,sizeof(org)));
-            //std::cerr << p8 << std::endl;
+
+            Y_Memory_BZero(w16);
+            Apex::Transmute::To(p16,p64);
+            Y_ASSERT(p16.sanity());
+            Y_ASSERT(p16.bits() == numBits);
+            std::cerr << p16 << std::endl;
+
+            Y_Memory_BZero(w64);
+            Apex::Transmute::To(p64,p16);
+            Y_ASSERT(p64.sanity());
+            Y_ASSERT(p64.bits() == numBits);
+            Y_ASSERT(0==memcmp(p64.data,org,sizeof(org)));
+
+
         }
     }
 
