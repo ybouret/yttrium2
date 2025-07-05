@@ -115,7 +115,10 @@ namespace Yttrium
                 if(target.space>=source.bytes)
                 {
                     target.cpy(source);
+                    std::cerr << "source=" << source << std::endl;
+                    std::cerr << "target=" << target << std::endl;
                     relax();
+                    std::cerr << "target=" << target << std::endl;
                 }
                 else
                 {

@@ -35,13 +35,22 @@ namespace Yttrium
 
 
         template <typename T> static inline
-        void ModelCopy(Model &target, const Model &source) noexcept
+        void ModelCopy(Model &       target,
+                       const Model & source,
+                       BlockAPI *  const  sync[]) noexcept
         {
+            assert(0==target.bits);
+
             Block<T>       &to   = target.get<T>(); assert(0==to.size); assert( to.isValid() );
             const Block<T> &from = source.get<T>(); assert( from.isValid() );
-            const size_t    size = from.size; assert(size<=to.maxi);
+            const size_t    size = from.size;       assert(size<=to.maxi);
             memcpy(to.data,from.data, (to.size=size) * sizeof(T) );
             assert(to.isValid());
+            
+            const size_t numBits = ( Coerce(source.bits) = target.bits );
+            sync[0]->resize(numBits);  
+            sync[1]->resize(numBits);
+            sync[2]->resize(numBits);
         }
 
 
@@ -53,12 +62,21 @@ namespace Yttrium
 
             switch(ldz(other.view).view)
             {
-                case View8:  ModelCopy<uint8_t> (*this,other); break;
-                case View16: ModelCopy<uint16_t>(*this,other); break;
-                case View32: ModelCopy<uint32_t>(*this,other); break;
-                case View64: ModelCopy<uint64_t>(*this,other); break;
+                case View8:  ModelCopy<uint8_t> (*this,other,sync[0]); break;
+                case View16: ModelCopy<uint16_t>(*this,other,sync[1]); break;
+                case View32: ModelCopy<uint32_t>(*this,other,sync[2]); break;
+                case View64: ModelCopy<uint64_t>(*this,other,sync[3]); break;
             }
-            Coerce(bits) = other.bits;
+
+            assert(view == other.view);
+            switch(view)
+            {
+                case View8:  assert( block<uint8_t>().isValid()  ); break;
+                case View16: assert( block<uint16_t>().isValid() ); break;
+                case View32: assert( block<uint32_t>().isValid() ); break;
+                case View64: assert( block<uint64_t>().isValid() ); break;
+            }
+
         }
 
         Model:: Model(const Model &  userModel,
@@ -71,7 +89,7 @@ namespace Yttrium
         bits(userModel.bits)
         {
             // transmogrify
-            std::cerr << "Copy/Trans" << userView << std::endl;
+            update();
             set(userView);
         }
 
