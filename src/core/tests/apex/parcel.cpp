@@ -3,7 +3,9 @@
 
 #include "y/utest/run.hpp"
 #include "y/random/park-miller.hpp"
+#include "y/random/fill.hpp"
 #include "y/format/hexadecimal.hpp"
+#include "y/check/static.hpp"
 
 using namespace Yttrium;
 
@@ -61,6 +63,11 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
             virtual std::ostream & print(std::ostream &os) const = 0;
         };
 
+
+        template <typename T> class Parcel;
+
+
+
         template <typename T>
         class Parcel : public ParcelAPI
         {
@@ -87,6 +94,7 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
             {
                 assert( sanity() );
             }
+
 
             inline virtual ~Parcel() noexcept
             {
@@ -149,6 +157,70 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
         {
             "Plan8 ", "Plan16", "Plan32", "Plan64"
         };
+
+
+        struct Transmute
+        {
+            template <typename SMALL, typename LARGE> static inline
+            void Expand(Parcel<SMALL>       &small,
+                        const Parcel<LARGE> &large) noexcept
+            {
+                Y_STATIC_CHECK(sizeof(SMALL)<sizeof(LARGE),BadType);
+                SMALL *       tgt = small.data;
+                const LARGE * src = large.data;
+                for(size_t i=large.size;i>0;--i)
+                {
+                    LARGE value = *(src++);
+                }
+            }
+
+            template <typename LARGE, typename SMALL> static inline
+            void Shrink(Parcel<LARGE>       &large,
+                        const Parcel<SMALL> &small) noexcept
+            {
+
+            }
+
+            template <typename SMALL, typename LARGE> static inline
+            void To(Parcel<SMALL>       &      small,
+                    const Parcel<LARGE> &      large,
+                    const IntToType<Negative> &) noexcept
+            {
+                Expand(small,large);
+            }
+
+            template <typename T> static inline
+            void To(Parcel<T>       & ,
+                    const Parcel<T> & ,
+                    const IntToType<__Zero__> &) noexcept
+            {
+            }
+
+            template <typename LARGE, typename SMALL> static inline
+            void To(Parcel<LARGE>       &      large,
+                    const Parcel<SMALL> &      small,
+                    const IntToType<Positive> &) noexcept
+            {
+                Shrink(large,small);
+            }
+
+            template <const unsigned lhs, const unsigned rhs>
+            struct SignOf
+            {
+                static const SignType Value = (lhs<rhs) ? Negative : ( (rhs<lhs) ? Positive : __Zero__ );
+            };
+
+
+            template <typename TARGET, typename SOURCE> static inline
+            void To(Parcel<TARGET>       & target,
+                    const Parcel<SOURCE> & source) noexcept
+            {
+                static const IntToType< SignOf< sizeof(TARGET), sizeof(SOURCE) >::Value > choice = {};
+                return To(target,source,choice);
+            }
+
+
+        };
     }
 
 }
@@ -158,7 +230,7 @@ namespace
     template <typename T>
     static inline void testParcel(const Apex::Parcel<T> &p, const size_t numBits)
     {
-        std::cerr << p << std::endl;
+        std::cerr << "\t" << p << std::endl;
         Y_ASSERT( p.bits() == numBits );
     }
 }
@@ -197,6 +269,45 @@ Y_UTEST(apex_parcel)
             testParcel(p,i);
         }
     }
+
+    uint64_t     wksp[2];
+    const size_t wlen = sizeof(wksp);
+    Apex::Parcel<uint8_t>  p8 (wksp,wlen);  std::cerr << "p8 .maxi=" << p8.maxi << std::endl;
+    Apex::Parcel<uint16_t> p16(wksp,wlen); std::cerr << "p16.maxi=" << p16.maxi << std::endl;
+    Apex::Parcel<uint32_t> p32(wksp,wlen); std::cerr << "p32.maxi=" << p32.maxi << std::endl;
+    Apex::Parcel<uint64_t> p64(wksp,wlen); std::cerr << "p64.maxi=" << p64.maxi << std::endl;
+
+    {
+        for(size_t i=0;i<=128;++i)
+        {
+            Y_Memory_BZero(wksp);
+            if(i<=64)
+            {
+                wksp[0] = ran.to<uint64_t>( i );
+            }
+            else
+            {
+                wksp[0] = ran.to<uint64_t>();
+                wksp[1] = ran.to<uint64_t>(i-64);
+            }
+
+            p64.size = p64.maxi;
+            p64.adjust();
+            Y_ASSERT(p64.sanity());
+            std::cerr << p64 << std::endl;
+            const size_t numBits = p64.bits(); assert(i==numBits);
+            p8.resize(numBits);
+            p16.resize(numBits);
+            p32.resize(numBits);
+
+            Apex::Transmute::Expand(p32,p64);
+            Y_ASSERT(p32.sanity());
+            Y_ASSERT(p32.bits() == numBits);
+            std::cerr << p32 << std::endl;
+        }
+    }
+
+
 
 }
 Y_UDONE()
