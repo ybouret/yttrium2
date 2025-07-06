@@ -18,7 +18,7 @@ namespace Yttrium
         {
             Plan8  = 0,
             Plan16 = 1,
-            Plan32 = 3,
+            Plan32 = 2,
             Plan64 = 3
         };
 
@@ -54,6 +54,17 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
             virtual void   adjust()                     noexcept = 0;
             virtual void   resize(const size_t numBits) noexcept = 0;
             virtual size_t bits()                 const noexcept = 0;
+
+            size_t update(ParcelAPI * const sync[]) noexcept
+            {
+                assert(sync);
+                adjust(); assert( sanity() );
+                const size_t numBits  = bits();
+                assert(0!=sync[0]); sync[0]->resize(numBits);
+                assert(0!=sync[1]); sync[1]->resize(numBits);
+                assert(0!=sync[2]); sync[2]->resize(numBits);
+                return numBits;
+            }
 
             size_t       size; //!< size in words
             const size_t maxi; //!< capacity in words
@@ -121,6 +132,10 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
                 const size_t msi = size-1;
                 return msi * BitsPerUnit + Calculus::BitsFor::Count(data[msi]);
             }
+
+
+
+
 
             inline virtual void resize(const size_t numBits) noexcept
             {
@@ -243,6 +258,131 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
 
 
         };
+
+        template <PlanType> struct UIntFor;
+        template <> struct UIntFor<Plan8>  { typedef uint8_t  Type; };
+        template <> struct UIntFor<Plan16> { typedef uint16_t Type; };
+        template <> struct UIntFor<Plan32> { typedef uint32_t Type; };
+        template <> struct UIntFor<Plan64> { typedef uint64_t Type; };
+
+        class Parcels
+        {
+        public:
+            typedef Parcel<uint8_t> ParcelProto;
+            static const unsigned   ParcelProtoSize = sizeof(ParcelProto);
+            static const unsigned   ParcelProtoBytes = Metrics::Views * ParcelProtoSize;
+            static const size_t     ParcelProtoWords = Alignment::WordsGEQ<ParcelProtoBytes>::Count;
+
+            explicit Parcels(const size_t   userBlockSize,
+                             const PlanType userBlockPlan) :
+            addr(0),
+            plan(userBlockPlan),
+            pAPI(0),
+            sync(),
+            wksp(),
+            blockShift(0),
+            blockBytes(Metrics::BytesFor(userBlockSize,blockShift)),
+            blockEntry( Query(blockShift) )
+            {
+                initialize();
+            }
+
+            explicit Parcels(const Parcels &other) :
+            addr(0),
+            plan(other.plan),
+            pAPI(0),
+            sync(),
+            wksp(),
+            blockShift(0),
+            blockBytes(Metrics::BytesFor(other.room(),blockShift)),
+            blockEntry( Query(blockShift) )
+            {
+                initialize();
+                parcel<uint8_t>() .size = other.parcel<uint8_t>() .size;
+                parcel<uint16_t>().size = other.parcel<uint16_t>().size;
+                parcel<uint32_t>().size = other.parcel<uint32_t>().size;
+                Parcel<uint64_t> &       target = parcel<uint64_t>();
+                const Parcel<uint64_t> & source = other.parcel<uint64_t>();
+                memcpy(target.data,source.data, (target.size=source.size) * sizeof(uint64_t) );
+            }
+
+            virtual ~Parcels() noexcept
+            {
+                static Archon & archon = Archon::Location();
+                archon.store(blockShift,blockEntry);
+            }
+
+            size_t room() const noexcept
+            {
+                return parcel<uint64_t>().size * sizeof(uint64_t);
+            }
+
+
+
+
+
+        private:
+            Y_Disable_Assign(Parcels);
+            uint8_t * const   addr;
+        public:
+            const PlanType    plan;
+            ParcelAPI * const pAPI;
+
+        private:
+            ParcelAPI * const sync[Metrics::Views][Metrics::Views-1];
+            void    *         wksp[ParcelProtoWords];
+            unsigned          blockShift;
+            const size_t      blockBytes;
+            void * const      blockEntry;
+
+            void initialize() noexcept
+            {
+                uint8_t * const p = ( Coerce(addr) = static_cast<uint8_t *>( Y_Memory_BZero(wksp) ) );
+                new (p)                     Parcel<uint8_t>(blockEntry,blockBytes);
+                new (p +   ParcelProtoSize) Parcel<uint16_t>(blockEntry,blockBytes);
+                new (p + 2*ParcelProtoSize) Parcel<uint32_t>(blockEntry,blockBytes);
+                new (p + 3*ParcelProtoSize) Parcel<uint64_t>(blockEntry,blockBytes);
+
+                Coerce( sync[Plan8][0] ) = & parcel<uint16_t>();
+                Coerce( sync[Plan8][1] ) = & parcel<uint32_t>();
+                Coerce( sync[Plan8][2] ) = & parcel<uint64_t>();
+
+                Coerce( sync[Plan16][0] ) = & parcel<uint8_t>();
+                Coerce( sync[Plan16][1] ) = & parcel<uint32_t>();
+                Coerce( sync[Plan16][2] ) = & parcel<uint64_t>();
+
+                Coerce( sync[Plan32][0] ) = & parcel<uint8_t>();
+                Coerce( sync[Plan32][1] ) = & parcel<uint16_t>();
+                Coerce( sync[Plan32][2] ) = & parcel<uint64_t>();
+
+                Coerce( sync[Plan64][0] ) = & parcel<uint8_t>();
+                Coerce( sync[Plan64][1] ) = & parcel<uint16_t>();
+                Coerce( sync[Plan64][2] ) = & parcel<uint32_t>();
+
+                switch(plan)
+                {
+                    case Plan8:  Coerce(pAPI) = & parcel<uint8_t>();  break;
+                    case Plan16: Coerce(pAPI) = & parcel<uint16_t>(); break;
+                    case Plan32: Coerce(pAPI) = & parcel<uint32_t>(); break;
+                    case Plan64: Coerce(pAPI) = & parcel<uint64_t>(); break;
+                }
+
+
+            }
+
+            template <typename T>
+            inline Parcel<T> & parcel() const noexcept {
+                return *(Parcel<T> *) &addr[ParcelProtoSize*IntegerLog2For<T>::Value];
+            }
+
+
+            static uint8_t * Query(const unsigned shift)
+            {
+                static Archon & archon = Archon::Instance();
+                return static_cast<uint8_t *>( archon.query(shift) );
+            }
+        };
+
     }
 
 }
@@ -374,6 +514,9 @@ Y_UTEST(apex_parcel)
             Y_ASSERT(0==memcmp(p64.data,org,sizeof(org)));
         }
     }
+
+
+    Apex::Parcels ap(100,Apex::Plan8);
 
 
 }
