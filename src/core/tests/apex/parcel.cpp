@@ -54,7 +54,7 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
             virtual void   adjust()                     noexcept = 0;
             virtual void   resize(const size_t numBits) noexcept = 0;
             virtual size_t bits()                 const noexcept = 0;
-            virtual size_t naught(ParcelAPI * const[])  noexcept = 0;
+            virtual void   naught(ParcelAPI * const[])  noexcept = 0;
             size_t         update(ParcelAPI * const sync[]) noexcept
             {
                 assert(sync);
@@ -134,7 +134,7 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
                 return msi * BitsPerUnit + Calculus::BitsFor::Count(data[msi]);
             }
 
-            virtual size_t naught(ParcelAPI * const sync[])  noexcept
+            virtual void naught(ParcelAPI * const sync[])  noexcept
             {
                 assert(sanity());
                 while(size>0) data[--size] = 0;
@@ -142,7 +142,6 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
                 sync[0]->size = 0;
                 sync[1]->size = 0;
                 sync[2]->size = 0;
-                return 0;
             }
 
 
@@ -324,10 +323,12 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
                 archon.store(blockShift,blockEntry);
             }
 
+            // bytes to hold highest plan
             size_t room() const noexcept
             {
                 return parcel<uint64_t>().size * sizeof(uint64_t);
             }
+
 
             void ldz(const PlanType userPlan) noexcept
             {
