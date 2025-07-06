@@ -54,8 +54,8 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
             virtual void   adjust()                     noexcept = 0;
             virtual void   resize(const size_t numBits) noexcept = 0;
             virtual size_t bits()                 const noexcept = 0;
-
-            size_t update(ParcelAPI * const sync[]) noexcept
+            virtual size_t naught(ParcelAPI * const[])  noexcept = 0;
+            size_t         update(ParcelAPI * const sync[]) noexcept
             {
                 assert(sync);
                 adjust(); assert( sanity() );
@@ -121,6 +121,7 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
 
             inline virtual size_t bits() const noexcept
             {
+                assert(sanity());
                 switch(size)
                 {
                     case 0: return 0;
@@ -131,6 +132,17 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
                 assert(size>1);
                 const size_t msi = size-1;
                 return msi * BitsPerUnit + Calculus::BitsFor::Count(data[msi]);
+            }
+
+            virtual size_t naught(ParcelAPI * const sync[])  noexcept
+            {
+                assert(sanity());
+                while(size>0) data[--size] = 0;
+                assert(sanity());
+                sync[0]->size = 0;
+                sync[1]->size = 0;
+                sync[2]->size = 0;
+                return 0;
             }
 
 
@@ -317,7 +329,12 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
                 return parcel<uint64_t>().size * sizeof(uint64_t);
             }
 
-
+            void ldz(const PlanType userPlan) noexcept
+            {
+                pAPI->naught(sync[plan]);
+                Coerce(plan) = userPlan;
+                selectAPI();
+            }
 
 
 
@@ -334,6 +351,17 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
             unsigned          blockShift;
             const size_t      blockBytes;
             void * const      blockEntry;
+
+            void selectAPI() noexcept
+            {
+                switch(plan)
+                {
+                    case Plan8:  Coerce(pAPI) = & parcel<uint8_t>();  break;
+                    case Plan16: Coerce(pAPI) = & parcel<uint16_t>(); break;
+                    case Plan32: Coerce(pAPI) = & parcel<uint32_t>(); break;
+                    case Plan64: Coerce(pAPI) = & parcel<uint64_t>(); break;
+                }
+            }
 
             void initialize() noexcept
             {
@@ -359,15 +387,7 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
                 Coerce( sync[Plan64][1] ) = & parcel<uint16_t>();
                 Coerce( sync[Plan64][2] ) = & parcel<uint32_t>();
 
-                switch(plan)
-                {
-                    case Plan8:  Coerce(pAPI) = & parcel<uint8_t>();  break;
-                    case Plan16: Coerce(pAPI) = & parcel<uint16_t>(); break;
-                    case Plan32: Coerce(pAPI) = & parcel<uint32_t>(); break;
-                    case Plan64: Coerce(pAPI) = & parcel<uint64_t>(); break;
-                }
-
-
+                selectAPI();
             }
 
             template <typename T>
