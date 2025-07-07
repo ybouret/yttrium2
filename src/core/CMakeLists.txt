@@ -70,6 +70,8 @@ Y_CreateLibrary(y
     y/string/stride
     y/apex
     y/apex/m
+    y/apex/k
+    y/apex/k/parcel
     y/apex/block
     y/apex/block/model
     y/apex/n
