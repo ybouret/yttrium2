@@ -18,11 +18,13 @@ namespace Yttrium
 #define Y_Apex_Parcel_Check(EXPR) \
 do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::endl; return false; } } while(false)
 
+        //! common API for Parcel<T>
         class ParcelAPI
         {
         public:
             static const char * const HumanReadablePlan[Metrics::Views];
 
+            //! set capacity in words
             explicit ParcelAPI(const size_t capa) noexcept :
             size(0),
             maxi(capa)
@@ -44,6 +46,8 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
             virtual void   resize(const size_t numBits) noexcept = 0;
             virtual size_t bits()                 const noexcept = 0;
             virtual void   naught(ParcelAPI * const[])  noexcept = 0;
+            virtual void   setOne(ParcelAPI * const[])  noexcept = 0;
+            
             size_t         update(ParcelAPI * const sync[]) noexcept
             {
                 assert(sync);

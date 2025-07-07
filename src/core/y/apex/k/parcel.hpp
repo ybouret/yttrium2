@@ -1,5 +1,3 @@
-
-
 //! \file
 
 #ifndef Y_Apex_Parcel_Included
@@ -68,7 +66,18 @@ namespace Yttrium
                 return msi * BitsPerUnit + Calculus::BitsFor::Count(data[msi]);
             }
 
-            virtual void naught(ParcelAPI * const sync[])  noexcept
+            inline virtual void setOne(ParcelAPI * const sync[])  noexcept
+            {
+                assert(sanity());
+                while(size>1) data[--size] = 0;
+                data[size=1] = 1;
+                assert(sanity());
+                sync[0]->size = 1;
+                sync[1]->size = 1;
+                sync[2]->size = 1;
+            }
+
+            inline virtual void naught(ParcelAPI * const sync[])  noexcept
             {
                 assert(sanity());
                 while(size>0) data[--size] = 0;
@@ -111,10 +120,6 @@ namespace Yttrium
             }
         };
 
-        const char * const ParcelAPI:: HumanReadablePlan[Metrics::Views] =
-        {
-            "Plan8 ", "Plan16", "Plan32", "Plan64"
-        };
 
     }
 

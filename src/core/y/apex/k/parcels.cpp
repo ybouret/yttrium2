@@ -1,0 +1,125 @@
+
+#include "y/apex/k/parcels.hpp"
+#include "y/apex/m/archon.hpp"
+#include <cstring>
+
+namespace Yttrium
+{
+    namespace Apex
+    {
+
+
+        Parcels:: Parcels(const size_t   userBlockSize,
+                          const PlanType userBlockPlan) :
+        addr(0),
+        plan(userBlockPlan),
+        api(0),
+        sync(),
+        wksp(),
+        blockShift(0),
+        blockBytes(Metrics::BytesFor(userBlockSize,blockShift)),
+        blockEntry( Query(blockShift) )
+        {
+            initialize();
+        }
+
+
+        Parcels:: Parcels(const Parcels &other) :
+        addr(0),
+        plan(other.plan),
+        api(0),
+        sync(),
+        wksp(),
+        blockShift(0),
+        blockBytes(Metrics::BytesFor(other.necessary(),blockShift)),
+        blockEntry( Query(blockShift) )
+        {
+            initialize();
+            parcel<uint8_t>() .size = other.parcel<uint8_t>() .size;
+            parcel<uint16_t>().size = other.parcel<uint16_t>().size;
+            parcel<uint32_t>().size = other.parcel<uint32_t>().size;
+            Parcel<uint64_t> &       target = parcel<uint64_t>();
+            const Parcel<uint64_t> & source = other.parcel<uint64_t>();
+            memcpy(target.data,source.data,(target.size=source.size) * sizeof(uint64_t) );
+        }
+
+
+        Parcels:: ~Parcels() noexcept
+        {
+            static Archon & archon = Archon::Location();
+            archon.store(blockShift,blockEntry);
+        }
+
+
+        size_t Parcels:: necessary() const noexcept
+        {
+            return parcel<uint64_t>().size * sizeof(uint64_t);
+        }
+
+        uint8_t * Parcels:: Query(const unsigned shift)
+        {
+            static Archon & archon = Archon::Instance();
+            return static_cast<uint8_t *>( archon.query(shift) );
+        }
+
+
+        void Parcels:: selectAPI() noexcept
+        {
+            switch(plan)
+            {
+                case Plan8:  Coerce(api) = & parcel<uint8_t>();  break;
+                case Plan16: Coerce(api) = & parcel<uint16_t>(); break;
+                case Plan32: Coerce(api) = & parcel<uint32_t>(); break;
+                case Plan64: Coerce(api) = & parcel<uint64_t>(); break;
+            }
+        }
+
+        void Parcels:: initialize() noexcept
+        {
+            uint8_t * const p = ( Coerce(addr) = static_cast<uint8_t *>( Y_Memory_BZero(wksp) ) );
+            new (p)                     Parcel<uint8_t>(blockEntry,blockBytes);
+            new (p +   ParcelProtoSize) Parcel<uint16_t>(blockEntry,blockBytes);
+            new (p + 2*ParcelProtoSize) Parcel<uint32_t>(blockEntry,blockBytes);
+            new (p + 3*ParcelProtoSize) Parcel<uint64_t>(blockEntry,blockBytes);
+
+            Coerce( sync[Plan8][0] ) = & parcel<uint16_t>();
+            Coerce( sync[Plan8][1] ) = & parcel<uint32_t>();
+            Coerce( sync[Plan8][2] ) = & parcel<uint64_t>();
+
+            Coerce( sync[Plan16][0] ) = & parcel<uint8_t>();
+            Coerce( sync[Plan16][1] ) = & parcel<uint32_t>();
+            Coerce( sync[Plan16][2] ) = & parcel<uint64_t>();
+
+            Coerce( sync[Plan32][0] ) = & parcel<uint8_t>();
+            Coerce( sync[Plan32][1] ) = & parcel<uint16_t>();
+            Coerce( sync[Plan32][2] ) = & parcel<uint64_t>();
+
+            Coerce( sync[Plan64][0] ) = & parcel<uint8_t>();
+            Coerce( sync[Plan64][1] ) = & parcel<uint16_t>();
+            Coerce( sync[Plan64][2] ) = & parcel<uint32_t>();
+
+            selectAPI();
+        }
+
+
+        void Parcels:: ldz(const PlanType userPlan) noexcept
+        {
+            api->naught(sync[plan]);
+            Coerce(plan) = userPlan;
+            selectAPI();
+        }
+
+        void Parcels:: ld1(const PlanType userPlan) noexcept
+        {
+            api->setOne(sync[plan]);
+            Coerce(plan) = userPlan;
+            selectAPI();
+        }
+
+
+
+    }
+
+}
+
+
