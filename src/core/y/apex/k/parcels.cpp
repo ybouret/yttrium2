@@ -1,6 +1,7 @@
 
 #include "y/apex/k/parcels.hpp"
 #include "y/apex/m/archon.hpp"
+#include "y/system/endian.hpp"
 #include <cstring>
 
 namespace Yttrium
@@ -9,11 +10,49 @@ namespace Yttrium
     {
 
 
+        namespace
+        {
+            static ExchangePolicy _ExchangePolicy = ExchangeBuiltInEndian;
+
+            static Parcels::Exch ChooseExchangeMethod() noexcept
+            {
+                switch( _ExchangePolicy )
+                {
+                    case ExchangeBuiltInEndian:
+                        if( Endian::Little() )
+                            return & Parcels:: exchLE;
+                        else
+                            return  & Parcels::exchEN;
+
+                    case ExchangeNeutralEndian:
+                        return & Parcels:: exchEN;
+                }
+            }
+
+            static Parcels::Exch _ExchangeMethod = ChooseExchangeMethod();
+        }
+
+        ExchangePolicy  Parcels:: GetExchangePolicy() noexcept
+        {
+            return _ExchangePolicy;
+        }
+
+        void Parcels:: SetExchangePolicy(const ExchangePolicy ep) noexcept
+        {
+            static Lockable &access = Archon::Instance().access;
+            Y_Lock(access);
+            _ExchangePolicy = ep;
+            _ExchangeMethod = ChooseExchangeMethod();
+        }
+
+
+
         Parcels:: Parcels(const size_t   userBlockSize,
                           const PlanType userBlockPlan) :
         addr(0),
         plan(userBlockPlan),
         api(0),
+        exch(_ExchangeMethod),
         sync(),
         wksp(),
         blockShift(0),
@@ -28,6 +67,7 @@ namespace Yttrium
         addr(0),
         plan(other.plan),
         api(0),
+        exch(_ExchangeMethod),
         sync(),
         wksp(),
         blockShift(0),
@@ -113,6 +153,79 @@ namespace Yttrium
             api->setOne(sync[plan]);
             Coerce(plan) = userPlan;
             selectAPI();
+        }
+
+        void Parcels:: set(const PlanType userPlan) const noexcept
+        {
+            assert(exch);
+            (*this.*exch)(userPlan);
+            Coerce(plan) = userPlan;
+            Coerce(*this).selectAPI();
+        }
+
+
+        void Parcels:: exchLE(const PlanType) const noexcept
+        {
+            // do nothing
+        }
+
+    }
+}
+
+#include "y/apex/k/parcel/transmute.hpp"
+namespace Yttrium
+{
+
+    namespace Apex
+    {
+
+        void Parcels:: exchEN(const PlanType userPlan) const noexcept
+        {
+            static Lockable &access = Archon::Instance().access;
+
+            Y_Lock(access);
+            switch(plan)
+            {
+                case Plan8:
+                    switch(userPlan)
+                    {
+                        case Plan8:  Transmute::To(parcel<uint8_t>(), parcel<uint8_t>()); break;
+                        case Plan16: Transmute::To(parcel<uint16_t>(),parcel<uint8_t>()); break;
+                        case Plan32: Transmute::To(parcel<uint16_t>(),parcel<uint8_t>()); break;
+                        case Plan64: Transmute::To(parcel<uint16_t>(),parcel<uint8_t>()); break;
+                    }
+                    break;
+
+                case Plan16:
+                    switch(userPlan)
+                    {
+                        case Plan8:  Transmute::To(parcel<uint8_t>(), parcel<uint16_t>()); break;
+                        case Plan16: Transmute::To(parcel<uint16_t>(),parcel<uint16_t>()); break;
+                        case Plan32: Transmute::To(parcel<uint16_t>(),parcel<uint16_t>()); break;
+                        case Plan64: Transmute::To(parcel<uint16_t>(),parcel<uint16_t>()); break;
+                    }
+                    break;
+
+                case Plan32:
+                    switch(userPlan)
+                    {
+                        case Plan8:  Transmute::To(parcel<uint8_t>(), parcel<uint32_t>()); break;
+                        case Plan16: Transmute::To(parcel<uint16_t>(),parcel<uint32_t>()); break;
+                        case Plan32: Transmute::To(parcel<uint16_t>(),parcel<uint32_t>()); break;
+                        case Plan64: Transmute::To(parcel<uint16_t>(),parcel<uint32_t>()); break;
+                    }
+                    break;
+
+                case Plan64:
+                    switch(userPlan)
+                    {
+                        case Plan8:  Transmute::To(parcel<uint8_t>(), parcel<uint64_t>()); break;
+                        case Plan16: Transmute::To(parcel<uint16_t>(),parcel<uint64_t>()); break;
+                        case Plan32: Transmute::To(parcel<uint16_t>(),parcel<uint64_t>()); break;
+                        case Plan64: Transmute::To(parcel<uint16_t>(),parcel<uint64_t>()); break;
+                    }
+                    break;
+            }
         }
 
 
