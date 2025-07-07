@@ -90,6 +90,7 @@ namespace Yttrium
                 sync[2]->size = 0;
             }
 
+        private:
             static inline void SHR(T &curr, const T next) noexcept
             {
                 static const T one(1);
@@ -98,7 +99,8 @@ namespace Yttrium
                 if( 0 != (next&one) ) curr |= top;
             }
 
-            
+
+        public:
             inline virtual size_t shr(ParcelAPI * const sync[]) noexcept
             {
 
@@ -142,7 +144,7 @@ namespace Yttrium
                 size  = SizeFor<T>::From(numBits);
             }
 
-
+            
             T * const data;
         private:
             Y_Disable_Copy_And_Assign(Parcel);
