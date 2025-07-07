@@ -18,9 +18,10 @@ namespace Yttrium
 
             explicit Device(const size_t   userBlockSize,
                             const PlanType userBlockPlan);
-
             Device(const Device &);
             virtual ~Device() noexcept;
+
+            void shr() noexcept;
 
             const size_t   bits;  //!< current bits
             const size_t & bytes; //!< current bytes in Plan8

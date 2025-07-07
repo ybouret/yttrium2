@@ -80,10 +80,11 @@ namespace Yttrium
         public:
             const PlanType    plan;
             ParcelAPI * const api;
-
         private:
             Exch              exch;
+        public:
             ParcelAPI * const sync[Metrics::Views][Metrics::Views-1];
+        private:
             void    *         wksp[ParcelProtoWords];
             unsigned          blockShift;
             const size_t      blockBytes;

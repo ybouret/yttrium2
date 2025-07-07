@@ -90,6 +90,52 @@ namespace Yttrium
                 sync[2]->size = 0;
             }
 
+            static inline void SHR(T &curr, const T next) noexcept
+            {
+                static const T one(1);
+                static const T top = (one << (sizeof(T)*8-1));
+                curr >>= 1;
+                if( 0 != (next&one) ) curr |= top;
+            }
+
+            
+            inline virtual size_t shr(ParcelAPI * const sync[]) noexcept
+            {
+
+                assert(sanity());
+                switch(size)
+                {
+                    case 0:
+                        return 0;
+
+                    case 1:
+                        if( (data[0] >>= 1) <= 0)
+                        {
+                            --size;
+                            assert(sanity());
+                            assert(0==bits());
+                            return Propagate(sync,0);
+                        }
+                        else
+                        {
+                            assert( sanity() );
+                            assert(bits()>0);
+                            return Propagate(sync,Calculus::BitsFor::Count(data[0]));
+                        }
+                        
+                    default: {
+                        const size_t msi = size-1;
+                        for(size_t i=0,j=1;i<msi;++i,++j)
+                            SHR(data[i],data[j]);
+                        if( (data[msi] >>= 1) <= 0)
+                            --size;
+                        assert(sanity());
+                        break;
+                    }
+                }
+                return Propagate(sync,bits());
+            }
+
             
             inline virtual void resize(const size_t numBits) noexcept
             {

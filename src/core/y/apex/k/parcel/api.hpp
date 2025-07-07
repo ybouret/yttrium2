@@ -47,17 +47,17 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
             virtual size_t bits()                 const noexcept = 0;
             virtual void   naught(ParcelAPI * const[])  noexcept = 0;
             virtual void   setOne(ParcelAPI * const[])  noexcept = 0;
-            
+            virtual size_t shr(ParcelAPI * const[])     noexcept = 0;
+
             size_t         update(ParcelAPI * const sync[]) noexcept
             {
                 assert(sync);
                 adjust(); assert( sanity() );
-                const size_t numBits  = bits();
-                assert(0!=sync[0]); sync[0]->resize(numBits);
-                assert(0!=sync[1]); sync[1]->resize(numBits);
-                assert(0!=sync[2]); sync[2]->resize(numBits);
-                return numBits;
+                return Propagate(sync,bits());
             }
+
+
+
 
             size_t       size; //!< size in words
             const size_t maxi; //!< capacity in words
@@ -66,6 +66,16 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
             Y_Disable_Copy_And_Assign(ParcelAPI);
             virtual bool           check() const noexcept = 0;
             virtual std::ostream & print(std::ostream &os) const = 0;
+
+        protected:
+            static size_t Propagate(ParcelAPI * const sync[], const size_t numBits) noexcept
+            {
+                assert(0!=sync[0]); sync[0]->resize(numBits);
+                assert(0!=sync[1]); sync[1]->resize(numBits);
+                assert(0!=sync[2]); sync[2]->resize(numBits);
+                return numBits;
+            }
+
         };
 
     }

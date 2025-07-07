@@ -22,11 +22,14 @@ namespace Yttrium
                         if( Endian::Little() )
                             return & Parcels:: exchLE;
                         else
-                            return  & Parcels::exchEN;
+                            return & Parcels::exchEN;
 
                     case ExchangeNeutralEndian:
                         return & Parcels:: exchEN;
                 }
+
+                return & Parcels:: exchEN;
+
             }
 
             static Parcels::Exch _ExchangeMethod = ChooseExchangeMethod();

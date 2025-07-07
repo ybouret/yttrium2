@@ -72,6 +72,7 @@ Y_CreateLibrary(y
     y/apex/m
     y/apex/k
     y/apex/k/parcel
+    y/apex/k/device
     y/apex/block
     y/apex/block/model
     y/apex/n
