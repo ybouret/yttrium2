@@ -37,6 +37,10 @@ namespace Yttrium
             size_t srz(OutputStream &) const;
             void   com()  noexcept; //!< propagate bits
 
+            static SignType Compare(const Device & lhs,
+                                    const Device & rhs,
+                                    const PlanType cmp) noexcept;
+
             const size_t   bits;  //!< current bits
             const size_t & bytes; //!< current bytes in Plan8
             const size_t & space; //!< in bytes

@@ -9,6 +9,8 @@
 #include "y/apex/k/ops.hpp"
 #include "y/mkl/two-to-the-power-of.hpp"
 #include "y/ostream-proto.hpp"
+#include "y/apex/k/plan.hpp"
+#include "y/type/sign.hpp"
 
 namespace Yttrium
 {
@@ -18,12 +20,20 @@ namespace Yttrium
     {
 
 
+#define Y_APN_Proto_Decl_NoExcept(RET,FUNC) \
+RET FUNC(const Natural &, const Natural &) noexcept;\
+RET FUNC(const Natural &, const natural_t) noexcept;\
+RET FUNC(const natural_t, const Natural &) noexcept
+
+
         class Device;
 
         class Natural : public Number
         {
         public:
-            static OpsMode Ops;
+            static OpsMode  Ops;
+            static PlanType Cmp;
+            
             static const char * const CallSign;
 
             Natural();
@@ -42,6 +52,8 @@ namespace Yttrium
             virtual size_t serialize(OutputStream &) const;
             size_t    bits() const noexcept;
             Natural & xch(Natural &) noexcept;
+
+            Y_APN_Proto_Decl_NoExcept(static SignType,Compare);
 
         private:
             Device * const device;

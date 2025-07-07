@@ -9,6 +9,7 @@ namespace Yttrium
     {
 
         OpsMode            Natural:: Ops      = Ops32_64;
+        PlanType           Natural:: Cmp      = Device::SmallPlan[Ops];
         const char * const Natural:: CallSign = "apn";
 
         Natural:: Natural() :
