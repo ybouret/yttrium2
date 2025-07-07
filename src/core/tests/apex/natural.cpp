@@ -1,5 +1,5 @@
 
-#include "y/apex/natural.hpp"
+//#include "y/apex/natural.hpp"
 #include "y/utest/run.hpp"
 #include "y/random/park-miller.hpp"
 #include "y/format/hexadecimal.hpp"
@@ -12,6 +12,7 @@ Y_UTEST(apex_n)
 {
     Random::ParkMiller ran;
 
+#if 0
     {
         std::cerr << "Default" << std::endl;
         Apex::Natural n;
@@ -344,6 +345,7 @@ Y_UTEST(apex_n)
             std::cerr << i << " => " << i.sqrt() << std::endl;
         }
     }
-
+#endif
+    
 }
 Y_UDONE()

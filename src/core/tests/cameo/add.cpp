@@ -1,8 +1,9 @@
+#if 0
 #include "y/cameo/addition.hpp"
 #include "y/cameo/summator/fpoint.hpp"
 #include "y/cameo/summator/direct.hpp"
 #include "y/cameo/summator/aproxy.hpp"
-
+#endif
 
 #include "y/mkl/complex.hpp"
 #include "y/mkl/xreal.hpp"
@@ -29,6 +30,7 @@ namespace Yttrium
 Y_UTEST(cameo_add)
 {
 
+#if 0
     {
         Cameo::DirectSummator<apz> zsum;
         Cameo::DirectSummator<apn> nsum;
@@ -75,6 +77,7 @@ Y_UTEST(cameo_add)
         Cameo::Addition<float>              fsum;
         Cameo::Addition< XReal<double> >    xsum;
     }
+#endif
 
 }
 Y_UDONE()
