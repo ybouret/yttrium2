@@ -14,6 +14,7 @@ namespace Yttrium
 
         Natural:: Natural() :
         Number(),
+        seal(),
         device( new Device(sizeof(uint64_t), Device::SmallPlan[Ops]) )
         {
 
@@ -21,6 +22,7 @@ namespace Yttrium
 
         Natural:: Natural(const Natural &n) :
         Number(),
+        seal(),
         device( new Device( *n.device ) )
         {
 
@@ -29,6 +31,7 @@ namespace Yttrium
         size_t Natural:: serialize(OutputStream &fp) const
         {
             assert(device);
+            Y_Lock(seal);
             return device->srz(fp);
         }
 
@@ -70,6 +73,7 @@ namespace Yttrium
 
         std::ostream & operator<<(std::ostream &os, const Natural &self)
         {
+            Y_Lock(self.seal);
             return os << self.device->hex();
         }
 

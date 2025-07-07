@@ -46,6 +46,10 @@ namespace Yttrium
                                     const natural_t rhs,
                                     const PlanType  cmp) noexcept;
 
+            static SignType Compare(const natural_t lhs,
+                                    const Device &  rhs,
+                                    const PlanType  cmp) noexcept;
+
             const size_t   bits;  //!< current bits
             const size_t & bytes; //!< current bytes in Plan8
             const size_t & space; //!< in bytes
