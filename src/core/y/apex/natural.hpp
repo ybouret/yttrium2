@@ -36,7 +36,7 @@ namespace Yttrium
             Y_OSTREAM_PROTO(Natural);
 
             Natural(Random::Bits &ran, const size_t bits);
-
+            Natural(const TwoToThePowerOf_ &, const size_t n);
 
 
             virtual size_t serialize(OutputStream &) const;

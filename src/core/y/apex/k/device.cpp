@@ -103,6 +103,7 @@ space( parcel<uint8_t>().maxi )
                 {
                     s += Hexadecimal::LowerByte[ b[--i] ];
                 }
+                while(s.size()>1 && s[1] == '0') s.popHead();
                 return s;
             }
         }

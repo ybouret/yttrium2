@@ -23,6 +23,15 @@ Y_UTEST(apex_n)
         }
     }
 
+    {
+        for(size_t i=0;i<=80;++i)
+        {
+            const apn n(TwoToThePowerOf,i);
+            std::cerr << n << std::endl;
+        }
+    }
+
+
 #if 0
     {
         std::cerr << "Default" << std::endl;

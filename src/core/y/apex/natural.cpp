@@ -72,6 +72,25 @@ namespace Yttrium
             return os << self.device->hex();
         }
 
+        Natural:: Natural(const TwoToThePowerOf_ &, const size_t n) :
+        Number(),
+        device(0)
+        {
+            static const uint8_t bit[8] = { 1,2,4,8,16,32,64,128 };
+            const size_t         ibit   = n+1;
+            const size_t         size   = Alignment::On<8>::Ceil(ibit)/8;
+            Coerce(device) = new Device(size,Plan8);
+            if(ibit>0)
+            {
+                Parcel<uint8_t> &p = device->get<uint8_t>();
+                p.data[n>>3] = bit[n&7];
+                p.size = size;
+                assert(p.sanity());
+            }
+            Coerce(device->bits) = ibit;
+            device->com();
+            assert(device->api->bits()==ibit);
+        }
 
     }
 
