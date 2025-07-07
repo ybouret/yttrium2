@@ -55,7 +55,14 @@ namespace Yttrium
                 return parcel<T>();
             }
 
-            void set(const PlanType userPlan) const noexcept;;
+            template <typename T> inline
+            Parcel<T> & make() noexcept
+            {
+                set( PlanType(  IntegerLog2For<T>::Value ) );
+                return parcel<T>();
+            }
+
+            void set(const PlanType userPlan) const noexcept;
             void ldz(const PlanType userPlan) noexcept;
             void ld1(const PlanType userPlan) noexcept;
 
@@ -82,22 +89,17 @@ namespace Yttrium
             const size_t      blockBytes;
             void * const      blockEntry;
 
-
-
-
             void   selectAPI()       noexcept;
             void   initialize()      noexcept;
 
+            static uint8_t * Query(const unsigned shift);
+
+        protected:
             //! \return parcel by type
             template <typename T>
             inline Parcel<T> & parcel() const noexcept {
                 return *(Parcel<T> *) &addr[ParcelProtoSize*IntegerLog2For<T>::Value];
             }
-
-            static uint8_t * Query(const unsigned shift);
-
-
-
         };
 
     }
