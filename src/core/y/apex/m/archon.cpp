@@ -123,12 +123,12 @@ namespace Yttrium
 
         }
 
-        JMutex      * Archon:: queryMutex() {
+        JointMutex      * Archon:: queryMutex() {
             Y_Lock(access);
-            return jlist.size ? jlist.popHead() : new JMutex();
+            return jlist.size ? jlist.popHead() : new JointMutex();
         }
 
-        void Archon:: storeMutex(JMutex * const jmutex) noexcept
+        void Archon:: storeMutex(JointMutex * const jmutex) noexcept
         {
             Y_Lock(access);
             assert(0!=jmutex);

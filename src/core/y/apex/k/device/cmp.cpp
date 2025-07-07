@@ -56,6 +56,13 @@ namespace Yttrium
                     return Get(lhs.make<T>(), n);
                 }
 
+                static inline
+                SignType Get(const natural_t lhs, const Device &rhs ) noexcept
+                {
+                    const Parcel<T> n(lhs);
+                    return Get(n,rhs.make<T>());
+                }
+
             };
         }
 
@@ -64,6 +71,21 @@ namespace Yttrium
                                   const PlanType cmp) noexcept
         {
             typedef SignType (*Cmp)(const Device &, const Device &);
+            static Cmp const Table[Metrics::Views] =
+            {
+                ParcelCmp<uint8_t>::Get,
+                ParcelCmp<uint16_t>::Get,
+                ParcelCmp<uint32_t>::Get,
+                ParcelCmp<uint64_t>::Get
+            };
+            return Table[cmp](lhs,rhs);
+        }
+
+        SignType Device:: Compare(const Device &  lhs,
+                                  const natural_t rhs,
+                                  const PlanType  cmp) noexcept
+        {
+            typedef SignType (*Cmp)(const Device &, const natural_t);
             static Cmp const Table[Metrics::Views] =
             {
                 ParcelCmp<uint8_t>::Get,

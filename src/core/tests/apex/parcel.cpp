@@ -29,7 +29,7 @@ namespace
 Y_UTEST(apex_parcel)
 {
 
-    Y_SIZEOF(Apex::JMutex);
+    Y_SIZEOF(Apex::JointMutex);
     Random::ParkMiller ran;
 
     for(size_t i=0;i<=64;++i)

@@ -6,11 +6,11 @@ namespace Yttrium
 
     namespace Apex
     {
-        JMutex:: ~JMutex() noexcept
+        JointMutex:: ~JointMutex() noexcept
         {
         }
 
-        JMutex:: JMutex() : Object(), Concurrent::Mutex(), next(0), prev(0)
+        JointMutex:: JointMutex() : Object(), Concurrent::Mutex(), next(0), prev(0)
         {
         }
         

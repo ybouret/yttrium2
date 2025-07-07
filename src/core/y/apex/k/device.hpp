@@ -5,6 +5,7 @@
 #define Y_Apex_Device_Included 1
 
 #include "y/apex/k/parcels.hpp"
+
 #include "y/object.hpp"
 #include "y/stream/output.hpp"
 #include "y/stream/input.hpp"
@@ -40,6 +41,10 @@ namespace Yttrium
             static SignType Compare(const Device & lhs,
                                     const Device & rhs,
                                     const PlanType cmp) noexcept;
+
+            static SignType Compare(const Device &  lhs,
+                                    const natural_t rhs,
+                                    const PlanType  cmp) noexcept;
 
             const size_t   bits;  //!< current bits
             const size_t & bytes; //!< current bytes in Plan8

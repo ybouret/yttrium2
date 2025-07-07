@@ -58,8 +58,8 @@ namespace Yttrium
             void *       query(const unsigned shift);                              //!< \param shift valid shift \return 2^shift bytes
             void         store(const unsigned shift, void * const block) noexcept; //!< store \param shift 2^shift bytes \param block queried
 
-            JMutex      *queryMutex();
-            void         storeMutex(JMutex * const) noexcept;
+            JointMutex      *queryMutex();
+            void             storeMutex(JointMutex * const) noexcept;
 
 
         private:
@@ -71,7 +71,7 @@ namespace Yttrium
 
             Slot * const          slots;      //!< caches
             Memory::Quanta  &     quanta;     //!< lower level memory
-            CxxListOf<JMutex>     jlist;      //!< joint mutexes
+            CxxListOf<JointMutex> jlist;      //!< joint mutexes
         };
 
        
