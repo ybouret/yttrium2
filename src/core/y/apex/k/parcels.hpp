@@ -68,9 +68,7 @@ namespace Yttrium
                 set( PlanType(  IntegerLog2For<T>::Value ) );
                 return parcel<T>();
             }
-
-
-
+            
 
             void set(const PlanType userPlan) const noexcept;
             void ldz(const PlanType userPlan) noexcept;
