@@ -11,7 +11,7 @@
 #include "y/ostream-proto.hpp"
 #include "y/apex/k/plan.hpp"
 #include "y/type/sign.hpp"
-#include "y/apex/m/seal.hpp"
+#include "y/apex/n/shielded.hpp"
 
 namespace Yttrium
 {
@@ -38,7 +38,8 @@ Y_APN_Compare_Proto(OP,natural_t,Natural &,RET)
 
         class Device;
 
-        class Natural : public Number
+
+        class Natural : public Shielded
         {
         public:
             static OpsMode  Ops;
@@ -78,8 +79,7 @@ Y_APN_Compare_Proto(OP,natural_t,Natural &,RET)
 
 
         private:
-            mutable  Seal  seal;
-            Device * const device;
+            Device * const   device;
 
         };
 

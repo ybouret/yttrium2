@@ -13,16 +13,14 @@ namespace Yttrium
         const char * const Natural:: CallSign = "apn";
 
         Natural:: Natural() :
-        Number(),
-        seal(),
+        Shielded(),
         device( new Device(sizeof(uint64_t), Device::SmallPlan[Ops]) )
         {
 
         }
 
         Natural:: Natural(const Natural &n) :
-        Number(),
-        seal(),
+        Shielded(),
         device( new Device( *n.device ) )
         {
 
@@ -31,7 +29,7 @@ namespace Yttrium
         size_t Natural:: serialize(OutputStream &fp) const
         {
             assert(device);
-            Y_Lock(seal);
+            Y_Lock(**this);
             return device->srz(fp);
         }
 
@@ -43,7 +41,7 @@ namespace Yttrium
 
         uint64_t Natural:: ls64() const   noexcept
         {
-            Y_Lock(seal);
+            Y_Lock(**this);
             return device->make<uint64_t>().data[0];
         }
 
@@ -72,7 +70,7 @@ namespace Yttrium
 
 
         Natural:: Natural(const natural_t n) :
-        Number(),
+        Shielded(),
         device( new Device(CopyOf,n) )
         {
         }
@@ -90,7 +88,7 @@ namespace Yttrium
 
         std::ostream & operator<<(std::ostream &os, const Natural &self)
         {
-            Y_Lock(self.seal);
+            Y_Lock(*self);
             return os << self.device->hex();
         }
 
@@ -101,7 +99,7 @@ namespace Yttrium
         }
 
         Natural:: Natural(const TwoToThePowerOf_ &, const size_t n) :
-        Number(),
+        Shielded(),
         device(0)
         {
             static const uint8_t bit[8] = { 1,2,4,8,16,32,64,128 };
@@ -131,7 +129,7 @@ namespace Yttrium
     namespace Apex
     {
         Natural:: Natural(Random::Bits &ran, const size_t numBits) :
-        Number(),
+        Shielded(),
         device(0)
         {
             const size_t ceilBits = Alignment::On<8>::Ceil(numBits);

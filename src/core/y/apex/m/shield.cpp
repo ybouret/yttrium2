@@ -1,5 +1,5 @@
 
-#include "y/apex/m/seal.hpp"
+#include "y/apex/m/shield.hpp"
 #include "y/apex/m/archon.hpp"
 
 
@@ -19,25 +19,25 @@ namespace Yttrium
 
         }
 
-        Seal:: Seal() : jmutex( QueryJointMutex() )
+        Shield:: Shield() : jmutex( QueryJointMutex() )
         {
 
         }
 
-        Seal:: ~Seal() noexcept
+        Shield:: ~Shield() noexcept
         {
             static Archon & archon = Archon::Location();
             archon.storeMutex( static_cast<JointMutex *>(jmutex) );
             Coerce(jmutex) = 0;
         }
 
-        void Seal:: doLock() noexcept
+        void Shield:: doLock() noexcept
         {
             assert(jmutex);
             static_cast<JointMutex *>(jmutex)->lock();
         }
 
-        void Seal:: doUnlock() noexcept
+        void Shield:: doUnlock() noexcept
         {
             assert(jmutex);
             static_cast<JointMutex *>(jmutex)->unlock();

@@ -13,14 +13,14 @@ namespace Yttrium
     namespace Apex
     {
 
-        class Seal : public Lockable
+        class Shield : public Lockable
         {
         public:
-            explicit Seal();
-            virtual ~Seal() noexcept;
+            explicit Shield();
+            virtual ~Shield() noexcept;
 
         private:
-            Y_Disable_Copy_And_Assign(Seal);
+            Y_Disable_Copy_And_Assign(Shield);
             void * const jmutex;
 
             virtual void doLock()   noexcept;
