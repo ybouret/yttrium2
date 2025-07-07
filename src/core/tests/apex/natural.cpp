@@ -1,5 +1,5 @@
 
-//#include "y/apex/natural.hpp"
+#include "y/apex/natural.hpp"
 #include "y/utest/run.hpp"
 #include "y/random/park-miller.hpp"
 #include "y/format/hexadecimal.hpp"
@@ -11,6 +11,17 @@ using namespace Yttrium;
 Y_UTEST(apex_n)
 {
     Random::ParkMiller ran;
+
+    {
+        apn n;
+        std::cerr << n << std::endl;
+        for(size_t i=0;i<=10;++i)
+        {
+            const apn r(ran,i);
+            std::cerr << r << std::endl;
+            Y_ASSERT(r.bits()==i);
+        }
+    }
 
 #if 0
     {

@@ -6,6 +6,21 @@ namespace Yttrium
     namespace Apex
     {
 
+        const PlanType Device:: SmallPlan[NumOps] =
+        {
+            Plan8,
+            Plan8,
+            Plan8,
+
+            Plan16,
+            Plan16,
+
+            Plan32
+        };
+
+
+
+
         Device:: ~Device() noexcept
         {
         }
@@ -32,13 +47,41 @@ space( parcel<uint8_t>().maxi )
             
         }
 
-        Device:: Device(const uint64_t n) :
+
+
+        Device:: Device(const CopyOf_ &, const uint64_t n) :
         Object(),
         Parcels(sizeof(n),Plan64),
         Y_Apex_Device( Calculus::BitsFor::Count(n) )
         {
+            if(bits>0)
+            {
+                Parcel<uint64_t> &p = get<uint64_t>();
+                p.data[0] = n;
+                p.size    = 1;
+                assert(p.sanity());
+                ParcelAPI:: Propagate(sync[Plan64],bits);
+            }
         }
-        
+
+
+        void Device:: ld(const uint64_t n) noexcept
+        {
+            Parcel<uint64_t> &p = make<uint64_t>();
+            p.naught(sync[Plan64]);
+            if(n>0)
+            {
+                p.data[0] = n;
+                p.size    = 1;
+                ParcelAPI:: Propagate(sync[Plan64], Coerce(bits) = Calculus::BitsFor::Count(n));
+                assert(p.sanity());
+            }
+            else
+            {
+                Coerce(bits) = 0;
+            }
+        }
+
 
         String Device:: hex() const
         {

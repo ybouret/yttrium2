@@ -67,7 +67,7 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
             virtual bool           check() const noexcept = 0;
             virtual std::ostream & print(std::ostream &os) const = 0;
 
-        protected:
+        public:
             static size_t Propagate(ParcelAPI * const sync[], const size_t numBits) noexcept
             {
                 assert(0!=sync[0]); sync[0]->resize(numBits);

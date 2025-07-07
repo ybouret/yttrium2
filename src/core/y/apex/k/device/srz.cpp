@@ -4,7 +4,7 @@ namespace Yttrium
 {
     namespace Apex
     {
-        size_t Device:: save(OutputStream &fp) const
+        size_t Device:: srz(OutputStream &fp) const
         {
             const Parcel<uint8_t> &p = make<uint8_t>();
             size_t res = fp.emitVBR(p.size);
