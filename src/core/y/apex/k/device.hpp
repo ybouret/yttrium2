@@ -9,6 +9,7 @@
 
 #include "y/stream/output.hpp"
 #include "y/stream/input.hpp"
+#include "y/string.hpp"
 
 namespace Yttrium
 {
@@ -28,7 +29,8 @@ namespace Yttrium
             void shr() noexcept;
 
             size_t save(OutputStream &) const;
-            
+            String hex()                const;
+
 
             const size_t   bits;  //!< current bits
             const size_t & bytes; //!< current bytes in Plan8

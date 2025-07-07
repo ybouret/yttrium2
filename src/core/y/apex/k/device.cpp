@@ -40,8 +40,25 @@ space( parcel<uint8_t>().maxi )
         }
         
 
+        String Device:: hex() const
+        {
+            const Parcel<uint8_t> &p = make<uint8_t>();
+            if(p.size<=0)
+            {
+                return '0';
+            }
+            else
+            {
+                String          s;
+                uint8_t * const b = p.data;
+                for(size_t i=p.size;i>0;)
+                {
+                    s += Hexadecimal::LowerByte[ b[--i] ];
+                }
+                return s;
+            }
+        }
 
-        
     }
 
 }
