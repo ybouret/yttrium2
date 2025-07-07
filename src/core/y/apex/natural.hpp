@@ -25,7 +25,15 @@ namespace Yttrium
 RET FUNC(const Natural &, const Natural &) noexcept; \
 RET FUNC(const Natural &, const natural_t) noexcept; \
 RET FUNC(const natural_t, const Natural &) noexcept
-        
+
+#define Y_APN_Compare_Proto(OP,LHS,RHS,RET) \
+inline friend bool operator OP (const LHS lhs, const RHS rhs) noexcept { return Compare(lhs,rhs) RET; }
+
+#define Y_APN_Compare_Decl(OP,RET) \
+Y_APN_Compare_Proto(OP,Natural &,Natural &,RET) \
+Y_APN_Compare_Proto(OP,Natural &,natural_t,RET) \
+Y_APN_Compare_Proto(OP,natural_t,Natural &,RET)
+
 
 
         class Device;
@@ -52,10 +60,22 @@ RET FUNC(const natural_t, const Natural &) noexcept
 
 
             virtual size_t serialize(OutputStream &) const;
+            virtual void   ldz() noexcept;
+            virtual void   ld1() noexcept;
             size_t         bits() const noexcept;
             Natural &      xch(Natural &) noexcept;
+            uint64_t       ls64() const   noexcept;
+
+            void alter(const PlanType) noexcept;
 
             Y_APN_Proto_Decl_NoExcept(static SignType,Compare);
+            Y_APN_Compare_Decl(==, == __Zero__)
+            Y_APN_Compare_Decl(!=, != __Zero__)
+            Y_APN_Compare_Decl(<,  == Negative)
+            Y_APN_Compare_Decl(>,  == Positive)
+            Y_APN_Compare_Decl(<=, != Positive)
+            Y_APN_Compare_Decl(>=, != Negative)
+
 
         private:
             mutable  Seal  seal;

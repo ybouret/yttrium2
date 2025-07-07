@@ -3,6 +3,7 @@
 #include "y/utest/run.hpp"
 #include "y/random/park-miller.hpp"
 #include "y/format/hexadecimal.hpp"
+#include "y/apex/metrics.hpp"
 
 using namespace Yttrium;
 
@@ -12,27 +13,8 @@ Y_UTEST(apex_n)
 {
     Random::ParkMiller ran;
 
-    {
-        apn n;
-        std::cerr << n << std::endl;
-        for(size_t i=0;i<=10;++i)
-        {
-            const apn r(ran,i);
-            std::cerr << r << std::endl;
-            Y_ASSERT(r.bits()==i);
-        }
-    }
-
-    {
-        for(size_t i=0;i<=80;++i)
-        {
-            const apn n(TwoToThePowerOf,i);
-            std::cerr << n << std::endl;
-        }
-    }
 
 
-#if 0
     {
         std::cerr << "Default" << std::endl;
         Apex::Natural n;
@@ -43,7 +25,7 @@ Y_UTEST(apex_n)
 
 
     {
-        std::cerr << "Comparisons" << std::endl;
+        std::cerr << "Comparisons...." << std::endl;
         for(size_t i=0;i<1000;++i)
         {
             const uint64_t      l = ran.to<uint64_t>( ran.leq<unsigned>(64) );
@@ -66,8 +48,8 @@ Y_UTEST(apex_n)
             {
                 for(unsigned k=0;k<Apex::Metrics::Views;++k)
                 {
-                    L.alter( Apex::ViewType(j) );
-                    R.alter( Apex::ViewType(k) );
+                    L.alter( Apex::PlanType(j) );
+                    R.alter( Apex::PlanType(k) );
                     Y_ASSERT( Apex::Natural::Compare(L,R) == S);
                 }
             }
@@ -76,9 +58,8 @@ Y_UTEST(apex_n)
         }
     }
 
-
     {
-        std::cerr << "TwoToThePowerOf" << std::endl;
+        std::cerr << "TwoToThePowerOf..." << std::endl;
         for(size_t p=0;p<=80;++p)
         {
             Apex::Natural n(TwoToThePowerOf,p);
@@ -104,7 +85,8 @@ Y_UTEST(apex_n)
             }
         }
     }
-
+    
+#if 0
     {
         std::cerr << "Additions 64" << std::endl;
         for(size_t i=0;i<64;++i)

@@ -41,10 +41,27 @@ namespace Yttrium
             return *this;
         }
 
+        uint64_t Natural:: ls64() const   noexcept
+        {
+            Y_Lock(seal);
+            return device->make<uint64_t>().data[0];
+        }
+
+
         size_t Natural:: bits() const noexcept
         {
             assert(device);
             return device->bits;
+        }
+
+        void Natural:: ldz() noexcept
+        {
+            device->ldz( Device::SmallPlan[Ops] );
+        }
+
+        void Natural:: ld1() noexcept
+        {
+            device->ld1( Device::SmallPlan[Ops] );
         }
 
         Natural & Natural:: operator=( const Natural &n )
@@ -75,6 +92,12 @@ namespace Yttrium
         {
             Y_Lock(self.seal);
             return os << self.device->hex();
+        }
+
+
+        void Natural:: alter(const PlanType plan) noexcept
+        {
+            device->set(plan);
         }
 
         Natural:: Natural(const TwoToThePowerOf_ &, const size_t n) :
