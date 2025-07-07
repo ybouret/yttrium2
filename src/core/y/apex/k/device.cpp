@@ -47,7 +47,11 @@ space( parcel<uint8_t>().maxi )
             
         }
 
-
+        void Device:: com()  noexcept
+        {
+            assert(api->sanity());
+            ParcelAPI:: Propagate(sync[plan],bits);
+        }
 
         Device:: Device(const CopyOf_ &, const uint64_t n) :
         Object(),
@@ -60,7 +64,7 @@ space( parcel<uint8_t>().maxi )
                 p.data[0] = n;
                 p.size    = 1;
                 assert(p.sanity());
-                ParcelAPI:: Propagate(sync[Plan64],bits);
+                com();
             }
         }
 
@@ -73,8 +77,9 @@ space( parcel<uint8_t>().maxi )
             {
                 p.data[0] = n;
                 p.size    = 1;
-                ParcelAPI:: Propagate(sync[Plan64], Coerce(bits) = Calculus::BitsFor::Count(n));
                 assert(p.sanity());
+                Coerce(bits) = Calculus::BitsFor::Count(n);
+                com();
             }
             else
             {

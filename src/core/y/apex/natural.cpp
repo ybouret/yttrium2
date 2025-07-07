@@ -83,11 +83,11 @@ namespace Yttrium
 {
     namespace Apex
     {
-        Natural:: Natural(Random::Bits &ran, const size_t bits) :
+        Natural:: Natural(Random::Bits &ran, const size_t numBits) :
         Number(),
         device(0)
         {
-            const size_t ceilBits = Alignment::On<8>::Ceil(bits);
+            const size_t ceilBits = Alignment::On<8>::Ceil(numBits);
             const size_t numBytes = ceilBits/8;
             Coerce(device)        = new Device(numBytes,Plan8);
             Parcel<uint8_t> & p   = device->get<uint8_t>();
@@ -95,11 +95,14 @@ namespace Yttrium
             {
                 const size_t msi = numBytes - 1;
                 for(size_t i=0;i<msi;++i) p.data[i] = ran.to<uint8_t>();
-                const size_t rem = bits - msi * 8;  
+                const size_t rem = numBits - msi * 8;
                 if(rem>0) p.data[msi] = ran.to<uint8_t>(rem);
             }
-            p.size = numBytes; assert( bits == p.bits() );
-            ParcelAPI::Propagate(device->sync[Plan8],Coerce(device->bits)=bits);
+            p.size = numBytes;
+            assert( p.sanity() );
+            assert( numBits == p.bits() );
+            Coerce(device->bits) = numBits;
+            device->com();
         }
     }
 }

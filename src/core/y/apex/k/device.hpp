@@ -35,6 +35,7 @@ namespace Yttrium
             void   shr() noexcept;
             String hex()                const;
             size_t srz(OutputStream &) const;
+            void   com()  noexcept; //!< propagate bits
 
             const size_t   bits;  //!< current bits
             const size_t & bytes; //!< current bytes in Plan8
