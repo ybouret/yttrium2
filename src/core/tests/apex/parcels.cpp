@@ -90,6 +90,7 @@ Y_UTEST(apex_parcels)
     Apex::Parcels::SetExchangePolicy( Apex::ExchangeBuiltInEndian);
     testParcels(ran);
 
+    Y_SIZEOF(Apex::Parcels);
 
 }
 Y_UDONE()
