@@ -45,6 +45,9 @@ namespace Yttrium
 
             }
 
+            inline virtual const void * ro()     const noexcept { return data; }
+            inline virtual size_t       length() const noexcept { return size * sizeof(T); }
+
             inline virtual void adjust() noexcept
             {
                 while(size>0 && 0 == data[size-1]) --size;

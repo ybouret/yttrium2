@@ -31,7 +31,7 @@ namespace Yttrium
         sync(),
         wksp(),
         blockShift(0),
-        blockBytes(Metrics::BytesFor(other.necessary(),blockShift)),
+        blockBytes(Metrics::BytesFor(other.parcel<uint64_t>().length(),blockShift)),
         blockEntry( Query(blockShift) )
         {
             initialize();
@@ -50,10 +50,9 @@ namespace Yttrium
             archon.store(blockShift,blockEntry);
         }
 
-
-        size_t Parcels:: necessary() const noexcept
+        std::ostream & operator<<(std::ostream &os, const Parcels &self)
         {
-            return parcel<uint64_t>().size * sizeof(uint64_t);
+            return os << *self.api;
         }
 
         uint8_t * Parcels:: Query(const unsigned shift)

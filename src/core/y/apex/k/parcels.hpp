@@ -22,11 +22,30 @@ namespace Yttrium
                              const PlanType userBlockPlan);
             explicit Parcels(const Parcels &other);
             virtual ~Parcels() noexcept;
+            Y_OSTREAM_PROTO(Parcels);
 
-            
+            template <typename T> inline
+            Parcel<T> & get() noexcept
+            {
+                assert( IntegerLog2For<T>::Value == plan );
+                return parcel<T>();
+            }
+
+            template <typename T> inline
+            const Parcel<T> & get() const noexcept
+            {
+                assert( IntegerLog2For<T>::Value == plan );
+                return parcel<T>();
+            }
+
+
             void ldz(const PlanType userPlan) noexcept;
             void ld1(const PlanType userPlan) noexcept;
 
+            size_t update() noexcept
+            {
+                return api->update( sync[plan] );
+            }
 
 
         private:
@@ -44,7 +63,6 @@ namespace Yttrium
             void * const      blockEntry;
 
             void   selectAPI()       noexcept;
-            size_t necessary() const noexcept; //!< \return necessery bytes
             void   initialize()      noexcept;
 
             template <typename T>

@@ -6,8 +6,7 @@
 
 #include "y/apex/k/plan.hpp"
 #include "y/apex/metrics.hpp"
-
-#include "y/core/setup.hpp"
+#include "y/memory/buffer/rw.hpp"
 
 namespace Yttrium
 {
@@ -19,13 +18,14 @@ namespace Yttrium
 do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::endl; return false; } } while(false)
 
         //! common API for Parcel<T>
-        class ParcelAPI
+        class ParcelAPI : public Memory::ReadWriteBuffer
         {
         public:
             static const char * const HumanReadablePlan[Metrics::Views];
 
             //! set capacity in words
             explicit ParcelAPI(const size_t capa) noexcept :
+            Memory::ReadWriteBuffer(),
             size(0),
             maxi(capa)
             {

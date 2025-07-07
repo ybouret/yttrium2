@@ -22,6 +22,10 @@ namespace Yttrium
                               const uint8_t= 0x00,
                               const uint8_t= 0xff) noexcept;
 
+            static void Block64(Bits &ran,
+                                uint64_t * const arr,
+                                const size_t     bits) noexcept;
+            
 
             //! fill object with random bits
             /**
