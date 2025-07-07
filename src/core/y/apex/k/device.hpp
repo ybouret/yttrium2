@@ -7,6 +7,9 @@
 #include "y/apex/k/parcels.hpp"
 #include "y/object.hpp"
 
+#include "y/stream/output.hpp"
+#include "y/stream/input.hpp"
+
 namespace Yttrium
 {
     namespace Apex
@@ -18,10 +21,14 @@ namespace Yttrium
 
             explicit Device(const size_t   userBlockSize,
                             const PlanType userBlockPlan);
+            explicit Device(const uint64_t);
             Device(const Device &);
             virtual ~Device() noexcept;
 
             void shr() noexcept;
+
+            size_t save(OutputStream &) const;
+            
 
             const size_t   bits;  //!< current bits
             const size_t & bytes; //!< current bytes in Plan8

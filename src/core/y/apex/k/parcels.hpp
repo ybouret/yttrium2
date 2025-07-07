@@ -62,6 +62,16 @@ namespace Yttrium
                 return parcel<T>();
             }
 
+            template <typename T> inline
+            const Parcel<T> & make() const noexcept
+            {
+                set( PlanType(  IntegerLog2For<T>::Value ) );
+                return parcel<T>();
+            }
+
+
+
+
             void set(const PlanType userPlan) const noexcept;
             void ldz(const PlanType userPlan) noexcept;
             void ld1(const PlanType userPlan) noexcept;
