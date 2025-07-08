@@ -332,14 +332,6 @@ Y_UTEST(apex_n)
     }
     
 #if 0
-    {
-        std::cerr << "Debug..." << std::endl;
-        const apn s  = 2;
-        const apn x0 = 1;
-        const apn rho = s/x0;
-        std::cerr << "rho=" << rho << std::endl;
-        return 0;
-    }
 
     {
         std::cerr << "Sqrt" << std::endl;
