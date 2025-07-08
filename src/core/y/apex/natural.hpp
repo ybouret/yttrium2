@@ -70,6 +70,7 @@ Y_APN_Operator_Impl_Unary(OP,CALL)
         public:
             static OpsMode            Ops;      //!< for multiplication/division
             static PlanType           Cmp;      //!< for comparisons
+            static PlanType           BWO;      //!< for BitWise Ops
             static const char * const CallSign; //!< "apn"
 
             Natural();

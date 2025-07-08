@@ -29,7 +29,7 @@ Y_UTEST(apex_perf)
             for(unsigned i=0;i<Apex::Metrics::Plans;++i)
             {
                 apn p = n;
-                p.alter(Apex::PlanType(i));
+                Apex::Natural::BWO = Apex::PlanType(i);
                 while(p.bits())
                 {
                     Y_WallTime_Mark(&tmx[i]);

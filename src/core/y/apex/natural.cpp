@@ -10,6 +10,7 @@ namespace Yttrium
 
         OpsMode            Natural:: Ops      = Ops32_64;
         PlanType           Natural:: Cmp      = Device::SmallPlan[Ops];
+        PlanType           Natural:: BWO      = Plan64;
         const char * const Natural:: CallSign = "apn";
         Y_Shallow_Impl(Hook);
 

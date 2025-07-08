@@ -12,6 +12,7 @@ namespace Yttrium
 
         void Natural:: shr() noexcept
         {
+            device->set(BWO);
             device->shr();
         }
     }
