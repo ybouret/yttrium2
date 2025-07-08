@@ -41,6 +41,27 @@ RET FUNC(const Natural &, const Natural &); \
 RET FUNC(const Natural &, const natural_t); \
 RET FUNC(const natural_t, const Natural &)
 
+#define Y_APN_Operator_Proto_Binary(OP,LHS,RHS,CALL) \
+inline friend Natural operator OP (const LHS lhs, const RHS rhs) { return Natural(Hook,CALL(lhs,rhs)); }
+
+#define Y_APN_Operator_Impl_Binary(OP,CALL) \
+Y_APN_Operator_Proto_Binary(OP,Natural &,Natural &,CALL) \
+Y_APN_Operator_Proto_Binary(OP,Natural &,natural_t,CALL) \
+Y_APN_Operator_Proto_Binary(OP,natural_t,Natural &,CALL) \
+
+
+#define Y_APN_Operator_Proto_Unary(OP,RHS,CALL) \
+inline Natural & operator OP##=(const RHS rhs) { Natural res(Hook,CALL(*this,rhs)); return xch(res); }
+
+#define Y_APN_Operator_Impl_Unary(OP,CALL) \
+Y_APN_Operator_Proto_Unary(OP,Natural &,CALL)\
+Y_APN_Operator_Proto_Unary(OP,natural_t,CALL)
+
+
+#define Y_APN_Operator_Impl(OP,CALL) \
+Y_APN_Operator_Impl_Binary(OP,CALL)  \
+Y_APN_Operator_Impl_Unary(OP,CALL)
+
         class Device;
 
         class SmartDev
@@ -48,8 +69,12 @@ RET FUNC(const natural_t, const Natural &)
         public:
             explicit SmartDev(Device * const) noexcept;
             virtual ~SmartDev()               noexcept;
+            
         protected:
             Device * const device;
+
+        private:
+            Y_Disable_Copy_And_Assign(SmartDev);
         };
 
         class Natural : public SmartDev, public Shielded
@@ -91,14 +116,14 @@ RET FUNC(const natural_t, const Natural &)
             Y_APN_Compare_Decl(>=, != Negative)
 
             Y_APN_Proto_Decl(static Device *,Add);
+            Y_APN_Operator_Impl(+,Add)
 #endif
 
         private:
             Natural(const Hook_ &, Device *);
         };
-
     }
-
+    
     typedef Apex::Natural apn;
 }
 

@@ -184,9 +184,7 @@ namespace Yttrium
 
         void Parcels:: exchEN(const PlanType userPlan) const noexcept
         {
-            static Lockable &access = Archon::Instance().access;
-
-            Y_Lock(access);
+            
             switch(plan)
             {
                 case Plan8:

@@ -86,7 +86,6 @@ Y_UTEST(apex_n)
         }
     }
     
-#if 0
     {
         std::cerr << "Additions 64" << std::endl;
         for(size_t i=0;i<64;++i)
@@ -106,8 +105,8 @@ Y_UTEST(apex_n)
                 {
                     for(unsigned v=0;v<Apex::Metrics::Views;++v)
                     {
-                        L.alter( Apex::ViewType(u) );
-                        R.alter( Apex::ViewType(v) );
+                        L.alter( Apex::PlanType(u) );
+                        R.alter( Apex::PlanType(v) );
                         const uint64_t l64 = L.ls64();
                         const uint64_t r64 = R.ls64();
                         Y_ASSERT( l64  == l);
@@ -120,15 +119,15 @@ Y_UTEST(apex_n)
 
                         {
                             Apex::Natural lhs = L; Y_ASSERT(lhs==L);
-                            lhs.alter( Apex::ViewType(u)  );
-                            R.alter( Apex::ViewType(v) );
+                            lhs.alter( Apex::PlanType(u)  );
+                            R.alter( Apex::PlanType(v) );
                             lhs += R;
                             Y_ASSERT(lhs==s);
                         }
 
                         {
                             Apex::Natural lhs = L; Y_ASSERT(lhs==L);
-                            lhs.alter( Apex::ViewType(u)  );
+                            lhs.alter( Apex::PlanType(u)  );
                             lhs += r;
                             Y_ASSERT(lhs==s);
                         }
@@ -136,6 +135,8 @@ Y_UTEST(apex_n)
                 }
             }
         }
+
+#if 0
         Apex::Natural n = 0;
         while(n<10)
         {
@@ -148,9 +149,11 @@ Y_UTEST(apex_n)
             std::cerr << ' ' << ++n;
         }
         std::cerr << std::endl;
+#endif
     }
 
 
+#if 0
 
     {
         std::cerr << "Subtractions 64" << std::endl;

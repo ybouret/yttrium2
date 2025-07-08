@@ -31,20 +31,22 @@ namespace Yttrium
         {
 
         }
-
-#if 0
-        Natural:: Natural(const Hook_ &, Device *) :
-        {
-
-        }
-#endif
         
+
         Natural:: Natural(const Natural &n) :
         SmartDev(new Device( *n.device ) ),
         Shielded()
         {
 
         }
+
+        Natural:: Natural(const Hook_ &, Device * const dev) :
+        SmartDev(dev),
+        Shielded()
+        {
+
+        }
+
 
         size_t Natural:: serialize(OutputStream &fp) const
         {
@@ -119,8 +121,8 @@ namespace Yttrium
         }
 
         Natural:: Natural(const TwoToThePowerOf_ &, const size_t n) :
-        Shielded(),
-        device(0)
+        SmartDev(0),
+        Shielded()
         {
             static const uint8_t bit[8] = { 1,2,4,8,16,32,64,128 };
             const size_t         ibit   = n+1;
@@ -149,8 +151,8 @@ namespace Yttrium
     namespace Apex
     {
         Natural:: Natural(Random::Bits &ran, const size_t numBits) :
-        Shielded(),
-        device(0)
+        SmartDev(0),
+        Shielded()
         {
             const size_t ceilBits = Alignment::On<8>::Ceil(numBits);
             const size_t numBytes = ceilBits/8;
