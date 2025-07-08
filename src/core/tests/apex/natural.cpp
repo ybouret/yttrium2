@@ -44,9 +44,9 @@ Y_UTEST(apex_n)
             Y_ASSERT(s==s2);
 
 #if 1
-            for(unsigned j=0;j<Apex::Metrics::Views;++j)
+            for(unsigned j=0;j<Apex::Metrics::Plans;++j)
             {
-                for(unsigned k=0;k<Apex::Metrics::Views;++k)
+                for(unsigned k=0;k<Apex::Metrics::Plans;++k)
                 {
                     L.alter( Apex::PlanType(j) );
                     R.alter( Apex::PlanType(k) );
@@ -101,9 +101,9 @@ Y_UTEST(apex_n)
                 //std::cerr << "L=" << L << std::endl;
                 //std::cerr << "R=" << R << std::endl;
 
-                for(unsigned u=0;u<Apex::Metrics::Views;++u)
+                for(unsigned u=0;u<Apex::Metrics::Plans;++u)
                 {
-                    for(unsigned v=0;v<Apex::Metrics::Views;++v)
+                    for(unsigned v=0;v<Apex::Metrics::Plans;++v)
                     {
                         L.alter( Apex::PlanType(u) );
                         R.alter( Apex::PlanType(v) );
@@ -168,9 +168,9 @@ Y_UTEST(apex_n)
                 Apex::Natural  L = l;
                 Apex::Natural  R = r;
 
-                for(unsigned u=0;u<Apex::Metrics::Views;++u)
+                for(unsigned u=0;u<Apex::Metrics::Plans;++u)
                 {
-                    for(unsigned v=0;v<Apex::Metrics::Views;++v)
+                    for(unsigned v=0;v<Apex::Metrics::Plans;++v)
                     {
                         L.alter( Apex::PlanType(u) );
                         R.alter( Apex::PlanType(v) );
@@ -236,7 +236,6 @@ Y_UTEST(apex_n)
         }
     }
     
-#if 0
     {
         std::cerr << "SHR" << std::endl;
         for(size_t i=0;i<=80;++i)
@@ -259,6 +258,7 @@ Y_UTEST(apex_n)
         Y_CHECK(13==lhs);
     }
 
+#if 0
     {
         std::cerr << "Mul64" << std::endl;
         for(size_t i=0;i<=32;++i)

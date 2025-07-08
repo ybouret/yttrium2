@@ -41,7 +41,7 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
             //__________________________________________________________________
 
             //! human readable aliases
-            static const char * const HumanReadablePlan[Metrics::Views];
+            static const char * const HumanReadablePlan[Metrics::Plans];
 
             //__________________________________________________________________
             //

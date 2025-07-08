@@ -120,6 +120,10 @@ Y_APN_Operator_Impl_Unary(OP,CALL)
             void      decr();
 
 
+            void    shr() noexcept; //!< in-place shr
+            Natural abs() const;
+
+
         private:
             Natural(const Hook_ &, Device *);
         };

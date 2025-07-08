@@ -38,7 +38,7 @@ namespace Yttrium
             //__________________________________________________________________
             typedef Parcel<uint8_t> ParcelProto;                                                     //!< alias
             static const unsigned   ParcelProtoSize = sizeof(ParcelProto);                           //!< aloas
-            static const unsigned   ParcelProtoBytes = Metrics::Views * ParcelProtoSize;             //!< alias
+            static const unsigned   ParcelProtoBytes = Metrics::Plans * ParcelProtoSize;             //!< alias
             static const size_t     ParcelProtoWords = Alignment::WordsGEQ<ParcelProtoBytes>::Count; //!< alias
 
             typedef void            (Parcels:: *Exch)(const PlanType) const;         //!< method pointer
@@ -126,7 +126,7 @@ namespace Yttrium
         private:
             Exch              exch;    //!< exchange method
         public:
-            ParcelAPI * const sync[Metrics::Views][Metrics::Views-1]; //!< synchronized peers
+            ParcelAPI * const sync[Metrics::Plans][Metrics::Plans-1]; //!< synchronized peers
         private:
             void    *         wksp[ParcelProtoWords]; //!< to store parcless
             unsigned          blockShift;             //!< for memory

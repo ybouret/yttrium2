@@ -67,7 +67,7 @@ namespace Yttrium
         }
 
 #define Y_Apex_Device_Compare() \
-/**/    static Cmp const Table[Metrics::Views] =\
+/**/    static Cmp const Table[Metrics::Plans] =\
 /**/      {\
 /**/        ParcelCmp<uint8_t> ::Get,\
 /**/        ParcelCmp<uint16_t>::Get,\

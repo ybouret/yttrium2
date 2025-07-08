@@ -9,7 +9,7 @@ namespace Yttrium
     {
 
 
-        const char * const ParcelAPI:: HumanReadablePlan[Metrics::Views] =
+        const char * const ParcelAPI:: HumanReadablePlan[Metrics::Plans] =
         {
             "Plan8 ", "Plan16", "Plan32", "Plan64"
         };
