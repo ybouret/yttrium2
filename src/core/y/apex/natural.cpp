@@ -13,22 +13,35 @@ namespace Yttrium
         const char * const Natural:: CallSign = "apn";
         Y_Shallow_Impl(Hook);
 
+        SmartDev:: SmartDev(Device * const dev) noexcept :
+        device(dev)
+        {
+
+        }
+
+        SmartDev:: ~SmartDev() noexcept
+        {
+            if(device) { delete device; Coerce(device)=0; }
+        }
+
+
         Natural:: Natural() :
-        Shielded(),
-        device( new Device(sizeof(uint64_t), Device::SmallPlan[Ops]) )
+        SmartDev( new Device(sizeof(uint64_t), Device::SmallPlan[Ops]) ),
+        Shielded()
         {
 
         }
 
-        Natural:: Natural(const Hook_ &, Device *) noexcept :
+#if 0
+        Natural:: Natural(const Hook_ &, Device *) :
+        {
+
+        }
+#endif
         
-        {
-
-        }
-
         Natural:: Natural(const Natural &n) :
-        Shielded(),
-        device( new Device( *n.device ) )
+        SmartDev(new Device( *n.device ) ),
+        Shielded()
         {
 
         }
@@ -77,8 +90,8 @@ namespace Yttrium
 
 
         Natural:: Natural(const natural_t n) :
-        Shielded(),
-        device( new Device(CopyOf,n) )
+        SmartDev( new Device(CopyOf,n) ),
+        Shielded() 
         {
         }
 

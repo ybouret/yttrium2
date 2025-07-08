@@ -43,8 +43,16 @@ RET FUNC(const natural_t, const Natural &)
 
         class Device;
 
+        class SmartDev
+        {
+        public:
+            explicit SmartDev(Device * const) noexcept;
+            virtual ~SmartDev()               noexcept;
+        protected:
+            Device * const device;
+        };
 
-        class Natural : public Shielded
+        class Natural : public SmartDev, public Shielded
         {
         public:
             static OpsMode            Ops;      //!< for multiplication/division
@@ -86,7 +94,6 @@ RET FUNC(const natural_t, const Natural &)
 #endif
 
         private:
-            Device * const   device;
             Natural(const Hook_ &, Device *);
         };
 
