@@ -26,7 +26,8 @@ namespace
 
             Apex::Parcels source(sizeof(arr),Apex::Plan64);  Y_ASSERT(source.api->maxi>=num);
             memcpy( source.api->rw(), arr, (source.api->size=num)*sizeof(uint64_t) );
-            const size_t bits = source.update();
+            const size_t bits = source.synchronize();
+            
             Y_ASSERT(bits==numBits);
             std::cerr << source << std::endl;
             {

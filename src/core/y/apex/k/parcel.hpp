@@ -215,7 +215,7 @@ namespace Yttrium
                         os << '[' << Hexadecimal(data[--i]).c_str()+2 << ']';
                 }
                 os << ":size=" << size;
-                if(Plan!=Plan8) os << ":bytes=" << size * sizeof(T);
+                //if(Plan!=Plan8) os << ":bytes=" << size * sizeof(T);
                 return os;
             }
         };

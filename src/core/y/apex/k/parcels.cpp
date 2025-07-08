@@ -171,9 +171,8 @@ namespace Yttrium
         {
             // do nothing
         }
-
-
-        size_t Parcels:: update() noexcept
+        
+        size_t Parcels::  synchronize() noexcept
         {
             return api->update( sync[plan] );
         }

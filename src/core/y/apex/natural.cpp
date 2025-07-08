@@ -25,7 +25,7 @@ namespace Yttrium
         
 
         Natural:: Natural(const Natural &n) :
-        SmartDev(new Device( *n.device ) ),
+        SmartDev( new Device( *n.device ) ),
         Shielded()
         {
 

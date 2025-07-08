@@ -40,7 +40,7 @@ namespace Yttrium
                         throw Specific::Exception(fn,"missing byte %s/%s of %s", Decimal(i+1).c_str(),Decimal(numBytes).c_str(),id);
                     }
                 }
-                Coerce(device->bits) = device->update();
+                device->fix();
                 if(numBytes != p.size) {
                     const char * const id = varName ? varName : "variable";
                     throw Specific::Exception(fn,"corrupted %s",id);

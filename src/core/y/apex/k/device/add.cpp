@@ -25,10 +25,10 @@ namespace Yttrium
                     assert(nbig>0);
                     assert(lit);
                     assert(big);
-                    const size_t  output  = nbig+1;
-                    Device * const result  = new Device(output*sizeof(SMALL),SmallPlan);
+                    const size_t   output = nbig+1;
+                    Device * const result = new Device(output*sizeof(SMALL),SmallPlan);
                     LARGE         carry   = 0;
-                    Parcel<SMALL> &blk     = result->get<SMALL>(); assert(blk.maxi>=output);
+                    Parcel<SMALL> &blk    = result->get<SMALL>(); assert(blk.maxi>=output);
                     SMALL *       sum     = blk.data;
 
                     // common part
@@ -52,7 +52,7 @@ namespace Yttrium
 
                     // update created model
                     blk.size = output;
-                    result->update();
+                    result->fix();
                     return result;
                 }
 
@@ -95,11 +95,23 @@ namespace Yttrium
                     return Compute(L.data,L.size,R.data,R.size);
                 }
 
-                
+
             };
 
         }
 
+
+#define Y_Apex_Device_Call() \
+/**/    static  Proc const Table[NumOps] =\
+/**/    {\
+/**/        DeviceAdd<uint8_t,uint16_t> ::Compute, \
+/**/        DeviceAdd<uint8_t,uint32_t> ::Compute, \
+/**/        DeviceAdd<uint8_t,uint64_t> ::Compute, \
+/**/        DeviceAdd<uint16_t,uint32_t>::Compute, \
+/**/        DeviceAdd<uint16_t,uint64_t>::Compute, \
+/**/        DeviceAdd<uint32_t,uint64_t>::Compute  \
+/**/    };\
+/**/    return Table[ops](lhs,rhs)
 
         Device * Device:: Add(const Device &lhs, const Device &rhs, OpsMode ops)
         {
@@ -124,16 +136,7 @@ namespace Yttrium
                 else
                 {
                     typedef Device * (*Proc)(const Device &, const Device &);
-                    static  Proc const Table[NumOps] =
-                    {
-                        DeviceAdd<uint8_t,uint16_t>  ::Compute,
-                        DeviceAdd<uint8_t,uint32_t>  ::Compute,
-                        DeviceAdd<uint8_t,uint64_t>  ::Compute,
-                        DeviceAdd<uint16_t,uint32_t> ::Compute,
-                        DeviceAdd<uint16_t,uint64_t> ::Compute,
-                        DeviceAdd<uint32_t,uint64_t> ::Compute
-                    };
-                    return Table[ops](lhs,rhs);
+                    Y_Apex_Device_Call();
                 }
             }
         }
@@ -142,34 +145,30 @@ namespace Yttrium
         {
             if(lhs.bits<=0)
             {
+                // lhs is zero
                 if(rhs<=0)
                 {
+                    // result is zero
                     return new Device(0,SmallPlan[ops]);
                 }
                 else
                 {
-                    return new Device(CopyOf,rhs);
+                    // result is rhs
+                     return new Device(CopyOf,rhs);
                 }
             }
             else
             {
+                // lhs is positive
                 if(rhs<=0)
                 {
+                    // result is rhs
                     return new Device(lhs);
                 }
                 else
                 {
                     typedef Device * (*Proc)(const Device &, natural_t);
-                    static  Proc const Table[NumOps] =
-                    {
-                        DeviceAdd<uint8_t,uint16_t>  ::Compute,
-                        DeviceAdd<uint8_t,uint32_t>  ::Compute,
-                        DeviceAdd<uint8_t,uint64_t>  ::Compute,
-                        DeviceAdd<uint16_t,uint32_t> ::Compute,
-                        DeviceAdd<uint16_t,uint64_t> ::Compute,
-                        DeviceAdd<uint32_t,uint64_t> ::Compute
-                    };
-                    return Table[ops](lhs,rhs);
+                    Y_Apex_Device_Call();
                 }
             }
         }

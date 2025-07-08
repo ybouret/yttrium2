@@ -136,24 +136,23 @@ Y_UTEST(apex_n)
             }
         }
 
-#if 0
-        Apex::Natural n = 0;
+        
+        Apex::Natural n(0);
         while(n<10)
         {
             std::cerr << ' ' << n++;
         }
         std::cerr << std::endl;
+
         n=0;
         while(n<10)
         {
             std::cerr << ' ' << ++n;
         }
         std::cerr << std::endl;
-#endif
     }
 
 
-#if 0
 
     {
         std::cerr << "Subtractions 64" << std::endl;
@@ -173,8 +172,8 @@ Y_UTEST(apex_n)
                 {
                     for(unsigned v=0;v<Apex::Metrics::Views;++v)
                     {
-                        L.alter( Apex::ViewType(u) );
-                        R.alter( Apex::ViewType(v) );
+                        L.alter( Apex::PlanType(u) );
+                        R.alter( Apex::PlanType(v) );
 
                         {
                             Apex::Natural D = L - R;
@@ -193,15 +192,15 @@ Y_UTEST(apex_n)
 
                         {
                             Apex::Natural lhs = L; Y_ASSERT(lhs==L);
-                            lhs.alter( Apex::ViewType(u)  );
-                            R.alter( Apex::ViewType(v) );
+                            lhs.alter( Apex::PlanType(u)  );
+                            R.alter( Apex::PlanType(v) );
                             lhs -= R;
                             Y_ASSERT(lhs==d);
                         }
 
                         {
                             Apex::Natural lhs = L; Y_ASSERT(lhs==L);
-                            lhs.alter( Apex::ViewType(u)  );
+                            lhs.alter( Apex::PlanType(u)  );
                             lhs -= r;
                             Y_ASSERT(lhs==d);
                         }
@@ -225,7 +224,6 @@ Y_UTEST(apex_n)
         std::cerr << std::endl;
     }
 
-
     {
         std::cerr << "AddSub" << std::endl;
         for(size_t iter=0;iter<10;++iter)
@@ -237,7 +235,8 @@ Y_UTEST(apex_n)
             Y_ASSERT(s-r == l);
         }
     }
-
+    
+#if 0
     {
         std::cerr << "SHR" << std::endl;
         for(size_t i=0;i<=80;++i)

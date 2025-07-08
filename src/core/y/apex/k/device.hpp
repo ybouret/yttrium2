@@ -82,7 +82,8 @@ namespace Yttrium
             void   shr()              noexcept; //!< right shift
             String hex()                 const; //!< \return hexadecimal string
             size_t srz(OutputStream &)   const; //!< \return serialized bytes
-            void   com()              noexcept; //!< propagate bits
+            void   com()              noexcept; //!< propagate precomputed bits
+            void   fix()              noexcept; //!< set bits to api->update()
 
             //__________________________________________________________________
             //
@@ -114,6 +115,17 @@ namespace Yttrium
             //__________________________________________________________________
             static Device * Add(const Device &, const Device  &, OpsMode); //!< \return addition
             static Device * Add(const Device &, const natural_t, OpsMode); //!< \return addition
+
+
+            //__________________________________________________________________
+            //
+            //
+            // Subtractions
+            //
+            //__________________________________________________________________
+            static Device * Sub(const Device  &, const Device  &, OpsMode); //!< \return addition
+            static Device * Sub(const Device  &, const natural_t, OpsMode); //!< \return addition
+            static Device * Sub(const natural_t, const Device  &, OpsMode); //!< \return addition
 
             //__________________________________________________________________
             //

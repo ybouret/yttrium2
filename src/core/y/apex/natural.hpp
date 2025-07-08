@@ -105,7 +105,20 @@ Y_APN_Operator_Impl_Unary(OP,CALL)
 
             Y_APN_Proto_Decl(static Device *,Add);
             Y_APN_Operator_Impl(+,Add)
+
+            Y_APN_Proto_Decl(static Device *,Sub);
+            Y_APN_Operator_Impl(-,Sub)
 #endif
+
+            Natural   operator+() const; //!< \return *this
+            Natural & operator++();      //!< prefix  \return increased *this
+            Natural   operator++(int);   //!< postfix \return previous value, increase *this*
+            void      incr();
+
+            Natural & operator--();      //!< prefix  \return decreased *this
+            Natural   operator--(int);   //!< postfix \return previous value, decrease *this*
+            void      decr();
+
 
         private:
             Natural(const Hook_ &, Device *);

@@ -50,8 +50,17 @@ space( parcel<uint8_t>().maxi )
         void Device:: com()  noexcept
         {
             assert(api->sanity());
+            assert(bits==api->bits());
             ParcelAPI:: Propagate(sync[plan],bits);
         }
+
+        
+        void Device:: fix() noexcept
+        {
+            Coerce(bits) = synchronize();
+        }
+
+
 
         Device:: Device(const CopyOf_ &, const uint64_t n) :
         Object(),
@@ -66,6 +75,7 @@ space( parcel<uint8_t>().maxi )
                 assert(p.sanity());
                 com();
             }
+            assert(Plan64==plan);
         }
 
 

@@ -111,11 +111,12 @@ namespace Yttrium
             void   set(const PlanType) const noexcept; //!< transmute
             void   ldz(const PlanType) noexcept;       //!< load zero, transmute
             void   ld1(const PlanType) noexcept;       //!< load one, transmuste
-            size_t update()            noexcept;       //!< \return num bits, synchronized
-
+            
             void    exchLE(const PlanType) const noexcept; //!< Little Endian code
             void    exchEN(const PlanType) const noexcept; //!< Endian Neutral code
-            
+
+            size_t  synchronize() noexcept; //!< \return api->update( sync[plan] )
+
         private:
             Y_Disable_Assign(Parcels); //!< discarding
             uint8_t * const   addr;    //!< from wksp
