@@ -280,7 +280,6 @@ Y_UTEST(apex_n)
         }
     }
     
-#if 0
     {
         std::cerr << "Div64 [";
 
@@ -320,7 +319,6 @@ Y_UTEST(apex_n)
         std::cerr << "]" << std::endl;
     }
 
-
     {
         std::cerr << "MulDiv" << std::endl;
         for(size_t iter=0;iter<10;++iter)
@@ -332,7 +330,8 @@ Y_UTEST(apex_n)
             Y_ASSERT(p/r==l);
         }
     }
-
+    
+#if 0
     {
         std::cerr << "Debug..." << std::endl;
         const apn s  = 2;

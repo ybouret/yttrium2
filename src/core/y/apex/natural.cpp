@@ -68,12 +68,12 @@ namespace Yttrium
 
         void Natural:: ldz() noexcept
         {
-            device->ldz( Device::SmallPlan[Ops] );
+            device->ldz( Coerce(device->bits), Device::SmallPlan[Ops] );
         }
 
         void Natural:: ld1() noexcept
         {
-            device->ld1( Device::SmallPlan[Ops] );
+            device->ld1(Coerce(device->bits), Device::SmallPlan[Ops] );
         }
 
         Natural & Natural:: operator=( const Natural &n )

@@ -109,9 +109,9 @@ namespace Yttrium
             }
 
             void   set(const PlanType) const noexcept; //!< transmute
-            void   ldz(const PlanType) noexcept;       //!< load zero, transmute
-            void   ld1(const PlanType) noexcept;       //!< load one, transmuste
-            
+            void   ldz(size_t &, const PlanType) noexcept;       //!< load zero, zero bits, transmute
+            void   ld1(size_t &, const PlanType) noexcept;       //!< load one, one bitstransmuste
+
             void    exchLE(const PlanType) const noexcept; //!< Little Endian code
             void    exchEN(const PlanType) const noexcept; //!< Endian Neutral code
 

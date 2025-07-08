@@ -144,17 +144,19 @@ namespace Yttrium
         }
 
 
-        void Parcels:: ldz(const PlanType userPlan) noexcept
+        void Parcels:: ldz(size_t &bits, const PlanType userPlan) noexcept
         {
             api->naught(sync[plan]);
             Coerce(plan) = userPlan;
+            bits         = 0;
             selectAPI();
         }
 
-        void Parcels:: ld1(const PlanType userPlan) noexcept
+        void Parcels:: ld1(size_t &bits, const PlanType userPlan) noexcept
         {
             api->setOne(sync[plan]);
             Coerce(plan) = userPlan;
+            bits         = 1;
             selectAPI();
         }
 

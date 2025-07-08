@@ -63,7 +63,13 @@ Y_APN_Operator_Proto_Unary(OP,natural_t,CALL)
 Y_APN_Operator_Impl_Binary(OP,CALL)  \
 Y_APN_Operator_Impl_Unary(OP,CALL)
 
-       
+#define Y_APN_DivMod_Impl(OP,CALL) \
+inline friend Natural operator OP (const Natural & lhs, const Natural & rhs) { return CALL(lhs,rhs); }                     \
+inline friend Natural operator OP (const Natural & lhs, const natural_t rhs) { const Natural _(rhs); return CALL(lhs,_); } \
+inline friend Natural operator OP (const natural_t lhs, const Natural & rhs) { const Natural _(lhs); return CALL(_,rhs); } \
+inline Natural & operator OP##=(const Natural & rhs) { Natural                       res = CALL(*this,rhs); return xch(res); } \
+inline Natural & operator OP##=(const natural_t rhs) { const Natural _(rhs); Natural res = CALL(*this,_);   return xch(res); } \
+
 
         class Natural : public SmartDev, public Shielded
         {
@@ -112,6 +118,8 @@ Y_APN_Operator_Impl_Unary(OP,CALL)
 
             Y_APN_Proto_Decl(static Device *,Mul);
             Y_APN_Operator_Impl(*,Mul)
+            Y_APN_DivMod_Impl(/,Div)
+            Y_APN_DivMod_Impl(%,Mod)
 #endif
 
             Natural   operator+() const; //!< \return *this
@@ -123,6 +131,13 @@ Y_APN_Operator_Impl_Unary(OP,CALL)
             Natural   operator--(int);   //!< postfix \return previous value, decrease *this*
             void      decr();
 
+            static void Div_(Natural * const Q,
+                             Natural * const R,
+                             const Natural  &numer,
+                             const Natural  &denom);
+            
+            static Natural Div(const Natural &numer, const Natural &denom);
+            static Natural Mod(const Natural &numer, const Natural &denom);
 
             void    shr() noexcept; //!< in-place shr
             Natural abs() const;
