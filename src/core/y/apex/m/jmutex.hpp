@@ -16,13 +16,12 @@ namespace Yttrium
         class JointMutex : public Object, public Concurrent::Mutex
         {
         public:
-            explicit JointMutex();
-            virtual ~JointMutex() noexcept;
-
-            JointMutex *next;
-            JointMutex *prev;
+            explicit JointMutex();           //!< setup
+            virtual ~JointMutex() noexcept;  //!< cleanu[
+            JointMutex *next;                //!< for list
+            JointMutex *prev;                //!< for list
         private:
-            Y_Disable_Copy_And_Assign(JointMutex);
+            Y_Disable_Copy_And_Assign(JointMutex); //!< discarding
         };
     }
 }

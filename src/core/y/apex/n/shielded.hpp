@@ -10,18 +10,27 @@ namespace Yttrium
 {
     namespace Apex
     {
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Shielded Number for Natural
+        //
+        //
+        //______________________________________________________________________
         class Shielded : public Number
         {
         protected:
-            explicit Shielded();
+            explicit Shielded(); //!< setup
         public:
-            virtual ~Shielded() noexcept;
+            virtual ~Shielded() noexcept; //!< cleanup
 
-            Lockable & operator*() const noexcept;
+            Lockable & operator*() const noexcept; //!< \return mutex
 
         private:
-            Y_Disable_Copy_And_Assign(Shielded);
-            mutable Shield shield;
+            Y_Disable_Copy_And_Assign(Shielded); //!< discarding
+            mutable Shield shield;               //!< internal shield
         };
     }
 }

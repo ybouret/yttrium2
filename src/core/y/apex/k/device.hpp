@@ -104,8 +104,8 @@ namespace Yttrium
             // Additions
             //
             //__________________________________________________________________
-            static Device * Add(const Device &, const Device  &, OpsMode);
-            static Device * Add(const Device &, const natural_t, OpsMode);
+            static Device * Add(const Device &, const Device  &, OpsMode); //!< \return addition
+            static Device * Add(const Device &, const natural_t, OpsMode); //!< \return addition
 
             //__________________________________________________________________
             //

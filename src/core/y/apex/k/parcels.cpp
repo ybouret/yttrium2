@@ -172,6 +172,11 @@ namespace Yttrium
             // do nothing
         }
 
+
+        size_t Parcels:: update() noexcept
+        {
+            return api->update( sync[plan] );
+        }
     }
 }
 

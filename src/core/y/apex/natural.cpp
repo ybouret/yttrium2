@@ -13,16 +13,7 @@ namespace Yttrium
         const char * const Natural:: CallSign = "apn";
         Y_Shallow_Impl(Hook);
 
-        SmartDev:: SmartDev(Device * const dev) noexcept :
-        device(dev)
-        {
-
-        }
-
-        SmartDev:: ~SmartDev() noexcept
-        {
-            if(device) { delete device; Coerce(device)=0; }
-        }
+      
 
 
         Natural:: Natural() :

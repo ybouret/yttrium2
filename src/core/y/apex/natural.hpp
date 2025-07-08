@@ -12,6 +12,7 @@
 #include "y/apex/k/plan.hpp"
 #include "y/type/sign.hpp"
 #include "y/apex/n/shielded.hpp"
+#include "y/apex/n/smartdev.hpp"
 
 namespace Yttrium
 {
@@ -62,20 +63,7 @@ Y_APN_Operator_Proto_Unary(OP,natural_t,CALL)
 Y_APN_Operator_Impl_Binary(OP,CALL)  \
 Y_APN_Operator_Impl_Unary(OP,CALL)
 
-        class Device;
-
-        class SmartDev
-        {
-        public:
-            explicit SmartDev(Device * const) noexcept;
-            virtual ~SmartDev()               noexcept;
-            
-        protected:
-            Device * const device;
-
-        private:
-            Y_Disable_Copy_And_Assign(SmartDev);
-        };
+       
 
         class Natural : public SmartDev, public Shielded
         {

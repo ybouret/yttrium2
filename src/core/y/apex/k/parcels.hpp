@@ -11,43 +11,82 @@ namespace Yttrium
     namespace Apex
     {
 
+
+        //! how to exchange views
         enum ExchangePolicy
         {
-            ExchangeBuiltInEndian,
-            ExchangeNeutralEndian
+            ExchangeBuiltInEndian, //!< using Endian::Little/Big
+            ExchangeNeutralEndian  //!< force using Transmute::To
         };
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Parcels of different Plan, same data
+        //
+        //
+        //______________________________________________________________________
         class Parcels
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef Parcel<uint8_t> ParcelProto;                                                     //!< alias
+            static const unsigned   ParcelProtoSize = sizeof(ParcelProto);                           //!< aloas
+            static const unsigned   ParcelProtoBytes = Metrics::Views * ParcelProtoSize;             //!< alias
+            static const size_t     ParcelProtoWords = Alignment::WordsGEQ<ParcelProtoBytes>::Count; //!< alias
+
+            typedef void            (Parcels:: *Exch)(const PlanType) const;         //!< method pointer
+            static ExchangePolicy  GetExchangePolicy()                     noexcept; //!< \return current global policy
+            static void            SetExchangePolicy(const ExchangePolicy) noexcept; //!< set current global policy
 
 
-            typedef Parcel<uint8_t> ParcelProto;
-            static const unsigned   ParcelProtoSize = sizeof(ParcelProto);
-            static const unsigned   ParcelProtoBytes = Metrics::Views * ParcelProtoSize;
-            static const size_t     ParcelProtoWords = Alignment::WordsGEQ<ParcelProtoBytes>::Count;
 
-            typedef void            (Parcels:: *Exch)(const PlanType) const;
-
-            static ExchangePolicy  GetExchangePolicy() noexcept;
-            static void            SetExchangePolicy(const ExchangePolicy) noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
 
 
-
-
+            //! setup
+            /**
+             \param userBlockSize total bytes
+             \param userBlockPlan initial plan
+             */
             explicit Parcels(const size_t   userBlockSize,
                              const PlanType userBlockPlan);
-            explicit Parcels(const Parcels &other);
+
+            //! duplicate
+            explicit Parcels(const Parcels &);
+
+            //! cleanup
             virtual ~Parcels() noexcept;
+
+            //! display
             Y_OSTREAM_PROTO(Parcels);
 
-            template <typename T> inline
-            Parcel<T> & get() noexcept
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! \return current plan
+            template <typename T> inline Parcel<T> & get() noexcept
             {
                 assert( IntegerLog2For<T>::Value == plan );
                 return parcel<T>();
             }
 
+            //! \return const current plan
             template <typename T> inline
             const Parcel<T> & get() const noexcept
             {
@@ -55,53 +94,47 @@ namespace Yttrium
                 return parcel<T>();
             }
 
-            template <typename T> inline
-            Parcel<T> & make() noexcept
+            //! \return current view, transmuted
+            template <typename T> inline Parcel<T> & make() noexcept
             {
                 set( PlanType(  IntegerLog2For<T>::Value ) );
                 return parcel<T>();
             }
 
-            template <typename T> inline
-            const Parcel<T> & make() const noexcept
+            //! \return const current view, transmuted
+            template <typename T> inline const Parcel<T> & make() const noexcept
             {
                 set( PlanType(  IntegerLog2For<T>::Value ) );
                 return parcel<T>();
             }
-            
 
-            void set(const PlanType userPlan) const noexcept;
-            void ldz(const PlanType userPlan) noexcept;
-            void ld1(const PlanType userPlan) noexcept;
-
-            size_t update() noexcept
-            {
-                return api->update( sync[plan] );
-            }
+            void   set(const PlanType) const noexcept; //!< transmute
+            void   ldz(const PlanType) noexcept;       //!< load zero, transmute
+            void   ld1(const PlanType) noexcept;       //!< load one, transmuste
+            size_t update()            noexcept;       //!< \return num bits, synchronized
 
             void    exchLE(const PlanType) const noexcept; //!< Little Endian code
             void    exchEN(const PlanType) const noexcept; //!< Endian Neutral code
             
         private:
-            Y_Disable_Assign(Parcels);
-            uint8_t * const   addr;
+            Y_Disable_Assign(Parcels); //!< discarding
+            uint8_t * const   addr;    //!< from wksp
         public:
-            const PlanType    plan;
-            ParcelAPI * const api;
+            const PlanType    plan;    //!< current plan
+            ParcelAPI * const api;     //!< current api
         private:
-            Exch              exch;
+            Exch              exch;    //!< exchange method
         public:
-            ParcelAPI * const sync[Metrics::Views][Metrics::Views-1];
+            ParcelAPI * const sync[Metrics::Views][Metrics::Views-1]; //!< synchronized peers
         private:
-            void    *         wksp[ParcelProtoWords];
-            unsigned          blockShift;
-            const size_t      blockBytes;
-            void * const      blockEntry;
+            void    *         wksp[ParcelProtoWords]; //!< to store parcless
+            unsigned          blockShift;             //!< for memory
+            const size_t      blockBytes;             //!< for memory
+            void * const      blockEntry;             //!< memory
 
-            void   selectAPI()       noexcept;
-            void   initialize()      noexcept;
-
-            static uint8_t * Query(const unsigned shift);
+            void             selectAPI()  noexcept; //!< from plan
+            void             initialize() noexcept; //!< full setup
+            static uint8_t * Query(const unsigned); //!< \return from archon
 
         protected:
             //! \return parcel by type

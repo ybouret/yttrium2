@@ -58,8 +58,8 @@ namespace Yttrium
             void *       query(const unsigned shift);                              //!< \param shift valid shift \return 2^shift bytes
             void         store(const unsigned shift, void * const block) noexcept; //!< store \param shift 2^shift bytes \param block queried
 
-            JointMutex      *queryMutex();
-            void             storeMutex(JointMutex * const) noexcept;
+            JointMutex      *queryMutex();                            //!< \return usable mutex
+            void             storeMutex(JointMutex * const) noexcept; //!< store used mutex
 
 
         private:
