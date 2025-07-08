@@ -66,19 +66,22 @@ namespace Yttrium
             };
         }
 
+#define Y_Apex_Device_Compare() \
+/**/    static Cmp const Table[Metrics::Views] =\
+/**/      {\
+/**/        ParcelCmp<uint8_t> ::Get,\
+/**/        ParcelCmp<uint16_t>::Get,\
+/**/        ParcelCmp<uint32_t>::Get,\
+/**/        ParcelCmp<uint64_t>::Get \
+/**/      };\
+/**/    return Table[cmp](lhs,rhs);
+
         SignType Device:: Compare(const Device & lhs,
                                   const Device & rhs,
                                   const PlanType cmp) noexcept
         {
             typedef SignType (*Cmp)(const Device &, const Device &);
-            static Cmp const Table[Metrics::Views] =
-            {
-                ParcelCmp<uint8_t>::Get,
-                ParcelCmp<uint16_t>::Get,
-                ParcelCmp<uint32_t>::Get,
-                ParcelCmp<uint64_t>::Get
-            };
-            return Table[cmp](lhs,rhs);
+            Y_Apex_Device_Compare();
         }
 
         SignType Device:: Compare(const Device &  lhs,
@@ -86,14 +89,7 @@ namespace Yttrium
                                   const PlanType  cmp) noexcept
         {
             typedef SignType (*Cmp)(const Device &, const natural_t);
-            static Cmp const Table[Metrics::Views] =
-            {
-                ParcelCmp<uint8_t>::Get,
-                ParcelCmp<uint16_t>::Get,
-                ParcelCmp<uint32_t>::Get,
-                ParcelCmp<uint64_t>::Get
-            };
-            return Table[cmp](lhs,rhs);
+            Y_Apex_Device_Compare();
         }
 
         SignType Device:: Compare(const natural_t lhs,
@@ -101,14 +97,7 @@ namespace Yttrium
                                   const PlanType  cmp) noexcept
         {
             typedef SignType (*Cmp)(const natural_t, const Device &);
-            static Cmp const Table[Metrics::Views] =
-            {
-                ParcelCmp<uint8_t>::Get,
-                ParcelCmp<uint16_t>::Get,
-                ParcelCmp<uint32_t>::Get,
-                ParcelCmp<uint64_t>::Get
-            };
-            return Table[cmp](lhs,rhs);
+            Y_Apex_Device_Compare();
         }
 
     }
