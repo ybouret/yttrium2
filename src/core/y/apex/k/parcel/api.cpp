@@ -19,6 +19,13 @@ namespace Yttrium
             Y_Apex_Parcel_Check(size<=maxi);
             return check();
         }
+
+        size_t ParcelAPI:: update(ParcelAPI * const sync[]) noexcept
+        {
+            assert(sync);
+            adjust(); assert( sanity() );
+            return Propagate(sync,bits());
+        }
     }
 
 }

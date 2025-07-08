@@ -42,10 +42,9 @@ Y_APN_Compare_Proto(OP,natural_t,Natural &,RET)
         class Natural : public Shielded
         {
         public:
-            static OpsMode  Ops;
-            static PlanType Cmp;
-            
-            static const char * const CallSign;
+            static OpsMode            Ops;      //!< for multiplication/division
+            static PlanType           Cmp;      //!< for comparisons
+            static const char * const CallSign; //!< "apn"
 
             Natural();
             virtual ~Natural() noexcept;
@@ -56,8 +55,8 @@ Y_APN_Compare_Proto(OP,natural_t,Natural &,RET)
             Natural & operator=(const natural_t);
             Y_OSTREAM_PROTO(Natural);
 
-            Natural(Random::Bits &ran, const size_t bits);
-            Natural(const TwoToThePowerOf_ &, const size_t n);
+            Natural(Random::Bits & , const size_t);
+            Natural(const TwoToThePowerOf_ &, const size_t );
 
 
             virtual size_t serialize(OutputStream &) const;
@@ -69,6 +68,7 @@ Y_APN_Compare_Proto(OP,natural_t,Natural &,RET)
 
             void alter(const PlanType) noexcept;
 
+#if !defined(DOXYGEN_SHOULD_SKIP_THIS)
             Y_APN_Proto_Decl_NoExcept(static SignType,Compare);
             Y_APN_Compare_Decl(==, == __Zero__)
             Y_APN_Compare_Decl(!=, != __Zero__)
@@ -76,7 +76,7 @@ Y_APN_Compare_Proto(OP,natural_t,Natural &,RET)
             Y_APN_Compare_Decl(>,  == Positive)
             Y_APN_Compare_Decl(<=, != Positive)
             Y_APN_Compare_Decl(>=, != Negative)
-
+#endif
 
         private:
             Device * const   device;

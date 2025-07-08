@@ -48,6 +48,14 @@ namespace Yttrium
     }
 }
 
+#define Y_WallTime_Mark(U64PTR) \
+const bool     Y_WallTime_DoMark = (0!=(U64PTR)); \
+const uint64_t Y_WallTime_Mark64 = (Y_WallTime_DoMark ? Yttrium::System::WallTime::Ticks() : 0)
+
+
+#define Y_WallTime_Gain(U64PTR) \
+do { if(Y_WallTime_DoMark) (*U64PTR) += Yttrium::System::WallTime::Ticks() - Y_WallTime_Mark64; } while(false)
+
 #endif
 
 

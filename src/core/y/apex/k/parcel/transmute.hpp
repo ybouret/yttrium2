@@ -1,4 +1,3 @@
-
 //! \file
 
 #ifndef Y_Apex_Parcel_Transmute_Included
@@ -12,10 +11,15 @@ namespace Yttrium
 {
     namespace Apex
     {
+        //! transmute from one plan to another
         struct Transmute
         {
 
             //! Expand Parcels with synchronized size
+            /**
+             \param small with small unit
+             \param large with large unit
+             */
             template <typename SMALL, typename LARGE> static inline
             void Expand(Parcel<SMALL>       &small,
                         const Parcel<LARGE> &large) noexcept
@@ -34,6 +38,10 @@ namespace Yttrium
             }
 
             //! Shrink Parcels with synchronized size
+            /**
+             \param large with large unit
+             \param small with small unit
+             */
             template <typename LARGE, typename SMALL> static inline
             void Shrink(Parcel<LARGE>       &large,
                         const Parcel<SMALL> &small) noexcept
@@ -55,6 +63,11 @@ namespace Yttrium
                 }
             }
 
+            //! alias to expand
+            /**
+             \param small with small unit
+             \param large with large unit
+             */
             template <typename SMALL, typename LARGE> static inline
             void To(Parcel<SMALL>       &      small,
                     const Parcel<LARGE> &      large,
@@ -63,6 +76,7 @@ namespace Yttrium
                 Expand(small,large);
             }
 
+            //! do nothing when same unit size
             template <typename T> static inline
             void To(Parcel<T>       & ,
                     const Parcel<T> & ,
@@ -70,6 +84,11 @@ namespace Yttrium
             {
             }
 
+            //! alias to shrink
+            /**
+             \param large with large unit
+             \param small with small unit
+             */
             template <typename LARGE, typename SMALL> static inline
             void To(Parcel<LARGE>       &      large,
                     const Parcel<SMALL> &      small,
@@ -78,13 +97,19 @@ namespace Yttrium
                 Shrink(large,small);
             }
 
+            //! select sign accordint to unit size
             template <const unsigned lhs, const unsigned rhs>
             struct SignOf
             {
+                //! hard coded difference
                 static const SignType Value = (lhs<rhs) ? Negative : ( (rhs<lhs) ? Positive : __Zero__ );
             };
 
-
+            //! select expand/shrink from unit size difference
+            /**
+             \param target target parcel
+             \param source source parcel
+             */
             template <typename TARGET, typename SOURCE> static inline
             void To(Parcel<TARGET>       & target,
                     const Parcel<SOURCE> & source) noexcept
@@ -101,4 +126,3 @@ namespace Yttrium
 
 
 #endif
-

@@ -8,12 +8,18 @@ namespace Yttrium
 {
     namespace Apex
     {
+        //______________________________________________________________________
+        //
+        //
+        //! representation of data
+        //
+        //______________________________________________________________________
         enum PlanType
         {
-            Plan8  = 0,
-            Plan16 = 1,
-            Plan32 = 2,
-            Plan64 = 3
+            Plan8  = 0, //!< as uint8_t
+            Plan16 = 1, //!< as uint16_t
+            Plan32 = 2, //!< as uint32_t
+            Plan64 = 3  //!< as uint64_t
         };
     }
     
