@@ -258,7 +258,6 @@ Y_UTEST(apex_n)
         Y_CHECK(13==lhs);
     }
 
-#if 0
     {
         std::cerr << "Mul64" << std::endl;
         for(size_t i=0;i<=32;++i)
@@ -280,7 +279,8 @@ Y_UTEST(apex_n)
             }
         }
     }
-
+    
+#if 0
     {
         std::cerr << "Div64 [";
 

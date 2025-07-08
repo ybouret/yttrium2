@@ -109,6 +109,9 @@ Y_APN_Operator_Impl_Unary(OP,CALL)
 
             Y_APN_Proto_Decl(static Device *,Sub);
             Y_APN_Operator_Impl(-,Sub)
+
+            Y_APN_Proto_Decl(static Device *,Mul);
+            Y_APN_Operator_Impl(*,Mul)
 #endif
 
             Natural   operator+() const; //!< \return *this

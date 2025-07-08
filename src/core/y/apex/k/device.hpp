@@ -123,9 +123,18 @@ namespace Yttrium
             // Subtractions
             //
             //__________________________________________________________________
-            static Device * Sub(const Device  &, const Device  &, OpsMode); //!< \return addition
-            static Device * Sub(const Device  &, const natural_t, OpsMode); //!< \return addition
-            static Device * Sub(const natural_t, const Device  &, OpsMode); //!< \return addition
+            static Device * Sub(const Device  &, const Device  &, OpsMode); //!< \return subtraction
+            static Device * Sub(const Device  &, const natural_t, OpsMode); //!< \return subtraction
+            static Device * Sub(const natural_t, const Device  &, OpsMode); //!< \return subtraction
+
+            //__________________________________________________________________
+            //
+            //
+            // Additions
+            //
+            //__________________________________________________________________
+            static Device * Mul(const Device &, const Device  &, OpsMode); //!< \return multiplication
+            static Device * Mul(const Device &, const natural_t, OpsMode); //!< \return multiplication
 
             //__________________________________________________________________
             //
