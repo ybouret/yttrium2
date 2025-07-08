@@ -131,6 +131,15 @@ namespace Yttrium
             assert(device->api->bits()==ibit);
         }
 
+
+        Natural:: Natural(InputStream &fp, const char * const varName ) :
+        SmartDev( Device::Load(fp,varName) ),
+        Shielded()
+        {
+
+        }
+
+
     }
 
 }

@@ -83,7 +83,7 @@ Y_APN_Operator_Impl_Unary(OP,CALL)
 
             Natural(Random::Bits & , const size_t);
             Natural(const TwoToThePowerOf_ &, const size_t );
-
+            Natural(InputStream &, const char * const = 0 );
 
             virtual size_t serialize(OutputStream &) const;
             virtual void   ldz() noexcept;
