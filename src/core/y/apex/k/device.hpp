@@ -59,7 +59,7 @@ namespace Yttrium
             //! duplicate device
             Device(const Device &);
 
-            
+
 
 
             //! cleanup
@@ -105,7 +105,8 @@ namespace Yttrium
             // Additions
             //
             //__________________________________________________________________
-            static Device * Add(const Device &, const Device &, OpsMode);
+            static Device * Add(const Device &, const Device  &, OpsMode);
+            static Device * Add(const Device &, const natural_t, OpsMode);
 
             //__________________________________________________________________
             //

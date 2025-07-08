@@ -83,6 +83,18 @@ namespace Yttrium
                     return Compute(L.data,L.size,R.data,R.size);
                 }
 
+                static inline
+                Device * Compute(const Device &lhs,
+                                 natural_t     rhs)
+                {
+                    assert(lhs.bits>0);
+                    assert(rhs>0);
+
+                    const Parcel<SMALL> & L = lhs.make<SMALL>();
+                    const Parcel<SMALL>   R(rhs);
+                    return Compute(L.data,L.size,R.data,R.size);
+                }
+
                 
             };
 
@@ -112,6 +124,42 @@ namespace Yttrium
                 else
                 {
                     typedef Device * (*Proc)(const Device &, const Device &);
+                    static  Proc const Table[NumOps] =
+                    {
+                        DeviceAdd<uint8_t,uint16_t>  ::Compute,
+                        DeviceAdd<uint8_t,uint32_t>  ::Compute,
+                        DeviceAdd<uint8_t,uint64_t>  ::Compute,
+                        DeviceAdd<uint16_t,uint32_t> ::Compute,
+                        DeviceAdd<uint16_t,uint64_t> ::Compute,
+                        DeviceAdd<uint32_t,uint64_t> ::Compute
+                    };
+                    return Table[ops](lhs,rhs);
+                }
+            }
+        }
+
+        Device * Device:: Add(const Device &lhs, const natural_t rhs, OpsMode ops)
+        {
+            if(lhs.bits<=0)
+            {
+                if(rhs<=0)
+                {
+                    return new Device(0,SmallPlan[ops]);
+                }
+                else
+                {
+                    return new Device(CopyOf,rhs);
+                }
+            }
+            else
+            {
+                if(rhs<=0)
+                {
+                    return new Device(lhs);
+                }
+                else
+                {
+                    typedef Device * (*Proc)(const Device &, natural_t);
                     static  Proc const Table[NumOps] =
                     {
                         DeviceAdd<uint8_t,uint16_t>  ::Compute,

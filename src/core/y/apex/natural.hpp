@@ -20,6 +20,7 @@ namespace Yttrium
     namespace Apex
     {
 
+        Y_Shallow_Decl(Hook);
 
 #define Y_APN_Proto_Decl_NoExcept(RET,FUNC)          \
 RET FUNC(const Natural &, const Natural &) noexcept; \
@@ -35,6 +36,10 @@ Y_APN_Compare_Proto(OP,Natural &,natural_t,RET) \
 Y_APN_Compare_Proto(OP,natural_t,Natural &,RET)
 
 
+#define Y_APN_Proto_Decl(RET,FUNC)          \
+RET FUNC(const Natural &, const Natural &); \
+RET FUNC(const Natural &, const natural_t); \
+RET FUNC(const natural_t, const Natural &)
 
         class Device;
 
@@ -76,11 +81,13 @@ Y_APN_Compare_Proto(OP,natural_t,Natural &,RET)
             Y_APN_Compare_Decl(>,  == Positive)
             Y_APN_Compare_Decl(<=, != Positive)
             Y_APN_Compare_Decl(>=, != Negative)
+
+            Y_APN_Proto_Decl(static Device *,Add);
 #endif
 
         private:
             Device * const   device;
-
+            Natural(const Hook_ &, Device *);
         };
 
     }
