@@ -12,15 +12,41 @@ namespace Yttrium
 {
     namespace Apex
     {
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Parcel for a given unit type
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class Parcel : public ParcelAPI
         {
         public:
-            typedef T             Unit;
-            static const size_t   BitsPerUnit = sizeof(Unit) * 8;
-            static const PlanType Plan = PlanType( IntegerLog2For<T>::Value );
+            //__________________________________________________________________
+            //
+            //
+            // Definition
+            //
+            //__________________________________________________________________
+            typedef T             Unit;                                        //!< alias
+            static const size_t   BitsPerUnit = sizeof(Unit) * 8;              //!< alias
+            static const PlanType Plan = PlanType( IntegerLog2For<T>::Value ); //!< alias
+
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
 
             //! build with block of memory
+            /**
+             \param blockAddr address of bytes
+             \param blockSize available bytes
+             */
             inline explicit Parcel(void * const blockAddr,
                                    const size_t blockSize) noexcept :
             ParcelAPI(blockSize/sizeof(T)),
@@ -31,7 +57,7 @@ namespace Yttrium
 
             }
 
-            //! local parcel
+            //! local parcel \param qw original/workspace
             inline explicit Parcel( uint64_t &qw ) noexcept :
             ParcelAPI( sizeof(uint64_t)/sizeof(T) ),
             data( UFormatAs<T>(qw,size) )
@@ -40,22 +66,30 @@ namespace Yttrium
             }
 
 
-            inline virtual ~Parcel() noexcept
-            {
+            //! cleanup
+            inline virtual ~Parcel() noexcept {}
 
-            }
-
+            //__________________________________________________________________
+            //
+            //
+            // ReadWriteBuffer Interface
+            //
+            //__________________________________________________________________
             inline virtual const void * ro()     const noexcept { return data; }
             inline virtual size_t       length() const noexcept { return size * sizeof(T); }
 
-            inline virtual void adjust() noexcept
-            {
+            //__________________________________________________________________
+            //
+            //
+            // API
+            //
+            //__________________________________________________________________
+            inline virtual void adjust() noexcept {
                 while(size>0 && 0 == data[size-1]) --size;
                 assert(sanity());
             }
 
-            inline virtual size_t bits() const noexcept
-            {
+            inline virtual size_t bits() const noexcept {
                 assert(sanity());
                 switch(size)
                 {
@@ -91,6 +125,7 @@ namespace Yttrium
             }
 
         private:
+            //! inline SHR with carry \param curr to modify \param next next unit
             static inline void SHR(T &curr, const T next) noexcept
             {
                 static const T one(1);
@@ -146,9 +181,17 @@ namespace Yttrium
 
             
 
-            T * const data;
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            T * const data; //!< units
         private:
-            Y_Disable_Copy_And_Assign(Parcel);
+            Y_Disable_Copy_And_Assign(Parcel); //!< cleanup
+
+            //! \return checked values of units
             inline virtual bool check() const noexcept
             {
                 if(size>0)
@@ -156,6 +199,11 @@ namespace Yttrium
                 return true;
             }
 
+            //! print detailed informations
+            /**
+             \param os output stream
+             \return os
+             */
             inline virtual std::ostream & print(std::ostream &os) const
             {
                 os << HumanReadablePlan[Plan] << ":";
