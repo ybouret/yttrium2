@@ -70,6 +70,10 @@ Y_UTEST(apex_z)
                     Y_ASSERT(apz::Add(nu,V)==S);
                     Y_ASSERT(apz::Sub(nu,V)==D);
                     Y_ASSERT(apz::Mul(nu,V)==P);
+                    if(testDiv)
+                    {
+                        Y_ASSERT(apz::Div(nu,V)==q);
+                    }
                 }
 
                 if(v>=0)
@@ -78,7 +82,10 @@ Y_UTEST(apex_z)
                     Y_ASSERT(apz::Add(U,nv)==S);
                     Y_ASSERT(apz::Sub(U,nv)==D);
                     Y_ASSERT(apz::Mul(U,nv)==P);
-
+                    if( testDiv )
+                    {
+                        Y_ASSERT(apz::Div(U,nv) == Q);
+                    }
                 }
 
             }

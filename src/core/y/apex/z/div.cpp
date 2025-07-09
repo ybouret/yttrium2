@@ -80,6 +80,48 @@ namespace Yttrium
             return Integer();
         }
 
+        Integer Integer:: Div(const Integer &lhs, const Natural &rhs)
+        {
+            if(rhs.bits()<=0)
+                throw Libc::Exception(EDOM,"%s division by zero %s",CallSign,Natural::CallSign);
+
+            switch(lhs.s)
+            {
+                case __Zero__: break;
+                case Positive: { const Natural q = lhs.n / rhs; return Integer(q); }
+                case Negative: { const Natural q = lhs.n / rhs; return Integer(q).neg(); }
+            }
+            return __Zero__;
+        }
+
+        Integer Integer:: Div(const Natural &lhs, const Integer &rhs)
+        {
+            switch(rhs.s)
+            {
+                case __Zero__:
+                    break;
+
+                case Positive:
+                    if(lhs.bits()<=0)
+                        return Integer();
+                    else
+                    {
+                        const Natural q = lhs/rhs.n; return Integer(q);
+                    }
+
+                case Negative:
+                    if(lhs.bits()<=0)
+                        return Integer();
+                    else
+                    {
+                        const Natural q = lhs/rhs.n; return Integer(q).neg();
+                    }
+
+            }
+            throw Libc::Exception(EDOM,"%s division by zero %s",Natural::CallSign,CallSign);
+        }
+
+
     }
 
 }
