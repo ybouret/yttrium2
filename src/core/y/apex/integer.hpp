@@ -11,6 +11,29 @@ namespace Yttrium
 
     namespace Apex
     {
+
+        //! helper
+#define Y_APZ_Proto_Decl_NoExcept(RET,FUNC)          \
+RET FUNC(const Integer &, const Integer &) noexcept; \
+RET FUNC(const Integer &, const integer_t) noexcept; \
+RET FUNC(const integer_t, const Integer &) noexcept; \
+RET FUNC(const Integer &, const Natural &) noexcept; \
+RET FUNC(const Natural &, const Integer &) noexcept
+
+        //! helper
+#define Y_APZ_Compare_Proto(OP,LHS,RHS,RET) \
+inline friend bool operator OP (const LHS lhs, const RHS rhs) noexcept { return Compare(lhs,rhs) RET; }
+
+
+         //! helper
+#define Y_APZ_Compare_Decl(OP,RET) \
+Y_APN_Compare_Proto(OP,Integer &,Integer &,RET) \
+Y_APN_Compare_Proto(OP,Integer &,integer_t,RET) \
+Y_APN_Compare_Proto(OP,integer_t,Integer &,RET) \
+Y_APN_Compare_Proto(OP,Integer &,Natural &,RET) \
+Y_APN_Compare_Proto(OP,Natural &,Integer &,RET) 
+
+
         //______________________________________________________________________
         //
         //
@@ -67,6 +90,16 @@ namespace Yttrium
             String    toString() const;
             Integer   abs()      const;
 
+#if !defined(DOXYGEN_SHOULD_SKIP_THIS)
+            Y_APZ_Proto_Decl_NoExcept(static SignType,Compare);
+            Y_APZ_Compare_Decl(==, == __Zero__)
+            Y_APZ_Compare_Decl(!=, != __Zero__)
+            Y_APZ_Compare_Decl(<,  == Negative)
+            Y_APZ_Compare_Decl(>,  == Positive)
+            Y_APZ_Compare_Decl(<=, != Positive)
+            Y_APZ_Compare_Decl(>=, != Negative)
+#endif
+            
             //__________________________________________________________________
             //
             //
