@@ -19,7 +19,7 @@ Y_UTEST(apex_z)
 
     {
         std::cerr << "Ops cases..." << std::endl;
-        const Apex::integer_t arr[3] = { -5, 0, 3 };
+        const Apex::integer_t arr[3] = { -7, 0, 3 };
         const size_t          num    = sizeof(arr)/sizeof(arr[0]);
 
         for(size_t i=0;i<num;++i)
@@ -38,6 +38,10 @@ Y_UTEST(apex_z)
                 const apz     S = apz::Add(U,V);
                 const apz     D = apz::Sub(U,V);
                 const apz     P = apz::Mul(U,V);
+                int64_t       q=0;
+                apz           Q;
+                const bool testDiv = v>0;
+
 
                 Y_ASSERT(s==S);
                 Y_ASSERT(d==D);
@@ -50,6 +54,13 @@ Y_UTEST(apex_z)
 
                 Y_ASSERT(apz::Mul(U,v)==P);
                 Y_ASSERT(apz::Mul(u,V)==P);
+
+                if(testDiv)
+                {
+                    q = u/v;
+                    Q = apz::Div(U,V);
+                    Y_ASSERT(q==Q);
+                }
 
                 if(u>=0)
                 {

@@ -89,11 +89,11 @@ namespace Yttrium
             Y_APZ_Proto_Decl(static Integer,Add);
             Y_APZ_Proto_Decl(static Integer,Sub);
             Y_APZ_Proto_Decl(static Integer,Mul);
+            Y_APZ_Proto_Decl(static Integer,Div);
 
             Y_APZ_Operator_Impl(+,Add)
             Y_APZ_Operator_Impl(-,Sub)
             Y_APZ_Operator_Impl(*,Mul)
-
 #endif
 
             //__________________________________________________________________
