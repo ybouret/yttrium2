@@ -39,6 +39,33 @@ RET FUNC(const Integer &, const Integer &); \
 RET FUNC(const Integer &, const integer_t); \
 RET FUNC(const integer_t, const Integer &)
 
+#if 0
+        //! helper
+#define Y_APZ_Operator_Proto_Binary(OP,LHS,RHS,CALL) \
+inline friend Natural operator OP (const LHS lhs, const RHS rhs) { return Natural(Hook,CALL(lhs,rhs)); }
+
+        //! helper
+#define Y_APN_Operator_Impl_Binary(OP,CALL) \
+Y_APN_Operator_Proto_Binary(OP,Natural &,Natural &,CALL) \
+Y_APN_Operator_Proto_Binary(OP,Natural &,natural_t,CALL) \
+Y_APN_Operator_Proto_Binary(OP,natural_t,Natural &,CALL) \
+
+        //! helper
+#define Y_APN_Operator_Proto_Unary(OP,RHS,CALL) \
+inline Natural & operator OP##=(const RHS rhs) { Natural res(Hook,CALL(*this,rhs)); return xch(res); }
+
+        //! helper
+#define Y_APN_Operator_Impl_Unary(OP,CALL) \
+Y_APN_Operator_Proto_Unary(OP,Natural &,CALL)\
+Y_APN_Operator_Proto_Unary(OP,natural_t,CALL)
+
+        //! helper
+#define Y_APN_Operator_Impl(OP,CALL) \
+Y_APN_Operator_Impl_Binary(OP,CALL)  \
+Y_APN_Operator_Impl_Unary(OP,CALL)
+
+#endif
+
         //______________________________________________________________________
         //
         //

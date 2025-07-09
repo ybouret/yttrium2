@@ -18,7 +18,7 @@ Y_UTEST(apex_z)
 
     {
         const Apex::integer_t arr[3] = { -5, 0, 3 };
-        const size_t          num = sizeof(arr)/sizeof(arr[0]);
+        const size_t          num    = sizeof(arr)/sizeof(arr[0]);
 
         for(size_t i=0;i<num;++i)
         {
@@ -33,7 +33,10 @@ Y_UTEST(apex_z)
                 const int64_t s = u + v;
                 const apz     S = apz::Add(U,V);
                 Y_ASSERT(s==S);
-                std::cerr << U << " + " << V << " => " << S << std::endl;
+                //std::cerr << U << " + " << V << " => " << S << std::endl;
+                std::cerr << "Add(" << U << "," << v << ")=" << apz::Add(U,v) << std::endl;
+                Y_ASSERT(apz::Add(U,v)==S);
+                Y_ASSERT(apz::Add(u,V)==S);
 
             }
         }

@@ -48,6 +48,56 @@ namespace Yttrium
 
             return Integer();
         }
+
+        Integer Integer:: Add(const Integer &lhs, const integer_t rhs)
+        {
+            const SignType rhs_s = Sign::Of(rhs);
+            switch( Sign::Pair(lhs.s,rhs_s) )
+            {
+                case Sign::ZZ: break; // => zero
+
+                case Sign::ZN:
+                case Sign::ZP:
+                    return rhs;
+
+                case Sign::NZ:
+                case Sign::PZ:
+                    return lhs;
+
+                case Sign::PP: { const Natural sum = lhs.n + natural_t(rhs);  return Integer(Positive,sum); }
+                case Sign::NN: { const Natural sum = lhs.n + natural_t(-rhs); return Integer(Negative,sum); }
+
+                case Sign::PN: {
+                    const natural_t abr(-rhs);
+                    switch( Natural:: Compare(lhs.n,abr) )
+                    {
+                        case __Zero__: break; // => zero
+                        case Positive: { const Natural dif = lhs.n - abr; return Integer(Positive,dif); }
+                        case Negative: { const Natural dif = abr - lhs.n; return Integer(Negative,dif); }
+                    }
+                } break; // => zero
+
+                case Sign::NP: {
+                    const natural_t rrr(rhs);
+                    switch( Natural:: Compare(lhs.n,rrr) )
+                    {
+                        case __Zero__: break; // => zero
+                        case Positive: { const Natural dif = lhs.n - rrr; return Integer(Negative,dif); }
+                        case Negative: { const Natural dif = rrr - lhs.n; return Integer(Positive,dif); }
+                    }
+                } break; // => zero
+            }
+
+            return Integer();
+        }
+
+
+        Integer Integer:: Add(const integer_t lhs, const Integer &rhs)
+        {
+            return Add(rhs,lhs);
+        }
+
+
     }
 
 }
