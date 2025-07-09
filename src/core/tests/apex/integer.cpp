@@ -18,7 +18,7 @@ Y_UTEST(apex_z)
     }
 
     {
-        std::cerr << "Add/Sub cases..." << std::endl;
+        std::cerr << "Ops cases..." << std::endl;
         const Apex::integer_t arr[3] = { -5, 0, 3 };
         const size_t          num    = sizeof(arr)/sizeof(arr[0]);
 
@@ -34,23 +34,29 @@ Y_UTEST(apex_z)
 
                 const int64_t s = u + v;
                 const int64_t d = u-v;
+                const int64_t p = u*v;
                 const apz     S = apz::Add(U,V);
                 const apz     D = apz::Sub(U,V);
+                const apz     P = apz::Mul(U,V);
 
                 Y_ASSERT(s==S);
                 Y_ASSERT(d==D);
+                Y_ASSERT(p==P);
                 Y_ASSERT(apz::Add(U,v)==S);
                 Y_ASSERT(apz::Add(u,V)==S);
 
                 Y_ASSERT(apz::Sub(U,v)==D);
                 Y_ASSERT(apz::Sub(u,V)==D);
 
+                Y_ASSERT(apz::Mul(U,v)==P);
+                Y_ASSERT(apz::Mul(u,V)==P);
 
                 if(u>=0)
                 {
                     const apn nu = u;
                     Y_ASSERT(apz::Add(nu,V)==S);
                     Y_ASSERT(apz::Sub(nu,V)==D);
+                    Y_ASSERT(apz::Mul(nu,V)==P);
                 }
 
                 if(v>=0)
@@ -58,6 +64,8 @@ Y_UTEST(apex_z)
                     const apn nv = v;
                     Y_ASSERT(apz::Add(U,nv)==S);
                     Y_ASSERT(apz::Sub(U,nv)==D);
+                    Y_ASSERT(apz::Mul(U,nv)==P);
+
                 }
 
             }
@@ -93,6 +101,6 @@ Y_UTEST(apex_z)
     }
     std::cerr << std::endl;
 
-    
+
 }
 Y_UDONE()
