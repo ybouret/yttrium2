@@ -107,6 +107,8 @@ Y_APZ_Operator_Impl_Unary(OP,CALL)
             Integer & operator=(const integer_t) noexcept;
             Integer(const Natural &);
             Integer(const SignType,const Natural &);
+            Integer(Random::Bits &, const size_t);
+
 
             //__________________________________________________________________
             //
@@ -142,6 +144,8 @@ Y_APZ_Operator_Impl_Unary(OP,CALL)
             Y_APZ_Proto_Decl(static Integer,Sub);
 
             Y_APZ_Operator_Impl(+,Add)
+            Y_APZ_Operator_Impl(-,Sub)
+
 #endif
 
             //__________________________________________________________________

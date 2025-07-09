@@ -2,6 +2,7 @@
 #include "y/apex/integer.hpp"
 #include "y/calculus/iabs.hpp"
 #include "y/system/exception.hpp"
+#include "y/random/bits.hpp"
 
 namespace Yttrium
 {
@@ -46,6 +47,14 @@ namespace Yttrium
         s(z.s),
         n(z.n)
         {
+        }
+
+        Integer:: Integer(Random::Bits &ran, const size_t nbit) :
+        Number(),
+        s(nbit>0?Positive:__Zero__),
+        n(ran,nbit)
+        {
+            if(ran.choice()) (void) neg();
         }
 
 
