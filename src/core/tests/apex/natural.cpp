@@ -321,10 +321,27 @@ Y_UTEST(apex_n)
 
     std::cerr << "String" << std::endl;
     {
-        const apn n = 12345678;;
+        const apn n = 12345678;
         std::cerr << n.hexString() << std::endl;
         std::cerr << n.decString() << std::endl;
     }
+
+    std::cerr << "Factorial" << std::endl;
+    for(size_t i=0;i<=20;++i)
+    {
+        std::cerr << std::setw(2) << i << "! = " << apn::Factorial(i) << std::endl;
+    }
+
+    for(size_t n=0;n<=10;++n)
+    {
+        for(size_t k=0;k<=n;++k)
+        {
+            std::cerr << " " << apn::Comb(n,k);
+        }
+        std::cerr << std::endl;
+    }
+
+
 
 }
 Y_UDONE()

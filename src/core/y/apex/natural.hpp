@@ -164,6 +164,8 @@ namespace Yttrium
 
             static Natural GCD(const Natural &, const Natural &); //!< \return gcd(,)
             static void    Simplify(Natural &, Natural&);         //!< atomic simplification
+            static Natural Factorial(const size_t);               //!< \return n!
+            static Natural Comb(const size_t n, const size_t k);  //!< \param n n>=0 \param k k<=m \return (n,k)
 
             //! try cast to integral value
             /**

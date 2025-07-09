@@ -95,6 +95,26 @@ namespace Yttrium
                 B.xch(b);
             }
         }
+
+        Natural Natural:: Factorial(const size_t n)
+        {
+            if(n<=1)
+                return 1;
+            else
+            {
+                Natural f = 2;
+                for(size_t i=3;i<=n;++i)
+                    f *= i;
+                return f;
+            }
+        }
+
+        Natural Natural:: Comb(const size_t n, const size_t k)
+        {
+            assert(k<=n);
+            return Factorial(n)/Factorial(k)/Factorial(n-k);
+        }
+
     }
 
 }

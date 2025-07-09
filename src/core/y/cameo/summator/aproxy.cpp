@@ -1,4 +1,3 @@
-#if 0
 #include "y/cameo/summator/aproxy.hpp"
 #include "y/system/exception.hpp"
 #include <cerrno>
@@ -14,5 +13,4 @@ namespace Yttrium
     }
 }
 
-#endif
 

@@ -1,4 +1,4 @@
-#if 0
+#if 1
 #include "y/cameo/addition.hpp"
 #include "y/cameo/summator/fpoint.hpp"
 #include "y/cameo/summator/direct.hpp"
@@ -30,7 +30,6 @@ namespace Yttrium
 Y_UTEST(cameo_add)
 {
 
-#if 0
     {
         Cameo::DirectSummator<apz> zsum;
         Cameo::DirectSummator<apn> nsum;
@@ -38,8 +37,6 @@ Y_UTEST(cameo_add)
         Cameo::AProxySummator<int>            isum; std::cerr << "isum/" <<Cameo::AProxySummator<int>::CoreType::CallSign << std::endl;
         Cameo::AProxySummator<unsigned short> usum; std::cerr << "usum/" <<Cameo::AProxySummator<unsigned short>::CoreType::CallSign << std::endl;
 
-        Y_SIZEOF(Cameo::FPointSummator<float>::Accumulator);
-        Y_SIZEOF(Cameo::FPointSummator< XReal<long double> >::Accumulator);
 
         Cameo::FPointSummator< float > fsum(5);
         std::cerr << fsum->capacity() << std::endl;
@@ -76,8 +73,10 @@ Y_UTEST(cameo_add)
         Cameo::Addition<unsigned>           usum;
         Cameo::Addition<float>              fsum;
         Cameo::Addition< XReal<double> >    xsum;
+        Cameo::Addition< Complex<double> >  csum;
+        Cameo::Addition< Complex< XReal<long double> > >  xcsum;
+
     }
-#endif
 
 }
 Y_UDONE()

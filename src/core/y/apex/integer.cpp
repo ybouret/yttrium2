@@ -10,6 +10,8 @@ namespace Yttrium
     namespace Apex
     {
 
+        const char * const Integer:: CallSign = "apz";
+
         Integer::  Integer() : s(__Zero__), n() {}
         Integer:: ~Integer() noexcept {}
 

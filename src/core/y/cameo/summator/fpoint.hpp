@@ -66,7 +66,9 @@ namespace Yttrium
 
             inline virtual T sum()
             {
-                if( acc.size() <= 0 ) return 0;
+                if( acc.size() <= 0 )
+                    return T(0);
+                
                 while(acc.size()>1)
                 {
                     const Unit lhs = acc.pop();
