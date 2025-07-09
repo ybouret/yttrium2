@@ -332,7 +332,6 @@ Y_UTEST(apex_n)
     }
     
 #if 1
-
     {
         std::cerr << "Sqrt" << std::endl;
         for(apn i=0;i<=100;++i)
