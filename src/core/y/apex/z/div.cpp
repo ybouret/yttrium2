@@ -18,18 +18,41 @@ namespace Yttrium
                 case Sign::ZZ:
                 case Sign::NZ:
                 case Sign::PZ:
-                    throw Libc::Exception(EDOM,"division by zero %s", CallSign);
+                    throw Libc::Exception(EDOM,"%s division by zero %s", CallSign, CallSign);
 
                 case Sign::ZN:
                 case Sign::ZP:
                     break; // zero
 
                 case Sign::NN:
-                case Sign::PP: { const Natural q = lhs.n/rhs.n; return Integer(Positive,q); }
+                case Sign::PP: { const Natural q = lhs.n/rhs.n; return Integer(q); }
                 case Sign::NP:
-                case Sign::PN: { const Natural q = lhs.n/rhs.n; return Integer(Negative,q); }
+                case Sign::PN: { const Natural q = lhs.n/rhs.n; return Integer(q).neg(); }
             }
 
+            return Integer();
+        }
+
+        Integer Integer:: Div(const Integer &lhs, const integer_t rhs)
+        {
+            const SignType rhs_s = Sign::Of(rhs);
+
+            switch( Sign::Pair(lhs.s,rhs_s) )
+            {
+                case Sign::ZZ:
+                case Sign::NZ:
+                case Sign::PZ:
+                    throw Libc::Exception(EDOM,"%s division by zero integer", CallSign);
+
+                case Sign::ZN:
+                case Sign::ZP:
+                    break; // zero
+
+                case Sign::NN: { const Natural q = lhs.n/natural_t(-rhs); return Integer(q); }
+                case Sign::PP: { const Natural q = lhs.n/natural_t(rhs);  return Integer(q); }
+                case Sign::NP: { const Natural q = lhs.n/natural_t(rhs);  return Integer(q).neg(); }
+                case Sign::PN: { const Natural q = lhs.n/natural_t(-rhs); return Integer(q).neg(); }
+            }
             return Integer();
         }
 
