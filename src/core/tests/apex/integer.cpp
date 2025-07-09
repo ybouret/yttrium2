@@ -50,12 +50,14 @@ Y_UTEST(apex_z)
                 {
                     const apn nu = u;
                     Y_ASSERT(apz::Add(nu,V)==S);
+                    Y_ASSERT(apz::Sub(nu,V)==D);
                 }
 
                 if(v>=0)
                 {
                     const apn nv = v;
                     Y_ASSERT(apz::Add(U,nv)==S);
+                    Y_ASSERT(apz::Sub(U,nv)==D);
                 }
 
             }

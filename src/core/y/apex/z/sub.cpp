@@ -63,6 +63,27 @@ namespace Yttrium
             return Add(rhs,-lhs).neg();
         }
 
+        Integer Integer:: Sub(const Integer &lhs, const Natural &rhs)
+        {
+            switch(lhs.s)
+            {
+                case __Zero__: return Integer(rhs).neg();
+                case Negative: { Integer res(lhs); Coerce(res.n) += rhs; return res; }
+                case Positive: break;
+            }
+            switch( Natural::Compare(lhs.n,rhs) )
+            {
+                case __Zero__: break;
+                case Positive: { const Natural dif = lhs.n - rhs; return Integer(Positive,dif); }
+                case Negative: { const Natural dif = rhs - lhs.n; return Integer(Negative,dif); }
+            }
+            return Integer();
+        }
+
+        Integer Integer:: Sub(const Natural &lhs, const Integer &rhs)
+        {
+            return Sub(rhs,lhs).neg();
+        }
 
     }
 
