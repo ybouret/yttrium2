@@ -126,6 +126,7 @@ Y_APZ_Operator_Impl_Unary(OP,CALL)
             // Method
             //
             //__________________________________________________________________
+            void      ldm1() noexcept;
             Integer & xch(Integer &) noexcept;
             String    str() const;
             Integer   abs() const;
@@ -166,6 +167,9 @@ Y_APZ_Operator_Impl_Unary(OP,CALL)
             //
             //__________________________________________________________________
             Integer   operator-() const; //!< \return - *this
+            Integer & operator--();      //!< prefix  \return decreased *this
+            Integer   operator--(int);   //!< postfix \return previous value, decrease *this*
+            void      decr();            //!< in-place decrease
 
             //__________________________________________________________________
             //

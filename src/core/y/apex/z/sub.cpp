@@ -85,6 +85,38 @@ namespace Yttrium
             return Sub(rhs,lhs).neg();
         }
 
+
+        void Integer:: decr()
+        {
+            switch(s)
+            {
+                case __Zero__: ldm1(); break;
+                case Negative: Coerce(n).incr(); break;
+                case Positive:
+                    if(n.bits()<=1)
+                    {
+                        ldz();
+                    }
+                    else
+                    {
+                        Coerce(n).decr();
+                    }
+                    break;
+            }
+        }
+
+        Integer & Integer:: operator--()
+        {
+            decr();
+            return *this;
+        }
+
+        Integer   Integer:: operator--(int)
+        {
+            const Integer saved = *this;
+            decr();
+            return saved;
+        }
     }
 
 }

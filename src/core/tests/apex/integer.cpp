@@ -65,14 +65,7 @@ Y_UTEST(apex_z)
 
     }
 
-#if 0
-    {
-        apz z = 10;
-        z    += 10;
-        std::cerr << z << std::endl;
-        z    -= 10;
-        std::cerr << z << std::endl;
-    }
+
 
     for(apz i=-5;i<=5;)
     {
@@ -100,7 +93,6 @@ Y_UTEST(apex_z)
     }
     std::cerr << std::endl;
 
-#endif
     
 }
 Y_UDONE()

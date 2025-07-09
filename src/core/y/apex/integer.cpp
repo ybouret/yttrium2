@@ -25,6 +25,13 @@ namespace Yttrium
             Coerce(n).ld1();
         }
 
+        void   Integer::ldm1() noexcept
+        {
+            Coerce(s) = Negative;;
+            Coerce(n).ld1();
+        }
+
+
         String Integer:: str() const
         {
             switch(s)
