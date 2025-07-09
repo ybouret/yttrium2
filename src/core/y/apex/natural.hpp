@@ -13,6 +13,7 @@
 #include "y/apex/n/shielded.hpp"
 #include "y/apex/n/smartdev.hpp"
 #include "y/string.hpp"
+#include "y/type/is-signed.hpp"
 
 namespace Yttrium
 {
@@ -139,16 +140,51 @@ inline Natural & operator OP##=(const natural_t rhs) { const Natural _(rhs); Nat
             static Natural Div(const Natural &numer, const Natural &denom);
             static Natural Mod(const Natural &numer, const Natural &denom);
 
-            void    shr() noexcept; //!< in-place shr
-            Natural abs() const;
-            Natural sqrt() const;
+            void           shr() noexcept; //!< in-place shr
+            Natural        abs() const;
+            Natural        sqrt() const;
+            String         hexString() const;
+            String         decString() const;
+
             static Natural GCD(const Natural &, const Natural &);
             static void    Simplify(Natural &, Natural&);
-            String hexString() const;
-            String decString() const;
+
+            //! try cast to integral value
+            /**
+             \param value target value
+             \return true if compatible
+             */
+            template <typename T> inline
+            bool tryCast(T &value) const noexcept
+            {
+                static const IntToType< IsSigned<T>::Value > choice = {};
+                return tryCast(value,choice);
+            }
+
 
         private:
             Natural(const Hook_ &, Device *);
+
+            //! unsigned try cast \param value unsigned target \return true if possible
+            template <typename T> inline
+            bool tryCast(T &value, const IntToType<false> &) const noexcept
+            {
+                const size_t MaxBits = sizeof(T) * 8;
+                if( bits() > MaxBits ) return false;
+                value = T( ls64() );
+                return true;
+            }
+
+            //! signed try cast \param value signed target \return true if possible
+            template <typename T> inline
+            bool tryCast(T &value, const IntToType<true> &) const noexcept
+            {
+                const size_t MaxBits = sizeof(T) * 8-1;
+                if( bits() > MaxBits ) return false;
+                value = T( ls64() );
+                return true;
+            }
+
         };
     }
     
