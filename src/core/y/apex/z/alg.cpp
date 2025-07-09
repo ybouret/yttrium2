@@ -20,6 +20,13 @@ namespace Yttrium
             return Integer();
         }
 
+
+        Integer & Integer:: neg() noexcept
+        {
+            Sign::MakeOpposite( Coerce(s) );
+            return *this;
+        }
+
     }
 
 }

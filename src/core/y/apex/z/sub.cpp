@@ -10,8 +10,7 @@ namespace Yttrium
         Integer Integer:: operator-() const
         {
             Integer z(*this);
-            Sign::MakeOpposite( Coerce(z.s) );
-            return z;
+            return z.neg();
         }
 
         Integer Integer:: Sub(const Integer &lhs, const Integer &rhs)
@@ -50,9 +49,20 @@ namespace Yttrium
                     }
                     break; // zero
             }
-
             return Integer();
         }
+
+        Integer Integer:: Sub(const Integer &lhs, const integer_t rhs)
+        {
+            return Add(lhs,-rhs);
+        }
+
+
+        Integer Integer:: Sub(const integer_t lhs, const Integer &rhs)
+        {
+            return Add(rhs,-lhs).neg();
+        }
+
 
     }
 

@@ -127,6 +127,7 @@ Y_APZ_Operator_Impl_Unary(OP,CALL)
             Integer & xch(Integer &) noexcept;
             String    str() const;
             Integer   abs() const;
+            Integer & neg() noexcept;
 
 #if !defined(DOXYGEN_SHOULD_SKIP_THIS)
             Y_APZ_Proto_Decl_NoExcept(static SignType,Compare);

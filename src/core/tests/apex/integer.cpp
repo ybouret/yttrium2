@@ -12,11 +12,13 @@ Y_UTEST(apex_z)
     Random::ParkMiller ran;
 
     {
+        std::cerr << "Default..." << std::endl;
         apz z;
         std::cerr << z << std::endl;
     }
 
     {
+        std::cerr << "Add/Sub cases..." << std::endl;
         const Apex::integer_t arr[3] = { -5, 0, 3 };
         const size_t          num    = sizeof(arr)/sizeof(arr[0]);
 
@@ -34,10 +36,15 @@ Y_UTEST(apex_z)
                 const int64_t d = u-v;
                 const apz     S = apz::Add(U,V);
                 const apz     D = apz::Sub(U,V);
+
                 Y_ASSERT(s==S);
                 Y_ASSERT(d==D);
                 Y_ASSERT(apz::Add(U,v)==S);
                 Y_ASSERT(apz::Add(u,V)==S);
+
+                Y_ASSERT(apz::Sub(U,v)==D);
+                Y_ASSERT(apz::Sub(u,V)==D);
+
 
                 if(u>=0)
                 {
