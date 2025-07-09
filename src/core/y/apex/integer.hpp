@@ -41,32 +41,35 @@ RET FUNC(const integer_t, const Integer &); \
 RET FUNC(const Integer &, const Natural &); \
 RET FUNC(const Natural &, const Integer &)
 
-#if 0
         //! helper
 #define Y_APZ_Operator_Proto_Binary(OP,LHS,RHS,CALL) \
-inline friend Natural operator OP (const LHS lhs, const RHS rhs) { return Natural(Hook,CALL(lhs,rhs)); }
+inline friend Integer operator OP (const LHS lhs, const RHS rhs) { return CALL(lhs,rhs); }
 
         //! helper
-#define Y_APN_Operator_Impl_Binary(OP,CALL) \
-Y_APN_Operator_Proto_Binary(OP,Natural &,Natural &,CALL) \
-Y_APN_Operator_Proto_Binary(OP,Natural &,natural_t,CALL) \
-Y_APN_Operator_Proto_Binary(OP,natural_t,Natural &,CALL) \
+#define Y_APZ_Operator_Impl_Binary(OP,CALL) \
+Y_APZ_Operator_Proto_Binary(OP,Integer &,Integer &,CALL) \
+Y_APZ_Operator_Proto_Binary(OP,Integer &,integer_t,CALL) \
+Y_APZ_Operator_Proto_Binary(OP,integer_t,Integer &,CALL) \
+
 
         //! helper
-#define Y_APN_Operator_Proto_Unary(OP,RHS,CALL) \
-inline Natural & operator OP##=(const RHS rhs) { Natural res(Hook,CALL(*this,rhs)); return xch(res); }
+#define Y_APZ_Operator_Proto_Unary(OP,RHS,CALL) \
+inline Integer & operator OP##=(const RHS rhs) { Integer res( CALL(*this,rhs) ); return xch(res); }
+
 
         //! helper
-#define Y_APN_Operator_Impl_Unary(OP,CALL) \
-Y_APN_Operator_Proto_Unary(OP,Natural &,CALL)\
-Y_APN_Operator_Proto_Unary(OP,natural_t,CALL)
+#define Y_APZ_Operator_Impl_Unary(OP,CALL)    \
+Y_APZ_Operator_Proto_Unary(OP,Integer &,CALL) \
+Y_APZ_Operator_Proto_Unary(OP,integer_t,CALL) \
+Y_APZ_Operator_Proto_Unary(OP,Natural &,CALL)
+
+
 
         //! helper
-#define Y_APN_Operator_Impl(OP,CALL) \
-Y_APN_Operator_Impl_Binary(OP,CALL)  \
-Y_APN_Operator_Impl_Unary(OP,CALL)
+#define Y_APZ_Operator_Impl(OP,CALL) \
+Y_APZ_Operator_Impl_Binary(OP,CALL)  \
+Y_APZ_Operator_Impl_Unary(OP,CALL)
 
-#endif
 
         //______________________________________________________________________
         //
@@ -135,7 +138,9 @@ Y_APN_Operator_Impl_Unary(OP,CALL)
             Y_APZ_Compare_Decl(>=, != Negative)
 
             Y_APZ_Proto_Decl(static Integer,Add);
+            Y_APZ_Proto_Decl(static Integer,Sub);
 
+            Y_APZ_Operator_Impl(+,Add)
 #endif
 
             //__________________________________________________________________
