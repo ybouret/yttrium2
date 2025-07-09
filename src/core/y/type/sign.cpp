@@ -71,8 +71,13 @@ namespace Yttrium
             case Negative: return Positive;
         }
         return __Zero__;
-
     }
+
+    void Sign:: MakeOpposite(SignType &s) noexcept
+    {
+        s = Opposite(s);
+    }
+
 
     Sign::PairType Sign:: Pair(const SignType l, const SignType r) noexcept
     {

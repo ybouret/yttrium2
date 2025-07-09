@@ -146,6 +146,25 @@ Y_APZ_Operator_Impl_Unary(OP,CALL)
             //__________________________________________________________________
             //
             //
+            // Specific additions
+            //
+            //__________________________________________________________________
+            Integer   operator+() const; //!< \return *this
+            Integer & operator++();      //!< prefix  \return increased *this
+            Integer   operator++(int);   //!< postfix \return previous value, increase *this*
+            void      incr();            //!< in-place increase
+
+            //__________________________________________________________________
+            //
+            //
+            // Specific subtraction
+            //
+            //__________________________________________________________________
+            Integer   operator-() const; //!< \return - *this
+
+            //__________________________________________________________________
+            //
+            //
             // Conversion
             //
             //__________________________________________________________________

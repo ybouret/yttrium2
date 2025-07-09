@@ -7,8 +7,6 @@ namespace Yttrium
     namespace Apex
     {
 
-
-
         Integer Integer:: Add(const Integer &lhs, const Integer &rhs)
         {
 
@@ -119,6 +117,54 @@ namespace Yttrium
         Integer Integer:: Add(const Natural &lhs, const Integer &rhs)
         {
             return Add(rhs,lhs);
+        }
+
+    }
+
+}
+
+namespace Yttrium
+{
+
+    namespace Apex
+    {
+        Integer Integer:: operator+() const
+        {
+            return *this;
+        }
+
+        void Integer:: incr()
+        {
+            switch(s)
+            {
+                case __Zero__: ld1();            break;
+                case Positive: Coerce(n).incr(); break;
+                case Negative:
+                    if(n.bits()<=1)
+                    {
+                        assert(-1==*this);
+                        assert(1==n);
+                        ldz();
+                    }
+                    else
+                    {
+                        Coerce(n).decr();
+                        assert(n>0);
+                    }
+            }
+        }
+
+        Integer & Integer:: operator++()
+        {
+            incr();
+            return *this;
+        }
+
+        Integer   Integer:: operator++(int)
+        {
+            const Integer saved = *this;
+            incr();
+            return saved;
         }
 
     }

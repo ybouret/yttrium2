@@ -31,10 +31,11 @@ Y_UTEST(apex_z)
 
 
                 const int64_t s = u + v;
+                const int64_t d = u-v;
                 const apz     S = apz::Add(U,V);
+                const apz     D = apz::Sub(U,V);
                 Y_ASSERT(s==S);
-                //std::cerr << U << " + " << V << " => " << S << std::endl;
-                //std::cerr << "Add(" << U << "," << v << ")=" << apz::Add(U,v) << std::endl;
+                Y_ASSERT(d==D);
                 Y_ASSERT(apz::Add(U,v)==S);
                 Y_ASSERT(apz::Add(u,V)==S);
 
