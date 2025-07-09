@@ -56,6 +56,30 @@ namespace Yttrium
             return Integer();
         }
 
+
+        Integer Integer:: Div(const integer_t lhs, const Integer &rhs)
+        {
+            const SignType lhs_s = Sign::Of(lhs);
+            switch( Sign::Pair(lhs_s,rhs.s) )
+            {
+                case Sign::ZZ:
+                case Sign::NZ:
+                case Sign::PZ:
+                    throw Libc::Exception(EDOM,"integer division by zero %s", CallSign);
+
+                case Sign::ZN:
+                case Sign::ZP:
+                    break; // zero
+
+                case Sign::NN: { const Natural q = natural_t(-lhs)/rhs.n; return Integer(q); }
+                case Sign::PP: { const Natural q = natural_t(lhs)/rhs.n;  return Integer(q); }
+                case Sign::NP: { const Natural q = natural_t(-lhs)/rhs.n; return Integer(q).neg(); }
+                case Sign::PN: { const Natural q = natural_t(lhs)/rhs.n;  return Integer(q).neg(); }
+            }
+
+            return Integer();
+        }
+
     }
 
 }

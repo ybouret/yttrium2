@@ -61,6 +61,7 @@ Y_UTEST(apex_z)
                     Q = apz::Div(U,V);
                     Y_ASSERT(q==Q);
                     Y_ASSERT(apz::Div(U,v) == Q);
+                    Y_ASSERT(apz::Div(u,V) == Q);
                 }
 
                 if(u>=0)
