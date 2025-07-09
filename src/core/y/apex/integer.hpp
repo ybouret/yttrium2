@@ -32,9 +32,9 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            static const char __Zero__Mark = 0;
-            static const char PositiveMark = 1;
-            static const char NegativeMark = 2;
+            static const char __Zero__Mark = 0; //!< to serialize zero
+            static const char PositiveMark = 1; //!< to serialize positive
+            static const char NegativeMark = 2; //!< to serialize negstive
             static const char * const CallSign; //!< "apz"
 
             //__________________________________________________________________
@@ -43,17 +43,17 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            Integer();
-            virtual ~Integer() noexcept;
-            Integer(const Integer&);
-            Integer &operator=(const Integer&);
-            Y_OSTREAM_PROTO(Integer);
-            Integer(const integer_t);
-            Integer & operator=(const integer_t) noexcept;
-            Integer(const Natural &);
-            Integer(const SignType,const Natural &);
-            Integer(Random::Bits &, const size_t);
-
+            Integer();                                     //!< setup
+            virtual ~Integer() noexcept;                   //!< cleanup
+            Integer(const Integer&);                       //!< duplicate
+            Integer &operator=(const Integer&);            //!< assign \return *this
+            Y_OSTREAM_PROTO(Integer);                      //!< display
+            Integer(const integer_t);                      //!< setup from integral
+            Integer & operator=(const integer_t) noexcept; //!< assign integral \return *this*
+            Integer(const Natural &);                      //!< setup from Natural
+            Integer(const SignType,const Natural &);       //!< setup from sign + natura
+            Integer(Random::Bits &, const size_t);         //!< setup with random bits and sign
+            Integer & operator=(const Natural &);          //!< assign integral \return *this
 
             //__________________________________________________________________
             //
@@ -71,11 +71,12 @@ namespace Yttrium
             // Method
             //
             //__________________________________________________________________
-            void      ldm1() noexcept;
-            Integer & xch(Integer &) noexcept;
-            String    str() const;
-            Integer   abs() const;
-            Integer & neg() noexcept;
+            void      ldm1()         noexcept; //!< no-throw set to -1
+            Integer & xch(Integer &) noexcept; //!< no-throw exchange \return *this
+            String    str()             const; //!< \return decimal string
+            Integer   abs()             const; //!< \return |*this|
+            Integer & neg()          noexcept; //!< in-place opposite \return *this*
+            Integer   sqrt()             const; //!< \return (*this)^(1/2)
 
 #if !defined(DOXYGEN_SHOULD_SKIP_THIS)
             Y_APZ_Proto_Decl_NoExcept(static SignType,Compare);
@@ -144,8 +145,8 @@ namespace Yttrium
             // Members
             //
             //__________________________________________________________________
-            const SignType s;
-            const Natural  n;
+            const SignType s; //!< sign
+            const Natural  n; //!< natural part
 
             
         private:
@@ -182,7 +183,7 @@ namespace Yttrium
 
     }
 
-    typedef Apex::Integer apz;
+    typedef Apex::Integer apz; //!< alias
 
 }
 

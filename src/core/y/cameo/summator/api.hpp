@@ -62,6 +62,11 @@ namespace Yttrium
             inline Summator & operator<<(ParamType value) { add(value); return *this; }
 
             //! load a range without reset
+            /**
+             \param  curr initial iterator
+             \param  size range size
+             \return *this
+             */
             template <typename ITERATOR> inline
             Summator & load(ITERATOR curr, size_t size)
             {
@@ -70,12 +75,18 @@ namespace Yttrium
             }
 
             //! reset, load range and return sum
+            /**
+             \param  curr initial iterator
+             \param  size range size
+             \return sum
+             */
             template <typename ITERATOR> inline
             T operator()(ITERATOR curr, const size_t size)
             {
                 ldz(); return load(curr,size).sum();
             }
 
+            //! \param seq sequence \return sum of sequence
             template <typename SEQUENCE> inline
             T operator()(SEQUENCE &seq)
             {

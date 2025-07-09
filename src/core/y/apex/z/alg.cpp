@@ -27,7 +27,16 @@ namespace Yttrium
             return *this;
         }
 
-        
+        Integer   Integer:: sqrt()      const
+        {
+            switch(s)
+            {
+                case __Zero__: break;
+                case Positive: { const Natural s = n.sqrt(); return Integer(s); }
+                case Negative: throw Libc::Exception(EDOM,"sqrt of negative %s",CallSign);
+            }
+            return Integer();
+        }
     }
 
 }

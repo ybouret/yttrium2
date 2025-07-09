@@ -3,7 +3,7 @@
 //! \file
 
 #ifndef Y_Apex_Integer_Helpers_Included
-#define Y_Apex_Integr_Helpers_Included 1
+#define Y_Apex_Integer_Helpers_Included 1
 
 
 

@@ -119,6 +119,12 @@ namespace Yttrium
             return *this;
         }
 
+        Integer & Integer:: operator=(const Natural &n)
+        {
+            Integer z(n);
+            return xch(z);
+        }
+
 
         Integer:: Integer(const Natural &N) :
         Number(),
