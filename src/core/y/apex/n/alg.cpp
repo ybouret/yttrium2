@@ -83,6 +83,18 @@ namespace Yttrium
                 }
             }
         }
+
+        void Natural:: Simplify(Natural &a, Natural &b)
+        {
+            const Natural g = GCD(a,b);
+            if(g.device->bits>1)
+            {
+                Natural A = a/g;
+                Natural B = b/g;
+                A.xch(a);
+                B.xch(b);
+            }
+        }
     }
 
 }

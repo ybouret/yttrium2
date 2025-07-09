@@ -175,7 +175,7 @@ namespace Yttrium
 
             static SignType Compare(const String &, const String &) noexcept; //!< \return lexicographic comparison
 
-            String & reverse() noexcept; //!< reverse content
+            String & reverse() noexcept; //!< reverse content \return *this
 
         private:
             Code * const code; //!< internal memory

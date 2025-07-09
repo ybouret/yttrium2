@@ -10,23 +10,26 @@ namespace Yttrium
 {
     namespace Random
     {
-
+        
         //! fill memory with random bits
         struct Fill
         {
-
+            
             //! generic fill each byte with given range
             static void Block(Bits &,
                               void * const,
                               const size_t,
                               const uint8_t= 0x00,
                               const uint8_t= 0xff) noexcept;
-
-            static void Block64(Bits &ran,
-                                uint64_t * const arr,
-                                const size_t     bits) noexcept;
             
-
+            //! fill block with exact bit count
+            /**
+             \param arr large enough array
+             \param nbit number of bits to put in arrary
+             */
+            static void Block64(Bits &,uint64_t * const arr, const size_t nbit) noexcept;
+            
+            
             //! fill object with random bits
             /**
              \param ran   Bits
@@ -44,9 +47,9 @@ namespace Yttrium
                 Block(ran,&arg,sizeof(T),lower,upper);
             }
         };
-
+        
     }
-
+    
 }
 
 #endif

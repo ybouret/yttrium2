@@ -11,11 +11,12 @@
 
 namespace Yttrium
 {
+    //! RunTime Endian detecting
     struct Endian
     {
-        static bool Little() noexcept;
-        static bool Big()    noexcept;
-        static const char * HumanReadable()  noexcept;
+        static bool         Little()        noexcept; //!< \return LE architecture
+        static bool         Big()           noexcept; //!< \return BE architecture
+        static const char * HumanReadable() noexcept; //!< \return Litte/Big endina
     };
 }
 

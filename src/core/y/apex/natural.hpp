@@ -143,7 +143,7 @@ inline Natural & operator OP##=(const natural_t rhs) { const Natural _(rhs); Nat
             Natural abs() const;
             Natural sqrt() const;
             static Natural GCD(const Natural &, const Natural &);
-
+            static void    Simplify(Natural &, Natural&);
             String hexString() const;
             String decString() const;
 

@@ -22,7 +22,7 @@ namespace Yttrium
         class Shielded : public Number
         {
         protected:
-            explicit Shielded(); //!< setup
+            explicit Shielded();          //!< setup
         public:
             virtual ~Shielded() noexcept; //!< cleanup
 

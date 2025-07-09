@@ -12,17 +12,23 @@ namespace Yttrium
     {
         class Device;
 
+        //______________________________________________________________________
+        //
+        //
+        //! Smart Pointer on Device
+        //
+        //______________________________________________________________________
         class SmartDev
         {
         public:
-            explicit SmartDev(Device * const) noexcept;
-            virtual ~SmartDev()               noexcept;
+            explicit SmartDev(Device * const) noexcept; //!< register device
+            virtual ~SmartDev()               noexcept; //!< delete device is no null
 
         protected:
-            Device * const device;
+            Device * const device; //!< inner device
 
         private:
-            Y_Disable_Copy_And_Assign(SmartDev);
+            Y_Disable_Copy_And_Assign(SmartDev); //!< discarding
         };
     }
 
