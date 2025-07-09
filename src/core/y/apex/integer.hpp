@@ -200,8 +200,7 @@ Y_APZ_Operator_Impl_Unary(OP,CALL)
             const SignType s;
             const Natural  n;
 
-
-
+            
         private:
             //! unsigned cast \param value target \return true if possible
             template <typename T> inline
