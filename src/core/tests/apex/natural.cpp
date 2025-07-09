@@ -331,13 +331,16 @@ Y_UTEST(apex_n)
         }
     }
     
-#if 0
+#if 1
 
     {
         std::cerr << "Sqrt" << std::endl;
         for(apn i=0;i<=100;++i)
         {
-            std::cerr << i << " => " << i.sqrt() << std::endl;
+            const apn s = i.sqrt();
+            std::cerr << i << " => " << s << std::endl;
+            Y_ASSERT(s*s<=i);
+            Y_ASSERT((s+1)*(s+1)>i);
         }
     }
 #endif

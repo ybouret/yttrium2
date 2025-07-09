@@ -70,6 +70,8 @@ namespace Yttrium
             // Reload
             //
             //__________________________________________________________________
+
+            //! \return previously written device
             static Device * Load(InputStream &, const char * const = 0);
 
             //__________________________________________________________________

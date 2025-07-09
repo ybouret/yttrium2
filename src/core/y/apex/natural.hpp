@@ -141,6 +141,7 @@ inline Natural & operator OP##=(const natural_t rhs) { const Natural _(rhs); Nat
 
             void    shr() noexcept; //!< in-place shr
             Natural abs() const;
+            Natural sqrt() const;
 
 
         private:
