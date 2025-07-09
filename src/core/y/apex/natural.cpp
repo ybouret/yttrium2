@@ -89,7 +89,7 @@ namespace Yttrium
         {
         }
 
-        Natural & Natural:: operator=(const natural_t n)
+        Natural & Natural:: operator=(const natural_t n) noexcept
         {
             device->ld(n);
             return *this;
@@ -110,10 +110,7 @@ namespace Yttrium
         }
 
 
-        void Natural:: alter(const PlanType plan) noexcept
-        {
-            device->set(plan);
-        }
+        
 
         Natural:: Natural(const TwoToThePowerOf_ &, const size_t n) :
         SmartDev(0),

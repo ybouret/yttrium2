@@ -43,17 +43,6 @@ Y_UTEST(apex_n)
             Y_ASSERT(s==s1);
             Y_ASSERT(s==s2);
 
-#if 1
-            for(unsigned j=0;j<Apex::Metrics::Plans;++j)
-            {
-                for(unsigned k=0;k<Apex::Metrics::Plans;++k)
-                {
-                    L.alter( Apex::PlanType(j) );
-                    R.alter( Apex::PlanType(k) );
-                    Y_ASSERT( Apex::Natural::Compare(L,R) == S);
-                }
-            }
-#endif
 
         }
     }
@@ -101,37 +90,26 @@ Y_UTEST(apex_n)
                 //std::cerr << "L=" << L << std::endl;
                 //std::cerr << "R=" << R << std::endl;
 
-                for(unsigned u=0;u<Apex::Metrics::Plans;++u)
+                const uint64_t l64 = L.ls64();
+                const uint64_t r64 = R.ls64();
+                Y_ASSERT( l64  == l);
+                Y_ASSERT( r64  == r);
+
                 {
-                    for(unsigned v=0;v<Apex::Metrics::Plans;++v)
-                    {
-                        L.alter( Apex::PlanType(u) );
-                        R.alter( Apex::PlanType(v) );
-                        const uint64_t l64 = L.ls64();
-                        const uint64_t r64 = R.ls64();
-                        Y_ASSERT( l64  == l);
-                        Y_ASSERT( r64  == r);
+                    Apex::Natural S = L + R;
+                    Y_ASSERT(S==s);
+                }
 
-                        {
-                            Apex::Natural S = L + R;
-                            Y_ASSERT(S==s);
-                        }
+                {
+                    Apex::Natural lhs = L; Y_ASSERT(lhs==L);
+                    lhs += R;
+                    Y_ASSERT(lhs==s);
+                }
 
-                        {
-                            Apex::Natural lhs = L; Y_ASSERT(lhs==L);
-                            lhs.alter( Apex::PlanType(u)  );
-                            R.alter( Apex::PlanType(v) );
-                            lhs += R;
-                            Y_ASSERT(lhs==s);
-                        }
-
-                        {
-                            Apex::Natural lhs = L; Y_ASSERT(lhs==L);
-                            lhs.alter( Apex::PlanType(u)  );
-                            lhs += r;
-                            Y_ASSERT(lhs==s);
-                        }
-                    }
+                {
+                    Apex::Natural lhs = L; Y_ASSERT(lhs==L);
+                    lhs += r;
+                    Y_ASSERT(lhs==s);
                 }
             }
         }
@@ -168,44 +146,34 @@ Y_UTEST(apex_n)
                 Apex::Natural  L = l;
                 Apex::Natural  R = r;
 
-                for(unsigned u=0;u<Apex::Metrics::Plans;++u)
+
                 {
-                    for(unsigned v=0;v<Apex::Metrics::Plans;++v)
-                    {
-                        L.alter( Apex::PlanType(u) );
-                        R.alter( Apex::PlanType(v) );
-
-                        {
-                            Apex::Natural D = L - R;
-                            Y_ASSERT(D==d);
-                        }
-
-                        {
-                            Apex::Natural D = L - r;
-                            Y_ASSERT(D==d);
-                        }
-
-                        {
-                            Apex::Natural D = l - R;
-                            Y_ASSERT(D==d);
-                        }
-
-                        {
-                            Apex::Natural lhs = L; Y_ASSERT(lhs==L);
-                            lhs.alter( Apex::PlanType(u)  );
-                            R.alter( Apex::PlanType(v) );
-                            lhs -= R;
-                            Y_ASSERT(lhs==d);
-                        }
-
-                        {
-                            Apex::Natural lhs = L; Y_ASSERT(lhs==L);
-                            lhs.alter( Apex::PlanType(u)  );
-                            lhs -= r;
-                            Y_ASSERT(lhs==d);
-                        }
-                    }
+                    Apex::Natural D = L - R;
+                    Y_ASSERT(D==d);
                 }
+
+                {
+                    Apex::Natural D = L - r;
+                    Y_ASSERT(D==d);
+                }
+
+                {
+                    Apex::Natural D = l - R;
+                    Y_ASSERT(D==d);
+                }
+
+                {
+                    Apex::Natural lhs = L; Y_ASSERT(lhs==L);
+                    lhs -= R;
+                    Y_ASSERT(lhs==d);
+                }
+
+                {
+                    Apex::Natural lhs = L; Y_ASSERT(lhs==L);
+                    lhs -= r;
+                    Y_ASSERT(lhs==d);
+                }
+
             }
 
         }
@@ -330,7 +298,7 @@ Y_UTEST(apex_n)
             Y_ASSERT(p/r==l);
         }
     }
-    
+
     {
         std::cerr << "Sqrt" << std::endl;
         for(apn i=0;i<=100;++i)

@@ -15,6 +15,8 @@
 #include "y/string.hpp"
 #include "y/type/is-signed.hpp"
 
+#include "y/apex/n/helpers.hpp"
+
 namespace Yttrium
 {
     namespace Random { class Bits; }
@@ -22,85 +24,67 @@ namespace Yttrium
     namespace Apex
     {
 
-        Y_Shallow_Decl(Hook);
+        Y_Shallow_Decl(Hook); //!< alias
 
-#define Y_APN_Proto_Decl_NoExcept(RET,FUNC)          \
-RET FUNC(const Natural &, const Natural &) noexcept; \
-RET FUNC(const Natural &, const natural_t) noexcept; \
-RET FUNC(const natural_t, const Natural &) noexcept
-
-#define Y_APN_Compare_Proto(OP,LHS,RHS,RET) \
-inline friend bool operator OP (const LHS lhs, const RHS rhs) noexcept { return Compare(lhs,rhs) RET; }
-
-#define Y_APN_Compare_Decl(OP,RET) \
-Y_APN_Compare_Proto(OP,Natural &,Natural &,RET) \
-Y_APN_Compare_Proto(OP,Natural &,natural_t,RET) \
-Y_APN_Compare_Proto(OP,natural_t,Natural &,RET)
-
-
-#define Y_APN_Proto_Decl(RET,FUNC)          \
-RET FUNC(const Natural &, const Natural &); \
-RET FUNC(const Natural &, const natural_t); \
-RET FUNC(const natural_t, const Natural &)
-
-#define Y_APN_Operator_Proto_Binary(OP,LHS,RHS,CALL) \
-inline friend Natural operator OP (const LHS lhs, const RHS rhs) { return Natural(Hook,CALL(lhs,rhs)); }
-
-#define Y_APN_Operator_Impl_Binary(OP,CALL) \
-Y_APN_Operator_Proto_Binary(OP,Natural &,Natural &,CALL) \
-Y_APN_Operator_Proto_Binary(OP,Natural &,natural_t,CALL) \
-Y_APN_Operator_Proto_Binary(OP,natural_t,Natural &,CALL) \
-
-
-#define Y_APN_Operator_Proto_Unary(OP,RHS,CALL) \
-inline Natural & operator OP##=(const RHS rhs) { Natural res(Hook,CALL(*this,rhs)); return xch(res); }
-
-#define Y_APN_Operator_Impl_Unary(OP,CALL) \
-Y_APN_Operator_Proto_Unary(OP,Natural &,CALL)\
-Y_APN_Operator_Proto_Unary(OP,natural_t,CALL)
-
-
-#define Y_APN_Operator_Impl(OP,CALL) \
-Y_APN_Operator_Impl_Binary(OP,CALL)  \
-Y_APN_Operator_Impl_Unary(OP,CALL)
-
-#define Y_APN_DivMod_Impl(OP,CALL) \
-inline friend Natural operator OP (const Natural & lhs, const Natural & rhs) { return CALL(lhs,rhs); }                     \
-inline friend Natural operator OP (const Natural & lhs, const natural_t rhs) { const Natural _(rhs); return CALL(lhs,_); } \
-inline friend Natural operator OP (const natural_t lhs, const Natural & rhs) { const Natural _(lhs); return CALL(_,rhs); } \
-inline Natural & operator OP##=(const Natural & rhs) { Natural                       res = CALL(*this,rhs); return xch(res); } \
-inline Natural & operator OP##=(const natural_t rhs) { const Natural _(rhs); Natural res = CALL(*this,_);   return xch(res); } \
-
-
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Natural number
+        //
+        //
+        //______________________________________________________________________
         class Natural : public SmartDev, public Shielded
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
             static OpsMode            Ops;      //!< for multiplication/division
             static PlanType           Cmp;      //!< for comparisons
             static PlanType           BWO;      //!< for BitWise Ops
             static const char * const CallSign; //!< "apn"
 
-            Natural();
-            virtual ~Natural() noexcept;
-            Natural(const Natural &);
-            Natural & operator=(const Natural &);
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            Natural();                                     //!< setup empty
+            virtual ~Natural() noexcept;                   //!< cleanup
+            Natural(const Natural &);                      //!< duplicate
+            Natural & operator=(const Natural &);          //!< \return assigned by copy/swap
+            Natural(const natural_t);                      //!< setup
+            Natural & operator=(const natural_t) noexcept; //!< \return assigned
+            Y_OSTREAM_PROTO(Natural);                      //!< display hex/dec
 
-            Natural(const natural_t);
-            Natural & operator=(const natural_t);
-            Y_OSTREAM_PROTO(Natural);
+            Natural(Random::Bits & , const size_t);           //!< setup with exact number of random bits
+            Natural(const TwoToThePowerOf_ &, const size_t ); //!< setup to 2^n
+            Natural(InputStream &, const char * const = 0 );  //!< load from input stream
 
-            Natural(Random::Bits & , const size_t);
-            Natural(const TwoToThePowerOf_ &, const size_t );
-            Natural(InputStream &, const char * const = 0 );
-
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             virtual size_t serialize(OutputStream &) const;
             virtual void   ldz() noexcept;
             virtual void   ld1() noexcept;
-            size_t         bits() const noexcept;
-            Natural &      xch(Natural &) noexcept;
-            uint64_t       ls64() const   noexcept;
 
-            void alter(const PlanType) noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            size_t         bits()   const noexcept; //!< \return current bits
+            Natural &      xch(Natural &) noexcept; //!< \return no-throw exchanged
+            uint64_t       ls64() const   noexcept; //!< \return least significant 64 bits
 
 #if !defined(DOXYGEN_SHOULD_SKIP_THIS)
             Y_APN_Proto_Decl_NoExcept(static SignType,Compare);
@@ -123,31 +107,63 @@ inline Natural & operator OP##=(const natural_t rhs) { const Natural _(rhs); Nat
             Y_APN_DivMod_Impl(%,Mod)
 #endif
 
+            //__________________________________________________________________
+            //
+            //
+            // Specific additions
+            //
+            //__________________________________________________________________
             Natural   operator+() const; //!< \return *this
             Natural & operator++();      //!< prefix  \return increased *this
             Natural   operator++(int);   //!< postfix \return previous value, increase *this*
-            void      incr();
+            void      incr();            //!< in-place increase
 
+            //__________________________________________________________________
+            //
+            //
+            // Specific subtraction
+            //
+            //__________________________________________________________________
             Natural & operator--();      //!< prefix  \return decreased *this
             Natural   operator--(int);   //!< postfix \return previous value, decrease *this*
-            void      decr();
+            void      decr();            //!< in-place decrease
 
+            //__________________________________________________________________
+            //
+            //
+            // flexible div
+            //
+            //__________________________________________________________________
+
+            //! ldiv for natural
+            /**
+             \param Q optional quot
+             \param R optional rem
+             \param numer numerator
+             \param denom denominator
+             */
             static void Div_(Natural * const Q,
                              Natural * const R,
                              const Natural  &numer,
                              const Natural  &denom);
             
-            static Natural Div(const Natural &numer, const Natural &denom);
-            static Natural Mod(const Natural &numer, const Natural &denom);
+            static Natural Div(const Natural & , const Natural & ); //!< \return divison
+            static Natural Mod(const Natural & , const Natural & ); //!< \return modulus
 
-            void           shr() noexcept; //!< in-place shr
-            Natural        abs() const;
-            Natural        sqrt() const;
-            String         hexString() const;
-            String         decString() const;
+            //__________________________________________________________________
+            //
+            //
+            // algebra
+            //
+            //__________________________________________________________________
+            void           shr()    noexcept; //!< in-place shr
+            Natural        abs()       const; //!< \return *this
+            Natural        sqrt()      const; //!< \return integer square root
+            String         hexString() const; //!< \return hexadecimal, concise string
+            String         decString() const; //!< \return decimal string
 
-            static Natural GCD(const Natural &, const Natural &);
-            static void    Simplify(Natural &, Natural&);
+            static Natural GCD(const Natural &, const Natural &); //!< \return gcd(,)
+            static void    Simplify(Natural &, Natural&);         //!< atomic simplification
 
             //! try cast to integral value
             /**
@@ -163,7 +179,7 @@ inline Natural & operator OP##=(const natural_t rhs) { const Natural _(rhs); Nat
 
 
         private:
-            Natural(const Hook_ &, Device *);
+            Natural(const Hook_ &, Device *); //!< direct construction
 
             //! unsigned try cast \param value unsigned target \return true if possible
             template <typename T> inline
