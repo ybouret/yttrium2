@@ -12,24 +12,50 @@ namespace Yttrium
 
     namespace Cameo
     {
-        //! ap[n|z|q]
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Direct sum for ap[n|z|q]
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class DirectSummator : public Summator<T>
         {
         public:
-            Y_Args_Declare(T,Type);
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            Y_Args_Declare(T,Type); //!< aliases
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup
             inline explicit DirectSummator() : Summator<T>(), acc()
             {
                 Y_STATIC_CHECK(Y_Is_SuperSubClass_Strict(Apex::Number,MutableType),NoApexNumber);
             }
 
-            inline virtual ~DirectSummator() noexcept
-            {
-            }
+            //! cleanup
+            inline virtual ~DirectSummator() noexcept {}
 
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             inline virtual void ldz() noexcept { acc.ldz(); }
-
             inline virtual T    sum() noexcept
             {
                 ConstType res = acc;
@@ -38,8 +64,8 @@ namespace Yttrium
             }
 
         private:
-            Y_Disable_Copy_And_Assign(DirectSummator);
-            MutableType acc;
+            Y_Disable_Copy_And_Assign(DirectSummator); //!< discarding
+            MutableType acc; //!< accumulator
 
             inline virtual void add(ParamType x) { acc += x; }
         };
