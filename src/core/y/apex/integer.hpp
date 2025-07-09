@@ -92,6 +92,7 @@ namespace Yttrium
 
             Y_APZ_Operator_Impl(+,Add)
             Y_APZ_Operator_Impl(-,Sub)
+            Y_APZ_Operator_Impl(*,Mul)
 
 #endif
 
