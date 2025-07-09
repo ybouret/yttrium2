@@ -490,7 +490,7 @@ const CH & String<CH>:: getTail() const noexcept
 }
 
 template <>
-void String<CH>:: reserve(const size_t n) noexcept
+void String<CH>:: reserve(const size_t n)
 {
     assert(0!=code);
     if(n>0)
@@ -512,4 +512,12 @@ String<CH>:: String(const WithAtLeast_ &, const size_t n, const bool filled) :
 Y_String(), code( new Code(n) )
 {
     if(filled) code->size = n;
+}
+
+template <>
+String<CH> & String<CH>:: reverse() noexcept
+{
+    assert(0!=code);
+    Algorithm::Reverse(code->base,code->size,Swap<CH>);
+    return *this;
 }

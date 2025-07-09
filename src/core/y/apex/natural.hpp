@@ -8,11 +8,11 @@
 #include "y/apex/types.hpp"
 #include "y/apex/k/ops.hpp"
 #include "y/mkl/two-to-the-power-of.hpp"
-#include "y/ostream-proto.hpp"
 #include "y/apex/k/plan.hpp"
 #include "y/type/sign.hpp"
 #include "y/apex/n/shielded.hpp"
 #include "y/apex/n/smartdev.hpp"
+#include "y/string.hpp"
 
 namespace Yttrium
 {
@@ -142,7 +142,10 @@ inline Natural & operator OP##=(const natural_t rhs) { const Natural _(rhs); Nat
             void    shr() noexcept; //!< in-place shr
             Natural abs() const;
             Natural sqrt() const;
+            static Natural GCD(const Natural &, const Natural &);
 
+            String hexString() const;
+            String decString() const;
 
         private:
             Natural(const Hook_ &, Device *);

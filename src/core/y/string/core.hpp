@@ -119,7 +119,7 @@ namespace Yttrium
             virtual void         pushHead(ParamType); //!< prepend char
             virtual void         popTail() noexcept;
             virtual void         popHead() noexcept;
-            virtual void         reserve(const size_t n) noexcept;
+            virtual void         reserve(const size_t n);
 
             //__________________________________________________________________
             //
@@ -174,6 +174,8 @@ namespace Yttrium
             friend bool      operator!=<>(const String<T> &, const T) noexcept;
 
             static SignType Compare(const String &, const String &) noexcept; //!< \return lexicographic comparison
+
+            String & reverse() noexcept; //!< reverse content
 
         private:
             Code * const code; //!< internal memory

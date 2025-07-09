@@ -12,6 +12,7 @@
 #include "y/system/exception.hpp"
 #include "y/format/decimal.hpp"
 #include "y/core/text.hpp"
+#include "y/container/algorithm/reverse.hpp"
 
 #include <cstring>
 

@@ -103,7 +103,10 @@ namespace Yttrium
         std::ostream & operator<<(std::ostream &os, const Natural &self)
         {
             Y_Lock(*self);
-            return os << self.device->hex();
+            if( os.flags() & std::ios_base::hex )
+                return os << self.hexString();
+            else
+                return os << self.decString();
         }
 
 

@@ -85,7 +85,7 @@ Y_UTEST(apex_n)
             }
         }
     }
-    
+
     {
         std::cerr << "Additions 64" << std::endl;
         for(size_t i=0;i<64;++i)
@@ -136,7 +136,7 @@ Y_UTEST(apex_n)
             }
         }
 
-        
+
         Apex::Natural n(0);
         while(n<10)
         {
@@ -235,7 +235,7 @@ Y_UTEST(apex_n)
             Y_ASSERT(s-r == l);
         }
     }
-    
+
     {
         std::cerr << "SHR" << std::endl;
         for(size_t i=0;i<=80;++i)
@@ -279,7 +279,7 @@ Y_UTEST(apex_n)
             }
         }
     }
-    
+
     {
         std::cerr << "Div64 [";
 
@@ -331,7 +331,6 @@ Y_UTEST(apex_n)
         }
     }
     
-#if 1
     {
         std::cerr << "Sqrt" << std::endl;
         for(apn i=0;i<=100;++i)
@@ -342,7 +341,22 @@ Y_UTEST(apex_n)
             Y_ASSERT((s+1)*(s+1)>i);
         }
     }
-#endif
-    
+
+    std::cerr << "GCD..." << std::endl;
+    for(size_t iter=0;iter<10;++iter)
+    {
+        const apn a(ran,ran.leq<size_t>(10));
+        const apn b(ran,ran.leq<size_t>(10));
+        const apn g = apn::GCD(a,b);
+        std::cerr << "gcd(" << a << "," << b <<")=" << g << std::endl;
+    }
+
+    std::cerr << "String" << std::endl;
+    {
+        const apn n = 12345678;;
+        std::cerr << n.hexString() << std::endl;
+        std::cerr << n.decString() << std::endl;
+    }
+
 }
 Y_UDONE()

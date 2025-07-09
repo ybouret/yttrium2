@@ -33,6 +33,56 @@ namespace Yttrium
             }
             return x0;
         }
+
+        static inline
+        Natural apnGreatestCommonDivisor(Natural a, Natural b)
+        {
+            assert(a>0);
+            assert(b>0);
+            switch( Natural::Compare(a,b) )
+            {
+                case Negative: a.xch(b); break;
+                case __Zero__: return a;
+                case Positive:
+                    break;
+            }
+            assert(a>=b);
+            while(b.bits()>0)
+            {
+                Natural r = Natural::Mod(a,b);
+                a.xch(b);
+                b.xch(r);
+            }
+            return a;
+        }
+
+        Natural Natural:: GCD(const Natural &a, const Natural &b)
+        {
+            if(a.device->bits<=0)
+            {
+                if(b.device->bits<=0)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return b;
+                }
+            }
+            else
+            {
+                assert(a>0);
+                if(b.device->bits<=0)
+                {
+                    return a;
+                }
+                else
+                {
+                    assert(b>0);
+                    return apnGreatestCommonDivisor(a,b);
+                }
+            }
+        }
     }
 
 }
