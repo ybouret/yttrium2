@@ -12,19 +12,19 @@ namespace Yttrium
 
         namespace
         {
-            static ExchangePolicy _ExchangePolicy = ExchangeBuiltInEndian;
+            static TransmutePolicy _TransmutePolicy = TransmuteBuiltInEndian;
 
-            static Parcels::Exch ChooseExchangeMethod() noexcept
+            static Parcels::Exch ChooseTransmuteMethod() noexcept
             {
-                switch( _ExchangePolicy )
+                switch( _TransmutePolicy )
                 {
-                    case ExchangeBuiltInEndian:
+                    case TransmuteBuiltInEndian:
                         if( Endian::Little() )
                             return & Parcels:: exchLE;
                         else
                             return & Parcels::exchEN;
 
-                    case ExchangeNeutralEndian:
+                    case TransmuteNeutralEndian:
                         return & Parcels:: exchEN;
                 }
 
@@ -32,20 +32,20 @@ namespace Yttrium
 
             }
 
-            static Parcels::Exch _ExchangeMethod = ChooseExchangeMethod();
+            static Parcels::Exch _TransmuteMethod = ChooseTransmuteMethod();
         }
 
-        ExchangePolicy  Parcels:: GetExchangePolicy() noexcept
+        TransmutePolicy  Parcels:: GetTransmutePolicy() noexcept
         {
-            return _ExchangePolicy;
+            return _TransmutePolicy;
         }
 
-        void Parcels:: SetExchangePolicy(const ExchangePolicy ep) noexcept
+        void Parcels:: SetTransmutePolicy(const TransmutePolicy ep) noexcept
         {
             static Lockable &access = Archon::Instance().access;
             Y_Lock(access);
-            _ExchangePolicy = ep;
-            _ExchangeMethod = ChooseExchangeMethod();
+            _TransmutePolicy = ep;
+            _TransmuteMethod = ChooseTransmuteMethod();
         }
 
 
@@ -55,7 +55,7 @@ namespace Yttrium
         addr(0),
         plan(userBlockPlan),
         api(0),
-        exch(_ExchangeMethod),
+        exch(_TransmuteMethod),
         sync(),
         wksp(),
         blockShift(0),
@@ -70,7 +70,7 @@ namespace Yttrium
         addr(0),
         plan(other.plan),
         api(0),
-        exch(_ExchangeMethod),
+        exch(_TransmuteMethod),
         sync(),
         wksp(),
         blockShift(0),

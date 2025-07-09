@@ -13,10 +13,10 @@ namespace Yttrium
 
 
         //! how to exchange views
-        enum ExchangePolicy
+        enum TransmutePolicy
         {
-            ExchangeBuiltInEndian, //!< using Endian::Little/Big
-            ExchangeNeutralEndian  //!< force using Transmute::To
+            TransmuteBuiltInEndian, //!< using Endian::Little/Big
+            TransmuteNeutralEndian  //!< force using Transmute::To
         };
 
         //______________________________________________________________________
@@ -42,8 +42,8 @@ namespace Yttrium
             static const size_t     ParcelProtoWords = Alignment::WordsGEQ<ParcelProtoBytes>::Count; //!< alias
 
             typedef void            (Parcels:: *Exch)(const PlanType) const;         //!< method pointer
-            static ExchangePolicy  GetExchangePolicy()                     noexcept; //!< \return current global policy
-            static void            SetExchangePolicy(const ExchangePolicy) noexcept; //!< set current global policy
+            static TransmutePolicy  GetTransmutePolicy()                     noexcept; //!< \return current global policy
+            static void             SetTransmutePolicy(const TransmutePolicy) noexcept; //!< set current global policy
 
 
 

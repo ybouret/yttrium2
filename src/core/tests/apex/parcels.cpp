@@ -85,10 +85,10 @@ namespace
 Y_UTEST(apex_parcels)
 {
     Random::ParkMiller  ran;
-    Apex::Parcels::SetExchangePolicy( Apex::ExchangeNeutralEndian );
+    Apex::Parcels::SetTransmutePolicy( Apex::TransmuteNeutralEndian );
     testParcels(ran);
 
-    Apex::Parcels::SetExchangePolicy( Apex::ExchangeBuiltInEndian);
+    Apex::Parcels::SetTransmutePolicy( Apex::TransmuteBuiltInEndian);
     testParcels(ran);
 
     Y_SIZEOF(Apex::Parcels);
