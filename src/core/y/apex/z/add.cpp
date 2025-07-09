@@ -97,6 +97,29 @@ namespace Yttrium
             return Add(rhs,lhs);
         }
 
+        
+        Integer Integer:: Add(const Integer &lhs, const Natural &rhs)
+        {
+            switch(lhs.s)
+            {
+                case __Zero__: return rhs;
+                case Positive: { const Natural sum = lhs.n + rhs; assert(sum>0); return Integer(Positive,sum); }
+                case Negative:
+                    break;
+            }
+            switch( Natural::Compare(lhs.n,rhs) )
+            {
+                case __Zero__: break;
+                case Negative: { const Natural dif = rhs-lhs.n; return Integer(Positive,dif); }
+                case Positive: { const Natural dif = lhs.n-rhs; return Integer(Negative,dif); }
+            }
+            return Integer();
+        }
+
+        Integer Integer:: Add(const Natural &lhs, const Integer &rhs)
+        {
+            return Add(rhs,lhs);
+        }
 
     }
 

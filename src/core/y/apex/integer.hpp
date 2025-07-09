@@ -37,7 +37,9 @@ Y_APN_Compare_Proto(OP,Natural &,Integer &,RET)
 #define Y_APZ_Proto_Decl(RET,FUNC)          \
 RET FUNC(const Integer &, const Integer &); \
 RET FUNC(const Integer &, const integer_t); \
-RET FUNC(const integer_t, const Integer &)
+RET FUNC(const integer_t, const Integer &); \
+RET FUNC(const Integer &, const Natural &); \
+RET FUNC(const Natural &, const Integer &)
 
 #if 0
         //! helper

@@ -34,9 +34,21 @@ Y_UTEST(apex_z)
                 const apz     S = apz::Add(U,V);
                 Y_ASSERT(s==S);
                 //std::cerr << U << " + " << V << " => " << S << std::endl;
-                std::cerr << "Add(" << U << "," << v << ")=" << apz::Add(U,v) << std::endl;
+                //std::cerr << "Add(" << U << "," << v << ")=" << apz::Add(U,v) << std::endl;
                 Y_ASSERT(apz::Add(U,v)==S);
                 Y_ASSERT(apz::Add(u,V)==S);
+
+                if(u>=0)
+                {
+                    const apn nu = u;
+                    Y_ASSERT(apz::Add(nu,V)==S);
+                }
+
+                if(v>=0)
+                {
+                    const apn nv = v;
+                    Y_ASSERT(apz::Add(U,nv)==S);
+                }
 
             }
         }
