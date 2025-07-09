@@ -163,6 +163,7 @@ namespace Yttrium
             String         decString() const; //!< \return decimal string
 
             static Natural GCD(const Natural &, const Natural &); //!< \return gcd(,)
+            static Natural LCM(const Natural &, const Natural &); //!< \return least common multiple
             static void    Simplify(Natural &, Natural&);         //!< atomic simplification
             static Natural Factorial(const size_t);               //!< \return n!
             static Natural Comb(const size_t n, const size_t k);  //!< \param n n>=0 \param k k<=m \return (n,k)

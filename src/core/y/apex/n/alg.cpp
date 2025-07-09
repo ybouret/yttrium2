@@ -84,6 +84,13 @@ namespace Yttrium
             }
         }
 
+
+        Natural Natural:: LCM(const Natural &a, const Natural &b)
+        {
+            return (a*b)/GCD(a,b);
+        }
+
+
         void Natural:: Simplify(Natural &a, Natural &b)
         {
             const Natural g = GCD(a,b);
