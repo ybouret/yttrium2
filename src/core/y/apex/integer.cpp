@@ -1,6 +1,7 @@
 
 #include "y/apex/integer.hpp"
 #include "y/calculus/iabs.hpp"
+#include "y/system/exception.hpp"
 
 namespace Yttrium
 {
@@ -23,7 +24,7 @@ namespace Yttrium
             Coerce(n).ld1();
         }
 
-        String Integer:: toString() const
+        String Integer:: str() const
         {
             switch(s)
             {
@@ -37,7 +38,7 @@ namespace Yttrium
 
         std::ostream & operator<<(std::ostream &os, const Integer &z)
         {
-            return os << z.toString();
+            return os << z.str();
         }
 
         Integer:: Integer(const Integer &z) :
@@ -68,6 +69,26 @@ namespace Yttrium
         {
 
         }
+
+        Integer:: Integer(const SignType S, const Natural & N) :
+        Number(),
+        s(S),
+        n(N)
+        {
+            static const char fn[] = "apz(s,n)";
+            switch(s)
+            {
+                case Negative:
+                case Positive:
+                    if(n.bits()<=0) throw Specific::Exception(fn,"n=zero, sign=%s",Sign::HumanReadable(s));
+                    break;
+                case __Zero__:
+                    if(n.bits()>0) throw Specific::Exception(fn,"n>0 for sign=%s",Sign::HumanReadable(s));
+                    break;
+
+            }
+        }
+
 
         Integer & Integer:: operator=( const integer_t z ) noexcept
         {

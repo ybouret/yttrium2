@@ -33,6 +33,11 @@ Y_APN_Compare_Proto(OP,integer_t,Integer &,RET) \
 Y_APN_Compare_Proto(OP,Integer &,Natural &,RET) \
 Y_APN_Compare_Proto(OP,Natural &,Integer &,RET) 
 
+        //! helper
+#define Y_APZ_Proto_Decl(RET,FUNC)          \
+RET FUNC(const Integer &, const Integer &); \
+RET FUNC(const Integer &, const integer_t); \
+RET FUNC(const integer_t, const Integer &)
 
         //______________________________________________________________________
         //
@@ -69,6 +74,7 @@ Y_APN_Compare_Proto(OP,Natural &,Integer &,RET)
             Integer(const integer_t);
             Integer & operator=(const integer_t) noexcept;
             Integer(const Natural &);
+            Integer(const SignType,const Natural &);
 
             //__________________________________________________________________
             //
@@ -87,8 +93,8 @@ Y_APN_Compare_Proto(OP,Natural &,Integer &,RET)
             //
             //__________________________________________________________________
             Integer & xch(Integer &) noexcept;
-            String    toString() const;
-            Integer   abs()      const;
+            String    str() const;
+            Integer   abs() const;
 
 #if !defined(DOXYGEN_SHOULD_SKIP_THIS)
             Y_APZ_Proto_Decl_NoExcept(static SignType,Compare);
@@ -98,8 +104,11 @@ Y_APN_Compare_Proto(OP,Natural &,Integer &,RET)
             Y_APZ_Compare_Decl(>,  == Positive)
             Y_APZ_Compare_Decl(<=, != Positive)
             Y_APZ_Compare_Decl(>=, != Negative)
+
+            Y_APZ_Proto_Decl(static Integer,Add);
+
 #endif
-            
+
             //__________________________________________________________________
             //
             //
