@@ -4,7 +4,7 @@
 
 using namespace Yttrium;
 
-Y_UTEST(decimal)
+Y_UTEST(format_decimal)
 {
 
     for(int i=1;i<argc;++i)

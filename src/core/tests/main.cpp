@@ -10,10 +10,13 @@
 Y_UTEST_DECL(128)
 {
     Y_UTEST(exception);
-    Y_UTEST(hexadecimal);
-    Y_UTEST(decimal);
+
     Y_UTEST(singleton);
     Y_UTEST(static_init);
+
+    Y_UTEST(format_hexadecimal);
+    Y_UTEST(format_decimal);
+    Y_UTEST(format_human_readable);
 
     Y_UTEST(core_variadic);
     Y_UTEST(core_linked);

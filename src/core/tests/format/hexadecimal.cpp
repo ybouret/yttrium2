@@ -4,7 +4,7 @@
 
 using namespace Yttrium;
 
-Y_UTEST(hexadecimal)
+Y_UTEST(format_hexadecimal)
 {
 
     std::cerr << Hexadecimal() << std::endl;

@@ -3,6 +3,7 @@
 
 Y_CreateTest(test-core
 core
+format
 type
 static
 system
@@ -37,10 +38,14 @@ enable_testing()
 Y_Message("Preparing ${Y_Test}")
 
 Y_UTEST(exception)
-Y_UTEST(hexadecimal)
-Y_UTEST(decimal)
+
 Y_UTEST(singleton)
 Y_UTEST(static_init)
+
+#format
+Y_UTEST(format:hexadecimal)
+Y_UTEST(format:decimal)
+Y_UTEST(format:human_readable)
 
 # core
 Y_UTEST(core:variadic)
