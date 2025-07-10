@@ -10,40 +10,76 @@ namespace Yttrium
 {
     namespace Apex
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Rational Number
+        //
+        //
+        //______________________________________________________________________
         class Rational : public Number
         {
         public:
-            static const char * const CallSign;
-            
-            Rational();
-            Rational(const Rational &);
-            Rational & operator=(const Rational &);
-            virtual ~Rational() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const char * const CallSign; //!< "apq"
 
-            Rational(const integer_t,const natural_t);
-            Rational(const Integer &);
-            Rational(const Natural &);
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            Rational();                                //!< setup
+            Rational(const Rational &);                //!< duplicate
+            Rational & operator=(const Rational &);    //!< assign \return *this
+            virtual ~Rational() noexcept;              //!< cleanup
+            Rational(const integer_t,const natural_t); //!< setup
+            Rational(const Integer &);                 //!< setup
+            Rational(const Natural &);                 //!< setup
+            Y_OSTREAM_PROTO(Rational);                 //!< display
 
-            Y_OSTREAM_PROTO(Rational);
-
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             virtual size_t serialize(OutputStream&) const;
             virtual void   ldz() noexcept;
             virtual void   ld1() noexcept;
 
-            Rational &     xch(Rational &) noexcept;
-            Rational &     neg() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            Rational &     xch(Rational &) noexcept; //!< exchange \return *this
+            Rational &     neg() noexcept;           //!< in-place opposite \return *this
 
 
-            const Integer numer;
-            const Natural denom;
+            //__________________________________________________________________
+            //
+            //
+            // Memberss
+            //
+            //__________________________________________________________________
+            const Integer numer; //!< numerator
+            const Natural denom; //!< denominator
 
         private:
-            void           simplify();
+            void           simplify(); //!< check/simplify
 
         };
     }
 
-    typedef Apex::Rational apq;
+    typedef Apex::Rational apq; //!< alias
 }
 
 #endif
