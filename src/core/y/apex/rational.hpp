@@ -10,6 +10,19 @@ namespace Yttrium
 {
     namespace Apex
     {
+        //! helper
+#define Y_APQ_Proto_Decl(RET,FUNC)            \
+RET FUNC(const Rational &, const Rational &); \
+
+        //! helper
+#define Y_APQ_Compare_Proto(OP,LHS,RHS,RET) \
+inline friend bool operator OP (const LHS lhs, const RHS rhs) noexcept { return Compare(lhs,rhs) RET; }
+
+
+        //! helper
+#define Y_APQ_Compare_Decl(OP,RET) \
+Y_APN_Compare_Proto(OP,Rational &,Rational &,RET)
+
         //______________________________________________________________________
         //
         //
@@ -54,6 +67,15 @@ namespace Yttrium
             virtual void   ldz() noexcept;
             virtual void   ld1() noexcept;
 
+
+            Y_APQ_Proto_Decl(static SignType,Compare);
+            Y_APQ_Compare_Decl(==, == __Zero__)
+            Y_APQ_Compare_Decl(!=, != __Zero__)
+            Y_APQ_Compare_Decl(<,  == Negative)
+            Y_APQ_Compare_Decl(>,  == Positive)
+            Y_APQ_Compare_Decl(<=, != Positive)
+            Y_APQ_Compare_Decl(>=, != Negative)
+            
             //__________________________________________________________________
             //
             //
