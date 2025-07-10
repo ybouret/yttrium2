@@ -87,6 +87,14 @@ namespace Yttrium
             simplify();
         }
 
+        Rational:: Rational(const Fraction &F) :
+        Number(),
+        numer(F.numer),
+        denom(F.denom)
+        {
+            simplify();
+        }
+
         Rational::Rational(const Integer &N) :
         Number(), numer(N), denom(1)
         {

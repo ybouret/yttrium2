@@ -8,6 +8,12 @@
 
 namespace Yttrium
 {
+    struct Fraction
+    {
+        int64_t  numer;
+        uint64_t denom;
+    };
+
     namespace Apex
     {
         //! helper
@@ -22,6 +28,8 @@ inline friend bool operator OP (const LHS lhs, const RHS rhs) noexcept { return 
         //! helper
 #define Y_APQ_Compare_Decl(OP,RET) \
 Y_APN_Compare_Proto(OP,Rational &,Rational &,RET)
+
+
 
         //______________________________________________________________________
         //
@@ -56,7 +64,8 @@ Y_APN_Compare_Proto(OP,Rational &,Rational &,RET)
             Rational(const Integer &);                 //!< setup
             Rational(const Natural &);                 //!< setup
             Y_OSTREAM_PROTO(Rational);                 //!< display
-
+            Rational(const Fraction &);                //!< setup
+                                                       
             //__________________________________________________________________
             //
             //
@@ -75,7 +84,7 @@ Y_APN_Compare_Proto(OP,Rational &,Rational &,RET)
             Y_APQ_Compare_Decl(>,  == Positive)
             Y_APQ_Compare_Decl(<=, != Positive)
             Y_APQ_Compare_Decl(>=, != Negative)
-            
+
             //__________________________________________________________________
             //
             //
