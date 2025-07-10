@@ -95,6 +95,22 @@ namespace Yttrium
             simplify();
         }
 
+        Rational::Rational(const Integer &N, const Natural &D) :
+        Number(),
+        numer(N),
+        denom(D)
+        {
+        }
+
+        Rational:: Rational(const integer_t N) :
+        Number(),
+        numer(N),
+        denom(1)
+        {
+        }
+        
+
+
         Rational::Rational(const Integer &N) :
         Number(), numer(N), denom(1)
         {

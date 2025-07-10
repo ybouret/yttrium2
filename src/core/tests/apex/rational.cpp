@@ -15,7 +15,7 @@ Y_UTEST(apex_q)
     {
         static const Fraction F[] =
         {
-            {-1,3}, {0,1}, {2,5}
+            {-1,3}, {0,1}, {6,5}
         };
         static const size_t num = sizeof(F)/sizeof(F[0]);
 
@@ -30,8 +30,19 @@ Y_UTEST(apex_q)
 
                 const SignType cmp = Sign::Of(xi,xj);
                 Y_ASSERT( apq::Compare(I,J) == cmp);
-
             }
+        }
+
+        {
+            const apq one = 1;
+            const apq gt1 = F[2];
+            std::cerr << one << std::endl;
+            const apn _1 = 1;
+            Y_CHECK( __Zero__ == apq::Compare(one,_1) );
+            Y_CHECK( __Zero__ == apq::Compare(_1,one) );
+            Y_CHECK( Positive == apq::Compare(gt1,_1) );
+            Y_CHECK( Negative == apq::Compare(_1,gt1) );
+
         }
 
     }
