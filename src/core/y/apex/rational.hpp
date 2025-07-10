@@ -19,6 +19,7 @@ namespace Yttrium
         //! helper
 #define Y_APQ_Proto_Decl(RET,FUNC)            \
 RET FUNC(const Rational &, const Rational &); \
+RET FUNC(const Rational &, const Integer  &); \
 
         //! helper
 #define Y_APQ_Compare_Proto(OP,LHS,RHS,RET) \
@@ -27,7 +28,8 @@ inline friend bool operator OP (const LHS lhs, const RHS rhs) noexcept { return 
 
         //! helper
 #define Y_APQ_Compare_Decl(OP,RET) \
-Y_APN_Compare_Proto(OP,Rational &,Rational &,RET)
+Y_APN_Compare_Proto(OP,Rational &,Rational &,RET) \
+Y_APN_Compare_Proto(OP,Rational &,Integer  &,RET)
 
 
 
@@ -65,7 +67,7 @@ Y_APN_Compare_Proto(OP,Rational &,Rational &,RET)
             Rational(const Natural &);                 //!< setup
             Y_OSTREAM_PROTO(Rational);                 //!< display
             Rational(const Fraction &);                //!< setup
-                                                       
+
             //__________________________________________________________________
             //
             //
