@@ -29,8 +29,8 @@ namespace Yttrium
 
         //! Divider
         struct Divider {
-            const char     suffix; //!<  ' '|k|M|G|T|P|E
-            const uint64_t factor; //!< 2^(0|10|20|30|40|50|60)
+            char     suffix; //!<  ' '|k|M|G|T|P|E
+            uint64_t factor; //!< 2^(0|10|20|30|40|50|60)
         };
 
         static const Divider Divide[]; //!< precomputed dividers

@@ -66,7 +66,7 @@ Y_UTEST(apex_z)
 
                 if(u>=0)
                 {
-                    const apn nu = u;
+                    const apn nu = Apex::natural_t(u);
                     Y_ASSERT(apz::Add(nu,V)==S);
                     Y_ASSERT(apz::Sub(nu,V)==D);
                     Y_ASSERT(apz::Mul(nu,V)==P);
@@ -78,7 +78,7 @@ Y_UTEST(apex_z)
 
                 if(v>=0)
                 {
-                    const apn nv = v;
+                    const apn nv = Apex::natural_t(v);
                     Y_ASSERT(apz::Add(U,nv)==S);
                     Y_ASSERT(apz::Sub(U,nv)==D);
                     Y_ASSERT(apz::Mul(U,nv)==P);

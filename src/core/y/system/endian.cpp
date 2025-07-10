@@ -1,5 +1,6 @@
 
 #include "y/system/endian.hpp"
+#include "y/memory/stealth.hpp"
 
 namespace Yttrium
 {
@@ -7,7 +8,8 @@ namespace Yttrium
     bool Endian:: Little() noexcept
     {
         static const uint8_t  byte[2]={0,1};
-        const uint16_t        word = *(const uint16_t*)(&(byte[0]));
+		const uint16_t        word = *static_cast<const uint16_t *>( Memory::Stealth::Address(byte) );
+		//const uint16_t        word = *(const uint16_t*)(&(byte[0]));
         return 0x0100 == word;
     }
 

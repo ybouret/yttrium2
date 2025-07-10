@@ -83,7 +83,7 @@ namespace Yttrium
         Integer:: Integer(const integer_t z) :
         Number(),
         s( Sign::Of(z)   ),
-        n( IntegerAbs(z) )
+        n( natural_t(z>=0?z:-z) )
         {
 
         }
@@ -119,9 +119,9 @@ namespace Yttrium
             return *this;
         }
 
-        Integer & Integer:: operator=(const Natural &n)
+        Integer & Integer:: operator=(const Natural &N)
         {
-            Integer z(n);
+            Integer z(N);
             return xch(z);
         }
 

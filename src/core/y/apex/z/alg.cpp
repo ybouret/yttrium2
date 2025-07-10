@@ -32,7 +32,7 @@ namespace Yttrium
             switch(s)
             {
                 case __Zero__: break;
-                case Positive: { const Natural s = n.sqrt(); return Integer(s); }
+                case Positive: { const Natural S = n.sqrt(); return Integer(S); }
                 case Negative: throw Libc::Exception(EDOM,"sqrt of negative %s",CallSign);
             }
             return Integer();

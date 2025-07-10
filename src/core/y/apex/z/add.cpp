@@ -66,7 +66,7 @@ namespace Yttrium
                 case Sign::NN: { const Natural sum = lhs.n + natural_t(-rhs); return Integer(Negative,sum); }
 
                 case Sign::PN: {
-                    const natural_t abr(-rhs);
+                    const natural_t abr = natural_t(-rhs);
                     switch( Natural:: Compare(lhs.n,abr) )
                     {
                         case __Zero__: break; // => zero
@@ -76,7 +76,7 @@ namespace Yttrium
                 } break; // => zero
 
                 case Sign::NP: {
-                    const natural_t rrr(rhs);
+                    const natural_t rrr = natural_t(rhs);
                     switch( Natural:: Compare(lhs.n,rrr) )
                     {
                         case __Zero__: break; // => zero
