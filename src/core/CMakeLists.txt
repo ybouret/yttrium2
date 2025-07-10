@@ -77,6 +77,7 @@ Y_CreateLibrary(y
     y/apex/block/model
     y/apex/n
     y/apex/z
+    y/apex/q
     y/mkl
     y/mkl/api
     y/random

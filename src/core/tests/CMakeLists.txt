@@ -167,6 +167,7 @@ Y_UTEST(apex:parcels)
 Y_UTEST(apex:device)
 Y_UTEST(apex:n)
 Y_UTEST(apex:z)
+Y_UTEST(apex:q)
 Y_UTEST(apex:io)
 
 #random
