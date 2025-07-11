@@ -1,5 +1,3 @@
-
-
 //! \file
 
 #ifndef Y_Apex_Integer_Helpers_Included
