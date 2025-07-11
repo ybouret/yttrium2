@@ -91,7 +91,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(AProxyMultiplier); //!< discarding
             CoreType acc;                              //!< inner accumulator
 
-            inline virtual void Mul(ParamType x) { acc *= x; }
+            inline virtual void mul(ParamType x) { acc *= x; }
 
         };
     }
