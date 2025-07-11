@@ -63,6 +63,8 @@ namespace Yttrium
             Rational & operator=(const integer_t); //!< \return *this
             Rational & operator=(const Fraction);  //!< \return *this
 
+            Rational(InputStream&,const char * const=0);
+
             //__________________________________________________________________
             //
             //

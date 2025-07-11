@@ -14,6 +14,7 @@ Y_UTEST(apex_io)
 
     Vector<apn> nvec;
     Vector<apz> zvec;
+    Vector<apq> qvec;
 
     {
         OutputFile fp("apio.dat");
@@ -22,12 +23,18 @@ Y_UTEST(apex_io)
         {
             const apn n(ran,ibits);
             const apz z(ran,ibits);
+            const apq q(ran,ibits,ibits<=0?1:ibits);
+
             std::cerr << "n=" << n << std::endl;
             std::cerr << "z=" << z << std::endl;
+            std::cerr << "q=" << q << std::endl;
+
             nw += n.serialize(fp);
             nw += z.serialize(fp);
+            nw += q.serialize(fp);
             nvec << n;
             zvec << z;
+            qvec << q;
         }
         std::cerr << "nw=" << nw << std::endl;
     }
@@ -46,6 +53,13 @@ Y_UTEST(apex_io)
                 const apz z(fp,"apz");
                 if(z!=zvec[i]) throw Exception("invalid apz[%u]",i);
             }
+
+            {
+                const apq q(fp,"apq");
+                if(q!=qvec[i]) throw Exception("invalid apq[%u]",i);
+            }
+
+
             ++i;
         }
     }
