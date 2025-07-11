@@ -60,7 +60,7 @@ namespace Yttrium
 
                 inline T product()
                 {
-                    if(list.size<=0) return T(0);
+                    if(list.size<=0) return T(1);
                     while(true)
                     {
                         assert(list.size>=2);

@@ -49,7 +49,7 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
-            virtual void ldz() noexcept = 0; //!< clear
+            virtual void ld1() noexcept = 0; //!< clear
             virtual T    product()      = 0; //!< must reset after computation \return sum
 
             //__________________________________________________________________
@@ -71,7 +71,7 @@ namespace Yttrium
             template <typename ITERATOR> inline
             Multiplier & load(ITERATOR curr, size_t size)
             {
-                while(size-- > 0) add( *(curr++) );
+                while(size-- > 0) mul( *(curr++) );
                 return *this;
             }
 
@@ -84,7 +84,7 @@ namespace Yttrium
             template <typename ITERATOR> inline
             T operator()(ITERATOR curr, const size_t size)
             {
-                ldz(); return load(curr,size).prod();
+                ld1(); return load(curr,size).product();
             }
 
             //! \param seq sequence \return sum of sequence

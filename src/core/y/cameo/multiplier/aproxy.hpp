@@ -69,13 +69,13 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
-            inline virtual void ldz() noexcept { acc.ldz(); }
+            inline virtual void ld1() noexcept { acc.ld1(); }
             inline virtual T    product()
             {
                 T result = 0;
                 if(!acc.tryCast(result))
                     AProxyMultiplierInfo::Overflow();
-                acc.ldz();
+                ld1();
                 return result;
             }
 
@@ -91,7 +91,10 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(AProxyMultiplier); //!< discarding
             CoreType acc;                              //!< inner accumulator
 
-            inline virtual void mul(ParamType x) { acc *= x; }
+            inline virtual void mul(ParamType x)
+            {
+                acc *= x;
+            }
             inline virtual void mul(ParamType x, size_t n)
             {
                 const CoreType _(x);

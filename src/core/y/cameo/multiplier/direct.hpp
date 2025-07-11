@@ -55,11 +55,11 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
-            inline virtual void ldz()     noexcept { acc.ldz(); }
+            inline virtual void ld1()     noexcept { acc.ld1(); }
             inline virtual T    product() noexcept
             {
                 ConstType res = acc;
-                acc.ldz();
+                ld1();
                 return res;
             }
 

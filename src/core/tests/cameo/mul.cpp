@@ -1,8 +1,4 @@
-
-#include "y/cameo/multiplier/aproxy.hpp"
-#include "y/cameo/multiplier/direct.hpp"
-#include "y/cameo/multiplier/synod/fp-list.hpp"
-
+#include "y/cameo/multiplication.hpp"
 
 #include "y/mkl/complex.hpp"
 #include "y/mkl/xreal.hpp"
@@ -11,53 +7,6 @@
 
 using namespace Yttrium;
 
-namespace Yttrium
-{
-    namespace Cameo
-    {
-
-     
-         
-       
-
-
-        template <typename T>
-        class FPointMultiplier : public Multiplier<T>
-        {
-        public:
-            Y_Args_Declare(T,Type);
-
-            typedef Synod::FPList<T>              EngineType;
-            typedef typename EngineType::UnitList UnitList;
-
-            inline explicit FPointMultiplier() : Multiplier<T>(), engine()
-            {
-            }
-
-            inline virtual ~FPointMultiplier() noexcept {
-            }
-
-            inline Caching *       operator->()       noexcept { return &engine; }
-            inline const Caching * operator->() const noexcept { return &engine; }
-
-            inline const UnitList & operator*() const noexcept { return *engine; }
-
-            inline virtual void ldz() noexcept { engine.free(); }
-
-            inline virtual T product()
-            {
-                return engine.product();
-            }
-
-        private:
-            EngineType engine;
-
-            virtual void mul(ParamType x)           { engine.push(x);   }
-            virtual void mul(ParamType x, size_t n) { engine.push(x,n); }
-        };
-
-    }
-}
 
 
 namespace
@@ -103,10 +52,26 @@ Y_UTEST(cameo_mul)
 
     {
         Cameo::FPointMultiplier<float> fmul;
+        fmul->cache(10);
         fmul << 1e-5f << 1e-8f << 0.1f;
         std::cerr << *fmul << std::endl;
         std::cerr << fmul.product() << std::endl;
     }
 
+    {
+        Cameo::Multiplication<apz>                zmul;
+        Cameo::Multiplication<apn>                nmul;
+        Cameo::Multiplication<int>                imul;
+        Cameo::Multiplication<unsigned>           umul;
+        Cameo::Multiplication<float>              fmul;
+        Cameo::Multiplication< XReal<double> >    xmul;
+        Cameo::Multiplication< Complex<double> >  cmul;
+        Cameo::Multiplication< Complex< XReal<long double> > >  xcmul;
+
+        {
+            unsigned short arr[] = { 1, 10, 101, 99 };
+            std::cerr << umul(arr,sizeof(arr)/sizeof(arr[0])) << std::endl;
+        }
+    }
 }
 Y_UDONE()
