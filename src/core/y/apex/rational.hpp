@@ -22,7 +22,9 @@ RET FUNC(const Rational &, const Rational &); \
 RET FUNC(const Rational &, const Integer  &); \
 RET FUNC(const Integer  &, const Rational &); \
 RET FUNC(const Rational &, const Natural  &); \
-RET FUNC(const Natural  &, const Rational &) 
+RET FUNC(const Natural  &, const Rational &); \
+RET FUNC(const Rational &, const integer_t ); \
+RET FUNC(const integer_t , const Rational &)
 
         //! helper
 #define Y_APQ_Compare_Proto(OP,LHS,RHS,RET) \
@@ -33,7 +35,11 @@ inline friend bool operator OP (const LHS lhs, const RHS rhs) noexcept { return 
 #define Y_APQ_Compare_Decl(OP,RET) \
 Y_APN_Compare_Proto(OP,Rational &, Rational &,RET) \
 Y_APN_Compare_Proto(OP,Rational &, Integer  &,RET) \
-Y_APN_Compare_Proto(OP,Integer  &, Rational &,RET)
+Y_APN_Compare_Proto(OP,Integer  &, Rational &,RET) \
+Y_APN_Compare_Proto(OP,Rational &, Natural  &,RET) \
+Y_APN_Compare_Proto(OP,Natural  &, Rational &,RET) \
+Y_APN_Compare_Proto(OP,Rational &, integer_t ,RET) \
+Y_APN_Compare_Proto(OP,integer_t , Rational &,RET)
 
 
 
@@ -73,7 +79,7 @@ Y_APN_Compare_Proto(OP,Integer  &, Rational &,RET)
             Rational(const Fraction &);                //!< setup
             Rational(const Integer &,const Natural &); //!< setup
             Rational(const integer_t);                 //!< setup
-            
+
             //__________________________________________________________________
             //
             //

@@ -6,6 +6,7 @@
 #include "y/format/hexadecimal.hpp"
 #include "y/system/wall-time.hpp"
 #include "y/memory/stealth.hpp"
+#include "y/format/human-readable.hpp"
 
 using namespace Yttrium;
 
@@ -41,7 +42,8 @@ Y_UTEST(apex_perf)
 
         for(unsigned i=0;i<Apex::Metrics::Plans;++i)
         {
-            std::cerr << " " << std::setw(20) << (long double)cycle / chrono(tmx[i]);
+            const double speed = ceil((long double)cycle / chrono(tmx[i]));
+            std::cerr << " " << HumanReadable( speed ) << "/s";
         }
         std::cerr << std::endl;
 
