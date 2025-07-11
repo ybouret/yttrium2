@@ -24,6 +24,7 @@ Y_CreateLibrary(y
     y/concurrent/thread
     y/concurrent/data
     y/container
+    y/container/matrix
     y/container/iter
     y/container/algorithm
     y/container/sequence

@@ -118,6 +118,7 @@ Y_UTEST(xml:attribute)
 Y_UTEST(container:algo)
 Y_UTEST(container:iterator)
 Y_UTEST(container:cxx:array)
+Y_UTEST(container:matrix)
 
 #stream
 Y_UTEST(stream:io:char)

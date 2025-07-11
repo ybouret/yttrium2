@@ -83,6 +83,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(container_algo);
     Y_UTEST(container_iterator);
     Y_UTEST(container_cxx_array);
+    Y_UTEST(container_matrix);
 
     Y_UTEST(stream_io_char);
     Y_UTEST(stream_queue);
