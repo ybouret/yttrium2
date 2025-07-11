@@ -15,7 +15,6 @@ Y_UTEST(cameo_mul)
         Cameo::DirectMultiplier<apn> nmul;
         Cameo::DirectMultiplier<apz> zmul;
         Cameo::DirectMultiplier<apq> qmul;
-
     }
 }
 Y_UDONE()
