@@ -35,6 +35,12 @@ namespace
                         Y_ASSERT( apq::Add(x,r) == sum );
                     }
 
+                    {
+                        const apq dif = apq::Sub(q,r); Y_ASSERT( apq::Sub(r,q) == -dif );
+                        Y_ASSERT( apq::Sub(r,x) == -dif );
+                        Y_ASSERT( apq::Sub(x,r) == dif );
+                    }
+
                     if(nbit<=0) break;
                 }
             }
@@ -122,6 +128,19 @@ Y_UTEST(apex_q)
         for(apq q(-23,7);q <= 3; )
         {
             std::cerr << ' ' << q++;
+        }
+        std::cerr << std::endl;
+    }
+
+    {
+        for(apq q(14,3); q >= -4; )
+        {
+            std::cerr << ' ' << --q;
+        }
+        std::cerr << std::endl;
+        for(apq q(14,3); q >= -4; )
+        {
+            std::cerr << ' ' << q--;
         }
         std::cerr << std::endl;
     }

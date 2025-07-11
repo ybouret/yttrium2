@@ -139,6 +139,9 @@ Y_APQ_Operator_Impl_Unary(OP,CALL)
 
             Y_APQ_Proto_Decl(static Rational,Add);
             Y_APQ_Operator_Impl(+,Add)
+
+            Y_APQ_Proto_Decl(static Rational,Sub);
+            Y_APQ_Operator_Impl(-,Sub)
  #endif
 
             //__________________________________________________________________
@@ -151,6 +154,17 @@ Y_APQ_Operator_Impl_Unary(OP,CALL)
             Rational & operator++();      //!< prefix  \return increased *this
             Rational   operator++(int);   //!< postfix \return previous value, increase *this
             void       incr();            //!< in-place increase
+
+            //__________________________________________________________________
+            //
+            //
+            // Specific subtraction
+            //
+            //__________________________________________________________________
+            Rational   operator-() const; //!< \return - *this
+            Rational & operator--();      //!< prefix  \return decreased *this
+            Rational   operator--(int);   //!< postfix \return previous value, decrease *this*
+            void       decr();            //!< in-place decrease
 
 
             //__________________________________________________________________
