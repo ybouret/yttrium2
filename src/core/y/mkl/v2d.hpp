@@ -39,10 +39,10 @@ namespace Yttrium
         //
         //______________________________________________________________________
         inline  V2D()                         noexcept : x(0), y(0) {}                 //!< setup 0
-        inline  V2D(const T X, const T Y)     noexcept : x(X), y(Y) {}                 //!< setup
+        inline  V2D(const T X, const T Y)     noexcept : x(X), y(Y) {}                 //!< setup \param X x \param Y y
         inline ~V2D()                         noexcept {}                              //!< cleanup
-        inline  V2D(const V2D &v)             noexcept : x(v.x), y(v.y) {}             //!< copy
-        inline  V2D & operator=(const V2D &v) noexcept { x=v.x; y=v.y; return *this; } //!< assign
+        inline  V2D(const V2D &v)             noexcept : x(v.x), y(v.y) {}             //!< duplicate \param v another vertex
+        inline  V2D & operator=(const V2D &v) noexcept { x=v.x; y=v.y; return *this; } //!< assign    \param v another vertex \return *this
 
         //______________________________________________________________________
         //
@@ -51,15 +51,15 @@ namespace Yttrium
         //
         //______________________________________________________________________
 
-        //! pseudo writable
+        //! pseudo writable \return 2
         inline size_t size() const noexcept { return 2; }
 
         //______________________________________________________________________
         //
         // access
         //______________________________________________________________________
-        inline T &       operator[](const size_t i)       noexcept { assert(i==1||i==2); return *((&x)+i-1); } //!< access
-        inline const T & operator[](const size_t i) const noexcept { assert(i==1||i==2); return *((&x)+i-1); } //!< access
+        inline T &       operator[](const size_t i)       noexcept { assert(i==1||i==2); return *((&x)+i-1); } //!< \param i index \return access[1..2]
+        inline const T & operator[](const size_t i) const noexcept { assert(i==1||i==2); return *((&x)+i-1); } //!< \param i index \return access[1..2]
 
         //______________________________________________________________________
         //

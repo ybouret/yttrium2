@@ -60,7 +60,7 @@ namespace Yttrium
 
 
             inline bool isEmpty() const noexcept { return 0 == pointee; } //!< \return 0 == pointee
-            inline bool isValud() const noexcept { return 0 != pointee; } //!< \return 0 != pointee
+            inline bool isValid() const noexcept { return 0 != pointee; } //!< \return 0 != pointee
 
         private:
             Y_Disable_Copy_And_Assign(AcceptNullPointer); //!< discarding

@@ -55,6 +55,12 @@ namespace Yttrium
             inline typename Redirect<T>::ConstReturnType operator->() const noexcept { assert(pointee); return this->fetch(pointee); }
 
 
+            //! content exchange \param other another pointer
+            inline void xch(Pointer &other) noexcept
+            {
+                Swap(pointee,other.pointee);
+            }
+            
         protected:
             //__________________________________________________________________
             //
@@ -69,11 +75,7 @@ namespace Yttrium
             //! cleanup, pointee should be NULL
             inline virtual ~Pointer() noexcept { assert(0==pointee); }
 
-            //! content exchange \param other another pointer
-            inline void xch(Pointer &other) noexcept
-            {
-                Swap(pointee,other.pointee);
-            }
+
 
             MutableType * pointee; //!< the pointee
 

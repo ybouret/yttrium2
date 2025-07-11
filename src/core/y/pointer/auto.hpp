@@ -70,6 +70,12 @@ namespace Yttrium
             return *this;
         }
 
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
 
         //! \return pointee
         inline T * yield() noexcept {
@@ -77,7 +83,9 @@ namespace Yttrium
             pointee = 0;
             return res;
         }
+
         
+
     };
 
 }

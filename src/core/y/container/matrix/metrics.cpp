@@ -11,8 +11,10 @@ namespace Yttrium
 
     }
 
-    const char * const MatrixMetrics:: CallSign = "Matrix";
+    const char * const MatrixMetrics:: CallSign    = "Matrix";
     const char * const MatrixMetrics:: EmptyMatrix = "[]";
+    const char * const MatrixMetrics:: L_HCAT      = "hcat(";
+    const char * const MatrixMetrics:: R_HCAT      = ")";
 
     MatrixMetrics:: MatrixMetrics(const size_t nr,
                                   const size_t nc) :
@@ -36,6 +38,18 @@ namespace Yttrium
     cols(_.rows),
     count(_.count)
     {
+    }
+
+    bool MatrixMetrics:: isSquare() const noexcept
+    {
+        return cols == rows;
+    }
+
+    void MatrixMetrics:: _xch( MatrixMetrics &m ) noexcept
+    {
+        CoerceSwap(rows,m.rows);
+        CoerceSwap(cols,m.cols);
+        CoerceSwap(count,m.count);
     }
 
 

@@ -55,7 +55,7 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
-        bool         alive();
+        bool alive(); //!< try to query/store \return true iff available char
 
 
 

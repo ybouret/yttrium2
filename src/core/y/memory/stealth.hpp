@@ -176,7 +176,7 @@ namespace Yttrium
              */
             static ptrdiff_t Diff(const void * const ini, const void *const end) noexcept;
 
-            //! hide address location \param addr address to hide
+            //! \return hidden address location \param addr address to hide
             template <typename T> static inline
             T * Hide(T * const addr) noexcept {
                 return (T*)Address(addr);

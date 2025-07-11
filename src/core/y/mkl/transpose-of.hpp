@@ -9,7 +9,7 @@
 namespace Yttrium
 {
 
-    Y_Shallow_Decl(TransposeOf);
+    Y_Shallow_Decl(TransposeOf); //!< alias
 }
 
 #endif
