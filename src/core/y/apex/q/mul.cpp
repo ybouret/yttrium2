@@ -50,3 +50,22 @@ namespace Yttrium
 
     }
 }
+
+
+namespace Yttrium
+{
+    namespace Apex
+    {
+        Rational Rational::Mul(const Rational &lhs, const integer_t rhs)
+        {
+            const Integer num = lhs.numer * rhs;
+            return Rational(num,lhs.denom);
+        }
+
+        Rational Rational::Mul(const integer_t lhs, const Rational &rhs)
+        {
+            return Mul(rhs,lhs);
+        }
+
+    }
+}

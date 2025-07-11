@@ -41,6 +41,12 @@ namespace
                         Y_ASSERT( apq::Sub(x,r) == dif );
                     }
 
+                    {
+                        const apq prod = apq::Mul(q,r); Y_ASSERT( apq::Mul(r,q) == prod );
+                        Y_ASSERT( apq::Mul(r,x) == prod );
+                        Y_ASSERT( apq::Mul(x,r) == prod );
+                    }
+
                     if(nbit<=0) break;
                 }
             }

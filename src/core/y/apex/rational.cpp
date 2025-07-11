@@ -130,6 +130,14 @@ namespace Yttrium
             simplify();
         }
 
+        Rational:: Rational(const SignType s, const Natural &n, const Natural &d) :
+        Number(),
+        numer(s,n),
+        denom(d)
+        {
+            simplify();
+        }
+
         Rational & Rational:: operator=(const Natural &N)
         {
             Integer nn(N);

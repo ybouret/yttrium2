@@ -56,7 +56,7 @@ namespace Yttrium
             Rational(const Integer &,const Natural &); //!< setup
             Rational(const integer_t);                 //!< setup
             Rational(Random::Bits &,const size_t, const size_t); //!< random
-
+            Rational(const SignType, const Natural &, const Natural &); //!< numer(s,n), denom(d)
 
             Rational & operator=(const Natural &); //!< \return *this
             Rational & operator=(const Integer &); //!< \return *this
@@ -90,6 +90,10 @@ namespace Yttrium
             Y_APQ_Operator_Impl(-,Sub)
 
             Y_APQ_Proto_Decl(static Rational,Mul);
+            Y_APQ_Operator_Impl(*,Mul)
+
+            Y_APQ_Proto_Decl(static Rational,Div);
+            Y_APQ_Operator_Impl(/,Div)
 
  #endif
 
