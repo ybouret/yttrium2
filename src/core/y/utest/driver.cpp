@@ -97,7 +97,7 @@ namespace Yttrium
             {
                 std::cerr << "<" << mainName << " [" << size << "/" << capacity << "]>" << std::endl;
                 display();
-                std::cerr << "<" << mainName << "/>" << std::endl;
+                std::cerr << "<" << mainName << " [" << size << "]>" << std::endl;
                 return 0;
             }
         }
