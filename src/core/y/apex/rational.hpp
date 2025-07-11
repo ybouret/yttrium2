@@ -106,6 +106,8 @@ Y_APN_Compare_Proto(OP,integer_t , Rational &,RET)
             Y_APQ_Compare_Decl(>,  == Positive)
             Y_APQ_Compare_Decl(<=, != Positive)
             Y_APQ_Compare_Decl(>=, != Negative)
+
+            Y_APQ_Proto_Decl(static Rational,Add);
 #endif
 
             //__________________________________________________________________
