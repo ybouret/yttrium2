@@ -105,7 +105,7 @@ namespace Yttrium
             //__________________________________________________________________
             Integer   operator+() const; //!< \return *this
             Integer & operator++();      //!< prefix  \return increased *this
-            Integer   operator++(int);   //!< postfix \return previous value, increase *this*
+            Integer   operator++(int);   //!< postfix \return previous value, increase *this
             void      incr();            //!< in-place increase
 
             //__________________________________________________________________

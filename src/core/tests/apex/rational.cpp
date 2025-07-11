@@ -110,7 +110,20 @@ Y_UTEST(apex_q)
             genericOps(arr,sizeof(arr)/sizeof(arr[0]),ran);
         }
 
+    }
 
+    {
+        for(apq q(-23,7);q <= 3; )
+        {
+            std::cerr << ' ' << ++q;
+        }
+        std::cerr << std::endl;
+
+        for(apq q(-23,7);q <= 3; )
+        {
+            std::cerr << ' ' << q++;
+        }
+        std::cerr << std::endl;
     }
 
 }

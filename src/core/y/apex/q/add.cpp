@@ -91,3 +91,38 @@ namespace Yttrium
     }
 
 }
+
+
+namespace Yttrium
+{
+
+    namespace Apex
+    {
+        Rational Rational:: operator+() const
+        {
+            return *this;
+        }
+
+        void Rational:: incr()
+        {
+            const Integer _ = numer + denom;
+            Rational      q(_,denom);
+            xch(q);
+        }
+
+        Rational & Rational:: operator++()
+        {
+            incr();
+            return *this;
+        }
+
+        Rational   Rational:: operator++(int)
+        {
+            const Rational saved = *this;
+            incr();
+            return saved;
+        }
+
+    }
+
+}

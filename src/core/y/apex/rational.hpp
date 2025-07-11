@@ -144,6 +144,18 @@ Y_APQ_Operator_Impl_Unary(OP,CALL)
             //__________________________________________________________________
             //
             //
+            // Specific additions
+            //
+            //__________________________________________________________________
+            Rational   operator+() const; //!< \return *this
+            Rational & operator++();      //!< prefix  \return increased *this
+            Rational   operator++(int);   //!< postfix \return previous value, increase *this
+            void       incr();            //!< in-place increase
+
+
+            //__________________________________________________________________
+            //
+            //
             // Methods
             //
             //__________________________________________________________________
@@ -154,7 +166,7 @@ Y_APQ_Operator_Impl_Unary(OP,CALL)
             //__________________________________________________________________
             //
             //
-            // Memberss
+            // Members
             //
             //__________________________________________________________________
             const Integer numer; //!< numerator
