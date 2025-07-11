@@ -297,6 +297,14 @@ namespace Yttrium
                 return *this;
             }
 
+            template <typename LIST>
+            inline ListOf & mergeHead(LIST &other) noexcept
+            {
+                other.mergeTail(*this);
+                swapListFor(other);
+                return *this;
+            }
+
 
             //! insertion after a given node
             /**
@@ -317,6 +325,47 @@ namespace Yttrium
                 incr();
                 return node;
             }
+
+
+            inline void insertAfter(NODE * const mine, ListOf &list) noexcept
+            {
+                assert(0!=mine); assert(owns(mine));
+                assert( this != &list );
+                if(mine==tail)
+                {
+                    mergeTail(list);
+                }
+                else
+                {
+                    assert(size>1);
+                    switch(list.size)
+                    {
+                        case 0: return;
+                        case 1: (void) insertAfter(mine,list.popTail()); return;
+                        default:
+                            break;
+                    }
+                    assert(list.size>1);
+
+                    {
+                        NODE *next      = mine->next; assert(0!=next);
+                        next->prev      = list.tail;
+                        list.tail->next = next;
+                    }
+
+                    {
+                        mine->next      = list.head;
+                        list.head->prev = mine;
+                    }
+
+                    Coerce(size) += list.size;
+
+                    list.tail         = 0;
+                    list.head         = 0;
+                    Coerce(list.size) = 0;
+                }
+            }
+
 
             //! insertion before a given node
             /**

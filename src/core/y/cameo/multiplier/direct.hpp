@@ -55,8 +55,8 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
-            inline virtual void ldz() noexcept { acc.ldz(); }
-            inline virtual T    prod() noexcept
+            inline virtual void ldz()     noexcept { acc.ldz(); }
+            inline virtual T    product() noexcept
             {
                 ConstType res = acc;
                 acc.ldz();
@@ -68,6 +68,7 @@ namespace Yttrium
             MutableType acc; //!< accumulator
 
             inline virtual void mul(ParamType x) { acc *= x; }
+            inline virtual void mul(ParamType x, size_t n) { while(n-- > 0) acc *= x; }
         };
     }
 }

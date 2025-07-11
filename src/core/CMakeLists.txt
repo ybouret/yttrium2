@@ -85,6 +85,7 @@ Y_CreateLibrary(y
     y/cameo
     y/cameo/summator
     y/cameo/multiplier
+    y/cameo/multiplier/synod
 )
 
 add_subdirectory(tests)

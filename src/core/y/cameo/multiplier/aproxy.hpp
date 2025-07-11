@@ -70,7 +70,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             inline virtual void ldz() noexcept { acc.ldz(); }
-            inline virtual T    prod()
+            inline virtual T    product()
             {
                 T result = 0;
                 if(!acc.tryCast(result))
@@ -92,6 +92,11 @@ namespace Yttrium
             CoreType acc;                              //!< inner accumulator
 
             inline virtual void mul(ParamType x) { acc *= x; }
+            inline virtual void mul(ParamType x, size_t n)
+            {
+                const CoreType _(x);
+                while(n-- > 0) acc *= _;
+            }
 
         };
     }

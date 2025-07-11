@@ -69,7 +69,7 @@ namespace Yttrium
                 // C++
                 //______________________________________________________________
                 //! setup \param x value
-                inline  Unit(ParamType x)       : data(x),          rank( MKL::Fabs<T>::Of(data) ) {}
+                inline  Unit(ParamType x) : data(x), rank( MKL::Fabs<T>::Of(data) ) {}
 
                 //! duplicate \param other antoher unit
                 inline  Unit(const Unit &other) : data(other.data), rank(other.rank) {}
@@ -129,7 +129,7 @@ namespace Yttrium
             {
                 if( acc.size() <= 0 )
                     return T(0);
-                
+
                 while(acc.size()>1)
                 {
                     const Unit lhs = acc.pop();

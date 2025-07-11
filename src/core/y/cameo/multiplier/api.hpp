@@ -50,7 +50,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             virtual void ldz() noexcept = 0; //!< clear
-            virtual T    prod()         = 0; //!< must reset after computation \return sum
+            virtual T    product()      = 0; //!< must reset after computation \return sum
 
             //__________________________________________________________________
             //
@@ -97,8 +97,9 @@ namespace Yttrium
 
 
         private:
-            Y_Disable_Copy_And_Assign(Multiplier); //!< discarding
-            virtual void mul(ParamType) = 0;   //!< store/use data
+            Y_Disable_Copy_And_Assign(Multiplier);  //!< discarding
+            virtual void mul(ParamType) = 0;        //!< store/use data
+            virtual void mul(ParamType,size_t) = 0; //!< store/use data
         };
 
     }
