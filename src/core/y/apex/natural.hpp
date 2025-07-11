@@ -25,6 +25,8 @@ namespace Yttrium
     {
 
         Y_Shallow_Decl(Hook); //!< alias
+        class Integer;
+        class Rational;
 
         //______________________________________________________________________
         //
@@ -65,7 +67,7 @@ namespace Yttrium
             Natural(Random::Bits & , const size_t);           //!< setup with exact number of random bits
             Natural(const TwoToThePowerOf_ &, const size_t ); //!< setup to 2^n
             Natural(InputStream &, const char * const = 0 );  //!< load from input stream
-
+            
             //__________________________________________________________________
             //
             //

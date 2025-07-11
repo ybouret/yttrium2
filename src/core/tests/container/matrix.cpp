@@ -2,6 +2,7 @@
 #include "y/container/matrix.hpp"
 #include "y/utest/run.hpp"
 #include "y/apex/rational.hpp"
+#include "y/memory/stealth.hpp"
 
 using namespace Yttrium;
 
@@ -10,7 +11,7 @@ Y_UTEST(container_matrix)
 
     {
         int arr[3] = { 1, 2, 3 };
-        Matrix<int>::Row row(arr,3);
+        Matrix<int>::Row row( Memory::Stealth::Hide(arr),3);
         std::cerr << row << std::endl;
     }
 
