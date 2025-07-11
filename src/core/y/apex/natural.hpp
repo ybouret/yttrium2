@@ -25,9 +25,7 @@ namespace Yttrium
     {
 
         Y_Shallow_Decl(Hook); //!< alias
-        class Integer;
-        class Rational;
-
+        
         //______________________________________________________________________
         //
         //

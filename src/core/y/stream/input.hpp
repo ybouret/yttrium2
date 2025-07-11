@@ -49,13 +49,16 @@ namespace Yttrium
         //______________________________________________________________________
         virtual bool query(char &)     = 0; //!< \return true if one char was read
         virtual void store(const char) = 0; //!< unread a char
-
         //______________________________________________________________________
         //
         //
         // Methods
         //
         //______________________________________________________________________
+        bool         alive();
+
+
+
 
         //! codec64 decoding, throw exception on error, with optional variable name
         void decode64(uint64_t &, const char * const  = 0);

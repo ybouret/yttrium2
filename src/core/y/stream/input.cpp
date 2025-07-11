@@ -15,6 +15,12 @@ namespace Yttrium
     }
 
 
+    bool InputStream:: alive()
+    {
+        char C = 0;
+        if( query(C) ) { store(C); return true; } else return false;
+    }
+
     static const char     fmt[]         = " for %s";
 
 
