@@ -82,10 +82,10 @@ Y_APN_Compare_Proto(OP,integer_t , Rational &,RET)
             Rational(Random::Bits &,const size_t, const size_t); //!< random
 
 
-            Rational & operator=(const Natural &);
-            Rational & operator=(const Integer &);
-            Rational & operator=(const integer_t);
-            Rational & operator=(const Fraction);
+            Rational & operator=(const Natural &); //!< \return *this
+            Rational & operator=(const Integer &); //!< \return *this
+            Rational & operator=(const integer_t); //!< \return *this
+            Rational & operator=(const Fraction);  //!< \return *this
 
             //__________________________________________________________________
             //
@@ -98,6 +98,7 @@ Y_APN_Compare_Proto(OP,integer_t , Rational &,RET)
             virtual void   ld1() noexcept;
 
 
+#if !defined(DOXYGEN_SHOULD_SKIP_THIS)
             Y_APQ_Proto_Decl(static SignType,Compare);
             Y_APQ_Compare_Decl(==, == __Zero__)
             Y_APQ_Compare_Decl(!=, != __Zero__)
@@ -105,6 +106,7 @@ Y_APN_Compare_Proto(OP,integer_t , Rational &,RET)
             Y_APQ_Compare_Decl(>,  == Positive)
             Y_APQ_Compare_Decl(<=, != Positive)
             Y_APQ_Compare_Decl(>=, != Negative)
+#endif
 
             //__________________________________________________________________
             //
@@ -114,10 +116,8 @@ Y_APN_Compare_Proto(OP,integer_t , Rational &,RET)
             //__________________________________________________________________
             Rational &     xch(Rational &) noexcept; //!< exchange \return *this
             Rational &     neg() noexcept;           //!< in-place opposite \return *this
+            Rational       abs() const;              //!< \return |*this|
 
-
-            Rational       abs() const;
-            
             //__________________________________________________________________
             //
             //
