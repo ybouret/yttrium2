@@ -79,6 +79,13 @@ Y_APN_Compare_Proto(OP,integer_t , Rational &,RET)
             Rational(const Fraction &);                //!< setup
             Rational(const Integer &,const Natural &); //!< setup
             Rational(const integer_t);                 //!< setup
+            Rational(Random::Bits &,const size_t, const size_t); //!< random
+
+
+            Rational & operator=(const Natural &);
+            Rational & operator=(const Integer &);
+            Rational & operator=(const integer_t);
+            Rational & operator=(const Fraction);
 
             //__________________________________________________________________
             //

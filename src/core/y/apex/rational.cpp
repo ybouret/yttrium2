@@ -1,6 +1,7 @@
 
 #include "y/apex/rational.hpp"
 #include "y/system/exception.hpp"
+#include "y/random/bits.hpp"
 
 namespace Yttrium
 {
@@ -108,7 +109,7 @@ namespace Yttrium
         denom(1)
         {
         }
-        
+
 
 
         Rational::Rational(const Integer &N) :
@@ -120,6 +121,47 @@ namespace Yttrium
         Number(), numer(N), denom(1)
         {
         }
+
+        Rational:: Rational(Random::Bits &ran,const size_t nbit, const size_t dbit) :
+        Number(),
+        numer(ran,nbit),
+        denom(ran,dbit)
+        {
+            simplify();
+        }
+
+        Rational & Rational:: operator=(const Natural &N)
+        {
+            Integer nn(N);
+            Coerce(numer).xch(nn);
+            Coerce(denom).ld1();
+            return *this;
+        }
+
+        Rational & Rational:: operator=(const Integer &N)
+        {
+            Integer nn(N);
+            Coerce(numer).xch(nn);
+            Coerce(denom).ld1();
+            return *this;
+        }
+
+
+        Rational & Rational:: operator=(const integer_t N)
+        {
+            Integer nn(N);
+            Coerce(numer).xch(nn);
+            Coerce(denom).ld1();
+            return *this;
+        }
+
+        Rational & Rational:: operator=(const Fraction f)
+        {
+            Rational q(f);
+            return xch(q);
+        }
+
+
 
 
         std::ostream & operator<<(std::ostream &os, const Rational &q)

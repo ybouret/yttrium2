@@ -112,7 +112,7 @@ namespace Yttrium
             switch( Sign::Pair(lhs.numer.s,rhs_s))
             {
                 case Sign::ZZ:
-                    return __Zero__;
+                    break; // zero
 
                 case Sign::NZ:
                 case Sign::NP:
@@ -124,13 +124,17 @@ namespace Yttrium
                 case Sign::ZN:
                     return Positive;
 
-                case Sign::NN:
-                case Sign::PP:
-                    break;
-            }
+                case Sign::NN: {
+                    const Natural R = natural_t(-rhs) * lhs.denom;
+                    return Natural::Compare(R,lhs.numer.n);
+                }
 
-            //const Integer R = rhs * lhs.denom;
-            //return (lhs.numer-R).s;
+                case Sign::PP: {
+                    const Natural R = natural_t(rhs) * lhs.denom;
+                    return Natural::Compare(lhs.numer.n,R);
+                }
+            }
+            return __Zero__;
         }
 
 
