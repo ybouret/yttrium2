@@ -40,7 +40,7 @@ namespace Yttrium
     {
         Rational Rational::Add(const Rational &lhs, const Natural &rhs)
         {
-            const Natural _  = rhs * lhs.denom;
+            const Natural _   = rhs * lhs.denom;
             const Integer num = lhs.numer + _;
             return Rational(num,lhs.denom);
         }
@@ -49,7 +49,45 @@ namespace Yttrium
         {
             return Add(rhs,lhs);
         }
+    }
 
+}
+
+namespace Yttrium
+{
+    namespace Apex
+    {
+        Rational Rational::Add(const Rational &lhs, const integer_t rhs)
+        {
+
+            switch( Sign::Of(rhs) )
+            {
+                case __Zero__:
+                    break; // return lhs
+
+                case Positive:
+                {
+                    const Natural _   = lhs.denom * natural_t(rhs);
+                    const Integer num = lhs.numer + _;
+                    return Rational(num,lhs.denom);
+                }
+
+
+                case Negative:
+                {
+                    const Natural _   = lhs.denom * natural_t(-rhs);
+                    const Integer num = lhs.numer - _;
+                    return Rational(num,lhs.denom);
+                }
+
+            }
+            return lhs;
+        }
+
+        Rational Rational::Add(const integer_t lhs, const Rational &rhs)
+        {
+            return Add(rhs,lhs);
+        }
     }
 
 }

@@ -9,17 +9,16 @@ using namespace Yttrium;
 namespace
 {
     template <typename T> static inline
-    void genericCompare(const T        arr[],
-                        const size_t   num,
-                        Random::Bits & ran)
+    void genericOps(const T        arr[],
+                    const size_t   num,
+                    Random::Bits & ran)
     {
-        std::cerr << std::endl;
-        std::cerr << "----" << std::endl;
+        std::cerr << "---- generic ops --" << std::endl;
         for(size_t i=0;i<num;++i)
         {
             const T  &x = arr[i]; // original
             const apq q = x;      // as rational
-            std::cerr << "Comparing " << x << " (= " << q << ")" << std::endl << "\t";
+            std::cerr << "Using " << x << " (= " << q << ")" << std::endl << "\t";
             for(size_t nbit=0;nbit<=3;++nbit)
             {
                 for(size_t dbit=1;dbit<=4;++dbit)
@@ -29,6 +28,12 @@ namespace
 
                     Y_ASSERT(apq::Compare(r,q) == apq::Compare(r,x));
                     Y_ASSERT(apq::Compare(q,r) == apq::Compare(x,r));
+
+                    {
+                        const apq sum = apq::Add(q,r); Y_ASSERT( apq::Add(r,q) == sum );
+                        Y_ASSERT( apq::Add(r,x) == sum );
+                        Y_ASSERT( apq::Add(x,r) == sum );
+                    }
 
                     if(nbit<=0) break;
                 }
@@ -92,17 +97,17 @@ Y_UTEST(apex_q)
 
         {
             const apn arr[] = { apn(0), apn(1) };
-            genericCompare(arr,sizeof(arr)/sizeof(arr[0]),ran);
+            genericOps(arr,sizeof(arr)/sizeof(arr[0]),ran);
         }
 
         {
             const apz arr[] = { apz(-1), apz(0), apz(1) };
-            genericCompare(arr,sizeof(arr)/sizeof(arr[0]),ran);
+            genericOps(arr,sizeof(arr)/sizeof(arr[0]),ran);
         }
 
         {
             const int arr[] = { -1,0,1 };
-            genericCompare(arr,sizeof(arr)/sizeof(arr[0]),ran);
+            genericOps(arr,sizeof(arr)/sizeof(arr[0]),ran);
         }
 
 
