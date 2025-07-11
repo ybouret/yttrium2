@@ -1,10 +1,10 @@
 //! \file
 
-#ifndef Y_Cameo_DirectSummator_Included
-#define Y_Cameo_DirectSummator_Included 1
+#ifndef Y_Cameo_DirectMultiplier_Included
+#define Y_Cameo_DirectMultiplier_Included 1
 
 
-#include "y/cameo/summator/api.hpp"
+#include "y/cameo/multiplier/api.hpp"
 #include "y/apex/rational.hpp"
 
 namespace Yttrium
@@ -17,12 +17,12 @@ namespace Yttrium
         //
         //
         //
-        //! Direct sum for ap[n|z|q]
+        //! Direct product for ap[n|z|q]
         //
         //
         //______________________________________________________________________
         template <typename T>
-        class DirectSummator : public Summator<T>
+        class DirectMultiplier: public Multiplier<T>
         {
         public:
             //__________________________________________________________________
@@ -41,13 +41,13 @@ namespace Yttrium
             //__________________________________________________________________
 
             //! setup
-            inline explicit DirectSummator() : Summator<T>(), acc()
+            inline explicit DirectMultiplier() : Multiplier<T>(), acc()
             {
                 Y_STATIC_CHECK(Y_Is_SuperSubClass_Strict(Apex::Number,MutableType),NoApexNumber);
             }
 
             //! cleanup
-            inline virtual ~DirectSummator() noexcept {}
+            inline virtual ~DirectMultiplier() noexcept {}
 
             //__________________________________________________________________
             //
@@ -56,7 +56,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             inline virtual void ldz() noexcept { acc.ldz(); }
-            inline virtual T    sum() noexcept
+            inline virtual T    prod() noexcept
             {
                 ConstType res = acc;
                 acc.ldz();
@@ -64,10 +64,10 @@ namespace Yttrium
             }
 
         private:
-            Y_Disable_Copy_And_Assign(DirectSummator); //!< discarding
+            Y_Disable_Copy_And_Assign(DirectMultiplier); //!< discarding
             MutableType acc; //!< accumulator
 
-            inline virtual void add(ParamType x) { acc += x; }
+            inline virtual void mul(ParamType x) { acc *= x; }
         };
     }
 }

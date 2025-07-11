@@ -21,7 +21,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename T>
-        class Multipler
+        class Multiplier
         {
         public:
             //__________________________________________________________________
@@ -39,9 +39,9 @@ namespace Yttrium
             //
             //__________________________________________________________________
         protected:
-            inline explicit Multipler() noexcept {} //!< setup
+            inline explicit Multiplier() noexcept {} //!< setup
         public:
-            inline virtual ~Multipler() noexcept {} //!< cleanup
+            inline virtual ~Multiplier() noexcept {} //!< cleanup
 
             //__________________________________________________________________
             //
@@ -60,7 +60,7 @@ namespace Yttrium
             //__________________________________________________________________
 
             //! store/use data \param value data \return *this
-            inline Multipler & operator<<(ParamType value) { mul(value); return *this; }
+            inline Multiplier & operator<<(ParamType value) { mul(value); return *this; }
 
             //! load a range without reset
             /**
@@ -69,7 +69,7 @@ namespace Yttrium
              \return *this
              */
             template <typename ITERATOR> inline
-            Multipler & load(ITERATOR curr, size_t size)
+            Multiplier & load(ITERATOR curr, size_t size)
             {
                 while(size-- > 0) add( *(curr++) );
                 return *this;
@@ -97,7 +97,7 @@ namespace Yttrium
 
 
         private:
-            Y_Disable_Copy_And_Assign(Multipler); //!< discarding
+            Y_Disable_Copy_And_Assign(Multiplier); //!< discarding
             virtual void mul(ParamType) = 0;   //!< store/use data
         };
 
