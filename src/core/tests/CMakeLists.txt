@@ -191,5 +191,6 @@ Y_UTEST(mkl:adaptor)
 
 #cameo
 Y_UTEST(cameo:add)
+Y_UTEST(cameo:mul)
 
 

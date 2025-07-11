@@ -1,31 +1,11 @@
-#if 1
 #include "y/cameo/addition.hpp"
-#include "y/cameo/summator/fpoint.hpp"
-#include "y/cameo/summator/direct.hpp"
-#include "y/cameo/summator/aproxy.hpp"
-#endif
-
 #include "y/mkl/complex.hpp"
 #include "y/mkl/xreal.hpp"
 #include "y/utest/run.hpp"
 
-#include "y/check/static.hpp"
 
 using namespace Yttrium;
 
-namespace Yttrium
-{
-
-    namespace Cameo
-    {
-
-        
-     
-
-    }
-
-
-}
 
 Y_UTEST(cameo_add)
 {

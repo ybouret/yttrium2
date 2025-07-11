@@ -144,6 +144,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(mkl_adaptor);
 
     Y_UTEST(cameo_add);
+    Y_UTEST(cameo_mul);
 }
 Y_UTEST_EXEC()
 

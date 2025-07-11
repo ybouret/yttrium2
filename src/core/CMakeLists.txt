@@ -84,6 +84,7 @@ Y_CreateLibrary(y
     y/random
     y/cameo
     y/cameo/summator
+    y/cameo/multiplier
 )
 
 add_subdirectory(tests)
