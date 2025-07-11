@@ -12,11 +12,12 @@ namespace Yttrium
     }
 
     const char * const MatrixMetrics:: CallSign = "Matrix";
+    const char * const MatrixMetrics:: EmptyMatrix = "[]";
 
     MatrixMetrics:: MatrixMetrics(const size_t nr,
                                   const size_t nc) :
     rows(nr),
-    cols(nr),
+    cols(nc),
     count(rows*cols)
     {
         if( (nr<=0 && nc>0) || (nr>0&&nc<=0) )

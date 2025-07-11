@@ -15,7 +15,8 @@ namespace Yttrium
     {
     public:
         static const char * const CallSign; //!< matrix
-        
+        static const char * const EmptyMatrix;
+
         explicit MatrixMetrics(const size_t nr, const size_t nc);
         MatrixMetrics(const MatrixMetrics &) noexcept; //!< duplicate
         MatrixMetrics(const TransposeOf_ &, const MatrixMetrics &) noexcept;
