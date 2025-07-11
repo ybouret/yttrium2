@@ -42,6 +42,36 @@ Y_APN_Compare_Proto(OP,Rational &, integer_t ,RET) \
 Y_APN_Compare_Proto(OP,integer_t , Rational &,RET)
 
 
+        //! helper
+#define Y_APQ_Operator_Proto_Binary(OP,LHS,RHS,CALL) \
+inline friend Rational operator OP (const LHS lhs, const RHS rhs) { return CALL(lhs,rhs); }
+
+        //! helper
+#define Y_APQ_Operator_Impl_Binary(OP,CALL) \
+Y_APQ_Operator_Proto_Binary(OP, Rational &, Rational &, CALL) \
+Y_APQ_Operator_Proto_Binary(OP, Rational &, Integer &, CALL)  \
+Y_APQ_Operator_Proto_Binary(OP, Integer  &, Rational &, CALL) \
+Y_APQ_Operator_Proto_Binary(OP, Rational &, Natural &, CALL)  \
+Y_APQ_Operator_Proto_Binary(OP, Natural  &, Rational &, CALL) \
+Y_APQ_Operator_Proto_Binary(OP, Rational &, integer_t,  CALL) \
+Y_APQ_Operator_Proto_Binary(OP, integer_t,  Rational &, CALL)
+
+        //! helper
+#define Y_APQ_Operator_Proto_Unary(OP,RHS,CALL) \
+inline Rational & operator OP##=(const RHS rhs) { Rational res( CALL(*this,rhs) ); return xch(res); }
+
+
+        //! helper
+#define Y_APQ_Operator_Impl_Unary(OP,CALL)       \
+Y_APQ_Operator_Proto_Unary(OP, Rational &, CALL) \
+Y_APQ_Operator_Proto_Unary(OP, Integer  &, CALL) \
+Y_APQ_Operator_Proto_Unary(OP, integer_t,  CALL) \
+Y_APQ_Operator_Proto_Unary(OP, Natural &,  CALL)
+
+        //! helper
+#define   Y_APQ_Operator_Impl(OP,CALL) \
+Y_APQ_Operator_Impl_Binary(OP,CALL)    \
+Y_APQ_Operator_Impl_Unary(OP,CALL)
 
         //______________________________________________________________________
         //
@@ -108,7 +138,8 @@ Y_APN_Compare_Proto(OP,integer_t , Rational &,RET)
             Y_APQ_Compare_Decl(>=, != Negative)
 
             Y_APQ_Proto_Decl(static Rational,Add);
-#endif
+            Y_APQ_Operator_Impl(+,Add)
+ #endif
 
             //__________________________________________________________________
             //
