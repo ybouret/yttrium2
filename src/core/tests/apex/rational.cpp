@@ -47,6 +47,19 @@ namespace
                         Y_ASSERT( apq::Mul(x,r) == prod );
                     }
 
+                    if(x>0)
+                    {
+                        const apq quot = apq::Div(r,q);
+                        Y_ASSERT( apq::Div(r,x) == quot );
+                    }
+
+                    if(r>0)
+                    {
+                        const apq quot = apq::Div(q,r);
+                        Y_ASSERT( apq::Div(x,r) == quot );
+                    }
+
+
                     if(nbit<=0) break;
                 }
             }
@@ -150,6 +163,7 @@ Y_UTEST(apex_q)
         }
         std::cerr << std::endl;
     }
+
 
 }
 Y_UDONE()
