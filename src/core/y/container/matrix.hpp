@@ -155,11 +155,13 @@ Y_Matrix_Rows()
             return self.juliaPrint(os);
         }
 
+        //! assign \param M another matrix \return *this
         inline Matrix & operator=( const Matrix &M )
         {
             return assign(M);
         }
 
+        //! assign \param M another compatible matrix \return *this
         template <typename U> inline
         Matrix & operator=(const Matrix<U> &M)
         {
@@ -183,6 +185,7 @@ Y_Matrix_Rows()
             return *this;
         }
 
+        //! assign by copy/swap \param other compatible matrix \return *this
         template <typename U> inline
         Matrix & assign(const Matrix<U> &other)
         {

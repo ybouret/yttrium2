@@ -14,34 +14,60 @@ namespace Yttrium
 
         namespace Synod
         {
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Ordered List + Cache of FPUnit
+            //
+            //
+            //__________________________________________________________________
             template <typename T>
             class FPList : public FPUnit<T>::Cache
             {
             public:
-                typedef FPUnit<T>            Unit;
-                typedef typename Unit::Cache Cache;
-                typedef Core::ListOf<Unit>   UnitList;
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                typedef FPUnit<T>            Unit;     //!< alias
+                typedef typename Unit::Cache Cache;    //!< alias
+                typedef Core::ListOf<Unit>   UnitList; //!< alias
 
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! setup
                 inline explicit FPList() : Cache(), list()
                 {
                 }
 
+                //! cleanup
                 inline virtual ~FPList() noexcept
                 {
                     while(list.size>0) this->remove( list.popTail() );
                 }
 
+                //! free content, keep memory
                 inline void free() noexcept {
                     while(list.size) this->banish( list.popTail() );
                 }
 
-                
+
+                //! \param value pushed in ordered position
                 inline void push(const T &value) {
                     UnitList temp;
                     temp.pushTail( this->summon(value) );
                     insert(temp);
                 }
 
+                //! \param value pushed in ordered position \param n number of copies
                 inline void push(const T &value, size_t n) {
                     UnitList temp;
                     try {
@@ -56,8 +82,10 @@ namespace Yttrium
                     }
                 }
 
+                //! \return internal list, mostly for debug
                 inline const UnitList & operator*() const noexcept { return list; }
 
+                //! \return product algorithm
                 inline T product()
                 {
                     if(list.size<=0) return T(1);
@@ -74,9 +102,10 @@ namespace Yttrium
 
 
             private:
-                Y_Disable_Copy_And_Assign(FPList);
-                UnitList list;
+                Y_Disable_Copy_And_Assign(FPList); //!< discarding
+                UnitList list; //!< all unit to make product of
 
+                //! \return lowest exponent value
                 inline T  pullHead()
                 {
                     assert(list.size>=1);
@@ -85,6 +114,7 @@ namespace Yttrium
                     return res;
                 }
 
+                //! \return highest exponent value
                 inline T  pullTail()
                 {
                     assert(list.size>=1);
@@ -93,6 +123,7 @@ namespace Yttrium
                     return res;
                 }
 
+                //! \param temp temporary list, merged within list
                 inline void insert(Core::ListOf<Unit> &temp) noexcept
                 {
                     UnitList target;

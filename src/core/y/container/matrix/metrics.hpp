@@ -52,7 +52,7 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
-        bool isSquare() const noexcept;
+        bool isSquare() const noexcept; //!< \return rows==cols
 
         //______________________________________________________________________
         //
@@ -67,7 +67,7 @@ namespace Yttrium
     private:
         Y_Disable_Assign(MatrixMetrics);  //!< discarding
     protected:
-        void _xch( MatrixMetrics & ) noexcept;
+        void _xch( MatrixMetrics & ) noexcept; //!< exchange values
     };
 
 }

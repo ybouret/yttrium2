@@ -85,6 +85,8 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
+
+            //! \return internal accumulator, mostly to debug
             inline const CoreType operator*() const noexcept { return acc; }
 
         private:

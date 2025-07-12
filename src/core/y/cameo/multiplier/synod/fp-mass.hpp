@@ -14,13 +14,15 @@ namespace Yttrium
     {
         namespace Synod
         {
-            
-            template <typename T>
-            struct FPointMass;
 
+            template <typename T>
+            struct FPointMass; //!< generic mass computation
+
+            //! default for floating point
             template <typename T>
             struct FPointMass
             {
+                //! \param x floating point \return exponent
                 static int Get(const T &x) noexcept {
                     int mass = 0;
                     (void) std::frexp(x,&mass);
@@ -28,15 +30,19 @@ namespace Yttrium
                 }
             };
 
+            //! for XReal
             template <typename T>
             struct FPointMass< XReal<T> >
             {
+                //! \param x floating point \return exponent
                 static int Get(const XReal<T> &x) noexcept { return x.exponent; }
             };
 
+            //! for floating point complex
             template <typename T>
             struct FPointMass< Complex<T> >
             {
+                //! \param x floating point \return exponent of |x|
                 static int Get(const Complex<T> &x) noexcept
                 {
                     const T _ = x.abs();
@@ -44,10 +50,11 @@ namespace Yttrium
                 }
             };
 
-
+            //! for XReal complex
             template <typename T>
             struct FPointMass< Complex< XReal<T> > >
             {
+                //! \param x floating point \return exponent
                 static int Get(const Complex< XReal<T> > &x) noexcept
                 {
                     const XReal<T> _ = x.abs();
@@ -56,6 +63,7 @@ namespace Yttrium
             };
         }
 
+        //! \param x any floating point \return exponent as mass
         template <typename T> inline
         int GetFPointMass(const T &x) noexcept
         {

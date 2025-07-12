@@ -14,28 +14,50 @@ namespace Yttrium
     namespace Cameo
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Use ordered by exponent values to compute product
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class FPointMultiplier : public Multiplier<T>
         {
         public:
-            Y_Args_Declare(T,Type);
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            Y_Args_Declare(T,Type);                           //!< aliases
+            typedef Synod::FPList<T>              EngineType; //!< alias
+            typedef typename EngineType::UnitList UnitList;   //!< alias
 
-            typedef Synod::FPList<T>              EngineType;
-            typedef typename EngineType::UnitList UnitList;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
 
+            //! setup \param n optional capacity
             inline explicit FPointMultiplier(const size_t n=0) : Multiplier<T>(), engine()
             {
                 engine.cache(n);
             }
 
-            inline virtual ~FPointMultiplier() noexcept {
-            }
+            //! cleanup
+            inline virtual ~FPointMultiplier() noexcept {}
 
-            inline Caching *       operator->()       noexcept { return &engine; }
-            inline const Caching * operator->() const noexcept { return &engine; }
-
-            inline const UnitList & operator*() const noexcept { return *engine; }
-
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             inline virtual void ld1() noexcept { engine.free(); }
 
             inline virtual T product()
@@ -43,8 +65,21 @@ namespace Yttrium
                 return engine.product();
             }
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            inline Caching *       operator->()       noexcept { return &engine; } //!< \return cache access
+            inline const Caching * operator->() const noexcept { return &engine; } //!< \return cache access
+            inline const UnitList & operator*() const noexcept { return *engine; } //!< \return internal state
+
+
+
         private:
-            EngineType engine;
+            Y_Disable_Copy_And_Assign(FPointMultiplier); //!< discarding
+            EngineType engine; //!< internal state
 
             virtual void mul(ParamType x)           { engine.push(x);   }
             virtual void mul(ParamType x, size_t n) { engine.push(x,n); }
