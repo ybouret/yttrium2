@@ -52,7 +52,7 @@ namespace Yttrium
 
         //! keep only one copy \param other another pointer
         inline AutoPtr(const AutoPtr &other) noexcept :
-        PointerType(other.pointee)
+        PointerType(other.pointee), Recyclable()
         {
             if(0!=pointee) {
                 Coerce(other).pointee = 0;
