@@ -82,7 +82,7 @@ Y_UTEST(container_matrix)
         Matrix<apq> m(5,6);
     }
 
-    
+
 
     for(size_t nr=1;nr<=3;++nr)
     {
@@ -111,7 +111,7 @@ Y_UTEST(container_matrix)
                 Matrix<int> m3;
                 m3 = m;
                 std::cerr << "m3_" << nr << "x" << nc << " = " <<  m3 << std::endl;
-             }
+            }
 
             {
                 Matrix<apz> m4;
@@ -124,41 +124,33 @@ Y_UTEST(container_matrix)
     }
 
 
-
-
-
-    for(size_t nr=1;nr<=4;++nr)
+    for(size_t nr=1; nr <= 5; ++nr)
     {
-        for(size_t nc=1;nc<=4;++nc)
+        for(size_t nc=1;nc<=5;++nc)
         {
-            if(nr==nc) continue;
-            std::cerr << nr << " x " << nc << std::endl;
-            Vector<Pair> pairs;
-            for(size_t i=1;i<=nr;++i)
+            std::cerr << "M" << nr << "x" << nc << std::endl;
+            size_t idem = 0;
+            for(size_t i=0;i<nr;++i)
             {
-                for(size_t j=1;j<=nc;++j)
+                for(size_t j=0;j<nc;++j)
                 {
-                    if(i!=j)
+                    const size_t p = i*nr+j;
+                    const size_t q = j*nc+i;
+                    if(q==p)
                     {
-                        const Pair p(i,j);
-                        std::cerr << "\tswp " << p << std::endl;
-                        bool found = false;
-                        for(size_t i=1;i<=pairs.size();++i)
-                        {
-                            if( pairs[i] == p)
-                            {
-                                found = true;
-                                break;
-                            }
-                        }
-                        if(!found) pairs << p;
+                        ++idem;
+                        continue;
                     }
+                    std::cerr << "\t" << p <<  " => " << q << std::endl;
                 }
             }
-            std::cerr << "pairs=" << pairs << std::endl;
-
+            std::cerr << "idem=" << idem << std::endl;
         }
     }
+
+
+
+
 
 
 

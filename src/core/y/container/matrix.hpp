@@ -162,6 +162,18 @@ namespace Yttrium
 
         }
 
+        //! duplicate \param M another compatible matrix
+        template <typename U>
+        inline Matrix(const TransposeOf_ &transpose, const Matrix<U> &M) :
+        MatrixMetrics(transpose,M),
+        Releasable(),
+        code( newCode()  ),
+        rowp( newRows()  )
+        {
+            
+        }
+
+
         //! cleanup
         inline virtual ~Matrix() noexcept {}
 
