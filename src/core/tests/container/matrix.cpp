@@ -8,6 +8,55 @@
 
 using namespace Yttrium;
 
+namespace
+{
+    class Pair
+    {
+    public:
+        Pair(const size_t first, const size_t second) noexcept :
+        i(first),
+        j(second)
+        {
+            assert(i!=j);
+            if(i>j) CoerceSwap(i,j);
+            assert(i<j);
+        }
+
+        Pair(const Pair &p) noexcept : i(p.i), j(p.j) { assert(i<j); }
+
+        ~Pair() noexcept {}
+
+        inline friend std::ostream & operator<< (std::ostream &os, const Pair &p)
+        {
+            os << "(" << p.i << "," << p.j << ")";
+            return os;
+        }
+
+        inline SignType Compare(const Pair &lhs, const Pair &rhs) noexcept
+        {
+            switch( Sign::Of(lhs.i, rhs.i) )
+            {
+                case __Zero__: break;
+                case Negative: return Negative;
+                case Positive: return Positive;
+            }
+            return Sign::Of(lhs.j,rhs.j);
+        }
+
+        inline friend bool operator==(const Pair &lhs, const Pair &rhs) noexcept
+        {
+            return lhs.i == rhs.i && lhs.j == rhs.j;
+        }
+
+
+        const size_t i;
+        const size_t j;
+    private:
+        Y_Disable_Assign(Pair);
+    };
+
+}
+
 Y_UTEST(container_matrix)
 {
 
@@ -75,16 +124,8 @@ Y_UTEST(container_matrix)
     }
 
 
-    struct Pair
-    {
-        size_t i,j;
-    };
 
-    struct Pairs
-    {
-        Pair source;
-        Pair target;
-    };
+
 
     for(size_t nr=1;nr<=4;++nr)
     {
@@ -92,16 +133,29 @@ Y_UTEST(container_matrix)
         {
             if(nr==nc) continue;
             std::cerr << nr << " x " << nc << std::endl;
+            Vector<Pair> pairs;
             for(size_t i=1;i<=nr;++i)
             {
                 for(size_t j=1;j<=nc;++j)
                 {
                     if(i!=j)
                     {
-                        std::cerr << "\tswp " << i << "," << j << std::endl;
+                        const Pair p(i,j);
+                        std::cerr << "\tswp " << p << std::endl;
+                        bool found = false;
+                        for(size_t i=1;i<=pairs.size();++i)
+                        {
+                            if( pairs[i] == p)
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if(!found) pairs << p;
                     }
                 }
             }
+            std::cerr << "pairs=" << pairs << std::endl;
 
         }
     }

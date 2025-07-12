@@ -45,7 +45,6 @@ namespace Yttrium
         MatrixMetrics(const TransposeOf_ &, const MatrixMetrics &) noexcept; //!< duplicate transpoe
         virtual ~MatrixMetrics() noexcept;                                   //!< cleanup
 
-
         //______________________________________________________________________
         //
         //
@@ -54,7 +53,7 @@ namespace Yttrium
         //______________________________________________________________________
         bool isSquare() const noexcept; //!< \return rows==cols
         bool sameMetricsThan(const MatrixMetrics &) const noexcept;
-        
+
         //______________________________________________________________________
         //
         //
