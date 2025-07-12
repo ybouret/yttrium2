@@ -58,6 +58,17 @@ namespace Yttrium
     }
 
 
+    size_t MatrixMetrics:: indexOf(const size_t ir, const size_t ic) const noexcept
+    {
+        assert(ir>=0);
+        assert(ir<rows);
+        assert(ic>=0);
+        assert(ic<cols);
+        return ir * rows + ic;
+    }
+
+
+
 }
 
 

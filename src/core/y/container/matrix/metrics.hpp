@@ -51,8 +51,9 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
-        bool isSquare() const noexcept; //!< \return rows==cols
-        bool sameMetricsThan(const MatrixMetrics &) const noexcept;
+        bool   isSquare() const noexcept; //!< \return rows==cols
+        bool   sameMetricsThan(const MatrixMetrics &) const noexcept;
+        size_t indexOf(const size_t ir, const size_t ic) const noexcept;
 
         //______________________________________________________________________
         //
