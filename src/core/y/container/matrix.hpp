@@ -4,7 +4,6 @@
 #define Y_Matrix_Included 1
 
 #include "y/container/matrix/metrics.hpp"
-#include "y/object.hpp"
 #include "y/object/school-of.hpp"
 #include "y/memory/operating.hpp"
 #include "y/pointer/auto.hpp"
@@ -78,9 +77,6 @@ namespace Yttrium
             //! [Writable] \return columns
             inline virtual size_t size() const noexcept { return cols; }
 
-            inline virtual void release() noexcept {
-                
-            }
 
             //__________________________________________________________________
             //
@@ -162,7 +158,7 @@ namespace Yttrium
 
         }
 
-        //! duplicate \param M another compatible matrix
+        //! duplicate \param transpose helper \param M another compatible matrix
         template <typename U>
         inline Matrix(const TransposeOf_ &transpose, const Matrix<U> &M) :
         MatrixMetrics(transpose,M),
@@ -170,7 +166,7 @@ namespace Yttrium
         code( newCode()  ),
         rowp( newRows()  )
         {
-            
+            copyTranspose(M);
         }
 
 
@@ -229,6 +225,18 @@ namespace Yttrium
             return xch(temp);
         }
 
+        //! duplicate
+        /**
+         \param transpose helper
+         \param M another compatible matrix
+         \return *this
+         */
+        template <typename U> inline
+        Matrix & assign(const TransposeOf_ &transpose, const Matrix<U> &M)
+        {
+            Matrix temp(transpose,M);
+            return xch(temp);
+        }
 
         //! \return first item of linear space
         inline ConstType * operator()(void) const noexcept
@@ -310,15 +318,17 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Code); //!< discarding
         };
 
+        //! \return new code according to metrics
         inline Code * newCode() {
             const MatrixMetrics & metrics = *this;
             return count > 0 ? new Code(metrics) : 0;
         }
 
+        //! \param M source matrix \return new code from copied matrix
         template <typename U>
         inline Code * newCode(const Matrix<U> &M)
         {
-            assert( sameMetricsThan(M) );
+            assert( gotSameMetricsThan(M) );
             return M.count >0 ? new Code(M) : 0;
         }
 
@@ -356,6 +366,8 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Rows); //!< discarding
         };
 
+
+        //! \return rows for code
         inline Rows * newRows()
         {
             const MatrixMetrics & metrics = *this;
@@ -366,8 +378,22 @@ namespace Yttrium
         AutoPtr<Code> code; //!< current code
         AutoPtr<Rows> rowp; //!< current rows on code
 
-        //! \return return *this as metrics
-        inline MatrixMetrics getMetrics() const noexcept { return *this; }
+        //! copy the transpose matrix data \param M source matrix
+        template <typename U> inline
+        void copyTranspose(const Matrix<U> &M)
+        {
+            Matrix &self = *this;
+            assert( transposeMetricsOf(M) );
+            for(size_t i=rows;i>0;--i)
+            {
+                Matrix::Row &self_i = self[i];
+                for(size_t j=cols;j>0;--j)
+                {
+                    self_i[j] = M[j][i];
+                }
+            }
+        }
+
 
     };
 

@@ -10,50 +10,7 @@ using namespace Yttrium;
 
 namespace
 {
-    class Pair
-    {
-    public:
-        Pair(const size_t first, const size_t second) noexcept :
-        i(first),
-        j(second)
-        {
-            assert(i!=j);
-            if(i>j) CoerceSwap(i,j);
-            assert(i<j);
-        }
-
-        Pair(const Pair &p) noexcept : i(p.i), j(p.j) { assert(i<j); }
-
-        ~Pair() noexcept {}
-
-        inline friend std::ostream & operator<< (std::ostream &os, const Pair &p)
-        {
-            os << "(" << p.i << "," << p.j << ")";
-            return os;
-        }
-
-        inline SignType Compare(const Pair &lhs, const Pair &rhs) noexcept
-        {
-            switch( Sign::Of(lhs.i, rhs.i) )
-            {
-                case __Zero__: break;
-                case Negative: return Negative;
-                case Positive: return Positive;
-            }
-            return Sign::Of(lhs.j,rhs.j);
-        }
-
-        inline friend bool operator==(const Pair &lhs, const Pair &rhs) noexcept
-        {
-            return lhs.i == rhs.i && lhs.j == rhs.j;
-        }
-
-
-        const size_t i;
-        const size_t j;
-    private:
-        Y_Disable_Assign(Pair);
-    };
+    
 
 }
 
@@ -108,6 +65,12 @@ Y_UTEST(container_matrix)
             }
 
             {
+                Matrix<apz> m2t(TransposeOf,m);
+                std::cerr << "m2t_" << nr << "x" << nc << " = " <<  m2t << std::endl;
+
+            }
+
+            {
                 Matrix<int> m3;
                 m3 = m;
                 std::cerr << "m3_" << nr << "x" << nc << " = " <<  m3 << std::endl;
@@ -124,29 +87,6 @@ Y_UTEST(container_matrix)
     }
 
 
-    for(size_t nr=1; nr <= 5; ++nr)
-    {
-        for(size_t nc=1;nc<=5;++nc)
-        {
-            std::cerr << "M" << nr << "x" << nc << std::endl;
-            size_t idem = 0;
-            for(size_t i=0;i<nr;++i)
-            {
-                for(size_t j=0;j<nc;++j)
-                {
-                    const size_t p = i*nr+j;
-                    const size_t q = j*nc+i;
-                    if(q==p)
-                    {
-                        ++idem;
-                        continue;
-                    }
-                    std::cerr << "\t" << p <<  " => " << q << std::endl;
-                }
-            }
-            std::cerr << "idem=" << idem << std::endl;
-        }
-    }
 
 
 

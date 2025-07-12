@@ -89,6 +89,8 @@ namespace Yttrium
         }
 
     private:
+
+        //! delete pointee if needed
         inline void doFree() noexcept
         { if(pointee) { delete pointee; pointee=0; } }
 

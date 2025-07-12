@@ -63,6 +63,17 @@ namespace Yttrium
             return Coerce(getItemAt(indx));
         }
 
+        //! access when const
+        /**
+         \param indx in [1..size()]
+         \return const reference at indx
+         */
+        inline ConstType & operator[](const size_t indx) const noexcept
+        {
+            assert(indx>0); assert(indx<=size());
+            return getItemAt(indx);
+        }
+
     private:
         Y_Disable_Copy_And_Assign(Writable); //!< discarding
     };

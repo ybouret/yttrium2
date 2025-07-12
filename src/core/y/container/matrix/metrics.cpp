@@ -45,10 +45,16 @@ namespace Yttrium
         return cols == rows;
     }
 
-    bool MatrixMetrics:: sameMetricsThan(const MatrixMetrics &M) const noexcept
+    bool MatrixMetrics:: gotSameMetricsThan(const MatrixMetrics &M) const noexcept
     {
         return rows == M.rows && cols == M.cols;
     }
+
+    bool MatrixMetrics:: transposeMetricsOf(const MatrixMetrics &M) const noexcept
+    {
+        return rows == M.cols && cols == M.rows;
+    }
+
 
     void MatrixMetrics:: _xch( MatrixMetrics &m ) noexcept
     {
@@ -58,14 +64,7 @@ namespace Yttrium
     }
 
 
-    size_t MatrixMetrics:: indexOf(const size_t ir, const size_t ic) const noexcept
-    {
-        assert(ir>=0);
-        assert(ir<rows);
-        assert(ic>=0);
-        assert(ic<cols);
-        return ir * rows + ic;
-    }
+    
 
 
 
