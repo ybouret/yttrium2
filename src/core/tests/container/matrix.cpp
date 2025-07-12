@@ -4,6 +4,7 @@
 #include "y/apex/rational.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/random/park-miller.hpp"
+#include "y/container/sequence/vector.hpp"
 
 using namespace Yttrium;
 
@@ -69,6 +70,38 @@ Y_UTEST(container_matrix)
                 std::cerr << "m4_" << nr << "x" << nc << " = " <<  m4 << std::endl;
             }
 
+
+        }
+    }
+
+
+    struct Pair
+    {
+        size_t i,j;
+    };
+
+    struct Pairs
+    {
+        Pair source;
+        Pair target;
+    };
+
+    for(size_t nr=1;nr<=4;++nr)
+    {
+        for(size_t nc=1;nc<=4;++nc)
+        {
+            if(nr==nc) continue;
+            std::cerr << nr << " x " << nc << std::endl;
+            for(size_t i=1;i<=nr;++i)
+            {
+                for(size_t j=1;j<=nc;++j)
+                {
+                    if(i!=j)
+                    {
+                        std::cerr << "\tswp " << i << "," << j << std::endl;
+                    }
+                }
+            }
 
         }
     }
