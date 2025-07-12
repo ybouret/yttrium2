@@ -11,18 +11,12 @@
 #include "y/container/contiguous.hpp"
 #include "y/type/copy-of.hpp"
 #include "y/mkl/transpose-of.hpp"
+#include "y/ability/releasable.hpp"
 
 namespace Yttrium
 {
 
 
-    //! helper to build rows
-#define Y_Matrix_Rows() rowp( new Rows( getMetrics(), *code  ) )
-
-    //! helper to initialize code and rows
-#define Y_Matrix()                       \
-code( new Code( getMetrics() ) ),        \
-Y_Matrix_Rows()
 
     //__________________________________________________________________________
     //
@@ -33,7 +27,7 @@ Y_Matrix_Rows()
     //
     //__________________________________________________________________________
     template <typename T>
-    class Matrix : public MatrixMetrics
+    class Matrix : public MatrixMetrics, public Releasable
     {
     public:
         //______________________________________________________________________
@@ -84,6 +78,10 @@ Y_Matrix_Rows()
             //! [Writable] \return columns
             inline virtual size_t size() const noexcept { return cols; }
 
+            inline virtual void release() noexcept {
+                
+            }
+
             //__________________________________________________________________
             //
             // Interface
@@ -125,15 +123,30 @@ Y_Matrix_Rows()
         //______________________________________________________________________
 
         //! setup empty
-        inline Matrix() : MatrixMetrics(0,0), Y_Matrix() {}
+        inline Matrix() noexcept :
+        MatrixMetrics(0,0),
+        Releasable(),
+        code(0),
+        rowp(0)
+        {}
+
 
         //! setup default \param nr rows \param nc cols
         inline Matrix(const size_t nr, const size_t nc) :
-        MatrixMetrics(nr,nc), Y_Matrix() {}
+        MatrixMetrics(nr,nc),
+        Releasable(),
+        code( newCode() ),
+        rowp( newRows() )
+        {
+
+        }
 
         //! duplicate \param M another matrix
         inline Matrix(const Matrix &M) :
-        MatrixMetrics(M), code( new Code( M ) ), Y_Matrix_Rows()
+        MatrixMetrics(M),
+        Releasable(),
+        code( newCode(M) ),
+        rowp( newRows()  )
         {
 
         }
@@ -141,7 +154,10 @@ Y_Matrix_Rows()
         //! duplicate \param M another compatible matrix
         template <typename U>
         inline Matrix(const CopyOf_ &, const Matrix<U> &M) :
-        MatrixMetrics(M), code( new Code( M ) ), Y_Matrix_Rows()
+        MatrixMetrics(M),
+        Releasable(),
+        code( newCode(M) ),
+        rowp( newRows()  )
         {
 
         }
@@ -168,6 +184,14 @@ Y_Matrix_Rows()
             return assign(M);
         }
 
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
+
+        inline virtual void release() noexcept { Matrix _; xch(_); }
 
         //______________________________________________________________________
         //
@@ -197,7 +221,7 @@ Y_Matrix_Rows()
         //! \return first item of linear space
         inline ConstType * operator()(void) const noexcept
         {
-            return code->entry;
+            return code.isValid() ? code->entry : 0;
         }
 
 
@@ -206,6 +230,7 @@ Y_Matrix_Rows()
         {
             assert(irow>0);
             assert(irow<=rows);
+            assert(rowp.isValid());
             return rowp->cxx[irow];
         }
 
@@ -214,6 +239,7 @@ Y_Matrix_Rows()
         {
             assert(irow>0);
             assert(irow<=rows);
+            assert(rowp.isValid());
             return rowp->cxx[irow];
         }
 
@@ -265,13 +291,25 @@ Y_Matrix_Rows()
             {
             }
 
-
             //! cleanup
             inline virtual ~Code() noexcept { }
 
         private:
             Y_Disable_Copy_And_Assign(Code); //!< discarding
         };
+
+        inline Code * newCode() {
+            const MatrixMetrics & metrics = *this;
+            return count > 0 ? new Code(metrics) : 0;
+        }
+
+        template <typename U>
+        inline Code * newCode(const Matrix<U> &M)
+        {
+            assert( sameMetricsThan(M) );
+            return M.count >0 ? new Code(M) : 0;
+        }
+
 
         //______________________________________________________________________
         //
@@ -286,15 +324,17 @@ Y_Matrix_Rows()
 
             //! setup \param metrics metrics \param objects associated code
             inline Rows(const MatrixMetrics & metrics,
-                        Code &                objects) :
+                        Code         &        objects) :
             Memory::SchoolOf<Row>(metrics.rows)
             {
+
                 Row *        row  = entry;
                 T   *        addr = objects.entry;
-                const size_t nr   = metrics.rows;
                 const size_t nc   = metrics.cols;
+                const size_t nr = metrics.rows;
                 for(size_t i=0;i<nr;++i, addr += nc)
                     new ( row++ ) Row(addr,nc);
+
             }
 
             //! cleanup
@@ -303,6 +343,12 @@ Y_Matrix_Rows()
         private:
             Y_Disable_Copy_And_Assign(Rows); //!< discarding
         };
+
+        inline Rows * newRows()
+        {
+            const MatrixMetrics & metrics = *this;
+            return code.isValid() ? new Rows(metrics,*code) : 0 ;
+        }
 
 
         AutoPtr<Code> code; //!< current code

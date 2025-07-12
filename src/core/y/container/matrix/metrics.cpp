@@ -45,6 +45,11 @@ namespace Yttrium
         return cols == rows;
     }
 
+    bool MatrixMetrics:: sameMetricsThan(const MatrixMetrics &M) const noexcept
+    {
+        return rows == M.rows && cols == M.cols;
+    }
+
     void MatrixMetrics:: _xch( MatrixMetrics &m ) noexcept
     {
         CoerceSwap(rows,m.rows);

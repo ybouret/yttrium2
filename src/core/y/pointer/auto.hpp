@@ -6,6 +6,7 @@
 
 #include "y/pointer/immediate.hpp"
 #include "y/pointer/accept-null.hpp"
+#include "y/ability/recyclable.hpp"
 
 namespace Yttrium
 {
@@ -22,7 +23,7 @@ namespace Yttrium
     typename T,
     template <typename> class Redirect = Immediate
     >
-    class AutoPtr : public Smart::AcceptNullPointer<T,Redirect>
+    class AutoPtr : public Smart::AcceptNullPointer<T,Redirect>, public Recyclable
     {
     public:
         //______________________________________________________________________
@@ -46,7 +47,7 @@ namespace Yttrium
         //! cleanup
         inline virtual ~AutoPtr() noexcept
         {
-            if(pointee) { delete pointee; pointee=0; }
+            doFree();
         }
 
         //! keep only one copy \param other another pointer
@@ -77,14 +78,19 @@ namespace Yttrium
         //
         //______________________________________________________________________
 
-        //! \return pointee
-        inline T * yield() noexcept {
+        //! free pointee
+        inline virtual void free() noexcept { doFree(); }
+
+        //! \return pointee back to user
+        inline T *  yield() noexcept {
             T * const res = pointee;
             pointee = 0;
             return res;
         }
 
-        
+    private:
+        inline void doFree() noexcept
+        { if(pointee) { delete pointee; pointee=0; } }
 
     };
 

@@ -20,16 +20,19 @@ Y_UTEST(container_matrix)
 
     { Matrix<int> m; }
 
+
     {
         Matrix<int> m(2,3);
 
     }
 
+
+
     {
         Matrix<apq> m(5,6);
     }
 
-
+    
 
     for(size_t nr=1;nr<=3;++nr)
     {

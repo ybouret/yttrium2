@@ -53,7 +53,8 @@ namespace Yttrium
         //
         //______________________________________________________________________
         bool isSquare() const noexcept; //!< \return rows==cols
-
+        bool sameMetricsThan(const MatrixMetrics &) const noexcept;
+        
         //______________________________________________________________________
         //
         //
