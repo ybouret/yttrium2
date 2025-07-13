@@ -60,6 +60,16 @@ namespace Yttrium
         }
 
 
+        bool Natural:: isOdd() const noexcept
+        {
+            return 0 != (0x01 & device->api->lsb());
+        }
+
+        bool Natural:: isEven() const noexcept
+        {
+            return 0 == (0x01 & device->api->lsb());
+        }
+
         size_t Natural:: bits() const noexcept
         {
             assert(device);

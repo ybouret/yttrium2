@@ -75,12 +75,13 @@ do { if ( !(EXPR) ) { std::cerr << " *** '" << #EXPR << "' failure'" << std::end
             // Interface
             //
             //__________________________________________________________________
-            virtual void   adjust()                     noexcept = 0; //!< adjust size
-            virtual void   resize(const size_t numBits) noexcept = 0; //!< set size \param numBits to compute size
-            virtual size_t bits()                 const noexcept = 0; //!< \return bit count
-            virtual void   naught(ParcelAPI * const[])  noexcept = 0; //!< set to zero
-            virtual void   setOne(ParcelAPI * const[])  noexcept = 0; //!< set to one
-            virtual size_t shr(ParcelAPI * const[])     noexcept = 0; //!< right shift \return bit count
+            virtual void    adjust()                     noexcept = 0; //!< adjust size
+            virtual void    resize(const size_t numBits) noexcept = 0; //!< set size \param numBits to compute size
+            virtual size_t  bits()                 const noexcept = 0; //!< \return bit count
+            virtual void    naught(ParcelAPI * const[])  noexcept = 0; //!< set to zero
+            virtual void    setOne(ParcelAPI * const[])  noexcept = 0; //!< set to one
+            virtual size_t  shr(ParcelAPI * const[])     noexcept = 0; //!< right shift \return bit count
+            virtual uint8_t lsb()                  const noexcept = 0; //!< \return least significant byte
 
             //__________________________________________________________________
             //

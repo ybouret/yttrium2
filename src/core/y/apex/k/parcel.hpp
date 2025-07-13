@@ -125,6 +125,11 @@ namespace Yttrium
                 sync[2]->size = 0;
             }
 
+            inline virtual uint8_t lsb() const noexcept
+            {
+                return uint8_t(data[0]);
+            }
+
         private:
             //! inline SHR with carry \param curr to modify \param next next unit
             static inline void SHR(T &curr, const T next) noexcept
