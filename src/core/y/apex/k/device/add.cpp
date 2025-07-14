@@ -70,7 +70,7 @@ namespace Yttrium
                     return (n<=m) ? Compute_(a,n,b,m) : Compute_(b,m,a,n);
                 }
 
-
+                
                 static inline
                 Device * Compute(const Device &lhs,
                                  const Device &rhs)
@@ -82,7 +82,7 @@ namespace Yttrium
                     const Parcel<SMALL> & R = rhs.make<SMALL>();
                     return Compute(L.data,L.size,R.data,R.size);
                 }
-
+                
                 static inline
                 Device * Compute(const Device &lhs,
                                  natural_t     rhs)

@@ -132,11 +132,21 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //
-            // Additions
+            // Multiplications
             //
             //__________________________________________________________________
             static Device * Mul(const Device &, const Device  &, OpsMode); //!< \return multiplication
             static Device * Mul(const Device &, const natural_t, OpsMode); //!< \return multiplication
+
+
+            //__________________________________________________________________
+            //
+            //
+            // Square
+            //
+            //__________________________________________________________________
+            static Device * Sqr(const Device &, OpsMode); //!< \return square
+
 
             //__________________________________________________________________
             //
