@@ -53,6 +53,37 @@ namespace Yttrium
                     Swap(arr[1], arr[0]);
             }
         }
+
+        //! co-sorting a triplet in ascending order
+        /**
+         \param arr arr[0..2]
+         \param brr brr[0..2]
+         */
+        template <typename T, typename U> inline
+        void Sort3(T arr[], U brr[])
+        {
+            // insert arr[1]
+            if (arr[1] < arr[0])
+            {
+                Swap(arr[0], arr[1]);
+                Swap(brr[0], brr[1]);
+            }
+
+            // insert arr[2]
+            if (arr[2] < arr[1])
+            {
+                Swap(arr[1], arr[2]);
+                Swap(brr[1], brr[2]);
+
+                if (arr[1] < arr[0])
+                {
+                    Swap(arr[1], arr[0]);
+                    Swap(brr[1], brr[0]);
+                }
+            }
+        }
+
+
     }
 
 }

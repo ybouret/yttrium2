@@ -144,6 +144,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(mkl_numeric);
     Y_UTEST(mkl_api);
     Y_UTEST(mkl_adaptor);
+    Y_UTEST(mkl_triplet);
 
     Y_UTEST(cameo_add);
     Y_UTEST(cameo_mul);

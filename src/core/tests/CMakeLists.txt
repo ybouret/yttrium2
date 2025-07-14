@@ -190,6 +190,7 @@ Y_UTEST(random:shuffle)
 Y_UTEST(mkl:numeric)
 Y_UTEST(mkl:api)
 Y_UTEST(mkl:adaptor)
+Y_UTEST(mkl:triplet)
 
 #cameo
 Y_UTEST(cameo:add)
