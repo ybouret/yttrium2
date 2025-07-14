@@ -10,6 +10,11 @@ namespace Yttrium
             const Integer N = numer.abs();
             return Rational(N,denom);
         }
+
+        Rational Rational:: sqrt() const
+        {
+            
+        }
     }
 
 }

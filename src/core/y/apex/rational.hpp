@@ -131,6 +131,7 @@ namespace Yttrium
             Rational &     xch(Rational &) noexcept; //!< exchange \return *this
             Rational &     neg() noexcept;           //!< in-place opposite \return *this
             Rational       abs() const;              //!< \return |*this|
+            Rational       sqrt() const;             //!< \return |*this|
 
             //__________________________________________________________________
             //
