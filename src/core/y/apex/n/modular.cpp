@@ -2,7 +2,6 @@
 #include "y/apex/n/modular.hpp"
 #include "y/apex/integer.hpp"
 #include "y/system/exception.hpp"
-#include "y/apex/k/device.hpp"
 
 namespace Yttrium
 {
@@ -24,23 +23,23 @@ namespace Yttrium
                     result = (result * base) % modulus;
                 exponent.shr();
                 base = base.sqr() % modulus;
-                
             }
-            return result;
+            return result % modulus;
         }
 
 
-#if 0
+#if 1
         Natural Modular::Inv(const Natural &a, const Natural &n)
         {
             Integer t=0,newt=1;
             Natural r=n,newr=a;
-            Natural quotient  = 0;
-            Natural remainder = 0;
 
-            while(newr->bits>0)
+
+            while(newr.bits()>0)
             {
-                Natural::Div(quotient, remainder, r, newr);
+                Natural quotient;
+                Natural remainder;
+                Natural::Div_( &quotient, &remainder, r, newr);
                 {
                     Integer _ = t - quotient * newt;
                     t.xch(newt);

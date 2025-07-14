@@ -175,6 +175,7 @@ Y_UTEST(apex:n)
 Y_UTEST(apex:z)
 Y_UTEST(apex:q)
 Y_UTEST(apex:io)
+Y_UTEST(apex:rsa)
 
 #random
 Y_UTEST(random:bits)
