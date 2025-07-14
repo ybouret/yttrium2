@@ -22,12 +22,23 @@ namespace Yttrium
         //______________________________________________________________________
         struct Modular
         {
-            //! \return b^e[n]
+            //! Modular Exponentiation
+            /**
+             \param b value
+             \param e exponent
+             \param n modulus
+             \return b^e[n]
+             */
             static Natural Exp(const Natural &b,
                                const Natural &e,
                                const Natural &n);
 
-            //! \return a^(-1)[n]
+            //! Modular Inverse
+            /**
+             \param a value
+             \param n modulus
+             \return a^(-1)[n]
+             */
             static Natural Inv(const Natural &a,
                                const Natural &n);
         };

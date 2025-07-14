@@ -41,6 +41,7 @@ Y_UTEST(exception)
 
 Y_UTEST(singleton)
 Y_UTEST(static_init)
+Y_UTEST(functor)
 
 #format
 Y_UTEST(format:hexadecimal)

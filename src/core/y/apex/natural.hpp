@@ -157,13 +157,13 @@ namespace Yttrium
             //
             //__________________________________________________________________
             void           shr()    noexcept; //!< in-place shr
-            Natural        sqr()       const;
+            Natural        sqr()       const; //!< \return |*this|^2
             Natural        abs()       const; //!< \return *this
             Natural        sqrt()      const; //!< \return integer square root
             String         hexString() const; //!< \return hexadecimal, concise string
             String         decString() const; //!< \return decimal string
-            bool           isOdd() const noexcept;
-            bool           isEven() const noexcept;
+            bool           isOdd()  const noexcept; //!< \return true iff odd
+            bool           isEven() const noexcept; //!< \return true iff even
 
 
             static Natural GCD(const Natural &, const Natural &); //!< \return gcd(,)

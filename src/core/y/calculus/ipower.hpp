@@ -8,7 +8,12 @@
 namespace Yttrium
 {
 
-    //! integer power of x
+    //! integer power
+    /**
+     \param x value
+     \param n power
+     \return x^n
+     */
     template <typename T>
     T ipower(const T x, size_t n) {
         switch(n)
