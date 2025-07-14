@@ -37,8 +37,20 @@ Y_UTEST(apex_rsa)
     }
 
     std::cerr << "Modular Inv" << std::endl;
-    
+    for(size_t in=1;in<=40;in += 1+ran.leq<size_t>(8))
+    {
+        for(size_t ia=0;ia<=10;++ia)
+        {
+            const apn  n(ran,in);
+            const apn  a(ran,ia);
+            //const apn  b = Apex::Modular::Inv(a,n);
+        }
+    }
 
+
+    {
+        
+    }
 
 }
 Y_UDONE()
