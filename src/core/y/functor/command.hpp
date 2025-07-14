@@ -34,7 +34,7 @@ namespace Yttrium {
             // C++
             //__________________________________________________________________
 
-            //! construct from host+method
+            //! construct \param o object pointer \param m method pointer
             explicit command( const OBJECT_POINTER o, const METHOD_POINTER m ) :
             callable_type(),
             object_( o ),
@@ -48,7 +48,7 @@ namespace Yttrium {
 
             //__________________________________________________________________
             //
-            //! cloneable interface
+            //! cloneable interface \return cloned command
             //__________________________________________________________________
             virtual  callable<R,TLIST> *clone() const { return new command( *this ); }
 
@@ -57,7 +57,7 @@ namespace Yttrium {
             // calls
             //__________________________________________________________________
 
-            //! no argument call
+            //! no argument call \return call value
             inline R operator()(void)
             {
                 assert( NULL != object_ );
@@ -66,6 +66,10 @@ namespace Yttrium {
             }
 
             //! one argument call
+            /**
+             \param P1 param1
+             \return call value
+             */
             inline R operator()( param1 P1 )
             {
                 assert( NULL != object_ );
@@ -74,6 +78,11 @@ namespace Yttrium {
             }
 
             //! two arguments call
+            /**
+             \param P1 param1
+             \param P2 param2
+             \return call value
+             */
             inline R operator()( param1 P1, param2 P2 )
             {
                 assert( NULL != object_ );
@@ -82,6 +91,12 @@ namespace Yttrium {
             }
 
             //! three arguments call
+            /**
+             \param P1 param1
+             \param P2 param2
+             \param P3 param3
+             \return call value
+             */
             inline R operator()( param1 P1, param2 P2, param3 P3)
             {
                 assert( NULL != object_ );
@@ -90,6 +105,13 @@ namespace Yttrium {
             }
 
             //! four arguments call
+            /**
+             \param P1 param1
+             \param P2 param2
+             \param P3 param3
+             \param P4 param4
+             \return call value
+             */
             inline R operator()( param1 P1, param2 P2, param3 P3, param4 P4)
             {
                 assert( NULL != object_ );
@@ -98,6 +120,14 @@ namespace Yttrium {
             }
 
             //! five arguments call
+            /**
+             \param P1 param1
+             \param P2 param2
+             \param P3 param3
+             \param P4 param3
+             \param P5 param3
+            \return call value
+            */
             inline R operator()( param1 P1, param2 P2, param3 P3, param4 P4, param5 P5)
             {
                 assert( NULL != object_ );
@@ -107,11 +137,11 @@ namespace Yttrium {
 
 
         private:
-            Y_Disable_Assign(command);
-            OBJECT_POINTER object_;
-            METHOD_POINTER method_;
+            Y_Disable_Assign(command); //!< discarding
+            OBJECT_POINTER object_;    //!< object pointer
+            METHOD_POINTER method_;    //!< method pointer
 
-            //! copy for the clone function
+            //! copy for the clone function \param other another command
             explicit command( const command &other ) noexcept:
             callable_type(),
             object_( other.object_ ),

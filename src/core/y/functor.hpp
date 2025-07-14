@@ -224,10 +224,14 @@ namespace Yttrium
 
             Y_FUNCTOR_PARAMETERS(); //!< parameters alias
 
-            //! cloneable interface by copy
+            //! \return cloned
             virtual callable<R,TLIST> *clone() const { return new binder_first( *this ); }
 
             //! constructor
+            /**
+             \param f incoming function
+             \param b bounded param, copied
+             */
             explicit binder_first( const incoming &f, bounded_param b ) :
             functor_( f ),
             bounded_( b )
@@ -238,22 +242,43 @@ namespace Yttrium
 
 
 
-            //! 1->0 argument call
+            //! 1->0 argument call \return f(bounded)
             inline R operator()(void)
             {
                 return functor_(bounded_);
             }
 
             //! 2->1 argument call
+            /**
+             \param p1 param1
+             \return f(bounded,p1)
+            */
             inline R operator()(param1 p1)
             {
                 return functor_(bounded_,p1);
             }
 
             //! 3->2 arguments call
+            /**
+             \param p1 param1
+             \param p2 param2
+             \return f(bounded,p1,p2)
+            */
             inline R operator()(param1 p1, param2 p2)
             {
                 return functor_(bounded_,p1,p2);
+            }
+
+            //! 4->3 arguments call
+            /**
+             \param p1 param1
+             \param p2 param2
+             \param p3 param3
+             \return f(bounded,p1,p2,p3)
+             */
+            inline R operator()(param1 p1, param2 p2, param3 p3)
+            {
+                return functor_(bounded_,p1,p2,p3);
             }
 
 
@@ -261,6 +286,7 @@ namespace Yttrium
             incoming functor_;   //!< functor copy semantics
             bounded  bounded_;   //!< first parameter value
 
+            //! duplicate \param other another binder_first
             binder_first( const binder_first &other ) :
             functor_( other.functor_ ),
             bounded_( other.bounded_ )
@@ -270,10 +296,14 @@ namespace Yttrium
     }
 
     //! bind first parameter to make a new functor
-    template <typename incoming>
-    inline
+    /**
+     \param f incoming functior
+     \param p bounded first parameter
+     \return new functor
+     */
+    template <typename incoming> inline
     typename Kernel::binder_first<incoming>::outgoing
-    bind_first( const incoming &f, typename Kernel::binder_first<incoming>::bounded_param p )
+    BindFirst( const incoming &f, typename Kernel::binder_first<incoming>::bounded_param p )
     {
         typedef typename Kernel::binder_first<incoming>::outgoing out_functor;
         typedef typename out_functor::callable                    out_callable;
@@ -282,14 +312,26 @@ namespace Yttrium
     }
 
     //! make a functor from a C function
+    /**
+     \param cfn C-function
+     \return functor
+     */
     template <typename R,typename T>
     inline Functor<R,TL1(T)> cfunctor( R (*cfn)(T) ) { return Functor<R,TL1(T)>( cfn ); }
 
     //! make a functor from a C function
+    /**
+     \param cfn C-function
+     \return functor
+     */
     template <typename R,typename T,typename U>
     inline Functor<R,TL2(T,U)> cfunctor2( R (*cfn)(T,U) ) { return Functor<R,TL2(T,U)>( cfn ); }
 
     //! make a functor from a C function
+    /**
+    \param cfn C-function
+    \return functor
+    */
     template <typename R,typename T,typename U,typename V>
     inline Functor<R,TL3(T,U,V)> cfunctor3( R (*cfn)(T,U,V) ) { return Functor<R,TL3(T,U,V)>( cfn ); }
 
