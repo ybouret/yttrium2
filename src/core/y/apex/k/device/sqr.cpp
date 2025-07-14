@@ -16,14 +16,12 @@ namespace Yttrium
 
                 static inline
                 Device * Compute(const SMALL * const a,
-                                 const size_t        p,
-                                 const SMALL *       b,
-                                 const size_t        q)
+                                 const size_t        p)
                 {
                     assert(0!=a);
-                    assert(0!=b);
                     assert(p>0);
-                    assert(q>0);
+                    const SMALL *  b      = a;
+                    const size_t   q      = p;
                     const size_t   n      = p+q;
                     Device *       device = new Device(n*sizeof(SMALL),SmallPlan);
                     {
@@ -50,19 +48,44 @@ namespace Yttrium
                 }
 
                 static inline
-                Device * Compute(const Device &lhs, const Device &rhs)
+                Device * Compute(const Device &dev)
                 {
-                    assert(lhs.bits>1);
-                    assert(rhs.bits>1);
-                    const Parcel<SMALL> &L = lhs.make<SMALL>();
-                    const Parcel<SMALL> &R = rhs.make<SMALL>();
-                    return Compute(L.data,L.size,R.data,R.size);
+                    assert(dev.bits>1);
+                    const Parcel<SMALL> &D = dev.make<SMALL>();
+                    return Compute(D.data,D.size);
                 }
 
             };
 
+
         }
 
+#define Y_Apex_Device_Call() \
+/**/    static  Proc const Table[NumOps] =\
+/**/    {\
+/**/        DeviceSqr<uint8_t,uint16_t> ::Compute, \
+/**/        DeviceSqr<uint8_t,uint32_t> ::Compute, \
+/**/        DeviceSqr<uint8_t,uint64_t> ::Compute, \
+/**/        DeviceSqr<uint16_t,uint32_t>::Compute, \
+/**/        DeviceSqr<uint16_t,uint64_t>::Compute, \
+/**/        DeviceSqr<uint32_t,uint64_t>::Compute  \
+/**/    };\
+/**/    return Table[ops](dev)
+
+        Device * Device:: Sqr(const Device &dev, OpsMode ops)
+        {
+
+            switch(dev.bits)
+            {
+                case 0: return new Device(0,SmallPlan[ops]);
+                case 1: return new Device(CopyOf,1);
+                default:
+                    break;
+            }
+
+            typedef Device * (*Proc)(const Device &);
+            Y_Apex_Device_Call();
+        }
     }
 
 }

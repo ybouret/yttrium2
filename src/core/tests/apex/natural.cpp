@@ -341,6 +341,21 @@ Y_UTEST(apex_n)
         std::cerr << std::endl;
     }
 
+    std::cerr << "Square..." << std::endl;
+    {
+        apn n;
+        Y_ASSERT( 0 == n.sqr() );
+        n = 1;
+        Y_ASSERT( 1 == n.sqr() );
+        for(size_t bits=2;bits<=100;++bits)
+        {
+            n = apn(ran,bits);
+            const apn n2 = n.sqr();
+            const apn s  = n2.sqrt();
+            Y_ASSERT(s==n);
+        }
+    }
+
 
 
 }

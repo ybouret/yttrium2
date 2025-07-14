@@ -25,6 +25,12 @@ namespace Yttrium
             Y_Lock(*rhs);
             return Device::Mul(*rhs.device,lhs,Ops);
         }
+
+        Natural Natural:: sqr() const
+        {
+            Y_Lock(**this);
+            return Natural(Hook, Device::Sqr(*device,Ops) );
+        }
     }
 
 }
