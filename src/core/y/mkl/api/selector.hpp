@@ -11,7 +11,7 @@ namespace Yttrium
 {
     namespace MKL
     {
-        //! named API type
+        //! named API type 
         enum API_Type
         {
             API_Integral, //!< char,...,uint64_t

@@ -58,17 +58,6 @@ namespace Yttrium
         };
 
 
-        //! testing is type is scalar
-        template <typename T>
-        struct IsScalarType
-        {
-            Y_Args_Expose(T,Type);                                    //!< aliases
-            typedef typename ScalarFor<MutableType>::Type ScalarType; //!< alias
-            enum
-            {
-                Value = IsSameType<MutableType,ScalarType>::Value //!< true iff scalar
-            };
-        };
     }
 
 }

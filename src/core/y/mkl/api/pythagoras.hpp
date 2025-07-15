@@ -4,6 +4,7 @@
 #ifndef Y_MKL_Pythagoras_Included
 #define Y_MKL_Pythagoras_Included 1
 
+#include "y/mkl/api/scalar.hpp"
 #include "y/sorting/sort3.hpp"
 #include "y/mkl/api/fabs.hpp"
 #include "y/mkl/api/sqrt.hpp"
@@ -24,7 +25,7 @@ namespace Yttrium
          */
         template <typename T> T Pythagoras(const T a, const T b)
         {
-            Y_STATIC_CHECK(IsScalarType<T>::Value,BadType);
+            Y_STATIC_CHECK(IsScalar<T>::Value,BadType);
             const T absa = Fabs<T>::Of(a);
             const T absb = Fabs<T>::Of(b);
             const T one(1);

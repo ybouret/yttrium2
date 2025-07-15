@@ -4,6 +4,8 @@
 
 #include "y/mkl/complex.hpp"
 
+#include "y/mkl/api/vectorial.hpp"
+
 using namespace Yttrium;
 using namespace MKL;
 
