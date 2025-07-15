@@ -38,7 +38,7 @@ namespace Yttrium
         public:
             Y_Args_Declare(T,Type);
             typedef typename MKL::ScalarFor<T>::Type ScalarType;
-            typedef ScalarSummator<ScalarType>       ScalarSummator;
+            typedef ScalarSummator<ScalarType>       CoordSummator;
 
             static const size_t DIMENSIONS = MutableType::DIMENSIONS;
 
@@ -79,8 +79,8 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(VectorialSummator);
-            Memory::SchoolOf<ScalarSummator>   summators;
-            Memory::Operating<ScalarSummator>  operating;
+            Memory::SchoolOf<CoordSummator>   summators;
+            Memory::Operating<CoordSummator>  operating;
             inline virtual void add(ParamType value)
             {
                 try {
