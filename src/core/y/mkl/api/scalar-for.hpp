@@ -62,7 +62,7 @@ namespace Yttrium
         template <typename T>
         struct IsScalarType
         {
-            Y_Args_Expose(T,Type); //!< aliases
+            Y_Args_Expose(T,Type);                                    //!< aliases
             typedef typename ScalarFor<MutableType>::Type ScalarType; //!< alias
             enum
             {
