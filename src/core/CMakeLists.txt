@@ -87,6 +87,8 @@ Y_CreateLibrary(y
     y/cameo/multiplier
     y/cameo/multiplier/synod
     y/functor
+    y/dft
+    y/dft/fmt
 )
 
 add_subdirectory(tests)
