@@ -14,6 +14,7 @@ using namespace Yttrium;
 #include "y/ascii/convert.hpp"
 #include "y/stream/libc/output.hpp"
 #include "y/string/format.hpp"
+#include <typeinfo>
 
 namespace
 {
