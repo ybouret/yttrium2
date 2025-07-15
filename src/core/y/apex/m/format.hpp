@@ -6,6 +6,7 @@
 #define Y_Apex_Format_Included 1
 
 #include "y/apex/m/size-for.hpp"
+#include "y/memory/stealth.hpp"
 #include <cassert>
 
 namespace Yttrium
@@ -38,7 +39,7 @@ namespace Yttrium
             {
                 assert(size<=2);
                 uint64_t          v = data;
-                uint32_t * const  u = (uint32_t *) &data;
+                uint32_t * const  u = Memory::Stealth::Cast<uint32_t>(&data);
                 switch(size)
                 {
                     case 2: u[1] = uint32_t(v>>32); // FALLTHRU
@@ -61,7 +62,7 @@ namespace Yttrium
             {
                 assert(size<=4);
                 uint64_t          v = data;
-                uint16_t * const  u = (uint16_t *) &data;
+                uint16_t * const  u = Memory::Stealth::Cast<uint16_t>(&data);
                 switch(size)
                 {
                     case 4: u[3] = uint16_t(v>>48); // FALLTHRU
