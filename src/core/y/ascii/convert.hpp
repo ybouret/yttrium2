@@ -55,6 +55,23 @@ namespace Yttrium
             };
 
 
+            template <typename T>
+            struct FPointParser
+            {
+                static T Get(const char * const text, const size_t size)
+                {
+                    apz    ip;
+                    apn    fp;
+                    size_t fl=0;
+                    apz    xp;
+                    Parsing::FPoint(ip, fp, fl, xp, text, size);
+
+                    int64_t  ii = 0; if(!ip.tryCast(ii)) Parsing::Overflow();
+                    uint64_t ff = 0; if(!fp.tryCast(ff)) Parsing::Overflow();
+                    int64_t  xx = 0; if(!xp.tryCast(xx)) Parsing::Overflow();
+                    
+                }
+            };
 
         };
     }

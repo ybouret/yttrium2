@@ -1,7 +1,7 @@
 
 #include "y/ascii/convert.hpp"
 #include "y/utest/run.hpp"
-
+#include <cstring>
 
 using namespace Yttrium;
 
@@ -43,13 +43,14 @@ Y_UTEST(ascii_convert)
 
         try
         {
-            apz ip;
-            apn fp;
+            apz    ip;
+            apn    fp;
             size_t fl=0;
-            apz xp;
+            apz    xp;
             ASCII::Conversion::Parsing::FPoint(ip,fp,fl,xp,argv[i],strlen(argv[i]));
             std::cerr << "ip='" << ip << "'" << std::endl;
             std::cerr << "fp='" << fp << "'" << " / length=" << fl << std::endl;
+            std::cerr << "xp='" << xp << "'" << std::endl;
         }
         catch(const Exception &excp) { excp.show(std::cerr); }
         catch(...) { throw; }

@@ -41,7 +41,7 @@ namespace Yttrium
                 }
 
 
-                size_t ipLength = 0;
+                size_t il = 0;
                 while(curr<last)
                 {
                     const char c = *(curr++);
@@ -59,7 +59,7 @@ namespace Yttrium
                         case '9':
                             ip *= 10;
                             ip += int64_t(c-'0');
-                            ++ipLength;
+                            ++il;
                             continue;
                         case '.':
                             goto FP;
@@ -90,12 +90,58 @@ namespace Yttrium
                             fp += int64_t(c-'0');
                             ++fl;
                             continue;
+                        case 'e':
+                        case 'E':
+                            goto XP;
                         default:
                             throw Specific::Exception(fn,"unexpected '%c' in fractional part",c);
                     }
                 }
+                goto RETURN;
+
+            XP:
+                assert('e'==curr[-1]||'E'==curr[-1]);
+                {
+                    bool   xn = false;
+                    size_t xl = 0;
+                    if('-'==*curr)
+                    {
+                        ++curr;
+                        xn =  true;
+                    }
+                    if('+'==*curr)
+                    {
+                        ++curr;
+                    }
+                    while(curr<last)
+                    {
+                        const char c = *(curr++);
+                        switch(c)
+                        {
+                            case '0':
+                            case '1':
+                            case '2':
+                            case '3':
+                            case '4':
+                            case '5':
+                            case '6':
+                            case '7':
+                            case '8':
+                            case '9':
+                                xp *= 10;
+                                xp += int64_t(c-'0');
+                                ++xl;
+                                continue;
+                            default:
+                                throw Specific::Exception(fn,"unexpected '%c' in exponent partt",c);
+                        }
+                    }
+                    if(xl<=0) throw Specific::Exception(fn,"empty exponent");
+                    if(xn) (void) xp.neg();
+                }
 
             RETURN:
+                if(il<=0&&fl<=0) throw Specific::Exception(fn,"both empty integral and fractional part");
                 if(neg) (void) ip.neg();
 
             }
