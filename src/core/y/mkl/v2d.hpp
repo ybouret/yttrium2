@@ -65,24 +65,24 @@ namespace Yttrium
         //
         // addition
         //______________________________________________________________________
-        inline V2D        operator+()                         const noexcept { return V2D(x,y); }                     //!< unary +
+        inline V2D        operator+()                         const noexcept { return V2D(x,y); }                     //!< unary + \return *this
         inline friend V2D operator+(const V2D &lhs, const V2D &rhs) noexcept { return V2D(lhs.x+rhs.x,lhs.y+rhs.y); } //!< binary +
-        inline V2D & operator+=(const V2D &rhs)                     noexcept { x+=rhs.x; y+=rhs.y; return *this; }    //!< in place +
+        inline V2D & operator+=(const V2D &rhs)                     noexcept { x+=rhs.x; y+=rhs.y; return *this; }    //!< \param rhs rhs  \return *this+rhs
 
         //______________________________________________________________________
         //
         // subtraction
         //______________________________________________________________________
-        inline V2D        operator-()                         const noexcept { return V2D(-x,-y); }                   //!< unary -
+        inline V2D        operator-()                         const noexcept { return V2D(-x,-y); }                   //!< unary - \return -(*this)
         inline friend V2D operator-(const V2D &lhs, const V2D &rhs) noexcept { return V2D(lhs.x-rhs.x,lhs.y-rhs.y); } //!< binary -
-        inline V2D & operator-=(const V2D &rhs)                     noexcept { x-=rhs.x; y-=rhs.y; return *this; }    //!< in place -
+        inline V2D & operator-=(const V2D &rhs)                     noexcept { x-=rhs.x; y-=rhs.y; return *this; }    //!< \param rhs rhs  \return *this-rhs
 
         //______________________________________________________________________
         //
         // multiplication
         //______________________________________________________________________
         inline friend V2D operator*(const T u, const V2D &v)    noexcept { return V2D(v.x*u,v.y*u);  } //!< left multiplication
-        inline V2D &      operator*=(const T u)                 noexcept { x*=u; y*=u; return *this; } //!< in place multiplication
+        inline V2D &      operator*=(const T u)                 noexcept { x*=u; y*=u; return *this; } //!< \param u scalar \return u * *this
         inline friend T   operator*(const V2D &a, const V2D &b) noexcept { return a.x*b.x + a.y*b.y; } //!< dot product
 
         //______________________________________________________________________
@@ -90,7 +90,7 @@ namespace Yttrium
         // division
         //______________________________________________________________________
         inline friend V2D operator/( const V2D &v, const T u)   noexcept { return V2D(v.x/u,v.y/u);  } //!< right division
-        inline V2D &      operator/=(const T u)                 noexcept { x/=u; y/=u; return *this; } //!< in place division
+        inline V2D &      operator/=(const T u)                 noexcept { x/=u; y/=u; return *this; } //!< \param u scalar \return (1/u) * *this*
 
 
         //______________________________________________________________________
@@ -120,7 +120,7 @@ namespace Yttrium
 
         //______________________________________________________________________
         //
-        //! |v|^2
+        //! \return |v|^2
         //______________________________________________________________________
         inline T norm2() const noexcept
         {
@@ -129,26 +129,26 @@ namespace Yttrium
 
         //______________________________________________________________________
         //
-        //! |v|
+        //! \return |v|
         //______________________________________________________________________
         inline T norm() const noexcept
         {
             return MKL::Pythagoras(x,y);
         }
 
-        //! lower point
+        //! \return lower point \param lhs lhs \param rhs rhs
         inline static V2D MinOf(const V2D &lhs, const V2D &rhs) noexcept
         {
             return V2D(MinOf(lhs.x,rhs.x),MinOf(lhs.y,rhs.y));
         }
 
-        //! upper point
+        //! \return upper point \param lhs lhs \param rhs rhs
         inline static V2D MaxOf(const V2D &lhs, const V2D &rhs) noexcept
         {
             return V2D(MaxOf(lhs.x,rhs.x),MaxOf(lhs.y,rhs.y));
         }
 
-        //! direct orthogonal
+        //! \return direct orthogonal rotation
         inline V2D ortho() const noexcept
         {
             return V2D(-y,x);
