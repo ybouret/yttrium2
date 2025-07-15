@@ -151,6 +151,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(cameo_mul);
 
     Y_UTEST(dft_fmt);
+    Y_UTEST(dft_core);
 
     Y_UTEST(ascii_convert);
 }

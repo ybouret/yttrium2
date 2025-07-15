@@ -11,7 +11,7 @@ using namespace Yttrium;
 #include "y/cameo/addition.hpp"
 #include "y/system/wall-time.hpp"
 #include "y/format/human-readable.hpp"
-//#include "y/text/ascii/convert.hpp"
+#include "y/ascii/convert.hpp"
 #include "y/stream/libc/output.hpp"
 #include "y/string/format.hpp"
 
@@ -248,7 +248,7 @@ Y_UTEST(dft_core)
 
     if( argc > 1)
     {
-        //duration = ASCII::Convert::ToReal<double>(argv[1],"duration");
+        duration = ASCII::Convert::To<double>(argv[1],"duration");
     }
 
 #if 0

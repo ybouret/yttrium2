@@ -11,7 +11,7 @@ using namespace Yttrium;
 #include "y/random/park-miller.hpp"
 #include "y/system/wall-time.hpp"
 #include "y/format/human-readable.hpp"
-//#include "y/text/ascii/convert.hpp"
+#include "y/ascii/convert.hpp"
 #include "y/stream/libc/output.hpp"
 #include "y/format/hexadecimal.hpp"
 #include "y/calculus/bits-for.hpp"
@@ -229,7 +229,7 @@ Y_UTEST(dft_fmt)
     duration = 0.1;
     if(argc>1)
     {
-       // duration = ASCII::Convert::ToReal<double>(argv[1],"duration");
+       duration = ASCII::Convert::To<double>(argv[1],"duration");
     }
 
     if(false)

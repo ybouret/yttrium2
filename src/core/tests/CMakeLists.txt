@@ -201,6 +201,7 @@ Y_UTEST(cameo:mul)
 
 #dft
 Y_UTEST(dft:core)
+Y_UTEST(dft:fmt)
 
 #ascii
 Y_UTEST(ascii_convert)
