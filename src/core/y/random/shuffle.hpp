@@ -16,19 +16,7 @@ namespace Yttrium
         struct Shuffle
         {
 
-            //! Knuth Shuffle for array[1..n]
-            /**
-             \param ran Bits
-             \param a   array
-             \param n   items
-             */
-            template <typename ARRAY> static inline
-            void Cxx(Bits &ran, ARRAY &a, const size_t n)
-            {
-                if(n<=1) return;
-                for(size_t i=n-1;i>0;--i)
-                    Memory::Stealth::Swap(a[i],a[ran.leq(i)]);
-            }
+            
 
             //! Knuth Shuffle for iterator
             /**
@@ -43,6 +31,13 @@ namespace Yttrium
                 for(size_t i=n-1;i>0;--i)
                     Memory::Stealth::Swap(a[i],a[ran.leq(i)]);
             }
+
+            template <typename SEQUENCE> static inline
+            void Cxx(Bits &ran, SEQUENCE & seq) noexcept
+            {
+                Range(ran, seq.begin(), seq.size() );
+            }
+
 
         };
 

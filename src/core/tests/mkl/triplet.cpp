@@ -20,7 +20,7 @@ Y_UTEST(mkl_triplet)
     x.sort();
     std::cerr << x << std::endl;
 
-    Random:: Shuffle:: Cxx(ran, x, x.size() );
+    Random:: Shuffle::Range(ran,x(),3);
     std::cerr << x << std::endl;
     Triplet<size_t> idx = { 1,2,3 };
     x.sort(idx);

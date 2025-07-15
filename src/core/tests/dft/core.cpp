@@ -71,8 +71,10 @@ namespace
                       Random::Bits  &ran)
     {
         const size_t  n = 1<<p;
-        //(std::cerr << std::setw(16) << RTTI::Name<T>() << " / " << std::setw(7) << n).flush();
-        //(std::cerr << " / Complex").flush();
+        const char * const id = typeid(T).name();
+
+        (std::cerr << std::setw(16) << id << " / " << std::setw(7) << n).flush();
+        (std::cerr << " / Complex").flush();
         {
             Vector<T> data1(n*2,0);
             Vector<T> data2(n*2,0);
@@ -187,8 +189,8 @@ void TestTwoDFT(const unsigned p,
         data1[i] = i;
         data2[i] = i;
     }
-    Random::Shuffle::Cxx(ran,data1,n);
-    Random::Shuffle::Cxx(ran,data2,n);
+    Random::Shuffle::Cxx(ran,data1);
+    Random::Shuffle::Cxx(ran,data2);
 
 
     Vector<T> fft1(2*n,0), fft2(2*n,0);
@@ -200,7 +202,6 @@ void TestTwoDFT(const unsigned p,
     {
         Y_ASSERT( static_cast<size_t>(floor(fft1[1+(i-1)*2]/n+0.5) ) == static_cast<size_t>( data1[i] ) );
         Y_ASSERT( static_cast<size_t>(floor(fft2[1+(i-1)*2]/n+0.5) ) == static_cast<size_t>( data2[i] ) );
-
     }
 
 }
@@ -209,7 +210,9 @@ template <typename T> static inline
 double TestMultiply(const unsigned pmax, Random::Bits &ran)
 {
     //const String & id = RTTI::Name<T>();
-    //std::cerr <<  std::setw(16) << id << " speed:";
+    const char * const id = typeid(T).name();
+    std::cerr <<  std::setw(16) << id << " speed:" << std::endl;
+
     Cameo::Addition<T> xadd;
     for(unsigned p=0;p<=pmax;++p)
     {
@@ -238,7 +241,7 @@ double TestMultiply(const unsigned pmax, Random::Bits &ran)
         xadd << speed;
     }
     const double res = xadd.sum() / (1+pmax);
-    std::cerr << " => " << HumanReadable(res) << std::endl;
+    std::cerr << " => " << HumanReadable(res) << "/s" << std::endl;
     return res;
 }
 
@@ -279,7 +282,7 @@ Y_UTEST(dft_core)
         }
     }
 #endif
-    
+
     std::cerr << std::endl << "Tables" << std::endl;
     Core::Display(std::cerr, DFT::Table<double>::PositiveSin, 64) << std::endl;
     Core::Display(std::cerr, DFT::Table<double>::NegativeSin, 64) << std::endl;
@@ -307,6 +310,7 @@ Y_UTEST(dft_core)
 
     }
 
+
     std::cerr << std::endl << "Sample Of Two Transforms" << std::endl;
     {
         for(unsigned p=0;p<=12;++p)
@@ -317,12 +321,13 @@ Y_UTEST(dft_core)
         }
     }
 
+
+
     std::cerr << std::endl << "Multiply..." << std::endl;
     {
         TestMultiply<float>(10,ran);
         TestMultiply<double>(10,ran);
         TestMultiply<long double>(10,ran);
-
     }
 
 
