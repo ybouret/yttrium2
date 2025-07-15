@@ -18,6 +18,11 @@ namespace Yttrium
             struct Parsing
             {
                 static void Overflow();
+                static void FPoint(apz  &ip,
+                                   apn  &fp,
+                                   apz  &xp,
+                                   const char * const text,
+                                   const size_t       size);
             };
 
             template <typename T>
@@ -31,7 +36,6 @@ namespace Yttrium
                     return Parse<T>(text,size);
                 }
             };
-
 
 
             //! for signed/unsigned

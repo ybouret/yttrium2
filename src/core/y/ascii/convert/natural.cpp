@@ -16,7 +16,7 @@ namespace Yttrium
                            const size_t       size)
             {
                 static const uint64_t ten = 10;
-                static const char     fn[] = "ASCII::Parse<Natural>";
+                static const char     fn[] = "ASCII<Natural>";
                 assert( Good(text,size) );
 
                 if(size<=0) throw Specific::Exception(fn,"empty text");
