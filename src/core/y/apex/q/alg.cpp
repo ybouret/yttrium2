@@ -13,7 +13,13 @@ namespace Yttrium
 
         Rational Rational:: sqrt() const
         {
-            
+            const Integer n = numer.sqrt();
+            Natural       d = denom.sqrt();
+            const Natural & N = numer.n;
+            const Natural & D = denom;
+            const Natural   threshold = D * n.n.sqr();
+            while( d.sqr() * N < threshold) ++d;
+            return Rational(n,d);
         }
     }
 

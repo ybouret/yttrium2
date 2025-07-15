@@ -191,6 +191,7 @@ Y_UTEST(mkl:numeric)
 Y_UTEST(mkl:api)
 Y_UTEST(mkl:adaptor)
 Y_UTEST(mkl:triplet)
+Y_UTEST(mkl:v2d)
 
 #cameo
 Y_UTEST(cameo:add)

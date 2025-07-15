@@ -4,8 +4,8 @@
 #ifndef Y_MKL_V2D_Included
 #define Y_MKL_V2D_Included 1
 
-#include "y/mkl/api.hpp"
-#include "y/type/utils.hpp"
+#include "y/mkl/api/pythagoras.hpp"
+#include "y/core/utils.hpp"
 #include <iostream>
 #include <cmath>
 
@@ -133,19 +133,19 @@ namespace Yttrium
         //______________________________________________________________________
         inline T norm() const noexcept
         {
-            return MKL::Hypotenuse(x,y);
+            return MKL::Pythagoras(x,y);
         }
 
         //! lower point
         inline static V2D MinOf(const V2D &lhs, const V2D &rhs) noexcept
         {
-            return V2D(Min(lhs.x,rhs.x),Min(lhs.y,rhs.y));
+            return V2D(MinOf(lhs.x,rhs.x),MinOf(lhs.y,rhs.y));
         }
 
         //! upper point
         inline static V2D MaxOf(const V2D &lhs, const V2D &rhs) noexcept
         {
-            return V2D(Max(lhs.x,rhs.x),Max(lhs.y,rhs.y));
+            return V2D(MaxOf(lhs.x,rhs.x),MaxOf(lhs.y,rhs.y));
         }
 
         //! direct orthogonal

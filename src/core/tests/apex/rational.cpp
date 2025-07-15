@@ -164,6 +164,18 @@ Y_UTEST(apex_q)
         std::cerr << std::endl;
     }
 
+#if 0
+    for(size_t i=0;i<10;++i)
+    {
+        apq q(ran, ran.leq(10), 1 + ran.leq(10));
+        q = q.abs();
+        const apq s = q.sqrt();
+        std::cerr << "sqrt(" << q << ") = " << s << std::endl;
+        Y_ASSERT( s*s <= q );
+        Y_ASSERT( (s+1)*(s+1)>q );
+    }
+#endif
+
 
 }
 Y_UDONE()

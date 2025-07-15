@@ -101,6 +101,7 @@ namespace Yttrium
         numer(N),
         denom(D)
         {
+            simplify();
         }
 
         Rational:: Rational(const integer_t N) :
