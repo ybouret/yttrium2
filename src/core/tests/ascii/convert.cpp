@@ -46,14 +46,13 @@ Y_UTEST(ascii_convert)
         {
             bool   sg = false;
             String ip;
-            apn    fp;
-            size_t fl=0;
+            String fp;
             apz    xp;
-            ASCII::Conversion::Parsing::FPoint(sg,ip,fp,fl,xp,argv[i],strlen(argv[i]));
-            std::cerr << "ip='";
-            Hexadecimal::Display(std::cerr,ip(),ip.size());
-            std::cerr << "'" << std::endl;
-            std::cerr << "fp='" << fp << "'" << " / length=" << fl << std::endl;
+            ASCII::Conversion::Parsing::FPoint(sg,ip,fp,xp,argv[i],strlen(argv[i]));
+            std::cerr << "ip='"; Hexadecimal::Display(std::cerr,ip(),ip.size()); std::cerr << "'" << std::endl;
+            std::cerr << "fp='"; Hexadecimal::Display(std::cerr,fp(),fp.size()); std::cerr << "'" << std::endl;
+
+
             std::cerr << "xp='" << xp << "'" << std::endl;
         }
         catch(const Exception &excp) { excp.show(std::cerr); }

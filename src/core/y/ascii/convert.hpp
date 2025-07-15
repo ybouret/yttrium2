@@ -20,8 +20,7 @@ namespace Yttrium
                 static void Overflow();
                 static void FPoint(bool &   sg,
                                    String & ip,
-                                   apn &    fp,
-                                   size_t & fl,
+                                   String & fp,
                                    apz &    xp,
                                    const char * const text,
                                    const size_t       size);

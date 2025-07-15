@@ -13,16 +13,14 @@ namespace Yttrium
         {
             void Parsing::FPoint(bool   &sg,
                                  String &ip,
-                                 apn    &fp,
-                                 size_t &fl,
+                                 String &fp,
                                  apz    &xp,
                                  const char *const text,
                                  const size_t size)
             {
                 static const char fn[] = "ASCII<Floating Point>";
                 assert(0==ip.size());
-                assert(0==fp);
-                assert(0==fl);
+                assert(0==fp.size());
                 assert(0==xp);
                 assert(false==sg);
                 assert(Good(text,size));
@@ -84,9 +82,7 @@ namespace Yttrium
                         case '7':
                         case '8':
                         case '9':
-                            fp *= 10;
                             fp += int64_t(c-'0');
-                            ++fl;
                             continue;
                         case 'e':
                         case 'E':
@@ -139,7 +135,7 @@ namespace Yttrium
                 }
 
             RETURN:
-                if(ip.size()<=0&&fl<=0) throw Specific::Exception(fn,"both empty integral and fractional part");
+                if(ip.size()<=0&&fp.size()<=0) throw Specific::Exception(fn,"both empty integral and fractional part");
 
             }
         }
