@@ -23,13 +23,20 @@ namespace Yttrium
                 if(size<=0) throw Specific::Exception(fn,"empty text");
                 bool   neg = false;
                 size_t i0  = 0;
+
                 if('-'==text[0])
                 {
                     if(1==size) throw Specific::Exception(fn,"single '-'");
                     neg = true;
                     i0  = 1;
                 }
-                
+
+                if('+'==text[0])
+                {
+                    if(1==size) throw Specific::Exception(fn,"single '+'");
+                    i0  = 1;
+                }
+
                 apz  z;
                 for(size_t i=i0;i<size;++i)
                 {

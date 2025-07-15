@@ -45,10 +45,11 @@ Y_UTEST(ascii_convert)
         {
             apz ip;
             apn fp;
+            size_t fl=0;
             apz xp;
-            ASCII::Conversion::Parsing::FPoint(ip,fp,xp,argv[i],strlen(argv[i]));
+            ASCII::Conversion::Parsing::FPoint(ip,fp,fl,xp,argv[i],strlen(argv[i]));
             std::cerr << "ip='" << ip << "'" << std::endl;
-            std::cerr << "fp='" << fp << "'" << std::endl;
+            std::cerr << "fp='" << fp << "'" << " / length=" << fl << std::endl;
         }
         catch(const Exception &excp) { excp.show(std::cerr); }
         catch(...) { throw; }
