@@ -59,6 +59,8 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
+
+        //! create/overwrite \param fileName file to overwrite
         template <typename FILENAME> static inline
         void Overwrite(const FILENAME & fileName)  { OutputFile(fileName,false); }
 

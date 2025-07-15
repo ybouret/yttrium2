@@ -16,6 +16,8 @@
 #include "y/type/is-signed.hpp"
 
 #include "y/apex/n/helpers.hpp"
+#include "y/mkl/xreal.hpp"
+#include <cfloat>
 
 namespace Yttrium
 {
@@ -25,7 +27,23 @@ namespace Yttrium
     {
 
         Y_Shallow_Decl(Hook); //!< alias
-        
+
+        template <typename T> struct RealDigits;
+
+        //! digits for float
+        template <> struct RealDigits<float>       { static const unsigned Count = FLT_DIG; /*!< FLT_DIG */  };
+
+        //! digits for double
+        template <> struct RealDigits<double>      { static const unsigned Count = DBL_DIG;  /*!< DBL_DIG */};
+
+        //! digits for long double
+        template <> struct RealDigits<long double> { static const unsigned Count = LDBL_DIG; /*!< LDBL_DIG */};
+
+        //! digits for associated XReal
+        template <typename T> struct RealDigits< XReal<T> > { static const unsigned Count = RealDigits<T>::Count; /*!< alias */  };
+
+
+
         //______________________________________________________________________
         //
         //
@@ -85,6 +103,8 @@ namespace Yttrium
             size_t         bits()   const noexcept; //!< \return current bits
             Natural &      xch(Natural &) noexcept; //!< \return no-throw exchanged
             uint64_t       ls64() const   noexcept; //!< \return least significant 64 bits
+            size_t         bytes() const  noexcept; //!< \return current number of bytes
+
 
 #if !defined(DOXYGEN_SHOULD_SKIP_THIS)
             Y_APN_Proto_Decl_NoExcept(static SignType,Compare);
@@ -184,9 +204,50 @@ namespace Yttrium
                 return tryCast(value,choice);
             }
 
+            //! \param num numerator \param den denominator \return ratio with given precision
+            template <typename T> static inline
+            T Ratio(const Natural &num, const Natural &den)
+            {
+                static const unsigned  Digits = RealDigits<T>::Count;
+                static const T         Factor = 256;
+                static const T         Tenth  = 0.1;
+                static const natural_t ten    = 10;
+                Natural N = num;
+                Natural q,r;
+
+                T res = 0;
+
+                // integer part
+                Div_(&q,&r,N,den);
+                {
+                    const uint8_t * const b = q.data8();
+                    size_t                n = q.bytes();
+                    while(n-- > 0 )
+                    {
+                        res *= Factor;
+                        res += b[n];
+                    }
+                }
+
+                T pos = Tenth;
+                for(unsigned i=0;i<Digits;++i, pos *= Tenth)
+                {
+                    if(r.bits()<=0) break;
+                    N.xch(r);
+                    N *= ten;
+                    Div_(&q,&r,N,den);
+                    res += pos * static_cast<T>(q.data8()[0]);
+                }
+
+                return res;
+            }
+
 
         private:
             Natural(const Hook_ &, Device *); //!< direct construction
+
+            //! \return this as bytes, without locking
+            const uint8_t * data8() const noexcept;
 
             //! unsigned try cast \param value unsigned target \return true if possible
             template <typename T> inline

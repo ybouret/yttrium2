@@ -74,14 +74,13 @@ namespace Yttrium
             return getItemAt(indx);
         }
 
+        //! load the same value \param value value to load
         inline void ld(ParamType value)
         {
             Writable<T> &a = *this;
             const size_t n = a.size();
             for(size_t i=1;i<=n;++i)
-            {
                 a[i] = value;
-            }
         }
 
     private:

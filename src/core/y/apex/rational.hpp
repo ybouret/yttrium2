@@ -133,6 +133,20 @@ namespace Yttrium
             Rational       abs() const;              //!< \return |*this|
             Rational       sqrt() const;             //!< \return |*this|
 
+            //! \return floating point ratio
+            template <typename T> inline
+            T to()
+            {
+                switch(numer.s)
+                {
+                    case __Zero__: break;
+                    case Positive: return  Natural::Ratio<T>(numer.n,denom);
+                    case Negative: return -Natural::Ratio<T>(numer.n,denom);
+                }
+                return T(0);
+            }
+
+
             //__________________________________________________________________
             //
             //

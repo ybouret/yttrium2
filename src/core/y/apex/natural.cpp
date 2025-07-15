@@ -76,6 +76,19 @@ namespace Yttrium
             return device->bits;
         }
 
+        size_t Natural:: bytes() const noexcept
+        {
+            assert(device);
+            return device->bytes;
+        }
+
+
+        const uint8_t * Natural:: data8() const noexcept
+        {
+            return device->make<uint8_t>().data;
+        }
+
+
         void Natural:: ldz() noexcept
         {
             device->ldz( Coerce(device->bits), Device::SmallPlan[Ops] );

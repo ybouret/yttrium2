@@ -13,6 +13,12 @@ namespace Yttrium
     {
 
         //! three points on the unit sphere
+        /**
+         \param x first coord
+         \param y second coord
+         \param z third coord
+         \param ran bits
+         */
         template <typename T> inline
         void OnSphere(T &x, T &y, T &z, Random::Bits &ran)
         {
@@ -34,12 +40,18 @@ namespace Yttrium
         }
 
 
-        //! vertex on the unit sphere
+        //! \param ran bits \return vertex on the unit sphere
         template <typename VTX> inline
         VTX OnSphere(Random::Bits &ran)
         { VTX v; OnSphere(v[1],v[2],v[3],ran); return v; }
 
         //! three points within the unit ball
+        /**
+         \param x first coord
+         \param y second coord
+         \param z third coord
+         \param ran bits
+         */
         template <typename T> inline
         void InBall(T &x, T &y, T &z, Random::Bits &ran)
         {
@@ -52,7 +64,7 @@ namespace Yttrium
             } while( x*x + y*y + z*z > one );
         }
 
-        //! vertex within the unit ball
+        //! \param ran bits \return vertex within the unit ball
         template <typename VTX> inline
         VTX InBall(Random::Bits &ran)
         { VTX v; InBall(v[1],v[2],v[3],ran); return v; }

@@ -96,6 +96,7 @@ built(0)
             catch(...) { release_(); throw; }
         }
 
+        //! duplicate \param other another vector
         inline Vector(const Vector &other) :
         Y_Vector_Ctor(),
         code( 0 )

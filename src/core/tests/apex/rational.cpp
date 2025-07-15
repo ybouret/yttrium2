@@ -79,7 +79,7 @@ Y_UTEST(apex_q)
 
     {
         std::cerr << "Special..." << std::endl;
-        apq q(-3,9); std::cerr << q << std::endl;
+        apq q(-3,9); std::cerr << q << " = " << q.to<long double>() << std::endl;
     }
 
     {

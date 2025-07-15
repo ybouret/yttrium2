@@ -19,7 +19,7 @@ namespace Yttrium
         template <typename T>
         struct Triplet
         {
-            static const size_t DIMENSIONS = 3;
+            static const size_t DIMENSIONS = 3; //!< pseudo-dimension
 
             T a; //!< a value
             T b; //!< b value
@@ -28,6 +28,8 @@ namespace Yttrium
             inline size_t    size()           const noexcept { return DIMENSIONS; } //!< \return 3
             inline T *       operator()(void)       noexcept { return &a; } //!< \return mutable address
             inline const T * operator()(void) const noexcept { return &a; } //!< \return const address
+
+            //! \param indx in [1..DIMENSIONS] \return matching value
             inline T & operator[](size_t indx) noexcept
             {
                 assert(indx>=1);
@@ -35,6 +37,7 @@ namespace Yttrium
                 return *( (&a) + --indx );
             }
 
+            //! \param indx in [1..DIMENSIONS] \return matching value
             inline const T & operator[](size_t indx) const noexcept
             {
                 assert(indx>=1);
