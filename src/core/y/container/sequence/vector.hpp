@@ -27,9 +27,10 @@ namespace Yttrium
     //
     //__________________________________________________________________________
 #define Y_Vector_Ctor()         \
+Container(),                    \
 Sequence<T,VectorContainer>(),  \
 Contiguous< Writable<T> >(),    \
-ThreadingPolicy(),             \
+ThreadingPolicy(),              \
 built(0)
 
     //__________________________________________________________________________

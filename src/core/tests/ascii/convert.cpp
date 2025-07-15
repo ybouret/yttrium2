@@ -12,44 +12,52 @@ Y_UTEST(ascii_convert)
     {
         try
         {
-            const apz z = ASCII::Conversion::DirectParser<apz>::Get(argv[i], strlen(argv[i]));
-            std::cerr << "z=" << z << std::endl;
+            std::cerr << "z=" << ASCII::Convert::To<apz>(argv[i],"z") << std::endl;
         }
         catch(const Exception &excp) { excp.show(std::cerr); }
         catch(...) { throw; }
 
         try
         {
-            const apn n = ASCII::Conversion::DirectParser<apn>::Get(argv[i], strlen(argv[i]));
-            std::cerr << "n=" << n << std::endl;
+            std::cerr << "n=" << ASCII::Convert::To<apn>(argv[i],"n") << std::endl;
         }
         catch(const Exception &excp) { excp.show(std::cerr); }
         catch(...) { throw; }
 
         try
         {
-            const uint16_t u = ASCII::Conversion::AProxyParser<uint16_t>::Get(argv[i], strlen(argv[i]));
-            std::cerr << "u=" << u << std::endl;
+            std::cerr << "u=" << ASCII::Convert::To<uint16_t>(argv[i],"u") << std::endl;
         }
         catch(const Exception &excp) { excp.show(std::cerr); }
         catch(...) { throw; }
 
         try
         {
-            const signed char s = ASCII::Conversion::AProxyParser<signed char>::Get(argv[i], strlen(argv[i]));
-            std::cerr << "s=" << s << std::endl;
+            std::cerr << "s=" << ASCII::Convert::To<signed char>(argv[i],"s") << std::endl;
         }
         catch(const Exception &excp) { excp.show(std::cerr); }
         catch(...) { throw; }
 
         try
         {
-            const float f = ASCII::Conversion::FPointParser<float>::Get(argv[i],strlen(argv[i]));
-            std::cerr << std::setprecision(15) << "f=" << f << std::endl;
+            std::cerr << "f=" << ASCII::Convert::To<float>(argv[i],"f") << std::endl;
         }
         catch(const Exception &excp) { excp.show(std::cerr); }
         catch(...) { throw; }
 
+        try
+        {
+            std::cerr << "d=" << ASCII::Convert::To<double>(argv[i],"d") << std::endl;
+        }
+        catch(const Exception &excp) { excp.show(std::cerr); }
+        catch(...) { throw; }
+
+        try
+        {
+            std::cerr << "L=" << ASCII::Convert::To<long double>(argv[i],"L") << std::endl;
+        }
+        catch(const Exception &excp) { excp.show(std::cerr); }
+        catch(...) { throw; }
 
     }
 }

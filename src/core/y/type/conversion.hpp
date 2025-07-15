@@ -40,11 +40,11 @@ namespace Yttrium
 
     //! true if U is derived from T, may be T
 #define Y_Is_SuperSubClass(T,U) \
-(Conversion<const U *,const T *>::Exists && (!Conversion<const T *, const void *>::SameType) )
+(Yttrium::Conversion<const U *,const T *>::Exists && (!Yttrium::Conversion<const T *, const void *>::SameType) )
 
     //! true is U is derived from T, and not T
 #define Y_Is_SuperSubClass_Strict(T,U) \
-( Y_Is_SuperSubClass(T,U) && (!Conversion<const T *,const U *>::SameType) )
+( Y_Is_SuperSubClass(T,U) && (!Yttrium::Conversion<const T *,const U *>::SameType) )
 
 }
 

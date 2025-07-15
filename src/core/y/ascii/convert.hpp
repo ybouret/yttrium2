@@ -8,6 +8,11 @@
 #include "y/format/hexadecimal.hpp"
 #include "y/calculus/ipower.hpp"
 
+#include "y/type/conversion.hpp"
+#include "y/type/alternative.hpp"
+#include "y/exception.hpp"
+
+
 namespace Yttrium
 {
 
@@ -66,9 +71,12 @@ namespace Yttrium
                     String fp;
                     apz    xp;
                     Parsing::FPoint(sg,ip, fp, xp, text, size);
+
+#if 0
                     std::cerr << "ip='"; Hexadecimal::Display(std::cerr,ip(),ip.size()); std::cerr << "'" << std::endl;
                     std::cerr << "fp='"; Hexadecimal::Display(std::cerr,fp(),fp.size()); std::cerr << "'" << std::endl;
                     std::cerr << "xp='" << xp << "'" << std::endl;
+#endif
 
                     const T ten(10);
                     const T tenth(0.1);
@@ -116,10 +124,51 @@ namespace Yttrium
                     return res;
                 }
 
-
             };
 
+        }
+
+        struct Convert
+        {
+            
+            template <typename T>
+            static inline T Parse(const char * const text, const size_t size)
+            {
+                typedef typename TypeTraits<T>::MutableType MutableType;
+                static const bool IsApNumber = Y_Is_SuperSubClass_Strict(Apex::Number,MutableType);
+                static const bool IsIntegral = TypeTraits<MutableType>::IsIntegral;
+                typedef typename Alternative<IsApNumber,Conversion::DirectParser<T>,
+                IsIntegral,Conversion::AProxyParser<T>,Conversion::FPointParser<T>>::Type API;
+                return API::Get(text,size);
+            }
+
+            template <typename T> static inline
+            T To(const String &text, const char * const varName = 0)
+            {
+                try {
+                    return Parse<T>(text.c_str(),text.size());
+                }
+                catch(Exception &excp)
+                {
+                    if(varName) excp.add(" for %s", varName);
+                    throw excp;
+                }
+                catch(...)
+                {
+                    throw;
+                }
+            }
+
+            template <typename T> static inline
+            T To(const char * const text, const char * const varName = 0)
+            {
+                const String _(text);
+                return To<T>(_,varName);
+            }
+
         };
+
+
     }
 
 }
