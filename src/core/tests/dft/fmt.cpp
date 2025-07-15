@@ -200,7 +200,7 @@ namespace
         } while( chrono.since(start) < duration );
         const long double speedRaw = static_cast<long double>(cycles) / chrono(tmxRaw);
         const long double speedTab = static_cast<long double>(cycles) / chrono(tmxTab);
-        std::cerr << " raw: " << HumanReadable(speedRaw) << " | tab: " << HumanReadable(speedTab) << std::endl;
+        std::cerr << " raw: " << HumanReadable( (uint64_t)speedRaw) << " | tab: " << HumanReadable( (uint64_t)speedTab) << std::endl;
 
 
     }

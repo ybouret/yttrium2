@@ -39,13 +39,13 @@ Y_UTEST(cameo_mul)
     }
 
     {
-        const XReal<float>       f = 0.1;   showMass(f);
+        const XReal<float>       f = 0.1f;  showMass(f);
         const XReal<double>      d = -1e-8; showMass(d);
         const XReal<long double> D = 1e43;  showMass(D);
     }
 
     {
-        const Complex<float>           f(0.1,0.2);   showMass(f);
+        const Complex<float>           f(0.1f,0.2f);  showMass(f);
         const Complex< XReal<double> > d(1e-8,1e-5); showMass(d);
     }
 

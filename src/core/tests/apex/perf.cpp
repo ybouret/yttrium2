@@ -42,8 +42,8 @@ Y_UTEST(apex_perf)
 
         for(unsigned i=0;i<Apex::Metrics::Plans;++i)
         {
-            const double speed = ceil((long double)cycle / chrono(tmx[i]));
-            std::cerr << " " << HumanReadable( speed ) << "/s";
+            const long double speed = std::ceil((long double)cycle / chrono(tmx[i]));
+            std::cerr << " " << HumanReadable( (uint64_t)speed ) << "/s";
         }
         std::cerr << std::endl;
 
