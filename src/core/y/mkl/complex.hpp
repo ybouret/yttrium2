@@ -39,6 +39,7 @@ namespace Yttrium
         //______________________________________________________________________
         typedef T             Type; //!< alias
         typedef Core::Complex Self; //!< alias
+        static const size_t   DIMENSIONS = 2; //!< alias
 
         //______________________________________________________________________
         //
