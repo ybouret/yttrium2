@@ -5,7 +5,7 @@
 #define Y_ASCII_Convert_Included 1
 
 #include "y/apex/integer.hpp"
-#include "y/type/traits.hpp"
+//#include "y/string.hpp"
 
 namespace Yttrium
 {
@@ -18,7 +18,8 @@ namespace Yttrium
             struct Parsing
             {
                 static void Overflow();
-                static void FPoint(apz &    ip,
+                static void FPoint(bool &   sg,
+                                   String & ip,
                                    apn &    fp,
                                    size_t & fl,
                                    apz &    xp,
@@ -58,6 +59,7 @@ namespace Yttrium
             template <typename T>
             struct FPointParser
             {
+#if 0
                 static T Get(const char * const text, const size_t size)
                 {
                     apz    ip;
@@ -69,8 +71,10 @@ namespace Yttrium
                     int64_t  ii = 0; if(!ip.tryCast(ii)) Parsing::Overflow();
                     uint64_t ff = 0; if(!fp.tryCast(ff)) Parsing::Overflow();
                     int64_t  xx = 0; if(!xp.tryCast(xx)) Parsing::Overflow();
-                    
+
                 }
+#endif
+
             };
 
         };

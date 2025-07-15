@@ -2,6 +2,7 @@
 #include "y/ascii/convert.hpp"
 #include "y/utest/run.hpp"
 #include <cstring>
+#include "y/format/hexadecimal.hpp"
 
 using namespace Yttrium;
 
@@ -43,12 +44,15 @@ Y_UTEST(ascii_convert)
 
         try
         {
-            apz    ip;
+            bool   sg = false;
+            String ip;
             apn    fp;
             size_t fl=0;
             apz    xp;
-            ASCII::Conversion::Parsing::FPoint(ip,fp,fl,xp,argv[i],strlen(argv[i]));
-            std::cerr << "ip='" << ip << "'" << std::endl;
+            ASCII::Conversion::Parsing::FPoint(sg,ip,fp,fl,xp,argv[i],strlen(argv[i]));
+            std::cerr << "ip='";
+            Hexadecimal::Display(std::cerr,ip(),ip.size());
+            std::cerr << "'" << std::endl;
             std::cerr << "fp='" << fp << "'" << " / length=" << fl << std::endl;
             std::cerr << "xp='" << xp << "'" << std::endl;
         }

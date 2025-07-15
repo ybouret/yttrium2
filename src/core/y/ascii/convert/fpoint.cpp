@@ -11,28 +11,29 @@ namespace Yttrium
 
         namespace Conversion
         {
-            void Parsing::FPoint(apz   &ip,
-                                 apn   &fp,
+            void Parsing::FPoint(bool   &sg,
+                                 String &ip,
+                                 apn    &fp,
                                  size_t &fl,
                                  apz    &xp,
                                  const char *const text,
                                  const size_t size)
             {
                 static const char fn[] = "ASCII<Floating Point>";
-                assert(0==ip);
+                assert(0==ip.size());
                 assert(0==fp);
                 assert(0==fl);
                 assert(0==xp);
+                assert(false==sg);
                 assert(Good(text,size));
 
                 if(size<=0) throw Specific::Exception(fn,"no input");
                 const char * const last = text + size;
                 const char *       curr = text;
-                bool neg = false;
                 if('-'== *curr)
                 {
                     if(++curr>=last) throw Specific::Exception(fn,"no input after '-'");
-                    neg  = true;
+                    sg  = true;
                 }
                 
                 if('-'== *curr)
@@ -41,7 +42,6 @@ namespace Yttrium
                 }
 
 
-                size_t il = 0;
                 while(curr<last)
                 {
                     const char c = *(curr++);
@@ -57,9 +57,7 @@ namespace Yttrium
                         case '7':
                         case '8':
                         case '9':
-                            ip *= 10;
                             ip += int64_t(c-'0');
-                            ++il;
                             continue;
                         case '.':
                             goto FP;
@@ -141,8 +139,7 @@ namespace Yttrium
                 }
 
             RETURN:
-                if(il<=0&&fl<=0) throw Specific::Exception(fn,"both empty integral and fractional part");
-                if(neg) (void) ip.neg();
+                if(ip.size()<=0&&fl<=0) throw Specific::Exception(fn,"both empty integral and fractional part");
 
             }
         }
