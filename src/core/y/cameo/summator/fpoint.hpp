@@ -152,7 +152,6 @@ namespace Yttrium
             inline virtual void add(ParamType x)
             {
                 acc.push(x);
-                //std::cerr << acc.peek() << " @" << acc << std::endl;
             }
 
         };

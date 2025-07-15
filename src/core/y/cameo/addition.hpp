@@ -43,7 +43,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             //! setup
-            inline explicit Addition() noexcept : SummatorType()  {}
+            inline explicit Addition() : SummatorType()  {}
 
             //! setup with summator accepting initializer \param n capacity
             inline explicit Addition(const size_t n) : SummatorType(n) {}
