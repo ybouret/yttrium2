@@ -60,7 +60,7 @@ namespace Yttrium
         //______________________________________________________________________
         //
         //
-        //! swap two consecutive blocks
+        //! swap two consecutive blocks \param lhs lhs \param rhs rhs
         //
         //______________________________________________________________________
         template <typename T> static inline
@@ -76,6 +76,11 @@ namespace Yttrium
         //
         //
         //! Format using fallback algorithm
+        /**
+         \param data [1..2*size]
+         \param size count of complex numbers
+         \return 2*size
+         */
         //
         //______________________________________________________________________
         template <typename T> static inline
@@ -101,6 +106,12 @@ namespace Yttrium
         //
         //
         //! Dual Format using fallback algorithm
+        /**
+         \param data1 [1..2*size]
+         \param data2 [1..2*size]
+         \param size count of complex numbers
+         \return 2*size
+         */
         //
         //______________________________________________________________________
         template <typename T> static inline
@@ -127,13 +138,21 @@ namespace Yttrium
 
         
     private:
-        struct SwapInfo { uint16_t i; uint16_t j; };
+        //! swap indices info from table
+        struct SwapInfo {
+            uint16_t i; //!< first index
+            uint16_t j; //!< second index
+        };
     public:
 
         //______________________________________________________________________
         //
         //
         //! Format using precomputed table
+        /**
+         \param data matching FMT::Count
+         \return FMT::Result
+         */
         //
         //______________________________________________________________________
         template <typename T, typename FMT> static inline
@@ -159,7 +178,11 @@ namespace Yttrium
         //
         //
         //! Dual Format using precomputed table
-        //
+        /**
+         \param data1 matching FMT::Count
+         \param data2 matching FMT::Count
+         \return FMT::Result
+         */
         //______________________________________________________________________
         template <typename T, typename FMT> static inline
         size_t Format(T data1[], T data2[]) noexcept
@@ -196,6 +219,11 @@ namespace Yttrium
         //
         //
         //! Format Data Dispatcher
+        /**
+         \param data user data
+         \param size count of complex numbers
+         \return size*2
+         */
         //
         //______________________________________________________________________
         template <typename T> static inline
@@ -231,6 +259,12 @@ namespace Yttrium
         //
         //
         //! Dual Format Data Disatcher
+        /**
+         \param data1 user data
+         \param data2 user data
+         \param size count of complex numbers
+         \return size*2
+         */
         //
         //______________________________________________________________________
         template <typename T> static inline
@@ -281,6 +315,9 @@ namespace Yttrium
          - Replaces data[1..2*size] :
          - by its              Discrete Fourier transform         if SinTable = PositiveSin
          - by 'size' times its Inverse Discrete Fourier transform if SinTable = NegativeSin
+         \param data user data
+         \param size count of complex numbers
+         \param SinTable precomputed sine table
          */
         //______________________________________________________________________
         template <typename T> static inline
@@ -321,7 +358,12 @@ namespace Yttrium
         //
         //
         //! Dual Transform Using a Sine Table
-        //
+        /**
+         \param data1 user data
+         \param data2 user data
+         \param size count of complex numbers
+         \param SinTable precomputed sine table
+         */
         //______________________________________________________________________
         template <typename T> static inline
         void Transform(T                                data1[],
@@ -363,7 +405,10 @@ namespace Yttrium
         //
         //
         //! Forward Discrete Fourier Transform of data[1..2*size]
-        //
+        /**
+         \param data user data
+         \param size count of complex numbers
+         */
         //______________________________________________________________________
         template <typename T> static inline
         void Forward(T            data[],
@@ -376,7 +421,11 @@ namespace Yttrium
         //
         //
         //! Dual Forward Discrete Fourier Transform of data[1|2][1..2*size]
-        //
+        /**
+         \param data1 user data
+         \param data2 user data
+         \param size  count of complex numbers
+         */
         //______________________________________________________________________
         template <typename T> static inline
         void Forward(T            data1[],
@@ -389,7 +438,10 @@ namespace Yttrium
         //
         //
         //! Forward Discrete Fourier Transform of cplx[1..size]
-        //
+        /**
+         \param cplx user data
+         \param size count of complex numbers
+         */
         //______________________________________________________________________
         template <typename T> static inline
         void Forward(Complex<T>   cplx[],
@@ -403,7 +455,10 @@ namespace Yttrium
         //
         //
         //! Reverse Discrete Fourier Transform of data[1..2*size], times size
-        //
+        /**
+         \param data user data
+         \param size count of complex numbers
+         */
         //______________________________________________________________________
         template <typename T> static inline
         void Reverse(T            data[],
@@ -416,7 +471,10 @@ namespace Yttrium
         //
         //
         //! Reverse Discrete Fourier Transform of cplx[1..size]
-        //
+        /**
+         \param cplx user data
+         \param size count of complex numbers
+         */
         //______________________________________________________________________
         template <typename T> static inline
         void Reverse(Complex<T>   cplx[],
@@ -430,7 +488,11 @@ namespace Yttrium
         //
         //
         //! unpack for fft1[1..2n] info fft1[1..2n] and fft2[1..2n]
-        //
+        /**
+         \param fft1 packed first fft (unpacked)
+         \param fft2 output unpacked second fft
+         \param n count of complex numbers
+         */
         //______________________________________________________________________
         template <typename T> static inline
         void Unpack(T fft1[], T fft2[], const size_t n) noexcept
@@ -473,7 +535,11 @@ namespace Yttrium
         //
         //
         //! Unpack for complexes
-        //
+        /**
+         \param fft1 packed/unpacked first fft
+         \param fft2 unpacked second fft
+         \param n number of complex numbers
+         */
         //______________________________________________________________________
         template <typename T> static inline
         void Unpack(Complex<T> fft1[], Complex<T> fft2[], const size_t n) noexcept
@@ -489,6 +555,11 @@ namespace Yttrium
         /**
          - real data1[1..size] -> fft1[1..2*size]
          - real data2[1..size] -> fft2[1..2*size]
+         \param fft1 target first fft
+         \param fft2 target second fft
+         \param data1 first real data
+         \param data2 second real data
+         \param n  count of real/complex numbers
          */
         //______________________________________________________________________
         template <typename T> static inline
@@ -529,6 +600,11 @@ namespace Yttrium
         //
         //
         //! fft1 *= fft2
+        /**
+         \param fft1 target [1..2n] array
+         \param fft2 rhs    [1..2n] array
+         \param n count of complex numbers
+         */
         //
         //______________________________________________________________________
         template <typename T> static inline
@@ -564,6 +640,14 @@ namespace Yttrium
 /**/ DATA[i4] = -h1i + (wr*h2i+wi*h2r)
 #endif
 
+        //! Real FFT
+        /**
+         \param data user data
+         \param c2   transform coefficient
+         \param wpr  complex re recursion
+         \param wpi  complex im recursion
+         \param n    number of real numbers
+         */
         template <typename T> static inline
         void RealProcess(T                                data[],
                          const T                          c2,
@@ -594,6 +678,15 @@ namespace Yttrium
             }
         }
 
+        //! Two Real FFT at once
+        /**
+         \param data1 user data
+         \param data2 user data
+         \param c2   transform coefficient
+         \param wpr  complex re recursion
+         \param wpi  complex im recursion
+         \param n    number of real numbers
+         */
         template <typename T> static inline
         void RealProcess(T                                data1[],
                          T                                data2[],
@@ -630,7 +723,10 @@ namespace Yttrium
         //
         //
         //! DFT of data[1..n>=2]
-        //
+        /**
+         \param data user data
+         \param n    count of real numbers
+         */
         //______________________________________________________________________
         template <typename T> static inline
         void RealForward(T            data[],
@@ -667,7 +763,11 @@ namespace Yttrium
         //
         //
         //! Dual Real DFT of data1[1..n>=2], data2[1..n]
-        //
+        /**
+         \param data1 user data
+         \param data2 user data
+         \param n    count of real numbers
+         */
         //______________________________________________________________________
         template <typename T> static inline
         void RealForward(T            data1[],
@@ -712,7 +812,10 @@ namespace Yttrium
         //
         //
         //! Reverse DFT of data[1..n>=2]
-        //
+        /**
+         \param data user data
+         \param n    count of real numbers
+         */
         //______________________________________________________________________
         template <typename T> static inline
         void RealReverse(T            data[],
@@ -752,6 +855,7 @@ namespace Yttrium
 
     };
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #if !defined(_MSC_VER)
     template <> const double      DFT:: Table<double>::      PositiveSin[]; //!< decl
@@ -763,6 +867,7 @@ namespace Yttrium
     template <> const long double DFT:: Table<long double>:: CosMinusOne[]; //!< decl
 #endif
 
+#endif
 
 }
 

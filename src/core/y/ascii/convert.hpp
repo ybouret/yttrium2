@@ -21,9 +21,27 @@ namespace Yttrium
         namespace Conversion
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Parsing helpers
+            //
+            //
+            //__________________________________________________________________
             struct Parsing
             {
-                static void Overflow();
+                static void Overflow(); //!< throw overflow
+
+                //! split floating point parts
+                /**
+                 \param sg sign
+                 \param ip string of [0..9]s
+                 \param fp string of [0..9]s
+                 \param xp exponent
+                 \param text original test
+                 \param size original size
+                 */
                 static void FPoint(bool &   sg,
                                    String & ip,
                                    String & fp,
@@ -32,12 +50,26 @@ namespace Yttrium
                                    const size_t       size);
             };
 
+            //! direct parsing function \return Apex::Numberb
             template <typename T>
-            T Parse(const char * const text, const size_t size);
+            T Parse(const char * const, const size_t);
 
+
+            //__________________________________________________________________
+            //
+            //
+            //! Direct parser for ap[n|z]
+            //
+            //__________________________________________________________________
             template <typename T>
             struct DirectParser
             {
+                //! direct parse
+                /**
+                 \param text original test
+                 \param size original size
+                 \return parsed value
+                 */
                 static T Get(const char *const text, const size_t size)
                 {
                     return Parse<T>(text,size);
@@ -45,12 +77,23 @@ namespace Yttrium
             };
 
 
-            //! for signed/unsigned
+            //__________________________________________________________________
+            //
+            //
+            //! Proxy for unsigned/signed integral
+            //
+            //__________________________________________________________________
             template <typename T>
             struct AProxyParser
             {
-                typedef typename Pick< IsSigned<T>::Value, apz, apn>::Type apType;
+                typedef typename Pick< IsSigned<T>::Value, apz, apn>::Type apType; //!< alias
 
+                //!  parse thru apex proxy
+                /**
+                 \param text original test
+                 \param size original size
+                 \return parsed and casted value
+                 */
                 static T Get(const char * const text, const size_t size)
                 {
                     const apType ans = DirectParser<apType>::Get(text,size);
@@ -60,10 +103,21 @@ namespace Yttrium
                 }
             };
 
-
+            //__________________________________________________________________
+            //
+            //
+            //!  Floating Point Parser
+            //
+            //__________________________________________________________________
             template <typename T>
             struct FPointParser
             {
+                //! split and compute result
+                /**
+                 \param text original test
+                 \param size original size
+                 \return parsed and computed value
+                 */
                 static T Get(const char * const text, const size_t size)
                 {
                     bool   sg = false;
@@ -71,12 +125,6 @@ namespace Yttrium
                     String fp;
                     apz    xp;
                     Parsing::FPoint(sg,ip, fp, xp, text, size);
-
-#if 0
-                    std::cerr << "ip='"; Hexadecimal::Display(std::cerr,ip(),ip.size()); std::cerr << "'" << std::endl;
-                    std::cerr << "fp='"; Hexadecimal::Display(std::cerr,fp(),fp.size()); std::cerr << "'" << std::endl;
-                    std::cerr << "xp='" << xp << "'" << std::endl;
-#endif
 
                     const T ten(10);
                     const T tenth(0.1);
@@ -121,6 +169,7 @@ namespace Yttrium
                                 break;
                         }
                     }
+
                     return res;
                 }
 
@@ -128,9 +177,23 @@ namespace Yttrium
 
         }
 
+
+        //______________________________________________________________________
+        //
+        //
+        //!  Generic conversion
+        //
+        //______________________________________________________________________
         struct Convert
         {
-            
+
+
+            //! select and call conversion function
+            /**
+             \param text original test
+             \param size original size
+             \return parsed and computed value according to type
+             */
             template <typename T>
             static inline T Parse(const char * const text, const size_t size)
             {
@@ -138,10 +201,16 @@ namespace Yttrium
                 static const bool IsApNumber = Y_Is_SuperSubClass_Strict(Apex::Number,MutableType);
                 static const bool IsIntegral = TypeTraits<MutableType>::IsIntegral;
                 typedef typename Alternative<IsApNumber,Conversion::DirectParser<T>,
-                IsIntegral,Conversion::AProxyParser<T>,Conversion::FPointParser<T>>::Type API;
+                IsIntegral,Conversion::AProxyParser<T>,Conversion::FPointParser<T> >::Type API;
                 return API::Get(text,size);
             }
 
+            //! parse user's data
+            /**
+             \param text user's string
+             \param varName optional variable name
+             \return parsed value
+             */
             template <typename T> static inline
             T To(const String &text, const char * const varName = 0)
             {
@@ -159,6 +228,12 @@ namespace Yttrium
                 }
             }
 
+            //! parse c-string
+            /**
+             \param text user's string
+             \param varName optional variable name
+             \return parsed value
+             */
             template <typename T> static inline
             T To(const char * const text, const char * const varName = 0)
             {
