@@ -5,7 +5,8 @@
 #define Y_ASCII_Convert_Included 1
 
 #include "y/apex/integer.hpp"
-//#include "y/string.hpp"
+#include "y/format/hexadecimal.hpp"
+#include "y/calculus/ipower.hpp"
 
 namespace Yttrium
 {
@@ -58,21 +59,63 @@ namespace Yttrium
             template <typename T>
             struct FPointParser
             {
-#if 0
                 static T Get(const char * const text, const size_t size)
                 {
-                    apz    ip;
-                    apn    fp;
-                    size_t fl=0;
+                    bool   sg = false;
+                    String ip;
+                    String fp;
                     apz    xp;
-                    Parsing::FPoint(ip, fp, fl, xp, text, size);
+                    Parsing::FPoint(sg,ip, fp, xp, text, size);
+                    std::cerr << "ip='"; Hexadecimal::Display(std::cerr,ip(),ip.size()); std::cerr << "'" << std::endl;
+                    std::cerr << "fp='"; Hexadecimal::Display(std::cerr,fp(),fp.size()); std::cerr << "'" << std::endl;
+                    std::cerr << "xp='" << xp << "'" << std::endl;
 
-                    int64_t  ii = 0; if(!ip.tryCast(ii)) Parsing::Overflow();
-                    uint64_t ff = 0; if(!fp.tryCast(ff)) Parsing::Overflow();
-                    int64_t  xx = 0; if(!xp.tryCast(xx)) Parsing::Overflow();
+                    const T ten(10);
+                    const T tenth(0.1);
 
+                    T res = 0;
+                    {
+                        const size_t ips = ip.size();
+                        for(size_t i=1;i<=ips;++i)
+                        {
+                            res *= ten;
+                            res += static_cast<T>( ip[i] );
+                        }
+                    }
+
+                    {
+                        const size_t fps = fp.size();
+                        T            fac = tenth;
+                        for(size_t i=1;i<=fps;++i,fac *= tenth)
+                        {
+                            res += fac * static_cast<T>(fp[i]);
+                        }
+                    }
+
+                    {
+                        int xpi = 0; if(!xp.tryCast(xpi)) Parsing::Overflow();
+                        switch(xp.s)
+                        {
+                            case __Zero__: break;
+                            case Positive: res *= ipower(ten,   size_t( xpi) ); break;
+                            case Negative: res *= ipower(tenth, size_t(-xpi) ); break;
+                        }
+                    }
+
+                    if(sg)
+                    {
+                        switch( Sign::Of(res) )
+                        {
+                            case __Zero__: break;
+                            case Negative:
+                            case Positive:
+                                res = -res;
+                                break;
+                        }
+                    }
+                    return res;
                 }
-#endif
+
 
             };
 
