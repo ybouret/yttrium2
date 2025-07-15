@@ -18,7 +18,7 @@ namespace Yttrium
     size_t Expandable:: NextIncrease(const size_t currentCapacity)
     {
         static const size_t MaxCapacity = IntegerFor<size_t>::Maximum;
-        const size_t        increase    = MaxOf<size_t>(currentCapacity >> 1,8);
+        const size_t        increase    = Max<size_t>(currentCapacity >> 1,8);
         if(MaxCapacity-increase<currentCapacity)
             throw Specific::Exception("Expandable::NextIncrease","capacity overflow");
         return  increase;

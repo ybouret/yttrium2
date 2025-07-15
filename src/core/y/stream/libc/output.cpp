@@ -89,6 +89,11 @@ namespace Yttrium
     {
     }
 
+    AppendFile:: AppendFile(const String &fileName) :
+    OutputFile(fileName,true)
+    {
+    }
+
     AppendFile:: ~AppendFile() noexcept
     {
     }

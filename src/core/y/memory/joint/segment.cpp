@@ -168,7 +168,7 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                     // using alignment
                     //----------------------------------------------------------
                     {
-                        const size_t aligned = Aligned( MaxOf(request,BlockSize) ); assert(aligned<=block->size);
+                        const size_t aligned = Aligned( Max(request,BlockSize) ); assert(aligned<=block->size);
                         const size_t remains = block->size - aligned; assert(0==remains%BlockSize);
                         if(remains>=2*BlockSize)
                         {
@@ -333,7 +333,7 @@ if(!(EXPR)) { std::cerr << "\t*** " << #EXPR << std::endl; return false; } \
                 if(request>MaxRequest) throw Specific::Exception(CallSign,"request=%s>%s",Decimal(request).c_str(),Decimal(MaxRequest).c_str());
                 const size_t raw   = SegmentBytes + 2*BlockSize + request;
                 unsigned     shift = 0;
-                (void) NextPowerOfTwo( MaxOf(raw,MinDataBytes), shift);
+                (void) NextPowerOfTwo( Max(raw,MinDataBytes), shift);
                 assert(shift>=MinDataShift);
                 assert(shift<=MaxDataShift);
                 return shift;

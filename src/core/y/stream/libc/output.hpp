@@ -52,7 +52,16 @@ namespace Yttrium
         virtual void write(const char); //!< write a char
         virtual void flush();           //!< flush attempt
         virtual void frame(const void * const, const size_t);
-        
+
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+        template <typename FILENAME> static inline
+        void Overwrite(const FILENAME & fileName)  { OutputFile(fileName,false); }
+
     private:
         Y_Disable_Copy_And_Assign(OutputFile); //!< discarding
         Libc::OutputFile * const file;         //!< low-level file
@@ -69,8 +78,9 @@ namespace Yttrium
     class AppendFile : public OutputFile
     {
     public:
-        explicit AppendFile(const char * const); //!< setup
-        virtual ~AppendFile() noexcept;          //!< cleanup
+        explicit AppendFile(const Core::String<char> &); //!< setu:
+        explicit AppendFile(const char * const);         //!< setup
+        virtual ~AppendFile() noexcept;                  //!< cleanup
 
     private:
         Y_Disable_Copy_And_Assign(AppendFile); //!< discarding

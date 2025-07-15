@@ -11,7 +11,7 @@ namespace Yttrium
     //__________________________________________________________________________
     //
     //
-    //! inline MaxOf
+    //! inline Max
     /**
      \param a lhs argument
      \param b rhs argument
@@ -20,7 +20,7 @@ namespace Yttrium
     //
     //__________________________________________________________________________
     template <typename T> inline
-    T MaxOf(const T a, const T b)
+    T Max(const T a, const T b)
     {
         return a < b ? b : a;
     }
@@ -44,7 +44,7 @@ namespace Yttrium
     //__________________________________________________________________________
     //
     //
-    //! inline MinOf
+    //! inline Min
     /**
      \param a lhs argument
      \param b rhs argument
@@ -53,7 +53,7 @@ namespace Yttrium
     //
     //__________________________________________________________________________
     template <typename T> inline
-    T MinOf(const T a, const T b)
+    T Min(const T a, const T b)
     {
         return a < b ? a : b;
     }
@@ -89,7 +89,7 @@ namespace Yttrium
     template <typename T> inline
     T Clamp(const T a, const T b, const T c)
     {
-        return MinOf( MaxOf(a,b), c );
+        return Min( Max(a,b), c );
     }
 
     //! \return a+a \param a any valid type

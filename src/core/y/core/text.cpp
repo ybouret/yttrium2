@@ -23,7 +23,7 @@ namespace Yttrium
             {
                 const size_t textLength  = Length(text);
                 const size_t copyLength  = outputLength-1;
-                const size_t length      = MinOf(textLength,copyLength);
+                const size_t length      = Min(textLength,copyLength);
                 memcpy(outputBuffer,text,length);
                 memset(outputBuffer+length,0,outputLength-length);
             }
@@ -58,7 +58,7 @@ namespace Yttrium
                 const size_t occupied   = Length(outputBuffer); assert(occupied<outputLength);
                 const size_t available  = outputLength-(occupied+1);
                 const size_t textLength = Length(text);
-                const size_t toCopy     = MinOf(textLength,available);
+                const size_t toCopy     = Min(textLength,available);
                 char * const target     = outputBuffer+occupied;
                 memcpy(target,text,toCopy);
                 memset(target+toCopy,0,available-toCopy);

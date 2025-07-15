@@ -27,7 +27,7 @@ namespace Yttrium
         // Definitions
         //
         //______________________________________________________________________
-        Y_Args_Expose(T,Type); //!< aliases
+        Y_Args_Declare(T,Type); //!< aliases
         using Readable<T>::size;
         using Readable<T>::getItemAt;
 
@@ -72,6 +72,16 @@ namespace Yttrium
         {
             assert(indx>0); assert(indx<=size());
             return getItemAt(indx);
+        }
+
+        inline void ld(ParamType value)
+        {
+            Writable<T> &a = *this;
+            const size_t n = a.size();
+            for(size_t i=1;i<=n;++i)
+            {
+                a[i] = value;
+            }
         }
 
     private:

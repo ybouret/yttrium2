@@ -54,8 +54,8 @@ namespace Yttrium
         static const size_t headerSize = sizeof(header)-1;
         const char * const  prolog     = what();
         const char * const  epilog     = when();
-        const size_t        maxLength  = MaxOf( Core::Text::Length(prolog), Core::Text::Length(epilog) );
-        const size_t        lineSize   = maxLength+headerSize;;
+        const size_t        maxLength  = Max( Core::Text::Length(prolog), Core::Text::Length(epilog) );
+        const size_t        lineSize   = maxLength+headerSize;
         Core::Indent(os << '|',  lineSize, '-') << std::endl;
         os << '|' << header << prolog << std::endl;
         os << '|' << header << epilog << std::endl;

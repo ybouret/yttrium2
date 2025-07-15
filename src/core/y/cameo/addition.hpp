@@ -43,11 +43,13 @@ namespace Yttrium
             //
             //__________________________________________________________________
             //! setup
-            explicit Addition() noexcept : SummatorType()  {}
+            inline explicit Addition() noexcept : SummatorType()  {}
+
+            inline explicit Addition(const size_t n) : SummatorType(n) {}
 
             //! cleanup
-            virtual ~Addition() noexcept {}
-            
+            inline virtual ~Addition() noexcept {}
+
         private:
             Y_Disable_Copy_And_Assign(Addition); //!< discarding
         };

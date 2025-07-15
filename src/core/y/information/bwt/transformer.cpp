@@ -19,7 +19,7 @@ namespace Yttrium
 
             inline explicit Code(const size_t n) :
             Object(),
-            Memory::SchoolOf<size_t>(MaxOf<size_t>(n,8))
+            Memory::SchoolOf<size_t>(Max<size_t>(n,8))
             {
             }
 

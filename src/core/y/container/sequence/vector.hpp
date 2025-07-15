@@ -96,6 +96,27 @@ built(0)
             catch(...) { release_(); throw; }
         }
 
+        inline Vector(const Vector &other) :
+        Y_Vector_Ctor(),
+        code( 0 )
+        {
+            const size_t n = other.size();
+            if( n > 0 )
+            {
+                code = new Code(n);
+                try {
+                    for(size_t i=1;i<=n;++i) {
+                        new (code->entry+built) T( other[i] );
+                        ++built;
+                    }
+                }
+                catch(...)
+                {
+                    release_(); throw;
+                }
+            }
+        }
+
         //! cleanup
         inline virtual ~Vector() noexcept {
             release_();
@@ -244,8 +265,8 @@ built(0)
 
 
     private:
-        Y_Disable_Copy_And_Assign(Vector); //!< discarding
-        size_t built;                      //!< currently built
+        Y_Disable_Assign(Vector); //!< discarding
+        size_t built;             //!< currently built
 
         typedef Memory::SchoolOf<MutableType> SchoolType; //!< alias
 

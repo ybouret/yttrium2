@@ -136,7 +136,7 @@ namespace Yttrium
 
             void * Segments:: acquire(size_t &blockSize)
             {
-                const unsigned shift = MaxOf(Segment::ShiftFor(blockSize),MinShift);
+                const unsigned shift = Max(Segment::ShiftFor(blockSize),MinShift);
                 assert(shift>=MinShift);
                 assert(shift<=MaxShift);
 

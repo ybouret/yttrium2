@@ -23,7 +23,7 @@ namespace Yttrium
             CountedObject(),
             zpool(),
             bytes(0),
-            guild( MaxOf<size_t>(userBlockSize,sizeof(Page)) )
+            guild( Max<size_t>(userBlockSize,sizeof(Page)) )
             {
                 Coerce(bytes) = guild.getBlockSize();
             }

@@ -13,7 +13,7 @@ namespace Yttrium
         StrideMetrics:: StrideMetrics(const size_t minimalCapacity,
                                       const size_t blockSize) noexcept :
         size(0),
-        capacity( MaxOf<size_t>(minimalCapacity,7) ),
+        capacity( Max<size_t>(minimalCapacity,7) ),
         address(0),
         numChars( capacity+1 ),
         obtained( numChars * blockSize )

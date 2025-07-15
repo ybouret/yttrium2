@@ -28,6 +28,7 @@ apex
 random
 mkl
 cameo
+dft
 )
 
 
@@ -197,4 +198,6 @@ Y_UTEST(mkl:v2d)
 Y_UTEST(cameo:add)
 Y_UTEST(cameo:mul)
 
+#dft
+Y_UTEST(dft:core)
 
