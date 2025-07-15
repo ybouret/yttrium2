@@ -4,6 +4,7 @@
 Y_CreateTest(test-core
 core
 format
+ascii
 type
 static
 system
@@ -200,4 +201,7 @@ Y_UTEST(cameo:mul)
 
 #dft
 Y_UTEST(dft:core)
+
+#ascii
+Y_UTEST(ascii_convert)
 

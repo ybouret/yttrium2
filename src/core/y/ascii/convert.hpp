@@ -5,6 +5,7 @@
 #define Y_ASCII_Convert_Included 1
 
 #include "y/apex/integer.hpp"
+#include "y/type/traits.hpp"
 
 namespace Yttrium
 {
@@ -22,39 +23,31 @@ namespace Yttrium
             template <typename T>
             T Parse(const char * const text, const size_t size);
 
-
-
-            template <typename T,bool>
-            struct ParseIntegral;
-
-
-
-            //! unsigned
             template <typename T>
-            struct ParseIntegral<T,false>
+            struct DirectParser
             {
-                static inline T From(const char * const text, const size_t size)
+                static T Get(const char *const text, const size_t size)
                 {
-                    const apn n = Parse<apn>(text,size);
-                    T         res(0);
-                    if(!n.tryCast(res)) Parsing::Overflow();
-                    return res;
+                    return Parse<T>(text,size);
                 }
             };
 
-            //! signed
+
+
+            //! for signed/unsigned
             template <typename T>
-            struct ParseIntegral<T,true>
+            struct AProxyParser
             {
-                static inline T From(const char * const text, const size_t size)
+                typedef typename Pick< IsSigned<T>::Value, apz, apn>::Type apType;
+
+                static T Get(const char * const text, const size_t size)
                 {
-                    const apz z = Parse<apz>(text,size);
-                    T         res(0);
-                    if(!z.tryCast(res)) Parsing::Overflow();
+                    const apType ans = DirectParser<apType>::Get(text,size);
+                    T            res(0);
+                    if(!ans.tryCast(res)) Parsing::Overflow();
                     return res;
                 }
             };
-
 
 
 

@@ -1,5 +1,5 @@
 
-#include "y/ascii/convert/natural.hpp"
+#include "y/ascii/convert.hpp"
 #include "y/system/exception.hpp"
 #include "y/check/usual.hpp"
 
@@ -16,7 +16,7 @@ namespace Yttrium
                            const size_t       size)
             {
                 static const uint64_t ten = 10;
-                static const char     fn[] = "ASCII::ToNatural";
+                static const char     fn[] = "ASCII::Parse<Natural>";
                 assert( Good(text,size) );
 
                 if(size<=0) throw Specific::Exception(fn,"empty text");
@@ -26,16 +26,16 @@ namespace Yttrium
                     const char c = text[i];
                     switch(c)
                     {
-                        case 0:
-                        case 1:
-                        case 2:
-                        case 3:
-                        case 4:
-                        case 5:
-                        case 6:
-                        case 7:
-                        case 8:
-                        case 9:
+                        case '0':
+                        case '1':
+                        case '2':
+                        case '3':
+                        case '4':
+                        case '5':
+                        case '6':
+                        case '7':
+                        case '8':
+                        case '9':
                             n *= ten;
                             n += uint64_t(c-'0');
                             continue;
