@@ -6,6 +6,13 @@
 
 using namespace Yttrium;
 
+namespace Yttrium
+{
+    namespace MKL
+    {
+        
+    }
+}
 
 Y_UTEST(cameo_add)
 {

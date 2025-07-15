@@ -10,7 +10,11 @@ namespace Yttrium
 {
 
     template <typename> class Complex;
-    
+    template <typename> class V2D;
+    template <typename> class V3D;
+    template <typename> class V4D;
+
+
     namespace MKL
     {
 
@@ -22,6 +26,29 @@ namespace Yttrium
         {
             typedef T Type; //!< alias
         };
+
+        //! select scalar for complex
+        template <typename T>
+        struct ScalarFor< V2D<T> >
+        {
+            typedef T Type; //!< alias
+        };
+
+
+        //! select scalar for complex
+        template <typename T>
+        struct ScalarFor< V3D<T> >
+        {
+            typedef T Type; //!< alias
+        };
+
+        //! select scalar for complex
+        template <typename T>
+        struct ScalarFor< V4D<T> >
+        {
+            typedef T Type; //!< alias
+        };
+
 
         //! select scalar for scalar
         template <typename T>
