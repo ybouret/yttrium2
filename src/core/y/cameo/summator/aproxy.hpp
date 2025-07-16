@@ -5,6 +5,7 @@
 #define Y_Cameo_AProxySummator_Included 1
 
 #include "y/cameo/summator/api.hpp"
+#include "y/cameo/genus/aproxy.hpp"
 #include "y/apex/integer.hpp"
 
 namespace Yttrium
@@ -12,18 +13,7 @@ namespace Yttrium
 
     namespace Cameo
     {
-        //______________________________________________________________________
-        //
-        //
-        //
-        //! common info for AProxySummator
-        //
-        //
-        //______________________________________________________________________
-        struct AProxySummatorInfo
-        {
-            static void Overflow(); //!< overflow when type casting
-        };
+        
 
         //______________________________________________________________________
         //
@@ -34,7 +24,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename T>
-        class AProxySummator : public Summator<T>
+        class AProxySummator : public Summator<T>, public AProxyGenus
         {
         public:
             //__________________________________________________________________
@@ -69,12 +59,14 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
+            inline virtual const char * callSign() const noexcept { return CallSign; }
+
             inline virtual void ldz() noexcept { acc.ldz(); }
             inline virtual T    sum()
             {
                 T result = 0;
                 if(!acc.tryCast(result))
-                    AProxySummatorInfo::Overflow();
+                    Overflow();
                 acc.ldz();
                 return result;
             }

@@ -14,6 +14,7 @@ namespace Yttrium
         {
         public:
             static const char * const CallSign;
+            static void Overflow();
 
             virtual ~AProxyGenus() noexcept;
 

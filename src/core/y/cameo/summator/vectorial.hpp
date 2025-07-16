@@ -5,6 +5,7 @@
 #define Y_Cameo_VectorialSummator_Included 1
 
 #include "y/cameo/summator/scalar.hpp"
+#include "y/cameo/genus/vectorial.hpp"
 #include "y/memory/operating.hpp"
 
 namespace Yttrium
@@ -12,6 +13,7 @@ namespace Yttrium
 
     namespace Cameo
     {
+
 
         //______________________________________________________________________
         //
@@ -22,7 +24,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename T>
-        class VectorialSummator : public Summator<T>
+        class VectorialSummator : public Summator<T>, public VectorialGenus
         {
         public:
             //__________________________________________________________________
@@ -46,6 +48,7 @@ namespace Yttrium
             //! default
             inline explicit VectorialSummator() :
             Summator<T>(),
+            VectorialGenus(CoordSummator::CallSign),
             summators(DIMENSIONS),
             operating(summators.entry,DIMENSIONS)
             {}
@@ -53,6 +56,7 @@ namespace Yttrium
             //! for FPointSummators \param n minimal capacity
             inline explicit VectorialSummator(const size_t n) :
             Summator<T>(),
+            VectorialGenus(CoordSummator::CallSign),
             summators(DIMENSIONS),
             operating(CopyOf,n,summators.entry,DIMENSIONS)
             {}
@@ -69,6 +73,8 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
+            inline virtual const char * callSign() const noexcept { return identifier; }
+            
             inline virtual void ldz() noexcept
             {
                 for(size_t i=0;i<DIMENSIONS;++i) summators.entry[i].ldz();

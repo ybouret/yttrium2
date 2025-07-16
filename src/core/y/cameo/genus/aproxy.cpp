@@ -1,7 +1,7 @@
 
-
-
 #include "y/cameo/genus/aproxy.hpp"
+#include "y/system/exception.hpp"
+#include <cerrno>
 
 namespace Yttrium
 {
@@ -16,6 +16,11 @@ namespace Yttrium
         }
 
         const char * const AProxyGenus:: CallSign = "AProxy";
+
+        void AProxyGenus:: Overflow()
+        {
+            throw Libc::Exception(ERANGE,"AProxy Overflow");
+        }
     }
 
 }

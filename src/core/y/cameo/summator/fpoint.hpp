@@ -5,6 +5,7 @@
 #define Y_Cameo_FPointSummator_Included 1
 
 #include "y/cameo/summator/api.hpp"
+#include "y/cameo/genus/fpoint.hpp"
 #include "y/mkl/api/fabs.hpp"
 #include "y/type/sign.hpp"
 #include "y/container/ordered/priority-queue.hpp"
@@ -24,7 +25,10 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename T>
-        class FPointSummator : public Summator<T>, public Ingress< PriorityQueuePolicy >
+        class FPointSummator :
+        public Summator<T>,
+        public Ingress< PriorityQueuePolicy >,
+        public FPointGenus
         {
         public:
             //__________________________________________________________________
@@ -123,6 +127,8 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
+            inline virtual const char * callSign() const noexcept { return CallSign; }
+
             virtual void     ldz() noexcept { acc.free(); }
 
             inline virtual T sum()
