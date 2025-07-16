@@ -11,6 +11,7 @@
 #include "y/threading/single-threaded-class.hpp"
 #include "y/calculus/safe-add.hpp"
 #include "y/type/with-at-least.hpp"
+#include "y/static/moniker.hpp"
 
 namespace Yttrium
 {
@@ -143,15 +144,21 @@ namespace Yttrium
                 }
                 else
                 {
-                    Code * temp = new Code( this->NextCapacity(code->capacity));
-                    temp->steal(*code);
-                    delete code;
-                    code = temp;
+                    const Static::Moniker<Type> data(args);
+                    {
+                        Code * const temp = new Code( this->NextCapacity(code->capacity));
+                        temp->steal(*code);
+                        delete code;
+                        code = temp;
+                    }
+                    assert(code->size<code->capacity);
+                    code->push(*data,compare);
                 }
             }
             else
             {
                 code = new Code( this->NextCapacity(0) );
+                assert(code->size<code->capacity);
                 code->push(args,compare);
             }
         }

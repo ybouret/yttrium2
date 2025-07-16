@@ -90,8 +90,9 @@ namespace Yttrium
         inline void steal(PrioQueue &q) noexcept
         {
             assert(this != &q);
-            assert(0==size);
+            assert(0    == size);
             assert(capacity>=q.size);
+            
             Memory::Stealth::SafeCopy(tree,q.tree, (Coerce(size) = q.size)*sizeof(T) );
             Coerce(q.size) = 0;
         }

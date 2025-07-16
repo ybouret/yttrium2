@@ -7,6 +7,9 @@
 #include "y/random/mt19937.hpp"
 #include "y/apex/rational.hpp"
 #include "y/core/utils.hpp"
+#include "y/mkl/v3d.hpp"
+#include "y/mkl/v4d.hpp"
+
 
 namespace Yttrium
 {

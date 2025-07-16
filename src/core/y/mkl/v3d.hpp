@@ -36,11 +36,12 @@ namespace Yttrium
         // C++
         //
         //______________________________________________________________________
-        inline  V3D()                                noexcept : x(0), y(0), z(0) {}                  //!< setup 0
+        inline  V3D()                                noexcept : x(0), y(0), z(0) {}                  //!< setup 0,0,0
         inline  V3D(const T X, const T Y, const T Z) noexcept : x(X), y(Y), z(Z) {}                  //!< setup
         inline ~V3D()                                noexcept {}                                     //!< cleanup
         inline  V3D(const V3D &v)                    noexcept : x(v.x), y(v.y), z(v.z) {}            //!< copy
         inline  V3D & operator=(const V3D &v)        noexcept { x=v.x; y=v.y; z=v.z; return *this; } //!< assign
+        inline  V3D(const T X)                       noexcept : x(X), y(0), z(0) {}                  //!< setup X,0,0
 
         //______________________________________________________________________
         //
@@ -122,8 +123,8 @@ namespace Yttrium
         //______________________________________________________________________
         inline T norm2() const noexcept
         {
-            T data[4] = { 0, x*x, y*y, z*z };
-            NetworkSort::Algo<3>::Decreasing(data);
+            T data[3] = { x*x, y*y, z*z };
+            Sorting::Sort3(data);
             return data[1] + (data[2]+data[3]);
         }
 
@@ -133,7 +134,7 @@ namespace Yttrium
         //______________________________________________________________________
         inline T norm() const noexcept
         {
-            return MKL::Hypotenuse(x,y,z);
+            return MKL::Pythagoras(x,y,z);
         }
 
         //______________________________________________________________________
