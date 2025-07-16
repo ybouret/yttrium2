@@ -7,12 +7,43 @@
 
 using namespace Yttrium;
 
+namespace {
+    template <typename T> static inline
+    void testXAdd(Random::Bits &)
+    {
+        Cameo::Addition<T> xadd;
+        std::cerr << "Genus: " << xadd.callSign() << std::endl;
+
+
+    }
+
+}
 
 Y_UTEST(cameo_add)
 {
 
     Random::MT19937 ran;
 
+    testXAdd<apn>(ran);
+    testXAdd<apz>(ran);
+    testXAdd<apq>(ran);
+
+    testXAdd<int>(ran);
+    testXAdd<uint16_t>(ran);
+
+    testXAdd<float>(ran);
+    testXAdd<double>(ran);
+    testXAdd<long double>(ran);
+
+    testXAdd< XReal<float> >(ran);
+    testXAdd< XReal<double> >(ran);
+    testXAdd< XReal<long double> >(ran);
+
+    testXAdd< Complex<float> >(ran);
+    testXAdd< Complex<double> >(ran);
+    testXAdd< Complex<long double> >(ran);
+
+#if 0
     {
         std::cerr << Gen< Complex<float> >:: New(ran) << std::endl;
         std::cerr << Gen< Complex< XReal<long double> > >:: New(ran) << std::endl;
@@ -73,6 +104,8 @@ Y_UTEST(cameo_add)
         csum << Complex<float>(0.1f,0.2f);
 
     }
+#endif
+
 }
 Y_UDONE()
 
