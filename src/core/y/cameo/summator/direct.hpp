@@ -13,6 +13,16 @@ namespace Yttrium
     namespace Cameo
     {
 
+        class DirectSummatorInfo
+        {
+        public:
+            static const char * const CallSign;
+            explicit DirectSummatorInfo() noexcept;
+            virtual ~DirectSummatorInfo() noexcept;
+        private:
+            Y_Disable_Copy_And_Assign(DirectSummatorInfo);
+        };
+
         //______________________________________________________________________
         //
         //
@@ -22,7 +32,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename T>
-        class DirectSummator : public Summator<T>
+        class DirectSummator : public Summator<T>, public DirectSummatorInfo
         {
         public:
             //__________________________________________________________________
@@ -55,6 +65,8 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
+            inline virtual const char * callSign() const noexcept { return CallSign; }
+
             inline virtual void ldz() noexcept { acc.ldz(); }
             inline virtual T    sum() noexcept
             {

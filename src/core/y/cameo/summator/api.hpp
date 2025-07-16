@@ -3,6 +3,7 @@
 #ifndef Y_Cameo_Summator_Included
 #define Y_Cameo_Summator_Included 1
 
+#include "y/ability/identifiable.hpp"
 #include "y/type/args.hpp"
 
 namespace Yttrium
@@ -20,7 +21,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename T>
-        class Summator
+        class Summator : public Identifiable
         {
         public:
             //__________________________________________________________________
