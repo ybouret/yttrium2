@@ -5,6 +5,7 @@
 
 
 #include "y/cameo/summator/api.hpp"
+#include "y/cameo/genus/direct.hpp"
 #include "y/apex/rational.hpp"
 
 namespace Yttrium
@@ -13,15 +14,7 @@ namespace Yttrium
     namespace Cameo
     {
 
-        class DirectSummatorInfo
-        {
-        public:
-            static const char * const CallSign;
-            explicit DirectSummatorInfo() noexcept;
-            virtual ~DirectSummatorInfo() noexcept;
-        private:
-            Y_Disable_Copy_And_Assign(DirectSummatorInfo);
-        };
+
 
         //______________________________________________________________________
         //
@@ -32,7 +25,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename T>
-        class DirectSummator : public Summator<T>, public DirectSummatorInfo
+        class DirectSummator : public Summator<T>, public DirectGenus
         {
         public:
             //__________________________________________________________________

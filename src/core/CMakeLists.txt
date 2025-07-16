@@ -84,6 +84,7 @@ Y_CreateLibrary(y
     y/mkl/api
     y/random
     y/cameo
+    y/cameo/genus
     y/cameo/summator
     y/cameo/multiplier
     y/cameo/multiplier/synod
