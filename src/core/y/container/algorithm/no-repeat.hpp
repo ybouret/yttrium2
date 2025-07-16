@@ -31,7 +31,7 @@ namespace Yttrium
                     while(j<n)
                     {
                         const size_t k=j+1;
-                        Memory::OutOfReach::Swap(seq[j],seq[k]);
+                        Memory::Stealth::Swap(seq[j],seq[k]);
                         j=k;
                     }
                     seq.popTail();

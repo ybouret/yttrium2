@@ -60,27 +60,27 @@ namespace Yttrium
         //______________________________________________________________________
 
         //! \return first valid address, may be NULL
-        inline ConstType * head() const noexcept {
+        inline ConstType * head_() const noexcept {
             const Readable<Type> &self = *this;
             return (size()>0) ? & self[1] : 0;
         }
 
         //! \return first invalid address, may be NULL
-        inline ConstType * last() const noexcept {
+        inline ConstType * last_() const noexcept {
             const Readable<Type> &self = *this;
             const size_t       sz   = self.size();
             return  (sz>0) ? & self[1]+sz : 0;
         }
 
         //! \return first invalid reverse address, may be NULL
-        inline ConstType * fore() const noexcept {
+        inline ConstType * fore_() const noexcept {
             const Readable<Type> &self = *this;
             return (size()>0) ? (&self[1])-1 : 0;
         }
 
 
         //! \return first valid revers address, may be NULL
-        inline ConstType * tail() const noexcept {
+        inline ConstType * tail_() const noexcept {
             const Readable<Type> &self = *this;
             const size_t       sz   = self.size();
             return (sz>0) ? (&self[sz]) : 0;
@@ -110,10 +110,10 @@ namespace Yttrium
         typedef typename CONTAINER::ConstType            ConstType;            //!< alias
         typedef Iter::Linear<Iter::Forward,ConstType>    ConstIterator;        //!< alias
         typedef Iter::Linear<Iter::Reverse,ConstType>    ConstReverseIterator; //!< alias
-        using ContiguousCommon<CONTAINER>::head;
-        using ContiguousCommon<CONTAINER>::last;
-        using ContiguousCommon<CONTAINER>::tail;
-        using ContiguousCommon<CONTAINER>::fore;
+        using ContiguousCommon<CONTAINER>::head_;
+        using ContiguousCommon<CONTAINER>::last_;
+        using ContiguousCommon<CONTAINER>::tail_;
+        using ContiguousCommon<CONTAINER>::fore_;
 
     protected:
         //______________________________________________________________________
@@ -133,7 +133,7 @@ namespace Yttrium
         virtual ~ReadableContiguous() noexcept {}
 
         //! \return CONST base address, may be null
-        inline ConstType * operator()(void) const noexcept { return head(); }
+        inline ConstType * operator()(void) const noexcept { return head_(); }
 
         //______________________________________________________________________
         //
@@ -141,11 +141,11 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
-        inline ConstIterator begin() const noexcept { return head(); } //!< \return first valid ConstIterator
-        inline ConstIterator end()   const noexcept { return last(); } //!< \return first invalid ConstIterator
+        inline ConstIterator begin() const noexcept { return head_(); } //!< \return first valid ConstIterator
+        inline ConstIterator end()   const noexcept { return last_(); } //!< \return first invalid ConstIterator
 
-        inline ConstReverseIterator rbegin() const noexcept { return tail(); } //!< \return first valid ConstReverseIterator
-        inline ConstReverseIterator rend()   const noexcept { return fore(); } //!< \return first invalid ConstReverseIterator
+        inline ConstReverseIterator rbegin() const noexcept { return tail_(); } //!< \return first valid ConstReverseIterator
+        inline ConstReverseIterator rend()   const noexcept { return fore_(); } //!< \return first invalid ConstReverseIterator
 
     private:
         Y_Disable_Copy_And_Assign(ReadableContiguous); //!< discarding
@@ -172,10 +172,10 @@ namespace Yttrium
         typedef typename CONTAINER::Type         Type;                 //!< alias
         typedef typename CONTAINER::MutableType  MutableType;          //!< alias
         typedef typename CONTAINER::ConstType    ConstType;            //!< alias
-        using ContiguousCommon<CONTAINER>::head;
-        using ContiguousCommon<CONTAINER>::last;
-        using ContiguousCommon<CONTAINER>::tail;
-        using ContiguousCommon<CONTAINER>::fore;
+        using ContiguousCommon<CONTAINER>::head_;
+        using ContiguousCommon<CONTAINER>::last_;
+        using ContiguousCommon<CONTAINER>::tail_;
+        using ContiguousCommon<CONTAINER>::fore_;
 
         typedef Iter::Linear<Iter::Forward,Type>      Iterator;             //!< alias
         typedef Iter::Linear<Iter::Reverse,Type>      ReverseIterator;      //!< alias
@@ -200,10 +200,10 @@ namespace Yttrium
         virtual ~WritableContiguous() noexcept {}
 
         //! \return CONST base address, may be null
-        inline ConstType * operator()(void) const noexcept { return head(); }
+        inline ConstType * operator()(void) const noexcept { return head_(); }
 
         //! \return base address, may be null
-        inline Type *      operator()(void)       noexcept { return (Type*)head(); }
+        inline Type *      operator()(void)       noexcept { return (Type*)head_(); }
 
 
         //______________________________________________________________________
@@ -212,18 +212,18 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
-        inline Iterator      begin()       noexcept { return (MutableType *)head(); } //!< \return first valid   Iterator
-        inline Iterator      end()         noexcept { return (MutableType *)last(); } //!< \return first invalid Iterator
+        inline Iterator      begin()       noexcept { return (MutableType *)head_(); } //!< \return first valid   Iterator
+        inline Iterator      end()         noexcept { return (MutableType *)last_(); } //!< \return first invalid Iterator
 
-        inline ReverseIterator rbegin()       noexcept { return (MutableType *)tail(); } //!< \return first valid   ReverseIterator
-        inline ReverseIterator rend()         noexcept { return (MutableType *)fore(); } //!< \return first invalid ReverseIterator
+        inline ReverseIterator rbegin()       noexcept { return (MutableType *)tail_(); } //!< \return first valid   ReverseIterator
+        inline ReverseIterator rend()         noexcept { return (MutableType *)fore_(); } //!< \return first invalid ReverseIterator
 
-        inline ConstIterator begin() const noexcept { return head(); } //!< \return first valid   ConstIterator
-        inline ConstIterator end()   const noexcept { return last(); } //!< \return first invalid ConstIterator
+        inline ConstIterator begin() const noexcept { return head_(); } //!< \return first valid   ConstIterator
+        inline ConstIterator end()   const noexcept { return last_(); } //!< \return first invalid ConstIterator
 
 
-        inline ConstReverseIterator rbegin() const noexcept { return tail(); } //!< \return first valid   ConstReverseIterator
-        inline ConstReverseIterator rend()   const noexcept { return fore(); } //!< \return first invalid ConstReverseIterator
+        inline ConstReverseIterator rbegin() const noexcept { return tail_(); } //!< \return first valid   ConstReverseIterator
+        inline ConstReverseIterator rend()   const noexcept { return fore_(); } //!< \return first invalid ConstReverseIterator
 
 
     private:

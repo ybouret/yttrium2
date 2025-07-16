@@ -49,6 +49,7 @@ Y_CreateLibrary(y
     y/stream/libc
     y/stream/libc/file
     y/stream/memory
+    y/stream/proc
     y/sorting
     y/threading
     y/pointer

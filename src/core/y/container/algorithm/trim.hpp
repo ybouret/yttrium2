@@ -19,7 +19,7 @@ namespace Yttrium
         template <typename SEQUENCE, typename IS_BAD>
         inline SEQUENCE &Trim(SEQUENCE &seq, IS_BAD &is_bad)
         {
-            while( seq.size() && is_bad(*seq.tail())) seq.popTail();
+            while( seq.size() && is_bad(seq.tail())) seq.popTail();
             return seq;
         }
     }

@@ -5,7 +5,7 @@
 #ifndef Y_Container_Algo_Skip_Included
 #define Y_Container_Algo_Skip_Included 1
 
-#include "y/sequence/interface.hpp"
+#include "y/system/compiler.hpp"
 
 namespace Yttrium
 {

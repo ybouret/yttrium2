@@ -473,6 +473,18 @@ namespace Yttrium
                 return node;
             }
 
+            //! \param nodeIndex valid index>0 \return node at index
+            inline NODE * fetch(const size_t nodeIndex) noexcept
+            {
+                return (NODE *) doFetch(nodeIndex);
+            }
+
+            //! \param nodeIndex valid index>0 \return node at index
+            inline const NODE * fetch(const size_t nodeIndex) const noexcept
+            {
+                return (NODE *) doFetch(nodeIndex);
+            }
+
             //__________________________________________________________________
             //
             //

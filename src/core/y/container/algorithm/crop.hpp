@@ -5,8 +5,8 @@
 #ifndef Y_Container_Algo_Crop_Included
 #define Y_Container_Algo_Crop_Included 1
 
-#include "y/container/algo/trim.hpp"
-#include "y/container/algo/skip.hpp"
+#include "y/container/algorithm/trim.hpp"
+#include "y/container/algorithm/skip.hpp"
 
 namespace Yttrium
 {

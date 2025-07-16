@@ -79,6 +79,12 @@ namespace Yttrium
         //! syntactic helper \param lhs value to prepend \return *this
         Sequence& operator>>(ParamType lhs) { pushHead(lhs); return *this; }
 
+
+        inline Type      & head()       noexcept { assert(this->size()>0 ); return Coerce(getHead()); }
+        inline Type      & tail()       noexcept { assert(this->size()>0 ); return Coerce(getTail()); }
+        inline ConstType & head() const noexcept { assert(this->size()>0 ); return getHead(); }
+        inline ConstType & tail() const noexcept { assert(this->size()>0 ); return getTail(); }
+
     private:
         Y_Disable_Copy_And_Assign(Sequence); //!< discarding
 

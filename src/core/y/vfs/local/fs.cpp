@@ -43,7 +43,7 @@ namespace Yttrium
 
 }
 
-#include "y/container/algorithm/trim.hpp"
+#include "y/container/algorithm/crop.hpp"
 
 namespace Yttrium
 {

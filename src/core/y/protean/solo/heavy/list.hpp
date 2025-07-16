@@ -46,7 +46,7 @@ namespace Yttrium
         inline virtual ~List() noexcept {}     //!< cleanup
 
         //! duplicate \param other another list
-        inline List(const List &other) : BaseType(other)
+        inline List(const List &other) : Container(), BaseType(other)
         {
         }
 

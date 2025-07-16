@@ -186,7 +186,7 @@ namespace Yttrium
                 }
             }
 
-            if(dirName.size()<=0 || !IsSeparator(*dirName.tail()) )
+            if(dirName.size()<=0 || !IsSeparator(dirName.tail()) )
                 dirName += '/';
 
             return dirName;
