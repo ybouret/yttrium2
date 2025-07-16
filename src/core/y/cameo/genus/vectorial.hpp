@@ -10,19 +10,22 @@ namespace Yttrium
 {
     namespace Cameo
     {
-        class VectorialGenus
+        //! Genus for vectorial types
+        class VectorialGenus : public Genus
         {
         public:
-
-            virtual ~VectorialGenus() noexcept;
+            virtual ~VectorialGenus() noexcept; //!< cleanup
 
         protected:
+
+            //! setup \param sid scalar identfier
             explicit VectorialGenus(const char * const sid) noexcept;
 
+            //! Vectorial+sid
             const char identifier[16];
 
         private:
-            Y_Disable_Copy_And_Assign(VectorialGenus);
+            Y_Disable_Copy_And_Assign(VectorialGenus); //!< discarding
         };
     }
 }

@@ -9,16 +9,17 @@ namespace Yttrium
 {
     namespace Cameo
     {
+        //! base class for Genus
         class Genus
         {
         public:
-            virtual ~Genus() noexcept;
+            virtual ~Genus() noexcept; //!< cleanup
 
         protected:
-            explicit Genus() noexcept;
-            
+            explicit Genus() noexcept; //!< setup
+
         private:
-            Y_Disable_Copy_And_Assign(Genus);
+            Y_Disable_Copy_And_Assign(Genus); //!< discarding
         };
     }
 }

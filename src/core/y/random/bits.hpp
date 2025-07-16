@@ -197,12 +197,14 @@ namespace Yttrium
             template <typename T> inline T to(const IntToType<false> &) noexcept { return toU<T>(); } //!< \return unsigned
             template <typename T> inline T to(const IntToType<true>  &) noexcept { return toS<T>(); } //!< \return signed
 
+            //! \return ]-1:1[ uniform
             template <typename T> inline T symmetric(const IntToType<Floating> &) noexcept
             {
                 const T res = (T) symm32();
                 return res;
             }
 
+            //!\return same than to<T> \param _ type selector
             template <typename T> inline T symmetric(const IntToType<Integral> &_) noexcept
             {
                 return intrinsic<T>(_);

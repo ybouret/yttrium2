@@ -66,13 +66,13 @@ namespace Yttrium
         //! \return DIMENSIONS
         inline size_t size()            const noexcept { return DIMENSIONS; }
 
-        //! param indx [1..2] \return re or im
+        //! \param indx [1..2] \return re or im
         inline T &    operator[](size_t indx) noexcept {
             assert(indx>=1); assert(indx<=2);
             return *(&re + --indx);
         }
 
-        //! param indx [1..2] \return re or im
+        //! \param indx [1..2] \return re or im
         inline const T &    operator[](size_t indx) const noexcept {
             assert(indx>=1); assert(indx<=2);
             return *(&re + --indx);
@@ -141,23 +141,23 @@ namespace Yttrium
         //! unary minus \return - (*this)
         inline Complex operator-() const noexcept { return Complex(-re,-im); }
 
-        //! z-z
+        //! \param lhs complex \param rhs complex \return lhs-rhs
         friend inline Complex operator-(const Complex &lhs, const Complex &rhs) noexcept
         { return Complex(lhs.re-rhs.re,lhs.im-rhs.im); }
 
-        //! z-x
+        //! \param lhs complex \param rhs scalar \return lhs-rhs
         friend inline Complex operator-(const Complex &lhs, const T rhs) noexcept
         { return Complex(lhs.re-rhs,lhs.im); }
 
-        //! x-z
+        //! \param lhs scalar \param rhs complex \return lhs-rhs
         friend inline Complex operator-(const T  lhs, const Complex &rhs) noexcept
         { return Complex(lhs-rhs.re,-rhs.im); }
 
-        //! -= z
+        //! \param z complex \return (*this) -= z
         inline Complex & operator-=(const Complex &z) noexcept
         { re -= z.re; im -= z.im; return *this; }
 
-        //! -= x
+        //! \param x scalar \return (*this) -= x
         inline Complex & operator-=(const T x) noexcept
         { re -= x; return *this; }
 
@@ -168,19 +168,20 @@ namespace Yttrium
         //
         //______________________________________________________________________
 
-        //! z*x
+
+        //! \return z*x
         inline friend Complex operator*(const Complex &z, const T x) noexcept
         { return Complex(z.re*x,z.im*x); }
 
-        //! x*z
+        //! \return x*z
         inline friend Complex operator*(const T x, const Complex &z) noexcept
         { return Complex(z.re*x,z.im*x); }
 
-        //! standard multiplication
+        //! standard multiplication \param X lhs \param Y lhs \return X*Y
         inline static Complex MultiAlgo(const Complex &X, const Complex &Y) noexcept
         { return Complex(X.re * Y.re - X.im * Y.im, X.re * Y.im + X.im * Y.re); }
 
-        //! Gauss multiplication
+        //! Gauss' multiplication \param X lhs \param Y lhs \return X*Y
         inline static Complex GaussAlgo(const Complex &X, const Complex &Y) noexcept
         {
             const T S1 = X.re * Y.re;
@@ -189,14 +190,14 @@ namespace Yttrium
             return Complex(S1-S2,S3-S1-S2);
         }
 
-        //! X*Y*
+        //! \return X*Y
         inline friend Complex operator*(const Complex &X, const Complex &Y) noexcept
         { return Complex(X.re * Y.re - X.im * Y.im, X.re * Y.im + X.im * Y.re); }
 
-        //! *= x
+        //! \param x scalar \return (*this) *= x
         inline Complex & operator*=(const T x)        { re *= x; im *= x; return *this; }
 
-        //! *= z
+        //! \param z complex \return (*this) *= z
         inline Complex & operator*=(const Complex &z)
         { const Complex p = (*this) * z; re=p.re; im=p.im; return *this; }
 
@@ -226,10 +227,10 @@ namespace Yttrium
             return (X * Y.conj())/Y.mod2();
         }
 
-        //! /= x
+        //! \param x scalar \return (*this) /= x
         inline Complex & operator/=(const T x)        { re/=x; im/=x; return *this; }
 
-        //! /= z
+        //! \param z complex \return (*this) /= z
         inline Complex & operator/=(const Complex &z)
         {
             const Complex d = (*this) / z; re = d.re; im = d.im; return *this;

@@ -10,19 +10,18 @@ namespace Yttrium
 {
     namespace Cameo
     {
-        class AProxyGenus
+
+        //! Genus for AProxy types
+        class AProxyGenus : public Genus
         {
         public:
-            static const char * const CallSign;
-            static void Overflow();
-
-            virtual ~AProxyGenus() noexcept;
-
+            static const char * const CallSign; //!< "AProxy"
+            static void Overflow();             //!< throw on overflow
+            virtual ~AProxyGenus() noexcept;    //!< cleanup
         protected:
-            explicit AProxyGenus() noexcept;
-
+            explicit AProxyGenus() noexcept;    //!< setup
         private:
-            Y_Disable_Copy_And_Assign(AProxyGenus);
+            Y_Disable_Copy_And_Assign(AProxyGenus); //!< discarding
         };
     }
 }

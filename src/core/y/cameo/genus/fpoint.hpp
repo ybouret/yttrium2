@@ -10,18 +10,17 @@ namespace Yttrium
 {
     namespace Cameo
     {
-        class FPointGenus
+
+        //! Genus for FPoint types
+        class FPointGenus : public Genus
         {
         public:
-            static const char * const CallSign;
-
-            virtual ~FPointGenus() noexcept;
-
+            static const char * const CallSign; //!< "FPoint
+            virtual ~FPointGenus() noexcept;    //!< cleanup
         protected:
-            explicit FPointGenus() noexcept;
-
+            explicit FPointGenus() noexcept;    //!< setup
         private:
-            Y_Disable_Copy_And_Assign(FPointGenus);
+            Y_Disable_Copy_And_Assign(FPointGenus); //!< discarding
         };
     }
 }

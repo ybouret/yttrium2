@@ -9,18 +9,17 @@ namespace Yttrium
 {
     namespace Cameo
     {
-        class DirectGenus
+        //! Genus for Direct types
+        class DirectGenus : public Genus
         {
         public:
-            static const char * const CallSign;
-
-            virtual ~DirectGenus() noexcept;
-
+            static const char * const CallSign; //!< "Direct
+            virtual ~DirectGenus() noexcept;    //!< cleanup
         protected:
-            explicit DirectGenus() noexcept;
+            explicit DirectGenus() noexcept;    //!< setup
 
         private:
-            Y_Disable_Copy_And_Assign(DirectGenus);
+            Y_Disable_Copy_And_Assign(DirectGenus); //!< discarding
         };
     }
 }
