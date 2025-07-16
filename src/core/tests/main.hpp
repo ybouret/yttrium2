@@ -23,7 +23,7 @@ namespace Yttrium
         
         static inline T New(Random::Bits &ran)
         {
-            return ran.to<T>();
+            return ran.symm<T>();
         }
     };
 

@@ -97,11 +97,7 @@ namespace Yttrium
                 return choice() ? -u : u;
             }
 
-            //! \return real in ]-1:1[
-            template <typename T> inline T symm() noexcept
-            {
-                return static_cast<T>(symm32());
-            }
+
 
 
         private:
@@ -118,11 +114,17 @@ namespace Yttrium
             template <typename T>
             T to() noexcept
             {
-                static const typename Pick<TL::IndexOf<FPList, T>::Value >= 0, IntToType<Floating>, IntToType<Integral> >::Type Choice = {};
-                return intrinsic<T>(Choice);
+                static const typename Pick<TL::IndexOf<FPList, T>::Value >= 0, IntToType<Floating>, IntToType<Integral> >::Type selected = {};
+                return intrinsic<T>(selected);
             }
 
 
+            //! \return real in ]-1:1[
+            template <typename T> inline T symm() noexcept
+            {
+                static const typename Pick<TL::IndexOf<FPList, T>::Value >= 0, IntToType<Floating>, IntToType<Integral> >::Type selected = {};
+                return symmetric<T>(selected);
+            }
 
             //! \param nbit bit count \return unsigned with exact bit count
             template <typename T>
@@ -140,6 +142,9 @@ namespace Yttrium
                 }
                 return res;
             }
+
+
+
 
             //!  \param n >= 0 \return uniform in [0:n]
             template <typename T> inline
@@ -188,8 +193,23 @@ namespace Yttrium
                 return to<T>(Choice);
             }
 
+
             template <typename T> inline T to(const IntToType<false> &) noexcept { return toU<T>(); } //!< \return unsigned
             template <typename T> inline T to(const IntToType<true>  &) noexcept { return toS<T>(); } //!< \return signed
+
+            template <typename T> inline T symmetric(const IntToType<Floating> &) noexcept
+            {
+                const T res = (T) symm32();
+                return res;
+            }
+
+            template <typename T> inline T symmetric(const IntToType<Integral> &_) noexcept
+            {
+                return intrinsic<T>(_);
+            }
+
+
+
 
         };
 
