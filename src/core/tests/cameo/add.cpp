@@ -1,3 +1,9 @@
+
+
+#if defined(_MSC_VER)
+#pragma warning ( disable : 4464 )
+#endif
+
 #include "y/cameo/addition.hpp"
 #include "y/mkl/complex.hpp"
 #include "y/mkl/xreal.hpp"
@@ -29,7 +35,7 @@ namespace {
         try
         {
             const T S = xadd.sum();
-            const T delta = S-s;
+            const T delta = (T)(S-s);
             std::cerr << "\t" << s << " -> " << S << ", delta=" << delta << std::endl;
         }
         catch(const Exception &excp)

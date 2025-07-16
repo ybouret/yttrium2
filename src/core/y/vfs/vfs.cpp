@@ -107,7 +107,7 @@ namespace Yttrium
         }
         else
         {
-            String res(path,1+ext-path);
+            String res(path,1+static_cast<size_t>(ext-path));
             res.pushAtTail(newExt,extLen);
             return res;
         }
@@ -137,7 +137,7 @@ namespace Yttrium
         }
         else
         {
-            return String(path,ext-path);
+            return String(path,static_cast<size_t>(ext-path));
         }
     }
 

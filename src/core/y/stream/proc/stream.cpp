@@ -13,7 +13,7 @@
 #else // Y_WIN
 // assuming gcc
 extern "C" FILE * popen(const char *, const char *);
-extern "C" void   pclose(FILE *);
+extern "C" int    pclose(FILE *);
 #endif // Y_WIN
 #endif
 
