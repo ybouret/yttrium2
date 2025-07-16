@@ -30,6 +30,7 @@ random
 mkl
 cameo
 dft
+vfs
 )
 
 
@@ -207,3 +208,12 @@ Y_UTEST(dft:fmt)
 #ascii
 Y_UTEST(ascii_convert)
 
+#vfs
+Y_UTEST(vfs:cwd)
+Y_UTEST(vfs:dname)
+Y_UTEST(vfs:entry)
+Y_UTEST(vfs:mkdir)
+Y_UTEST(vfs:names)
+Y_UTEST(vfs:rm)
+Y_UTEST(vfs:scan)
+Y_UTEST(vfs:subdirs)

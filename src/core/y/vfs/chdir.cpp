@@ -108,6 +108,7 @@ namespace Yttrium
         return code->size();
     }
 
+#if 0
     const String & VFS:: ChangeDirectory :: operator[](const size_t iDir) const noexcept
     {
 #if 1
@@ -116,7 +117,13 @@ namespace Yttrium
         return **((**code).fetch(iDir));
 #endif
     }
-
+#endif
+    const String & VFS:: ChangeDirectory:: getItemAt(const size_t iDir) const noexcept
+    {
+        assert(iDir>0);
+        assert(iDir<=code->size());
+        return **((**code).fetch(iDir));
+    }
 
 
     void VFS::ChangeDirectory:: ok()

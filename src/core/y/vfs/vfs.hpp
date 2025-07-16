@@ -232,12 +232,13 @@ namespace Yttrium
             //------------------------------------------------------------------
             virtual const char *   callSign()               const noexcept; //!< [Callable]
             virtual size_t         size()                   const noexcept; //!< [Collection]
-            virtual const String & operator[](const size_t) const noexcept; //!< [Readable]
+            //virtual const String & operator[](const size_t) const noexcept; //!< [Readable]
 
         private:
             Y_Disable_Assign(ChangeDirectory);
             class Code;
             Code *code;
+            virtual const String & getItemAt(const size_t) const noexcept;
         };
 
         //______________________________________________________________________

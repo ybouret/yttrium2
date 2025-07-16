@@ -24,6 +24,13 @@ namespace Yttrium
     {
     }
 
+    void LocalFS:: display(std::ostream &os, size_t indent) const
+    {
+        initProlog(os,indent)  << callSign();
+        initEpilog(os,true);
+    }
+
+
     bool LocalFS::tryRemoveFile(const String &path)
     {
         Y_Giant_Lock();

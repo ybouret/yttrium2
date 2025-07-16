@@ -155,6 +155,16 @@ Y_UTEST_DECL(128)
     Y_UTEST(dft_core);
 
     Y_UTEST(ascii_convert);
+
+    Y_UTEST(vfs_cwd);
+    Y_UTEST(vfs_dname);
+    Y_UTEST(vfs_entry);
+    Y_UTEST(vfs_mkdir);
+    Y_UTEST(vfs_names);
+    Y_UTEST(vfs_rm);
+    Y_UTEST(vfs_scan);
+    Y_UTEST(vfs_subdirs);
+
 }
 Y_UTEST_EXEC()
 
