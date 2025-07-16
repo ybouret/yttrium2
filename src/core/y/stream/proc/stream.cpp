@@ -11,7 +11,7 @@
 #       define popen  _popen
 #       define pclose _pclose
 #else // Y_WIN
-// assuming gcc
+      // assuming gcc
 extern "C" FILE * popen(const char *, const char *);
 extern "C" int    pclose(FILE *);
 #endif // Y_WIN
@@ -20,7 +20,7 @@ extern "C" int    pclose(FILE *);
 namespace Yttrium
 {
 
-    ProcStream:: ~ProcStream() noexcept
+    ProcessStream:: ~ProcessStream() noexcept
     {
         assert(0!=handle);
         pclose( (FILE*)handle );
@@ -38,13 +38,13 @@ namespace Yttrium
         return fp;
     }
 
-    ProcStream:: ProcStream(const char * const cmd,
-                            const char * const how) :
+    ProcessStream:: ProcessStream(const char * const cmd,
+                                  const char * const how) :
     handle( call_popen(cmd,how) )
     {
 
     }
-
+    
 
 
 }

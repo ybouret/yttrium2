@@ -28,7 +28,7 @@ namespace Yttrium
         // File Names
         //
         //______________________________________________________________________
-        static bool        IsSeparator(const char c) noexcept; //!< [back]slash
+        static bool        IsSeparator(const char )                              noexcept; //!< \return true iff [back]slash
         static const char *BaseName(const char * const path, const size_t size)  noexcept; //!< basename
         static const char *BaseName(const char * const path)                     noexcept; //!< basename
         static const char *BaseName(const String     & path)                     noexcept; //!< basename
@@ -58,9 +58,14 @@ namespace Yttrium
         //______________________________________________________________________
 
         //! make simplified, separator ending directory name
+        /**
+         \param path full path
+         \param size strlen(path)
+         \return as directory name
+         */
         static String MakeDirName(const char *const path, const size_t size);
-        static String MakeDirName(const char *const path); //!< alias
-        static String MakeDirName(const String &    path); //!< alias
+        static String MakeDirName(const char *const); //!< alias \return as directory name
+        static String MakeDirName(const String &   ); //!< alias \return as directory name
 
 
         //______________________________________________________________________
@@ -79,10 +84,10 @@ namespace Yttrium
             IsUnk  //!< doesn't exists ?
         };
 
-        //! integer value to compare entries
+        //! integer value to compare entries \return 'f','d' or 'u'
         static int         EntryTypeChar(const EntryType) noexcept;
 
-        //! human readable entry type
+        //! human readable entry type \return "f", "d', "?" or "!"
         static const char *EntryTypeText(const EntryType) noexcept;
 
         //______________________________________________________________________
@@ -107,8 +112,8 @@ namespace Yttrium
                 Ext        //!< use extension
             };
 
-            static const char * const CallSign; //!< "VFS::Entry"
-            static const char * PartText(const Part) noexcept; //!< human readable part name
+            static const char * const CallSign;                      //!< "VFS::Entry"
+            static const char *       PartText(const Part) noexcept; //!< \return human readable part name
 
             //__________________________________________________________________
             //
@@ -119,27 +124,27 @@ namespace Yttrium
             virtual ~Entry() noexcept;                   //!< cleanup
             Entry(const Entry &);                        //!< duplicate
             Y_OSTREAM_PROTO(Entry);                      //!< full display
-            const Entry & operator*() const noexcept;    //!< access to display
-            
+            const Entry & operator*() const noexcept;    //!< access to display \return *this
+
             //__________________________________________________________________
             //
             // methods
             //__________________________________________________________________
-            const char * typeText() const noexcept; //!< EntryTypeText(type)
-            bool         isReg()    const noexcept; //!< type == IsReg
-            bool         isDir()    const noexcept; //!< type == IsDir
-            String       pry(const Part)     const; //!< convert to string for ops
-            bool         isDot()             const; //!< check if is '.'
-            bool         isDDot()            const; //!< check if is '..'
+            const char * typeText() const noexcept; //!< \return EntryTypeText(type)
+            bool         isReg()    const noexcept; //!< \return type == IsReg
+            bool         isDir()    const noexcept; //!< \return type == IsDir
+            String       pry(const Part)     const; //!< \return converted to string for ops
+            bool         isDot()             const; //!< \return true iff is '.'
+            bool         isDDot()            const; //!< \return true iff is '..'
 
-            //! lexicographic path comparison
-            static SignType CompareByPath(const Entry *lhs, const Entry *rhs) noexcept;
+            //! \return lexicographic path comparison
+            static SignType CompareByPath(const Entry *, const Entry *) noexcept;
 
-            //! lexicographic base comparison
-            static SignType CompareByName(const Entry *lhs, const Entry *rhs) noexcept;
+            //! \return lexicographic base comparison
+            static SignType CompareByName(const Entry *, const Entry *) noexcept;
 
-            //! lexicographic path comparison, directory first
-            static SignType CompareByPathDirFirst(const Entry *lhs, const Entry *rhs) noexcept;
+            //! \return lexicographic path comparison, directory first
+            static SignType CompareByPathDirFirst(const Entry *, const Entry *) noexcept;
 
 
             //__________________________________________________________________
@@ -155,7 +160,7 @@ namespace Yttrium
             Entry              *prev; //!< fir list
 
         private:
-            Y_Disable_Assign(Entry);
+            Y_Disable_Assign(Entry); //!< discarding
         };
 
 
@@ -166,7 +171,7 @@ namespace Yttrium
         //! List of Entries
         //
         //______________________________________________________________________
-        typedef CxxListOf<Entry> Entries;
+        typedef CxxListOf<Entry> Entries; //!< alias
 
 
         //______________________________________________________________________
@@ -179,16 +184,18 @@ namespace Yttrium
         {
         public:
             virtual       ~Scanner() noexcept;            //!< cleanup
-            virtual Entry *get()          = 0;            //!< get next entry
+            virtual Entry *get()          = 0;            //!< \return next entry, NULL when done
         protected:
             explicit       Scanner(const VFS &,const String &) ; //!< setup
             const VFS     &vfs;                                  //!< original vfs
             const String   dir;                                  //!< original directory
 
         private:
-            Y_Disable_Copy_And_Assign(Scanner);
+            Y_Disable_Copy_And_Assign(Scanner); //!< discarding
         };
 
+
+        class DirectoryChanger;
 
         //______________________________________________________________________
         //
@@ -232,8 +239,7 @@ namespace Yttrium
             //------------------------------------------------------------------
             virtual const char *   callSign()               const noexcept; //!< [Callable]
             virtual size_t         size()                   const noexcept; //!< [Collection]
-            //virtual const String & operator[](const size_t) const noexcept; //!< [Readable]
-
+            
         private:
             Y_Disable_Assign(ChangeDirectory);
             class Code;
@@ -247,7 +253,7 @@ namespace Yttrium
         // Interface
         //
         //______________________________________________________________________
-        virtual bool      tryRemoveFile(const String &path)                         = 0; //!< try to remove file from VFS
+        virtual bool      tryRemoveFile(const String &path)                         = 0; //!< \return true iif removed file from VFS
         virtual Scanner * openDirectory(const String &dirName)                      = 0; //!< create scanner for dirName
         virtual EntryType findEntryType(const String &path, bool &lnk) const        = 0; //!< get entry attributes
         virtual void      makeDirectory(const String &dirName, const bool mayExist) = 0; //!< create a directory
@@ -278,10 +284,8 @@ namespace Yttrium
             AddAny  //!< add dir/reg BUT dot and ddot
         };
 
-        void addTo(Entries &entries, const String &     dirName, const AddMode mode); //!< add to entries dirName content
-        void addTo(Entries &entries, const char * const dirName, const AddMode mode); //!< add to entries dirname content
-
-
+        void addTo(Entries &, const String &     dirName, const AddMode mode); //!< grow entries \param dirName  \param mode how
+        void addTo(Entries &, const char * const dirName, const AddMode mode); //!< grow entries \param dirName  \param mode how
 
 
         //______________________________________________________________________
@@ -294,7 +298,7 @@ namespace Yttrium
     protected:
         explicit VFS() noexcept; //!< setup
     private:
-        Y_Disable_Copy_And_Assign(VFS);
+        Y_Disable_Copy_And_Assign(VFS); //!< discarding
     };
 }
 

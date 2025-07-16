@@ -6,29 +6,28 @@
 
 namespace Yttrium
 {
-    ProcInput:: ~ProcInput() noexcept
+    InputProcess:: ~InputProcess() noexcept
     {
     }
 
 
-    const char * const ProcInput:: How      = "r";
-    const char * const ProcInput:: CallSign = "ProcInput";
+    const char * const InputProcess:: How      = "r";
+    const char * const InputProcess:: CallSign = "InputProcess";
 
-    ProcInput:: ProcInput(const String &cmd) :
-    ProcStream(cmd.c_str(), How),
+    InputProcess:: InputProcess(const String &cmd) :
+    ProcessStream(cmd.c_str(), How),
     buffer()
     {
     }
 
 
-    ProcInput:: ProcInput(const char * const cmd) :
-    ProcStream(cmd,How),
+    InputProcess:: InputProcess(const char * const cmd) :
+    ProcessStream(cmd,How),
     buffer()
     {
     }
 
-    const char * ProcInput:: callSign() const noexcept { return CallSign; }
-
+    
     static inline bool forceQuery(void * const handle,
                                   char &       data)
     {
@@ -38,12 +37,12 @@ namespace Yttrium
         if(nr<=0) 
         {
             if(feof(fp)) return false;
-            throw Specific::Exception(ProcInput::CallSign, "fread failure");
+            throw Specific::Exception(InputProcess::CallSign, "fread failure");
         }
         return true;
     }
 
-    bool ProcInput:: query(char &data)
+    bool InputProcess:: query(char &data)
     {
         assert(0!=handle);
 
@@ -59,11 +58,12 @@ namespace Yttrium
 
     }
 
-    void ProcInput:: store(const char C)
+    void InputProcess:: store(const char C)
     {
         buffer >> C;
     }
 
+#if 0
     bool ProcInput:: ready()
     {
         if(buffer->size>0)
@@ -84,5 +84,6 @@ namespace Yttrium
             }
         }
     }
+#endif
 
 }

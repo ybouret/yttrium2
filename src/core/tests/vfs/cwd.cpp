@@ -17,11 +17,11 @@ namespace
         OutputFile fp(StdErr);
         std::cerr << "<listing>" << std::endl;
 #if defined(Y_BSD)
-        ProcInput::SendTo(fp, "ls");
+        InputProcess::SendTo(fp, "ls");
 #endif
 
 #if defined(Y_WIN)
-        ProcInput::SendTo(fp, "dir");
+        InputProcess::SendTo(fp, "dir");
 #endif
 
         std::cerr << "<listing/>" << std::endl;

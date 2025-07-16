@@ -15,6 +15,11 @@ namespace Yttrium
         //
         //
         //! Skip first bad items
+        /**
+         \param seq sequence-like interface
+         \param is_bad return true iif is bad
+         \return seq with skipped bad items
+         */
         //
         //______________________________________________________________________
         template <typename SEQUENCE, typename IS_BAD>

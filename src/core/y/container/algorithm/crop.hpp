@@ -16,6 +16,11 @@ namespace Yttrium
         //
         //
         //! Trim last bad items
+        /**
+         \param seq sequence-like container
+         \param bad return true iif bad
+         \return cropped seq
+         */
         //
         //______________________________________________________________________
         template <typename SEQUENCE, typename IS_BAD>

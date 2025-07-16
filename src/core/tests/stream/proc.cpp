@@ -10,7 +10,7 @@ Y_UTEST(stream_proc)
     for(int i=1;i<argc;++i)
     {
         const String cmd = argv[i];
-        ProcInput    inp(cmd);
+        InputProcess inp(cmd);
         String line;
         while( inp.gets(line) )
         {

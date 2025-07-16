@@ -29,8 +29,8 @@ namespace Yttrium
         // Definitions
         //
         //______________________________________________________________________
-        static const char * const      CallSign;                              //!< "LocalFS"
-        static const Longevity         LifeTime = 10; //!< alias
+        static const char * const      CallSign;                        //!< "LocalFS"
+        static const Longevity         LifeTime = LifeTimeOf::LocalFS;  //!< lifetime
 
         //______________________________________________________________________
         //
@@ -43,23 +43,25 @@ namespace Yttrium
         //______________________________________________________________________
         //
         //
-        // Methods
+        // Interface
         //
         //______________________________________________________________________
-        virtual bool      tryRemoveFile(const String &path);                         //!< try to remove file from disk
-        virtual Scanner * openDirectory(const String &dirName);                      //!< use O/S functions
-        virtual EntryType findEntryType(const String &path, bool &link) const;       //!< use O/S functions
-        virtual void      makeDirectory(const String &dirName, const bool mayExist); //!< use O/S functions
-        virtual bool      tryEraseEmpty(const String &dirName);                      //!< use O/S functions
-        virtual String    getCWD();                                                  //!< use O/S functions
-        virtual void      setCWD(const String &dirName);                             //!< use O/S functions
-        static  String    MakeWin32Path(const String &dirName);                      //!< needed for Win32
+        virtual bool      tryRemoveFile(const String &path);
+        virtual Scanner * openDirectory(const String &dirName);
+        virtual EntryType findEntryType(const String &path, bool &link) const;
+        virtual void      makeDirectory(const String &dirName, const bool mayExist);
+        virtual bool      tryEraseEmpty(const String &dirName);
+        virtual String    getCWD();
+        virtual void      setCWD(const String &dirName);
+
+        //! \param dirName directory to search \return searchable directory pattern
+        static  String    MakeWin32Path(const String &dirName);
 
     private:
-        Y_Disable_Copy_And_Assign(LocalFS);
+        Y_Disable_Copy_And_Assign(LocalFS); //!< discarding
         friend class Singleton<LocalFS,ClassLockPolicy>;
-        explicit LocalFS() noexcept;
-        virtual ~LocalFS() noexcept;
+        explicit LocalFS() noexcept; //!< setup
+        virtual ~LocalFS() noexcept; //!< cleanup
 
     };
 }

@@ -34,7 +34,8 @@ namespace Yttrium
             Y_LifeTime(PooledMemory)        /*!< for Memory::Pooled          */,
             Y_LifeTime(ObjectFactory)       /*!< for Object::Factory         */,
             Y_LifeTime(IOChars)             /*!< for IO::Char                */,
-            Y_LifeTime(ApexMemory)          /*!< for Apex::Archon            */
+            Y_LifeTime(ApexMemory)          /*!< for Apex::Archon            */,
+            Y_LifeTime(LocalFS)             /*!< for  LocalFS                */
         };
     };
 }

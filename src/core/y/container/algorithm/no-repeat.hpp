@@ -15,7 +15,7 @@ namespace Yttrium
         //______________________________________________________________________
         //
         //
-        //! Trim last bad items
+        //! Ensure no repeat
         //
         //______________________________________________________________________
         template <typename SEQUENCE, typename IS_BAD>

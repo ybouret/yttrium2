@@ -80,17 +80,17 @@ namespace Yttrium
         Sequence& operator>>(ParamType lhs) { pushHead(lhs); return *this; }
 
 
-        inline Type      & head()       noexcept { assert(this->size()>0 ); return Coerce(getHead()); }
-        inline Type      & tail()       noexcept { assert(this->size()>0 ); return Coerce(getTail()); }
-        inline ConstType & head() const noexcept { assert(this->size()>0 ); return getHead(); }
-        inline ConstType & tail() const noexcept { assert(this->size()>0 ); return getTail(); }
+        inline Type      & head()       noexcept { assert(this->size()>0 ); return Coerce(getHead()); } //!< \return head item
+        inline Type      & tail()       noexcept { assert(this->size()>0 ); return Coerce(getTail()); } //!< \return tail item
+        inline ConstType & head() const noexcept { assert(this->size()>0 ); return getHead(); }         //!< \return head item
+        inline ConstType & tail() const noexcept { assert(this->size()>0 ); return getTail(); }         //!< \return tail item
 
     private:
         Y_Disable_Copy_And_Assign(Sequence); //!< discarding
 
-        virtual ConstType & getHead() const noexcept = 0; //!< \return head item
-        virtual ConstType & getTail() const noexcept = 0; //!< \return tail item
-
+        virtual ConstType & getHead()             const noexcept = 0; //!< \return head item
+        virtual ConstType & getTail()             const noexcept = 0; //!< \return tail item
+        //virtual ConstType & getBulk(const size_t) const noexcept = 0;
     };
 
 }

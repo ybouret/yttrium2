@@ -19,7 +19,7 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    class ProcStream
+    class ProcessStream
     {
     public:
         //______________________________________________________________________
@@ -28,7 +28,7 @@ namespace Yttrium
         // C++
         //
         //______________________________________________________________________
-        virtual ~ProcStream() noexcept; //!< cleanup
+        virtual ~ProcessStream() noexcept; //!< cleanup
 
     protected:
         //! open process
@@ -36,8 +36,8 @@ namespace Yttrium
          \param cmd command to execute
          \param how read or write
          */
-        explicit ProcStream(const char * const cmd,
-                            const char * const how);
+        explicit ProcessStream(const char * const cmd,
+                               const char * const how);
 
         //______________________________________________________________________
         //
@@ -49,7 +49,7 @@ namespace Yttrium
 
 
     private:
-        Y_Disable_Copy_And_Assign(ProcStream);
+        Y_Disable_Copy_And_Assign(ProcessStream); //!< discarding
     };
 }
 

@@ -43,9 +43,9 @@ namespace Yttrium
             // methods
             //
             //__________________________________________________________________
-            const T *    token() const noexcept; //!< current token location
-            size_t       units() const noexcept; //!< current token size
-            
+            const T *    token() const noexcept; //!< \return current token location
+            size_t       units() const noexcept; //!< \return current token size
+
             bool         next(const T * const sep, const size_t num) noexcept; //!< find next
             bool         next(const T *)                             noexcept; //!< find next
             bool         next(const T)                               noexcept; //!< find next
@@ -100,9 +100,9 @@ namespace Yttrium
 
 
         private:
-            Y_Disable_Copy_And_Assign(Tokenizer);
+            Y_Disable_Copy_And_Assign(Tokenizer); //!< discarding
             class Code;
-            Code *code;
+            Code *code; //!< inner code
         };
     }
 

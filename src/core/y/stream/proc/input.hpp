@@ -20,9 +20,15 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    class ProcInput : public ProcStream, public InputStream
+    class InputProcess : public ProcessStream, public InputStream
     {
     public:
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
         static const char * const How;      //!< "r"
         static const char * const CallSign; //!< "ProcInput"
 
@@ -32,9 +38,9 @@ namespace Yttrium
         // C++
         //
         //______________________________________________________________________
-        explicit ProcInput(const String &     cmd); //!< start command
-        explicit ProcInput(const char * const cmd); //!< start command
-        virtual ~ProcInput() noexcept;              //!< cleanup
+        explicit InputProcess(const String &     cmd); //!< start \param cmd command
+        explicit InputProcess(const char * const cmd); //!< start \param cmd command
+        virtual ~InputProcess() noexcept;              //!< cleanup
 
         //______________________________________________________________________
         //
@@ -42,14 +48,8 @@ namespace Yttrium
         // Interface
         //
         //______________________________________________________________________
-
-        // [Identifiable]
-        virtual const char * callSign() const noexcept; //!< CallSign
-
-        // [InputStream]
-        virtual bool query(char & data);   //!< query a single char, false = EOS
-        virtual void store(const  char) ;  //!< unread a char
-        virtual bool ready();              //!< next char ?
+        virtual bool query(char & data);   //!< query \param data single chaer \return false = EOS
+        virtual void store(const  char) ;  //!< unread a char, using buffer
 
         //______________________________________________________________________
         //
@@ -59,21 +59,31 @@ namespace Yttrium
         //______________________________________________________________________
 
         //! append lines produced by cmd
+        /**
+         \param lines sequence-like of strings
+         \param cmd   input command
+         \return lines
+         */
         template <typename SEQUENCE,typename COMMAND>
         static SEQUENCE & AppendTo( SEQUENCE &lines, const COMMAND & cmd)
         {
-            ProcInput inp( cmd );
-            String    line;
+            InputProcess inp( cmd );
+            String       line;
             while(inp.gets(line)) lines << line;
             return lines;
         }
 
         //! redirect to another stream
+        /**
+         \param fp output stream
+         \param cmd input command
+         \return fp
+         */
         template <typename COMMAND>
         static OutputStream & SendTo(OutputStream &fp, const COMMAND &cmd)
         {
-            ProcInput inp( cmd );
-            char      chr = 0;
+            InputProcess inp( cmd );
+            char         chr = 0;
             while(inp.query(chr)) fp << chr;
 			fp.flush();
             return fp;
@@ -88,7 +98,7 @@ namespace Yttrium
         IO::Chars buffer; //!< auxiliary I/O buffer to unread chars
 
     private:
-        Y_Disable_Copy_And_Assign(ProcInput);
+        Y_Disable_Copy_And_Assign(InputProcess); //!< discarding
     };
 
 }
