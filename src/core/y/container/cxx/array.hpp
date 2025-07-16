@@ -39,6 +39,14 @@ namespace Yttrium
         //
         //______________________________________________________________________
 
+        //! setup with default value
+        /**
+         \param num number of created object
+         */
+        inline explicit CxxArray(const size_t num) : code( new Code(num) )
+        {
+        }
+
         //! setup with same value
         /**
          \param num number of created object
@@ -78,15 +86,23 @@ namespace Yttrium
         public:
             using Memory::SchoolOf<T>::entry;
 
+            //! setup \param count default objects
+            inline Code(const size_t count) :
+            Object(),
+            Memory::SchoolOf<T>(count),
+            Memory::Operating<T>(entry,count)
+            {
+            }
+
             //! setup
             /**
-             \param num from constructor
+             \param count from constructor
              \param arg from constructor
              */
-            inline Code(const size_t num, ConstType &arg) :
+            inline Code(const size_t count, ConstType &arg) :
             Object(),
-            Memory::SchoolOf<T>(num),
-            Memory::Operating<T>(CopyOf,arg,entry,num)
+            Memory::SchoolOf<T>(count),
+            Memory::Operating<T>(CopyOf,arg,entry,count)
             {
             }
 

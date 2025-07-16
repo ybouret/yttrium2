@@ -91,6 +91,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(stream_input_file);
     Y_UTEST(stream_output_file);
     Y_UTEST(stream_gets);
+    Y_UTEST(stream_proc);
 
 
     Y_UTEST(sorting_heap);

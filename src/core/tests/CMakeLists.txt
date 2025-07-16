@@ -129,6 +129,7 @@ Y_UTEST(stream:queue)
 Y_UTEST(stream:input:file)
 Y_UTEST(stream:output:file)
 Y_UTEST(stream:gets)
+Y_UTEST(stream:proc)
 
 #sort
 Y_UTEST(sorting:heap)
