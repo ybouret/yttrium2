@@ -49,7 +49,7 @@ namespace Yttrium
 
         if(buffer->size>0)
         {
-            data = buffer.pullHead();
+            data = char(buffer.pullHead());
             return true;
         }
         else

@@ -43,7 +43,7 @@ namespace Yttrium
         if (!::DeleteFile(path())) return false;
         return true;
 #endif
-        throw Specific::Exception(CallSign, "TryRemove not implemented");
+		// throw Specific::Exception(CallSign, "TryRemove not implemented");
     }
 
 
@@ -165,7 +165,7 @@ namespace Yttrium
 
 
 #if defined(Y_WIN)
-#include "y/ptr/auto.hpp"
+#include "y/pointer/auto.hpp"
 
 namespace Yttrium
 {
@@ -179,20 +179,20 @@ namespace Yttrium
         hFind(INVALID_HANDLE_VALUE),
         ready(TRUE)
         {
-            Y_GIANT_LOCK();
+            Y_Giant_Lock();
 			const String wDirName = LocalFS::MakeWin32Path(dirName);
             memset(&fData, 0, sizeof(fData));
             hFind = ::FindFirstFile(wDirName(), &fData);
             if (INVALID_HANDLE_VALUE == hFind)
             {
-                throw Win32::Exception(::GetLastError(), "FindFirstFile(%s)", dirName());
+                throw Windows::Exception(::GetLastError(), "FindFirstFile(%s)", dirName());
             }
 
         }
 
         virtual ~LocalScanner() noexcept
         {
-            Y_GIANT_LOCK();
+			Y_Giant_Lock();
             ::FindClose(hFind);
             hFind = INVALID_HANDLE_VALUE;
             memset(&fData, 0, sizeof(fData));
@@ -203,11 +203,11 @@ namespace Yttrium
         int             ready;
 
     private:
-        Y_DISABLE_COPY_AND_ASSIGN(LocalScanner);
+        Y_Disable_Copy_And_Assign(LocalScanner);
 
         virtual VFS::Entry *get()
         {
-            Y_GIANT_LOCK();
+			Y_Giant_Lock();
             if (ready)
             {
 				const char * const cFileName = fData.cFileName;
@@ -223,7 +223,7 @@ namespace Yttrium
 
     VFS::EntryType LocalFS:: findEntryType(const String &path, bool &link) const
     {
-		Y_GIANT_LOCK();
+		Y_Giant_Lock();
 		link = false;
 		const DWORD res = ::GetFileAttributes(path.c_str());
 		if (INVALID_FILE_ATTRIBUTES == res)
@@ -295,12 +295,12 @@ namespace Yttrium
                 default:
                     break;
             }
-            throw Win32::Exception(err,"CreateDirectory('%s')", dirName.c_str() );
+            throw Windows::Exception(err,"CreateDirectory('%s')", dirName.c_str() );
         }
         return;
 #endif
 
-        throw Specific::Exception("makeDirectory", "Not Implemented");
+        //throw Specific::Exception("makeDirectory", "Not Implemented");
     }
 
     bool LocalFS:: tryEraseEmpty(const String &dirName)
@@ -317,7 +317,7 @@ namespace Yttrium
         return true;
 #endif
 
-        throw Specific::Exception("tryEraseEmpty", "Not Implemented");
+       // throw Specific::Exception("tryEraseEmpty", "Not Implemented");
 
     }
 

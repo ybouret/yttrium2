@@ -127,7 +127,7 @@ namespace Yttrium
                     Parsing::FPoint(sg,ip, fp, xp, text, size);
 
                     const T ten(10);
-                    const T tenth(0.1);
+                    const T tenth(0.1f);
 
                     T res = 0;
                     {

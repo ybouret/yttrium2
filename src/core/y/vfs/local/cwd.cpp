@@ -47,13 +47,13 @@ namespace Yttrium
 #if defined(Y_WIN)
         Y_Giant_Lock();
         const DWORD buflen = ::GetCurrentDirectory(0, NULL);
-        if (buflen <= 0) throw Win32::Exception(::GetLastError(), fn);
+        if (buflen <= 0) throw Windows::Exception(::GetLastError(), fn);
         CxxArray<char> buffer(buflen,0);
         const DWORD result = ::GetCurrentDirectory(buflen,&buffer[1]);
         if (result != buflen-1)
         {
             const DWORD err = ::GetLastError();
-            throw Win32::Exception(err, "%s lengths mismatch!", fn);
+            throw Windows::Exception(err, "%s lengths mismatch!", fn);
         }
         return String(&buffer[1], result);
 #endif
@@ -79,7 +79,7 @@ namespace Yttrium
         if( ! ::SetCurrentDirectory(path) )
         {
             const DWORD err = ::GetLastError();
-            throw Win32::Exception(err, "SetCurrentDirectory(%s)", path);
+            throw Windows::Exception(err, "SetCurrentDirectory(%s)", path);
         }
 #endif
 
