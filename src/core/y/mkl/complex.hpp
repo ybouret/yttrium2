@@ -48,13 +48,13 @@ namespace Yttrium
         //
         //______________________________________________________________________
         inline Complex()                     noexcept : re(0), im(0)       {} //!< zero
-        inline Complex(const T x)            noexcept : re(x), im(0)       {} //!< from scalar
-        inline Complex(const T x, const T y) noexcept : re(x), im(y)       {} //!< from scalars
-        inline Complex(const Complex &z)     noexcept : re(z.re), im(z.im) {} //!< from complex
+        inline Complex(const T x)            noexcept : re(x), im(0)       {} //!< from scalar \param x re
+        inline Complex(const T x, const T y) noexcept : re(x), im(y)       {} //!< from scalars \param x re \param y im
+        inline Complex(const Complex &z)     noexcept : re(z.re), im(z.im) {} //!< from complex \param z complex
         inline ~Complex()                    noexcept                      {} //!< cleanup
 
-        inline Complex &operator=(const Complex z) noexcept { re=z.re; im=z.im; return *this; } //!< assign complex
-        inline Complex &operator=(const T       x) noexcept { re=x;    im=0;    return *this; } //!< assign scalar
+        inline Complex &operator=(const Complex z) noexcept { re=z.re; im=z.im; return *this; } //!< assign \param z complex \return *this
+        inline Complex &operator=(const T       x) noexcept { re=x;    im=0;    return *this; } //!< assign \param x scalar  \return *this
 
         //______________________________________________________________________
         //
@@ -63,8 +63,8 @@ namespace Yttrium
         //
         //______________________________________________________________________
 
-        //! no-throw exchange
-        inline void xch( Complex &z ) noexcept { Swap(re,z.re); Swap(im,z.im); }
+        //! no-throw exchange \param z complex \return *this*
+        inline Complex & xch( Complex &z ) noexcept { Swap(re,z.re); Swap(im,z.im); return *this; }
 
         //! display
         friend std::ostream & operator<<(std::ostream &os, const Complex &z)
@@ -84,26 +84,26 @@ namespace Yttrium
         //
         //______________________________________________________________________
 
-        //! unary plus
+        //! unary plus \return *this
         inline Complex operator+() const noexcept { return Complex(re,im); }
 
-        //! z+z
+        //! \param lhs complex \param rhs complex \return lhs+rhs
         friend inline Complex operator+(const Complex &lhs, const Complex &rhs) noexcept
         { return Complex(lhs.re+rhs.re,lhs.im+rhs.im); }
 
-        //! z+x
+        //! \param lhs complex \param rhs scalar \return lhs+rhs
         friend inline Complex operator+(const Complex &lhs, const T rhs) noexcept
         { return Complex(lhs.re+rhs,lhs.im); }
 
-        //! x+z
+        //! \param lhs scalar \param rhs complex \return lhs+rhs
         friend inline Complex operator+(const T  lhs, const Complex &rhs) noexcept
         { return Complex(lhs+rhs.re,rhs.im); }
 
-        //! += z
+        //! \param z complex \return *this + z
         inline Complex & operator+=(const Complex &z) noexcept
         { re += z.re; im += z.im; return *this; }
 
-        //! += x
+        //! \param x scalar \return *this + x
         inline Complex & operator+=(const T x) noexcept
         { re += x; return *this; }
 
@@ -116,7 +116,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
 
-        //! unary plus
+        //! unary minus \return - (*this)
         inline Complex operator-() const noexcept { return Complex(-re,-im); }
 
         //! z-z

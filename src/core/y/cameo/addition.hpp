@@ -13,11 +13,19 @@ namespace Yttrium
     namespace Cameo
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Scalar/Vectorial summator selection
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         struct SummatorFor
         {
-            static const bool IsScalar = MKL::IsScalar<T>::Value;
-            typedef typename Pick<IsScalar, ScalarSummator<T>, VectorialSummator<T> >::Type Type;
+            static const bool IsScalar = MKL::IsScalar<T>::Value;                                 //!< alias
+            typedef typename Pick<IsScalar, ScalarSummator<T>, VectorialSummator<T> >::Type Type; //!< alias
         };
 
         //______________________________________________________________________

@@ -21,7 +21,7 @@ namespace Yttrium
             //! Knuth Shuffle for iterator
             /**
              \param ran Bits
-             \param a   original iterator
+             \param a   original iterator using a[0..n-1]
              \param n   number of iterators
              */
             template <typename ITERATOR> static inline
@@ -32,6 +32,11 @@ namespace Yttrium
                     Memory::Stealth::Swap(a[i],a[ran.leq(i)]);
             }
 
+            //! Knuth Shuffle for sequence with begin()/size()
+            /**
+             \param ran Bits
+             \param seq sequence with begin() and size() method
+             */
             template <typename SEQUENCE> static inline
             void Cxx(Bits &ran, SEQUENCE & seq) noexcept
             {

@@ -14,25 +14,44 @@ namespace Yttrium
 
     namespace Cameo
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Choose summator for scalar type
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class ScalarSummator : public Select<T,DirectSummator<T>,AProxySummator<T>,FPointSummator<T> >::API
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
             typedef typename Select<T,DirectSummator<T>,AProxySummator<T>,FPointSummator<T> >::API SummatorType; //!< alias
 
-            inline explicit ScalarSummator() : SummatorType()
-            {
-            }
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
 
+            //! default constructor
+            inline explicit ScalarSummator() : SummatorType() { }
+
+            //! optional for FPointSummator \param n minimal capacity
             inline explicit ScalarSummator(const size_t n) : SummatorType(n) {}
 
-            inline virtual ~ScalarSummator() noexcept
-            {
-
-            }
+            //! cleanup
+            inline virtual ~ScalarSummator() noexcept  {}
 
         private:
-            Y_Disable_Copy_And_Assign(ScalarSummator);
+            Y_Disable_Copy_And_Assign(ScalarSummator); //!< discaring
         };
     }
 

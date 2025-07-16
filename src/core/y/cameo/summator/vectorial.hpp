@@ -13,32 +13,62 @@ namespace Yttrium
     namespace Cameo
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! multiple scalar summators
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class VectorialSummator : public Summator<T>
         {
         public:
-            Y_Args_Declare(T,Type);
-            typedef typename MKL::ScalarFor<T>::Type ScalarType;
-            typedef ScalarSummator<ScalarType>       CoordSummator;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            Y_Args_Declare(T,Type);                                 //!< aliases
+            typedef typename MKL::ScalarFor<T>::Type ScalarType;    //!< alias
+            typedef ScalarSummator<ScalarType>       CoordSummator; //!< alias
+            static const size_t DIMENSIONS = MutableType::DIMENSIONS; //!< alias
 
-            static const size_t DIMENSIONS = MutableType::DIMENSIONS;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
 
+            //! default
             inline explicit VectorialSummator() :
             Summator<T>(),
             summators(DIMENSIONS),
             operating(summators.entry,DIMENSIONS)
             {}
 
-            inline virtual ~VectorialSummator() noexcept
-            {
-            }
-
+            //! for FPointSummators \param n minimal capacity
             inline explicit VectorialSummator(const size_t n) :
             Summator<T>(),
             summators(DIMENSIONS),
             operating(CopyOf,n,summators.entry,DIMENSIONS)
             {}
 
+            //! cleanup
+            inline virtual ~VectorialSummator() noexcept
+            {
+            }
+
+
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             inline virtual void ldz() noexcept
             {
                 for(size_t i=0;i<DIMENSIONS;++i) summators.entry[i].ldz();
@@ -65,9 +95,10 @@ namespace Yttrium
 
 
         private:
-            Y_Disable_Copy_And_Assign(VectorialSummator);
-            Memory::SchoolOf<CoordSummator>   summators;
-            Memory::Operating<CoordSummator>  operating;
+            Y_Disable_Copy_And_Assign(VectorialSummator); //!< discarding
+            Memory::SchoolOf<CoordSummator>   summators;  //!< workspace for summators
+            Memory::Operating<CoordSummator>  operating;  //!< I/O for summators
+            
             inline virtual void add(ParamType value)
             {
                 try {
