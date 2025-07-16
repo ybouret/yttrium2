@@ -4,17 +4,21 @@
 #ifndef Y_Cameo_Addition_Included
 #define Y_Cameo_Addition_Included 1
 
-#include "y/cameo/selector.hpp"
-#include "y/cameo/summator/direct.hpp"
-#include "y/cameo/summator/aproxy.hpp"
-#include "y/cameo/summator/fpoint.hpp"
-
+#include "y/cameo/summator/vectorial.hpp"
+#include "y/mkl/api/scalar.hpp"
 
 namespace Yttrium
 {
 
     namespace Cameo
     {
+
+        template <typename T>
+        struct SummatorFor
+        {
+            static const bool IsScalar = MKL::IsScalar<T>::Value;
+            typedef typename Pick<IsScalar, ScalarSummator<T>, VectorialSummator<T> >::Type Type;
+        };
 
         //______________________________________________________________________
         //
@@ -25,7 +29,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename T>
-        class Addition : public Select<T,DirectSummator<T>,AProxySummator<T>,FPointSummator<T> >::API
+        class Addition : public SummatorFor<T>::Type
         {
         public:
             //__________________________________________________________________
@@ -34,7 +38,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            typedef typename Select<T,DirectSummator<T>,AProxySummator<T>,FPointSummator<T> >::API SummatorType; //!< alias
+            typedef typename SummatorFor<T>::Type SummatorType; //!< alias
 
             //__________________________________________________________________
             //
