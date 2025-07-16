@@ -63,7 +63,8 @@ namespace Yttrium
                      \param rhs second arg
                      \return decreasing comparison
                      */
-                    inline SignType operator()(const Unit &lhs, const Unit &rhs) {
+                    inline SignType operator()(const Unit &lhs, const Unit &rhs)
+                    {
                         return Sign::Of(rhs.rank,lhs.rank);
                     }
                 };
@@ -158,6 +159,7 @@ namespace Yttrium
             inline virtual void add(ParamType x)
             {
                 acc.push(x);
+                std::cerr << "[+] " << x << " -> " << acc << std::endl;
             }
 
         };

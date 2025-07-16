@@ -17,9 +17,10 @@ namespace Yttrium
     template <typename T>
     struct Gen
     {
+        
         static inline T New(Random::Bits &ran)
         {
-            return ran.symm<T>();
+            return ran.to<T>();
         }
     };
 
