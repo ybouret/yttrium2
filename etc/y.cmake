@@ -225,7 +225,9 @@ function(Y_CreateTest THE_TEST)
 	Y_MESSAGE("Create Test <${THE_TEST}>")
 	# top-level sources
 	set(SRC main.cpp)
-	file( GLOB src "test-*.cpp")
+	file( GLOB src "test-*.cpp" "*.hpp")
+        #cmake_print_variables(src)
+	#message( FATAL_ERROR "stop")
 	list( APPEND SRC ${src})
 
 	# sub-dir sources

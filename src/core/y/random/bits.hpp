@@ -16,187 +16,187 @@
 
 namespace Yttrium
 {
-	namespace Random
-	{
+    namespace Random
+    {
 
 
-		template <typename T> struct Alea;
+        template <typename T> struct Alea;
 
-		//! select T for XReal<T>
-		template <typename T> struct Alea< XReal<T> > { typedef T Type; /*!< alias */ };
+        //! select T for XReal<T>
+        template <typename T> struct Alea< XReal<T> > { typedef T Type; /*!< alias */ };
 
-		//! select T for real T
-		template <typename T> struct Alea { typedef T Type; /*!< alias */ };
-
-
-		//______________________________________________________________________
-		//
-		//
-		//
-		//! interface to random bits
-		//
-		//
-		//______________________________________________________________________
-		class Bits : public CountedObject, public Identifiable
-		{
-		public:
-			//__________________________________________________________________
-			//
-			//
-			// Definitions
-			//
-			//__________________________________________________________________
-			class               Metrics;
-			typedef long double Real;     //!< alias
-
-			//! \return list of usable floating point types
-			typedef TL6(float, double, long double, XReal<float>, XReal<double>, XReal<long double>) FPList;
-
-		protected:
-			//! setup \param highest32 higest reached 32-bits value
-			explicit Bits(const uint32_t highest32) noexcept;
-
-		public:
-			virtual ~Bits() noexcept; //!< cleanup
-			//__________________________________________________________________
-			//
-			//
-			//  Interface
-			//
-			//__________________________________________________________________
-			virtual uint32_t next32() noexcept = 0; //!< \return next 32-bits value
-
-			//__________________________________________________________________
-			//
-			//
-			// Methods
-			//
-			//__________________________________________________________________
-			Real             real32() noexcept;                  //!< convert uint32_t \return floating point in ]0:1[
-			Real             symm32() noexcept;                  //!< convert uint32_t \return floting point int ]-1:1[
-			uint64_t         fill64(const size_t nbit) noexcept; //!< \param nbit number of bits \return truncated uint64_t with nbit
-			bool             choice() noexcept;                  //!< \return equiprobable choice
-
-			//! \return any floating point in ]0:1[
-			template <typename T> inline T toR() noexcept
-			{
-				const T res = T(real32());
-				return res;
-			}
-
-			//! \return any unsigned integral value
-			template <typename T> inline T toU() noexcept
-			{
-				return static_cast<T>(fill64(sizeof(T) * 8));
-			}
-
-			//! \return any signed integral value
-			template <typename T> inline T toS() noexcept
-			{
-				const T u = static_cast<T>(fill64(sizeof(T) * 8 - 1));
-				return choice() ? -u : u;
-			}
-
-			//! \return real in ]-1:1[
-			template <typename T> inline T symm() noexcept
-			{
-				return static_cast<T>(symm32());
-			}
+        //! select T for real T
+        template <typename T> struct Alea { typedef T Type; /*!< alias */ };
 
 
-		private:
-			//! Intrinsic Type selection
-			enum IntrinsicType
-			{
-				Floating, //!< float,...,XReal<long double>>
-				Integral  //!< char,...,uint64_t
-			};
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! interface to random bits
+        //
+        //
+        //______________________________________________________________________
+        class Bits : public CountedObject, public Identifiable
+        {
+        public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            class               Metrics;
+            typedef long double Real;     //!< alias
 
-		public:
+            //! \return list of usable floating point types
+            typedef TL6(float, double, long double, XReal<float>, XReal<double>, XReal<long double>) FPList;
 
-			//! \return return selected random type
-			template <typename T>
-			T to() noexcept
-			{
-				static const typename Pick<TL::IndexOf<FPList, T>::Value >= 0, IntToType<Floating>, IntToType<Integral> >::Type Choice = {};
-				return intrinsic<T>(Choice);
-			}
+        protected:
+            //! setup \param highest32 higest reached 32-bits value
+            explicit Bits(const uint32_t highest32) noexcept;
 
+        public:
+            virtual ~Bits() noexcept; //!< cleanup
+            //__________________________________________________________________
+            //
+            //
+            //  Interface
+            //
+            //__________________________________________________________________
+            virtual uint32_t next32() noexcept = 0; //!< \return next 32-bits value
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            Real             real32() noexcept;                  //!< convert uint32_t \return floating point in ]0:1[
+            Real             symm32() noexcept;                  //!< convert uint32_t \return floting point int ]-1:1[
+            uint64_t         fill64(const size_t nbit) noexcept; //!< \param nbit number of bits \return truncated uint64_t with nbit
+            bool             choice() noexcept;                  //!< \return equiprobable choice
 
-			//! \param nbit bit count \return unsigned with exact bit count
-			template <typename T>
-			T to(const size_t nbit) noexcept
-			{
-				assert(nbit <= sizeof(T) * 8);
-				assert(!IsSigned<T>::Value);
-				static const T one = 1;
-				if (nbit <= 0) return 0;
-				T res = one;
-				for (size_t i = nbit - 1; i > 0; --i)
-				{
-					res <<= 1;
-					if (choice()) res |= one;
-				}
-				return res;
-			}
+            //! \return any floating point in ]0:1[
+            template <typename T> inline T toR() noexcept
+            {
+                const T res = T(real32());
+                return res;
+            }
 
-			//!  \param n >= 0 \return uniform in [0:n]
-			template <typename T> inline
-				T leq(const T n) noexcept
-			{
-				static const Real half(0.5);
-				return static_cast<T>(std::floor(Real(n) * real32() + half));
-			}
+            //! \return any unsigned integral value
+            template <typename T> inline T toU() noexcept
+            {
+                return static_cast<T>(fill64(sizeof(T) * 8));
+            }
 
-			//! \param n > 0 \return uniform in [0:n-1]
-			template <typename T> inline
-				T lt(const T n) noexcept
-			{
-				assert(n > 0);
-				return leq(n - 1);
-			}
+            //! \return any signed integral value
+            template <typename T> inline T toS() noexcept
+            {
+                const T u = static_cast<T>(fill64(sizeof(T) * 8 - 1));
+                return choice() ? -u : u;
+            }
 
-			//! uniform in integral segement
-			/**
-			 \param a lower bound
-			 \param b upper bound
-			 \return uniform([a:b])
-			 */
-			template <typename T> inline
-				T in(const T a, const T b) noexcept
-			{
-				assert(b >= a);
-				return a + leq(b - a);
-			}
-
-
-		private:
-			Y_Disable_Copy_And_Assign(Bits); //!< discarding
-			Metrics * const metrics;         //!< internal metrics
-
-			//! \return random floating point
-			template <typename T> inline T intrinsic(const IntToType<Floating> &) noexcept
-			{
-				return toR<T>();
-			}
-
-			//! \return random integral point
-			template <typename T> inline T intrinsic(const IntToType<Integral> &) noexcept
-			{
-				static const IntToType< IsSigned<T>::Value > Choice = {};
-				return to<T>(Choice);
-			}
-
-			template <typename T> inline T to(const IntToType<false> &) noexcept { return toU<T>(); } //!< \return unsigned
-			template <typename T> inline T to(const IntToType<true>  &) noexcept { return toS<T>(); } //!< \return signed
-
-		};
-
-		typedef ArcPtr<Bits> SharedBits; //!< alias
+            //! \return real in ]-1:1[
+            template <typename T> inline T symm() noexcept
+            {
+                return static_cast<T>(symm32());
+            }
 
 
-	}
+        private:
+            //! Intrinsic Type selection
+            enum IntrinsicType
+            {
+                Floating, //!< float,...,XReal<long double>>
+                Integral  //!< char,...,uint64_t
+            };
+
+        public:
+
+            //! \return return selected random type
+            template <typename T>
+            T to() noexcept
+            {
+                static const typename Pick<TL::IndexOf<FPList, T>::Value >= 0, IntToType<Floating>, IntToType<Integral> >::Type Choice = {};
+                return intrinsic<T>(Choice);
+            }
+
+
+
+            //! \param nbit bit count \return unsigned with exact bit count
+            template <typename T>
+            T to(const size_t nbit) noexcept
+            {
+                assert(nbit <= sizeof(T) * 8);
+                assert(!IsSigned<T>::Value);
+                static const T one = 1;
+                if (nbit <= 0) return 0;
+                T res = one;
+                for (size_t i = nbit - 1; i > 0; --i)
+                {
+                    res <<= 1;
+                    if (choice()) res |= one;
+                }
+                return res;
+            }
+
+            //!  \param n >= 0 \return uniform in [0:n]
+            template <typename T> inline
+            T leq(const T n) noexcept
+            {
+                static const Real half(0.5);
+                return static_cast<T>(std::floor(Real(n) * real32() + half));
+            }
+
+            //! \param n > 0 \return uniform in [0:n-1]
+            template <typename T> inline
+            T lt(const T n) noexcept
+            {
+                assert(n > 0);
+                return leq(n - 1);
+            }
+
+            //! uniform in integral segement
+            /**
+             \param a lower bound
+             \param b upper bound
+             \return uniform([a:b])
+             */
+            template <typename T> inline
+            T in(const T a, const T b) noexcept
+            {
+                assert(b >= a);
+                return a + leq(b - a);
+            }
+
+
+        private:
+            Y_Disable_Copy_And_Assign(Bits); //!< discarding
+            Metrics * const metrics;         //!< internal metrics
+
+            //! \return random floating point
+            template <typename T> inline T intrinsic(const IntToType<Floating> &) noexcept
+            {
+                return toR<T>();
+            }
+
+            //! \return random integral point
+            template <typename T> inline T intrinsic(const IntToType<Integral> &) noexcept
+            {
+                static const IntToType< IsSigned<T>::Value > Choice = {};
+                return to<T>(Choice);
+            }
+
+            template <typename T> inline T to(const IntToType<false> &) noexcept { return toU<T>(); } //!< \return unsigned
+            template <typename T> inline T to(const IntToType<true>  &) noexcept { return toS<T>(); } //!< \return signed
+
+        };
+
+        typedef ArcPtr<Bits> SharedBits; //!< alias
+
+
+    }
 }
 
 #endif

@@ -59,6 +59,28 @@ namespace Yttrium
         //______________________________________________________________________
         //
         //
+        // Pseudo-API
+        //
+        //______________________________________________________________________
+
+        //! \return DIMENSIONS
+        inline size_t size()            const noexcept { return DIMENSIONS; }
+
+        //! param indx [1..2] \return re or im
+        inline T &    operator[](size_t indx) noexcept {
+            assert(indx>=1); assert(indx<=2);
+            return *(&re + --indx);
+        }
+
+        //! param indx [1..2] \return re or im
+        inline const T &    operator[](size_t indx) const noexcept {
+            assert(indx>=1); assert(indx<=2);
+            return *(&re + --indx);
+        }
+
+        //______________________________________________________________________
+        //
+        //
         // Methods
         //
         //______________________________________________________________________

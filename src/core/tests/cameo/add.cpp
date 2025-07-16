@@ -1,6 +1,7 @@
 #include "y/cameo/addition.hpp"
 #include "y/mkl/complex.hpp"
 #include "y/mkl/xreal.hpp"
+#include "../main.hpp"
 #include "y/utest/run.hpp"
 
 
@@ -9,6 +10,15 @@ using namespace Yttrium;
 
 Y_UTEST(cameo_add)
 {
+
+    Random::MT19937 ran;
+
+    {
+        std::cerr << Gen< Complex<float> >:: New(ran) << std::endl;
+        std::cerr << Gen< Complex< XReal<long double> > >:: New(ran) << std::endl;
+    }
+
+    return 0;
 
     {
         Cameo::DirectSummator<apz> zsum;
