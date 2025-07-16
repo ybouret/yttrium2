@@ -91,6 +91,8 @@ Y_CreateLibrary(y
     y/functor
     y/dft
     y/dft/fmt
+    y/vfs
+    y/vfs/local
 )
 
 add_subdirectory(tests)
