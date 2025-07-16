@@ -7,6 +7,7 @@
 
 #include "y/vfs/vfs.hpp"
 #include "y/singleton.hpp"
+#include "y/concurrent/life-time.hpp"
 
 namespace Yttrium
 {
@@ -19,7 +20,7 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    class LocalFS : public Singleton<LocalFS>, public VFS
+    class LocalFS : public Singleton<LocalFS,ClassLockPolicy>, public VFS
     {
     public:
         //______________________________________________________________________
@@ -29,7 +30,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         static const char * const      CallSign;                              //!< "LocalFS"
-        static const AtExit::Longevity LifeTime = AtExit::MaximumLongevity-9; //!< alias
+        static const Longevity         LifeTime = 10; //!< alias
 
         //______________________________________________________________________
         //
@@ -47,8 +48,8 @@ namespace Yttrium
         static  String    MakeWin32Path(const String &dirName);                      //!< needed for Win32
 
     private:
-        Y_DISABLE_COPY_AND_ASSIGN(LocalFS);
-        friend class Singleton<LocalFS>;
+        Y_Disable_Copy_And_Assign(LocalFS);
+        friend class Singleton<LocalFS,ClassLockPolicy>;
         explicit LocalFS() noexcept;
         virtual ~LocalFS() noexcept;
 

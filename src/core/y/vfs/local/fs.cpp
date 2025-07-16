@@ -20,7 +20,6 @@ namespace Yttrium
     }
 
     LocalFS::LocalFS() noexcept :
-    Singleton<LocalFS>(),
     VFS()
     {
     }
@@ -44,7 +43,7 @@ namespace Yttrium
 
 }
 
-#include "y/container/algo/trim.hpp"
+#include "y/container/algorithm/trim.hpp"
 
 namespace Yttrium
 {
@@ -81,7 +80,7 @@ namespace Yttrium
 
             virtual ~LocalScanner() noexcept
             {
-                Y_GIANT_LOCK();
+                Y_Giant_Lock();
                 assert(0 != handle);
                 closedir(handle);
                 Coerce(handle) = 0;
@@ -90,11 +89,11 @@ namespace Yttrium
             DIR * const handle;
 
         private:
-            Y_DISABLE_COPY_AND_ASSIGN(LocalScanner);
+            Y_Disable_Copy_And_Assign(LocalScanner);
 
             static inline DIR *Setup(const String &dirName)
             {
-                Y_GIANT_LOCK();
+                Y_Giant_Lock();
                 DIR *d = opendir(dirName());
                 if (!d)
                 {
@@ -105,8 +104,8 @@ namespace Yttrium
 
             virtual VFS::Entry *get()
             {
-                Y_GIANT_LOCK();
-                assert(0 != dir);
+                Y_Giant_Lock();
+                assert(0 != handle);
                 const dirent * const dp = readdir(handle);
                 if (!dp) return 0;
                 const String path = dir + dp->d_name;
@@ -117,13 +116,13 @@ namespace Yttrium
 
     VFS::EntryType LocalFS:: findEntryType(const String &path, bool &link) const
     {
-        Y_GIANT_LOCK();
+        Y_Giant_Lock();
         assert(false==link);
 
         struct stat buf;
         mode_t &    m = buf.st_mode;
 
-        Y_STATIC_ZVAR(buf);
+        Y_Memory_VZero(buf);
         if(0!=lstat(path.c_str(),&buf))
         {
             return IsUnk;
@@ -133,7 +132,7 @@ namespace Yttrium
         {
             //std::cerr << "->link" << std::endl;
             link = true;
-            Y_STATIC_ZVAR(buf);
+            Y_Memory_VZero(buf);
             if(0!=stat(path.c_str(),&buf))
             {
                 return IsUnk;
@@ -260,7 +259,7 @@ namespace Yttrium
 
     void      LocalFS:: makeDirectory(const String &dirName, const bool mayExist)
     {
-        Y_GIANT_LOCK();
+        Y_Giant_Lock();
 
 #if defined(Y_BSD)
         if( mkdir( dirName.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) < 0)
@@ -299,7 +298,7 @@ namespace Yttrium
 
     bool LocalFS:: tryEraseEmpty(const String &dirName)
     {
-        Y_GIANT_LOCK();
+        Y_Giant_Lock();
 
 #if defined(Y_BSD)
         if( rmdir( dirName.c_str() ) < 0 ) return false;

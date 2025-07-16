@@ -39,7 +39,7 @@ namespace Yttrium
             const CH * const last;
 
         private:
-            Y_DISABLE_COPY_AND_ASSIGN(Code);
+            Y_Disable_Copy_And_Assign(Code);
             static inline bool in(const CH * const sep, const size_t num, const CH c) noexcept
             {
                 assert(Good(sep,num));
