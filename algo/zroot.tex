@@ -11,6 +11,7 @@
 
 \begin{document}
 
+\section{Regularizing}
 We have $f_0$ and $f_1$ with opposite signs.
 We compute $f_{1/2}$.
 We define $h(u) = f(u) e^{\alpha u}$ such that
@@ -35,12 +36,22 @@ $$
 $$
 
 \begin{equation}
-	\Delta' = f_{1/2}^2 - (f_0f_1) > 0
+	\Delta' = f_{1/2}^2 - (f_0f_1) > 0, \;\; \vert \Delta' \vert > \vert f_{1/2} \vert
 \end{equation}
 
 \begin{equation}
-	X = \dfrac{ f_{1/2} \pm \sqrt{\Delta'} }{f_1}
+	X_\pm = \dfrac{ f_{1/2} \pm \sqrt{\Delta'} }{f_1} = \dfrac{f_0}{f_{1/2} \mp \sqrt{\Delta'}}
 \end{equation}
+There is always two solution with opposite signs.
+ 
+\section{Opposite $f_0$ and $f_{1/2}$ $\implies$ same sign for $f_1$ and $f_{1/2}$}
+ 
+ $$
+ 	h(u) \approx h_0 + 2 u (h_{1/2}-h_0) \implies u = \dfrac{1}{2} \dfrac{h_0}{h_0-h_{1/2}} \in ]0:\frac{1}{2}[
+ $$
+ 
+ \section{Same sign for $f_0$ and $f_{1/2}$ $\implies$ opposite sign for $f_1$ and $f_{1/2}$}
+
  
   
   
