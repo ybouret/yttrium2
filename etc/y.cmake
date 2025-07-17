@@ -207,7 +207,7 @@ function(Y_CreateLibrary THE_LIB)
 endfunction()
 
 function(Y_LinkLibraries THE_EXE)
-	set(THE_LIBS "y")
+	set(THE_LIBS "")
 
 	# forward libraries
 	list( APPEND THE_LIBS ${ARGN} )
@@ -218,6 +218,8 @@ function(Y_LinkLibraries THE_EXE)
 		list( APPEND THE_LIBS "rt" )
 	endif()
 	#cmake_print_variables(THE_LIBS)
+
+	list(APPEND THE_LIBS "y")
 	target_link_libraries(${THE_EXE} ${THE_LIBS})
 endfunction()
 
