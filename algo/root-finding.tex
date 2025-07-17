@@ -11,6 +11,16 @@
 
 \begin{document}
 
+$a$ is almost equal to $b$ iff
+\begin{equation}
+	\dfrac{\vert a - b \vert}{ \max(\theta,\min(\vert a \vert,\vert b \vert)) } \leq \epsilon
+\end{equation}
+with a small $\theta$.
+When $b=0$, 
+\begin{equation}
+	\dfrac{\vert a \vert }{ \max(\theta,\vert a \vert) } \leq \epsilon
+\end{equation}
+
 The bisection methods divides by two the size of the interval at each iteration.
 The relative size of the interval after $n$ iterations is
 $$
