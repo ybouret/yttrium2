@@ -1,7 +1,8 @@
 #include "y/mkl/root/zbis.hpp"
 #include "y/utest/run.hpp"
 #include "y/stream/libc/output.hpp"
-#include "y/mkl/xreal.hpp"
+#include "y/mkl/numeric.hpp"
+#include <cfloat>
 
 using namespace Yttrium;
 using namespace MKL;
@@ -11,7 +12,8 @@ namespace
     static inline
     float F(float x)
     {
-        return 0.2f + 0.7f * cosf( x*x - 0.01f);
+        //return 0.2f + 0.7f * cosf( x*x - 0.01f);
+        return x;
     }
 
 
@@ -19,7 +21,7 @@ namespace
     inline void testZFind( )
     {
 
-        Triplet<T> x = { 0, 0, 2 };
+        Triplet<T> x = { -1, 0, 2 };
         Triplet<T> f = { F(x.a), 0, F(x.c) };
         ZFIND<T>   zfind; std::cerr << "[" << zfind.callSign() << "]" << std::endl;
         typename ZFIND<T>::Handle hx,hf;
@@ -45,6 +47,17 @@ namespace
     }
 }
 
+namespace {
+    template <typename T>
+    static inline
+    void showMaxIter(const char * const id)
+    {
+        std::cerr << std::setw(16) << id << " EPSILON = " << MKL::Numeric<T>::EPSILON << std::endl;
+    }
+
+#define SHOW_MAX_ITER(T) showMaxIter<T>(#T)
+}
+
 Y_UTEST(root_zfind)
 {
 
@@ -64,8 +77,11 @@ Y_UTEST(root_zfind)
     testZFind<double,ZBis>();
     testZFind<long double,ZBis>();
 
-    
 
+    SHOW_MAX_ITER(float);
+    SHOW_MAX_ITER(double);
+    SHOW_MAX_ITER(long double);
+    
 }
 Y_UDONE()
 

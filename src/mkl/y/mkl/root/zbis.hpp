@@ -19,12 +19,12 @@ namespace Yttrium
         {
         public:
             typedef typename ZFind<T>::FunctionType FunctionType;
-            
+
             explicit ZBis() noexcept;
             virtual ~ZBis() noexcept;
 
             virtual const char * callSign() const noexcept;
-            virtual void lookup(Triplet<T> &x, Triplet<T> &f, FunctionType &F);
+            virtual void         lookup(Triplet<T> &x, Triplet<T> &f, FunctionType &F);
 
         private:
             Y_Disable_Copy_And_Assign(ZBis);

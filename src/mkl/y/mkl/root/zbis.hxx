@@ -52,9 +52,9 @@ void ZBis<real_t>:: lookup(Triplet<real_t> &x, Triplet<real_t> &f, FunctionType 
     }
 
 
+    for(size_t i=0;i<1000;++i)
     {
-        //const real_t A = f.amplitude();
-        std::cerr << "@  x=" << x << "; f=" << f << std::endl;
+        //std::cerr << "@  x=" << x << "; f=" << f << std::endl;
 
 
         switch( Sign::Of( f.b = F(x.b=Half<real_t>::Of(x.a+x.c) ) ) )
@@ -72,9 +72,9 @@ void ZBis<real_t>:: lookup(Triplet<real_t> &x, Triplet<real_t> &f, FunctionType 
                 *hf.pos = f.b;
                 break;
         }
+        std::cerr << "width=" << Fabs<real_t>::Of(x.a-x.c) << " / A=" << f.amplitude() << std::endl;
+        //std::cerr << "-> x=" << x << "; f=" << f << std::endl;
 
-        std::cerr << "-> x=" << x << "; f=" << f << std::endl;
-        
 
     }
 
