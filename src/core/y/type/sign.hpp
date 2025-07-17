@@ -62,7 +62,49 @@ namespace Yttrium
             return Of(value,NeedCast);
         }
 
+        template <typename T> static inline
+        bool LTZ(const T &value)
+        {
+            static const IntToType<Core::NeedZeroCast<T>::Value> NeedCast = {};
+            return LTZ(value,NeedCast);
+        }
+
+        template <typename T> static inline
+        bool LEQZ(const T &value)
+        {
+            static const IntToType<Core::NeedZeroCast<T>::Value> NeedCast = {};
+            return LEQZ(value,NeedCast);
+        }
+
     private:
+        template <typename T> static inline
+        bool LTZ(const T &value, const IntToType<false> &)
+        {
+            return value<0;
+        }
+
+        template <typename T> static inline
+        bool LTZ(const T &value, const IntToType<true> &)
+        {
+            const T zero;
+            return value<zero;
+        }
+
+        template <typename T> static inline
+        bool LEQZ(const T &value, const IntToType<false> &)
+        {
+            return value<=0;
+        }
+
+        template <typename T> static inline
+        bool LEQZ(const T &value, const IntToType<true> &)
+        {
+            const T zero;
+            return value<=zero;
+        }
+
+
+
         template <typename T> static inline SignType Of(const T &value, const IntToType<false> &)
         {
             return value<0 ? Negative : (0<value ? Positive : __Zero__ );
@@ -70,7 +112,7 @@ namespace Yttrium
 
         template <typename T> static inline SignType Of(const T &value, const IntToType<true> &)
         {
-            const T zero(0);
+            const T zero;
             return value<zero ? Negative : (zero<value ? Positive : __Zero__ );
         }
 

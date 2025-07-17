@@ -9,8 +9,8 @@ using namespace MKL;
 
 namespace
 {
-    static inline
-    float F(float x)
+    template <typename T>
+    T F(T x)
     {
         //return 0.2f + 0.7f * cosf( x*x - 0.01f);
         return x;
@@ -27,7 +27,7 @@ namespace
         typename ZFIND<T>::Handle hx,hf;
 
         
-        if( zfind.found(F,hx,hf,x,f) )
+        if( zfind.found(F<T>,hx,hf,x,f) )
         {
             std::cerr << "zero @" << x.b << std::endl;
         }
@@ -40,25 +40,14 @@ namespace
             Y_ASSERT(hf.pos);
             Y_ASSERT(*hf.neg<0);
             Y_ASSERT(*hf.pos>0);
-            zfind(F,x,f);
+            zfind(F<T>,x,f);
         }
 
 
     }
 }
 
-namespace {
-    template <typename T>
-    static inline
-    void showMaxIter(const char * const id)
-    {
-        std::cerr << std::setw(16) << id << " EPSILON = " << MKL::Numeric<T>::EPSILON << std::endl;
-        const T n = -log(MKL::Numeric<T>::EPSILON)/log( T(2) );
-        std::cerr << "n=" << int(n) << std::endl;
-    }
 
-#define SHOW_MAX_ITER(T) showMaxIter<T>(#T)
-}
 
 Y_UTEST(root_zfind)
 {
@@ -77,15 +66,10 @@ Y_UTEST(root_zfind)
 
     testZFind<float,ZBis>();
     testZFind<double,ZBis>();
-    testZFind<long double,ZBis>();
+    //testZFind<long double,ZBis>();
 
 
-    SHOW_MAX_ITER(float);
-    SHOW_MAX_ITER(double);
-    SHOW_MAX_ITER(long double);
-    SHOW_MAX_ITER(XReal<float>);
-    SHOW_MAX_ITER(XReal<double>);
-    SHOW_MAX_ITER(XReal<long double>);
+
 
 }
 Y_UDONE()

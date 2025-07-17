@@ -7,8 +7,30 @@
 using namespace Yttrium;
 using namespace MKL;
 
+namespace
+{
+    template <typename T>
+    static inline
+    void showCoeff(const char * const id)
+    {
+        std::cerr << id << std::endl;
+        const T eps = Numeric<T>::EPSILON;
+        const T min = Numeric<T>::MIN;
+        std::cerr << "eps=" << eps << ", min=" << min << std::endl;
+
+    }
+
+#define SHOW_COEFF(T) showCoeff<T>( #T )
+
+}
+
 Y_UTEST(mkl_almost_equal)
 {
+
+    SHOW_COEFF(float);
+    SHOW_COEFF(double);
+    SHOW_COEFF(long double);
+
 
     if(argc>2)
     {

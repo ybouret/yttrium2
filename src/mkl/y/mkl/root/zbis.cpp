@@ -2,6 +2,8 @@
 #include "y/mkl/root/zbis.hpp"
 #include "y/mkl/xreal.hpp"
 #include "y/mkl/api/half.hpp"
+#include "y/mkl/api/almost-equal.hpp"
+#include "y/ascii/boolean.hpp"
 
 namespace Yttrium
 {
