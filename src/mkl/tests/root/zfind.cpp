@@ -53,6 +53,8 @@ namespace {
     void showMaxIter(const char * const id)
     {
         std::cerr << std::setw(16) << id << " EPSILON = " << MKL::Numeric<T>::EPSILON << std::endl;
+        const T n = -log(MKL::Numeric<T>::EPSILON)/log( T(2) );
+        std::cerr << "n=" << int(n) << std::endl;
     }
 
 #define SHOW_MAX_ITER(T) showMaxIter<T>(#T)
@@ -81,7 +83,10 @@ Y_UTEST(root_zfind)
     SHOW_MAX_ITER(float);
     SHOW_MAX_ITER(double);
     SHOW_MAX_ITER(long double);
-    
+    SHOW_MAX_ITER(XReal<float>);
+    SHOW_MAX_ITER(XReal<double>);
+    SHOW_MAX_ITER(XReal<long double>);
+
 }
 Y_UDONE()
 

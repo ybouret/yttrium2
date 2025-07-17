@@ -197,6 +197,7 @@ Y_UTEST(mkl:api)
 Y_UTEST(mkl:adaptor)
 Y_UTEST(mkl:triplet)
 Y_UTEST(mkl:v2d)
+Y_UTEST(mkl:almost_equal)
 
 #cameo
 Y_UTEST(cameo:add)

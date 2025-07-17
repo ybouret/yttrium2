@@ -150,6 +150,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(mkl_v2d);
     Y_UTEST(mkl_triplet);
     Y_UTEST(mkl_xreal);
+    Y_UTEST(mkl_almost_equal);
 
     Y_UTEST(cameo_add);
     Y_UTEST(cameo_mul);
