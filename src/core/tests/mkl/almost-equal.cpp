@@ -17,7 +17,7 @@ namespace
         const T eps = Numeric<T>::EPSILON;
         const T min = Numeric<T>::MIN;
         std::cerr << "eps=" << eps << ", min=" << min << std::endl;
-
+        std::cerr << "theta=" << min/eps << std::endl;
     }
 
 #define SHOW_COEFF(T) showCoeff<T>( #T )
