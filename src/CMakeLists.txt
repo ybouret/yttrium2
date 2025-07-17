@@ -20,6 +20,7 @@ endif()
 set(Y_UnitTests "")
 add_subdirectory(y)
 add_subdirectory(core)
+add_subdirectory(mkl)
 cmake_print_variables(Y_UnitTests)
 
 add_subdirectory(cli)

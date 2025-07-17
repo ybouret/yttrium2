@@ -1,15 +1,15 @@
 #include "y/utest/run.hpp"
 #include "y/container/ordered/priority-queue.hpp"
 #include "y/container/sequence/vector.hpp"
-#include "y/system/rand.hpp"
-
+#include "y/random/park-miller.hpp"
+#include "y/apex/integer.hpp"
 
 
 using namespace Yttrium;
 
 Y_UTEST(ordered_pqueue)
 {
-    System::Rand    ran;
+    Random::ParkMiller ran;
     {
         void *          wksp[ 10 ];
         const size_t    wlen = sizeof(wksp);
@@ -18,7 +18,7 @@ Y_UTEST(ordered_pqueue)
 
         for(size_t i=0;i<pq.capacity;++i)
         {
-            pq.push( ran.gen<unsigned>( unsigned(ran.leq(10)) ), Sign::Decreasing<unsigned> ); std::cerr << pq << std::endl;
+            pq.push( ran.to<unsigned>( ran.leq<size_t>(10) ), Sign::Decreasing<unsigned> ); std::cerr << pq << std::endl;
         }
 
         Vector<unsigned> vec;
@@ -26,8 +26,13 @@ Y_UTEST(ordered_pqueue)
         std::cerr << vec << std::endl;
     }
 
-    PriorityQueue<int> pq;
-
-
+    PriorityQueue<apz> pq;
+    std::cerr << pq << std::endl;
+    for(size_t i=0;i<20;++i)
+    {
+        pq << apz(ran,10);
+        std::cerr << pq << std::endl;
+    }
+    
 }
 Y_UDONE()

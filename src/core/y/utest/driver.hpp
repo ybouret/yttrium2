@@ -7,6 +7,7 @@
 #include "y/exception.hpp"
 #include "y/core/utils.hpp"
 #include "y/utest/catch.hpp"
+#include <iostream>
 
 namespace Yttrium
 {

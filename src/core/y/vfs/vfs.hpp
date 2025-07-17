@@ -29,13 +29,13 @@ namespace Yttrium
         //
         //______________________________________________________________________
         static bool        IsSeparator(const char )                              noexcept; //!< \return true iff [back]slash
-        static const char *BaseName(const char * const path, const size_t size)  noexcept; //!< basename
-        static const char *BaseName(const char * const path)                     noexcept; //!< basename
-        static const char *BaseName(const String     & path)                     noexcept; //!< basename
+        static const char *BaseName(const char * const path, const size_t size)  noexcept; //!< \param path path \param size size \return basename
+        static const char *BaseName(const char * const path)                     noexcept; //!< \param path path \return basename
+        static const char *BaseName(const String     & path)                     noexcept; //!< \param path path \return basename
 
-        static const char *Extension(const char * const path, const size_t size) noexcept; //!< NULL or .ext
-        static const char *Extension(const char * const path)                    noexcept; //!< NULL or .ext
-        static const char *Extension(const String &     path)                    noexcept; //!< NULL or .ext
+        static const char *Extension(const char * const path, const size_t size) noexcept; //!< \param path path \param size size \return NULL or .ext
+        static const char *Extension(const char * const path)                    noexcept; //!< \param path path \return NULL or .ext
+        static const char *Extension(const String &     path)                    noexcept; //!< \param path path \return NULL or .ext
 
         //! changing extension
         static String ChangedExtension(const char * const newExt,

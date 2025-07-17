@@ -12,6 +12,7 @@
 #include "y/calculus/safe-add.hpp"
 #include "y/type/with-at-least.hpp"
 #include "y/static/moniker.hpp"
+#include "y/static/replica.hpp"
 
 namespace Yttrium
 {
@@ -139,20 +140,19 @@ namespace Yttrium
             if(code)
             {
                 if(code->size<code->capacity)
-                {
                     code->push(args,compare);
-                }
                 else
                 {
-                    const Static::Moniker<Type> data(args);
+                    Static::Replica<Type>       replica(args);
                     {
-                        Code * const temp = new Code( this->NextCapacity(code->capacity));
+                        Code * const temp = new Code( this->NextCapacity(code->capacity) );
                         temp->steal(*code);
                         delete code;
                         code = temp;
                     }
                     assert(code->size<code->capacity);
-                    code->push(*data,compare);
+                    replica.yield(code->tree+code->size);
+                    code->balance(compare);
                 }
             }
             else

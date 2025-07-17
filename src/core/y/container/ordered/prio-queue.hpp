@@ -109,6 +109,13 @@ namespace Yttrium
             assert( Memory::Stealth::Are0(tree+size,sizeof(T)));
 
             new (tree+size) T(value);
+            balance(compare);
+        }
+
+        //! balance and update size after push \param compare comparison function
+        template <typename COMPARE>
+        inline void balance(COMPARE &compare)
+        {
             try
             {
                 size_t ipos = Coerce(size)++;

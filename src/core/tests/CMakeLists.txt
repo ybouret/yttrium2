@@ -68,6 +68,7 @@ Y_UTEST(type:ints)
 Y_UTEST(static:moniker)
 Y_UTEST(static:solitary)
 Y_UTEST(static:multiple)
+Y_UTEST(static:replica)
 
 #calculus
 Y_UTEST(calculus:integer_log2)
