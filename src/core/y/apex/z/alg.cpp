@@ -37,6 +37,13 @@ namespace Yttrium
             }
             return Integer();
         }
+
+        void Integer:: shr() noexcept
+        {
+            if(__Zero__==s) return;
+            Coerce(n).shr();
+            if(n.bits()<=0) Coerce(s) = __Zero__;
+        }
     }
 
 }

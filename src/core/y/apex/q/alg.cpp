@@ -44,6 +44,13 @@ namespace Yttrium
 
             return Rational();
         }
+
+        void Rational:: shr()
+        {
+            if(__Zero__ == numer.s) return;
+            Coerce(denom) += denom;
+            simplify();
+        }
     }
 
 }

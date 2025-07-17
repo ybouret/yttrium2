@@ -132,7 +132,8 @@ namespace Yttrium
             Rational &     neg() noexcept;           //!< in-place opposite \return *this
             Rational       abs() const;              //!< \return |*this|
             Rational       sqrt() const;             //!< \return |*this|
-
+            void           shr();                    //!< divide by two
+            
             //! \return floating point ratio
             template <typename T> inline
             T to()
