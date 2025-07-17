@@ -24,7 +24,7 @@ Y_UTEST(mkl_triplet)
     std::cerr << x << std::endl;
     Triplet<size_t> idx = { 1,2,3 };
     x.sort(idx);
-    std::cerr << x << std::endl;
+    std::cerr << x   << std::endl;
     std::cerr << idx << std::endl;
 }
 Y_UDONE()
