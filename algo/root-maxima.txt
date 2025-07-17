@@ -1,0 +1,7 @@
+Eq : f_0 - 2 * f_h * X + f_1 *X^2;
+Dp : f_h^2 - (f_0*f_1);
+Xp : (f_h+sqrt(Dp))/f_1;
+Xm : (f_h-sqrt(Dp))/f_1;
+expand(subst([X=Xp],Eq));
+expand(subst([X=Xm],Eq));
+
