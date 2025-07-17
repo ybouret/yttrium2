@@ -78,7 +78,7 @@ namespace Yttrium
             {
                 assert(0!=addr);
                 plist.insertOderedByAddresses( Page::Cast(addr) );
-                assert(plist.isOrderedBy( plist.CompareAddresses, Sign::StriclyIncreasing ) );
+                assert(plist.isOrderedBy( Core::ListOf<Page>::CompareAddresses, Sign::StriclyIncreasing ) );
             }
 
             void Pages:: cache(size_t numPages)
