@@ -149,7 +149,7 @@ inline friend bool operator OP (const T      lhs, const XReal &rhs) noexcept { r
         //
         //______________________________________________________________________
         T p() const; //!< \return -log10(*this)
-
+        void shr() noexcept; //!< divide by two
 
         //______________________________________________________________________
         //

@@ -340,6 +340,12 @@ namespace Yttrium
 		return xr.str();
 	}
 
+    template <>
+    void XReal<real_t>:: shr() noexcept
+    {
+        if( std::fabs(mantissa) > 0) --Coerce(exponent);
+    }
+
 
 }
 

@@ -42,10 +42,31 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //
-            // interface
+            // Interface
             //
             //__________________________________________________________________
             virtual const char * callSign() const noexcept;
+
+
+            //! lookup interface
+            virtual void lookup(Triplet<T> &x, Triplet<T> &f, FunctionType &F) = 0;
+
+            
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! wrapper to callable FUNCTION
+            template <typename FUNCTION>   inline
+            void operator()(FUNCTION &F, Triplet<T> &x, Triplet<T> &f )
+            {
+                Wrapper1D<T,T,FUNCTION> FW(F);
+                lookup(x,f,FW);
+            }
+
 
             //! setup
             /**

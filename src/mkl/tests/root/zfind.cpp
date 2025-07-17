@@ -1,6 +1,7 @@
-#include "y/mkl/root/zfind.hpp"
+#include "y/mkl/root/zbis.hpp"
 #include "y/utest/run.hpp"
 #include "y/stream/libc/output.hpp"
+#include "y/mkl/xreal.hpp"
 
 using namespace Yttrium;
 using namespace MKL;
@@ -20,9 +21,10 @@ namespace
 
         Triplet<T> x = { 0, 0, 2 };
         Triplet<T> f = { F(x.a), 0, F(x.c) };
-        ZFIND<T>   zfind;
+        ZFIND<T>   zfind; std::cerr << "[" << zfind.callSign() << "]" << std::endl;
         typename ZFIND<T>::Handle hx,hf;
 
+        
         if( zfind.found(F,hx,hf,x,f) )
         {
             std::cerr << "zero @" << x.b << std::endl;
@@ -36,7 +38,7 @@ namespace
             Y_ASSERT(hf.pos);
             Y_ASSERT(*hf.neg<0);
             Y_ASSERT(*hf.pos>0);
-
+            zfind(F,x,f);
         }
 
 
@@ -58,10 +60,11 @@ Y_UTEST(root_zfind)
         }
     }
 
-    testZFind<float,ZFind>();
-    testZFind<double,ZFind>();
+    testZFind<float,ZBis>();
+    testZFind<double,ZBis>();
+    testZFind<long double,ZBis>();
 
-
+    
 
 }
 Y_UDONE()

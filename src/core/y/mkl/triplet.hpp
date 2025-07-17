@@ -3,6 +3,7 @@
 
 #include "y/mkl/api/fabs.hpp"
 #include "y/sorting/sort3.hpp"
+#include "y/core/utils.hpp"
 #include <iostream>
 
 namespace Yttrium
@@ -63,6 +64,11 @@ namespace Yttrium
             inline friend std::ostream & operator<<(std::ostream &os, const Triplet &self)
             {
                 return os << '[' << self.a << ';' << self.b << ';' << self.c << ']';
+            }
+
+            inline T amplitude() const
+            {
+                return Max( Fabs<T>::Of(a-b), Fabs<T>::Of(a-c), Fabs<T>::Of(b-c) );
             }
 
             

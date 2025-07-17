@@ -35,7 +35,8 @@ namespace Yttrium
             inline T  Half(const T &x, const MustCallAPI &) noexcept
             {
                 T res(x);
-                return res.shr();
+                res.shr();
+                return res;
             }
 
         }

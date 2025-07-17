@@ -28,6 +28,24 @@ namespace Yttrium
     //__________________________________________________________________________
     //
     //
+    //! inline Max
+    /**
+     \param a first argument
+     \param b second argument
+     \param c thirs argument
+     \return max of a,b and c
+     */
+    //
+    //__________________________________________________________________________
+    template <typename T> inline
+    T Max(const T a, const T b, const T c)
+    {
+        return Max(a,Max(b,c));
+    }
+
+    //__________________________________________________________________________
+    //
+    //
     //! inline in-situ Max
     /**
      \param a target value

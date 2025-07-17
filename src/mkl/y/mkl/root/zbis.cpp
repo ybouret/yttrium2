@@ -1,43 +1,40 @@
-#include "y/mkl/root/zfind.hpp"
-#include "y/mkl/api/half.hpp"
-#include "y/system/exception.hpp"
+
+#include "y/mkl/root/zbis.hpp"
 #include "y/mkl/xreal.hpp"
+#include "y/mkl/api/half.hpp"
 
 namespace Yttrium
 {
-
     namespace MKL
     {
-
-        static const char ZFindCallSign[] = "ZFind";
+        static const char ZBisCallSign[] = "ZBis";
 
 #define real_t float
-#include "zfind.hxx"
+#include "zbis.hxx"
 #undef real_t
 
 
 #define real_t double
-#include "zfind.hxx"
+#include "zbis.hxx"
 #undef real_t
 
 #define real_t long double
-#include "zfind.hxx"
+#include "zbis.hxx"
 #undef real_t
 
 
 #define real_t XReal<float>
-#include "zfind.hxx"
+#include "zbis.hxx"
 #undef real_t
 
 #define real_t XReal<double>
-#include "zfind.hxx"
+#include "zbis.hxx"
 #undef real_t
 
 #define real_t XReal<long double>
-#include "zfind.hxx"
+#include "zbis.hxx"
 #undef real_t
-
+        
     }
-    
-}
 
+}

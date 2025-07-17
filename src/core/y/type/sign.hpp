@@ -9,6 +9,26 @@
 namespace Yttrium
 {
 
+    template <typename> class XReal;
+
+    namespace Core
+    {
+
+        template <typename> struct NeedZeroCast;
+
+        template <typename T> struct NeedZeroCast< XReal<T> >
+        {
+            enum { Value = true };
+        };
+
+
+        template <typename T> struct NeedZeroCast
+        {
+            enum { Value = false };
+        };
+
+    }
+
     //! Named Sign
     enum SignType
     {
@@ -38,9 +58,23 @@ namespace Yttrium
         template <typename T> static inline
         SignType Of(const T &value)
         {
+            static const IntToType<Core::NeedZeroCast<T>::Value> NeedCast = {};
+            return Of(value,NeedCast);
+        }
+
+    private:
+        template <typename T> static inline SignType Of(const T &value, const IntToType<false> &)
+        {
             return value<0 ? Negative : (0<value ? Positive : __Zero__ );
         }
 
+        template <typename T> static inline SignType Of(const T &value, const IntToType<true> &)
+        {
+            const T zero(0);
+            return value<zero ? Negative : (zero<value ? Positive : __Zero__ );
+        }
+
+    public:
         //! natural comparison
         /**
          \param lhs lhs
