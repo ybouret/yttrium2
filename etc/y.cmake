@@ -211,6 +211,8 @@ function(Y_LinkLibraries THE_EXE)
 
 	# forward libraries
 	list( APPEND THE_LIBS ${ARGN} )
+
+	list(APPEND THE_LIBS "y")
 	if(Y_Linux OR Y_FreeBSD)
 		list( APPEND THE_LIBS "pthread" )
 	endif()
@@ -219,7 +221,6 @@ function(Y_LinkLibraries THE_EXE)
 	endif()
 	#cmake_print_variables(THE_LIBS)
 
-	list(APPEND THE_LIBS "y")
 	target_link_libraries(${THE_EXE} ${THE_LIBS})
 endfunction()
 
