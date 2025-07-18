@@ -23,11 +23,32 @@ $$
 $$	
 
 $$
-	f(u) = (1-u) f_0 + u f_1 - \lambda u(1-u)
+	g_0 = f_a - f_b \geq 0, \;\; g_1 = f_c - f_b \geq 0
+$$
+
+$$
+	g(u) = (1-u) f_0 + u f_1 - \lambda u(1-u)
 $$
 $$
-	f_\beta = (1-\beta) f_0 + \beta f_u - \lambda \beta(1-\beta)
+	0 = (1-\beta) g_0 + \beta g_1 - \lambda \beta(1-\beta)
 $$
+
+$$
+	\lambda = \dfrac{(1-\beta) g_0 + \beta g_1 }{\beta(1-\beta)}
+$$
+
+$$
+	g'(u) = g_1-g_0 + \lambda (2u-1)
+$$
+
+$$
+	u_m = \dfrac{1}{2} \dfrac{\lambda - (g_1-g_0)}{\lambda} = \dfrac{1}{2}\left[ 1 - \dfrac{g_1-g_0}{\lambda} \right]
+$$
+
+$$
+	u_m = \frac{1}{2} \left[ 1 - \dfrac{ \beta(1-\beta) (g_1-g_0) }{ (1-\beta) g_0 + \beta g_1 } \right]
+$$
+
 
 
 \end{document}
