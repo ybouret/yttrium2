@@ -32,6 +32,16 @@ namespace
         FIELD(GOLDEN);
         FIELD(INV_GOLDEN);
     }
+
+    template <typename T> static inline
+    void DisplayTheta(const char * const typeName)
+    {
+        const T Theta = Numeric<T>::MIN / Numeric<T>::EPSILON;
+        std::cerr << std::setw(16) << typeName << " ThetaMin =" << Theta << std::endl;
+
+    }
+
+#define SHOW_THETA(TYPE) DisplayTheta<TYPE>( #TYPE )
 }
 
 #define SHOW(TYPE) DisplayNumeric<TYPE>( #TYPE )
@@ -46,6 +56,13 @@ Y_UTEST(mkl_numeric)
     SHOW(XReal<float>);
     SHOW(XReal<double>);
     SHOW(XReal<long double>);
+
+    std::cerr << std::endl;
+    SHOW_THETA(float);
+    SHOW_THETA(double);
+    SHOW_THETA(long double);
+
+
 
 }
 Y_UDONE()

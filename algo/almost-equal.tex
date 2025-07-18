@@ -11,15 +11,30 @@
 
 \begin{document}
 
-$a$ is almost equal to $b$ iff
+We declare that $a$ is almost equal to $b$ iff
 \begin{equation}
 	\dfrac{\vert a - b \vert}{ \max(\theta,\min(\vert a \vert,\vert b \vert)) } \leq \epsilon
 \end{equation}
 with a small $\theta$.
 When $b=0$, 
 \begin{equation}
-	\dfrac{\vert a \vert }{ \max(\theta,\vert a \vert) } \leq \epsilon
+	\phi(a) = \dfrac{\vert a \vert }{ \max(\theta,\vert a \vert) } \leq \epsilon
 \end{equation}
+
+We want $\theta \gg \mu$, where $\mu$ is the mininal non zero floating point value.
+\begin{equation}
+\phi(|a|<\theta) = \dfrac{|a|}{\theta} \leq \epsilon \iff a \simeq 0
+\end{equation}
+
+We define the zero tolerance
+\begin{equation}
+	\zeta = \theta \epsilon \gg \epsilon \mu
+\end{equation}
+
+
+\vspace{3cm}
+
+
 
 The bisection methods divides by two the size of the interval at each iteration.
 The relative size of the interval after $n$ iterations is
