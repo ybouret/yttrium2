@@ -227,4 +227,7 @@ Y_UTEST(counting:comb)
 Y_UTEST(counting:combination)
 Y_UTEST(counting:nested)
 Y_UTEST(counting:part)
+Y_UTEST(counting:partition)
+Y_UTEST(counting:perm)
+Y_UTEST(counting:permutation)
 

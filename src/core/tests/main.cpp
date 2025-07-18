@@ -7,7 +7,7 @@
 #include <cstring>
 #include <iostream>
 
-Y_UTEST_DECL(128)
+Y_UTEST_DECL(256)
 {
     Y_UTEST(exception);
 
@@ -174,6 +174,9 @@ Y_UTEST_DECL(128)
     Y_UTEST(counting_combination);
     Y_UTEST(counting_nested);
     Y_UTEST(counting_part);
+    Y_UTEST(counting_partition);
+    Y_UTEST(counting_perm);
+    Y_UTEST(counting_permutation);
 
 }
 Y_UTEST_EXEC()

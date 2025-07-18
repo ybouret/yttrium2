@@ -30,22 +30,19 @@ namespace Yttrium
         inline explicit Code(const size_t n) :
         Object(),
         Memory::SchoolOf<size_t>(n),
-        indx( cxx ),
         perm()
         {
             Y_Perm_Init(&perm,n);
-            Y_Perm_Boot(&perm,indx);
+            Y_Perm_Boot(&perm,cxx);
         }
 
 
         inline virtual ~Code() noexcept {}
 
-        inline void boot() noexcept { Y_Perm_Boot(&perm,indx); }
-        inline bool next() noexcept { return 0 != Y_Perm_Next(&perm,indx); }
+        inline void boot() noexcept { Y_Perm_Boot(&perm,cxx); }
+        inline bool next() noexcept { return 0 != Y_Perm_Next(&perm,cxx); }
 
 
-
-        size_t * const indx;
         Y_Perm         perm;
 
     private:
@@ -90,7 +87,7 @@ namespace Yttrium
     {
         assert(i>0);
         assert(i<=code->perm.n);
-        return code->indx[i];
+        return code->cxx[i];
     }
 
 
