@@ -78,6 +78,11 @@ namespace Yttrium
         s = Opposite(s);
     }
 
+    bool Sign:: AreOpposite(const SignType lhs ,const SignType rhs) noexcept
+    {
+        return (lhs == Negative && rhs == Positive) || (lhs == Positive && rhs == Negative);
+    }
+
 
     Sign::PairType Sign:: Pair(const SignType l, const SignType r) noexcept
     {

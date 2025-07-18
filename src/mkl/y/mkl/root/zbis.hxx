@@ -52,17 +52,17 @@ void ZBis<real_t>:: lookup(Triplet<real_t> &x, Triplet<real_t> &f, FunctionType 
     }
 
 
-    size_t cycle=0;
+    //size_t cycle=0;
     while(true)
     {
-        ++cycle;
-        std::cerr << "@" << cycle <<":  x=" << x << "; f=" << f << std::endl;
+        //++cycle;
+        //std::cerr << "@" << cycle <<":  x=" << x << "; f=" << f << std::endl;
 
         const real_t x_old = x.b;
         switch( Sign::Of( f.b = F(x.b=Half<real_t>::Of(x.a+x.c) ) ) )
         {
             case __Zero__: // exact
-                std::cerr << "exact " << f.b << " @" << x.b << std::endl;
+                //std::cerr << "exact " << f.b << " @" << x.b << std::endl;
                 return;
 
             case Negative:
@@ -78,8 +78,6 @@ void ZBis<real_t>:: lookup(Triplet<real_t> &x, Triplet<real_t> &f, FunctionType 
 
         if( AlmostEqual<real_t>::Are(x_old,x.b) )
             return;
-
-
     }
 
 }

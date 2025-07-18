@@ -3,8 +3,11 @@
 #include "y/mkl/root/zrid.hpp"
 #include "y/mkl/xreal.hpp"
 #include "y/mkl/api/half.hpp"
+#include "y/mkl/api/sqrt.hpp"
 #include "y/mkl/api/almost-equal.hpp"
-#include "y/ascii/boolean.hpp"
+#include "y/sorting/heap.hpp"
+#include "y/core/display.hpp"
+#include "y/system/exception.hpp"
 
 namespace Yttrium
 {

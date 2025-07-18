@@ -17,42 +17,27 @@ namespace
     T F(T x)
     {
         ++CallCount;
-        //return 0.2f + 0.7f * cosf( x*x - 0.01f);
-        return x;
+        const T delta = x - T(0.3);
+        return -delta*delta*delta + T(0.2);
+        //const T fac(1.1);
+        //return fac * x;
     }
 
 
     template <typename T, template <typename> class ZFIND> static
     inline void testZFind( Random::Bits & ran)
     {
-        const T minusOne(-1);
         const T two(2);
 
-        Triplet<T> x = { minusOne * ran.to<T>(), 0, two * ran.to<T>() };
+        Triplet<T> x = { -two - ran.to<T>(), 0, two + ran.to<T>() };
         Triplet<T> f = { F(x.a), 0, F(x.c) };
-        ZFIND<T>   zfind; std::cerr << "[" << zfind.callSign() << "]" << std::endl;
-        typename ZFIND<T>::Handle hx,hf;
-
-
+        ZFIND<T>   zfind;
         CallCount = 0;
-        if( zfind.found(F<T>,hx,hf,x,f) )
-        {
-            std::cerr << "zero @" << x.b << std::endl;
-        }
-        else
-        {
-            std::cerr << "lookup" << std::endl;
-            Y_ASSERT(hx.neg);
-            Y_ASSERT(hx.pos);
-            Y_ASSERT(hf.neg);
-            Y_ASSERT(hf.pos);
-            Y_ASSERT( Sign::LTZ(*hf.neg) );
-            Y_ASSERT( Sign::GTZ(*hf.pos) );
-            zfind(F<T>,x,f);
-        }
-
-        std::cerr << "#call = " << CallCount << std::endl;
-
+        zfind(F<T>,x,f);
+        std::cerr << "[" << zfind.callSign() << "]"
+        << " #call = " << CallCount
+        << " x0=" << x.b
+        << std::endl;
     }
 }
 
@@ -75,15 +60,20 @@ Y_UTEST(root_zfind)
         }
     }
 
-#if 0
     testZFind<float,ZBis>(ran);
     testZFind<double,ZBis>(ran);
     testZFind<long double,ZBis>(ran);
     testZFind< XReal<float>,ZBis>(ran);
-#endif
+    testZFind< XReal<double>,ZBis>(ran);
+    testZFind< XReal<long double>,ZBis>(ran);
 
+    std::cerr << std::endl;
     testZFind<float,ZRid>(ran);
-
+    testZFind<double,ZRid>(ran);
+    testZFind<long double,ZRid>(ran);
+    testZFind< XReal<float>,ZRid>(ran);
+    testZFind< XReal<double>,ZRid>(ran);
+    testZFind< XReal<long double>,ZRid>(ran);
 
 }
 Y_UDONE()

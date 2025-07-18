@@ -57,6 +57,9 @@ namespace Yttrium
         //! make opposite
         static void MakeOpposite(SignType &) noexcept;
 
+        //! check opposite
+        static bool AreOpposite(const SignType,const SignType) noexcept;
+
         //! natural sign
         /** \param value to be tested \return sign of value againt "0" */
         template <typename T> static inline

@@ -100,7 +100,7 @@ namespace Yttrium
      \param a lower bound
      \param b test value
      \param c upper bound
-     \return MinOf( MaxOf(a,b), c )
+     \return Min( Max(a,b), c )
      */
     //
     //__________________________________________________________________________
