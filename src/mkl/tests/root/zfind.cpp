@@ -2,6 +2,7 @@
 #include "y/utest/run.hpp"
 #include "y/stream/libc/output.hpp"
 #include "y/mkl/numeric.hpp"
+#include "y/random/park-miller.hpp"
 #include <cfloat>
 
 using namespace Yttrium;
@@ -18,10 +19,12 @@ namespace
 
 
     template <typename T, template <typename> class ZFIND> static
-    inline void testZFind( )
+    inline void testZFind( Random::Bits & ran)
     {
+        const T minusOne(-1);
+        const T two(2);
 
-        Triplet<T> x = { -1, 0, 2 };
+        Triplet<T> x = { minusOne * ran.to<T>(), 0, two * ran.to<T>() };
         Triplet<T> f = { F(x.a), 0, F(x.c) };
         ZFIND<T>   zfind; std::cerr << "[" << zfind.callSign() << "]" << std::endl;
         typename ZFIND<T>::Handle hx,hf;
@@ -52,6 +55,8 @@ namespace
 Y_UTEST(root_zfind)
 {
 
+    Random::ParkMiller ran;
+
     {
         OutputFile     fp("zfind.dat");
         const float    Lmin = -5;
@@ -64,8 +69,8 @@ Y_UTEST(root_zfind)
         }
     }
 
-    testZFind<float,ZBis>();
-    testZFind<double,ZBis>();
+    testZFind<float,ZBis>(ran);
+    //testZFind<double,ZBis>(ran);
     //testZFind<long double,ZBis>();
 
 

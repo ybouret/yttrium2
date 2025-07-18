@@ -23,27 +23,13 @@ namespace Yttrium
             inline bool  ScalAreAlmostEqual(const T &x,
                                             const T &y)
             {
-                static const T eps = Numeric<T>::EPSILON;
-                static const T threshold = Numeric<T>::MIN/Numeric<T>::EPSILON;
-
-                const T        ax = MKL::Fabs<T>::Of(x);
-                const T        ay = MKL::Fabs<T>::Of(y);
-                const T        ad = MKL::Fabs<T>::Of(x-y);
-
-                return  ( ad / Max( Min(ax,ay), threshold ) ) <= eps;
-                
-#if 0
-                static const T & ftol  = Numeric<T>::EPSILON;
-                static const T & ztol  = Numeric<T>::MIN;
-                const T          vmin  = Min(MKL::Fabs<T>::Of(x),MKL::Fabs<T>::Of(y));
-                const T          delta = x-y;
-
-                if( Sign::LEQZ(vmin) ) {
-                    return MKL::Fabs<T>::Of(delta)<=ztol;
-                }
-
-                return (MKL::Fabs<T>::Of((delta)/Max(ztol,vmin)))<=ftol;
-#endif
+                const T ax  = MKL::Fabs<T>::Of(x);
+                const T ay  = MKL::Fabs<T>::Of(y);
+                const T del = x-y;
+                const T lhs = MKL::Fabs<T>::Of(del);
+                const T ma  = Min(ax,ay);
+                const T rhs = Max(ma,Numeric<T>::THETA);
+                return lhs <= Numeric<T>::EPSILON * rhs;
             }
 
 
