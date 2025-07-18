@@ -31,13 +31,21 @@ namespace
         FIELD(SQRT_EPSILON);
         FIELD(GOLDEN);
         FIELD(INV_GOLDEN);
+        FIELD(THETA);
     }
 
     template <typename T> static inline
     void DisplayTheta(const char * const typeName)
     {
-        const T Theta = Numeric<T>::MIN / Numeric<T>::EPSILON;
-        std::cerr << std::setw(16) << typeName << " ThetaMin =" << Theta << std::endl;
+        static const T ThetaMin = Numeric<T>::MIN / Numeric<T>::EPSILON;
+        std::cerr << std::setw(16) << typeName << " ThetaMin = " << ThetaMin << std::endl;
+
+        const T ThetaLog10 = 1+std::ceil( std::log10(ThetaMin) );
+        const T Ten        = 10;
+        const T Theta      = std::pow(Ten,ThetaLog10);
+        std::cerr << std::setw(16) << typeName << " Theta    = " << Theta << std::endl;
+        const T Zero       = Theta * Numeric<T>::EPSILON;
+        std::cerr << std::setw(16) << typeName << " Zero     = " << Zero << std::endl;
 
     }
 

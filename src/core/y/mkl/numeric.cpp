@@ -18,9 +18,13 @@ namespace Yttrium
         template <> const double      Numeric<double>::      PI = Y_D(3.14159265358979323846264338327950288419716939937510582);
         template <> const long double Numeric<long double>:: PI = Y_L(3.14159265358979323846264338327950288419716939937510582);
 
+
+
         template <> const unsigned Numeric<float>::      RADIX = FLT_RADIX;
         template <> const unsigned Numeric<double>::     RADIX = FLT_RADIX;
         template <> const unsigned Numeric<long double>::RADIX = FLT_RADIX;
+
+        
 
         template <> const unsigned Numeric< XReal<float>  >      :: RADIX = FLT_RADIX;
         template <> const unsigned Numeric< XReal<double> >      :: RADIX = FLT_RADIX;
@@ -61,8 +65,7 @@ Y_MKL_DECL_XREAL(VAR)
         Y_MKL_DECL_BOTH(EPSILON);
         Y_MKL_DECL_BOTH(MIN);
         Y_MKL_DECL_BOTH(MAX);
-
-
+        
 
 
 
@@ -88,6 +91,14 @@ Y_MKL_DECL_XREAL(VAR)
 
         Y_MKL_DECL_XREAL(GOLDEN);
         Y_MKL_DECL_XREAL(INV_GOLDEN);
+
+
+        template <> const float       Numeric<float>       :: THETA = std::pow( 10.0f, 1.0f + std::ceil( std::log10( FLT_MIN/FLT_EPSILON)));
+        template <> const double      Numeric<double>      :: THETA = std::pow( 10.0,  1.0  + std::ceil( std::log10(  DBL_MIN/DBL_EPSILON)));
+        template <> const long double Numeric<long double> :: THETA = std::pow( 10.0l, 1.0l + std::ceil( std::log10( LDBL_MIN/LDBL_EPSILON)));
+
+        Y_MKL_DECL_XREAL(THETA);
+
 
     }
 
