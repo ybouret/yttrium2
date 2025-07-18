@@ -25,7 +25,7 @@ namespace Yttrium
         //______________________________________________________________________
         class Code;
         static const char * const CallSign;  //!< "Combination"
-        static apn Cardinal(const size_t n, const size_t k); //!< (n,k)
+        static apn Cardinal(const size_t n, const size_t k); //!< \param n n \param k k \return (n,k)
 
         //______________________________________________________________________
         //
@@ -33,16 +33,22 @@ namespace Yttrium
         // C++
         //
         //______________________________________________________________________
-        explicit Combination(const size_t n, const size_t k); //!< setup
+        explicit Combination(const size_t n, const size_t k); //!< setup \param n n \param k k
         virtual ~Combination() noexcept;                      //!< cleanup
 
-        virtual size_t         size()                   const noexcept; //!< k
-        virtual size_t         capacity()               const noexcept; //!< k
-        virtual const char   * callSign()               const noexcept; //!< CallSign
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
+        virtual size_t         size()                   const noexcept; //!< \return k
+        virtual size_t         capacity()               const noexcept; //!< \return k
+        virtual const char   * callSign()               const noexcept; //!< \return CallSign
 
     private:
-        Y_Disable_Copy_And_Assign(Combination);
-        Code *code;
+        Y_Disable_Copy_And_Assign(Combination); //!< discaring
+        Code *code;  //!< inner code
 
         virtual void doBoot() noexcept;
         virtual bool doNext() noexcept;

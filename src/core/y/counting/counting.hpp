@@ -3,7 +3,7 @@
 #ifndef Y_Counting_Included
 #define Y_Counting_Included 1
 
-#include "y/core/setup.hpp"
+#include "y/ability/identifiable.hpp"
 
 namespace Yttrium
 {
@@ -18,7 +18,7 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    class Counting
+    class Counting : public Identifiable
     {
         //______________________________________________________________________
         //
@@ -39,7 +39,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         void boot() noexcept; //!< [re]boot state
-        bool next() noexcept; //!< compute next state
+        bool next() noexcept; //!< compute next state \return false when done
 
         //______________________________________________________________________
         //
@@ -51,9 +51,9 @@ namespace Yttrium
         const Cardinality  total; //!< fixed total number of configuration
 
     private:
-        Y_Disable_Copy_And_Assign(Counting);
-        virtual void doBoot() noexcept = 0;
-        virtual bool doNext() noexcept = 0;
+        Y_Disable_Copy_And_Assign(Counting); //!< discarding
+        virtual void doBoot() noexcept = 0;  //!< boot indices
+        virtual bool doNext() noexcept = 0;  //!< next indices \return false when done
     };
 
 }

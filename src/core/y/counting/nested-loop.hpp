@@ -26,7 +26,7 @@ namespace Yttrium
         //______________________________________________________________________
         static const char * const CallSign; //!< "NestedLoop"
 
-        //! (prod(i=0:d-1) (n-i))/d!
+        //! \param d dim \param n count \return (prod(i=0:d-1) (n-i))/d!
         static Cardinality CardinalityFor(const size_t d, const size_t n);
 
         //______________________________________________________________________
@@ -36,7 +36,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
 
-        //! d>=1, n>=d
+        //! setup \param d d>=1 \param n n>=d
         explicit NestedLoop(const size_t d,
                             const size_t n);
 
@@ -49,7 +49,7 @@ namespace Yttrium
         // [Identifiable]
         //
         //______________________________________________________________________
-        virtual const char * callSign() const noexcept; //!< CallSign
+        virtual const char * callSign() const noexcept; //!< \return CallSign
 
         //______________________________________________________________________
         //
@@ -57,12 +57,12 @@ namespace Yttrium
         // [Readable]
         //
         //______________________________________________________________________
-        virtual size_t          size()                    const noexcept; //!< dimensions
-        
+        virtual size_t          size() const noexcept; //!< \return dimensions
+
     private:
-        Y_Disable_Copy_And_Assign(NestedLoop);
         class Code;
-        Code *code;
+        Y_Disable_Copy_And_Assign(NestedLoop); //!< discarding
+        Code *code; //!< inner code
 
         virtual void doBoot() noexcept;
         virtual bool doNext() noexcept;

@@ -26,7 +26,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         static const char * const CallSign;  //!< "Partition"
-        static apn Cardinal(const size_t n); //!< from Euler's formula
+        static apn Cardinal(const size_t n); //!< \return from Euler's formula \param n integer to part
 
         //______________________________________________________________________
         //
@@ -34,7 +34,7 @@ namespace Yttrium
         // C++
         //
         //______________________________________________________________________
-        explicit Partition(const size_t n); //!< integer to part
+        explicit Partition(const size_t n); //!< \param n integer to part
         virtual ~Partition() noexcept;      //!< cleanup
 
         //______________________________________________________________________
@@ -43,13 +43,13 @@ namespace Yttrium
         // Interface
         //
         //______________________________________________________________________
-        virtual const char * callSign()  const noexcept; //!< CallSign
-        virtual size_t       size()      const noexcept; //!< current parts
+        virtual const char * callSign()  const noexcept; //!< \return CallSign
+        virtual size_t       size()      const noexcept; //!< \return current parts
 
     private:
-        Y_Disable_Copy_And_Assign(Partition);
         class Code;
-        Code *code;
+        Y_Disable_Copy_And_Assign(Partition); //!< discarding
+        Code *code; //!< inner code
 
         virtual void           doBoot() noexcept;
         virtual bool           doNext() noexcept;

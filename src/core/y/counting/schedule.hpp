@@ -19,12 +19,12 @@ namespace Yttrium
     class Schedule : public Counting, public Readable<size_t>
     {
     protected:
-        explicit Schedule(const Cardinality) noexcept; //!< setup
+        explicit Schedule(const Cardinality) noexcept; //!< setup with cardinality
     public:
         virtual ~Schedule() noexcept;                  //!< cleanup
         
     private:
-        Y_Disable_Copy_And_Assign(Schedule);
+        Y_Disable_Copy_And_Assign(Schedule); //!< discarding
     };
 
 }
