@@ -16,13 +16,23 @@ extern "C" {
         size_t   n; //!< among n, count will be n!
     };
 
-    /**! set n */
+    /**! set n
+     \param param data
+     \param n     number of objects
+     */
     void    Y_Perm_Init(struct Y_Perm *          param, size_t n);
     
-    /**! perm[1..n] = [1..n] */
+    /**! perm[1..n] = [1..n]
+     \param param data
+     \param perm  boot indices
+     */
     void    Y_Perm_Boot(const struct Y_Perm * param, size_t *perm);
 
-    /**! next permutation */
+    /**! next permutation
+     \param param data
+     \param perm  next indices
+     \return 0 when done
+     */
     int     Y_Perm_Next(const struct Y_Perm * param, size_t *perm);
 
 #if defined(__cplusplus)

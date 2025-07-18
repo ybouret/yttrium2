@@ -141,6 +141,7 @@ namespace Yttrium
                 return tryCast(value,choice);
             }
 
+            //! cast \param varName optional variable name \return casted when possible
             template <typename T> inline
             T cast(const char * const varName = 0) const
             {

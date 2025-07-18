@@ -16,13 +16,23 @@ extern "C" {
         size_t   k; //!< current number of  parts
     };
 
-    /**! intialize */
+    /**! intialize
+     \param param data
+     \param n     positive integer to part
+     */
     void    Y_Part_Init(struct Y_Part *param, size_t n);
    
-    /**! ints[1] = [n], k=1 */
+    /**! ints[1] = [n], k=1
+     \param param data
+     \param ints  boot indices
+     */
     void    Y_Part_Boot(struct Y_Part *param, size_t *ints);
     
-    /**! next partition */
+    /**! next partition
+     \param param data
+     \param ints  next indices
+     \return 0 when done
+     */
     int     Y_Part_Next(struct Y_Part *param, size_t *ints);
     
 

@@ -77,6 +77,7 @@ namespace Yttrium
             return getItemAt(indx);
         }
 
+        //! basic element-wise comparison
         inline friend bool operator==(const Readable &lhs, const Readable &rhs)
         {
             const size_t n = lhs.size(); if(rhs.size()!=n) return false;

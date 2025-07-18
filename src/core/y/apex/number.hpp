@@ -29,7 +29,8 @@ namespace Yttrium
             virtual void   ldz()       noexcept = 0; //!< noexcept set to zero
             virtual void   ld1()       noexcept = 0; //!< noexcept set to one
 
-            void castOverflow(const char * const varName) const;
+            //! throw exception when cast overflows
+            void castOverflow(const char * const) const;
 
         private:
             Y_Disable_Copy_And_Assign(Number); //!< discarding
