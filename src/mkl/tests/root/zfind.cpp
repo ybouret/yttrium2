@@ -10,9 +10,12 @@ using namespace MKL;
 
 namespace
 {
+    static size_t CallCount = 0;
+
     template <typename T>
     T F(T x)
     {
+        ++CallCount;
         //return 0.2f + 0.7f * cosf( x*x - 0.01f);
         return x;
     }
@@ -29,7 +32,8 @@ namespace
         ZFIND<T>   zfind; std::cerr << "[" << zfind.callSign() << "]" << std::endl;
         typename ZFIND<T>::Handle hx,hf;
 
-        
+
+        CallCount = 0;
         if( zfind.found(F<T>,hx,hf,x,f) )
         {
             std::cerr << "zero @" << x.b << std::endl;
@@ -46,6 +50,7 @@ namespace
             zfind(F<T>,x,f);
         }
 
+        std::cerr << "#call = " << CallCount << std::endl;
 
     }
 }
@@ -70,8 +75,8 @@ Y_UTEST(root_zfind)
     }
 
     testZFind<float,ZBis>(ran);
-    //testZFind<double,ZBis>(ran);
-    //testZFind<long double,ZBis>();
+    testZFind<double,ZBis>(ran);
+    testZFind<long double,ZBis>(ran);
 
 
 
