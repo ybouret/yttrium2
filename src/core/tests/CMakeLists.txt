@@ -225,4 +225,6 @@ Y_UTEST(vfs:subdirs)
 #counting
 Y_UTEST(counting:comb)
 Y_UTEST(counting:combination)
+Y_UTEST(counting:nested)
+Y_UTEST(counting:part)
 

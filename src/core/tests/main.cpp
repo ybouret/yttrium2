@@ -172,6 +172,8 @@ Y_UTEST_DECL(128)
 
     Y_UTEST(counting_comb);
     Y_UTEST(counting_combination);
+    Y_UTEST(counting_nested);
+    Y_UTEST(counting_part);
 
 }
 Y_UTEST_EXEC()

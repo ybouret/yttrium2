@@ -40,21 +40,20 @@ namespace Yttrium
         //______________________________________________________________________
         //
         //
-        // Methods
+        // Interface
         //
         //______________________________________________________________________
-        virtual const char * callSign()               const noexcept; //!< CallSign
-        virtual size_t       size()                   const noexcept; //!< current parts
-        //ConstType &          operator[](const size_t) const noexcept; //!< access parts[1..size()]
-        
+        virtual const char * callSign()  const noexcept; //!< CallSign
+        virtual size_t       size()      const noexcept; //!< current parts
+
     private:
         Y_Disable_Copy_And_Assign(Partition);
         class Code;
         Code *code;
 
-        virtual void doBoot() noexcept;
-        virtual bool doNext() noexcept;
-        virtual const size_t & getItemAt(const size_t indx) const noexcept;
+        virtual void           doBoot() noexcept;
+        virtual bool           doNext() noexcept;
+        virtual const size_t & getItemAt(const size_t) const noexcept;
 
     };
     

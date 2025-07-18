@@ -83,7 +83,6 @@ namespace Yttrium
         static inline Cardinality getCard(const size_t n)
         {
             if(n<1)   throw Specific::Exception(Partition::CallSign,"n<1");
-
             const apn np = Partition::Cardinal(n);
             return np.cast<Cardinality>(Partition::CallSign);
         }
@@ -102,7 +101,6 @@ namespace Yttrium
         inline explicit Code(const size_t n) :
         Object(),
         Memory::SchoolOf<size_t>(n),
-        data( cxx ),
         part()
         {
             assert(n>0);
@@ -112,14 +110,11 @@ namespace Yttrium
         virtual ~Code() noexcept { }
 
         //! booting
-        inline void boot() noexcept { Y_Part_Boot(&part,data); }
+        inline void boot() noexcept { Y_Part_Boot(&part,cxx); }
 
         //! get next config
-        inline bool next() noexcept { return 0!= Y_Part_Next(&part,data); }
+        inline bool next() noexcept { return 0!= Y_Part_Next(&part,cxx); }
 
-
-
-        size_t * const data;
         Y_Part         part;
 
     private:
@@ -168,7 +163,7 @@ namespace Yttrium
         assert(0!=code);
         assert(i>=1);
         assert(i<=size());
-        return code->data[i];
+        return code->cxx[i];
     }
 
     
