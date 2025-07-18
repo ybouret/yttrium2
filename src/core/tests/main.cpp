@@ -171,7 +171,8 @@ Y_UTEST_DECL(128)
 
 
     Y_UTEST(counting_comb);
-    
+    Y_UTEST(counting_combination);
+
 }
 Y_UTEST_EXEC()
 

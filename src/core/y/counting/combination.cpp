@@ -21,14 +21,14 @@ namespace Yttrium
     const char   * Combination:: callSign() const noexcept { return CallSign; }
 
 
-    static inline size_t getCard(const size_t n, const size_t k)
+    static inline Cardinality getCard(const size_t n, const size_t k)
     {
         if(n<1)   throw Specific::Exception(Combination::CallSign,"n<1");
         if(k<1)   throw Specific::Exception(Combination::CallSign,"k<1");
         if(k>n)   throw Specific::Exception(Combination::CallSign,"k>n");
 
         const apn np = Combination::Cardinal(n,k);
-        return np.cast<size_t>(Combination::CallSign);
+        return np.cast<Cardinality>(Combination::CallSign);
     }
 
     class Combination:: Code : public Object, public Memory::SchoolOf<size_t>
@@ -39,21 +39,18 @@ namespace Yttrium
                              const size_t k) :
         Object(),
         Memory::SchoolOf<size_t>(k),
-        indx(cxx),
         comb()
         {
             Y_Comb_Init(&comb,n,k);
-            Y_Comb_Boot(&comb,indx);
+            Y_Comb_Boot(&comb,cxx);
         }
 
 
         inline virtual ~Code() noexcept {}
 
-        inline void boot() noexcept { Y_Comb_Boot(&comb,indx); }
-        inline bool next() noexcept { return 0 != Y_Comb_Next(&comb,indx); }
+        inline void boot() noexcept { Y_Comb_Boot(&comb,cxx); }
+        inline bool next() noexcept { return 0 != Y_Comb_Next(&comb,cxx); }
 
-
-        size_t * const indx;
         Y_Comb         comb;
 
     private:
@@ -94,20 +91,11 @@ namespace Yttrium
         return code->comb.k;
     }
 
-#if 0
-    const size_t & Combination:: operator[](const size_t i) const noexcept
-    {
-        assert(i>0);
-        assert(i<=code->comb.k);
-        return code->indx[i];
-    }
-#endif
-
     const size_t & Combination:: getItemAt(const size_t i) const noexcept
     {
         assert(i>0);
         assert(i<=code->comb.k);
-        return code->indx[i];
+        return code->cxx[i];
     }
 
 
