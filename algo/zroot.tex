@@ -32,7 +32,7 @@ h_{1/2} & = & f_{1/2} e^{\alpha/2} = \dfrac{1}{2}( h_0+h_1 )\\
 \end{equation} 
 
 $$
-	e^Q = e^{\alpha/2} \text{~~~is solution of~~~} f_0 - 2 f_{1/2} X  + f_1 X^2 = 0
+	 Q = e^{\alpha/2} \text{~~~is a positive solution of~~~} f_0 - 2 f_{1/2} Q  + f_1 Q^2 = 0
 $$
 
 \begin{equation}
@@ -40,15 +40,36 @@ $$
 \end{equation}
 
 \begin{equation}
-	X_\pm = \dfrac{ f_{1/2} \pm \sqrt{\Delta'} }{f_1} = \dfrac{f_0}{f_{1/2} \mp \sqrt{\Delta'}}
+	Q_\pm = \dfrac{ f_{1/2} \pm \sqrt{\Delta'} }{f_1} = \dfrac{f_0}{f_{1/2} \mp \sqrt{\Delta'}}
 \end{equation}
 There are always two solutions with opposite signs.
+ 
+\begin{equation}
+	Q_\pm^2 = \dfrac{2f_{1/2}Q_\pm - f_0}{f_1}
+\end{equation}
+ 
+\begin{equation}
+	f_1 Q_\pm^2 =  2f_{1/2}Q_\pm - f_0
+\end{equation}
+
  
 \section{Opposite $f_0$ and $f_{1/2}$ $\implies$ same sign for $f_1$ and $f_{1/2}$}
  
  $$
  	h(u) \approx h_0 + 2 u (h_{1/2}-h_0) \implies u = \dfrac{1}{2} \dfrac{h_0}{h_0-h_{1/2}} \in ]0:\frac{1}{2}[
  $$
+  
+ $$
+ 	u =  \frac{1}{2}\dfrac{f_0}{f_0 - f_{1/2}Q}
+ $$
+ 
+ \begin{itemize}
+ \item 
+ $$
+ 	f_0>0, f_{1/2}<0 \implies Q = \frac{f_0}{f_{1/2}+\sqrt{\Delta'}} 
+	\implies u = \dfrac{1}{2} \dfrac{1}{ 1 - \dfrac{f_{1/2}}{f_{1/2}+\sqrt{\Delta'}} } = \dfrac{1}{2} \dfrac{f_{1/2}+\sqrt{\Delta'}}{\sqrt{\Delta'}}
+$$
+ \end{itemize}
  
  \section{Same sign for $f_0$ and $f_{1/2}$ $\implies$ opposite sign for $f_1$ and $f_{1/2}$}
 
