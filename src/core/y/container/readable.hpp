@@ -77,6 +77,13 @@ namespace Yttrium
             return getItemAt(indx);
         }
 
+        inline friend bool operator==(const Readable &lhs, const Readable &rhs)
+        {
+            const size_t n = lhs.size(); if(rhs.size()!=n) return false;
+            for(size_t i=n;i>0;--i) if(rhs[i]!=lhs[i]) return false;
+            return true;
+        }
+
     private:
         Y_Disable_Copy_And_Assign(Readable); //!< discarding
 

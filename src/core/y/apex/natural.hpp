@@ -90,9 +90,10 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
-            virtual size_t serialize(OutputStream &) const;
-            virtual void   ldz() noexcept;
-            virtual void   ld1() noexcept;
+            virtual size_t       serialize(OutputStream &) const;
+            virtual const char * callSign()       const noexcept;
+            virtual void         ldz()                  noexcept;
+            virtual void         ld1()                  noexcept;
 
             //__________________________________________________________________
             //
@@ -204,6 +205,14 @@ namespace Yttrium
                 return tryCast(value,choice);
             }
 
+            template <typename T> inline
+            T cast(const char * const varName = 0) const
+            {
+                T res(0);
+                if(!tryCast(res)) castOverflow(varName);
+                return res;
+            }
+
             //! \param num numerator \param den denominator \return ratio with given precision
             template <typename T> static inline
             T Ratio(const Natural &num, const Natural &den)
@@ -268,6 +277,8 @@ namespace Yttrium
                 value = T( ls64() );
                 return true;
             }
+
+
 
         };
     }

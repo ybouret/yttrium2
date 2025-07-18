@@ -39,7 +39,7 @@ namespace Yttrium
         void Driver:: display() const
         {
             for(size_t i=0;i<size;++i)
-                std::cerr << '\t' << '[' << proc[i].name << ']' << std::endl;
+                std::cout << '\t' << '[' << proc[i].name << ']' << std::endl;
         }
 
         void Driver:: operator()(CFunction          call,
@@ -95,9 +95,9 @@ namespace Yttrium
             }
             else
             {
-                std::cerr << "<" << mainName << " [" << size << "/" << capacity << "]>" << std::endl;
+                std::cout << "<" << mainName << " [" << size << "/" << capacity << "]>" << std::endl;
                 display();
-                std::cerr << "<" << mainName << " [" << size << "]>" << std::endl;
+                std::cout << "<" << mainName << " [" << size << "]>" << std::endl;
                 return 0;
             }
         }

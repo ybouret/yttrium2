@@ -12,6 +12,8 @@ namespace Yttrium
 
         const char * const Integer:: CallSign = "apz";
 
+        const char * Integer:: callSign() const noexcept { return CallSign; }
+
         Integer::  Integer() : s(__Zero__), n() {}
         Integer:: ~Integer() noexcept {}
 

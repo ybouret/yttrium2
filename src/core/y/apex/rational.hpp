@@ -71,11 +71,17 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
-            virtual size_t serialize(OutputStream&) const;
-            virtual void   ldz() noexcept;
-            virtual void   ld1() noexcept;
+            virtual size_t       serialize(OutputStream &) const;
+            virtual const char * callSign()       const noexcept;
+            virtual void         ldz()                  noexcept;
+            virtual void         ld1()                  noexcept;
 
-
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
 #if !defined(DOXYGEN_SHOULD_SKIP_THIS)
             Y_APQ_Proto_Decl(static SignType,Compare);
             Y_APQ_Compare_Decl(==, == __Zero__)

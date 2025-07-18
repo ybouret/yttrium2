@@ -15,6 +15,7 @@ namespace Yttrium
         Y_Shallow_Impl(Hook);
 
       
+        const char * Natural:: callSign() const noexcept { return CallSign; }
 
 
         Natural:: Natural() :

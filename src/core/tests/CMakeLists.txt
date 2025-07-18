@@ -31,6 +31,7 @@ mkl
 cameo
 dft
 vfs
+counting
 )
 
 
@@ -198,6 +199,7 @@ Y_UTEST(mkl:adaptor)
 Y_UTEST(mkl:triplet)
 Y_UTEST(mkl:v2d)
 Y_UTEST(mkl:almost_equal)
+Y_UTEST(mkl:xreal)
 
 #cameo
 Y_UTEST(cameo:add)
@@ -219,3 +221,7 @@ Y_UTEST(vfs:names)
 Y_UTEST(vfs:rm)
 Y_UTEST(vfs:scan)
 Y_UTEST(vfs:subdirs)
+
+#counting
+Y_UTEST(counting:comb)
+

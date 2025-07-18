@@ -169,6 +169,9 @@ Y_UTEST_DECL(128)
     Y_UTEST(vfs_scan);
     Y_UTEST(vfs_subdirs);
 
+
+    Y_UTEST(counting_comb);
+    
 }
 Y_UTEST_EXEC()
 

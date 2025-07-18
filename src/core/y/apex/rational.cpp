@@ -9,6 +9,7 @@ namespace Yttrium
     {
 
         const char * const Rational:: CallSign = "apq";
+        const char *       Rational:: callSign() const noexcept { return CallSign; }
 
         Rational:: Rational()   :
         Number(),
