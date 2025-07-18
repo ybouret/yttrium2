@@ -36,14 +36,14 @@ void ZRid<real_t>:: lookup(Triplet<real_t> &x, Triplet<real_t> &f, FunctionType 
 
 
     {
+        assert( Sign::LTZ(*hf.neg) );
+        assert( Sign::GTZ(*hf.pos) );
         f.b = F( x.b=Half<real_t>::Of(x.a+x.c) );
-        const SignType s_b = Sign::Of(f.b);
-        switch(s_b)
-        {
-            case __Zero__:
-                // exact
-                return;
-        }
+        const SignType s_b = Sign::Of(f.b); if(__Zero__==s_b) { return; }
+
+        const real_t scaling = Max( Fabs<real_t>::Of(f.a), Fabs<real_t>::Of(f.b), Fabs<real_t>::Of(f.c) );
+        const real_t f_h     = f.b/scaling;
+        const real_t Delta   = f_h * f_h - (f.a/scaling)*(f.c/scaling); assert( Sign::GTZ(Delta) );
 
     }
 

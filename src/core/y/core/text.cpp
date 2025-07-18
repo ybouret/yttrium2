@@ -65,6 +65,18 @@ namespace Yttrium
             }
             return outputBuffer;
         }
+
+
+        void Text::ToLower(char * const buffer,
+                           const size_t buflen) noexcept
+        {
+            assert( Good(buffer,buflen) );
+            for(size_t i=0;i<buflen;++i)
+            {
+                buffer[i] = char( tolower(buffer[i]) );
+            }
+
+        }
     }
 
 }

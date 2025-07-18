@@ -56,6 +56,9 @@ namespace Yttrium
             static char * Add(char * const       outputBuffer,
                               const size_t       outputLength,
                               const char * const text) noexcept;
+
+            static void ToLower(char * const buffer,
+                                const size_t buflen) noexcept;
         };
     }
 

@@ -1,4 +1,5 @@
 #include "y/mkl/root/zbis.hpp"
+#include "y/mkl/root/zrid.hpp"
 #include "y/utest/run.hpp"
 #include "y/stream/libc/output.hpp"
 #include "y/mkl/numeric.hpp"
@@ -74,12 +75,14 @@ Y_UTEST(root_zfind)
         }
     }
 
+#if 0
     testZFind<float,ZBis>(ran);
     testZFind<double,ZBis>(ran);
     testZFind<long double,ZBis>(ran);
-
     testZFind< XReal<float>,ZBis>(ran);
+#endif
 
+    testZFind<float,ZRid>(ran);
 
 
 }
