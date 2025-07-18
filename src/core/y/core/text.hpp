@@ -57,6 +57,11 @@ namespace Yttrium
                               const size_t       outputLength,
                               const char * const text) noexcept;
 
+            //! in place to lowercase conversion
+            /**
+             \param buffer buffer to convert
+             \param buflen length to convert
+             */
             static void ToLower(char * const buffer,
                                 const size_t buflen) noexcept;
         };

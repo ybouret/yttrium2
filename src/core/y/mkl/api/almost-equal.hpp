@@ -19,6 +19,12 @@ namespace Yttrium
         namespace Kernel
         {
 
+            //! return almost equal for scalar
+            /**
+             \param x lhs
+             \param y rhs
+             \return |x-y|/( Max( Min(|x|,|y|), THETA ) <= EPSILON
+             */
             template <typename T>
             inline bool  ScalAreAlmostEqual(const T &x,
                                             const T &y)
@@ -33,6 +39,12 @@ namespace Yttrium
             }
 
 
+            //! return almost equal for each coordinate
+            /**
+             \param lhs vectorial type
+             \param rhs vectorial type
+             \return all coord almost equal
+             */
             template <typename T>
             inline bool VectAreAlmostEqual(const T &lhs, const T &rhs)
             {
@@ -44,26 +56,35 @@ namespace Yttrium
                 return true;
             }
 
-
-
         }
 
+
+        //! wrapper to test almost equality
         template <typename T>
         struct AlmostEqual
         {
-            Y_Args_Declare(T,Type);
+            Y_Args_Declare(T,Type); //!< aliases
 
+            //! top-level function
+            /**
+             \param lhs lhs
+             \param rhs rhs
+             \return selected almost equal algorithm
+             */
             static inline bool Are(ParamType lhs, ParamType rhs)
             {
                 static const IntToType< IsScalar<MutableType>::Value > selected  = {};
                 return Are(lhs,rhs,selected);
             }
 
+        private:
+            //! \param lhs lhs \param rhs rhs \return scalar almost equal
             static inline bool Are(ConstType &lhs, ConstType &rhs, const IntToType<true> &)
             {
                 return Kernel::ScalAreAlmostEqual(lhs,rhs);
             }
 
+            //! \param lhs lhs \param rhs rhs \return vectorial almost equal
             static inline bool Are(ConstType &lhs, ConstType &rhs, const IntToType<false> &)
             {
                 return Kernel::VectAreAlmostEqual(lhs,rhs);

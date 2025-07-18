@@ -57,7 +57,7 @@ namespace Yttrium
         //! make opposite
         static void MakeOpposite(SignType &) noexcept;
 
-        //! check opposite
+        //! check opposite \return true if NP or PN
         static bool AreOpposite(const SignType,const SignType) noexcept;
 
         //! natural sign

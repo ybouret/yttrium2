@@ -72,6 +72,7 @@ namespace Yttrium
                 return Max( Fabs<T>::Of(a-b), Fabs<T>::Of(a-c), Fabs<T>::Of(b-c) );
             }
 
+            //! \return |c-a|
             inline T width() const
             {
                 const T delta = c - a;

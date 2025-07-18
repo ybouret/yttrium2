@@ -39,7 +39,7 @@ namespace Yttrium
             static const T        GOLDEN;       //!< (1+sqrt(5))/2
             static const T        INV_GOLDEN;   //!< 1/GOLDEN = GOLDEN-1 = (sqrt(5)-1)/2
 
-            static const T        THETA;
+            static const T        THETA;        //!< threshold for Almost Equal
         };
 
 #if !defined(_MSC_VER)
