@@ -45,8 +45,8 @@ namespace
             Y_ASSERT(hx.pos);
             Y_ASSERT(hf.neg);
             Y_ASSERT(hf.pos);
-            Y_ASSERT(*hf.neg<0);
-            Y_ASSERT(*hf.pos>0);
+            Y_ASSERT( Sign::LTZ(*hf.neg) );
+            Y_ASSERT( Sign::GTZ(*hf.pos) );
             zfind(F<T>,x,f);
         }
 
@@ -78,6 +78,7 @@ Y_UTEST(root_zfind)
     testZFind<double,ZBis>(ran);
     testZFind<long double,ZBis>(ran);
 
+    testZFind< XReal<float>,ZBis>(ran);
 
 
 

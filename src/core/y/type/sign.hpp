@@ -82,6 +82,14 @@ namespace Yttrium
             return LEQZ(value,NeedCast);
         }
 
+        //! \param value \return value<0
+        template <typename T> static inline
+        bool GTZ(const T &value)
+        {
+            static const IntToType<Core::NeedZeroCast<T>::Value> NeedCast = {};
+            return GTZ(value,NeedCast);
+        }
+
     private:
         //! \param value \return value<0 without cast
         template <typename T> static inline
@@ -112,6 +120,23 @@ namespace Yttrium
             const T zero;
             return value<=zero;
         }
+
+        //! \param value \return value<0 without cast
+        template <typename T> static inline
+        bool GTZ(const T &value, const IntToType<false> &)
+        {
+            return value>0;
+        }
+
+        //! \param value \return value<0 with cast
+        template <typename T> static inline
+        bool GTZ(const T &value, const IntToType<true> &)
+        {
+            const T zero;
+            return value>zero;
+        }
+
+
 
         //! \param value \return its sign without cast
         template <typename T> static inline SignType Of(const T &value, const IntToType<false> &)
