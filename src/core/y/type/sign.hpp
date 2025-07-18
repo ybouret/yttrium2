@@ -14,17 +14,21 @@ namespace Yttrium
     namespace Core
     {
 
+
+        //! utility to facilitate cast
         template <typename> struct NeedZeroCast;
 
+        //! XReal<...> need cast
         template <typename T> struct NeedZeroCast< XReal<T> >
         {
-            enum { Value = true };
+            enum { Value = true /*!< true */ };
         };
 
 
+        //! other types don't need cast
         template <typename T> struct NeedZeroCast
         {
-            enum { Value = false };
+            enum { Value = false /*!< false */};
         };
 
     }
@@ -62,6 +66,7 @@ namespace Yttrium
             return Of(value,NeedCast);
         }
 
+        //! \param value \return value<0
         template <typename T> static inline
         bool LTZ(const T &value)
         {
@@ -69,6 +74,7 @@ namespace Yttrium
             return LTZ(value,NeedCast);
         }
 
+        //! \param value \return value<=0
         template <typename T> static inline
         bool LEQZ(const T &value)
         {
@@ -77,12 +83,14 @@ namespace Yttrium
         }
 
     private:
+        //! \param value \return value<0 without cast
         template <typename T> static inline
         bool LTZ(const T &value, const IntToType<false> &)
         {
             return value<0;
         }
 
+        //! \param value \return value<0 with cast
         template <typename T> static inline
         bool LTZ(const T &value, const IntToType<true> &)
         {
@@ -90,12 +98,14 @@ namespace Yttrium
             return value<zero;
         }
 
+        //! \param value \return value<=0 without cast
         template <typename T> static inline
         bool LEQZ(const T &value, const IntToType<false> &)
         {
             return value<=0;
         }
 
+        //! \param value \return value<=0 with cast
         template <typename T> static inline
         bool LEQZ(const T &value, const IntToType<true> &)
         {
@@ -103,13 +113,13 @@ namespace Yttrium
             return value<=zero;
         }
 
-
-
+        //! \param value \return its sign without cast
         template <typename T> static inline SignType Of(const T &value, const IntToType<false> &)
         {
             return value<0 ? Negative : (0<value ? Positive : __Zero__ );
         }
 
+        //! \param value \return its sign with internal  cast
         template <typename T> static inline SignType Of(const T &value, const IntToType<true> &)
         {
             const T zero;

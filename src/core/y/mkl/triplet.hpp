@@ -66,6 +66,7 @@ namespace Yttrium
                 return os << '[' << self.a << ';' << self.b << ';' << self.c << ']';
             }
 
+            //! \return maximum amplitude
             inline T amplitude() const
             {
                 return Max( Fabs<T>::Of(a-b), Fabs<T>::Of(a-c), Fabs<T>::Of(b-c) );

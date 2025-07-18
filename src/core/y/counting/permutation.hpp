@@ -24,9 +24,8 @@ namespace Yttrium
         // Definitions
         //
         //______________________________________________________________________
-        class Code;
         static const char * const CallSign;  //!< "Permutation"
-        static apn Cardinal(const size_t n); //!< n!
+        static apn Cardinal(const size_t n); //!< \param n items to permute \return n!
 
         //______________________________________________________________________
         //
@@ -34,16 +33,17 @@ namespace Yttrium
         // C++
         //
         //______________________________________________________________________
-        explicit Permutation(const size_t n); //!< setup
+        explicit Permutation(const size_t n); //!< setup \param n items to permute
         virtual ~Permutation() noexcept;      //!< cleanup
 
-        virtual size_t         size()                   const noexcept; //!< n
-        virtual size_t         capacity()               const noexcept; //!< n
-        virtual const char    *callSign()               const noexcept; //!< CallSign
+        virtual size_t         size()                   const noexcept; //!< \return n
+        virtual size_t         capacity()               const noexcept; //!< \return n
+        virtual const char    *callSign()               const noexcept; //!< \return CallSign
 
     private:
-        Y_Disable_Copy_And_Assign(Permutation);
-        Code *code;
+        class Code;
+        Y_Disable_Copy_And_Assign(Permutation); //!< discarding
+        Code *code; //!< inner code
 
         virtual void doBoot() noexcept;
         virtual bool doNext() noexcept;

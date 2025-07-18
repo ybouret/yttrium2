@@ -46,12 +46,12 @@ namespace Yttrium
             const T *    token() const noexcept; //!< \return current token location
             size_t       units() const noexcept; //!< \return current token size
 
-            bool         next(const T * const sep, const size_t num) noexcept; //!< find next
-            bool         next(const T *)                             noexcept; //!< find next
-            bool         next(const T)                               noexcept; //!< find next
-            bool         next(const String<T> &)                     noexcept; //!< find next
+            bool         next(const T * const sep, const size_t num) noexcept; //!< \param sep separators \param num |sep| \return found next
+            bool         next(const T *)                             noexcept; //!< \return found next
+            bool         next(const T)                               noexcept; //!< \return found next
+            bool         next(const String<T> &)                     noexcept; //!< \return found next
 
-            //! split src and append tokens to seq
+            //! split src and append tokens to sequence-like container
             template <typename SEQUENCE> static inline
             void AppendTo(SEQUENCE        &seq,
                           const String<T> &src,
