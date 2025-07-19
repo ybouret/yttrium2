@@ -18,7 +18,7 @@ namespace
     static inline
     void testParabolic(Random::Bits &ran)
     {
-
+        std::cerr << std::endl;
         while(true)
         {
             Triplet<T> x = { ran.symm<T>(), ran.symm<T>(), ran.symm<T>() };
@@ -27,13 +27,12 @@ namespace
             Y_ASSERT(x.isIncreasing());
             if(!f.isLocalMinimum()) continue;
 
-            std::cerr << x << " : " << f << std::endl;
-
-            ParabolicOptimization<T>::Step(F<T>,x,f);
-            std::cerr << x << " : " << f << std::endl;
-            ParabolicOptimization<T>::Step(F<T>,x,f);
-            std::cerr << x << " : " << f << std::endl;
-
+            std::cerr << "[#] " << x << " : " << f << std::endl;
+            for(size_t i=0;i<3;++i)
+            {
+                ParabolicOptimization<T>::Step(F<T>,x,f);
+            }
+            std::cerr << "[#] " << x << " : " << f << std::endl;
             break;
         }
     }
@@ -46,6 +45,10 @@ Y_UTEST(opt_parabolic)
     ParabolicOptimizationVerbose = Environment::Flag("VERBOSE");
 
     testParabolic<float>(ran);
+    return 0;
+    
+    testParabolic<double>(ran);
+    testParabolic<long double>(ran);
 
 }
 Y_UDONE()

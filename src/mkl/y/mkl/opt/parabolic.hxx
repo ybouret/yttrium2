@@ -11,6 +11,14 @@ namespace
         assert(np>=3);
         Sorting::Heap::Sort(xx,ff,np,Sign::Increasing<real_t>);
 
+#if 1
+        if(ParabolicOptimizationVerbose)
+        {
+            Core::Display(std::cerr << PFX << "xx=",xx,np) << std::endl;
+            Core::Display(std::cerr << PFX << "ff=",ff,np) << std::endl;
+        }
+#endif
+
         size_t       imin = 0;
         real_t       fmin = ff[0];
         const size_t itop = np-1;
@@ -23,6 +31,7 @@ namespace
                 imin = i;
             }
         }
+        Y_PRINT("fmin=" << fmin << " #" << imin);
 
         if(imin<=0)
         {
@@ -71,6 +80,8 @@ void ParabolicOptimization<real_t>:: Step(Triplet<real_t> & x,
     real_t xx[5] = {_0,_0,_0,_0,_0};
     real_t ff[5] = {_0,_0,_0,_0,_0};
 
+
+
     if(x.b<=x.a)
     {
         Y_PRINT("<at left>");
@@ -104,6 +115,45 @@ void ParabolicOptimization<real_t>:: Step(Triplet<real_t> & x,
     //--------------------------------------------------------------------------
     real_t       g0 = f.a - f.b; assert( g0 >= _0  );
     real_t       g1 = f.c - f.b; assert( g1 >= _0  );
+
+    if(g0 <= _0 || g1 <= _0)
+    {
+        x.save(xx); f.save(ff);
+        ff[3] = F( xx[3] = Half<real_t>::Of(x.a,x.b) );
+        ff[4] = F( xx[4] = Half<real_t>::Of(x.b,x.c) );
+        return Extract(x,f,xx,ff,5);
+    }
+    else
+    {
+        assert(g0 > _0); assert( g1 > _0);
+        // most generic case
+        const real_t _1(1);
+        switch( Sign::Of(g0,g1) )
+        {
+            case Negative: assert(g0<g1); g0/=g1; g1=_1; break;
+            case __Zero__:                g0=g1=_1;      break;
+            case Positive: assert(g1<g0); g1/=g0; g0=_1; break;
+        }
+
+        const real_t width = x.width(); assert( Sign::GTZ(width) );
+        const real_t beta  = Clamp(_0,(x.b-x.a)/width,_1);
+        const real_t omb   = Clamp(_0,(x.c-x.b)/width,_1);
+        const real_t two_w = (_1 - ( beta * omb * (g1-g0) )/( omb*g0 + beta * g1)) * width;
+        x.save(xx);
+        f.save(ff);
+        ff[3] = F( xx[3] = Clamp(x.a,x.a+Half<real_t>::Of(two_w),x.c) );
+        if( xx[3] <= x.b )
+        {
+            ff[4] = F( xx[4] = Half<real_t>::Of(x.b,x.c) );
+        }
+        else
+        {
+            ff[4] = F( xx[4] = Half<real_t>::Of(x.b,x.a) );
+        }
+        return Extract(x,f,xx,ff,5);
+    }
+
+
     if(g0<=_0)
     {
         if(g1<=_0)
