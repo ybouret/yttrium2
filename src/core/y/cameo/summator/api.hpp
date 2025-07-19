@@ -95,10 +95,11 @@ namespace Yttrium
             }
 
 
+        protected:
+            virtual void add(ParamType) = 0;   //!< store/use data
 
         private:
             Y_Disable_Copy_And_Assign(Summator); //!< discarding
-            virtual void add(ParamType) = 0;   //!< store/use data
         };
 
     }

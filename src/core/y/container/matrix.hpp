@@ -12,9 +12,9 @@
 #include "y/mkl/transpose-of.hpp"
 #include "y/ability/releasable.hpp"
 
+
 namespace Yttrium
 {
-
 
 
     //__________________________________________________________________________

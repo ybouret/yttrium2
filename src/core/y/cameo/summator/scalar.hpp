@@ -8,6 +8,7 @@
 #include "y/cameo/summator/direct.hpp"
 #include "y/cameo/summator/aproxy.hpp"
 #include "y/cameo/summator/fpoint.hpp"
+#include "y/mkl/api/adaptor.hpp"
 
 namespace Yttrium
 {
@@ -32,7 +33,9 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
+            Y_Args_Expose(T,Type);
             typedef typename Select<T,DirectSummator<T>,AProxySummator<T>,FPointSummator<T> >::API SummatorType; //!< alias
+            typedef TypeToType<MutableType> MyTypeHint;
 
             //__________________________________________________________________
             //
@@ -49,6 +52,22 @@ namespace Yttrium
 
             //! cleanup
             inline virtual ~ScalarSummator() noexcept  {}
+
+            template <typename U, typename V> inline
+            void addProd(const U &u, const V &v)
+            {
+                static const MyTypeHint MyType = {};
+                ConstType res = MKL::AdaptedTo(MyType,u) * MKL::AdaptedTo(MyType,v);
+                add(res);
+            }
+
+            template <typename LHS, typename RHS>
+            inline void addProd(LHS lhs, RHS rhs, size_t n)
+            {
+                while(n-- > 0)
+                    addProd( *(lhs++), *(rhs++) );
+            }
+
 
         private:
             Y_Disable_Copy_And_Assign(ScalarSummator); //!< discaring

@@ -35,6 +35,9 @@ Y_UTEST(sequence_list)
     showList(l);
 
 
+    //std::cerr << l[1] << std::endl;
+
+
 }
 Y_UDONE()
 

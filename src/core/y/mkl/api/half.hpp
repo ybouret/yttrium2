@@ -52,6 +52,13 @@ namespace Yttrium
                 static const typename API_Select<T>::Choice choice = {};
                 return Kernel::Half<T>(x,choice);
             }
+
+            static inline Type Of(ParamType x, ParamType y)
+            {
+                static const typename API_Select<T>::Choice choice = {};
+                ConstType sum = x+y;
+                return Kernel::Half<T>(sum,choice);
+            }
         };
 
     }

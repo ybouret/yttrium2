@@ -2,6 +2,7 @@
 #define Y_MKL_Triplet_Included 1
 
 #include "y/mkl/api/fabs.hpp"
+#include "y/mkl/api/half.hpp"
 #include "y/sorting/sort3.hpp"
 #include "y/core/utils.hpp"
 #include <iostream>
@@ -46,12 +47,30 @@ namespace Yttrium
                 return *( (&a) + --indx );
             }
 
+            //! \return a <= b && b <= c;
+            inline bool isIncreasing() const
+            {
+                return a <= b && b <= c;
+            }
+
+            //! \return c <= b && b <= a
+            inline bool isDecreasing() const
+            {
+                return c <= b && b <= a;
+            }
+
+            //! \return increasing or decreasing
+            inline bool isOrdered() const
+            {
+                return isIncreasing() || isDecreasing();
+            }
 
             //! sort a <= b <= c
             inline void sort() noexcept
             {
-                Sorting::Sort3(&a);
+                Sorting::Sort3(&a); assert(isIncreasing());
             }
+
 
             //! sort a <= b <= c \param peer co-sorted triplet
             template <typename U>
@@ -78,6 +97,33 @@ namespace Yttrium
                 const T delta = c - a;
                 return Fabs<T>::Of(delta);
             }
+
+
+            //! \return b <= a && b <= c
+            inline bool isLocalMinimum() const
+            {
+                return b <= a && b <= c;
+            }
+
+            inline T middle() const
+            {
+                return Half<T>::Of(a,c);
+            }
+
+            inline void save( T data[] ) const
+            {
+                data[0] = a;
+                data[1] = b;
+                data[2] = c;
+            }
+
+            inline void load( const T data[] )
+            {
+                a = data[0];
+                b = data[1];
+                c = data[2];
+            }
+
 
 
         };
