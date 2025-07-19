@@ -60,7 +60,7 @@ namespace Yttrium
 
     void InputProcess:: store(const char C)
     {
-        buffer >> C;
+        buffer >> uint8_t(C);
     }
 
 #if 0

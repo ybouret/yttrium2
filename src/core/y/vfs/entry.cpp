@@ -39,7 +39,7 @@ namespace Yttrium
     static inline
     size_t shifting(const char *field, const String &path)
     {
-        return field-path.c_str();
+        return static_cast<size_t>(field-path.c_str());
     }
 
     VFS::Entry:: Entry(const Entry &entry) :
@@ -100,9 +100,9 @@ namespace Yttrium
         switch(part)
         {
             case Path:   return path;
-            case PathWE: return ext ? String(path.c_str(),ext-path.c_str()) : path;
+            case PathWE: return ext ? String(path.c_str(),static_cast<size_t>(ext-path.c_str()) ) : path;
             case Base:   return String(base);
-            case BaseWE: return ext ? String(base,ext-base) : String(base);
+            case BaseWE: return ext ? String(base,static_cast<size_t>(ext-base) ) : String(base);
             case Ext:    return String(ext?ext+1:0);
         }
         throw Specific::Exception(CallSign,"corrupted VFS::Entry::Part value");

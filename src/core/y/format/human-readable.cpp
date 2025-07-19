@@ -71,7 +71,7 @@ namespace Yttrium
 
         snprintf(fmt, sizeof(fmt), "%%4u.%%0%uu%%c",2);
         const HumanReadable::Divider &hd = HumanReadable::Divide[hr.sfx];
-        const unsigned                fp = unsigned( floor(100.0*double(hr.rem)/hd.factor) );
+        const unsigned                fp = unsigned( floor(100.0*double(hr.rem)/ (double) hd.factor) );
         snprintf(buf, sizeof(buf),fmt,hr.quot, fp, hd.suffix);
         os << buf;
         return os;
