@@ -27,9 +27,6 @@ namespace
     {
       
         Sorting::Heap::Sort(xx,ff,4, Sign::Increasing<real_t>);
-        //Core::Display(std::cerr << "\txx=", xx, 4) << std::endl;
-        //Core::Display(std::cerr << "\tff=", ff, 4) << std::endl;
-
         for(unsigned i=0,j=1;i<3;++i,++j)
         {
             f.a = ff[i];
@@ -51,9 +48,7 @@ namespace
                 return x.width();
             }
         }
-
-
-
+        
         throw Specific::Exception(ZRidCallSign,"corrupted algorithm");
     }
 }

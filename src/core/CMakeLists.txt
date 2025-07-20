@@ -1,5 +1,5 @@
 
-include_directories(.)
+include_directories(. ..)
 
 Y_CreateLibrary(y
     y
@@ -50,6 +50,7 @@ Y_CreateLibrary(y
     y/stream/libc/file
     y/stream/memory
     y/stream/proc
+    y/stream/gzip
     y/sorting
     y/threading
     y/pointer
