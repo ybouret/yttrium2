@@ -33,9 +33,9 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            Y_Args_Expose(T,Type);
+            Y_Args_Expose(T,Type); //!< aliases
             typedef typename Select<T,DirectSummator<T>,AProxySummator<T>,FPointSummator<T> >::API SummatorType; //!< alias
-            typedef TypeToType<MutableType> MyTypeHint;
+            typedef TypeToType<MutableType> MyTypeHint; //!< alias
 
             //__________________________________________________________________
             //
@@ -53,6 +53,7 @@ namespace Yttrium
             //! cleanup
             inline virtual ~ScalarSummator() noexcept  {}
 
+            //! add product \param u first arg \param v second arg
             template <typename U, typename V> inline
             void addProd(const U &u, const V &v)
             {
@@ -61,6 +62,7 @@ namespace Yttrium
                 add(res);
             }
 
+            //! dot product of a range \param lhs first iterator \param rhs second iterator \param n range size
             template <typename LHS, typename RHS>
             inline void addProd(LHS lhs, RHS rhs, size_t n)
             {

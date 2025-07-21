@@ -11,7 +11,7 @@ namespace
         assert(np>=3);
         Sorting::Heap::Sort(xx,ff,np,Sign::Increasing<real_t>);
 
-#if 1
+#if 0
         if(ParabolicOptimizationVerbose)
         {
             Core::Display(std::cerr << PFX << "xx=",xx,np) << std::endl;
@@ -31,7 +31,7 @@ namespace
                 imin = i;
             }
         }
-        Y_PRINT("fmin=" << fmin << " #" << imin);
+        //Y_PRINT("fmin=" << fmin << " #" << imin);
 
         if(imin<=0)
         {
@@ -152,61 +152,6 @@ void ParabolicOptimization<real_t>:: Step(Triplet<real_t> & x,
         }
         return Extract(x,f,xx,ff,5);
     }
-
-
-    if(g0<=_0)
-    {
-        if(g1<=_0)
-        {
-            // double degenerate case
-            Y_PRINT("<doubly degenerate>");
-            x.save(xx); f.save(ff);
-            ff[3] = F( xx[3] = Half<real_t>::Of(x.a,x.b) );
-            ff[4] = F( xx[4] = Half<real_t>::Of(x.b,x.c) );
-            return Extract(x,f,xx,ff,5);
-        }
-        else
-        {
-            // degenerate case: try (a+b)/2
-            Y_PRINT("<left degenerate>");
-            x.save(xx); f.save(ff);
-            ff[3] = F( xx[3] = Half<real_t>::Of(x.a,x.b) );
-            return Extract(x,f,xx,ff,4);
-        }
-    }
-    else
-    {
-        assert(g0>_0);
-        if(g1<=_0)
-        {
-            // degenerate case: try (b+c)/2
-            Y_PRINT("<right degenerate>");
-            x.save(xx); f.save(ff);
-            ff[3] = F( xx[3] = Half<real_t>::Of(x.b,x.c) );
-            return Extract(x,f,xx,ff,4);
-        }
-        else
-        {
-            // most generic case
-            const real_t _1(1);
-            switch( Sign::Of(g0,g1) )
-            {
-                case Negative: assert(g0<g1); g0/=g1; g1=_1; break;
-                case __Zero__:                g0=g1=_1;      break;
-                case Positive: assert(g1<g0); g1/=g0; g0=_1; break;
-            }
-
-            const real_t width = x.width(); assert( Sign::GTZ(width) );
-            const real_t beta  = Clamp(_0,(x.b-x.a)/width,_1);
-            const real_t omb   = _1 - beta;
-            const real_t two_w = (_1 - ( beta * omb * (g1-g0) )/( omb*g0 + beta * g1)) * width;
-            x.save(xx);
-            f.save(ff);
-            ff[3] = F( xx[3] = Clamp(x.a,x.a+Half<real_t>::Of(two_w),x.c) );
-            return Extract(x,f,xx,ff,4);
-        }
-    }
-
 
 
 

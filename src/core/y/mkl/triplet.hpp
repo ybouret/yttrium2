@@ -105,11 +105,13 @@ namespace Yttrium
                 return b <= a && b <= c;
             }
 
+            //! \return (a+c)/2
             inline T middle() const
             {
                 return Half<T>::Of(a,c);
             }
 
+            //! \param data data[0..2] target
             inline void save( T data[] ) const
             {
                 data[0] = a;
@@ -117,6 +119,7 @@ namespace Yttrium
                 data[2] = c;
             }
 
+            //! \param data data[0..2] source
             inline void load( const T data[] )
             {
                 a = data[0];

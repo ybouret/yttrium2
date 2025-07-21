@@ -52,6 +52,13 @@ namespace Yttrium
             bool         next(const String<T> &)                     noexcept; //!< \return found next
 
             //! split src and append tokens to sequence-like container
+            /**
+             \param seq target sequence
+             \param src source string
+             \param sep separators
+             \param num number of separator
+             \param imax limit count if positive
+             */
             template <typename SEQUENCE> static inline
             void AppendTo(SEQUENCE        &seq,
                           const String<T> &src,
@@ -69,7 +76,12 @@ namespace Yttrium
                 }
             }
 
-            //! split src and append tokens to seq
+            //! split src and append all possible tokens to seq
+            /**
+             \param seq target sequence
+             \param str source string
+             \param sep separators
+             */
             template <typename SEQUENCE> static inline
             void AppendTo(SEQUENCE        &seq,
                           const String<T> &str,
@@ -78,7 +90,12 @@ namespace Yttrium
                 AppendTo<SEQUENCE>(seq,str,sep,Length(sep),-1);
             }
 
-            //! split src and append tokens to seq
+            //! split src and append all possible tokens to seq
+            /**
+             \param seq target sequence
+             \param str source string
+             \param sep separators
+             */
             template <typename SEQUENCE> static inline
             void AppendTo(SEQUENCE        &seq,
                           const String<T> &str,
@@ -87,7 +104,12 @@ namespace Yttrium
                 AppendTo<SEQUENCE>(seq,str,sep.c_str(),sep.size(),-1);
             }
             
-            //! split src and append tokens to seq
+            //! split src and append all possible tokens to seq
+            /**
+             \param seq target sequence
+             \param str source string
+             \param sep separator
+             */
             template <typename SEQUENCE> static inline
             void AppendTo(SEQUENCE        &seq,
                           const String<T> &str,

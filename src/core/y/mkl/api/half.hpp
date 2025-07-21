@@ -46,13 +46,14 @@ namespace Yttrium
         {
             Y_Args_Declare(T,Type);                                   //!< aliases
 
-            //! \param x value \return |x|
+            //! \param x value \return x/2
             static inline Type Of(ParamType x)
             {
                 static const typename API_Select<T>::Choice choice = {};
                 return Kernel::Half<T>(x,choice);
             }
 
+            //! \param x value \param y value \return (x+y)/2
             static inline Type Of(ParamType x, ParamType y)
             {
                 static const typename API_Select<T>::Choice choice = {};

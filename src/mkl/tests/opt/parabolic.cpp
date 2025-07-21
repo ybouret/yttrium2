@@ -28,7 +28,7 @@ namespace
             if(!f.isLocalMinimum()) continue;
 
             std::cerr << "[#] " << x << " : " << f << std::endl;
-            for(size_t i=0;i<3;++i)
+            for(size_t i=0;i<10;++i)
             {
                 ParabolicOptimization<T>::Step(F<T>,x,f);
             }
