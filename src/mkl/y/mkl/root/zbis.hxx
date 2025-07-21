@@ -18,7 +18,7 @@ const char * ZBis<real_t>:: callSign() const noexcept
 }
 
 template <>
-void ZBis<real_t>:: lookup(Triplet<real_t> &x, Triplet<real_t> &f, FunctionType &F)
+real_t ZBis<real_t>:: lookup(Triplet<real_t> &x, Triplet<real_t> &f, FunctionType &F)
 {
     Handle hx = { 0,0 };
     Handle hf = { 0,0 };
@@ -28,7 +28,7 @@ void ZBis<real_t>:: lookup(Triplet<real_t> &x, Triplet<real_t> &f, FunctionType 
     // check and organize data
     //
     //--------------------------------------------------------------------------
-    if( found(hx, hf, x, f, F) ) return;
+    if( found(hx, hf, x, f, F) ) return x.b;
 
     //--------------------------------------------------------------------------
     //
@@ -38,7 +38,7 @@ void ZBis<real_t>:: lookup(Triplet<real_t> &x, Triplet<real_t> &f, FunctionType 
     switch( Sign::Of( f.b = F(x.b=Half<real_t>::Of(x.a+x.c) ) ) )
     {
         case __Zero__: // exact
-            return;
+            return x.b;
 
         case Negative:
             *hx.neg = x.b;
@@ -63,7 +63,7 @@ void ZBis<real_t>:: lookup(Triplet<real_t> &x, Triplet<real_t> &f, FunctionType 
         {
             case __Zero__: // exact
                 //std::cerr << "exact " << f.b << " @" << x.b << std::endl;
-                return;
+                return x.b;
 
             case Negative:
                 *hx.neg = x.b;
@@ -77,7 +77,7 @@ void ZBis<real_t>:: lookup(Triplet<real_t> &x, Triplet<real_t> &f, FunctionType 
         }
 
         if( AlmostEqual<real_t>::Are(x_old,x.b) )
-            return;
+            return x.b;
     }
 
 }

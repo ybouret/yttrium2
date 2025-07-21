@@ -50,7 +50,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             virtual const char * callSign() const noexcept;
-            virtual void         lookup(Triplet<T> &x, Triplet<T> &f, FunctionType &F);
+            virtual T            lookup(Triplet<T> &x, Triplet<T> &f, FunctionType &F);
 
         private:
             Y_Disable_Copy_And_Assign(ZBis); //!< discarding

@@ -58,20 +58,22 @@ namespace Yttrium
 
             //! lookup interface
             /**
+             x.b and f.b are the result, and f.b must be the
+             last evaluated call before return
              \param x initial bracketing x.a and x.c
              \param f initial function with f.a*f.c <=0
              \param F function to zero
              */
-            virtual void lookup(Triplet<T> &x, Triplet<T> &f, FunctionType &F) = 0;
+            virtual T lookup(Triplet<T> &x, Triplet<T> &f, FunctionType &F) = 0;
 
-            
+
             //__________________________________________________________________
             //
             //
             // Methods
             //
             //__________________________________________________________________
-
+            
             //! wrapper to callable FUNCTION
             /**
              \param F any compatible function
@@ -79,32 +81,25 @@ namespace Yttrium
              \param f initial function with f.a*f.c <=0
              */
             template <typename FUNCTION>   inline
-            void operator()(FUNCTION &F, Triplet<T> &x, Triplet<T> &f )
+            T operator()(FUNCTION &F, Triplet<T> &x, Triplet<T> &f )
             {
                 Wrapper1D<T,T,FUNCTION> FW(F);
-                lookup(x,f,FW);
+                return lookup(x,f,FW);
             }
 
 
             //! setup
             /**
+             upon success, F is called
              \param hx handle for x
              \param hf handle for f
              \param x  triplet with x.a and x.c initialized
              \param f  triplet with f.a * f.c <= 0
              \param F  function to zero
-             \return true if f.a or f.c was 0, x.b and f.b set accordingly
+             \return true if f.a or f.c was 0, x.b and f.b are set accordingly
              */
             bool found(Handle &hx, Handle &hf, Triplet<T> &x, Triplet<T> &f, FunctionType &F);
 
-#if 0
-            template <typename FUNCTION> inline
-            bool found(FUNCTION &F, Handle &hx, Handle &hf, Triplet<T> &x, Triplet<T> &f)
-            {
-                Wrapper1D<T,T,FUNCTION> WF(F);
-                return found(hx,hf,x,f,WF);
-            }
-#endif
 
 
 

@@ -25,14 +25,12 @@ bool ZFind<real_t>:: found(Handle &hx, Handle &hf, Triplet<real_t> &x, Triplet<r
 
         case Sign::ZN:
         case Sign::ZP:
-            x.b = x.a;
-            f.b = f.a;
+            f.b = f.a = F( x.b = x.a ); assert( __Zero__ == Sign::Of(f.b) );
             return true;
 
         case Sign::NZ:
         case Sign::PZ:
-            x.b = x.c;
-            f.b = f.c;
+            f.b = f.c = F( x.b = x.c ); assert( __Zero__ == Sign::Of(f.b) );
             return true;
 
         case Sign::NN:

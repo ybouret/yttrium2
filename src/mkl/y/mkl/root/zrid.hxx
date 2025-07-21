@@ -54,7 +54,7 @@ namespace
 }
 
 template <>
-void ZRid<real_t>:: lookup(Triplet<real_t> &x, Triplet<real_t> &f, FunctionType &F)
+real_t ZRid<real_t>:: lookup(Triplet<real_t> &x, Triplet<real_t> &f, FunctionType &F)
 {
     //--------------------------------------------------------------------------
     //
@@ -65,7 +65,7 @@ void ZRid<real_t>:: lookup(Triplet<real_t> &x, Triplet<real_t> &f, FunctionType 
         Handle hx = { 0,0 };
         Handle hf = { 0,0 };
 
-        if( found(hx, hf, x, f, F) ) return;
+        if( found(hx, hf, x, f, F) ) return x.b;
     }
 
     if(x.a>x.c)
@@ -85,7 +85,7 @@ void ZRid<real_t>:: lookup(Triplet<real_t> &x, Triplet<real_t> &f, FunctionType 
     {
         // take midpoint
         const SignType s_b = Sign::Of( f.b = F( x.b=Half<real_t>::Of(x.a+x.c) ));
-        if(__Zero__==s_b) { return; }
+        if(__Zero__==s_b) { return x.b; }
 
         // prepare possibilities
         real_t xx[4] = { x.a, x.b, x.c, zero };
@@ -133,14 +133,15 @@ void ZRid<real_t>:: lookup(Triplet<real_t> &x, Triplet<real_t> &f, FunctionType 
         {
             x.b = xx[3];
             f.b = ff[3];
-            return;
+            return x.b;
         }
 
         const real_t newWidth = Extract(x,f,xx,ff);
 
         if( AlmostEqual<real_t>::Are(width,newWidth) )
         {
-            return;
+            f.b = F(x.b); // last call
+            return x.b;
         }
         width = newWidth;
     }
