@@ -20,6 +20,8 @@ namespace Yttrium
 
             //! run steps up to convergence
             /**
+             - the result is f.b at x.b
+             - f.b = F(x.b) is called before return
              \param x initial ordered positions
              \param f initial local minimum
              \param F function to minimize

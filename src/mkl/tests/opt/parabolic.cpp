@@ -44,10 +44,12 @@ Y_UTEST(opt_parabolic)
     Random::ParkMiller ran;
     
     testParabolic<float>(ran);
-    return 0;
-    
     testParabolic<double>(ran);
     testParabolic<long double>(ran);
+
+    testParabolic<XReal<float> >(ran);
+    testParabolic<XReal<double> >(ran);
+    testParabolic<XReal<long double> >(ran);
 
 }
 Y_UDONE()

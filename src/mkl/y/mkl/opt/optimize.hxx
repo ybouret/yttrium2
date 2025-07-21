@@ -23,6 +23,7 @@ void Optimize<real_t>:: Run(Triplet<real_t> & x,
         ParabolicOptimization<real_t>::Step(x,f,F);
         if( AlmostEqual<real_t>::Are(x_old,x.b) )
         {
+            f.b = F(x.b);
             return;
         }
 
