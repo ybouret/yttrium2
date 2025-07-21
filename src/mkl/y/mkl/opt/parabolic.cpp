@@ -1,5 +1,6 @@
 #include "y/mkl/opt/parabolic.hpp"
 #include "y/mkl/xreal.hpp"
+#include "y/mkl/api/almost-equal.hpp"
 #include "y/sorting/heap.hpp"
 #include "y/core/display.hpp"
 

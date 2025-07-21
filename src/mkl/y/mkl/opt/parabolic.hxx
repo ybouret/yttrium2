@@ -103,16 +103,65 @@ void ParabolicStep<real_t>:: Tighten(Triplet<real_t> & x,
     assert(x.b < x.c);
 
     // at this point, beta exists
+
     //--------------------------------------------------------------------------
     //
     // check f
     //
     //--------------------------------------------------------------------------
-    real_t       g0 = f.a - f.b; assert( g0 >= _0  );
-    real_t       g1 = f.c - f.b; assert( g1 >= _0  );
+    real_t g0 = f.a - f.b; assert( g0 >= _0  );
+    real_t g1 = f.c - f.b; assert( g1 >= _0  );
 
-    
+    if(g0 <= _0 || g1 <= _0 || AlmostEqual<real_t>::Are(g0,g1) )
+    {
 
+        //----------------------------------------------------------------------
+        // add two middle points to scan
+        //----------------------------------------------------------------------
+        Y_PRINT("<degenerate> g0=" <<  g0 << " : g1=" << g1);
+        x.save(xx);
+        f.save(ff);
+        ff[3] = F( xx[3] = Half<real_t>::Of(x.a,x.b));
+        ff[4] = F( xx[4] = Half<real_t>::Of(x.b,x.c));
+        return Extract(x,f,xx,ff,5);
+    }
+
+    assert(g0>_0);
+    assert(g1>_0);
+    Y_PRINT("<generic> g0=" <<  g0 << " : g1=" << g1);
+
+    const real_t _1(1);
+    switch( Sign::Of(g0,g1) )
+    {
+        case Negative: assert(g0<g1); g0/=g1; g1=_1; break;
+        case __Zero__:                g0=g1=_1;      break;
+        case Positive: assert(g1<g0); g1/=g0; g0=_1; break;
+    }
+    Y_PRINT("<scaling> g0=" <<  g0 << " : g1=" << g1);
+
+    // save current triple
+    x.save(xx);
+    f.save(ff);
+
+    // append parabolic point
+    const real_t width = x.width(); assert( width > _0 );
+    const real_t beta  = Clamp(_0,(x.b-x.a)/width,_1);
+    const real_t omb   = Clamp(_0,(x.c-x.b)/width,_1);
+    const real_t twice = ( beta * omb * (g0-g1) )/( omb*g0 + beta * g1) * width;
+
+    const real_t xp  = Clamp(x.a,x.middle() + Half<real_t>::Of(twice), x.c);
+    ff[3] = F( xx[3] = xp );
+
+    // append counterpoint
+    if( xp <= x.b )
+    {
+        ff[4] = F( xx[4] = Half<real_t>::Of(x.b,x.c) );
+    }
+    else
+    {
+        ff[4] = F( xx[4] = Half<real_t>::Of(x.b,x.a) );
+    }
+    return Extract(x,f,xx,ff,5);
 
 
     exit(0);

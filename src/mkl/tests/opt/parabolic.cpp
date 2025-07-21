@@ -2,6 +2,7 @@
 #include "y/utest/run.hpp"
 #include "y/random/park-miller.hpp"
 #include "y/string/env.hpp"
+#include "y/stream/libc/output.hpp"
 
 using namespace Yttrium;
 using namespace MKL;
@@ -15,11 +16,27 @@ namespace
         return x*x*x*x - fac*x*x + x*x*x - x;
     }
 
+
+    template <typename T>
+    static inline void appendTo(const char * const fileName,
+                                const Triplet<T> &x,
+                                const Triplet<T> &f)
+    {
+        AppendFile fp(fileName);
+        fp("%.15g %.15g\n", double(x.a), double(f.a) );
+        fp("%.15g %.15g\n", double(x.b), double(f.b) );
+        fp("%.15g %.15g\n", double(x.c), double(f.c) );
+        fp("%.15g %.15g\n", double(x.a), double(f.a) );
+        fp("\n");
+    }
+
     template <typename T>
     static inline
-    void testParabolic(Random::Bits &ran)
+    void testParabolic(Random::Bits &ran, const char * const fileName = 0)
     {
         const T   amplitude(3);
+
+        if(fileName) OutputFile::Overwrite(fileName);
 
         std::cerr << std::endl;
         while(true)
@@ -31,9 +48,11 @@ namespace
             if(!f.isLocalMinimum()) continue;
 
             std::cerr << "[#] " << x << " : " << f << std::endl;
-            for(size_t i=0;i<10;++i)
+            if(fileName) appendTo(fileName,x,f);
+            for(size_t i=0;i<1;++i)
             {
                 ParabolicStep<T>::Tighten(F<T>,x,f);
+                if(fileName) appendTo(fileName,x,f);
             }
             std::cerr << "[#] " << x << " : " << f << std::endl;
             break;
@@ -46,8 +65,9 @@ Y_UTEST(opt_parabolic)
 {
     Random::ParkMiller ran;
     ParabolicStepVerbose = Environment::Flag("VERBOSE");
-    
-    testParabolic<float>(ran);
+
+
+    testParabolic<float>(ran,"para-f.dat");
     return 0;
 
     testParabolic<double>(ran);
