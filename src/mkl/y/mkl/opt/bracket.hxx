@@ -16,21 +16,39 @@ bool Bracket<real_t>:: Inside(Triplet<real_t> &x,
     }
     assert(f.a<=f.c);
 
-#if 0
-    const real_t _0(0);
-    real_t xx[4] = { _0,_0,_0,_0  };
-    real_t ff[4] = { _0,_0,_0,_0  };
-#endif
 
-    // initial guess
+PROBE:
+    // make new guess
     f.b = F( x.b = x.middle() ); assert( x.isOrdered() );
-    while( !f.isLocalMinimum() )
-    {
-        assert(f.a<=f.c);
-        assert(f.b>f.a);
 
+    // test against the minimal value
+    switch( Sign::Of(f.b,f.a) )
+    {
+        case __Zero__:
+        case Negative:
+            // success
+            assert(f.isLocalMinimum());
+            break;
+
+            // not there yet
+        case Positive:
+            f.c = f.b;
+            x.c = x.b;
+            assert( x.isOrdered() );
+            if( AlmostEqual<real_t>::Are(x.a,x.b) )
+            {
+                f.b = f.a;
+                x.b = x.a;
+                assert( x.isOrdered() );
+                assert( f.isLocalMinimum() );
+                return false; // global mininum on side
+            }
+            goto PROBE;
     }
 
-    assert( f.isLocalMinimum() );
+
+
     return true;
+
+
 }

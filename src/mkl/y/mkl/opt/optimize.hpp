@@ -25,10 +25,18 @@ namespace Yttrium
              \param x initial ordered positions
              \param f initial local minimum
              \param F function to minimize
+             \return minimum location
              */
-            static void Run(Triplet<T> &   x,
-                            Triplet<T> &   f,
-                            FunctionType & F);
+            static T Run(Triplet<T> &   x,
+                         Triplet<T> &   f,
+                         FunctionType & F);
+
+            template <typename FUNCTION> static inline
+            T Run(FUNCTION &F, Triplet<T> &x, Triplet<T> &f)
+            {
+                Wrapper1D<T,T,FUNCTION> FW(F);
+                return Run(x,f,FW);
+            }
         };
 
     }

@@ -23,7 +23,12 @@ namespace Yttrium
              */
             static bool Inside(Triplet<T> &x, Triplet<T> &f, FunctionType &F);
 
-            
+            template <typename FUNCTION> static inline
+            bool Inside(FUNCTION &F, Triplet<T> &x, Triplet<T> &f)
+            {
+                Wrapper1D<T,T,FUNCTION> FW(F);
+                return Inside(x,f,FW);
+            }
 
         };
 

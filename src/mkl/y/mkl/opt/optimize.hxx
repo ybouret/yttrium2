@@ -1,6 +1,6 @@
 
 template <>
-void Optimize<real_t>:: Run(Triplet<real_t> & x,
+real_t Optimize<real_t>:: Run(Triplet<real_t> & x,
                             Triplet<real_t> & f,
                             FunctionType &    F)
 {
@@ -21,10 +21,11 @@ void Optimize<real_t>:: Run(Triplet<real_t> & x,
     {
         const real_t x_old = x.b;
         ParabolicOptimization<real_t>::Step(x,f,F);
+        std::cerr << "x_old = " << x_old << " -> " << x.b << std::endl;
         if( AlmostEqual<real_t>::Are(x_old,x.b) )
         {
             f.b = F(x.b);
-            return;
+            return x.b;
         }
 
     }

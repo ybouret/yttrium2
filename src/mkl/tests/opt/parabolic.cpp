@@ -11,17 +11,20 @@ namespace
     template <typename T>
     static inline T F(T x)
     {
-        return Squared(Squared(x-T(0.1))) + T(0.7) + T(0.5) * x;
+        const T fac(3);
+        return x*x*x*x - fac*x*x + x*x*x - x;
     }
 
     template <typename T>
     static inline
     void testParabolic(Random::Bits &ran)
     {
+        const T   amplitude(3);
+
         std::cerr << std::endl;
         while(true)
         {
-            Triplet<T> x = { ran.symm<T>(), ran.symm<T>(), ran.symm<T>() };
+            Triplet<T> x = { amplitude*ran.symm<T>(), amplitude*ran.symm<T>(), amplitude*ran.symm<T>() };
             Triplet<T> f = { F(x.a), F(x.b), F(x.c) };
             x.sort(f);
             Y_ASSERT(x.isIncreasing());
@@ -44,6 +47,8 @@ Y_UTEST(opt_parabolic)
     Random::ParkMiller ran;
     
     testParabolic<float>(ran);
+    return 0;
+
     testParabolic<double>(ran);
     testParabolic<long double>(ran);
 

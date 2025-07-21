@@ -13,3 +13,4 @@ Y_UTEST(root:zfind)
 Y_UTEST(tao:1)
 
 Y_UTEST(opt:parabolic)
+Y_UTEST(opt:minimize)
