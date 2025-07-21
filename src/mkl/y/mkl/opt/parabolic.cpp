@@ -8,7 +8,14 @@ namespace Yttrium
     namespace MKL
     {
 
-        
+        bool              ParabolicStepVerbose = false;
+        static const char PFX[] = "[ParabolicStep] ";
+
+#define Y_PRINT(MSG) do { \
+if(ParabolicStepVerbose) { std::cerr << PFX << MSG << std::endl; } \
+} while(false)
+
+
 
 #define real_t float
 #include "parabolic.hxx"

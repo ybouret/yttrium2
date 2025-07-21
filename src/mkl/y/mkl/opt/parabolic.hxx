@@ -8,16 +8,17 @@ namespace
                  real_t            ff[],
                  const size_t      np)
     {
+        //----------------------------------------------------------------------
+        // sorting
+        //----------------------------------------------------------------------
         assert(np>=3);
         Sorting::Heap::Sort(xx,ff,np,Sign::Increasing<real_t>);
 
-#if 0
-        if(ParabolicOptimizationVerbose)
+        if(ParabolicStepVerbose)
         {
             Core::Display(std::cerr << PFX << "xx=",xx,np) << std::endl;
             Core::Display(std::cerr << PFX << "ff=",ff,np) << std::endl;
         }
-#endif
 
         size_t       imin = 0;
         real_t       fmin = ff[0];
@@ -65,18 +66,60 @@ namespace
 }
 
 template <>
-void ParabolicOptimization<real_t>:: Step(Triplet<real_t> & x,
-                                          Triplet<real_t> & f,
-                                          FunctionType &    F)
+void ParabolicStep<real_t>:: Tighten(Triplet<real_t> & x,
+                                     Triplet<real_t> & f,
+                                     FunctionType &    F)
 {
 
     assert( x.isIncreasing()   );
     assert( f.isLocalMinimum() );
 
-    const real_t _0(0);
+    //--------------------------------------------------------------------------
+    //
+    // preparing data
+    //
+    //--------------------------------------------------------------------------
+    Y_PRINT("<enter> x=" << x << "; f=" << f);
 
+    const real_t _0(0);
     real_t xx[5] = {_0,_0,_0,_0,_0};
     real_t ff[5] = {_0,_0,_0,_0,_0};
+
+    //--------------------------------------------------------------------------
+    //
+    // Intercepting side cases
+    //
+    //--------------------------------------------------------------------------
+    if(x.b<=x.a || x.b >= x.c)
+    {
+        xx[0] = x.a;        ff[0] = f.a;
+        xx[1] = x.middle(); ff[1] = F(xx[1]);
+        xx[2] = x.c;        ff[2] = f.c;
+        Y_PRINT("<on side> inserting F(" << xx[1] << ")=" << ff[1]);
+        return Extract(x,f,xx,ff,3);
+    }
+
+    assert(x.a < x.b);
+    assert(x.b < x.c);
+
+    // at this point, beta exists
+    //--------------------------------------------------------------------------
+    //
+    // check f
+    //
+    //--------------------------------------------------------------------------
+    real_t       g0 = f.a - f.b; assert( g0 >= _0  );
+    real_t       g1 = f.c - f.b; assert( g1 >= _0  );
+
+
+
+    exit(0);
+
+#if 0
+    exit(0);
+
+
+
 
 
 
@@ -148,7 +191,7 @@ void ParabolicOptimization<real_t>:: Step(Triplet<real_t> & x,
         }
         return Extract(x,f,xx,ff,5);
     }
-
+#endif
 
 
 

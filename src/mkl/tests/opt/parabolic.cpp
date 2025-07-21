@@ -33,7 +33,7 @@ namespace
             std::cerr << "[#] " << x << " : " << f << std::endl;
             for(size_t i=0;i<10;++i)
             {
-                ParabolicOptimization<T>::Step(F<T>,x,f);
+                ParabolicStep<T>::Tighten(F<T>,x,f);
             }
             std::cerr << "[#] " << x << " : " << f << std::endl;
             break;
@@ -45,6 +45,7 @@ namespace
 Y_UTEST(opt_parabolic)
 {
     Random::ParkMiller ran;
+    ParabolicStepVerbose = Environment::Flag("VERBOSE");
     
     testParabolic<float>(ran);
     return 0;

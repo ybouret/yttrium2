@@ -53,7 +53,10 @@ namespace Yttrium
                     std::cerr << s2 <<  " <= " << q << std::endl;
                     const Rational sp12 = (s+1).sqr();
                     if(q<sp12)
+                    {
+                        std::cerr << q <<  " < " << sp12 << std::endl;
                         return s;
+                    }
                 }
 
 
