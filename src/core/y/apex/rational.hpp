@@ -139,6 +139,7 @@ namespace Yttrium
             Rational       abs() const;              //!< \return |*this|
             Rational       sqrt() const;             //!< \return |*this|
             void           shr();                    //!< divide by two
+            Rational       sqr() const;              //!< return (*this)^2
             
             //! \return floating point ratio
             template <typename T> inline

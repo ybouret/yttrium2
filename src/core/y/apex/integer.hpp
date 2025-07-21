@@ -80,6 +80,7 @@ namespace Yttrium
             Integer & neg()          noexcept; //!< in-place opposite \return *this*
             Integer   sqrt()             const; //!< \return (*this)^(1/2)
             void      shr()           noexcept; //!< divide by 2
+            Integer   sqr()              const; //!< return (*this)^2
             
 #if !defined(DOXYGEN_SHOULD_SKIP_THIS)
             Y_APZ_Proto_Decl_NoExcept(static SignType,Compare);

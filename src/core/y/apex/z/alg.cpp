@@ -27,6 +27,21 @@ namespace Yttrium
             return *this;
         }
 
+        Integer Integer:: sqr() const
+        {
+            switch(s)
+            {
+                case __Zero__: return Integer();
+                case Negative:
+                case Positive:
+                    break;
+            }
+            const Natural n2 = n.sqr();
+            return Integer(Positive,n2);
+        }
+
+
+
         Integer   Integer:: sqrt()      const
         {
             switch(s)

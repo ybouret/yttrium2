@@ -13,6 +13,13 @@ namespace Yttrium
             return Rational(N,denom);
         }
 
+        Rational Rational:: sqr() const
+        {
+            const Integer n2 = numer.sqr();
+            const Natural d2 = denom.sqr();
+            return Rational(n2,d2);
+        }
+
         Rational Rational:: sqrt() const
         {
 
@@ -24,22 +31,35 @@ namespace Yttrium
                     break;
             }
 
-            const Natural &D = denom;
-            const Natural &N = numer.n;
-            Natural        a = N;
-            Natural        b = D;
+            const Rational & q = *this;
+            const Natural  & D = denom;
+            const Natural  & N = numer.n;
+            Natural          a = N;
+            Natural          b = D;
 
-            for(size_t i=0;i<4;++i)
+            //while(true)
+            for(size_t i=0;i<10;++i)
             {
                 Natural newB = b * a * D;
                 Natural newA = D*a.sqr() + N * b.sqr();
                 newA.shr();
                 Natural::Simplify(newA,newB);
-                const Rational q(Positive,newA,newB);
-                std::cerr << "s=" << q << std::endl;
+                const Rational s(Positive,newA,newB);
+                //std::cerr << "s=" << s << std::endl;
+                const Rational s2 = s.sqr();
+
+                if(s2 <= q )
+                {
+                    std::cerr << s2 <<  " <= " << q << std::endl;
+                    const Rational sp12 = (s+1).sqr();
+                    if(q<sp12)
+                        return s;
+                }
+
 
                 a.xch(newA);
                 b.xch(newB);
+
             }
 
             return Rational();
