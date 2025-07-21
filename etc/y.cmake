@@ -210,8 +210,9 @@ function(Y_LinkLibraries THE_EXE)
 	set(THE_LIBS "")
 
 	# forward libraries
+	list(APPEND THE_LIBS ${ARGN} )
 	list(APPEND THE_LIBS "y")
-	list( APPEND THE_LIBS ${ARGN} )
+	list(APPEND THE_LIBS "y-z")
 
 	if(Y_Linux OR Y_FreeBSD)
 		list( APPEND THE_LIBS "pthread" )

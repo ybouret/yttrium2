@@ -35,7 +35,7 @@ counting
 )
 
 
-Y_LinkLibraries(test-core y-z)
+Y_LinkLibraries(test-core)
 
 enable_testing()
 
