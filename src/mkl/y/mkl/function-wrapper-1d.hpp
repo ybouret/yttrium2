@@ -37,7 +37,7 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            inline explicit Wrapper1D(FUNCTION &f) noexcept : Function<R,T>(), fcn(f) {} //!< setup
+            inline explicit Wrapper1D(FUNCTION &f) noexcept : Function<R,T>(), fcn(f) {} //!< setup \param f compatible object
             inline virtual ~Wrapper1D()            noexcept                           {} //!< cleanup
 
             //__________________________________________________________________
@@ -47,12 +47,12 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            //! forward call
+            //! forward call \param t argument \return fcn(t)
             inline virtual R operator()(ParamType t) { return fcn(t); }
 
         private:
-            Y_Disable_Copy_And_Assign(Wrapper1D);
-            FUNCTION &fcn;
+            Y_Disable_Copy_And_Assign(Wrapper1D); //!< discarding
+            FUNCTION &fcn; //!< persistent object
         };
 
         

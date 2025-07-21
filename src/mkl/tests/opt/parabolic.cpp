@@ -42,8 +42,7 @@ namespace
 Y_UTEST(opt_parabolic)
 {
     Random::ParkMiller ran;
-    ParabolicOptimizationVerbose = Environment::Flag("VERBOSE");
-
+    
     testParabolic<float>(ran);
     return 0;
     

@@ -8,10 +8,7 @@ namespace Yttrium
     namespace MKL
     {
 
-        bool ParabolicOptimizationVerbose = false;
-        static const char PFX[] = "[ParabolicOptim] ";
-
-#define Y_PRINT(MSG) do { if(ParabolicOptimizationVerbose) { std::cerr << PFX << MSG << std::endl; } } while(false)
+        
 
 #define real_t float
 #include "parabolic.hxx"

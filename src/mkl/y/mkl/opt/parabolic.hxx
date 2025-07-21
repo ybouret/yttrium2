@@ -60,7 +60,6 @@ namespace
         assert(x.isIncreasing());
         assert(f.isLocalMinimum());
 
-        Y_PRINT("<leave> x=" << x << "; f=" << f);
 
     }
 }
@@ -71,7 +70,6 @@ void ParabolicOptimization<real_t>:: Step(Triplet<real_t> & x,
                                           FunctionType &    F)
 {
 
-    Y_PRINT("<enter> x=" << x << "; f=" << f);
     assert( x.isIncreasing()   );
     assert( f.isLocalMinimum() );
 
@@ -84,7 +82,6 @@ void ParabolicOptimization<real_t>:: Step(Triplet<real_t> & x,
 
     if(x.b<=x.a)
     {
-        Y_PRINT("<at left>");
         assert( f.a <= f.b );
         xx[0] = x.a; ff[0] = f.a;
         ff[1] = F(xx[1] = x.middle());
@@ -94,7 +91,6 @@ void ParabolicOptimization<real_t>:: Step(Triplet<real_t> & x,
 
     if(x.b>=x.c)
     {
-        Y_PRINT("<at right>");
         assert(f.c <= f.b);
         xx[0] = x.a; ff[0] = f.a;
         ff[1] = F(xx[1] = x.middle());

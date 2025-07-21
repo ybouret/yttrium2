@@ -37,7 +37,7 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
-            virtual R operator()(ParamType) = 0; //!< callable type
+            virtual R operator()(ParamType) = 0; //!< callable type \return call value
 
             //__________________________________________________________________
             //
@@ -50,7 +50,7 @@ namespace Yttrium
             inline explicit Function() noexcept {} //!< setup
 
         private:
-            Y_Disable_Copy_And_Assign(Function);
+            Y_Disable_Copy_And_Assign(Function); //!< discarding
         };
 
     }

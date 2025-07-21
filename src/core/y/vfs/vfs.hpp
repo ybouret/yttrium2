@@ -38,16 +38,29 @@ namespace Yttrium
         static const char *Extension(const String &     path)                    noexcept; //!< \param path path \return NULL or .ext
 
         //! changing extension
+        /**
+         \param newExt new extension address
+         \param extLen new extension length
+         \param path   current path
+         \param size   current path length
+         \return string with changed extension
+         */
         static String ChangedExtension(const char * const newExt,
                                        const size_t       extLen,
                                        const char * const path,
                                        const size_t       size);
-        static String ChangedExtension(const char * const  newExt, const String & path); //!< change extension
-        static String ChangedExtension(const String      & newExt, const String & path); //!< change extension
 
+        //! \param newExt new extension \param path old path \return path with new extentions
+        static String ChangedExtension(const char * const  newExt, const String & path);
 
-        static String RemovedExtension(const char * const path, const size_t size); //!< path with removed extension
-        static String RemovedExtension(const String& path);                         //!< path with removed extension
+        //! \param newExt new extension \param path old path \return path with new extentions
+        static String ChangedExtension(const String      & newExt, const String & path);
+
+        //! \param path old path \param size path length \return path with removed extension
+        static String RemovedExtension(const char * const path, const size_t size);
+
+        //! \param path old path \return path with remove extension
+        static String RemovedExtension(const String& path);
 
 
         //______________________________________________________________________
@@ -241,9 +254,9 @@ namespace Yttrium
             virtual size_t         size()                   const noexcept; //!< [Collection]
             
         private:
-            Y_Disable_Assign(ChangeDirectory);
+            Y_Disable_Assign(ChangeDirectory); //!< discarding
             class Code;
-            Code *code;
+            Code *code; //!< inner code
             virtual const String & getItemAt(const size_t) const noexcept;
         };
 
@@ -253,7 +266,7 @@ namespace Yttrium
         // Interface
         //
         //______________________________________________________________________
-        virtual bool      tryRemoveFile(const String &path)                         = 0; //!< \return true iif removed file from VFS
+        virtual bool      tryRemoveFile(const String &path)                         = 0; //!< \param path file path \return true iif removed file from VFS
         virtual Scanner * openDirectory(const String &dirName)                      = 0; //!< create scanner for dirName
         virtual EntryType findEntryType(const String &path, bool &lnk) const        = 0; //!< get entry attributes
         virtual void      makeDirectory(const String &dirName, const bool mayExist) = 0; //!< create a directory
@@ -267,14 +280,14 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
-        bool         tryRemoveFile(const char * const path);                         //!< alias
-        Scanner    * openDirectory(const char * const dirName);                      //!< alias
-        EntryType    findEntryType(const char * const path, bool &lnk) const;        //!< alias
-        void         makeDirectory(const char * const dirName, const bool mayExist); //!< alias
-        bool         tryEraseEmpty(const char * const dirName);                      //!< alias
-        void         createSubDirs(const String &dirPath);                           //!< create all requested dirs
-        void         createSubDirs(const char * const);                              //!< alias
-        void         setCWD(const char * const dirName);                             //!< alias
+        bool         tryRemoveFile(const char * const);                //!< alias \return true if removed path
+        Scanner    * openDirectory(const char * const);                //!< alias \return new directory scanner
+        EntryType    findEntryType(const char * const, bool & ) const; //!< alias \return entry type
+        void         makeDirectory(const char * const, const bool  );  //!< alias
+        bool         tryEraseEmpty(const char * const);                //!< alias \return true if empty directory was removed
+        void         createSubDirs(const String &);                    //!< create all requested dirs
+        void         createSubDirs(const char * const);                //!< alias
+        void         setCWD(const char * const);                       //!< alias
 
         //! Add Mode to quickly load entries from a directory
         enum AddMode
@@ -284,8 +297,8 @@ namespace Yttrium
             AddAny  //!< add dir/reg BUT dot and ddot
         };
 
-        void addTo(Entries &, const String &     dirName, const AddMode mode); //!< grow entries \param dirName  \param mode how
-        void addTo(Entries &, const char * const dirName, const AddMode mode); //!< grow entries \param dirName  \param mode how
+        void addTo(Entries &, const String &     dirName, const AddMode mode); //!< grow entries \param dirName directory \param mode how
+        void addTo(Entries &, const char * const dirName, const AddMode mode); //!< grow entries \param dirName directory \param mode how
 
 
         //______________________________________________________________________

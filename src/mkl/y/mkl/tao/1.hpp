@@ -15,6 +15,11 @@ namespace Yttrium
         namespace Tao
         {
 
+            //! target[1..target.size()] = source[1..target.size()]
+            /**
+             \param target target sequence
+             \param source source sequence, larger than target
+             */
             template <typename TARGET, typename SOURCE> inline
             void Load(TARGET &target, SOURCE &source)
             {
@@ -25,6 +30,12 @@ namespace Yttrium
                 }
             }
 
+            //! \return lhs*rhs
+            /**
+             \param xadd perform additions
+             \param lhs  lhs sequence
+             \param rhs  rhs sequence
+             */
             template <typename T, typename LHS, typename RHS> inline
             T Dot(Cameo::Addition<T> &xadd, LHS &lhs, RHS &rhs)
             {

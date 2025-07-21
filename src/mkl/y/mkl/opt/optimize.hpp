@@ -12,10 +12,18 @@ namespace Yttrium
     namespace MKL
     {
 
+        //! Optimize API
         template <typename T>
         struct Optimize
         {
-            typedef Function<T,T> FunctionType;
+            typedef Function<T,T> FunctionType; //!< alias
+
+            //! run steps up to convergence
+            /**
+             \param x initial ordered positions
+             \param f initial local minimum
+             \param F function to minimize
+             */
             static void Run(Triplet<T> &   x,
                             Triplet<T> &   f,
                             FunctionType & F);

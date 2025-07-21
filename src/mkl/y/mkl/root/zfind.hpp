@@ -12,6 +12,14 @@ namespace Yttrium
     namespace MKL
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Zero Finding API
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class ZFind : public Identifiable
         {
@@ -36,8 +44,8 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            inline explicit ZFind() noexcept {}
-            inline virtual ~ZFind() noexcept {}
+            inline explicit ZFind() noexcept {} //!< setup
+            inline virtual ~ZFind() noexcept {} //!< cleanup
 
             //__________________________________________________________________
             //
@@ -49,6 +57,11 @@ namespace Yttrium
 
 
             //! lookup interface
+            /**
+             \param x initial bracketing x.a and x.c
+             \param f initial function with f.a*f.c <=0
+             \param F function to zero
+             */
             virtual void lookup(Triplet<T> &x, Triplet<T> &f, FunctionType &F) = 0;
 
             
@@ -60,6 +73,11 @@ namespace Yttrium
             //__________________________________________________________________
 
             //! wrapper to callable FUNCTION
+            /**
+             \param F any compatible function
+             \param x initial bracketing x.a and x.c
+             \param f initial function with f.a*f.c <=0
+             */
             template <typename FUNCTION>   inline
             void operator()(FUNCTION &F, Triplet<T> &x, Triplet<T> &f )
             {
@@ -73,22 +91,25 @@ namespace Yttrium
              \param hx handle for x
              \param hf handle for f
              \param x  triplet with x.a and x.c initialized
-             \param f  triplat with f.a * f.c <= 0
+             \param f  triplet with f.a * f.c <= 0
+             \param F  function to zero
+             \return true if f.a or f.c was 0, x.b and f.b set accordingly
              */
             bool found(Handle &hx, Handle &hf, Triplet<T> &x, Triplet<T> &f, FunctionType &F);
 
+#if 0
             template <typename FUNCTION> inline
             bool found(FUNCTION &F, Handle &hx, Handle &hf, Triplet<T> &x, Triplet<T> &f)
             {
                 Wrapper1D<T,T,FUNCTION> WF(F);
                 return found(hx,hf,x,f,WF);
             }
-
+#endif
 
 
 
         private:
-            Y_Disable_Copy_And_Assign(ZFind);
+            Y_Disable_Copy_And_Assign(ZFind); //!< discarding
         };
 
     }

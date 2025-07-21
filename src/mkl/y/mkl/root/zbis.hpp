@@ -14,20 +14,46 @@ namespace Yttrium
     namespace MKL
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Bisection
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class ZBis : public ZFind<T>
         {
         public:
-            typedef typename ZFind<T>::FunctionType FunctionType;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef typename ZFind<T>::FunctionType FunctionType; //!< alias
 
-            explicit ZBis() noexcept;
-            virtual ~ZBis() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit ZBis() noexcept; //!< setup
+            virtual ~ZBis() noexcept; //!< cleanup
 
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             virtual const char * callSign() const noexcept;
             virtual void         lookup(Triplet<T> &x, Triplet<T> &f, FunctionType &F);
 
         private:
-            Y_Disable_Copy_And_Assign(ZBis);
+            Y_Disable_Copy_And_Assign(ZBis); //!< discarding
         };
 
     }

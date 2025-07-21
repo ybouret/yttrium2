@@ -15,20 +15,46 @@ namespace Yttrium
     namespace MKL
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Modified Ridder's method
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class ZRid : public ZFind<T>
         {
         public:
-            typedef typename ZFind<T>::FunctionType FunctionType;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef typename ZFind<T>::FunctionType FunctionType; //!< alias
 
-            explicit ZRid() noexcept;
-            virtual ~ZRid() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit ZRid() noexcept; //!< setup
+            virtual ~ZRid() noexcept; //!< cleanup
 
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             virtual const char * callSign() const noexcept;
             virtual void         lookup(Triplet<T> &x, Triplet<T> &f, FunctionType &F);
 
         private:
-            Y_Disable_Copy_And_Assign(ZRid);
+            Y_Disable_Copy_And_Assign(ZRid); //!< discarding
         };
 
     }

@@ -11,16 +11,29 @@ namespace Yttrium
     namespace MKL
     {
 
-        extern bool ParabolicOptimizationVerbose;
         
+        //! Optimize API
         template <typename T>
         struct ParabolicOptimization
         {
-            typedef Function<T,T> FunctionType;
+            typedef Function<T,T> FunctionType; //!< alias
+
+            //! shrink position around local minimun
+            /**
+             \param x initial increasing positions
+             \param f initial local minimum
+             \param F function to minimize
+             */
             static void Step(Triplet<T> &   x,
                              Triplet<T> &   f,
                              FunctionType & F);
 
+            //! wrapper
+            /**
+             \param F any compatible function
+             \param x initial increasing positions
+             \param f initial local minimum
+             */
             template <typename FUNCTION> static inline
             void Step(FUNCTION &F, Triplet<T> &x, Triplet<T> &f)
             {
