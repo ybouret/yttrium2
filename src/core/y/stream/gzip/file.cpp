@@ -3,7 +3,7 @@
 #include <cassert>
 #include "y/system/exception.hpp"
 #include "y/ability/lockable.hpp"
-#include "y/zlib/zlib.h"
+#include "../../../../y/zlib/zlib.h"
 #include <cerrno>
 
 namespace Yttrium

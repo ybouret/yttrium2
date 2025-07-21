@@ -1,6 +1,10 @@
 
-include_directories(. ..)
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/..)
+include_directories(.)
+
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/../y/zlib)
+
+#cmake_print_variables(CMAKE_CURRENT_BINARY_DIR)
+#message( FATAL_ERROR "stop" )
 
 Y_CreateLibrary(y
     y
