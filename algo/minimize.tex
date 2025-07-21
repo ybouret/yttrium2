@@ -11,6 +11,7 @@
 
 \begin{document}
 
+\section{Problem}
 Let us assume that we have three points $a\leq b \leq c$ and their values
 $f_a,f_b,f_c$ such that
 \begin{equation}
@@ -26,6 +27,7 @@ $$
 	g_0 = f_a - f_b \geq 0, \;\; g_1 = f_c - f_b \geq 0
 $$
 
+\section{Parabolic Minimum}
 $$
 	g(u) = (1-u) f_0 + u f_1 - \lambda u(1-u)
 $$
@@ -42,12 +44,27 @@ $$
 $$
 
 $$
-	u_m = \dfrac{1}{2} \dfrac{\lambda - (g_1-g_0)}{\lambda} = \dfrac{1}{2}\left[ 1 + \dfrac{g_0-g_1}{\lambda} \right]
+	u_p = \dfrac{1}{2} \dfrac{\lambda - (g_1-g_0)}{\lambda} = \dfrac{1}{2}\left[ 1 + \dfrac{g_0-g_1}{\lambda} \right]
 $$
 
 $$
-	u_m = \frac{1}{2} \left[ 1 + \dfrac{ \beta(1-\beta) (g_0-g_1) }{ (1-\beta) g_0 + \beta g_1 } \right]
+	u_p = \frac{1}{2} \left[ 1 + \dfrac{ \beta(1-\beta) (g_0-g_1) }{ (1-\beta) g_0 + \beta g_1 } \right]
 $$
+
+This expression give the emplacement of the predicted minimum for the parabolic approximation of $g$.
+
+\section{Parabolic Balance}
+
+The position $u_p$ will go towards the smallest value. We need to shrink the interval by shrinking the interval by moving
+the point with the highest position.
+
+\begin{itemize}
+\item 
+$$g_0<g_1 \implies u_p < \frac{1}{2} \implies g(2u_p) = g_0$$
+\item
+$$g_0>g_1 \implies u_p > \frac{1}{2} \implies g(2u_p-1) = g_1$$
+\end{itemize}
+
 
 
 
