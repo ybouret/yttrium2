@@ -3,6 +3,7 @@
 #include "y/mkl/api/almost-equal.hpp"
 #include "y/sorting/heap.hpp"
 #include "y/core/display.hpp"
+#include "y/stream/libc/output.hpp"
 
 namespace Yttrium
 {

@@ -12,6 +12,8 @@ namespace
     template <typename T>
     static inline T F(T x)
     {
+        //return T(0.4)*(x-T(0.1))*(x-T(0.1));
+
         const T fac(3);
         return x*x*x*x - fac*x*x + x*x*x - x;
     }
@@ -20,13 +22,14 @@ namespace
     template <typename T>
     static inline void appendTo(const char * const fileName,
                                 const Triplet<T> &x,
-                                const Triplet<T> &f)
+                                const Triplet<T> &f,
+                                const unsigned    i)
     {
         AppendFile fp(fileName);
-        fp("%.15g %.15g\n", double(x.a), double(f.a) );
-        fp("%.15g %.15g\n", double(x.b), double(f.b) );
-        fp("%.15g %.15g\n", double(x.c), double(f.c) );
-        fp("%.15g %.15g\n", double(x.a), double(f.a) );
+        fp("%.15g %.15g %u\n", double(x.a), double(f.a), i );
+        fp("%.15g %.15g %u\n", double(x.b), double(f.b), i );
+        fp("%.15g %.15g %u\n", double(x.c), double(f.c), i );
+        fp("%.15g %.15g %u\n", double(x.a), double(f.a), i );
         fp("\n");
     }
 
@@ -34,7 +37,7 @@ namespace
     static inline
     void testParabolic(Random::Bits &ran, const char * const fileName = 0)
     {
-        const T   amplitude(3);
+        const T   amplitude(2.5);
 
         if(fileName) OutputFile::Overwrite(fileName);
 
@@ -48,11 +51,12 @@ namespace
             if(!f.isLocalMinimum()) continue;
 
             std::cerr << "[#] " << x << " : " << f << std::endl;
-            if(fileName) appendTo(fileName,x,f);
-            for(size_t i=0;i<1;++i)
+            if(fileName) appendTo(fileName,x,f,1);
+
+            for(unsigned i=1;i<=10;++i)
             {
                 ParabolicStep<T>::Tighten(F<T>,x,f);
-                if(fileName) appendTo(fileName,x,f);
+                if(fileName) appendTo(fileName,x,f,i+1);
             }
             std::cerr << "[#] " << x << " : " << f << std::endl;
             break;

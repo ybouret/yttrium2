@@ -12,13 +12,25 @@ namespace
         // sorting
         //----------------------------------------------------------------------
         assert(np>=3);
+        if(ParabolicStepVerbose)
+        {
+            Core::Display(std::cerr << PFX << "raw_xx=",xx,np) << std::endl;
+            Core::Display(std::cerr << PFX << "raw_ff=",ff,np) << std::endl;
+        }
         Sorting::Heap::Sort(xx,ff,np,Sign::Increasing<real_t>);
 
         if(ParabolicStepVerbose)
         {
-            Core::Display(std::cerr << PFX << "xx=",xx,np) << std::endl;
-            Core::Display(std::cerr << PFX << "ff=",ff,np) << std::endl;
+            Core::Display(std::cerr << PFX << "srt_xx=",xx,np) << std::endl;
+            Core::Display(std::cerr << PFX << "srt_ff=",ff,np) << std::endl;
+
+            OutputFile fp("_para.dat");
+            for(size_t i=0;i<np;++i) fp("%.15g %.15g\n", double(xx[i]), double(ff[i]));
+
         }
+
+
+
 
         size_t       imin = 0;
         real_t       fmin = ff[0];
@@ -32,7 +44,7 @@ namespace
                 imin = i;
             }
         }
-        //Y_PRINT("fmin=" << fmin << " #" << imin);
+        Y_PRINT("fmin=" << fmin << " #" << imin);
 
         if(imin<=0)
         {
@@ -131,10 +143,11 @@ void ParabolicStep<real_t>:: Tighten(Triplet<real_t> & x,
     Y_PRINT("<generic> g0=" <<  g0 << " : g1=" << g1);
 
     const real_t _1(1);
+    const SignType balance = Sign::Of(g0,g1);
     switch( Sign::Of(g0,g1) )
     {
         case Negative: assert(g0<g1); g0/=g1; g1=_1; break;
-        case __Zero__:                g0=g1=_1;      break;
+        case __Zero__:                g0=g1=_1;      break; // intercepted
         case Positive: assert(g1<g0); g1/=g0; g0=_1; break;
     }
     Y_PRINT("<scaling> g0=" <<  g0 << " : g1=" << g1);
@@ -148,24 +161,39 @@ void ParabolicStep<real_t>:: Tighten(Triplet<real_t> & x,
     const real_t beta  = Clamp(_0,(x.b-x.a)/width,_1);
     const real_t omb   = Clamp(_0,(x.c-x.b)/width,_1);
     const real_t twice = ( beta * omb * (g0-g1) )/( omb*g0 + beta * g1) * width;
-
-    const real_t xp  = Clamp(x.a,x.middle() + Half<real_t>::Of(twice), x.c);
+    const real_t dx    = Half<real_t>::Of(twice);
+    const real_t xm    = x.middle();             // middle point
+    const real_t xp  = Clamp(x.a,xm + dx , x.c); // predicted parabolic point
     ff[3] = F( xx[3] = xp );
 
-    // append counterpoint
-    if( xp <= x.b )
+    Y_PRINT("beta=" << beta << ", 1-beta=" << omb << ", xp=" << xp << ", fp=" << ff[3]);
+
+    if( balance == Negative )
     {
-        ff[4] = F( xx[4] = Half<real_t>::Of(x.b,x.c) );
+        std::cerr << "need to move right " << x.c << std::endl;
+        const real_t xr = Max(xm,x.b);
+        xx[4] = Half<real_t>::Of(xr,x.c);
+        ff[4] = F(xx[4]);
     }
     else
     {
-        ff[4] = F( xx[4] = Half<real_t>::Of(x.b,x.a) );
+        std::cerr << "need to move left " << x.a << std::endl;
+        const real_t xl = Min(xm,x.b);
+        xx[4] = Half<real_t>::Of(xl,x.a);
+        ff[4] = F(xx[4]);
     }
+
+
+
+
     return Extract(x,f,xx,ff,5);
 
 
-    exit(0);
 
+
+    
+
+    
 #if 0
     exit(0);
 
