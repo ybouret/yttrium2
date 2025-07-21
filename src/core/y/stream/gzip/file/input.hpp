@@ -9,17 +9,37 @@ namespace Yttrium
     namespace GZip
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! gzFile in input mode
+        //
+        //
+        //______________________________________________________________________
         class InputFile : public File
         {
         public:
-            explicit InputFile(const char * const fileName);
-            virtual ~InputFile() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit InputFile(const char * const fileName); //!< open \param fileName compatible file
+            virtual ~InputFile() noexcept;                   //!< cleanup
 
-            bool query1(char &c);
-            
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            bool query1(char &); //!< \return true if one char was read
+
 
         private:
-            Y_Disable_Copy_And_Assign(InputFile);
+            Y_Disable_Copy_And_Assign(InputFile); //!< discarding
         };
 
     }

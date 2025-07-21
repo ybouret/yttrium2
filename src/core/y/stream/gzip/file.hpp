@@ -11,17 +11,30 @@ namespace Yttrium
     namespace GZip
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! gzFile management
+        //
+        //
+        //______________________________________________________________________
         class File
         {
         public:
+            //! generic gzFile creation
+            /**
+             \param fileName compatible fileName
+             \param mode     desired mode
+             */
             explicit File(const char * const fileName, const char * const mode);
             virtual ~File() noexcept;
 
         protected:
-            void * const gz;
-            
+            void * const gz; //!< handle
+
         private:
-            Y_Disable_Copy_And_Assign(File);
+            Y_Disable_Copy_And_Assign(File); //!< discarding
         };
 
     }

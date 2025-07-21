@@ -13,6 +13,15 @@ namespace Yttrium
 
         }
 
+
+        Input:: Input(const String &fileName) :
+        InputFile(fileName.c_str()),
+        InputStream(),
+        buffer()
+        {
+
+        }
+
         Input:: ~Input() noexcept
         {
             
