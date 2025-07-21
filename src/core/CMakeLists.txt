@@ -1,5 +1,6 @@
 
 include_directories(. ..)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/..)
 
 Y_CreateLibrary(y
     y
