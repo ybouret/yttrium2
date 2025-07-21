@@ -13,6 +13,7 @@ namespace Yttrium
         File:: ~File() noexcept
         {
             assert(0!=gz);
+            Y_Giant_Lock();
             (void) gzclose( (gzFile)gz );
         }
 

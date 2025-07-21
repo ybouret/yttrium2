@@ -35,7 +35,7 @@ counting
 )
 
 
-Y_LinkLibraries(test-core)
+Y_LinkLibraries(test-core y-z)
 
 enable_testing()
 
@@ -133,6 +133,7 @@ Y_UTEST(stream:input:file)
 Y_UTEST(stream:output:file)
 Y_UTEST(stream:gets)
 Y_UTEST(stream:proc)
+Y_UTEST(stream:gzip:read)
 
 #sort
 Y_UTEST(sorting:heap)
