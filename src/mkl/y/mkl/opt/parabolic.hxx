@@ -111,6 +111,8 @@ void ParabolicStep<real_t>:: Tighten(Triplet<real_t> & x,
     real_t       g0 = f.a - f.b; assert( g0 >= _0  );
     real_t       g1 = f.c - f.b; assert( g1 >= _0  );
 
+    
+
 
 
     exit(0);
