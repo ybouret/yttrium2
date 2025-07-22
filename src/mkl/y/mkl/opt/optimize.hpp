@@ -31,6 +31,13 @@ namespace Yttrium
                          Triplet<T> &   f,
                          FunctionType & F);
 
+            //! wrapper
+            /**
+             \param F compatible function
+             \param x initial ordered positions
+             \param f initial local minimum
+             \return minimum location
+             */
             template <typename FUNCTION> static inline
             T Run(FUNCTION &F, Triplet<T> &x, Triplet<T> &f)
             {

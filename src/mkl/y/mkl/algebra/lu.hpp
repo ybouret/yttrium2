@@ -30,8 +30,8 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            Y_Args_Declare(T,Type);
-            typedef typename ScalarFor<T>::Type ScalarType;
+            Y_Args_Declare(T,Type); //!< aliases
+            typedef typename ScalarFor<T>::Type ScalarType; //!< alias
 
             //__________________________________________________________________
             //
@@ -39,8 +39,8 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            explicit LU(const size_t maxDim=0);
-            virtual ~LU() noexcept;
+            explicit LU(const size_t=0); //!< setup with optional max dimension
+            virtual ~LU() noexcept;      //!< cleanup
 
             //__________________________________________________________________
             //
@@ -58,7 +58,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            //! ensure/adjust size
+            //! ensure/adjust \param n size \return *this
             LU & make(const size_t n);
 
             //! decompose matrix
@@ -71,9 +71,10 @@ namespace Yttrium
             //! \return determinant of a decomposed matrix
             T    det(const Matrix<T> &);
 
-            //! b = inv(a) * b
+            //! solve \param a decomposed matrix \param b b = inv(a) * b
             void solve(const Matrix<T> &a, Writable<T> &b);
 
+            //! inverse \param a decomposed matrix \param ia a^(-1)
             void inv(const Matrix<T> &a, Matrix<T> &ia);
 
 

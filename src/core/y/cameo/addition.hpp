@@ -92,6 +92,7 @@ namespace Yttrium
                     addProd( *(lhs++), *(rhs++) );
             }
 
+            //! add u^2 to the sum \param u compatible are
             template <typename U> inline
             void addSquared(const U &u)
             {

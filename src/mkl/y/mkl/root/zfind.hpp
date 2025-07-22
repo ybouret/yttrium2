@@ -63,6 +63,7 @@ namespace Yttrium
              \param x initial bracketing x.a and x.c
              \param f initial function with f.a*f.c <=0
              \param F function to zero
+             \return position of zero
              */
             virtual T lookup(Triplet<T> &x, Triplet<T> &f, FunctionType &F) = 0;
 
@@ -79,6 +80,7 @@ namespace Yttrium
              \param F any compatible function
              \param x initial bracketing x.a and x.c
              \param f initial function with f.a*f.c <=0
+             \return position of zero
              */
             template <typename FUNCTION>   inline
             T operator()(FUNCTION &F, Triplet<T> &x, Triplet<T> &f )

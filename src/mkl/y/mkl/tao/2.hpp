@@ -15,6 +15,13 @@ namespace Yttrium
         namespace Tao
         {
 
+            //! matrix vector multiplication
+            /**
+             \param xadd perform additions
+             \param lhs  target vector
+             \param a    matrix
+             \param rhs  source vector
+             */
             template <
             typename T,
             typename LHS,

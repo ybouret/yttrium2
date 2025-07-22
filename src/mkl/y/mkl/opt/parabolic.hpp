@@ -11,7 +11,7 @@ namespace Yttrium
     namespace MKL
     {
 
-        extern bool ParabolicStepVerbose;
+        extern bool ParabolicStepVerbose; //!< verbosity to debug
 
         //! Optimize API
         template <typename T>

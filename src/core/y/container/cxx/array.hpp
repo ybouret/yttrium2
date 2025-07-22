@@ -120,6 +120,7 @@ namespace Yttrium
             //! cleanup
             inline virtual ~Code() noexcept { }
 
+            //! duplicate \param other another code
             inline Code(const Code &other) :
             Object(),
             Memory::SchoolOf<T>(other.count),
