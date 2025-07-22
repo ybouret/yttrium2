@@ -47,6 +47,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             typedef typename SummatorFor<T>::Type SummatorType; //!< alias
+            Y_Args_Declare(T,Type);
 
             //__________________________________________________________________
             //
@@ -62,6 +63,9 @@ namespace Yttrium
 
             //! cleanup
             inline virtual ~Addition() noexcept {}
+
+            inline Addition & operator=(ParamType value) { this->ldz(); this->add(value); return *this; }
+
 
         private:
             Y_Disable_Copy_And_Assign(Addition); //!< discarding

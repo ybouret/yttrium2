@@ -36,6 +36,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             typedef typename Select<T,DirectMultiplier<T>,AProxyMultiplier<T>,FPointMultiplier<T> >::API MultiplierType; //!< alias
+            Y_Args_Declare(T,Type);
 
             //__________________________________________________________________
             //
@@ -48,6 +49,9 @@ namespace Yttrium
 
             //! cleanup
             virtual ~Multiplication() noexcept {}
+
+            inline Multiplication & operator=(ParamType value) { this->ld1(); this->mul(value); return *this; }
+
 
         private:
             Y_Disable_Copy_And_Assign(Multiplication); //!< discarding

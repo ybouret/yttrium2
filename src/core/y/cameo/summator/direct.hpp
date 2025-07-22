@@ -72,6 +72,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(DirectSummator); //!< discarding
             MutableType acc; //!< accumulator
 
+        protected:
             inline virtual void add(ParamType x) { acc += x; }
         };
     }

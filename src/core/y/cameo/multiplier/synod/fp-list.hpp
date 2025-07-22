@@ -89,7 +89,7 @@ namespace Yttrium
                 inline T product()
                 {
                     if(list.size<=0) return T(1);
-                    while(true)
+                    while(list.size>1)
                     {
                         assert(list.size>=2);
                         const T lhs = pullHead();
@@ -98,6 +98,8 @@ namespace Yttrium
                         if(list.size<=0) return tmp;
                         push(tmp);
                     }
+                    assert(1==list.size);
+                    return pullHead();
                 }
 
 

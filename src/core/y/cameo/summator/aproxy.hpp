@@ -76,6 +76,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(AProxySummator); //!< discarding
             CoreType acc;                              //!< inner accumulator
 
+        protected:
             inline virtual void add(ParamType x) { acc += x; }
 
         };

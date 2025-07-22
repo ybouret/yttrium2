@@ -62,6 +62,9 @@ namespace Yttrium
             //! store/use data \param value data \return *this
             inline Multiplier & operator<<(ParamType value) { mul(value); return *this; }
 
+            inline Multiplier & operator*=(ParamType value) { mul(value); return *this; }
+
+
             //! load a range without reset
             /**
              \param  curr initial iterator
@@ -94,12 +97,13 @@ namespace Yttrium
                 return (*this)(seq.begin(),seq.size());
             }
 
-
+        protected:
+            virtual void mul(ParamType) = 0;        //!< store/use data
+            virtual void mul(ParamType,size_t) = 0; //!< store/use data
 
         private:
             Y_Disable_Copy_And_Assign(Multiplier);  //!< discarding
-            virtual void mul(ParamType) = 0;        //!< store/use data
-            virtual void mul(ParamType,size_t) = 0; //!< store/use data
+
         };
 
     }

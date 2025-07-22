@@ -11,6 +11,7 @@
 #include "y/type/copy-of.hpp"
 #include "y/mkl/transpose-of.hpp"
 #include "y/ability/releasable.hpp"
+#include "y/memory/stealth.hpp"
 
 
 namespace Yttrium
@@ -80,7 +81,7 @@ namespace Yttrium
 
             //__________________________________________________________________
             //
-            // Interface
+            // Methods
             //__________________________________________________________________
 
             //! display in Julia style \param os output stream \return os
@@ -261,6 +262,15 @@ namespace Yttrium
             assert(irow<=rows);
             assert(rowp.isValid());
             return rowp->cxx[irow];
+        }
+
+        inline void swapRows(const size_t lhs, const size_t rhs) noexcept
+        {
+            assert(lhs>0);
+            assert(lhs<=rows);
+            assert(rhs>0);
+            assert(rhs<=rows);
+            Memory::Stealth::Swap(& rowp->cxx[lhs][1], & rowp->cxx[rhs][1], sizeof(T) * cols);
         }
 
     private:

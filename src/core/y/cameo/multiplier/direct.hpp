@@ -63,12 +63,15 @@ namespace Yttrium
                 return res;
             }
 
+        protected:
+            inline virtual void mul(ParamType x) { acc *= x; }
+            inline virtual void mul(ParamType x, size_t n) { while(n-- > 0) acc *= x; }
+
         private:
             Y_Disable_Copy_And_Assign(DirectMultiplier); //!< discarding
             MutableType acc; //!< accumulator
 
-            inline virtual void mul(ParamType x) { acc *= x; }
-            inline virtual void mul(ParamType x, size_t n) { while(n-- > 0) acc *= x; }
+
         };
     }
 }

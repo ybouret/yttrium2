@@ -81,6 +81,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(FPointMultiplier); //!< discarding
             EngineType engine; //!< internal state
 
+        protected:
             virtual void mul(ParamType x)           { engine.push(x);   }
             virtual void mul(ParamType x, size_t n) { engine.push(x,n); }
         };

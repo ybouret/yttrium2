@@ -62,6 +62,12 @@ namespace Yttrium
             //! store/use data \param value data \return *this
             inline Summator & operator<<(ParamType value) { add(value); return *this; }
 
+            inline Summator & operator+=(ParamType value) { add(value); return *this; }
+
+            inline Summator & operator-=(ParamType value) { ConstType opp = -value; add(opp); return *this; }
+
+
+
             //! load a range without reset
             /**
              \param  curr initial iterator

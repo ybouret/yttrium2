@@ -88,6 +88,28 @@ namespace Yttrium
         }
     };
 
+    template <typename T>
+    struct FillWith
+    {
+        template <typename SEQUENCE> static inline
+        void Seq(Random::Bits &ran, SEQUENCE &seq )
+        {
+            for(size_t i=seq.size();i>0;--i) seq[i] = Gen<typename SEQUENCE::Type>::New(ran);
+        }
+
+        template <typename MATRIX> static inline
+        void Mat(Random::Bits &ran, MATRIX &a)
+        {
+            for(size_t i=a.rows;i>0;--i)
+            {
+                for(size_t j=a.cols;j>0;--j)
+                {
+                    a[i][j] = Gen<typename MATRIX::Type>::New(ran);
+                }
+            }
+        }
+
+    };
 
 
 }

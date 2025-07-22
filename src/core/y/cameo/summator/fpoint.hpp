@@ -156,6 +156,7 @@ namespace Yttrium
 
             inline virtual const PriorityQueuePolicy & locus() const noexcept { return acc; }
 
+        protected:
             inline virtual void add(ParamType x)
             {
                 acc.push(x);
