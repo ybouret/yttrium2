@@ -143,11 +143,15 @@ namespace Yttrium
                 {
                     const size_t ip=indx[i];
                     T sum=b[ip];
+                    xadd = sum;
                     b[ip]=b[i];
                     if(0!=ii)
                     {
+                        // for(size_t j=ii;j<i;++j) sum -= a[i][j]*b[j];
+                        const Row &a_i = a[i];
                         for(size_t j=ii;j<i;++j)
-                            sum -= a[i][j]*b[j];
+                            xadd -= a_i[j]*b[j];
+                        sum = xadd.sum();
                     }
                     else
                     {
