@@ -155,7 +155,7 @@ void ParabolicStep<real_t>:: Tighten(Triplet<real_t> & x,
     }
     Y_PRINT("<scaling> g0=" <<  g0 << " : g1=" << g1);
 
-    // save current triple
+    // save current triplet (np=3)
     x.save(xx);
     f.save(ff);
 
@@ -167,9 +167,32 @@ void ParabolicStep<real_t>:: Tighten(Triplet<real_t> & x,
     const real_t k_w   = kappa * width;
     const real_t dx    = Half<real_t>::Of(k_w);            // |dx| <= w/4
     const real_t xp    = Clamp(x.a,x.middle() + dx , x.c); // predicted parabolic point
-    const real_t fp    = F(xp );                           // value
+    const real_t fp    = ff[3] = F( xx[3] = xp );            // register value (np=4)
     Y_PRINT("<predicted> xp=" << xp << " (dx=" << dx <<") fp=" << fp);
-    
+
+    if( fp < f.b )
+    {
+        // xp will be the next minimum
+        if(xp<x.b)
+        {
+        }
+        else
+        {
+
+        }
+    }
+    else
+    {
+        // x.b will remain the minimum
+        if(xp<x.b)
+        {
+
+        }
+        else
+        {
+
+        }
+    }
 
 
 
