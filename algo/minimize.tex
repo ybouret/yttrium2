@@ -27,7 +27,7 @@ $$
 	g_0 = f_a - f_b \geq 0, \;\; g_1 = f_c - f_b \geq 0
 $$
 
-\section{Parabolic Minimum}
+\section{Parabolic Prediction}
 $$
 	g(u) = (1-u) f_0 + u f_1 - \lambda u(1-u)
 $$
@@ -48,21 +48,51 @@ $$
 $$
 
 $$
-	u_p = \frac{1}{2} \left[ 1 + \dfrac{ \beta(1-\beta) (g_0-g_1) }{ (1-\beta) g_0 + \beta g_1 } \right]
+	u_p = \frac{1}{2} \left[ 1 + \underbrace{\dfrac{ \beta(1-\beta) (g_0-g_1) }{ (1-\beta) g_0 + \beta g_1 }}_\kappa \right]
+	\implies x_p = a + (c-a) \frac{1}{2} \left(1+\kappa\right)  
+$$
+
+$$
+	|\kappa| < 1
+$$
+
+$$
+	x_p = \dfrac{1}{2}\left[ (a+c) + \kappa (c-a) \right]
 $$
 
 This expression give the emplacement of the predicted minimum for the parabolic approximation of $g$.
 
-\section{Parabolic Balance}
+\section{Parabolic Correction}
 
 The position $u_p$ will go towards the smallest value. We need to shrink the interval by shrinking the interval by moving
 the point with the highest position.
 
 \begin{itemize}
 \item 
-$$g_0<g_1 \implies u_p < \frac{1}{2} \implies g(2u_p) = g_0$$
+$$g_0<g_1 \implies -1 < \kappa < 0 \implies u_p < \frac{1}{2} \implies g(2u_p) = g_0$$
+$$2u_p = 1+\kappa$$
+$$
+	x_{c_1} = a + (1+\kappa)(c-a) = c +\kappa(c-a)
+$$
+
+We with $c$ to take the anharmonicity into account:
+$$
+	x_{c_1}' =  c + \dfrac{\kappa}{2}(c-a)
+$$
+
 \item
-$$g_0>g_1 \implies u_p > \frac{1}{2} \implies g(2u_p-1) = g_1$$
+$$g_0>g_1 \implies 0< \kappa < 1 \implies u_p > \frac{1}{2} \implies g(2u_p-1) = g_1$$
+$$
+2u_p - 1 = \kappa
+$$
+
+$$
+	x_{a_1} = a + \kappa(c-a)
+$$
+
+$$
+	x_{a_1}' = a + \dfrac{\kappa}{2}(c-a)
+$$
 \end{itemize}
 
 
