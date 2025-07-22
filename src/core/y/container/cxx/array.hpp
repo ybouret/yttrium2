@@ -56,6 +56,15 @@ namespace Yttrium
         {
         }
 
+        //! duplicate \param other another array
+        inline CxxArray(const CxxArray &other) : code( new Code(*other.code) )
+        {
+
+        }
+
+        
+
+
         //! cleanup
         inline virtual ~CxxArray() noexcept { assert(0!=code); Destroy(code); }
 
@@ -70,7 +79,7 @@ namespace Yttrium
         virtual size_t size() const noexcept { assert(0!=code); return code->numBlocks; }
 
     private:
-        Y_Disable_Copy_And_Assign(CxxArray); //!< discarding
+        Y_Disable_Assign(CxxArray); //!< discarding
         class Code;
         Code * code; //!< current code
 
@@ -109,8 +118,15 @@ namespace Yttrium
             //! cleanup
             inline virtual ~Code() noexcept { }
 
+            inline Code(const Code &other) :
+            Object(),
+            Memory::SchoolOf<T>(other.count),
+            Memory::Operating<T>(entry,other.entry,other.count)
+            {
+            }
+
         private:
-            Y_Disable_Copy_And_Assign(Code); //!< discarding
+            Y_Disable_Assign(Code); //!< discarding
 
         };
 

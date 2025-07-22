@@ -71,6 +71,10 @@ namespace Yttrium
             //! \return determinant of a decomposed matrix
             T    det(const Matrix<T> &);
 
+            //! b = inv(a) * b
+            void solve(const Matrix<T> &a, Writable<T> &b);
+
+
         private:
             class Code;
             Y_Disable_Copy_And_Assign(LU); //!< discarding

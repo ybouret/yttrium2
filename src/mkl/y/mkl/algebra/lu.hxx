@@ -68,3 +68,14 @@ size_t LU<real_t>:: size() const noexcept
 {
     return code ? code->dims : 0;
 }
+
+template <>
+void LU<real_t>:: solve(const Matrix<real_t> &a, Writable<real_t> &b)
+{
+    assert( a.isSquare() );
+    assert( a.rows>0 );
+    assert( a.rows==b.size() );
+    assert( 0 != code);
+    assert( code->dims >= a.rows );
+    code->solve(a,b);
+}

@@ -105,8 +105,7 @@ namespace Yttrium
                     }
                 }
 
-                //std::cerr << "scal=" << scal << std::endl;
-                //std::cerr << "indx=" << indx << std::endl;
+                
 
                 return true;
             }
@@ -123,6 +122,41 @@ namespace Yttrium
                     xmul *= a[i][i];
                 
                 return dneg ? -xmul.product() : xmul.product();
+            }
+
+            inline void solve(const Matrix<T> &a, Writable<T> &b)
+            {
+                assert(a.rows>0);
+                assert(a.isSquare());
+                assert(a.rows<=dims);
+                assert(a.rows==b.size());
+                const size_t n  = a.rows;
+                size_t       ii = 0;
+                for(size_t i=1;i<=n;++i)
+                {
+                    const size_t ip=indx[i];
+                    T sum=b[ip];
+                    b[ip]=b[i];
+                    if (ii)
+                    {
+                        for(size_t j=ii;j<=i-1;++j)
+                            sum -= a[i][j]*b[j];
+                    }
+                    else
+                    {
+                        if( Sign::GTZ( Fabs<T>::Of(sum) ) )
+                            ii=i;
+                    }
+                    b[i]=sum;
+                }
+
+                for(size_t i=n;i>=1;--i)
+                {
+                    T sum=b[i];
+                    for(size_t j=i+1;j<=n;++j)
+                        sum -= a[i][j]*b[j];
+                    b[i]=sum/a[i][i];
+                }
             }
 
 

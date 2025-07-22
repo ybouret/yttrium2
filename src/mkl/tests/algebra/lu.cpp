@@ -2,6 +2,7 @@
 #include "y/utest/run.hpp"
 #include "../../../core/tests/main.hpp"
 
+#include "y/container/cxx/array.hpp"
 
 
 using namespace Yttrium;
@@ -26,6 +27,17 @@ namespace
 
                 const T d = lu.det(a);
                 std::cerr << "d=" << d << std::endl;
+
+                CxxArray<T> b(n);
+                FillWith<T>::Seq(ran,b);
+                std::cerr << "b=" << b << std::endl;
+
+                CxxArray<T> u(b);
+                lu.solve(a,u);
+                std::cerr << "u=" << u << std::endl;
+
+
+
                 break;
             }
         }
@@ -37,6 +49,7 @@ Y_UTEST(algebra_lu)
 {
     Random::MT19937 ran;
     testLU<float>(ran);
+    testLU<apq>(ran);
 
 }
 Y_UDONE()
