@@ -4,8 +4,8 @@
 #include "y/mkl/algebra/lu.hpp"
 #include "y/utest/run.hpp"
 #include "../../../core/tests/main.hpp"
-
 #include "y/container/cxx/array.hpp"
+#include "y/mkl/api/mod2.hpp"
 
 
 using namespace Yttrium;
@@ -15,10 +15,14 @@ namespace
     template <typename T>
     static inline void testLU(Random::Bits &ran)
     {
+        typedef typename MKL::ScalarFor<T>::Type ScalarType;
+        MKL::LU<T>                  lu;
+        Cameo::Addition<T>          xadd;
+        Cameo::Addition<ScalarType> sadd;
+        const bool                  exact = Y_Is_SuperSubClass_Strict(Apex::Number,T);
 
-        MKL::LU<T> lu;
-        Cameo::Addition<T> xadd;
-        for(size_t n=1;n<=3;++n)
+
+        for(size_t n=1;n<=5;++n)
         {
             while(true)
             {
@@ -44,8 +48,13 @@ namespace
 
                 //std::cerr << "au=" << au << std::endl;
                 for(size_t i=n;i>0;--i) au[i] -= b[i];
-                //const T residue = MKL::Tao::Norm2(xadd,au);
-                //std::cerr << "residue=" << residue << std::endl;
+                const ScalarType residue = MKL::Tao::Norm2(sadd,au);
+                std::cerr << "residue=" << residue << std::endl;
+                if(exact)
+                {
+                    Y_CHECK( Sign::LEQZ(residue) );
+                }
+
 
                 Matrix<T> ia(n,n);
                 lu.inv(a,ia);
@@ -54,8 +63,7 @@ namespace
                 MKL::Tao::MMul(xadd,I,a0,ia);
                 std::cerr << "I=" << I << std::endl;
 
-#if 0
-                xadd.ldz();
+                sadd.ldz();
                 for(size_t i=n;i>0;--i)
                 {
                     for(size_t j=n;j>0;--j)
@@ -63,18 +71,21 @@ namespace
                         if(i==j)
                         {
                             const T delta = I[i][i] - T(1);
-                            xadd.addSquared(delta);
+                            sadd << MKL::Mod2<T>::Of(delta);
                         }
                         else
                         {
-                            xadd.addSquared(I[i][j]);
+                            sadd << MKL::Mod2<T>::Of(I[i][j]);
                         }
 
                     }
                 }
-                const T residueInv = xadd.sum();
+                const ScalarType residueInv = sadd.sum();
                 std::cerr << "residueInv=" << residueInv << std::endl;
-#endif
+                if(exact)
+                {
+                    Y_CHECK( Sign::LEQZ(residueInv) );
+                }
 
                 break;
             }
@@ -88,7 +99,10 @@ Y_UTEST(algebra_lu)
     Random::MT19937 ran;
     testLU<float>(ran);
 
-    //testLU< Complex<double> >(ran);
+    testLU< Complex<double> >(ran);
+
+
+    testLU< XReal<float> >(ran);
 
     testLU<apq>(ran);
 

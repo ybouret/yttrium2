@@ -5,6 +5,7 @@
 #define Y_MKL_Tao1_Included 1
 
 #include "y/cameo/addition.hpp"
+#include "y/core/utils.hpp"
 
 namespace Yttrium
 {
@@ -46,6 +47,46 @@ namespace Yttrium
                 return xadd.sum();
             }
 
+
+            namespace Hub
+            {
+                template <typename T,const bool SCALAR>
+                struct Norm2;
+
+                template <typename T>
+                struct Norm2<T,true>
+                {
+                    Y_Args_Expose(T,Type);
+                    typedef T OutputType;
+
+                    static inline void Push(Cameo::Addition<OutputType> & xadd,
+                                            ConstType &                   scal)
+                    {
+                        const T res = scal*scal;
+                        xadd << res;
+                    }
+                };
+
+                template <typename T>
+                struct Norm2<T,false>
+                {
+                    Y_Args_Expose(T,Type);
+                    typedef typename T::Type OutputType;
+
+                    static inline void Push(Cameo::Addition<OutputType> & xadd,
+                                            ConstType &                   vect)
+                    {
+                        for(size_t i=T::DIMENSIONS;i>0;--i)
+                        {
+                            const OutputType res = Squared(vect[i]);
+                            xadd << res;
+                        }
+                    }
+                };
+
+
+            }
+
             //! \return |lhs|^2
             /**
              \param xadd perform additions
@@ -54,11 +95,12 @@ namespace Yttrium
             template <typename T, typename LHS> inline
             T Norm2(Cameo::Addition<T> &xadd, LHS &lhs)
             {
+                typedef typename LHS::Type                                        InputType;
+                typedef          Hub::Norm2<InputType,IsScalar<InputType>::Value> API;
+
                 xadd.ldz();
-                for(size_t i=lhs.size();i>0;--i) {
-                    typename LHS::ConstType &l = lhs[i];
-                    xadd.addProd(l,l);
-                }
+                for(size_t i=lhs.size();i>0;--i)
+                    API::Push(xadd,lhs[i]);
                 return xadd.sum();
             }
 

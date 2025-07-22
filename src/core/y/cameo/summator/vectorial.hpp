@@ -104,7 +104,8 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(VectorialSummator); //!< discarding
             Memory::SchoolOf<CoordSummator>   summators;  //!< workspace for summators
             Memory::Operating<CoordSummator>  operating;  //!< I/O for summators
-            
+
+        protected:
             inline virtual void add(ParamType value)
             {
                 try {
