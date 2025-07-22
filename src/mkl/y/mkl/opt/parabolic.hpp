@@ -24,22 +24,24 @@ namespace Yttrium
              \param x initial increasing positions
              \param f initial local minimum
              \param F function to minimize
+             \return new width
              */
-            static void Tighten(Triplet<T> &   x,
-                                Triplet<T> &   f,
-                                FunctionType & F);
+            static T Tighten(Triplet<T> &   x,
+                             Triplet<T> &   f,
+                             FunctionType & F);
 
             //! wrapper
             /**
              \param F any compatible function
              \param x initial increasing positions
              \param f initial local minimum
+             \return new width
              */
             template <typename FUNCTION> static inline
-            void Tighten(FUNCTION &F, Triplet<T> &x, Triplet<T> &f)
+            T Tighten(FUNCTION &F, Triplet<T> &x, Triplet<T> &f)
             {
                 Wrapper1D<T,T,FUNCTION> FW(F);
-                Tighten(x,f,FW);
+                return Tighten(x,f,FW);
             }
         };
 

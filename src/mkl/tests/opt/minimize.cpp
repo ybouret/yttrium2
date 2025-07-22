@@ -31,6 +31,7 @@ namespace
         if( Bracket<T>::Inside(F<T>,x,f) )
         {
             std::cerr << "Look for Local Min" << std::endl;
+            std::cerr << "x=" << x << "; f=" << f << std::endl;
             const T x_opt = Optimize<T>::Run(F<T>,x,f);
             std::cerr << "Found F(" << x_opt << ")=" << f.b << std::endl;
         }

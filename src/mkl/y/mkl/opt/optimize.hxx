@@ -5,7 +5,12 @@ real_t Optimize<real_t>:: Run(Triplet<real_t> & x,
                               FunctionType &    F)
 {
 
+    //__________________________________________________________________________
+    //
+    //
     // prepare data
+    //
+    //__________________________________________________________________________
     assert(x.isOrdered());
     assert(f.isLocalMinimum());
     if(x.a>x.c)
@@ -16,18 +21,22 @@ real_t Optimize<real_t>:: Run(Triplet<real_t> & x,
     assert(x.isIncreasing());
     assert(f.isLocalMinimum());
 
+    //__________________________________________________________________________
+    //
+    //
     // run
+    //
+    //__________________________________________________________________________
+    real_t width = x.width();
     while(true)
     {
-        const real_t x_old = x.b;
-        ParabolicStep<real_t>::Tighten(x,f,F);
-        std::cerr << "x_old = " << x_old << " -> " << x.b << std::endl;
-        if( AlmostEqual<real_t>::Are(x_old,x.b) )
+        const real_t newWidth = ParabolicStep<real_t>::Tighten(x,f,F);
+        if( AlmostEqual<real_t>::Are(width,newWidth) )
         {
             f.b = F(x.b);
             return x.b;
         }
-
+        width = newWidth;
     }
 
 }

@@ -2,11 +2,11 @@
 namespace
 {
     static inline
-    void Extract(Triplet<real_t> & x,
-                 Triplet<real_t> & f,
-                 real_t            xx[],
-                 real_t            ff[],
-                 const size_t      np)
+    real_t Extract(Triplet<real_t> & x,
+                   Triplet<real_t> & f,
+                   real_t            xx[],
+                   real_t            ff[],
+                   const size_t      np)
     {
         //----------------------------------------------------------------------
         // sorting
@@ -32,47 +32,52 @@ namespace
         for(size_t i=1;i<=itop;++i)
         {
             const real_t ftmp = ff[i];
-            if(ftmp<fmin)
-            {
+            if(ftmp<fmin) {
                 fmin = ftmp;
                 imin = i;
             }
         }
+
         if(ParabolicStepVerbose)
         {
             Core::Display(std::cerr << PFX << "srt_xx=",xx,np) << std::endl;
             Core::Display(std::cerr << PFX << "srt_ff=",ff,np) << std::endl;
             Y_PRINT("fmin=" << fmin << " #" << imin);
 
+#if 0
             OutputFile fp("_para.dat");
             for(size_t i=0;i<np;++i)
             {
                 fp("%.15g %.15g\n", double(xx[i]), double(ff[i]));
             }
             //fp("%.15g %.15g\n", double(xx[0]), double(ff[0]));
+#endif
         }
 
         if(imin<=0)
         {
+            // take left side
             x.a = x.b = xx[0]; x.c = xx[1];
             f.a = f.b = fmin;  f.c = ff[1];
             assert(x.isIncreasing());
             assert(f.isLocalMinimum());
-            return;
+            return x.width();
         }
 
         if(imin>=itop)
         {
+            // take right side
             x.b = x.c = xx[imin];
-            f.b = f.c = xx[imin];
+            f.b = f.c = ff[imin];
             --imin;
             x.a = xx[imin];
             f.a = ff[imin];
             assert(x.isIncreasing());
             assert(f.isLocalMinimum());
-            return;
+            return x.width();
         }
 
+        // take points around imin
         assert(imin>0);
         assert(imin<itop);
         --imin;
@@ -82,14 +87,14 @@ namespace
         assert(x.isIncreasing());
         assert(f.isLocalMinimum());
 
-
+        return x.width();
     }
 }
 
 template <>
-void ParabolicStep<real_t>:: Tighten(Triplet<real_t> & x,
-                                     Triplet<real_t> & f,
-                                     FunctionType &    F)
+real_t ParabolicStep<real_t>:: Tighten(Triplet<real_t> & x,
+                                       Triplet<real_t> & f,
+                                       FunctionType &    F)
 {
 
     assert( x.isIncreasing()   );

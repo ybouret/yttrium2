@@ -49,12 +49,13 @@ namespace
             if(!f.isLocalMinimum()) continue;
 
             std::cerr << "[#] " << x << " : " << f << std::endl;
-            if(fileName) appendTo(fileName,x,f,1);
+            if(fileName) appendTo(fileName,x,f,2);
 
-            for(unsigned i=1;i<=3;++i)
+            for(unsigned i=1;i<=5;++i)
             {
-                ParabolicStep<T>::Tighten(F<T>,x,f);
-                if(fileName) appendTo(fileName,x,f,i+1);
+                const T w = ParabolicStep<T>::Tighten(F<T>,x,f);
+                if(fileName) appendTo(fileName,x,f,i+2);
+                std::cerr << "\twidth = " << w << std::endl;
             }
             std::cerr << "[#] " << x << " : " << f << std::endl;
             break;
@@ -70,8 +71,6 @@ Y_UTEST(opt_parabolic)
 
 
     testParabolic<float>(ran,"para-f.dat");
-    return 0;
-
     testParabolic<double>(ran);
     testParabolic<long double>(ran);
 
