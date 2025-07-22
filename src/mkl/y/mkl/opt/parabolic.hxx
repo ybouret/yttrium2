@@ -12,22 +12,16 @@ namespace
         // sorting
         //----------------------------------------------------------------------
         assert(np>=3);
+#if 0
         if(ParabolicStepVerbose)
         {
             Core::Display(std::cerr << PFX << "raw_xx=",xx,np) << std::endl;
             Core::Display(std::cerr << PFX << "raw_ff=",ff,np) << std::endl;
         }
+#endif
+
         Sorting::Heap::Sort(xx,ff,np,Sign::Increasing<real_t>);
 
-        if(ParabolicStepVerbose)
-        {
-            Core::Display(std::cerr << PFX << "srt_xx=",xx,np) << std::endl;
-            Core::Display(std::cerr << PFX << "srt_ff=",ff,np) << std::endl;
-
-            OutputFile fp("_para.dat");
-            for(size_t i=0;i<np;++i) fp("%.15g %.15g\n", double(xx[i]), double(ff[i]));
-
-        }
 
 
 
@@ -44,7 +38,19 @@ namespace
                 imin = i;
             }
         }
-        Y_PRINT("fmin=" << fmin << " #" << imin);
+        if(ParabolicStepVerbose)
+        {
+            Core::Display(std::cerr << PFX << "srt_xx=",xx,np) << std::endl;
+            Core::Display(std::cerr << PFX << "srt_ff=",ff,np) << std::endl;
+            Y_PRINT("fmin=" << fmin << " #" << imin);
+
+            OutputFile fp("_para.dat");
+            for(size_t i=0;i<np;++i)
+            {
+                fp("%.15g %.15g\n", double(xx[i]), double(ff[i]));
+            }
+            //fp("%.15g %.15g\n", double(xx[0]), double(ff[0]));
+        }
 
         if(imin<=0)
         {
@@ -168,45 +174,35 @@ void ParabolicStep<real_t>:: Tighten(Triplet<real_t> & x,
     const real_t dx    = Half<real_t>::Of(k_w);            // |dx| <= w/4
     const real_t xp    = Clamp(x.a,x.middle() + dx , x.c); // predicted parabolic point
     const real_t fp    = ff[3] = F( xx[3] = xp );            // register value (np=4)
-    Y_PRINT("<predicted> xp=" << xp << " (dx=" << dx <<") fp=" << fp);
+    Y_PRINT("<predicted> xp=" << xp << " (dx=" << dx <<") fp=" << fp << " / fb=" << f.b);
 
     if( fp < f.b )
     {
-        // xp will be the next minimum
+        // xp will be the next minimum : choose a point next to it
         if(xp<x.b)
         {
+            ff[4] = F( xx[4] = Half<real_t>::Of(x.a,xp) );
         }
         else
         {
-
+            ff[4] = F( xx[4] = Half<real_t>::Of(xp,x.c));
         }
     }
     else
     {
-        // x.b will remain the minimum
+        // x.b will remain the minimum : choose a point next to it
         if(xp<x.b)
         {
-
+            ff[4] = F( xx[4] = Half<real_t>::Of(x.b,x.c) );
         }
         else
         {
-
+            ff[4] = F( xx[4] = Half<real_t>::Of(x.b,x.a) );
         }
     }
 
 
-
-
     return Extract(x,f,xx,ff,5);
-
-
-
-
-    
-
-
-
-
 
 
 }

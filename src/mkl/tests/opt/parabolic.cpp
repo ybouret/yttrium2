@@ -12,8 +12,6 @@ namespace
     template <typename T>
     static inline T F(T x)
     {
-        //return T(0.4)*(x-T(0.1))*(x-T(0.1));
-
         const T fac(3);
         return x*x*x*x - fac*x*x + x*x*x - x;
     }
@@ -53,7 +51,7 @@ namespace
             std::cerr << "[#] " << x << " : " << f << std::endl;
             if(fileName) appendTo(fileName,x,f,1);
 
-            for(unsigned i=1;i<=1;++i)
+            for(unsigned i=1;i<=3;++i)
             {
                 ParabolicStep<T>::Tighten(F<T>,x,f);
                 if(fileName) appendTo(fileName,x,f,i+1);

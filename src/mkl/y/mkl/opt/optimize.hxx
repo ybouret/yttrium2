@@ -1,8 +1,8 @@
 
 template <>
 real_t Optimize<real_t>:: Run(Triplet<real_t> & x,
-                            Triplet<real_t> & f,
-                            FunctionType &    F)
+                              Triplet<real_t> & f,
+                              FunctionType &    F)
 {
 
     // prepare data
