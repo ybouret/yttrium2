@@ -48,6 +48,7 @@ namespace Yttrium
             //__________________________________________________________________
             typedef typename SummatorFor<T>::Type SummatorType; //!< alias
             Y_Args_Declare(T,Type); //!< aliases
+            typedef TypeToType<MutableType> MyTypeHint; //!< alias
 
             //__________________________________________________________________
             //
@@ -74,6 +75,30 @@ namespace Yttrium
             //! helper to initialize \param value initial value \return *this
             inline Addition & operator=(ParamType value) { this->ldz(); this->add(value); return *this; }
 
+            //! add product \param u first arg \param v second arg
+            template <typename U, typename V> inline
+            void addProd(const U &u, const V &v)
+            {
+                static const MyTypeHint MyType = {};
+                ConstType res = MKL::AdaptedTo(MyType,u) * MKL::AdaptedTo(MyType,v);
+                this->add(res);
+            }
+
+            //! dot product of a range \param lhs first iterator \param rhs second iterator \param n range size
+            template <typename LHS, typename RHS>
+            inline void addProd(LHS lhs, RHS rhs, size_t n)
+            {
+                while(n-- > 0)
+                    addProd( *(lhs++), *(rhs++) );
+            }
+
+            template <typename U> inline
+            void addSquared(const U &u)
+            {
+                static const MyTypeHint MyType = {};
+                MutableType res = MKL::AdaptedTo(MyType,u);
+                this->add(res*=res);
+            }
 
         private:
             Y_Disable_Copy_And_Assign(Addition); //!< discarding

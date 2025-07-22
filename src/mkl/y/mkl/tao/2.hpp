@@ -16,10 +16,11 @@ namespace Yttrium
         {
 
             template <
+            typename T,
             typename LHS,
             typename MAT,
-            typename RHS,
-            typename T> inline
+            typename RHS
+            > inline
             void Mul(Cameo::Addition<T> &xadd, LHS &lhs, const MAT &a, RHS &rhs)
             {
                 const size_t nr = a.rows; assert(lhs.size()==nr);
@@ -27,7 +28,11 @@ namespace Yttrium
                 for(size_t i=nr;i>0;--i)
                 {
                     const typename MAT::Row &a_i = a[i];
-                    xadd.ldz(); for(size_t j=nc;j>0;--j) xadd.addProd(a_i[j], rhs[j]);
+                    xadd.ldz();
+                    for(size_t j=nc;j>0;--j)
+                    {
+                        xadd.addProd(a_i[j], rhs[j]);
+                    }
                     lhs[i] = xadd.sum();
                 }
             }

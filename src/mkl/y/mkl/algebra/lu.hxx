@@ -79,3 +79,14 @@ void LU<real_t>:: solve(const Matrix<real_t> &a, Writable<real_t> &b)
     assert( code->dims >= a.rows );
     code->solve(a,b);
 }
+
+template <>
+void  LU<real_t>:: inv(const Matrix<real_t> &a, Matrix<real_t> &ia)
+{
+    assert( a.isSquare() );
+    assert( a.rows>0 );
+    assert( 0 != code);
+    assert( code->dims >= a.rows );
+    assert(a.gotSameMetricsThan(ia));
+    code->inv(a,ia);
+}

@@ -160,6 +160,33 @@ namespace Yttrium
             }
 
 
+            inline void inv(const Matrix<T> &a, Matrix<T> &ia)
+            {
+                assert(a.rows>0);
+                assert(a.isSquare());
+                assert(a.rows<=dims);
+                assert(a.gotSameMetricsThan(ia));
+
+                const size_t n = a.rows;
+                const T     _0(0);
+                const T     _1(1);
+
+                CxxArray<T> b(n,_0);
+                for(size_t i=n;i>0;--i)
+                {
+                    // prepare base vector
+                    for(size_t j=n;  j>i;--j) b[j] = _0;
+                    b[i] = _1;
+                    for(size_t j=i-1;j>0;--j) b[j] = _0;
+
+                    solve(a,b);
+                    for(size_t j=n;j>0;--j) ia[j][i] = b[j];
+                }
+
+
+            }
+
+
             bool                        dneg;
             const size_t                dims;
             const ScalarType            S1;
@@ -167,7 +194,7 @@ namespace Yttrium
             CxxArray<ScalarType>        scal;
             CxxArray<size_t>            indx;
             Cameo::Multiplication<Type> xmul;
-
+            
         private:
             Y_Disable_Copy_And_Assign(Code);
         };

@@ -74,6 +74,8 @@ namespace Yttrium
             //! b = inv(a) * b
             void solve(const Matrix<T> &a, Writable<T> &b);
 
+            void inv(const Matrix<T> &a, Matrix<T> &ia);
+
 
         private:
             class Code;
