@@ -264,6 +264,7 @@ namespace Yttrium
             return rowp->cxx[irow];
         }
 
+        //! swap rows \param lhs first row index \param rhs second row index
         inline void swapRows(const size_t lhs, const size_t rhs) noexcept
         {
             assert(lhs>0);

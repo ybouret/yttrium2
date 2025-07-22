@@ -6,30 +6,76 @@
 
 #include "y/mkl/api/scalar-for.hpp"
 #include "y/container/matrix.hpp"
+#include "y/container/gradual.hpp"
 
 namespace Yttrium
 {
     namespace MKL
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! LU decomposition
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
-        class LU : public Releasable
+        class LU : public Container, public Releasable
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
             Y_Args_Declare(T,Type);
             typedef typename ScalarFor<T>::Type ScalarType;
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
             explicit LU(const size_t maxDim=0);
             virtual ~LU() noexcept;
 
-            virtual void release() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
+            virtual void   release()    noexcept;
+            virtual size_t size() const noexcept;
+
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! ensure/adjust size
+            LU & make(const size_t n);
+
+            //! decompose matrix
+            /**
+             \param a a square matrix
+             \return true if not singular and decomposed
+             */
             bool build(Matrix<T> &a);
-            T    det(const Matrix<T> &a); // determinant of a decomposed matrix
-        
+
+            //! \return determinant of a decomposed matrix
+            T    det(const Matrix<T> &);
+
         private:
             class Code;
-            Y_Disable_Copy_And_Assign(LU);
-            void release_() noexcept;
-            Code *code;
+            Y_Disable_Copy_And_Assign(LU); //!< discarding
+            void release_() noexcept;      //!< release code
+            Code *code;                    //!< inner code
         };
     }
 

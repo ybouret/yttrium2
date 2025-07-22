@@ -62,6 +62,7 @@ namespace Yttrium
             //! store/use data \param value data \return *this
             inline Multiplier & operator<<(ParamType value) { mul(value); return *this; }
 
+            //! syntax helper \param value data \return *this
             inline Multiplier & operator*=(ParamType value) { mul(value); return *this; }
 
 

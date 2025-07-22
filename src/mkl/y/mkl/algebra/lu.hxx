@@ -24,15 +24,13 @@ LU<real_t>:: ~LU() noexcept
     release_();
 }
 
-
 template <>
-bool LU<real_t>:: build(Matrix<real_t> &a)
+LU<real_t> & LU<real_t>:: make(const size_t n)
 {
-    assert( a.isSquare() );
-    const size_t n = a.rows; if( n <= 0 ) return false;
     if(!code)
     {
-        code = new Code(n);
+        if(n>0)
+            code = new Code(n);
     }
     else
     {
@@ -43,7 +41,15 @@ bool LU<real_t>:: build(Matrix<real_t> &a)
         }
     }
     assert(code->dims>=n);
-    return code->build(a);
+    return *this;
+}
+
+template <>
+bool LU<real_t>:: build(Matrix<real_t> &a)
+{
+    assert( a.isSquare() );
+    const size_t n = a.rows; if( n <= 0 ) return false;
+    return make(n).code->build(a);
 }
 
 template <>
@@ -54,4 +60,11 @@ real_t LU<real_t>:: det(const Matrix<real_t> &a)
     assert(0!=code);
     assert(code->dims>=n);
     return code->det(a);
+}
+
+
+template <>
+size_t LU<real_t>:: size() const noexcept
+{
+    return code ? code->dims : 0;
 }
