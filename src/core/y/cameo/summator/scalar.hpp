@@ -59,7 +59,7 @@ namespace Yttrium
             {
                 static const MyTypeHint MyType = {};
                 ConstType res = MKL::AdaptedTo(MyType,u) * MKL::AdaptedTo(MyType,v);
-                add(res);
+                this->add(res);
             }
 
             //! dot product of a range \param lhs first iterator \param rhs second iterator \param n range size

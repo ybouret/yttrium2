@@ -46,6 +46,24 @@ namespace Yttrium
                 return xadd.sum();
             }
 
+            //! \return |lhs|^2
+            /**
+             \param xadd perform additions
+             \param lhs  lhs sequence
+             */
+            template <typename T, typename LHS> inline
+            T Norm2(Cameo::Addition<T> &xadd, LHS &lhs)
+            {
+                xadd.ldz();
+                for(size_t i=lhs.size();i>0;--i) {
+                    typename LHS::ConstType &l = lhs[i];
+                    xadd.addProd(l,l);
+                }
+                return xadd.sum();
+            }
+
+
+
 
         }
     }

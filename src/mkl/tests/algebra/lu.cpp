@@ -1,3 +1,6 @@
+
+#include "y/mkl/tao/2.hpp"
+
 #include "y/mkl/algebra/lu.hpp"
 #include "y/utest/run.hpp"
 #include "../../../core/tests/main.hpp"
@@ -14,7 +17,7 @@ namespace
     {
 
         MKL::LU<T> lu;
-
+        Cameo::Addition<T> xadd;
         for(size_t n=1;n<=5;++n)
         {
             while(true)
@@ -28,16 +31,22 @@ namespace
                 const T d = lu.det(a);
                 std::cerr << "d=" << d << std::endl;
 
-                CxxArray<T> b(n);
-                FillWith<T>::Seq(ran,b);
-                std::cerr << "b=" << b << std::endl;
+                const CxxArray<T> b(n);
+                FillWith<T>::Seq(ran,Coerce(b));
+                //std::cerr << "b=" << b << std::endl;
 
                 CxxArray<T> u(b);
                 lu.solve(a,u);
-                std::cerr << "u=" << u << std::endl;
+                //std::cerr << "u=" << u << std::endl;
 
+                CxxArray<T> au(n);
+                MKL::Tao::Mul(xadd,au,a0,u);
 
-
+                //std::cerr << "au=" << au << std::endl;
+                for(size_t i=n;i>0;--i) au[i] -= b[i];
+                //std::cerr << "del=" << au << std::endl;
+                const T residue = MKL::Tao::Norm2(xadd,au);
+                std::cerr << "residue=" << residue << std::endl;
                 break;
             }
         }

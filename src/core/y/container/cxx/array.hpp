@@ -57,7 +57,9 @@ namespace Yttrium
         }
 
         //! duplicate \param other another array
-        inline CxxArray(const CxxArray &other) : code( new Code(*other.code) )
+        inline CxxArray(const CxxArray &other) :
+        Container(), Contiguous< Writable<T> >(),
+        code( new Code(*other.code) )
         {
 
         }
