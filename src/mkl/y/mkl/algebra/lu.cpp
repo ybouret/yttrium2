@@ -16,6 +16,8 @@ namespace Yttrium
         {
         public:
 
+            typedef typename Matrix<T>::Row Row;
+
             explicit Code(const size_t n) :
             Object(),
             dneg(false),
@@ -49,7 +51,7 @@ namespace Yttrium
                 {
                     ScalarType apiv(0);
                     {
-                        const Readable<T> &a_i = a[i];
+                        const Row &a_i = a[i];
                         for(size_t j=n;j>0;--j)
                         {
                             const ScalarType atmp = Fabs<T>::Of(a_i[j]);
@@ -65,18 +67,21 @@ namespace Yttrium
                 {
                     for(size_t i=1;i<j;++i)
                     {
-                        T sum=a[i][j];
-                        for(size_t k=1;k<i;++k) sum -= a[i][k]*a[k][j];
-                        a[i][j]=sum;
+                        Row &a_i = a[i];
+                        xadd = a_i[j];
+                        for(size_t k=1;k<i;++k) xadd -= a[i][k]*a[k][j];
+                        a_i[j] = xadd.sum();
                     }
 
                     ScalarType apiv(0);
                     size_t     imax = 1;
                     for(size_t i=j;i<=n;++i) {
-                        T sum=a[i][j];
+
+                        Row &a_i = a[i];
+                        xadd     = a_i[j];
                         for (size_t k=1;k<j;++k)
-                            sum -= a[i][k]*a[k][j];
-                        const ScalarType atmp = Fabs<T>::Of(a[i][j]=sum) * scal[i];
+                            xadd -= a_i[k]*a[k][j];
+                        const ScalarType atmp = Fabs<T>::Of(a_i[j]=xadd.sum()) * scal[i];
                         if(atmp>=apiv)
                         {
                             apiv = atmp;
@@ -100,17 +105,17 @@ namespace Yttrium
                     if (j != n)
                     {
                         ConstType &den = a[j][j];
-                        for (size_t i=j+1;i<=n;++i)
+                        for(size_t i=n;i>j;--i)
                             a[i][j] /= den;
                     }
                 }
 
-                
 
                 return true;
             }
 
-            inline ConstType det(const Matrix<T> &a) 
+            // compute determinant of decomposed matrix
+            inline ConstType det(const Matrix<T> &a)
             {
                 assert(a.rows>0);
                 assert(a.isSquare());
@@ -120,9 +125,10 @@ namespace Yttrium
                 xmul = a[1][1];
                 for(size_t i=n;i>1;--i)
                     xmul *= a[i][i];
-                
+
                 return dneg ? -xmul.product() : xmul.product();
             }
+
 
             inline void solve(const Matrix<T> &a, Writable<T> &b)
             {
@@ -130,6 +136,7 @@ namespace Yttrium
                 assert(a.isSquare());
                 assert(a.rows<=dims);
                 assert(a.rows==b.size());
+
                 const size_t n  = a.rows;
                 size_t       ii = 0;
                 for(size_t i=1;i<=n;++i)
@@ -137,9 +144,9 @@ namespace Yttrium
                     const size_t ip=indx[i];
                     T sum=b[ip];
                     b[ip]=b[i];
-                    if (ii)
+                    if(0!=ii)
                     {
-                        for(size_t j=ii;j<=i-1;++j)
+                        for(size_t j=ii;j<i;++j)
                             sum -= a[i][j]*b[j];
                     }
                     else
@@ -150,12 +157,13 @@ namespace Yttrium
                     b[i]=sum;
                 }
 
-                for(size_t i=n;i>=1;--i)
+                for(size_t i=n;i>0;--i)
                 {
-                    T sum=b[i];
-                    for(size_t j=i+1;j<=n;++j)
-                        sum -= a[i][j]*b[j];
-                    b[i]=sum/a[i][i];
+                    const Row &a_i = a[i];
+                    xadd = b[i];
+                    for(size_t j=n;j>i;--j)
+                        xadd -= a_i[j]*b[j];
+                    b[i] = xadd.sum()/a_i[i];
                 }
             }
 
@@ -194,7 +202,7 @@ namespace Yttrium
             CxxArray<ScalarType>        scal;
             CxxArray<size_t>            indx;
             Cameo::Multiplication<Type> xmul;
-            
+
         private:
             Y_Disable_Copy_And_Assign(Code);
         };

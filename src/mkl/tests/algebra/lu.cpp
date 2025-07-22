@@ -22,7 +22,7 @@ namespace
         const bool                  exact = Y_Is_SuperSubClass_Strict(Apex::Number,T);
 
 
-        for(size_t n=1;n<=5;++n)
+        for(size_t n=1;n<=6;++n)
         {
             while(true)
             {
