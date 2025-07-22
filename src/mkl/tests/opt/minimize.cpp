@@ -49,6 +49,7 @@ Y_UTEST(opt_minimize)
     Random::ParkMiller ran;
 
     testMinimize<float>(ran);
+    testMinimize<double>(ran);
 
 #if 0
     testParabolic<double>(ran);

@@ -31,6 +31,7 @@ real_t Optimize<real_t>:: Run(Triplet<real_t> & x,
     while(true)
     {
         const real_t newWidth = ParabolicStep<real_t>::Tighten(x,f,F);
+        std::cerr << "x=" << x << ", f=" << f << std::endl;
         if( AlmostEqual<real_t>::Are(width,newWidth) )
         {
             f.b = F(x.b);
