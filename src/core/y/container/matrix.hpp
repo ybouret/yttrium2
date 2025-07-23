@@ -180,8 +180,7 @@ namespace Yttrium
         code( newCode() ),
         rowp( newRows() )
         {
-            assert(ir>0); assert(ir<=M.rows);
-            assert(ic>0); assert(ic<=M.cols);
+
             copyMinor(ir,ic,M);
         }
 
@@ -254,6 +253,15 @@ namespace Yttrium
             return xch(temp);
         }
 
+        template <typename U> inline
+        Matrix & assign(const MinorOf_ &, const size_t ir, const size_t ic, const Matrix<U> &M)
+        {
+            assert(1+rows==M.rows);
+            assert(1+cols==M.cols);
+            copyMinor(ir,ic,M);
+            return *this;
+        }
+
         //! \return first item of linear space
         inline ConstType * operator()(void) const noexcept
         {
@@ -300,6 +308,40 @@ namespace Yttrium
             else
                 return *this;
         }
+
+        Matrix & ld(ParamType arg)
+        {
+            size_t n = count;
+            if(n>0)
+            {
+                MutableType *p = code->entry;
+                while(n-- > 0) *(p++) = arg;
+            }
+            return *this;
+        }
+
+        inline Matrix & operator*=(ParamType arg)
+        {
+            size_t n = count;
+            if(n>0)
+            {
+                MutableType *p = code->entry;
+                while(n-- > 0) *(p++) *= arg;
+            }
+            return *this;
+        }
+
+        inline Matrix & operator/=(ParamType arg)
+        {
+            size_t n = count;
+            if(n>0)
+            {
+                MutableType *p = code->entry;
+                while(n-- > 0) *(p++) /= arg;
+            }
+            return *this;
+        }
+
 
     private:
 
@@ -435,6 +477,8 @@ namespace Yttrium
         template <typename U> inline
         void copyMinor(const size_t ir, const size_t ic, const Matrix<U> &M)
         {
+            assert(ir>0); assert(ir<=M.rows);
+            assert(ic>0); assert(ic<=M.cols);
             Matrix &self = *this;
             size_t r=0;
             for(size_t i=1;i<=M.rows;++i)

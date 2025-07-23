@@ -187,6 +187,20 @@ namespace Yttrium
             return os;
         }
 
+
+        Integer:: Integer(const Rational &q) :
+        s(q.numer.s),
+        n(q.numer.n)
+        {
+            if( q.denom.bits() > 1 ) throw Specific::Exception(CallSign,"assign non-integer %s", Rational::CallSign);
+        }
+
+
+        Integer & Integer:: operator=(const Rational &q)
+        {
+            Integer z(q);
+            return xch(z);
+        }
     }
 
 }

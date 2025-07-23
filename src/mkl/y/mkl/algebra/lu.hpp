@@ -10,6 +10,7 @@
 
 namespace Yttrium
 {
+    
     namespace MKL
     {
         //______________________________________________________________________
@@ -78,11 +79,61 @@ namespace Yttrium
             void inv(const Matrix<T> &a, Matrix<T> &ia);
 
 
+            //! compute determinant
+            /**
+             \param M compatible matrix, copied
+             \return det(M)
+             */
             template <typename U> inline
             T determinant(const Matrix<U> &M)
             {
+                assert(M.isSquare());
                 Matrix<T> a(CopyOf,M);
-                return build(a) ? det(a) : T(0);
+                return (a.rows>0 && build(a)) ? det(a) : T(0);
+            }
+
+            template <typename U> inline
+            bool inverse(Matrix<T> &iM, const Matrix<U> &M)
+            {
+                Matrix<T> a(CopyOf,M);
+                if( !build(a) ) { iM.ld(0); return false; }
+                inv(a,iM);
+                return true;
+            }
+
+            template <typename U, typename V> inline
+            void adjoint(Matrix<U> &A, const Matrix<V> &M)
+            {
+                assert(M.isSquare());
+                assert(A.gotSameMetricsThan(M));
+                const size_t n = M.rows;
+                switch(n)
+                {
+                    case 0: return;
+                    case 1: A[1][1] = U(1); return;
+                    default:
+                        break;
+                }
+
+                const U      _0(0);
+                const size_t m=n-1; assert(m>0);
+                Matrix<T> a(m,m);
+                for(size_t i=n;i>0;--i)
+                {
+                    for(size_t j=n;j>0;--j)
+                    {
+                        a.assign(MinorOf,i,j,M);
+                        if(build(a))
+                        {
+                            A[j][i] = (0 == ((i+j) & 1) ) ? det(a) : -det(a);
+                        }
+                        else
+                        {
+                            A[j][i] = _0;
+                        }
+                    }
+                }
+
             }
 
 

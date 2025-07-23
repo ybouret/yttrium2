@@ -90,3 +90,5 @@ void  LU<real_t>:: inv(const Matrix<real_t> &a, Matrix<real_t> &ia)
     assert(a.gotSameMetricsThan(ia));
     code->inv(a,ia);
 }
+
+ 

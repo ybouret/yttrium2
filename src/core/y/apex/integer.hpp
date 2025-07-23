@@ -13,7 +13,8 @@ namespace Yttrium
     namespace Apex
     {
 
-        
+        class Rational;
+
         //______________________________________________________________________
         //
         //
@@ -54,8 +55,8 @@ namespace Yttrium
             Integer(Random::Bits &, const size_t);         //!< setup with random bits and sign
             Integer & operator=(const Natural &);          //!< assign integral \return *this
             Integer(InputStream &, const char * const=0);  //!< reload from saved state
-
-
+            Integer(const Rational &);                     //!< assign integer rational
+            Integer & operator=(const Rational &);         //!< assign integer rational \return *this
             //__________________________________________________________________
             //
             //
