@@ -52,5 +52,13 @@
 #include <stddef.h>
 #endif
 
+#if defined(_MSC_VER)
+#define        Y_U64(X) X##ui64
+#define        Y_I64(X) X##i64
+#else
+#    define    Y_U64(X) X##ULL
+#    define    Y_I64(X) X##LL
+#endif
+
 #endif
 
