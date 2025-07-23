@@ -14,7 +14,7 @@ namespace
     void showCoeff(const char * const id)
     {
         std::cerr << id << std::endl;
-        const T eps = Numeric<T>::EPSILON;
+        const T eps = Numeric<T>::FTOL;
         const T min = Numeric<T>::MIN;
         std::cerr << "eps=" << eps << ", min=" << min << std::endl;
         std::cerr << "theta=" << min/eps << std::endl;

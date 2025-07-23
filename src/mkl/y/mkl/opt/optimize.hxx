@@ -1,4 +1,19 @@
 
+
+static inline bool isFlat(const Triplet<real_t> &f)
+{
+    assert(f.isLocalMinimum());
+    const real_t fmax = Max(f.a,f.c);
+    return AlmostEqual<real_t>::Are(fmax,f.b);
+}
+
+static inline bool isPunctual(const Triplet<real_t> &x)
+{
+    assert(x.isIncreasing() );
+    return AlmostEqual<real_t>::Are(x.a,x.b) &&  AlmostEqual<real_t>::Are(x.c,x.b);
+}
+
+
 template <>
 real_t Optimize<real_t>:: Run(Triplet<real_t> & x,
                               Triplet<real_t> & f,
@@ -28,28 +43,27 @@ real_t Optimize<real_t>:: Run(Triplet<real_t> & x,
     //
     //__________________________________________________________________________
     std::cerr.precision(15);
-    real_t width = x.width();
     while(true)
     {
-        const real_t newWidth = ParabolicStep<real_t>::Tighten(x,f,F);
-        std::cerr << "x=" << x << ", f=" << f << std::endl;
-        const real_t fmax = Max(f.a,f.c);
-        if( AlmostEqual<real_t>::Are(f.b,fmax))
+        ParabolicStep<real_t>::Tighten(x,f,F);
+        std::cerr << "x=" << x << ", f=" << f << " df=" << Max(f.a,f.c)-f.b << std::endl;
+        assert(x.isIncreasing());
+        assert(f.isLocalMinimum());
+
+        if( isFlat(f) )
         {
             std::cerr << "flat" << std::endl;
-        }
-
-        if( AlmostEqual<real_t>::Are(x.a,x.b) &&  AlmostEqual<real_t>::Are(x.a,x.b) )
-        {
-            std::cerr << "ponctual" << std::endl;
-        }
-
-
-        if( AlmostEqual<real_t>::Are(width,newWidth) )
-        {
             break;
         }
-        width = newWidth;
+
+        if( isPunctual(x) )
+        {
+            std::cerr << "ponctual" << std::endl;
+            break;
+        }
+
+
+
     }
 
     f.b = F(x.b);

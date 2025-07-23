@@ -23,7 +23,7 @@ namespace Yttrium
             /**
              \param x lhs
              \param y rhs
-             \return |x-y|/( Max( Min(|x|,|y|), THETA ) <= EPSILON
+             \return |x-y|/( Max( Min(|x|,|y|), THETA ) <= FTOL
              */
             template <typename T>
             inline bool  ScalAreAlmostEqual(const T &x,
@@ -35,7 +35,7 @@ namespace Yttrium
                 const T lhs = MKL::Fabs<T>::Of(del);
                 const T ma  = Min(ax,ay);
                 const T rhs = Max(ma,Numeric<T>::THETA);
-                return lhs <= Numeric<T>::EPSILON * rhs;
+                return lhs <= Numeric<T>::FTOL * rhs;
             }
 
 
