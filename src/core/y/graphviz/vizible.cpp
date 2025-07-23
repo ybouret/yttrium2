@@ -67,6 +67,56 @@ namespace Yttrium
         return Label(fp,_);
     }
 
+    OutputStream & Vizible:: Enter(OutputStream &fp)
+    {
+        return fp << "digraph G {\n";
+    }
+
+    OutputStream & Vizible:: Leave(OutputStream &fp)
+    {
+        return fp << "}\n";
+    }
+
+}
+
+#include "y/vfs/local/fs.hpp"
+#include "y/stream/libc/output.hpp"
+
+namespace Yttrium
+{
+
+
+    void Vizible:: DotToPng(const String &dotFile, const bool keepDot)
+    {
+        const String pngFile = VFS::ChangedExtension("png", dotFile);
+        const String cmd = "dot -T png " + dotFile + " -o " + pngFile;
+        //std::cerr << "cmd: '" << cmd << "'" << std::endl;
+        system(cmd.c_str());
+        if(!keepDot) LocalFS::Instance().tryRemoveFile(dotFile);
+    }
+
+
+    void Vizible:: DotToPng(const char * const dotFile, const bool keepDot)
+    {
+        const String _(dotFile);
+        DotToPng(_,keepDot);
+    }
+
+    OutputStream * Vizible:: NewDotFile(const Core::String<char> &fileName)
+    {
+        return new OutputFile(fileName);
+    }
+
+    OutputStream * Vizible:: NewDotFile(const char * const fileName)
+    {
+        return new OutputFile(fileName);
+    }
+    
+    void Vizible:: DelDotFile(OutputStream * const handle) noexcept
+    {
+        assert(0!=handle);
+        delete handle;
+    }
 
 
 }

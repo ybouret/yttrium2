@@ -133,7 +133,7 @@ namespace Yttrium
             Node::Pool   pool;
             Node *       create(Node * const sire,
                                 const code_t code);
-            void         prune(Node * const node) noexcept;
+            void         prune(Node * node) noexcept;
         };
 
 

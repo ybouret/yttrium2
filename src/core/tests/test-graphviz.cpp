@@ -57,7 +57,7 @@ Y_UTEST(graphviz)
 
     {
         OutputFile fp("table.dot");
-        fp << "digraph G {\n";
+        Vizible::Enter(fp);
         for(size_t i=0;i<16;++i)
         {
             for(size_t j=0;j<16;++j,++c)
@@ -74,11 +74,12 @@ Y_UTEST(graphviz)
                 }
             }
         }
-        fp << "}\n";
+        Vizible:: Leave(fp);
     }
 
-    system("dot -T png table.dot -o table.png");
+    Vizible::DotToPng("table.dot");
 
+    
 }
 Y_UDONE()
 

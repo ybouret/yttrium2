@@ -86,8 +86,22 @@ namespace Yttrium
         }
 
 
-        void SuffixTree:: prune(Node * const node) noexcept
+        void SuffixTree:: prune(Node * node) noexcept
         {
+            assert(0!=node);
+            assert(0==node->addr);
+
+        PRUNE:
+            if(0==node->chld.size && root != node)
+            {
+                // is a leave
+                Node * const sire = node->sire;
+                assert(sire);
+                assert(sire->chld.owns(node));
+                pool.store(sire->chld.pop(node));
+                node = sire;
+                goto PRUNE;
+            }
 
         }
 
