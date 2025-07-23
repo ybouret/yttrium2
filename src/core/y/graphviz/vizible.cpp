@@ -90,7 +90,6 @@ namespace Yttrium
     {
         const String pngFile = VFS::ChangedExtension("png", dotFile);
         const String cmd = "dot -T png " + dotFile + " -o " + pngFile;
-        //std::cerr << "cmd: '" << cmd << "'" << std::endl;
         system(cmd.c_str());
         if(!keepDot) LocalFS::Instance().tryRemoveFile(dotFile);
     }
