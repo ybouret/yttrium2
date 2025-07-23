@@ -53,12 +53,18 @@ namespace Yttrium
                 template <typename T,const bool SCALAR>
                 struct Norm2;
 
+                //! helper for scalar types
                 template <typename T>
                 struct Norm2<T,true>
                 {
-                    Y_Args_Expose(T,Type);
-                    typedef T OutputType;
+                    Y_Args_Expose(T,Type); //!< aliases
+                    typedef T OutputType;  //!< alias
 
+                    //! push scal^2 into xadd
+                    /**
+                     \param xadd addition
+                     \param scal scalar
+                     */
                     static inline void Push(Cameo::Addition<OutputType> & xadd,
                                             ConstType &                   scal)
                     {
@@ -67,12 +73,18 @@ namespace Yttrium
                     }
                 };
 
+                //! helper for vectorial types
                 template <typename T>
                 struct Norm2<T,false>
                 {
-                    Y_Args_Expose(T,Type);
-                    typedef typename T::Type OutputType;
+                    Y_Args_Expose(T,Type);               //!< aliases
+                    typedef typename T::Type OutputType; //!< alias
 
+                    //! push all squared components
+                    /**
+                     \param xadd addition
+                     \param vect vectorial
+                     */
                     static inline void Push(Cameo::Addition<OutputType> & xadd,
                                             ConstType &                   vect)
                     {
@@ -107,7 +119,7 @@ namespace Yttrium
             //! \return |vect|^2
             /**
              \param xadd perform additions
-             \param vect single vectorial type
+             \param v    single vectorial type
              */
             template <typename T, typename VECT> inline
             T Norm2V(Cameo::Addition<T> &xadd, const VECT &v)

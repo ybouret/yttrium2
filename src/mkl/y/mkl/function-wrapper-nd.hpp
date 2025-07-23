@@ -69,7 +69,7 @@ namespace Yttrium
             }
 
         private:
-            Y_DISABLE_COPY_AND_ASSIGN(WrapperND);
+            Y_Disable_Copy_And_Assign(WrapperND); //!< discarding
             FUNCTION          &fcn;
             const Readable<T> &var;
             const size_t       idx;

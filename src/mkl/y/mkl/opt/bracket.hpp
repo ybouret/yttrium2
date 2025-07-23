@@ -12,7 +12,7 @@ namespace Yttrium
     namespace MKL
     {
 
-        extern bool BracketVerbose;
+        extern bool BracketVerbose; //!< for verbosity
         
         //______________________________________________________________________
         //

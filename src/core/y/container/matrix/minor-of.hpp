@@ -8,7 +8,7 @@
 
 namespace Yttrium
 {
-    Y_Shallow_Decl(MinorOf);
+    Y_Shallow_Decl(MinorOf); //!< alias
 }
 
 #endif

@@ -170,6 +170,13 @@ namespace Yttrium
             copyTranspose(M);
         }
 
+        //! setup as minor
+        /**
+         \param minor helper
+         \param ir in M rows
+         \param ic in M cols
+         \param M extract minor from
+         */
         template <typename U>
         inline Matrix(const MinorOf_ &minor,
                       const size_t ir,
@@ -253,6 +260,13 @@ namespace Yttrium
             return xch(temp);
         }
 
+        //! assign minor
+        /**
+         \param ir in M rows
+         \param ic in M cols
+         \param M extract minor from
+         \return *this
+         */
         template <typename U> inline
         Matrix & assign(const MinorOf_ &, const size_t ir, const size_t ic, const Matrix<U> &M)
         {
@@ -309,6 +323,7 @@ namespace Yttrium
                 return *this;
         }
 
+        //! \param arg set all items to arg \return *this
         Matrix & ld(ParamType arg)
         {
             size_t n = count;
@@ -320,6 +335,7 @@ namespace Yttrium
             return *this;
         }
 
+        //! \param arg multiply all items by arg \return *this
         inline Matrix & operator*=(ParamType arg)
         {
             size_t n = count;
@@ -331,6 +347,7 @@ namespace Yttrium
             return *this;
         }
 
+        //! \param arg divide all items by arg \return *this
         inline Matrix & operator/=(ParamType arg)
         {
             size_t n = count;
@@ -474,6 +491,12 @@ namespace Yttrium
             }
         }
 
+        //! copy minor into
+        /**
+         \param ir in M rows
+         \param ic in M cols
+         \param M extract minor from
+         */
         template <typename U> inline
         void copyMinor(const size_t ir, const size_t ic, const Matrix<U> &M)
         {

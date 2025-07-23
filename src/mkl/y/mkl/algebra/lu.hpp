@@ -92,15 +92,27 @@ namespace Yttrium
                 return (a.rows>0 && build(a)) ? det(a) : T(0);
             }
 
+            //! compute inverse
+            /**
+             \param M original matrix, copied
+             \param iM inverse matrix if exists, 0 otherwise
+             \return true if inverse exists
+             */
             template <typename U> inline
             bool inverse(Matrix<T> &iM, const Matrix<U> &M)
             {
+                assert(iM.gotSameMetricsThan(M));
                 Matrix<T> a(CopyOf,M);
                 if( !build(a) ) { iM.ld(0); return false; }
                 inv(a,iM);
                 return true;
             }
 
+            //! compute adjoint
+            /**
+             \param M original matrix
+             \param A transpose of comatrix
+             */
             template <typename U, typename V> inline
             void adjoint(Matrix<U> &A, const Matrix<V> &M)
             {
