@@ -1,9 +1,17 @@
 
 #include "y/graphviz/vizible.hpp"
 #include "y/format/hexadecimal.hpp"
+#include "y/string.hpp"
+#include "y/stream/output.hpp"
 
 namespace Yttrium
 {
+
+    const char * Vizible:: Char[256] =
+    {
+#include "vizible.hxx"
+    };
+
     Vizible:: Vizible() noexcept {}
 
     Vizible:: ~Vizible() noexcept
@@ -36,7 +44,21 @@ namespace Yttrium
         return target->name( name(fp) << " -> " );
     }
 
+    OutputStream & Vizible:: Label(OutputStream &fp, const String &id)
+    {
+        fp << "label=\"";
+        for(size_t i=1;i<=id.size();++i)
+        {
+            fp << Char[ uint8_t(id[i]) ];
+        }
+        return fp << "\"";
+    }
 
+    OutputStream & Vizible:: Label(OutputStream &fp, const char * const id)
+    {
+        const String _(id);
+        return Label(fp,_);
 
+    }
 }
 
