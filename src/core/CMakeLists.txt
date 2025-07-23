@@ -36,6 +36,7 @@ Y_CreateLibrary(y
     y/container/sequence
     y/container/cxx
     y/container/ordered
+    y/container/tree
     y/static
     y/static/workspace
     y/memory

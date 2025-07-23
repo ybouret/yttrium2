@@ -125,6 +125,7 @@ Y_UTEST(container:algo)
 Y_UTEST(container:iterator)
 Y_UTEST(container:cxx:array)
 Y_UTEST(container:matrix)
+Y_UTEST(container:suffix_tree)
 
 #stream
 Y_UTEST(stream:io:char)
