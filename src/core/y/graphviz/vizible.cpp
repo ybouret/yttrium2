@@ -3,14 +3,12 @@
 #include "y/format/hexadecimal.hpp"
 #include "y/string.hpp"
 #include "y/stream/output.hpp"
+#include "y/ascii/embedding.hpp"
 
 namespace Yttrium
 {
 
-    const char * Vizible:: Char[256] =
-    {
-#include "vizible.hxx"
-    };
+    
 
     Vizible:: Vizible() noexcept {}
 
@@ -49,7 +47,7 @@ namespace Yttrium
         fp << "label=\"";
         for(size_t i=1;i<=id.size();++i)
         {
-            fp << Char[ uint8_t(id[i]) ];
+            fp << ASCII::Embedding::Text(id[i]);
         }
         return fp << "\"";
     }

@@ -13,8 +13,7 @@ namespace Yttrium
     class Vizible
     {
     public:
-        static const char *Char[256];
-
+        
         explicit Vizible() noexcept;
         virtual ~Vizible() noexcept;
 
