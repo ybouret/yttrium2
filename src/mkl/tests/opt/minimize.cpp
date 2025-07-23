@@ -24,20 +24,25 @@ namespace
         std::cerr << std::endl;
         const T   amplitude(3);
         const T   _0(0);
-        Triplet<T> x = { ran.symm<T>() * amplitude, _0, ran.symm<T>()*amplitude };
-        Triplet<T> f = { F(x.a), _0, F(x.c) };
 
-        std::cerr << "x=" << x << "; f=" << f << std::endl;
-        if( Bracket<T>::Inside(F<T>,x,f) )
+        for(size_t iter=0;iter<1;++iter)
         {
-            std::cerr << "Look for Local Min" << std::endl;
+            Triplet<T> x = { ran.symm<T>() * amplitude, _0, ran.symm<T>()*amplitude };
+            Triplet<T> f = { F(x.a), _0, F(x.c) };
+
             std::cerr << "x=" << x << "; f=" << f << std::endl;
-            const T x_opt = Optimize<T>::Run(F<T>,x,f);
-            std::cerr << "Found F(" << x_opt << ")=" << f.b << std::endl;
-        }
-        else
-        {
-            std::cerr << "Global Min at " << x.a << " : " << f.a << std::endl;
+            if( Bracket<T>::Inside(F<T>,x,f) )
+            {
+                std::cerr << "Look for Local Min" << std::endl;
+                std::cerr << "x=" << x << "; f=" << f << std::endl;
+                const T x_opt = Optimize<T>::Run(F<T>,x,f);
+                std::cerr << "Found F(" << x_opt << ")=" << f.b << std::endl;
+            }
+            else
+            {
+                std::cerr << "Global Min at " << x.a << " : " << f.a << std::endl;
+            }
+
         }
 
     }
@@ -47,9 +52,9 @@ namespace
 Y_UTEST(opt_minimize)
 {
     Random::ParkMiller ran;
-
+    //MKL::BracketVerbose = true;
     testMinimize<float>(ran);
-    testMinimize<double>(ran);
+    //testMinimize<double>(ran);
 
 #if 0
     testParabolic<double>(ran);

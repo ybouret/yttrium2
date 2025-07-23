@@ -12,6 +12,8 @@ namespace Yttrium
     namespace MKL
     {
 
+        extern bool BracketVerbose;
+        
         //______________________________________________________________________
         //
         //

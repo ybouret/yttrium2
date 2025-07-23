@@ -17,9 +17,14 @@ bool Bracket<real_t>:: Inside(Triplet<real_t> &x,
     assert(f.a<=f.c);
 
 
+
+    Y_PRINT("from F(" << x.a << ")=" << f.a << " to F(" << x.c << ")=" << f.c);
+
+    real_t width = x.width();
 PROBE:
     // make new guess
     f.b = F( x.b = x.middle() ); assert( x.isOrdered() );
+    Y_PRINT("try x=" << x << "; f=" << f << "; dx = " << Fabs<real_t>::Of(x.a-x.b) << "; w=" << Fabs<real_t>::Of(x.a-x.c) << "; df=" << f.b-f.a);
 
     // test against the minimal value
     switch( Sign::Of(f.b,f.a) )
@@ -28,27 +33,46 @@ PROBE:
         case Negative:
             // success
             assert(f.isLocalMinimum());
-            break;
-
-            // not there yet
-        case Positive:
-            f.c = f.b;
-            x.c = x.b;
-            assert( x.isOrdered() );
+            Y_PRINT("found local min");
             if( AlmostEqual<real_t>::Are(x.a,x.b) )
             {
-                f.b = f.a;
-                x.b = x.a;
-                assert( x.isOrdered() );
-                assert( f.isLocalMinimum() );
-                return false; // global mininum on side
+                Y_PRINT("but global");
+                goto GLOBAL;
             }
+            return true;
+
+            // not there yet: move c to b
+        case Positive:
+            assert(f.b>f.a);
+            assert( x.isOrdered() );
+            assert( !f.isLocalMinimum() );
+
+            if( AlmostEqual<real_t>::Are(x.a,x.b) )
+            {
+                Y_PRINT("x convergence");
+                goto GLOBAL;
+            }
+
+            // move c to b for next step
+            f.c = f.b;
+            x.c = x.b;
+
+        {
+            const real_t newWidth = x.width();
+            if(newWidth>=width)
+            {
+                Y_PRINT("width stagnation");
+                goto GLOBAL;;
+            }
+            width = newWidth;
+        }
+
+
             goto PROBE;
     }
 
-
-
-    return true;
-
-
+GLOBAL:
+    f.c = f.b; x.c = x.b;
+    f.b = f.a; x.b = x.a;
+    return false;
 }

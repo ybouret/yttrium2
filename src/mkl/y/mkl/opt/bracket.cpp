@@ -7,6 +7,13 @@ namespace Yttrium
     namespace MKL
     {
 
+        bool BracketVerbose = false;
+        static const char BracketPrefix[] = "[Bracket] ";
+
+#define Y_PRINT(MSG) do {\
+if(BracketVerbose) { std::cerr << BracketPrefix << MSG << std::endl; } \
+} while(false)
+
 #define real_t float
 #include "bracket.hxx"
 #undef real_t
