@@ -97,7 +97,11 @@ namespace Yttrium
 
         }
 
-        //! Mod2 for scalar or vectorial type
+        //! Mod2 for scalar or vectorial type, floating point
+        /**
+         for integer scalar type, use Tao::Norm2V,
+         but ok for "small" norms
+         */
         template <typename T>
         struct Mod2
         {

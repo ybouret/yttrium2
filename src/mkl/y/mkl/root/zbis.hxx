@@ -35,7 +35,7 @@ real_t ZBis<real_t>:: lookup(Triplet<real_t> &x, Triplet<real_t> &f, FunctionTyp
     // initial bisection
     //
     //--------------------------------------------------------------------------
-    switch( Sign::Of( f.b = F(x.b=Half<real_t>::Of(x.a+x.c) ) ) )
+    switch( Sign::Of( f.b = F(x.b=Half<real_t>::Of(x.a,x.c) ) ) )
     {
         case __Zero__: // exact
             return x.b;
@@ -51,18 +51,13 @@ real_t ZBis<real_t>:: lookup(Triplet<real_t> &x, Triplet<real_t> &f, FunctionTyp
             break;
     }
 
-
-    //size_t cycle=0;
+    real_t width = x.width();
     while(true)
     {
-        //++cycle;
-        //std::cerr << "@" << cycle <<":  x=" << x << "; f=" << f << std::endl;
-
         const real_t x_old = x.b;
         switch( Sign::Of( f.b = F(x.b=Half<real_t>::Of(x.a+x.c) ) ) )
         {
             case __Zero__: // exact
-                //std::cerr << "exact " << f.b << " @" << x.b << std::endl;
                 return x.b;
 
             case Negative:
@@ -78,6 +73,14 @@ real_t ZBis<real_t>:: lookup(Triplet<real_t> &x, Triplet<real_t> &f, FunctionTyp
 
         if( AlmostEqual<real_t>::Are(x_old,x.b) )
             return x.b;
+
+        const real_t newWidth = x.width();
+        if( newWidth >= width )
+        {
+            // width stagnation
+            return x.b;
+        }
+        width = newWidth;
     }
 
 }

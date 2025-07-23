@@ -104,6 +104,23 @@ namespace Yttrium
                 return xadd.sum();
             }
 
+            //! \return |vect|^2
+            /**
+             \param xadd perform additions
+             \param vect single vectorial type
+             */
+            template <typename T, typename VECT> inline
+            T Norm2V(Cameo::Addition<T> &xadd, const VECT &v)
+            {
+                typedef typename VECT::Type                                       InputType;
+                typedef          Hub::Norm2<InputType,IsScalar<InputType>::Value> API;
+
+                xadd.ldz();
+                API::Push(xadd,v);
+                return xadd.sum();
+            }
+
+
 
 
 
