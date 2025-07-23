@@ -8,7 +8,7 @@ using namespace Yttrium;
 Y_UTEST(container_suffix_tree)
 {
 
-    Core::SuffixTree tree;
+    SuffixTree tree;
 
     {
         int a = 2;
@@ -16,7 +16,7 @@ Y_UTEST(container_suffix_tree)
         int c = 4;
         int d = 5;
         const char * const key = "Hello";
-        Core::SuffixTree::Node * node = tree.insert(key,3,&a);
+        SuffixTree::Node * node = tree.insert(key,3,&a);
         Vizible::Render("tree1.dot", tree);
         tree.insert(key,2,&b);
         Vizible::Render("tree2.dot", tree);
