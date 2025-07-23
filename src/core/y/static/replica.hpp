@@ -58,7 +58,7 @@ namespace Yttrium
             }
 
             //! setup \param value sent to constructor
-            inline Replica(const ParamType value) :
+            inline Replica(ParamType value) :
             pointee(0),
             wksp()
             {
