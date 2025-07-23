@@ -78,6 +78,14 @@ namespace Yttrium
             void inv(const Matrix<T> &a, Matrix<T> &ia);
 
 
+            template <typename U> inline
+            T determinant(const Matrix<U> &M)
+            {
+                Matrix<T> a(CopyOf,M);
+                return build(a) ? det(a) : T(0);
+            }
+
+
         private:
             class Code;
             Y_Disable_Copy_And_Assign(LU); //!< discarding

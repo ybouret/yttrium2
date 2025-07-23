@@ -17,4 +17,5 @@ Y_UTEST(opt:parabolic)
 Y_UTEST(opt:minimize)
 
 Y_UTEST(algebra:lu)
+Y_UTEST(algebra:adjoint)
 

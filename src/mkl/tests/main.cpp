@@ -10,5 +10,6 @@ Y_UTEST_DECL(128)
     Y_UTEST(opt_minimize);
     
     Y_UTEST(algebra_lu);
+    Y_UTEST(algebra_adjoint);
 }
 Y_UTEST_EXEC()
