@@ -5,6 +5,7 @@
 #define Y_Matrix_Metrics_Included 1
 
 #include "y/mkl/transpose-of.hpp"
+#include "y/container/matrix/minor-of.hpp"
 #include "y/core/setup.hpp"
 
 namespace Yttrium
@@ -41,9 +42,10 @@ namespace Yttrium
         //
         //______________________________________________________________________
         explicit MatrixMetrics(const size_t nr, const size_t nc);            //!< \param nr rows \param nc columns
-        MatrixMetrics(const MatrixMetrics &) noexcept;                        //!< duplicate
+        MatrixMetrics(const MatrixMetrics &) noexcept;                       //!< duplicate
         MatrixMetrics(const TransposeOf_ &, const MatrixMetrics &) noexcept; //!< duplicate transpoe
         virtual ~MatrixMetrics() noexcept;                                   //!< cleanup
+        MatrixMetrics(const MinorOf_ &, const MatrixMetrics &);              //!< metrics for minor
 
         //______________________________________________________________________
         //

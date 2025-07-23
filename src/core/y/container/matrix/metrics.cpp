@@ -33,6 +33,30 @@ namespace Yttrium
     {
     }
 
+    static inline size_t minorRows(const MatrixMetrics &_)
+    {
+        const size_t nr = _.rows;
+        if(nr<=1) throw Specific::Exception(_.CallSign,"not enough rows for minor");
+        return nr-1;
+    }
+
+    static inline size_t minorCols(const MatrixMetrics &_)
+    {
+        const size_t nc = _.cols;
+        if(nc<=1) throw Specific::Exception(_.CallSign,"not enough colums for minor");
+        return nc-1;
+    }
+
+
+    MatrixMetrics:: MatrixMetrics(const MinorOf_ &, const MatrixMetrics &_) :
+    rows( minorRows(_) ),
+    cols( minorCols(_) ),
+    count(rows*cols)
+    {
+
+    }
+
+
     MatrixMetrics:: MatrixMetrics(const TransposeOf_ &, const MatrixMetrics &_) noexcept :
     rows(_.cols),
     cols(_.rows),

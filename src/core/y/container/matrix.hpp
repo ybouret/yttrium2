@@ -170,6 +170,21 @@ namespace Yttrium
             copyTranspose(M);
         }
 
+        template <typename U>
+        inline Matrix(const MinorOf_ &minor,
+                      const size_t ir,
+                      const size_t ic,
+                      const Matrix<U> &M) :
+        MatrixMetrics(minor,M),
+        Releasable(),
+        code( newCode() ),
+        rowp( newRows() )
+        {
+            assert(ir>0); assert(ir<=M.rows);
+            assert(ic>0); assert(ic<=M.cols);
+            copyMinor(ir,ic,M);
+        }
+
 
         //! cleanup
         inline virtual ~Matrix() noexcept {}
@@ -272,6 +287,18 @@ namespace Yttrium
             assert(rhs>0);
             assert(rhs<=rows);
             Memory::Stealth::Swap(& rowp->cxx[lhs][1], & rowp->cxx[rhs][1], sizeof(T) * cols);
+        }
+
+        //! \param nr required rows \param nc required cols \return same/new matrix
+        inline Matrix & make(const size_t nr, const size_t nc)
+        {
+            if(nr!=rows||nc!=cols)
+            {
+                Matrix tmp(nr,nc);
+                return xch(tmp);
+            }
+            else
+                return *this;
         }
 
     private:
@@ -403,6 +430,24 @@ namespace Yttrium
                     self_i[j] = M[j][i];
                 }
             }
+        }
+
+        template <typename U> inline
+        void copyMinor(const size_t ir, const size_t ic, const Matrix<U> &M)
+        {
+            Matrix &self = *this;
+            size_t r=0;
+            for(size_t i=1;i<=M.rows;++i)
+            {
+                if(ir==i) continue;
+                ++r;
+                size_t c=0;
+                for(size_t j=1;j<=M.cols;++j)
+                {
+                    if(ic==j) continue;
+                    self[r][++c] = M[i][j];
+                }
+             }
         }
 
 

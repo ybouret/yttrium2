@@ -82,6 +82,19 @@ Y_UTEST(container_matrix)
                 std::cerr << "m4_" << nr << "x" << nc << " = " <<  m4 << std::endl;
             }
 
+            {
+                if(nr>=2&&nc>=2)
+                {
+                    for(size_t ir=1;ir<=nr;++ir)
+                    {
+                        for(size_t ic=1;ic<=nc;++ic)
+                        {
+                            Matrix<int> sub(MinorOf,ir,ic,m);
+                            std::cerr << "sub" << ir << "_" << ic << " = " << sub << std::endl;
+                        }
+                    }
+                }
+            }
 
         }
     }
