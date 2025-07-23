@@ -60,5 +60,14 @@ namespace Yttrium
         return Label(fp,_);
 
     }
+
+    OutputStream & Vizible:: Label(OutputStream &fp, const char c)
+    {
+        const String _(c);
+        return Label(fp,_);
+    }
+
+
+
 }
 

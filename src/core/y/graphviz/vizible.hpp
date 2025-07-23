@@ -23,6 +23,7 @@ namespace Yttrium
 
         static OutputStream & Label(OutputStream &, const Core::String<char> &);
         static OutputStream & Label(OutputStream &, const char * const);
+        static OutputStream & Label(OutputStream &, const char);
         static OutputStream & Endl(OutputStream &);
 
 

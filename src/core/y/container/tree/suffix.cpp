@@ -1,5 +1,6 @@
 
 #include "y/container/tree/suffix.hpp"
+#include "y/stream/output.hpp"
 
 namespace Yttrium
 {
@@ -20,9 +21,42 @@ namespace Yttrium
 
         SuffixTree::Node:: ~Node() noexcept
         {
-            
+
         }
 
+        OutputStream &  SuffixTree::Node:: viz(OutputStream &fp) const
+        {
+            name(fp) << '[';
+            if(addr) fp << "shape=circle,style=bold";
+            else     fp << "shape=square";
+            fp << ',';
+            if(code<256)
+            {
+                Label(fp,char(code));
+            }
+            else
+            {
+                Label(fp,"???");
+            }
+
+            Endl(fp << ']');
+            for(const Node *node=chld.head;node;node=node->next)
+            {
+                node->viz(fp);
+                Endl(to(node,fp));
+            }
+            return fp;
+        }
+
+    }
+
+}
+
+namespace Yttrium
+{
+
+    namespace Core
+    {
 
         SuffixTree:: SuffixTree():
         size(0),
@@ -52,10 +86,17 @@ namespace Yttrium
         }
 
 
-        void SuffixTree:: prune(Node *const node) noexcept
+        void SuffixTree:: prune(Node * const node) noexcept
         {
 
         }
+
+        OutputStream & SuffixTree:: viz(OutputStream &fp) const
+        {
+            return root->viz(fp);
+        }
+
+
     }
 
 

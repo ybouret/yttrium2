@@ -6,6 +6,7 @@
 #include "y/core/linked/list/cxx.hpp"
 #include "y/core/linked/pool/cxx.hpp"
 #include "y/object.hpp"
+#include "y/graphviz/vizible.hpp"
 
 
 namespace Yttrium
@@ -20,7 +21,7 @@ namespace Yttrium
         public:
             typedef uint64_t code_t;
 
-            class Node : public Object
+            class Node : public Object, public Vizible
             {
             public:
                 typedef CxxListOf<Node> List;
@@ -28,6 +29,8 @@ namespace Yttrium
 
                 explicit Node() noexcept;
                 virtual ~Node() noexcept;
+
+                OutputStream & viz(OutputStream &fp) const;
 
                 const code_t code;
                 void * const addr; //!< user's data address
@@ -119,6 +122,8 @@ namespace Yttrium
                 prune(node);
                 return addr;
             }
+
+            OutputStream & viz(OutputStream &fp) const;
 
 
             const size_t size; //!< keep trace of inserted data
