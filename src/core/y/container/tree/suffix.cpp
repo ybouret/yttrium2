@@ -50,6 +50,12 @@ namespace Yttrium
 
             return node;
         }
+
+
+        void SuffixTree:: prune(Node *const node) noexcept
+        {
+
+        }
     }
 
 

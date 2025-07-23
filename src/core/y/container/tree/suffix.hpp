@@ -73,6 +73,8 @@ namespace Yttrium
                           void * const addr)
             {
                 assert(0!=addr);
+
+                // walk/create tree
                 Node * node = root;
                 while(plen-- > 0)
                 {
@@ -92,6 +94,7 @@ namespace Yttrium
                     if(!walk)
                         node = list.pushHead(create(node,code));
                 }
+
                 if(node->addr)
                 {
                     return 0; // occupied
@@ -104,14 +107,28 @@ namespace Yttrium
                 }
             }
 
+            template <typename ITERATOR>
+            void * remove(ITERATOR     path,
+                          size_t       plen)
+            {
+                Node * const node = (Node *) search(path,plen);
+                if(!node) return 0;
+                void * const addr = node->addr;
+                Coerce(node->addr) = 0;
+                --Coerce(size);
+                prune(node);
+                return addr;
+            }
+
+
             const size_t size; //!< keep trace of inserted data
         private:
             Y_Disable_Copy_And_Assign(SuffixTree);
             Node * const root;
             Node::Pool   pool;
-            Node * create(Node * const sire,
-                          const code_t code);
-
+            Node *       create(Node * const sire,
+                                const code_t code);
+            void         prune(Node * const node) noexcept;
         };
 
 
