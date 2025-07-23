@@ -9,6 +9,7 @@ using namespace Yttrium;
 Y_UTEST(graphviz)
 {
 
+#if 0
 
     if(false)
     {
@@ -50,6 +51,7 @@ Y_UTEST(graphviz)
         std::cerr << std::endl;
 
     }
+#endif
 
 
     Vizible viz[256];
