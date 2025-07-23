@@ -235,3 +235,6 @@ Y_UTEST(counting:partition)
 Y_UTEST(counting:perm)
 Y_UTEST(counting:permutation)
 
+#graphviz
+Y_UTEST(graphviz)
+

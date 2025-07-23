@@ -104,6 +104,7 @@ Y_CreateLibrary(y
     y/vfs/local
     y/counting
     y/counting/c
+    y/graphviz
 )
 
 add_subdirectory(tests)
