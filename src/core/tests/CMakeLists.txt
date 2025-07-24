@@ -25,7 +25,7 @@ information
 utf8
 protean
 string
-apex
+apex apex/ortho
 random
 mkl
 cameo
@@ -189,6 +189,7 @@ Y_UTEST(apex:z)
 Y_UTEST(apex:q)
 Y_UTEST(apex:io)
 Y_UTEST(apex:rsa)
+Y_UTEST(apex:ortho:vector)
 
 #random
 Y_UTEST(random:bits)

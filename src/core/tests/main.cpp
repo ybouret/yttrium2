@@ -142,6 +142,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(apex_q);
     Y_UTEST(apex_io);
     Y_UTEST(apex_rsa);
+    Y_UTEST(apex_ortho_vector);
 
     Y_UTEST(random_bits);
     Y_UTEST(random_gaussian);

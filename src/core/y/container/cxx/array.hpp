@@ -92,16 +92,18 @@ namespace Yttrium
         //! inline implementation
         //
         //______________________________________________________________________
-        class Code : public Object, public Memory::SchoolOf<T>, public Memory::Operating<T>
+        class Code : public Object, public Memory::SchoolOf<MutableType>, public Memory::Operating<MutableType>
         {
         public:
-            using Memory::SchoolOf<T>::entry;
+            typedef  Memory::SchoolOf<MutableType>  ScType;
+            typedef  Memory::Operating<MutableType> OpType;
+            using ScType::entry;
 
             //! setup \param count default objects
             inline Code(const size_t count) :
             Object(),
-            Memory::SchoolOf<T>(count),
-            Memory::Operating<T>(entry,count)
+            ScType(count),
+            OpType(entry,count)
             {
             }
 
@@ -112,8 +114,8 @@ namespace Yttrium
              */
             inline Code(const size_t count, ConstType &arg) :
             Object(),
-            Memory::SchoolOf<T>(count),
-            Memory::Operating<T>(CopyOf,arg,entry,count)
+            ScType(count),
+            OpType(CopyOf,arg,entry,count)
             {
             }
 
@@ -123,8 +125,8 @@ namespace Yttrium
             //! duplicate \param other another code
             inline Code(const Code &other) :
             Object(),
-            Memory::SchoolOf<T>(other.count),
-            Memory::Operating<T>(entry,other.entry,other.count)
+            ScType(other.count),
+            OpType(entry,other.entry,other.count)
             {
             }
 
