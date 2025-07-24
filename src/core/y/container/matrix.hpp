@@ -326,7 +326,7 @@ namespace Yttrium
         //! \param arg set all items to arg \return *this
         Matrix & ld(ParamType arg)
         {
-            size_t n = count;
+            size_t n = items;
             if(n>0)
             {
                 MutableType *p = code->entry;
@@ -338,7 +338,7 @@ namespace Yttrium
         //! \param arg multiply all items by arg \return *this
         inline Matrix & operator*=(ParamType arg)
         {
-            size_t n = count;
+            size_t n = items;
             if(n>0)
             {
                 MutableType *p = code->entry;
@@ -350,7 +350,7 @@ namespace Yttrium
         //! \param arg divide all items by arg \return *this
         inline Matrix & operator/=(ParamType arg)
         {
-            size_t n = count;
+            size_t n = items;
             if(n>0)
             {
                 MutableType *p = code->entry;
@@ -365,7 +365,7 @@ namespace Yttrium
         //! Julia stype output \param os output stream \return os
         inline std::ostream & juliaPrint(std::ostream &os) const
         {
-            if(count<=0) return os << EmptyMatrix;
+            if(items<=0) return os << EmptyMatrix;
             assert(rows>0);
             assert(cols>0);
             const bool        hcat = rows<=1 || cols<=1;
@@ -394,8 +394,8 @@ namespace Yttrium
             //! setup \param metrics matrix metrics
             inline Code(const MatrixMetrics &metrics) :
             Object(),
-            Memory::SchoolOf<T>(metrics.count),
-            Memory::Operating<T>(entry,metrics.count)
+            Memory::SchoolOf<T>(metrics.items),
+            Memory::Operating<T>(entry,metrics.items)
             {
             }
 
@@ -403,8 +403,8 @@ namespace Yttrium
             template <typename U>
             inline Code(const Matrix<U> &m) :
             Object(),
-            Memory::SchoolOf<T>(m.count),
-            Memory::Operating<T>(entry,m(),m.count)
+            Memory::SchoolOf<T>(m.items),
+            Memory::Operating<T>(entry,m(),m.items)
             {
             }
 
@@ -418,7 +418,7 @@ namespace Yttrium
         //! \return new code according to metrics
         inline Code * newCode() {
             const MatrixMetrics & metrics = *this;
-            return count > 0 ? new Code(metrics) : 0;
+            return metrics.items > 0 ? new Code(metrics) : 0;
         }
 
         //! \param M source matrix \return new code from copied matrix
@@ -426,7 +426,7 @@ namespace Yttrium
         inline Code * newCode(const Matrix<U> &M)
         {
             assert( gotSameMetricsThan(M) );
-            return M.count >0 ? new Code(M) : 0;
+            return M.items >0 ? new Code(M) : 0;
         }
 
 

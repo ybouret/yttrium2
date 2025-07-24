@@ -65,7 +65,7 @@ namespace Yttrium
         //______________________________________________________________________
         const size_t rows;  //!< rows
         const size_t cols;  //!< columns
-        const size_t count; //!< rows*cols
+        const size_t items; //!< rows*cols
 
     private:
         Y_Disable_Assign(MatrixMetrics);  //!< discarding

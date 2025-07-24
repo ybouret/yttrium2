@@ -16,34 +16,40 @@ namespace Yttrium
     const char * const MatrixMetrics:: L_HCAT      = "hcat(";
     const char * const MatrixMetrics:: R_HCAT      = ")";
 
+
+    static inline bool badMetrics(const size_t nr, const size_t nc)
+    {
+        return (nr<=0 && nc>0) || (nr>0&&nc<=0);
+    }
+
     MatrixMetrics:: MatrixMetrics(const size_t nr,
                                   const size_t nc) :
     rows(nr),
     cols(nc),
-    count(rows*cols)
+    items(rows*cols)
     {
-        if( (nr<=0 && nc>0) || (nr>0&&nc<=0) )
+        if( badMetrics(nr,nc) )
             throw Specific::Exception(CallSign,"invalid %s x %s", Decimal(rows).c_str(), Decimal(cols).c_str() );
     }
 
     MatrixMetrics:: MatrixMetrics(const MatrixMetrics &_) noexcept :
     rows(_.rows),
     cols(_.cols),
-    count(_.count)
+    items(_.items)
     {
     }
 
     static inline size_t minorRows(const MatrixMetrics &_)
     {
         const size_t nr = _.rows;
-        if(nr<=1) throw Specific::Exception(_.CallSign,"not enough rows for minor");
+        if(nr<=0) throw Specific::Exception(_.CallSign,"not enough rows for minor");
         return nr-1;
     }
 
     static inline size_t minorCols(const MatrixMetrics &_)
     {
         const size_t nc = _.cols;
-        if(nc<=1) throw Specific::Exception(_.CallSign,"not enough colums for minor");
+        if(nc<=0) throw Specific::Exception(_.CallSign,"not enough colums for minor");
         return nc-1;
     }
 
@@ -51,16 +57,16 @@ namespace Yttrium
     MatrixMetrics:: MatrixMetrics(const MinorOf_ &, const MatrixMetrics &_) :
     rows( minorRows(_) ),
     cols( minorCols(_) ),
-    count(rows*cols)
+    items(rows*cols)
     {
-
+        if( badMetrics(rows,cols) ) throw Specific::Exception(_.CallSign,"invalid metrics for minor");
     }
 
 
     MatrixMetrics:: MatrixMetrics(const TransposeOf_ &, const MatrixMetrics &_) noexcept :
     rows(_.cols),
     cols(_.rows),
-    count(_.count)
+    items(_.items)
     {
     }
 
@@ -84,7 +90,7 @@ namespace Yttrium
     {
         CoerceSwap(rows,m.rows);
         CoerceSwap(cols,m.cols);
-        CoerceSwap(count,m.count);
+        CoerceSwap(items,m.items);
     }
 
 
