@@ -80,6 +80,7 @@ Y_UTEST_DECL(256)
 
     Y_UTEST(hashing_mix64);
     Y_UTEST(hashing_hash32);
+    Y_UTEST(hashing_digest);
 
     Y_UTEST(xml_attribute);
 

@@ -5,6 +5,7 @@
 
 #include "y/container/contiguous.hpp"
 #include "y/memory/buffer/rw.hpp"
+#include "y/string.hpp"
 
 namespace Yttrium
 {
@@ -19,11 +20,17 @@ namespace Yttrium
             explicit Digest(const size_t width);
             virtual ~Digest() noexcept;
 
+            virtual const void * ro()     const noexcept;
+            virtual size_t       length() const noexcept;
+            virtual size_t       size() const noexcept;
+            String               str() const noexcept;
+            friend std::ostream & operator<<(std::ostream &, const Digest &);
 
         private:
             class Code;
             Y_Disable_Assign(Digest);
             Code * const code;
+            virtual ConstType & getItemAt(const size_t) const noexcept;
         };
 
     }

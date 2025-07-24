@@ -116,6 +116,7 @@ Y_UTEST(memory:buffer_out_of)
 #hashing
 Y_UTEST(hashing:mix64)
 Y_UTEST(hashing:hash32)
+Y_UTEST(hashing:digest)
 
 #xml
 Y_UTEST(xml:attribute)
