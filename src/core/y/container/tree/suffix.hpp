@@ -122,6 +122,40 @@ namespace Yttrium
             return node;
         }
 
+        //! search node with given path and caching
+        /**
+         \param path path iterator
+         \param plen path length
+         \return node at given path, NULL otherwise
+         */
+        template <typename ITERATOR> inline
+        Node * search(ITERATOR path,
+                      size_t   plen)   noexcept
+        {
+            assert(0!=root);
+            Node * node = root;
+            while(plen-- > 0)
+            {
+                const code_t code = static_cast<code_t>( *(path++) );
+                bool         walk = false;
+                for( Node *chld=node->chld.head;chld;chld=chld->next)
+                {
+                    if(code == chld->code)
+                    {
+                        node->chld.moveToFront(chld);
+                        node = chld;
+                        walk = true;
+                        break;
+                    }
+                }
+                if(!walk) return 0;
+                assert(0!=node);
+            }
+            return node;
+        }
+
+
+
         //! insert address at given path
         /**
          \param path path iterator
