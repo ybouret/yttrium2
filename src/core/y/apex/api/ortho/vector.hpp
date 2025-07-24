@@ -62,6 +62,9 @@ namespace Yttrium
                 void ldz() noexcept;
                 void update();
 
+                friend bool operator==(const Vector &lhs, const Vector &rhs) noexcept;
+                
+
 
                 const size_t ncof;
                 apn          nrm2;

@@ -10,7 +10,7 @@ Y_UTEST(apex_ortho_vector)
 
     Random::MT19937 ran;
 
-    for(size_t dims=1;dims<=3;++dims)
+    for(size_t dims=1;dims<=4;++dims)
     {
         std::cerr << std::endl << "--- dims=" << dims << std::endl;
         Apex::Ortho::Vector vec(dims);
@@ -36,6 +36,14 @@ Y_UTEST(apex_ortho_vector)
                 vec = arr;
                 Y_ASSERT(vec==src);
             }
+
+            {
+                CxxArray<apq> q(CopyOf,arr);
+                vec.ldz();
+                vec = q;
+                Y_ASSERT(vec==src);
+            }
+
         }
 
 

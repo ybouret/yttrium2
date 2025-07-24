@@ -177,6 +177,14 @@ namespace Yttrium
             }
 
 
+            bool operator==(const Vector &lhs, const Vector &rhs) noexcept
+            {
+                assert(lhs.dimensions==rhs.dimensions);
+                if(lhs.ncof!=rhs.ncof) return false;
+                if(lhs.nrm2!=rhs.nrm2) return false;
+                const VectorType &L = lhs, &R=rhs;
+                return L == R;
+            }
 
         }
 
