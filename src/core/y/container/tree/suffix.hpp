@@ -7,6 +7,8 @@
 #include "y/core/linked/pool/cxx.hpp"
 #include "y/object.hpp"
 #include "y/graphviz/vizible.hpp"
+#include "y/ability/recyclable.hpp"
+#include "y/ability/releasable.hpp"
 
 
 namespace Yttrium
@@ -20,7 +22,7 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    class SuffixTree
+    class SuffixTree : public Recyclable 
     {
     public:
         //______________________________________________________________________
@@ -87,6 +89,14 @@ namespace Yttrium
         //______________________________________________________________________
         //
         //
+        // interface
+        //
+        //______________________________________________________________________
+        virtual void free() noexcept;
+
+        //______________________________________________________________________
+        //
+        //
         // Methods
         //
         //______________________________________________________________________
@@ -138,11 +148,12 @@ namespace Yttrium
             {
                 const code_t code = static_cast<code_t>( *(path++) );
                 bool         walk = false;
-                for( Node *chld=node->chld.head;chld;chld=chld->next)
+                Node::List  &list = node->chld;
+                for( Node *chld=list.head;chld;chld=chld->next)
                 {
                     if(code == chld->code)
                     {
-                        node->chld.moveToFront(chld);
+                        list.moveToFront(chld);
                         node = chld;
                         walk = true;
                         break;
@@ -252,6 +263,19 @@ namespace Yttrium
 
         //! try to prune the tree from clean node
         void         prune(Node *) noexcept;
+
+        //! clear all content
+        void         clear()       noexcept;
+
+        //! helper to clear
+        void         clear(Node *) noexcept;
+
+        //! purge all content but root
+        void         purge() noexcept;
+
+        void         purge(Node *) noexcept;
+
+
     };
 
 

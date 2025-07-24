@@ -81,6 +81,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(hashing_mix64);
     Y_UTEST(hashing_hash32);
     Y_UTEST(hashing_digest);
+    Y_UTEST(hashing_perfect);
 
     Y_UTEST(xml_attribute);
 
@@ -89,6 +90,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(container_cxx_array);
     Y_UTEST(container_matrix);
     Y_UTEST(container_suffix_tree);
+    Y_UTEST(container_htable);
 
     Y_UTEST(stream_io_char);
     Y_UTEST(stream_queue);

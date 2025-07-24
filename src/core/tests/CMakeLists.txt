@@ -117,6 +117,7 @@ Y_UTEST(memory:buffer_out_of)
 Y_UTEST(hashing:mix64)
 Y_UTEST(hashing:hash32)
 Y_UTEST(hashing:digest)
+Y_UTEST(hashing:perfect)
 
 #xml
 Y_UTEST(xml:attribute)
@@ -127,6 +128,7 @@ Y_UTEST(container:iterator)
 Y_UTEST(container:cxx:array)
 Y_UTEST(container:matrix)
 Y_UTEST(container:suffix_tree)
+Y_UTEST(container:htable)
 
 #stream
 Y_UTEST(stream:io:char)

@@ -105,6 +105,35 @@ namespace Yttrium
         return root->viz(fp);
     }
 
+    void SuffixTree:: free() noexcept
+    {
+        clear();
+    }
+
+
+    void SuffixTree:: clear() noexcept
+    {
+        clear(root);
+        Coerce(size)=0;
+    }
+
+    void SuffixTree:: clear(Node *node) noexcept
+    {
+        assert(0!=node);
+
+        Coerce(node->sire) = 0;
+        Coerce(node->code) = 0;
+        Coerce(node->addr) = 0;
+
+        Node::List &list = node->chld;
+        while(list.size)
+            clear( list.popTail() );
+
+        if(root!=node)
+            pool.store(node);
+    }
+
+
 
 
 }
