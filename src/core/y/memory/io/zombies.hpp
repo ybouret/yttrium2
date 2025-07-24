@@ -54,7 +54,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             virtual void   gc(const uint8_t) noexcept;
-            virtual size_t count() const noexcept;
+            virtual size_t count()     const noexcept;
             virtual void   cache(const size_t);
 
             //__________________________________________________________________

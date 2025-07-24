@@ -5,7 +5,7 @@
 #include "y/core/linked/pool.hpp"
 #include "y/core/linked/list.hpp"
 #include "y/core/linked/convert/list-to-pool.hpp"
-#include "y/core/linked/convert/pool-to-list.hpp"
+#include "y/core/linked/convert/pool-to-ordered-list.hpp"
 #include "y/type/destroy.hpp"
 
 #include "y/memory/track-down.hpp"
@@ -40,8 +40,7 @@ namespace Yttrium
             inline void gc(const uint8_t amount) noexcept
             {
                 Core::ListOf<Page> zlist;
-                Core::PoolToList::Convert(zlist,zpool);
-                zlist.sortByIncreasingAddress();
+                Core::PoolToOrderedList::Convert(zlist,zpool);
                 {
                     const size_t zsize = Caching::NewSize(amount,zpool.size);
                     Y_Lock( *guild );
