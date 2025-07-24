@@ -8,7 +8,7 @@
 #include "y/core/linked/list/cxx.hpp"
 #include "y/core/linked/list/raw.hpp"
 
-#include "y/core/linked/convert/pool-to-list.hpp"
+#include "y/core/linked/convert/pool-to-ordered-list.hpp"
 #include "y/core/linked/convert/list-to-pool.hpp"
 
 #include "y/system/rand.hpp"

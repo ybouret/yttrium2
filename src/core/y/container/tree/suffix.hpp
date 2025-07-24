@@ -22,7 +22,7 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    class SuffixTree : public Recyclable 
+    class SuffixTree : public Recyclable, public Releasable
     {
     public:
         //______________________________________________________________________
@@ -92,7 +92,8 @@ namespace Yttrium
         // interface
         //
         //______________________________________________________________________
-        virtual void free() noexcept;
+        virtual void free()    noexcept;
+        virtual void release() noexcept;
 
         //______________________________________________________________________
         //
@@ -272,10 +273,7 @@ namespace Yttrium
 
         //! purge all content but root
         void         purge() noexcept;
-
-        void         purge(Node *) noexcept;
-
-
+        
     };
 
 

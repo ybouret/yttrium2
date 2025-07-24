@@ -24,7 +24,7 @@ namespace Yttrium
 
             inline virtual ~Code() noexcept
             {
-                free();
+                release();
             }
 
         private:
@@ -45,7 +45,7 @@ namespace Yttrium
         }
 
 
-        void Perfect:: operator()(const void *path, const size_t size, const int key)
+        void Perfect:: at(const void * const path, const size_t size, const int key)
         {
             Y_STATIC_CHECK(sizeof(void*)>=sizeof(int),BadSystem);
             assert(0!=code);
@@ -55,9 +55,11 @@ namespace Yttrium
             const uint8_t * const iter = static_cast<const uint8_t *>(path);
 
             union {
-                void * p;
-                int    k;
+                uint64_t q;
+                void *   p;
+                int     k;
             } alias = { 0 };
+
             alias.k = key; assert(0!=alias.p);
 
             if( ! code->insert(iter,size,alias.p) )
@@ -67,14 +69,70 @@ namespace Yttrium
         }
 
 
-        void Perfect:: operator()(const char * const text, const int key)
+        void Perfect:: at(const char * const text, const int key)
         {
-            (*this)(text, StringLength(text), key);
+            at(text, StringLength(text), key);
         }
 
-        void Perfect:: operator()(const Memory::ReadOnlyBuffer &buf, const int key)
+        void Perfect::at(const Memory::ReadOnlyBuffer &buf, const int key)
         {
-            (*this)(buf.ro(), buf.length(), key);
+            at(buf.ro(), buf.length(), key);
+        }
+
+
+        static inline int NodeToKey(const SuffixTree::Node * const node) noexcept
+        {
+            if(!node) return 0;
+            union {
+                uint64_t q;
+                void *   p;
+                int      k;
+            } alias = { 0 };
+            alias.p = node->addr;
+            assert(alias.k>0);
+            return alias.k;
+        }
+
+        int Perfect:: operator()(const void * const path, const size_t size) noexcept
+        {
+            assert(0!=code);
+            assert( Good(path,size) );
+            return NodeToKey(code->search(static_cast<const uint8_t *>(path),size));
+        }
+
+        int Perfect:: operator()(const char * const text) noexcept
+        {
+            return (*this)(text, StringLength(text));
+        }
+
+        int Perfect:: operator()(const Memory::ReadOnlyBuffer &buf) noexcept
+        {
+            return (*this)(buf.ro(), buf.length());
+        }
+
+
+        int Perfect:: operator()(const void * const path, const size_t size) const noexcept
+        {
+            assert(0!=code);
+            assert( Good(path,size) );
+            return NodeToKey(code->search(static_cast<const uint8_t *>(path),size));
+        }
+
+        int Perfect:: operator()(const char * const text) const noexcept
+        {
+            return (*this)(text, StringLength(text));
+        }
+
+        int Perfect:: operator()(const Memory::ReadOnlyBuffer &buf) const noexcept
+        {
+            return (*this)(buf.ro(), buf.length());
+        }
+
+
+
+        OutputStream & Perfect:: viz(OutputStream &fp) const
+        {
+            return code->viz(fp);
         }
 
     }

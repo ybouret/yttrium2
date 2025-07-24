@@ -521,3 +521,12 @@ String<CH> & String<CH>:: reverse() noexcept
     Algorithm::Reverse(code->base,code->size,Swap<CH>);
     return *this;
 }
+
+template <>
+const void * String<CH>:: ro() const noexcept { assert(code); return code->base; }
+
+
+template <>
+size_t String<CH>:: length() const noexcept { assert(code); return code->size; }
+
+

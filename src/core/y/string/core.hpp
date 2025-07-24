@@ -14,6 +14,7 @@
 #include "y/container/sequence.hpp"
 #include "y/container/expandable.hpp"
 #include "y/type/with-at-least.hpp"
+#include "y/memory/buffer/ro.hpp"
 
 namespace Yttrium
 {
@@ -55,7 +56,8 @@ namespace Yttrium
         public LegacyString,
         public Contiguous< Writable<T> >,
         public Sequence<T,Expandable>,
-        public Serializable
+        public Serializable,
+        public Memory::ReadOnlyBuffer
         {
         public:
             //__________________________________________________________________
@@ -120,6 +122,8 @@ namespace Yttrium
             virtual void         popTail() noexcept;
             virtual void         popHead() noexcept;
             virtual void         reserve(const size_t n);
+            virtual const void * ro()     const noexcept;
+            virtual size_t       length() const noexcept;
 
             //__________________________________________________________________
             //

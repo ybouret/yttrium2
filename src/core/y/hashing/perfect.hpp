@@ -7,6 +7,9 @@
 
 namespace Yttrium
 {
+
+    class OutputStream;
+    
     namespace Hashing
     {
 
@@ -18,9 +21,19 @@ namespace Yttrium
             explicit Perfect();
             virtual ~Perfect() noexcept;
 
-            void operator()(const void *path, const size_t size, const int key);
-            void operator()(const char * const, const int);
-            void operator()(const Memory::ReadOnlyBuffer &, const int);
+            void at(const void * const path, const size_t size, const int key);
+            void at(const char * const, const int);
+            void at(const Memory::ReadOnlyBuffer &, const int);
+
+            int operator()(const void * const, const size_t) noexcept;
+            int operator()(const char * const)               noexcept;
+            int operator()(const Memory::ReadOnlyBuffer &)   noexcept;
+
+            int operator()(const void * const, const size_t) const noexcept;
+            int operator()(const char * const)               const noexcept;
+            int operator()(const Memory::ReadOnlyBuffer &)   const noexcept;
+
+            OutputStream & viz(OutputStream &) const;
 
         private:
             class Code;

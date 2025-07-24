@@ -110,6 +110,11 @@ namespace Yttrium
         clear();
     }
 
+    void SuffixTree:: release() noexcept
+    {
+        purge();
+    }
+
 
     void SuffixTree:: clear() noexcept
     {
@@ -133,7 +138,19 @@ namespace Yttrium
             pool.store(node);
     }
 
+    void SuffixTree:: purge() noexcept
+    {
+        assert(root);
+        Coerce(size) = 0;
+        pool.release();
+        Coerce(root->sire) = 0;
+        Coerce(root->code) = 0;
+        Coerce(root->addr) = 0;
+        root->chld.release();
 
+    }
+
+    
 
 
 }
