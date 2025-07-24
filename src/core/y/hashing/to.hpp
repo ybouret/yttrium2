@@ -5,7 +5,6 @@
 
 
 #include "y/hashing/function.hpp"
-#include "y/associative/key-variety.hpp"
 
 namespace Yttrium
 {
@@ -43,10 +42,6 @@ namespace Yttrium
         template <typename T> inline
         T To(Function &H, const Memory::ReadOnlyBuffer &buf) noexcept
         { T res(0); H.block(&res,sizeof(T),buf); return res; }
-
-
-      
-
 
     }
 

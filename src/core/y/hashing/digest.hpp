@@ -12,19 +12,22 @@ namespace Yttrium
     namespace Hashing
     {
 
-        class Digest :
-        public Contiguous< Writable<uint8_t> >,
-        public Memory::ReadWriteBuffer
+        class Digest : public Contiguous< Writable<uint8_t> >, public Memory::ReadWriteBuffer
         {
         public:
-            explicit Digest(const size_t width);
+            static const char * const CallSign;
+            
+            Digest(const size_t width);
+            Digest(const Digest &);
             virtual ~Digest() noexcept;
+            Digest(const char * const hex);
 
             virtual const void * ro()     const noexcept;
             virtual size_t       length() const noexcept;
             virtual size_t       size() const noexcept;
-            String               str() const noexcept;
             friend std::ostream & operator<<(std::ostream &, const Digest &);
+
+            String               str() const noexcept;
 
         private:
             class Code;
