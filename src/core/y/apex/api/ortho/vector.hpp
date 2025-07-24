@@ -15,21 +15,40 @@ namespace Yttrium
         namespace Ortho
         {
 
+            //! base type for apz vector
             typedef CxxArray<const apz> VectorType;
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! vector to form orthogonal basis
+            //
+            //
+            //__________________________________________________________________
             class Vector :
             public Object,
             public Metrics,
             public VectorType
             {
             public:
-                Vector(const Metrics &);
-                Vector(const Vector &);
-                virtual ~Vector() noexcept;
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+                Vector(const Metrics &);           //!< setup to zero from metrics
+                Vector(const Vector &);            //!< duplicate
+                virtual ~Vector() noexcept;        //!< cleanup
+                Vector & operator=(const Vector&); //!< assign with same dimensions \return *this
 
-                Vector & operator=( const Vector & );
 
-
+                //! assign from compatible array (int,apz,apn,apq...) and update
+                /**
+                 \param copyOf helper
+                 \param arr    array eith positive size
+                 */
                 template <typename ARRAY> inline
                 Vector(const CopyOf_ &copyOf, ARRAY &arr) :
                 Object(),
@@ -43,9 +62,11 @@ namespace Yttrium
                     update();
                 }
 
-
-                friend std::ostream & operator<<(std::ostream &, const Vector &);
-
+                //! assign compatible array with same size/metrics
+                /**
+                 copy all components and update
+                 \param array
+                 */
                 template <typename ARRAY> inline
                 Vector & operator=(ARRAY &arr)
                 {
@@ -59,17 +80,32 @@ namespace Yttrium
                     return *this;
                 }
 
-                void ldz() noexcept;
-                void update();
+                //! display with extra info
+                friend std::ostream & operator<<(std::ostream &, const Vector &);
 
-                friend bool operator==(const Vector &lhs, const Vector &rhs) noexcept;
-                
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________=
+                void ldz() noexcept; //!< no-throw clear
+                void update();       //!< update to univocal vector
+
+                //! test equality
+                friend bool operator==(const Vector &, const Vector &) noexcept;
 
 
-                const size_t ncof;
-                apn          nrm2;
-                Vector *     next;
-                Vector *     prev;
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                const size_t ncof; //!< number of non-zero coefficient
+                apn          nrm2; //!< |*this|^2
+                Vector *     next; //!< for list/pool
+                Vector *     prev; //!< for list
 
             };
 
