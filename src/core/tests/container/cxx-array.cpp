@@ -21,8 +21,15 @@ Y_UTEST(container_cxx_array)
         std::cerr << "cpy=" << arr << std::endl;
 
         Y_CHECK(arr==cpy);
+    }
+
+
+    {
+        CxxArray<char> arr(5,64);       std::cerr << "arr=" << arr << std::endl;
+        CxxArray<int>  irr(CopyOf,arr); std::cerr << "irr=" << irr << std::endl;
 
     }
+
 }
 Y_UDONE()
 

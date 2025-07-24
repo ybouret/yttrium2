@@ -120,7 +120,7 @@ namespace Yttrium
                 }
                 else
                 {
-                    Code * temp = new Code( Calculus::SafeAdd(n,code->count) );
+                    Code * temp = new Code( Calculus::SafeAdd(n,code->maxBlocks) );
                     temp->steal(*code);
                     delete code;
                     code = temp;
@@ -202,14 +202,14 @@ namespace Yttrium
         {
         public:
             using SchoolType::entry;
-            using SchoolType::count;
+            using SchoolType::maxBlocks;
             using PQueueType::size;
 
             //! setup \param minimalCapacity desired capacity
             inline Code(const size_t minimalCapacity) :
             Object(),
             SchoolType(minimalCapacity),
-            PQueueType(entry,count)
+            PQueueType(entry,maxBlocks)
             {
             }
 
@@ -217,7 +217,7 @@ namespace Yttrium
             inline Code(const Code &other) :
             Object(),
             SchoolType(other.size),
-            PQueueType(entry,count)
+            PQueueType(entry,maxBlocks)
             {
                 while(size<other.size) {
                     new (entry+size) T(other.entry[size]);

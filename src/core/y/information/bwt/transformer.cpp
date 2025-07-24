@@ -51,7 +51,7 @@ namespace Yttrium
             }
             else
             {
-                if(code->count<length)
+                if(code->maxBlocks<length)
                 {
                     Destroy(code);
                     code = new Code(length);
@@ -60,7 +60,7 @@ namespace Yttrium
             }
 
             assert(0!=code);
-            assert(code->count>=length);
+            assert(code->maxBlocks>=length);
         }
 
         size_t BWT_Transformer:: encode(void * const       target,

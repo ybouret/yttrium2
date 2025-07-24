@@ -113,7 +113,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
         private:
-            Y_Disable_Copy_And_Assign(Operating); //!< discardin
+            Y_Disable_Copy_And_Assign(Operating); //!< discarding
 
             //! simple constructor
             /**

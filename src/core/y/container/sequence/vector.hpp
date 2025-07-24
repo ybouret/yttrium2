@@ -154,14 +154,14 @@ built(0)
         virtual size_t capacity() const noexcept
         {
             Y_Must_Lock();
-            return code ? code->count : 0;
+            return code ? code->maxBlocks : 0;
         }
 
         //! [GradualContainer] \return available
         virtual size_t available() const noexcept
         {
             Y_Must_Lock();
-            return code ? code->count-built : 0;
+            return code ? code->maxBlocks-built : 0;
         }
 
         //! [Dynamic Container] reserve \param n extra room for n objects
@@ -176,8 +176,8 @@ built(0)
                 }
                 else
                 {
-                    Code * temp = new Code( Calculus::SafeAdd(n,code->count) );
-                    assert(temp->count>code->count);
+                    Code * temp = new Code( Calculus::SafeAdd(n,code->maxBlocks) );
+                    assert(temp->maxBlocks>code->maxBlocks);
                     Memory::Stealth::Copy(temp->entry,code->entry,built*sizeof(T));
                     delete code;
                     code = temp;
@@ -192,11 +192,11 @@ built(0)
                 intoNewCode(args);
             else
             {
-                if(built<code->count)
+                if(built<code->maxBlocks)
                     new (code->entry+built) T(args);
                 else
                 {
-                    Code * temp = new Code( this->NextCapacity(built) );  assert(temp->count>built);
+                    Code * temp = new Code( this->NextCapacity(built) );  assert(temp->maxBlocks>built);
                     new (temp->entry+built) T(args);
                     Memory::Stealth::Copy(temp->entry,code->entry,built*sizeof(T));
                     delete code;
@@ -214,7 +214,7 @@ built(0)
             else
             {
                 const size_t filled = built * sizeof(T);
-                if(built<code->count)
+                if(built<code->maxBlocks)
                 {
                     MutableType * const curr = code->entry;
                     MutableType * const next = curr+1;
@@ -233,7 +233,7 @@ built(0)
                 }
                 else
                 {
-                    Code * temp = new Code( this->NextCapacity(built) );  assert(temp->count>built);
+                    Code * temp = new Code( this->NextCapacity(built) );  assert(temp->maxBlocks>built);
                     new (temp->entry) T(args);
                     Memory::Stealth::Copy(temp->entry+1,code->entry,filled);
                     delete code;
@@ -299,7 +299,7 @@ built(0)
         {
             assert(0==code);
             assert(0==built);
-            code = new Code(  this->NextCapacity(0) ); assert(code->count>0);
+            code = new Code(  this->NextCapacity(0) ); assert(code->maxBlocks>0);
             new (code->entry) T(args);
         }
 
@@ -310,7 +310,7 @@ built(0)
             assert(0!=code);
             assert(indx>=1);
             assert(indx<=built);
-            assert(built<=code->count);
+            assert(built<=code->maxBlocks);
             return code->cxx[indx];
         }
 

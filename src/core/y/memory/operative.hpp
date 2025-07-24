@@ -69,7 +69,7 @@ namespace Yttrium
             virtual ~Operative() noexcept;
 
             uint8_t * const workspace; //!< first byte of first object
-            const size_t    numBlocks; //!< number of objects
+            const size_t    numBlocks; //!< number of built objects
             const size_t    blockSize; //!< bytes per object
 
         private:

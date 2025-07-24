@@ -30,7 +30,7 @@ Y_UTEST(memory_school_of)
 
     {
         Memory::SchoolOf<int>  data(10);
-        Memory::Operating<int> op(data.entry,data.count);
+        Memory::Operating<int> op(data.entry,data.maxBlocks);
     }
 
 

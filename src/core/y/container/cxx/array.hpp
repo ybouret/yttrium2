@@ -64,7 +64,14 @@ namespace Yttrium
 
         }
 
-        
+        template <typename ARRAY> inline
+        CxxArray(const CopyOf_ &copyOf, ARRAY &arr) :
+        code( new Code(copyOf,arr) )
+        {
+        }
+
+
+
 
 
         //! cleanup
@@ -105,6 +112,7 @@ namespace Yttrium
             ScType(count),
             OpType(entry,count)
             {
+                assert(count==this->numBlocks);
             }
 
             //! setup
@@ -112,10 +120,10 @@ namespace Yttrium
              \param count from constructor
              \param arg from constructor
              */
-            inline Code(const size_t count, ConstType &arg) :
+            inline Code(const size_t num, ConstType &arg) :
             Object(),
-            ScType(count),
-            OpType(CopyOf,arg,entry,count)
+            ScType(num),
+            OpType(CopyOf,arg,entry,num)
             {
             }
 
@@ -125,13 +133,27 @@ namespace Yttrium
             //! duplicate \param other another code
             inline Code(const Code &other) :
             Object(),
-            ScType(other.count),
-            OpType(entry,other.entry,other.count)
+            ScType(other.numBlocks),
+            OpType(entry,other.entry,other.numBlocks)
             {
             }
 
+            template <typename ARRAY>
+            inline Code(const CopyOf_ &, ARRAY &arr) :
+            Object(),
+            ScType(arr.size()),
+            OpType(Procedural,Proc<ARRAY>,arr,entry,arr.size())
+            {
+            }
+
+
         private:
             Y_Disable_Assign(Code); //!< discarding
+            template <typename ARRAY> static inline
+            void Proc(void *target, const size_t indx, ARRAY &arr)
+            {
+                new (target) MutableType(arr[indx] );
+            }
 
         };
 
