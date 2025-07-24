@@ -4,14 +4,12 @@
 #define Y_HASHING_MD_INCLUDED 1
 
 
-#if 0
-#include "y/config/starting.hpp"
+#include "y/hashing/digest.hpp"
 
 namespace Yttrium
 {
 
-    namespace Memory { class ReadOnlyBuffer; }
-    class Digest;
+
 
     namespace Hashing
     {
@@ -36,6 +34,5 @@ namespace Yttrium
 
 }
 
-#endif
 
 #endif

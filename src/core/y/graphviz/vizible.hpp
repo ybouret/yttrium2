@@ -10,33 +10,68 @@ namespace Yttrium
 {
     class OutputStream;
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! helper to emit GraphViz code
+    //
+    //
+    //__________________________________________________________________________
     class Vizible
     {
     public:
-        
-        explicit Vizible() noexcept;
-        virtual ~Vizible() noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+        explicit Vizible() noexcept; //!< setup
+        virtual ~Vizible() noexcept; //!< cleanup
 
-        OutputStream & name(OutputStream &) const;
-        OutputStream & to(const Vizible * const, OutputStream &fp) const;
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+        OutputStream & name(OutputStream &) const;                      //!< address to name \return output stream
+        OutputStream & to(const Vizible * const, OutputStream &) const; //!< arrow from this \return output stream
 
-        static OutputStream & Label(OutputStream &, const Core::String<char> &);
-        static OutputStream & Label(OutputStream &, const char * const);
-        static OutputStream & Label(OutputStream &, const char);
-        static OutputStream & Endl(OutputStream &);
+        static OutputStream & Label(OutputStream &, const Core::String<char> &); //!< emit label \return output stream
+        static OutputStream & Label(OutputStream &, const char * const); //!< emit lable \return output stream
+        static OutputStream & Label(OutputStream &, const char); //!< emit label \return output stream
+        static OutputStream & Endl(OutputStream &); //!< ";\n" \return output stream
 
-        static OutputStream & Enter(OutputStream &);
-        static OutputStream & Leave(OutputStream &);
+        static OutputStream & Enter(OutputStream &); //!< prolog \return output stream
+        static OutputStream & Leave(OutputStream &); //!< epilog \return output stream
 
+        //! save Vizible object to output stream
+        /**
+         \param fp output stream
+         \param obj object with 'viz(OutputStream&)' method
+         \return output stream
+         */
         template <typename CLASS> static inline
         OutputStream & Save(OutputStream &fp, const CLASS &obj)
         {
             return Leave( obj.viz( Enter(fp) ) );
         }
 
+        //! convert 'file.dot' to 'file.png'
+        /**
+         \param dotFile graphViz dot file
+         \param keepDot don't remove dotFile upon success
+         */
         static void DotToPng(const Core::String<char> &dotFile,const bool keepDot=false);
-        static void DotToPng(const char * const,const bool keepDot=false);
+        static void DotToPng(const char * const,const bool = false); //!< wrapper
 
+        //! save Vizible object to output file
+        /**
+         \param dotFile filename
+         \param obj     object with 'viz(OutputStream&)' method
+         */
         template <typename FILENAME, typename CLASS> static inline
         void SaveAs(const FILENAME &dotFile, const CLASS &obj)
         {
@@ -45,6 +80,13 @@ namespace Yttrium
             catch(...) { DelDotFile(fp); throw; }
         }
 
+        //! save and render vizible object
+        /**
+         \param dotFile 'file.dot'
+         \param obj     object with 'viz(OutputStream&)' method
+         \param keepDot don't remove dotFile upon success
+         - upon success 'file.png' is created
+         */
         template <typename FILENAME, typename CLASS> static inline
         void Render(const FILENAME &dotFile, const CLASS &obj, const bool keepDot=false)
         {
@@ -57,10 +99,10 @@ namespace Yttrium
 
 
     private:
-        Y_Disable_Copy_And_Assign(Vizible);
-        static OutputStream * NewDotFile(const Core::String<char> &);
-        static OutputStream * NewDotFile(const char * const);
-        static void           DelDotFile(OutputStream * const) noexcept;
+        Y_Disable_Copy_And_Assign(Vizible); //!< discarding
+        static OutputStream * NewDotFile(const Core::String<char> &);    //!< \return output file
+        static OutputStream * NewDotFile(const char * const);            //!< \return output file
+        static void           DelDotFile(OutputStream * const) noexcept; //!< close file
 
     };
 }

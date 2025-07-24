@@ -17,8 +17,8 @@ namespace Yttrium
 			Y_HASHING_FUNCTION_DECL(Adler32,4,4);
 			
 		private:
-			uint32_t a;
-            Y_Disable_Copy_And_Assign(Adler32);
+			uint32_t a; //!< internal state
+            Y_Disable_Copy_And_Assign(Adler32); //!< discarding
 		};
 		
 	}

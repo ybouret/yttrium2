@@ -85,6 +85,16 @@ namespace Yttrium
             return true;
         }
 
+        //! basic element-wise difference
+        inline friend bool operator!=(const Readable &lhs, const Readable &rhs)
+        {
+            const size_t n = lhs.size(); if(rhs.size()!=n) return true;
+            for(size_t i=n;i>0;--i) if(rhs[i]!=lhs[i]) return true;
+            return false;
+        }
+
+
+
     private:
         Y_Disable_Copy_And_Assign(Readable); //!< discarding
 

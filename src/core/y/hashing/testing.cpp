@@ -2,7 +2,6 @@
 #include "y/hashing/testing.hpp"
 #include "y/hashing/function.hpp"
 #include "y/hashing/md.hpp"
-//#include "y/memory/digest.hpp"
 #include "y/system/exception.hpp"
 
 namespace Yttrium
@@ -10,7 +9,6 @@ namespace Yttrium
     namespace Hashing
     {
 
-#if 0
         void Testing:: Run(Function &H, const Testing tests[], const unsigned count)
         {
             assert(0!=tests);
@@ -28,7 +26,6 @@ namespace Yttrium
             std::cerr << "<Hashing::Test " << H.callSign() << "/>" <<std::endl;
 
         }
-#endif
-
+        
     }
 }

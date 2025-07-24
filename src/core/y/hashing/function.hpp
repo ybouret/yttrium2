@@ -30,8 +30,8 @@ namespace Yttrium
             // types and definitions
             //__________________________________________________________________
             typedef ArcPtr<Function> Pointer; //!< alias
-            const size_t length; //!< output generation
-			const size_t window; //!< internal window size
+            const size_t length;              //!< output generation
+			const size_t window;              //!< internal window size
 
             //__________________________________________________________________
             //
@@ -39,8 +39,8 @@ namespace Yttrium
             //__________________________________________________________________
             virtual            ~Function()                             noexcept;     //!< destructor
             virtual void        set()                                  noexcept = 0; //!< initialize
-			virtual void        run(const void *buffer, size_t buflen) noexcept = 0; //!< process bytes
-            virtual void        get(void *output, size_t outlen)       noexcept = 0; //!< finalize/fill array
+			virtual void        run(const void *buffer, size_t buflen) noexcept = 0; //!< process bytes \param buffer address \param buflen length
+            virtual void        get(void *output, size_t outlen)       noexcept = 0; //!< finalize/fill array \param output address \param outlen length
 
             //__________________________________________________________________
             //
@@ -48,6 +48,12 @@ namespace Yttrium
             //__________________________________________________________________
 
             //! helper, usually used by the virtual 'get' method.
+            /**
+             \param output output buffer
+             \param outlen output length
+             \param input input buffer
+             \param inlen input length
+             */
 			static void fill(void *output, size_t outlen, const void *input, size_t inlen) noexcept;
             
             //! run(block_addr,block_size)
@@ -71,11 +77,11 @@ namespace Yttrium
             void        block(void *output, size_t outlen, const char *msg) noexcept;
             
         protected:
-            //! initialize function length and window
+            //! initialize function \param L length \param W window
 			explicit Function( size_t L, size_t W) noexcept;
 			
 		private:
-            Y_Disable_Copy_And_Assign(Function);
+            Y_Disable_Copy_And_Assign(Function); //!< discarding
 		};
 		
         //! format hashing function prototype

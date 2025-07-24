@@ -17,8 +17,8 @@ namespace Yttrium
 			Y_HASHING_FUNCTION_DECL(ELF,4,4);
 			
 		private:
-			uint32_t hash;
-            Y_Disable_Copy_And_Assign(ELF);
+			uint32_t hash; //!< inner state
+            Y_Disable_Copy_And_Assign(ELF); //!< discarding
 		};
 		
 	}

@@ -1,7 +1,7 @@
 //! \file
 
 #ifndef Y_SuffixTree_Included
-#define Y_SuffuxTree_Included 1
+#define Y_SuffixTree_Included 1
 
 #include "y/core/linked/list/cxx.hpp"
 #include "y/core/linked/pool/cxx.hpp"
@@ -12,36 +12,92 @@
 namespace Yttrium
 {
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Agnostic Suffix Tree
+    //
+    //
+    //__________________________________________________________________________
     class SuffixTree
     {
     public:
-        typedef uint64_t code_t;
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        typedef uint64_t code_t; //!< alias
 
+        //______________________________________________________________________
+        //
+        //
+        //! internal node
+        //
+        //______________________________________________________________________
         class Node : public Object, public Vizible
         {
         public:
-            typedef CxxListOf<Node> List;
-            typedef CxxPoolOf<Node> Pool;
+            //__________________________________________________________________
+            //
+            // Definitions
+            //__________________________________________________________________
+            typedef CxxListOf<Node> List; //!< alias
+            typedef CxxPoolOf<Node> Pool; //!< alias
 
-            explicit Node() noexcept;
-            virtual ~Node() noexcept;
+            //__________________________________________________________________
+            //
+            // C++
+            //__________________________________________________________________
+            explicit Node() noexcept; //!< setup clear
+            virtual ~Node() noexcept; //!< cleanup
 
-            OutputStream & viz(OutputStream &fp) const;
+            //__________________________________________________________________
+            //
+            // Methods
+            //__________________________________________________________________
+            OutputStream & viz(OutputStream &) const; //!< emit graphViz \return output stream
 
-            const code_t code;
+            //__________________________________________________________________
+            //
+            // Members
+            //__________________________________________________________________
+            const code_t code; //!< current code
             void * const addr; //!< user's data address
             Node * const sire; //!< parent
             List         chld; //!< child[ren]
-            Node *       next;
-            Node *       prev;
+            Node *       next; //!< for list/pool
+            Node *       prev; //!< for pool
+
         private:
-            Y_Disable_Copy_And_Assign(Node);
+            Y_Disable_Copy_And_Assign(Node); //!< discarding
         };
 
-        explicit SuffixTree();
-        virtual ~SuffixTree() noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+        explicit SuffixTree();          //!< setup with root
+        virtual ~SuffixTree() noexcept; //!< cleanup
 
-        template <typename ITERATOR>
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+
+        //! search node with given path
+        /**
+         \param path path iterator
+         \param plen path length
+         \return node at given path, NULL otherwise
+         */
+        template <typename ITERATOR> inline
         const Node * search(ITERATOR path,
                             size_t   plen) const noexcept
         {
@@ -66,7 +122,14 @@ namespace Yttrium
             return node;
         }
 
-        template <typename ITERATOR>
+        //! insert address at given path
+        /**
+         \param path path iterator
+         \param plen path length
+         \param addr addr!=NULL to store into tree
+         \return found/new node or NULL if node was occupied
+         */
+        template <typename ITERATOR> inline
         Node * insert(ITERATOR     path,
                       size_t       plen,
                       void * const addr)
@@ -106,9 +169,17 @@ namespace Yttrium
             }
         }
 
-        template <typename ITERATOR>
+
+        //! remove address from tree
+        /**
+         tree if pruned upon success
+         \param path path iterator
+         \param plen path length
+         \return found address at given path, NULL if not found
+         */
+        template <typename ITERATOR> inline
         void * remove(ITERATOR     path,
-                      size_t       plen)
+                      size_t       plen) noexcept
         {
             Node * const node = (Node *) search(path,plen);
             if(!node) return 0;
@@ -119,17 +190,34 @@ namespace Yttrium
             return addr;
         }
 
-        OutputStream & viz(OutputStream &fp) const;
 
+        //! emit graphViz \return output stream
+        OutputStream & viz(OutputStream &) const;
 
+        //______________________________________________________________________
+        //
+        //
+        // Members
+        //
+        //______________________________________________________________________
         const size_t size; //!< keep trace of inserted data
     private:
-        Y_Disable_Copy_And_Assign(SuffixTree);
-        Node * const root;
-        Node::Pool   pool;
+        Node * const root; //!< fixed root for zero-length path
+        Node::Pool   pool; //!< pool of nodes
+
+        Y_Disable_Copy_And_Assign(SuffixTree); //!< discarding
+
+        //! create a node with parent and value
+        /**
+         \param sire parent node
+         \param code code value
+         \return new/stored node
+         */
         Node *       create(Node * const sire,
                             const code_t code);
-        void         prune(Node * node) noexcept;
+
+        //! try to prune the tree from clean node
+        void         prune(Node *) noexcept;
     };
 
 

@@ -1,9 +1,7 @@
 
 #include "y/hashing/md.hpp"
 
-#if 0
 #include "y/hashing/function.hpp"
-#include "y/memory/digest.hpp"
 
 namespace Yttrium
 {
@@ -45,4 +43,4 @@ namespace Yttrium
     }
 
 }
-#endif
+

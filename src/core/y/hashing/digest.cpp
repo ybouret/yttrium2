@@ -98,6 +98,9 @@ namespace Yttrium
         }
 
         Digest:: Digest(const Digest &other) :
+        Container(),
+        Contiguous< Writable<uint8_t> >(),
+        Memory::ReadWriteBuffer(),
         code( new Code( *other.code) )
         {
         }

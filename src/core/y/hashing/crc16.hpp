@@ -16,8 +16,8 @@ namespace Yttrium
 			Y_HASHING_FUNCTION_DECL(CRC16,2,2);
 			
 		private:
-			uint16_t    hash;
-			Y_Disable_Copy_And_Assign(CRC16);
+			uint16_t    hash; //!< internal state
+			Y_Disable_Copy_And_Assign(CRC16); //!< discarding
 		};
 		
 	}

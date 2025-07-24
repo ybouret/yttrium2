@@ -17,8 +17,8 @@ namespace Yttrium
             
             
 		private:
-			uint32_t    hash;
-            Y_Disable_Copy_And_Assign(CRC32);
+			uint32_t    hash; //!< internal state
+            Y_Disable_Copy_And_Assign(CRC32); //!< discarding
 		};
 		
 	}

@@ -22,7 +22,7 @@ namespace Yttrium
         struct Embedding
         {
             static const char * const Char[256]; //!< table of substitution
-            static const char *       Text(const char) noexcept; //!< convert char to text
+            static const char *       Text(const char) noexcept; //!< \return convert char to text
         };
 
     }
