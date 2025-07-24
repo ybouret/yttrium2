@@ -61,6 +61,8 @@ namespace Yttrium
             // Methods
             //__________________________________________________________________
             OutputStream & viz(OutputStream &) const; //!< emit graphViz \return output stream
+            bool descendsFrom(const Node * const root) const noexcept;
+
 
             //__________________________________________________________________
             //
@@ -230,12 +232,11 @@ namespace Yttrium
             Node * const node = (Node *) search(path,plen);
             if(!node) return 0;
             void * const addr = node->addr;
-            Coerce(node->addr) = 0;
-            --Coerce(size);
-            prune(node);
+            remove(node);
             return addr;
         }
 
+        void remove(Node * const node) noexcept;
 
         //! emit graphViz \return output stream
         OutputStream & viz(OutputStream &) const;
@@ -253,6 +254,7 @@ namespace Yttrium
 
         Y_Disable_Copy_And_Assign(SuffixTree); //!< discarding
 
+        
         //! create a node with parent and value
         /**
          \param sire parent node
@@ -268,7 +270,7 @@ namespace Yttrium
         //! clear all content
         void         clear()       noexcept;
 
-        //! helper to clear
+        //! helper to clear from root
         void         clear(Node *) noexcept;
 
         //! purge all content but root

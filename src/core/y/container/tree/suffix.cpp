@@ -22,6 +22,15 @@ namespace Yttrium
 
     }
 
+    bool SuffixTree::Node:: descendsFrom(const Node * const root) const noexcept
+    {
+        assert(0!=root);
+        const Node * node = this;
+        while(node->sire)
+            node=node->sire;
+        return root == node;
+    }
+
     OutputStream &  SuffixTree::Node:: viz(OutputStream &fp) const
     {
         name(fp) << '[';
@@ -151,6 +160,16 @@ namespace Yttrium
     }
 
     
+
+    void SuffixTree:: remove(Node * const node) noexcept
+    {
+        assert(0!=node);
+        assert(0!=node->addr);
+        assert(node->descendsFrom(root));
+        Coerce(node->addr) = 0;
+        --Coerce(size);
+        prune(node);
+    }
 
 
 }
