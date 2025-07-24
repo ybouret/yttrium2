@@ -28,15 +28,20 @@ namespace Yttrium
                 virtual ~Vector() noexcept;
 
                 template <typename ARRAY> inline
-                Vector(const CopyOf_ &, ARRAY &arr) :
+                Vector(const CopyOf_ &copyOf, ARRAY &arr) :
                 Object(),
                 Metrics( arr.size() ),
-                VectorType(dimensions)
+                VectorType(copyOf,arr),
+                ncof(0),
+                nrm2(),
+                next(0),
+                prev(0)
                 {
+                    update();
                 }
 
 
-
+                friend std::ostream & operator<<(std::ostream &, const Vector &);
 
                 void ldz() noexcept;
                 void update();

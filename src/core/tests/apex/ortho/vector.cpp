@@ -1,5 +1,4 @@
 #include "y/container/light-array.hpp"
-
 #include "y/apex/api/ortho/vector.hpp"
 #include "y/utest/run.hpp"
 
@@ -13,6 +12,10 @@ Y_UTEST(apex_ortho_vector)
     LightArray<const int> arr(data,sizeof(data)/sizeof(data[0]));
 
     std::cerr << "arr=" << arr << std::endl;
+
+    Apex::Ortho::Vector v(CopyOf,arr);
+    std::cerr << "v=" << v << std::endl;
+
 
 }
 Y_UDONE()
