@@ -190,6 +190,7 @@ Y_UTEST(apex:q)
 Y_UTEST(apex:io)
 Y_UTEST(apex:rsa)
 Y_UTEST(apex:ortho:vector)
+Y_UTEST(apex:ortho:keep)
 
 #random
 Y_UTEST(random:bits)

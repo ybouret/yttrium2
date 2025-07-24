@@ -43,10 +43,8 @@ Y_UTEST(apex_ortho_vector)
                 vec = q;
                 Y_ASSERT(vec==src);
             }
-
+            
         }
-
-
 
     }
 

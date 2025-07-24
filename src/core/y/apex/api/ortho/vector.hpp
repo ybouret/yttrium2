@@ -95,6 +95,7 @@ namespace Yttrium
                 //! test equality
                 friend bool operator==(const Vector &, const Vector &) noexcept;
 
+                bool keepOrtho(const Vector &b);
 
                 //______________________________________________________________
                 //

@@ -186,6 +186,32 @@ namespace Yttrium
                 return L == R;
             }
 
+
+            bool Vector:: keepOrtho(const Vector &b)
+            {
+                assert( dimensions == b.dimensions );
+                VectorType &a  = *this;
+                const apz   wa = b.nrm2;
+                apz         wb; for(size_t i=dimensions;i>0;--i) wb += a[i] * b[i];
+                switch(wb.s)
+                {
+                    case Negative: Coerce(wb.s) = Positive; break;
+                    case Positive: Coerce(wb.s) = Negative; break;
+                    case __Zero__: return ncof>0; // already orthogonal
+                }
+                try {
+                    for(size_t i=dimensions;i>0;--i)
+                    {
+                        apz &a_i = Coerce(a[i]);
+                        a_i = wa * a_i + wb * b[i];
+                    }
+                }
+                catch(...) {
+                    ldz(); throw;
+                }
+                update();
+                return ncof>0;
+            }
         }
 
     }
