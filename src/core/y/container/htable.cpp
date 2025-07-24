@@ -167,7 +167,13 @@ namespace Yttrium
         ++Coerce(size);
 
         // check load factor
-
+        if(size/code->numBlocks>MaxLoadFactor)
+        {
+            Code * temp = Code::createFor(code->numBlocks<<1);
+            temp->steal(*code);
+            delete code;
+            code = temp;
+        }
         return node;
     }
 
