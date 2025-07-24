@@ -23,9 +23,12 @@ namespace Yttrium
             public VectorType
             {
             public:
-                explicit Vector(const Metrics &);
+                Vector(const Metrics &);
                 Vector(const Vector &);
                 virtual ~Vector() noexcept;
+
+                Vector & operator=( const Vector & );
+
 
                 template <typename ARRAY> inline
                 Vector(const CopyOf_ &copyOf, ARRAY &arr) :
@@ -43,6 +46,19 @@ namespace Yttrium
 
                 friend std::ostream & operator<<(std::ostream &, const Vector &);
 
+                template <typename ARRAY> inline
+                Vector & operator=(ARRAY &arr)
+                {
+                    assert(arr.size()==dimensions);
+                    try {
+                        for(size_t i=dimensions;i>0;--i)
+                            Coerce( (*this)[i] ) = arr[i];
+                    }
+                    catch(...) { ldz(); throw; }
+                    update();
+                    return *this;
+                }
+
                 void ldz() noexcept;
                 void update();
 
@@ -51,9 +67,7 @@ namespace Yttrium
                 apn          nrm2;
                 Vector *     next;
                 Vector *     prev;
-                
-            private:
-                Y_Disable_Assign(Vector);
+
             };
 
 

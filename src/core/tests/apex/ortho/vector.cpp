@@ -1,20 +1,46 @@
 #include "y/container/light-array.hpp"
 #include "y/apex/api/ortho/vector.hpp"
 #include "y/utest/run.hpp"
+#include "y/random/mt19937.hpp"
 
 using namespace Yttrium;
 
 Y_UTEST(apex_ortho_vector)
 {
 
-    const int data[] = { 8, -2, 4 };
+    Random::MT19937 ran;
 
-    LightArray<const int> arr(data,sizeof(data)/sizeof(data[0]));
+    for(size_t dims=1;dims<=3;++dims)
+    {
+        std::cerr << std::endl << "--- dims=" << dims << std::endl;
+        Apex::Ortho::Vector vec(dims);
+        CxxArray<int>       arr(dims);
+        for(size_t iter=0;iter<4;++iter)
+        {
+            for(size_t i=dims;i>0;--i)
+                arr[i] = ran.in<int>(-4,4);
+            std::cerr << arr << " => ";
+            const Apex::Ortho::Vector src(CopyOf,arr);
+            std::cerr << src << std::endl;
+            {
+                const Apex::Ortho::Vector cpy(src);
+                Y_ASSERT(src==cpy);
+            }
+            {
+                vec.ldz();
+                vec = src;
+                Y_ASSERT(vec==src);
+            }
+            {
+                vec.ldz();
+                vec = arr;
+                Y_ASSERT(vec==src);
+            }
+        }
 
-    std::cerr << "arr=" << arr << std::endl;
 
-    Apex::Ortho::Vector v(CopyOf,arr);
-    std::cerr << "v=" << v << std::endl;
+
+    }
 
 
 }

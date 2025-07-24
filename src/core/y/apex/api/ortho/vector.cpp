@@ -36,6 +36,29 @@ namespace Yttrium
             {
             }
 
+
+            Vector & Vector:: operator=( const Vector &v )
+            {
+
+                assert(dimensions==v.dimensions);
+                try {
+                    for(size_t i=dimensions;i>0;--i)
+                    {
+                        Coerce( (*this)[i] ) = v[i];
+                    }
+                    Coerce(nrm2) = v.nrm2;
+                    Coerce(ncof) = v.ncof;
+                }
+                catch(...)
+                {
+                    ldz();
+                    throw;
+                }
+                return *this;
+
+            }
+
+
             void Vector:: ldz() noexcept
             {
                 Coerce(ncof)=0;
@@ -88,25 +111,58 @@ namespace Yttrium
                         g = (g.bits()<=0) ? z.n : Natural::GCD(g,z.n);
                     }
 
-                    std::cerr << "#p="  << p << std::endl;
-                    std::cerr << "#n="  << n << std::endl;
-                    std::cerr << "s = " << s << std::endl;
-                    std::cerr << "g = " << g << std::endl;
 
-                    if(g.bits()>0)
+
+                    const bool neg = (n>p) || ( (n<=p) && (Negative==s) );
+#if 0
+                    std::cerr
+                    << " #p = " << p
+                    << " #n = " << n
+                    << " s = " << s
+                    << " g = " << g
+                    << " neg = " << neg << std::endl;
+#endif
+                    if(g.bits()>1)
                     {
-                        for(size_t i=dimensions;i>0;--i)
+                        if(neg)
                         {
-                            apn & _ = Coerce(v[i].n);
-                            if(_.bits()<=0) continue;
-                            _ /= g;
+                            for(size_t i=dimensions;i>0;--i)
+                            {
+                                const apz &z = v[i];
+                                switch(z.s)
+                                {
+                                    case __Zero__: continue;
+                                    case Positive: Coerce(z.n)/=g; Coerce(z.s) = Negative; continue;
+                                    case Negative: Coerce(z.n)/=g; Coerce(z.s) = Positive; continue;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for(size_t i=dimensions;i>0;--i)
+                            {
+                                const apz &z = v[i];
+                                switch(z.s)
+                                {
+                                    case __Zero__: continue;
+                                    case Negative:
+                                    case Positive:
+                                        Coerce(z.n)/=g;
+                                }
+                            }
                         }
 
                         Coerce(nrm2) /= g.sqr();
                     }
                     else
                     {
-                        
+                        assert(g<=1);
+                        if(neg)
+                        {
+                            for(size_t i=dimensions;i>0;--i)
+                                Sign::MakeOpposite(Coerce(v[i].s));;
+                        }
+                        // else do nothing
                     }
 
 
