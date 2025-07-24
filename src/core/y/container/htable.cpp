@@ -5,6 +5,7 @@
 #include "y/calculus/base2.hpp"
 #include "y/system/exception.hpp"
 #include "y/type/destroy.hpp"
+#include "y/core/utils.hpp"
 
 namespace Yttrium
 {
@@ -106,9 +107,9 @@ namespace Yttrium
     }
 
 
-    HTable:: HTable() :
+    HTable:: HTable(const size_t minSlots) :
     size(0),
-    code( new Code(4) ),
+    code( new Code( Max<size_t>(4,minSlots) ) ),
     pool()
     {
 

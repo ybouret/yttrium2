@@ -42,7 +42,7 @@ namespace Yttrium
         typedef bool (*Same)(const void * const, const void * const);
 
 
-        explicit HTable();
+        explicit HTable(const size_t minSlots=4);
         virtual ~HTable() noexcept;
 
         virtual void free() noexcept;
