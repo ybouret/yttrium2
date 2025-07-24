@@ -212,6 +212,30 @@ namespace Yttrium
                 update();
                 return ncof>0;
             }
+
+
+            Vector:: Cache:: Cache(const Metrics &m) noexcept :
+            CountedObject(),
+            Metrics(m),
+            list()
+            {}
+
+            Vector:: Cache:: ~Cache() noexcept
+            {
+            }
+
+            Vector * Vector::Cache:: query()
+            {
+                return list.size ? list.popTail() : new Vector(*this);
+            }
+
+            void Vector:: Cache:: store(Vector *const vec) noexcept
+            {
+                assert(0!=vec);
+                assert(dimensions == vec->dimensions);
+                list.pushHead(vec)->ldz();
+            }
+
         }
 
     }

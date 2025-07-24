@@ -7,6 +7,8 @@
 #include "y/apex/api/ortho/metrics.hpp"
 #include "y/container/cxx/array.hpp"
 #include "y/apex/rational.hpp"
+#include "y/core/linked/list/cxx.hpp"
+#include "y/object/counted.hpp"
 
 namespace Yttrium
 {
@@ -32,6 +34,8 @@ namespace Yttrium
             public VectorType
             {
             public:
+                typedef CxxListOf<Vector> List;
+
                 //______________________________________________________________
                 //
                 //
@@ -104,10 +108,44 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 const size_t ncof; //!< number of non-zero coefficient
-                apn          nrm2; //!< |*this|^2
+                const apn    nrm2; //!< |*this|^2
                 Vector *     next; //!< for list/pool
                 Vector *     prev; //!< for list
 
+                //______________________________________________________________
+                //
+                //
+                // Cache
+                //
+                //______________________________________________________________
+                class Cache : public CountedObject, public Metrics
+                {
+                public:
+                    explicit Cache(const Metrics &) noexcept;
+                    virtual ~Cache() noexcept;
+
+                    Vector * query();
+                    void     store(Vector * const) noexcept;
+
+                    template <typename ARRAY> inline
+                    Vector * query(ARRAY &arr)
+                    {
+                        Vector * const v = query();
+                        try {
+                            *v = arr;
+                        }
+                        catch(...)
+                        {
+                            store(v);
+                            throw;
+                        }
+                        return v;
+                    }
+
+                private:
+                    Y_Disable_Copy_And_Assign(Cache);
+                    List list;
+                };
             };
 
 
