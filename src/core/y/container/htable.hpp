@@ -8,62 +8,152 @@
 #include "y/core/linked/pool/cxx.hpp"
 #include "y/object.hpp"
 #include "y/ability/recyclable.hpp"
+#include "y/ability/releasable.hpp"
 
 namespace Yttrium
 {
 
-    class HTable : public Recyclable
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Low-level Hash Table
+    //
+    //
+    //__________________________________________________________________________
+    class HTable : public Recyclable, public Releasable
     {
     public:
-        static const char * const CallSign;
-        static const size_t       MaxLoadFactor = 4;
-        
+
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        static const char * const CallSign;           //!< "HTable"
+        static const size_t       MaxLoadFactor = 4;  //!< Maximum Load Factor
+
+
+        //______________________________________________________________________
+        //
+        //
+        //! Inner node
+        //
+        //______________________________________________________________________
         class Node : public Object
         {
         public:
-            typedef CxxPoolOf<Node> Pool;
-            typedef CxxListOf<Node> List;
+            //__________________________________________________________________
+            //
+            // Definitions
+            //__________________________________________________________________
+            typedef CxxPoolOf<Node> Pool; //!< alias
+            typedef CxxListOf<Node> List; //!< alias
 
-            explicit Node() noexcept;
-            virtual ~Node() noexcept;
+            //__________________________________________________________________
+            //
+            // C++
+            //__________________________________________________________________
+            explicit Node() noexcept; //!< setup
+            virtual ~Node() noexcept; //!< cleanup
 
-            void     clear() noexcept;
-            
+            //__________________________________________________________________
+            //
+            // Methods
+            //__________________________________________________________________
+            void     clear() noexcept; //!< clean hkey and data
 
-            const size_t hkey;
-            void * const data;
-            Node *       next;
-            Node *       prev;
+            //__________________________________________________________________
+            //
+            // Members
+            //__________________________________________________________________
+            const size_t hkey; //!< Hash Key
+            void * const data; //!< some data/key
+            Node *       next; //!< for list/pool
+            Node *       prev; //!< for list
 
         private:
-            Y_Disable_Copy_And_Assign(Node);
+            Y_Disable_Copy_And_Assign(Node); //!< discarding
         };
-        typedef Node::List Slot;
+
+        typedef Node::List Slot; //!< alias
+
+        //! data/key comparison
         typedef bool (*Same)(const void * const, const void * const);
 
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+        explicit HTable(const size_t=4); //!< setup with optional min slots
+        virtual ~HTable() noexcept;      //!< cleanup
 
-        explicit HTable(const size_t minSlots=4);
-        virtual ~HTable() noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
+        virtual void free()    noexcept;
+        virtual void release() noexcept;
 
-        virtual void free() noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
 
+        //! search node
+        /**
+         \param hkey must have this key
+         \param data for comparison
+         \param same same(data,node->data) to test
+         \param slot slot where it should be
+         \return found node
+         */
         const Node * search(const size_t       hkey,
                             const void * const data,
                             Same const         same,
                             const Slot *   &   slot) const;
 
+        //! search node with pre-fetching
+        /**
+         \param hkey must have this key
+         \param data for comparison
+         \param same same(data,node->data) to test
+         \param slot slot where it should be
+         \return found node
+         */
         Node *       search(const size_t       hkey,
                             const void * const data,
                             Same const         same,
                             Slot *   &         slot);
 
-
+        //! hkey/data insertion
+        /**
+         \param hkey hash key
+         \param data data/key
+         \param same same(data,node->data) to test
+         \return inserted node, NULL on failure
+         */
         Node * insert(const size_t hkey,
                       void * const data,
                       Same const   same);
 
-        void remove(Node * const node) noexcept;
+        //! remove found node
+        void remove(Node * const ) noexcept;
 
+        //! try to remove data
+        /**
+         \param hkey hash key
+         \param data data/key
+         \param same same(data,node->data) to test
+         \return true if found and removed
+         */
         bool remove(const size_t hkey,
                     void * const data,
                     Same const   same);
@@ -73,9 +163,9 @@ namespace Yttrium
         const size_t    size; //!< keep inserted count
     private:
         class Code;
-        Y_Disable_Copy_And_Assign(HTable);
-        Code *          code;
-        CxxPoolOf<Node> pool;
+        Y_Disable_Copy_And_Assign(HTable); //!< discarding
+        Code *          code; //!< inner code
+        CxxPoolOf<Node> pool; //!< pool
     };
 
 }

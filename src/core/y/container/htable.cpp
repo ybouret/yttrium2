@@ -73,6 +73,12 @@ namespace Yttrium
             assert(source.isFree());
         }
 
+        inline void release() noexcept
+        {
+            for(size_t i=0;i<numBlocks;++i)
+                entry[i].release();
+        }
+
 
         const size_t mask;
 
@@ -212,6 +218,14 @@ namespace Yttrium
         assert(code);
         code->free(pool);
         assert(code->isFree());
+        Coerce(size)=0;
+    }
+
+    void HTable:: release() noexcept
+    {
+        assert(code);
+        code->release();
+        pool.release();
         Coerce(size)=0;
     }
 

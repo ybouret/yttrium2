@@ -135,7 +135,7 @@ namespace Yttrium
             return node;
         }
 
-        //! search node with given path and caching
+        //! search node with given path and pre-fetching
         /**
          \param path path iterator
          \param plen path length
@@ -236,7 +236,8 @@ namespace Yttrium
             return addr;
         }
 
-        void remove(Node * const node) noexcept;
+        //! remove found node
+        void remove(Node * const) noexcept;
 
         //! emit graphViz \return output stream
         OutputStream & viz(OutputStream &) const;
