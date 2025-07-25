@@ -66,6 +66,7 @@ namespace Yttrium
             prev(0)
             {}
 
+            //! cleanup
             inline ~Knot() noexcept {}
 
             //__________________________________________________________________

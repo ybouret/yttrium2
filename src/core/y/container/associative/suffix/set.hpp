@@ -9,57 +9,125 @@
 
 namespace Yttrium
 {
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! management for SuffixSet
+    //
+    //
+    //__________________________________________________________________________
     struct SuffixSetAPI
     {
-        typedef SuffixTree::Node Node;
+        typedef SuffixTree::Node Node; //!< alias
 
+        //______________________________________________________________________
+        //
+        //
+        //! inner knot
+        //
+        //______________________________________________________________________
         template <typename KEY, typename T>
         class Knot
         {
         public:
-            Y_Args_Declare(T,Type);
-            Y_Args_Declare(KEY,Key);
-            typedef Protean::WarpedCacheOf<Knot,SingleThreadedClass> Pool;
-            typedef Core::ListOf<Knot> List;
+            //__________________________________________________________________
+            //
+            // Definitions
+            //__________________________________________________________________
+            Y_Args_Declare(T,Type);   //!< aliases
+            Y_Args_Declare(KEY,Key);  //!< aliases
+            typedef Protean::WarpedCacheOf<Knot,SingleThreadedClass> Pool; //!< alias
+            typedef Core::ListOf<Knot>                               List; //!< alias
 
+            //__________________________________________________________________
+            //
+            // C++
+            //__________________________________________________________________
+
+            //! setup \param arg value
             inline  Knot(ParamType arg) : data(arg), next(0), prev(0) { }
+
+            //! duplicate \param knot another knot
             inline  Knot(const Knot &knot) : data(knot.data), next(0), prev(0) {}
+
+            //! cleanup
             inline ~Knot() noexcept {}
 
+            //__________________________________________________________________
+            //
+            // Methods
+            //__________________________________________________________________
+
+            //! \return current key
             ConstKey & key() const noexcept { return data.key(); }
 
-            Type   data;
-            Knot * next;
-            Knot * prev;
+            //__________________________________________________________________
+            //
+            // Members
+            //__________________________________________________________________
+            Type   data; //!< data with data.key()
+            Knot * next; //!< for list
+            Knot * prev; //!< for list
 
         private:
-            Y_Disable_Assign(Knot);
+            Y_Disable_Assign(Knot); //!< discard
         };
     };
 
+
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! SuffixSet
+    //
+    //
+    //__________________________________________________________________________
     template <typename KEY, typename T>
-    class SuffixSet : public Glossary<KEY,T>
+    class SuffixSet : public Glossary<KEY,T>, public Collectable
     {
     public:
-        Y_Args_Declare(T,Type);
-        Y_Args_Declare(KEY,Key);
-        typedef typename SuffixSetAPI::Node        Node;
-        typedef typename SuffixSetAPI::Knot<KEY,T> Knot;
-        typedef typename Knot::Pool                KPool;
-        typedef typename Knot::List                KList;
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        Y_Args_Declare(T,Type);  //!< aliases
+        Y_Args_Declare(KEY,Key); //!< aliases
+        typedef typename SuffixSetAPI::Node        Node;  //!< alias
+        typedef typename SuffixSetAPI::Knot<KEY,T> Knot;  //!< alias
+        typedef typename Knot::Pool                KPool; //!< alias
+        typedef typename Knot::List                KList; //!< alias
 
-        inline explicit SuffixSet() : tree(), list(), pool()
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+
+        //! setup
+        inline explicit SuffixSet() : tree(), list(), pool() {}
+
+        //! cleanup
+        inline virtual ~SuffixSet() noexcept { purge(); }
+
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
+
+        inline virtual void free()                   noexcept { clear(); }
+        inline virtual void release()                noexcept { purge(); }
+        inline virtual void gc(const uint8_t amount) noexcept
         {
+            tree.gc(amount);
+            pool.gc(amount);
         }
-
-        inline virtual ~SuffixSet() noexcept
-        {
-            purge();
-        }
-
-        inline virtual void free()    noexcept { clear(); }
-        inline virtual void release() noexcept { purge(); }
-
 
         inline bool insert(ParamType value)
         {
@@ -106,19 +174,26 @@ namespace Yttrium
 
 
 
-
+        //______________________________________________________________________
+        //
+        //
+        // Members
+        //
+        //______________________________________________________________________
     private:
-        SuffixTree tree;
-        KList      list;
-        KPool      pool;
+        SuffixTree tree; //!< inner tree
+        KList      list; //!< data list
+        KPool      pool; //!< data pool
 
-        Y_Disable_Copy_And_Assign(SuffixSet);
+        Y_Disable_Copy_And_Assign(SuffixSet); //!< discarding
 
+        //! free
         inline void clear() noexcept {
             tree.free();
             while(list.size) pool.banish( list.popTail() );
         }
 
+        //! release
         inline void purge() noexcept
         {
             tree.release();
