@@ -4,12 +4,13 @@
 #define Y_Associative_Included 1
 
 #include "y/type/args.hpp"
+#include "y/ability/recyclable.hpp"
 
 namespace Yttrium
 {
 
     template <typename KEY, typename T>
-    class Associative
+    class Associative : public Recyclable
     {
     public:
         Y_Args_Expose(T,Type);

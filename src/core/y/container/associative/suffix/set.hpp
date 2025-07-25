@@ -57,6 +57,10 @@ namespace Yttrium
             purge();
         }
 
+        inline virtual void free()    noexcept { clear(); }
+        inline virtual void release() noexcept { purge(); }
+
+
         inline bool insert(ParamType value)
         {
             Knot * const knot = pool.summon(value);

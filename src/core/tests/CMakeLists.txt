@@ -127,9 +127,10 @@ Y_UTEST(container:algo)
 Y_UTEST(container:iterator)
 Y_UTEST(container:cxx:array)
 Y_UTEST(container:matrix)
-Y_UTEST(container:suffix_tree)
+Y_UTEST(container:suffix:tree)
 Y_UTEST(container:htable)
-Y_UTEST(container:associative)
+Y_UTEST(container:suffix:set)
+Y_UTEST(container:suffix:map)
 
 #stream
 Y_UTEST(stream:io:char)

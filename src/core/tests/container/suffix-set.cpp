@@ -1,22 +1,8 @@
 
 #include "y/container/associative/suffix/set.hpp"
-#include "y/container/htable.hpp"
-
 #include "y/utest/run.hpp"
-
-
 #include "y/string.hpp"
 
-namespace Yttrium
-{
-
-
-  
-
-
-
-
-}
 
 using namespace Yttrium;
 
@@ -50,13 +36,13 @@ namespace
     };
 }
 
-Y_UTEST(container_associative)
+Y_UTEST(container_suffix_set)
 {
 
-    
+    SuffixSet<String,Dummy> set;
+
 
     {
-        SuffixSet<String,Dummy> set;
         const Dummy dum1("dum1");
         Y_CHECK(set.insert(dum1));
         Y_CHECK(!set.insert(dum1));
@@ -73,8 +59,12 @@ Y_UTEST(container_associative)
 
         Y_CHECK(set.remove("dum1"));
         Y_CHECK(!set.remove("dum1"));
-
     }
+
+    set.free();
+
+    
+
 
 }
 Y_UDONE()

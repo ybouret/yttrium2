@@ -95,6 +95,23 @@ namespace Yttrium
                 catch(...) { zpool.store(addr); throw; }
             }
 
+
+            //! summon a live node
+            /**
+             \param arg1 passed to node constructor
+             \param arg2 passed to node constructor
+             \return a new live node
+             */
+            template <typename ARG1, typename ARG2> inline
+            NodeType * summon(ARG1 &arg1, ARG2 &arg2)
+            {
+                Y_Must_Lock();
+                void * const addr = zpool.query();
+                try { return new (addr) NodeType(arg1,arg2); }
+                catch(...) { zpool.store(addr); throw; }
+            }
+
+
             //! send back to zombies (local cache)
             /**
              \param node a summoned node
