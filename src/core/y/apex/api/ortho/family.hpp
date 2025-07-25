@@ -70,8 +70,20 @@ namespace Yttrium
                     return isOrtho( fetch() = arr );
                 }
 
-                void         grow()                       noexcept; //!< grow last accepted vector
-                const char * humanReadableQuality() const noexcept; //!< \return quality
+                template <typename ARRAY> inline
+                bool contains(ARRAY &arr)
+                {
+                    assert(dimensions==arr.size());
+                    if(isBasis()) return true;
+                    return ! isOrtho( fetch() = arr );
+                }
+
+
+                void           grow()                       noexcept; //!< grow last accepted vector
+                const char *   humanReadableQuality() const noexcept; //!< \return quality
+                const Vector & last()                 const noexcept; //!< \return last ortho after successful accepts and before groe
+
+
 
                 //______________________________________________________________
                 //

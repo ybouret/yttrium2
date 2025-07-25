@@ -140,6 +140,14 @@ namespace Yttrium
                 }
                 return os << "# </Family>";
             }
+
+            const Vector & Family:: last() const noexcept
+            {
+                assert(0!=ortho);
+                return *ortho;
+            }
+
+            
         }
 
     }
