@@ -146,12 +146,12 @@ namespace Yttrium
 
 
                     const bool neg = (n>p) || ( (n<=p) && (Negative==s) );
-#if 0
+#if 1
                     std::cerr
                     << " #p = " << p
                     << " #n = " << n
-                    << " s = " << s
-                    << " g = " << g
+                    << " s = "  << s
+                    << " g = "  << g
                     << " neg = " << neg << std::endl;
 #endif
                     if(g.bits()>1)
