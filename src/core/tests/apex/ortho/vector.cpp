@@ -43,8 +43,10 @@ Y_UTEST(apex_ortho_vector)
                 vec = q;
                 Y_ASSERT(vec==src);
             }
-            
         }
+
+        Apex::Ortho::VCache vcache = new Apex::Ortho::Vector::Cache(dims);
+        
 
     }
 

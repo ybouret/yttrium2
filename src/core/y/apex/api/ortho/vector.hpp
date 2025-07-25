@@ -9,6 +9,8 @@
 #include "y/apex/rational.hpp"
 #include "y/core/linked/list/cxx.hpp"
 #include "y/object/counted.hpp"
+#include "y/pointer/arc.hpp"
+#include "y/ability/caching.hpp"
 
 namespace Yttrium
 {
@@ -34,6 +36,12 @@ namespace Yttrium
             public VectorType
             {
             public:
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
                 typedef CxxListOf<Vector> List;
 
                 //______________________________________________________________
@@ -101,6 +109,8 @@ namespace Yttrium
 
                 bool keepOrtho(const Vector &b);
 
+                static SignType Compare(const Vector * const, const Vector * const) noexcept;
+
                 //______________________________________________________________
                 //
                 //
@@ -118,14 +128,20 @@ namespace Yttrium
                 // Cache
                 //
                 //______________________________________________________________
-                class Cache : public CountedObject, public Metrics
+                class Cache : public CountedObject, public Metrics, public Caching
                 {
                 public:
                     explicit Cache(const Metrics &) noexcept;
                     virtual ~Cache() noexcept;
 
+
+                    virtual size_t count() const noexcept;
+                    virtual void   cache(const size_t);
+                    virtual void   gc(const uint8_t) noexcept;
+
                     Vector * query();
                     void     store(Vector * const) noexcept;
+
 
                     template <typename ARRAY> inline
                     Vector * query(ARRAY &arr)
@@ -146,9 +162,11 @@ namespace Yttrium
                     Y_Disable_Copy_And_Assign(Cache);
                     List list;
                 };
+
             };
 
-
+            typedef ArcPtr<Vector::Cache> VCache;
+            
         }
 
     }

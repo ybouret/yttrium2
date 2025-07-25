@@ -13,6 +13,13 @@ namespace Yttrium
         namespace Ortho
         {
 
+            enum Quality
+            {
+                Basis,      //!< size == dimensions
+                HyperPlane, //!< size == hyperplane
+                Generating  //!< size < hyperplane
+            };
+
             class Metrics
             {
             public:
@@ -21,6 +28,9 @@ namespace Yttrium
                 Metrics(const Metrics &) noexcept;
 
                 const size_t dimensions;
+                const size_t hyperplane;
+
+                Quality qualify(const size_t size) const noexcept;
 
             private:
                 Y_Disable_Assign(Metrics);

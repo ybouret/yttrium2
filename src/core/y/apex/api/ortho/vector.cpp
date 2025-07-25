@@ -26,6 +26,7 @@ namespace Yttrium
             }
 
             Vector:: Vector(const Vector &v) :
+            Container(),
             Object(),
             Metrics(v),
             VectorType(v),
@@ -74,6 +75,37 @@ namespace Yttrium
                 return os;
             }
 
+
+            SignType Vector:: Compare(const Vector * const lhs, const Vector * const rhs) noexcept
+            {
+                assert(lhs);
+                assert(rhs);
+                assert( lhs->dimensions == rhs->dimensions );
+                switch(Sign::Of(lhs->ncof,rhs->ncof))
+                {
+                    case Negative: return Negative;
+                    case Positive: return Positive;
+                    case __Zero__: break;
+                }
+
+                switch( apn::Compare(lhs->nrm2,rhs->nrm2) )
+                {
+                    case Negative: return Negative;
+                    case Positive: return Positive;
+                    case __Zero__: break;
+                }
+
+                const size_t n = lhs->dimensions;
+                for(size_t i=1;i<=n;++i)
+                    switch( apz::Compare( (*lhs)[i],(*rhs)[i]))
+                    {
+                        case __Zero__: continue;
+                        case Negative: return Negative;
+                        case Positive: return Positive;
+                    }
+
+                return __Zero__;
+            }
 
             void Vector:: update()
             {
@@ -235,6 +267,27 @@ namespace Yttrium
                 assert(dimensions == vec->dimensions);
                 list.pushHead(vec)->ldz();
             }
+
+            size_t Vector:: Cache:: count() const noexcept
+            {
+                return list.size;
+            }
+
+            void Vector:: Cache:: cache(const size_t n)
+            {
+                for(size_t i=n;i>0;--i)
+                {
+                    list.pushTail( new Vector(*this) );
+                }
+            }
+
+            void Vector:: Cache::gc(const uint8_t amount) noexcept
+            {
+                const size_t newSize = NewSize(amount,list.size);
+                list.sortByIncreasingAddress();
+                while(list.size>newSize) delete list.popTail();
+            }
+
 
         }
 

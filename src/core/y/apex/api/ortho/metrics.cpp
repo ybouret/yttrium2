@@ -16,17 +16,27 @@ namespace Yttrium
 
 
             Metrics:: Metrics(const size_t dims) :
-            dimensions(dims)
+            dimensions(dims),
+            hyperplane(dims-1)
             {
                 if(dimensions<1) throw Specific::Exception("Ortho::Metrics","nul dimension");
             }
 
             Metrics:: Metrics(const Metrics &_) noexcept :
-            dimensions(_.dimensions)
+            dimensions(_.dimensions),
+            hyperplane(_.hyperplane)
             {
             }
 
-            
+
+            Quality Metrics:: qualify(const size_t size) const noexcept
+            {
+                if(size>=dimensions) return Basis;
+                if(size>=hyperplane) return HyperPlane;
+                return Generating;
+            }
+
+
         }
         
     }
