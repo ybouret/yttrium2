@@ -19,7 +19,7 @@ namespace Yttrium
         inline explicit Associative() noexcept {}
 
     public:
-        inline virtual ~Associative() noexcept;
+        inline virtual ~Associative() noexcept {}
 
     private:
         Y_Disable_Copy_And_Assign(Associative);

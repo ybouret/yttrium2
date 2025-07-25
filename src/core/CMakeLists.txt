@@ -37,6 +37,8 @@ Y_CreateLibrary(y
     y/container/cxx
     y/container/ordered
     y/container/tree
+    y/container/associative
+    y/container/associative/suffix
     y/static
     y/static/workspace
     y/memory
