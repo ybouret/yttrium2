@@ -97,6 +97,12 @@ namespace Yttrium
             return false;
         }
 
+        inline bool remove(ParamKey key) noexcept
+        {
+            Node * node = tree.search(key.begin(),key.size());
+
+        }
+
 
     private:
         SuffixTree tree;
@@ -178,6 +184,7 @@ Y_UTEST(container_associative)
         SuffixSet<String,Dummy> set;
         const Dummy dum1("dum1");
         Y_ASSERT(set.insert(dum1));
+        Y_ASSERT(!set.insert(dum1));
 
     }
 
