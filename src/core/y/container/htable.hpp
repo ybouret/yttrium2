@@ -8,7 +8,7 @@
 #include "y/core/linked/pool/cxx.hpp"
 #include "y/object.hpp"
 #include "y/ability/recyclable.hpp"
-#include "y/ability/releasable.hpp"
+#include "y/ability/collectable.hpp"
 
 namespace Yttrium
 {
@@ -21,7 +21,7 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    class HTable : public Recyclable, public Releasable
+    class HTable : public Recyclable, public Collectable
     {
     public:
 
@@ -99,6 +99,7 @@ namespace Yttrium
         //______________________________________________________________________
         virtual void free()    noexcept;
         virtual void release() noexcept;
+        virtual void gc(const uint8_t) noexcept;
 
         //______________________________________________________________________
         //

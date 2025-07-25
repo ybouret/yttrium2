@@ -230,3 +230,19 @@ namespace Yttrium
     }
 
 }
+
+#include "y/core/linked/convert/pool-to-ordered-list.hpp"
+#include "y/core/linked/convert/list-to-pool.hpp"
+
+namespace Yttrium
+{
+    void HTable:: gc(const uint8_t amount) noexcept
+    {
+        Node::List list;
+        Core::PoolToOrderedList::Convert(list,pool);
+        const size_t newSize = NewSize(amount,list.size);
+        while(list.size>newSize) delete list.popTail();
+        Core::ListToPool::Convert(pool,list);
+    }
+
+}
