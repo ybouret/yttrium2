@@ -154,9 +154,9 @@ namespace Yttrium
          \param same same(data,node->data) to test
          \return true if found and removed
          */
-        bool remove(const size_t hkey,
-                    void * const data,
-                    Same const   same);
+        void * remove(const size_t       hkey,
+                      const void * const data,
+                      Same const         same);
 
 
 

@@ -1,7 +1,5 @@
 
 
-#include "y/hashing/key/hasher.hpp"
-
 #include "y/container/associative/hash/set.hpp"
 #include "y/utest/run.hpp"
 #include "y/string.hpp"
@@ -44,7 +42,7 @@ namespace
 Y_UTEST(container_hash_set)
 {
 
-    HashSet<String,Dummy, Hashing::KeyWith< Hashing::FNV > > set;
+    HashSet<String,Dummy> set;
 
 
     {
@@ -52,20 +50,20 @@ Y_UTEST(container_hash_set)
         Y_CHECK(set.insert(dum1));
         Y_CHECK(!set.insert(dum1));
 
-#if 0
         {
-            const SuffixSet<String,Dummy> &cset = set;
+            const HashSet<String,Dummy> &cset = set;
             Y_ASSERT(cset.search("dum1"));
             std::cerr << "const search: " << cset.search("dum1")->key() << std::endl;
         }
 
+#if 1
         Y_ASSERT(set.search("dum1"));
         std::cerr << "mutable search: " << set.search("dum1")->key() << std::endl;
-
+#endif
 
         Y_CHECK(set.remove("dum1"));
         Y_CHECK(!set.remove("dum1"));
-#endif
+        
     }
 
 

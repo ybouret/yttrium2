@@ -196,21 +196,22 @@ namespace Yttrium
     }
 
 
-    bool HTable::remove(const size_t hkey,
-                        void * const data,
-                        Same const   same)
+    void * HTable::remove(const size_t       hkey,
+                          const void * const data,
+                          Same const         same)
     {
         assert(code);
         assert(same);
         Slot *       slot = 0;
         Node * const node = search(hkey,data,same,slot);
 
-        if(!node) return false;
+        if(!node) return 0;
 
+        void * const res = node->data;
         assert(node==slot->head);
         pool.store( slot->popHead() )->clear();
         --Coerce(size);
-        return true;
+        return res;
     }
 
     void HTable:: free() noexcept

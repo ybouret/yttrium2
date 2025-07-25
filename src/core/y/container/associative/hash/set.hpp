@@ -6,14 +6,16 @@
 #include "y/container/associative.hpp"
 #include "y/container/htable.hpp"
 #include "y/protean/cache/warped.hpp"
-#include "y/threading/single-threaded-class.hpp"
 #include "y/threading/multi-threaded-object.hpp"
+#include "y/hashing/key/hasher.hpp"
+#include "y/hashing/fnv.hpp"
 
 namespace Yttrium
 {
     struct HashSetAPI
     {
         typedef HTable::Node Node;
+        typedef Hashing::FNV Function;
 
         template <typename KEY, typename T>
         class Knot
@@ -56,8 +58,9 @@ namespace Yttrium
     template <
     typename KEY,
     typename T,
-    typename KEY_HASHER>
-    class HashSet
+    typename KEY_HASHER = Hashing::KeyWith<HashSetAPI::Function>
+    >
+    class HashSet : public Associative<KEY,T>
     {
     public:
         Y_Args_Declare(T,Type);
@@ -67,14 +70,8 @@ namespace Yttrium
         typedef typename Knot::Pool              KPool;
         typedef typename Knot::List              KList;
         typedef typename KPool::Lock             Lock;
-
-
-        static inline bool Same(const void * const lhs, const void * const rhs)
-        {
-            return static_cast<const Knot *>(lhs)->key() == static_cast<const Knot *>(rhs)->key();
-        }
-
-        inline explicit HashSet() : table(), list(), pool()
+        
+        inline explicit HashSet() : table(), list(), pool(), hash()
         {
         }
 
@@ -92,7 +89,7 @@ namespace Yttrium
             const size_t hkey = hashKey(key);
             Knot * const knot = pool.summon(value,hkey);
             try {
-                Node * const node = table.insert(hkey,knot,Same);
+                Node * const node = table.insert(hkey,knot,SameKnot);
                 if(!node) { pool.banish(knot); return false; }
                 list.pushTail(knot);
                 assert(table.size == list.size);
@@ -105,24 +102,42 @@ namespace Yttrium
             return false;
         }
 
-#if 0
+
+
         inline bool remove(ParamKey key) noexcept
         {
-            void * const addr = tree.remove(key.begin(),key.size());
+            const size_t hkey = hashKey(key);
+            void * const addr = table.remove(hkey,&key,SameKey);
             if(!addr) return false;
             pool.banish( list.pop(static_cast<Knot *>(addr)) );
-            assert(tree.size == list.size);
+            assert(table.size == list.size);
             return true;
         }
 
         inline ConstType * search(ParamKey key) const noexcept
         {
-            const Node * const node = tree.search( key.begin(), key.size() );
+            const size_t        hkey = hashKey(key);
+            const HTable::Slot *slot = 0;
+            const Node * const  node = table.search(hkey,&key,SameKey,slot);
             if(!node) return 0;
-            assert(0!=node->addr);
-            return static_cast<ConstType *>(node->addr);
+            const Knot * const knot = static_cast<const Knot *>(node->data);
+            return & knot->data;
         }
 
+
+        inline  Type * search(ParamKey key) noexcept
+        {
+            const size_t   hkey = hashKey(key);
+            HTable::Slot * slot = 0;
+            Node * const   node = table.search(hkey,&key,SameKey,slot);
+            if(!node) return 0;
+            Knot * const knot = static_cast<Knot *>(node->data);
+            return & knot->data;
+        }
+
+
+
+#if 0
         inline  Type * search(ParamKey key) noexcept
         {
             Node * const node = tree.search( key.begin(), key.size() );
@@ -140,9 +155,17 @@ namespace Yttrium
         KPool              pool;
         mutable KEY_HASHER hash;
 
-
-
         Y_Disable_Copy_And_Assign(HashSet);
+
+        static inline bool SameKnot(const void * const lhs, const void * const rhs)
+        {
+            return static_cast<const Knot *>(lhs)->key() == static_cast<const Knot *>(rhs)->key();
+        }
+
+        static inline bool SameKey(const void * const lhs, const void * const rhs)
+        {
+            return *static_cast<ConstKey *>(lhs)== static_cast<const Knot *>(rhs)->key();
+        }
 
         inline size_t hashKey(ConstKey &key) const
         {
