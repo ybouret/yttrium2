@@ -99,7 +99,10 @@ namespace Yttrium
             //__________________________________________________________________
 
             //! cleanup
-            inline virtual ~CoopList() noexcept {}
+            inline virtual ~CoopList() noexcept
+            {
+                this->freeList_();
+            }
         protected:
 
             //! setup \param shared shared pool

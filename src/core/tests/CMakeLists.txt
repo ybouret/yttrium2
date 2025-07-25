@@ -26,6 +26,7 @@ utf8
 protean
 string
 apex apex/ortho
+coven
 random
 mkl
 cameo
@@ -195,6 +196,9 @@ Y_UTEST(apex:rsa)
 Y_UTEST(apex:ortho:vector)
 Y_UTEST(apex:ortho:keep)
 Y_UTEST(apex:ortho:family)
+
+#coven
+Y_UTEST(coven:indx)
 
 #random
 Y_UTEST(random:bits)

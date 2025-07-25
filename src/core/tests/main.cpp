@@ -149,6 +149,9 @@ Y_UTEST_DECL(256)
     Y_UTEST(apex_ortho_keep);
     Y_UTEST(apex_ortho_family);
 
+    Y_UTEST(coven_indx);
+
+
     Y_UTEST(random_bits);
     Y_UTEST(random_gaussian);
     Y_UTEST(random_in2d);
