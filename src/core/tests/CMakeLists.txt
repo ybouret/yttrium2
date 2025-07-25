@@ -129,6 +129,7 @@ Y_UTEST(container:cxx:array)
 Y_UTEST(container:matrix)
 Y_UTEST(container:suffix_tree)
 Y_UTEST(container:htable)
+Y_UTEST(container:associative)
 
 #stream
 Y_UTEST(stream:io:char)

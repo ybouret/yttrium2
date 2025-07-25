@@ -5,7 +5,7 @@
 #ifndef Y_String_Core_Included
 #define Y_String_Core_Included 1
 
-#include "y/object.hpp"
+#include "y/object/counted.hpp"
 #include "y/container/contiguous.hpp"
 #include "y/ability/legacy-string.hpp"
 #include "y/string/fwd.hpp"
@@ -52,7 +52,7 @@ namespace Yttrium
         //______________________________________________________________________
         template <typename T>
         class String :
-        public Object,
+        public CountedObject,
         public LegacyString,
         public Contiguous< Writable<T> >,
         public Sequence<T,Expandable>,

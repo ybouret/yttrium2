@@ -21,7 +21,7 @@ namespace Yttrium
     namespace Core
     {
 
-#define Y_String() Container(), Object(), LegacyString(), ContiguousType(), SequenceType(), Serializable(), Memory::ReadOnlyBuffer()
+#define Y_String() Container(), CountedObject(), LegacyString(), ContiguousType(), SequenceType(), Serializable(), Memory::ReadOnlyBuffer()
 
 #undef CH
 #define CH char
