@@ -16,6 +16,8 @@ namespace Yttrium
 
     struct SuffixSetAPI
     {
+        typedef SuffixTree::Node Node;
+
         template <typename KEY, typename T>
         class Knot
         {
@@ -27,6 +29,7 @@ namespace Yttrium
 
             inline Knot(ParamType arg) :
             data(arg),
+            node(0),
             next(0),
             prev(0)
             {
@@ -34,6 +37,7 @@ namespace Yttrium
 
             inline Knot(const Knot &knot) :
             data(knot.data),
+            node(0),
             next(0),
             prev(0)
             {
@@ -46,6 +50,7 @@ namespace Yttrium
             ConstKey & key() const noexcept { return data.key(); }
 
             Type   data;
+            Node * node;
             Knot * next;
             Knot * prev;
 
@@ -53,6 +58,66 @@ namespace Yttrium
             Y_Disable_Assign(Knot);
         };
     };
+
+    template <typename KEY, typename T>
+    class SuffixSet
+    {
+    public:
+        Y_Args_Declare(T,Type);
+        Y_Args_Declare(KEY,Key);
+        typedef typename SuffixSetAPI::Node        Node;
+        typedef typename SuffixSetAPI::Knot<KEY,T> Knot;
+        typedef typename Knot::Pool                KPool;
+        typedef typename Knot::List                KList;
+
+        inline explicit SuffixSet() : tree(), list(), pool()
+        {
+        }
+
+        inline virtual ~SuffixSet() noexcept
+        {
+            purge();
+        }
+
+        inline bool insert(ParamType value)
+        {
+            Knot * const knot = pool.summon(value);
+            try {
+                ConstKey &   key  = knot->key();
+                Node * const node = tree.insert(key.begin(), key.size(), knot);
+                if(!node) { pool.banish(knot); return false; }
+                list.pushTail(knot)->node = node;
+                assert(tree.size == list.size);
+                return true;
+            }
+            catch(...)
+            {
+                pool.banish(knot); throw;
+            }
+            return false;
+        }
+
+
+    private:
+        SuffixTree tree;
+        KList      list;
+        KPool      pool;
+
+        Y_Disable_Copy_And_Assign(SuffixSet);
+
+        inline void clear() noexcept {
+            tree.free();
+            while(list.size) pool.banish( list.popTail() );
+        }
+
+        inline void purge() noexcept
+        {
+            tree.release();
+            while(list.size) pool.remove( list.popTail() );
+        }
+
+    };
+
 
 
 
@@ -107,6 +172,12 @@ Y_UTEST(container_associative)
 
         kpool.banish(knot);
         kpool.remove(kcpy);
+    }
+
+    {
+        SuffixSet<String,Dummy> set;
+        const Dummy dum1("dum1");
+        Y_ASSERT(set.insert(dum1));
 
     }
 
