@@ -70,6 +70,11 @@ namespace Yttrium
                     return isOrtho( fetch() = arr );
                 }
 
+                //! check if arr is within family space
+                /**
+                 \param arr compatible array in type and size
+                 \return true if is in family image
+                 */
                 template <typename ARRAY> inline
                 bool contains(ARRAY &arr)
                 {
@@ -78,9 +83,7 @@ namespace Yttrium
                     return ! isOrtho( fetch() = arr );
                 }
 
-                bool includes(const Family &F);
-
-
+                bool           includes(const Family &);              //!< \return true if all vectors are withing this space
                 void           grow()                       noexcept; //!< grow last accepted vector
                 const char *   humanReadableQuality() const noexcept; //!< \return quality
                 const Vector & last()                 const noexcept; //!< \return last ortho after successful accepts and before groe
@@ -117,32 +120,46 @@ namespace Yttrium
                 //______________________________________________________________
                 //
                 //
-                //! cache
+                //! Cache
                 //
                 //______________________________________________________________
                 class Cache : public CountedObject, public Metrics, public Caching
                 {
                 public:
-                    explicit Cache(const VCache &) noexcept;
-                    virtual ~Cache() noexcept;
+                    //__________________________________________________________
+                    //
+                    // C++
+                    //__________________________________________________________
+                    explicit Cache(const VCache &) noexcept; //!< setup
+                    virtual ~Cache() noexcept;               //!< cleanup
 
-
+                    //__________________________________________________________
+                    //
+                    // Interface
+                    //__________________________________________________________
                     virtual size_t count()     const noexcept;
                     virtual void   gc(const uint8_t) noexcept;
                     virtual void   cache(const size_t);
 
-                    Family * query();
-                    void     store(Family * const) noexcept;
+                    //__________________________________________________________
+                    //
+                    // Methods
+                    //__________________________________________________________
+                    Family * query();                        //!< \return new empty family
+                    void     store(Family * const) noexcept; //!< store and clean family;
 
-                    VCache   vCache;
-
+                    //__________________________________________________________
+                    //
+                    // Members
+                    //__________________________________________________________
+                    VCache   vCache; //!< shared cache of vectors
                 private:
-                    Y_Disable_Copy_And_Assign(Cache);
-                    CxxListOf<Family> fCache;
+                    Y_Disable_Copy_And_Assign(Cache); //!< discarding
+                    CxxListOf<Family> fCache;         //!< pool
                 };
             };
 
-            typedef ArcPtr<Family::Cache> FCache;
+            typedef ArcPtr<Family::Cache> FCache; //!< alias
 
         }
 
