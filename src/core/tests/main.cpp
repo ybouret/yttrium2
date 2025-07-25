@@ -93,6 +93,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(container_htable);
     Y_UTEST(container_suffix_set);
     Y_UTEST(container_suffix_map);
+    Y_UTEST(container_hash_set);
 
     Y_UTEST(stream_io_char);
     Y_UTEST(stream_queue);

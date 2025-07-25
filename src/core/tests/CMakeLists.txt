@@ -131,6 +131,7 @@ Y_UTEST(container:suffix:tree)
 Y_UTEST(container:htable)
 Y_UTEST(container:suffix:set)
 Y_UTEST(container:suffix:map)
+Y_UTEST(container:hash:set)
 
 #stream
 Y_UTEST(stream:io:char)
