@@ -3,7 +3,7 @@
 #ifndef Y_Associative_HashSet_Included
 #define Y_Associative_HashSet_Included 1
 
-#include "y/container/associative.hpp"
+#include "y/container/associative/glossary.hpp"
 #include "y/container/htable.hpp"
 #include "y/protean/cache/warped.hpp"
 #include "y/threading/multi-threaded-object.hpp"
@@ -12,20 +12,44 @@
 
 namespace Yttrium
 {
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! management for HashSet
+    //
+    //
+    //__________________________________________________________________________
     struct HashSetAPI
     {
-        typedef HTable::Node Node;
-        typedef Hashing::FNV Function;
+        typedef HTable::Node Node;     //!< alias
+        typedef Hashing::FNV Function; //!< alias
 
+        //______________________________________________________________________
+        //
+        //
+        //! inner knot
+        //
+        //______________________________________________________________________
         template <typename KEY, typename T>
         class Knot
         {
         public:
-            Y_Args_Declare(T,Type);
-            Y_Args_Declare(KEY,Key);
-            typedef Protean::WarpedCacheOf<Knot,MultiThreadedObject> Pool;
-            typedef Core::ListOf<Knot>                               List;
+            //__________________________________________________________________
+            //
+            // Definitions
+            //__________________________________________________________________
+            Y_Args_Declare(T,Type);  //!< aliases
+            Y_Args_Declare(KEY,Key); //!< aliases
+            typedef Protean::WarpedCacheOf<Knot,MultiThreadedObject> Pool; //!< alias
+            typedef Core::ListOf<Knot>                               List; //!< alias
 
+            //__________________________________________________________________
+            //
+            // C++
+            //__________________________________________________________________
+
+            //! setup \param v value \param h hkey
             inline  Knot(ParamType    v,
                          const size_t h) :
             data(v),
@@ -34,6 +58,7 @@ namespace Yttrium
             prev(0)
             { }
 
+            //! duplicate \param knot another knot
             inline  Knot(const Knot &knot) :
             data(knot.data),
             hkey(key),
@@ -43,47 +68,86 @@ namespace Yttrium
 
             inline ~Knot() noexcept {}
 
-            ConstKey & key() const noexcept { return data.key(); }
+            //__________________________________________________________________
+            //
+            // Methods
+            //__________________________________________________________________
+            ConstKey & key() const noexcept { return data.key(); } //!< \return data key
 
-            Type         data;
-            const size_t hkey;
-            Knot *       next;
-            Knot *       prev;
+            //__________________________________________________________________
+            //
+            // Members
+            //__________________________________________________________________
+            Type         data; //!< object
+            const size_t hkey; //!< hkey of data->key()
+            Knot *       next; //!< for list
+            Knot *       prev; //!< for list
 
         private:
-            Y_Disable_Assign(Knot);
+            Y_Disable_Assign(Knot); //!< discarding
         };
     };
 
+
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! HTable based set
+    //
+    //
+    //__________________________________________________________________________
     template <
     typename KEY,
     typename T,
     typename KEY_HASHER = Hashing::KeyWith<HashSetAPI::Function>
     >
-    class HashSet : public Associative<KEY,T>
+    class HashSet : public Glossary<KEY,T>
     {
     public:
-        Y_Args_Declare(T,Type);
-        Y_Args_Declare(KEY,Key);
-        typedef typename HashSetAPI::Node        Node;
-        typedef typename HashSetAPI::Knot<KEY,T> Knot;
-        typedef typename Knot::Pool              KPool;
-        typedef typename Knot::List              KList;
-        typedef typename KPool::Lock             Lock;
-        
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        Y_Args_Declare(T,Type);  //!< alias
+        Y_Args_Declare(KEY,Key); //!< alias
+        typedef typename HashSetAPI::Node        Node;  //!< alias
+        typedef typename HashSetAPI::Knot<KEY,T> Knot;  //!< alias
+        typedef typename Knot::Pool              KPool; //!< alias
+        typedef typename Knot::List              KList; //!< alias
+        typedef typename KPool::Lock             Lock;  //!< alias
+
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+
+        //! setup
         inline explicit HashSet() : table(), list(), pool(), hash()
         {
         }
 
+        //! cleanup
         inline virtual ~HashSet() noexcept
         {
             purge();
         }
 
-        inline virtual void free()    noexcept { clear(); }
-        inline virtual void release() noexcept { purge(); }
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
+        inline virtual void free()    noexcept { clear(); } //!< free content, keep memory
+        inline virtual void release() noexcept { purge(); } //!< release maximum memory
 
-        inline bool insert(ParamType value)
+
+        inline virtual bool insert(ParamType value)
         {
             ConstKey &   key  = value.key();
             const size_t hkey = hashKey(key);
@@ -104,7 +168,7 @@ namespace Yttrium
 
 
 
-        inline bool remove(ParamKey key) noexcept
+        inline virtual bool remove(ParamKey key) noexcept
         {
             const size_t hkey = hashKey(key);
             void * const addr = table.remove(hkey,&key,SameKey);
@@ -114,18 +178,17 @@ namespace Yttrium
             return true;
         }
 
-        inline ConstType * search(ParamKey key) const noexcept
+        inline virtual ConstType * search(ParamKey key) const noexcept
         {
             const size_t        hkey = hashKey(key);
-            const HTable::Slot *slot = 0;
-            const Node * const  node = table.search(hkey,&key,SameKey,slot);
+            const Node * const  node = table.search(hkey,&key,SameKey);
             if(!node) return 0;
             const Knot * const knot = static_cast<const Knot *>(node->data);
             return & knot->data;
         }
 
 
-        inline  Type * search(ParamKey key) noexcept
+        inline virtual Type * search(ParamKey key) noexcept
         {
             const size_t   hkey = hashKey(key);
             HTable::Slot * slot = 0;
@@ -135,38 +198,36 @@ namespace Yttrium
             return & knot->data;
         }
 
+        
 
-
-#if 0
-        inline  Type * search(ParamKey key) noexcept
-        {
-            Node * const node = tree.search( key.begin(), key.size() );
-            if(!node) return 0;
-            assert(0!=node->addr);
-            return static_cast<Type *>(node->addr);
-        }
-#endif
-
-
+        //______________________________________________________________________
+        //
+        //
+        // Members
+        //
+        //______________________________________________________________________
 
     private:
-        HTable             table;
-        KList              list;
-        KPool              pool;
-        mutable KEY_HASHER hash;
+        HTable             table; //!< inner hash table
+        KList              list;  //!< list of knots
+        KPool              pool;  //!< pool of knots
+        mutable KEY_HASHER hash;  //!< key hasher
 
-        Y_Disable_Copy_And_Assign(HashSet);
+        Y_Disable_Copy_And_Assign(HashSet); //!< discarding
 
+        //! \param lhs knot address \param rhs knot address \return same keys
         static inline bool SameKnot(const void * const lhs, const void * const rhs)
         {
             return static_cast<const Knot *>(lhs)->key() == static_cast<const Knot *>(rhs)->key();
         }
 
+        //! \param lhs key address \param rhs knot address \return same keys
         static inline bool SameKey(const void * const lhs, const void * const rhs)
         {
             return *static_cast<ConstKey *>(lhs)== static_cast<const Knot *>(rhs)->key();
         }
 
+        //! protected hash call \param key key \return hash(key)
         inline size_t hashKey(ConstKey &key) const
         {
             volatile Lock lock(pool);
@@ -174,11 +235,13 @@ namespace Yttrium
         }
 
 
+        //! clear content
         inline void clear() noexcept {
             table.free();
             while(list.size) pool.banish( list.popTail() );
         }
 
+        //! purge content
         inline void purge() noexcept
         {
             table.free();

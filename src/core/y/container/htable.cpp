@@ -125,12 +125,11 @@ namespace Yttrium
 
     const HTable:: Node * HTable:: search(const size_t       hkey,
                                           const void * const data,
-                                          Same const         same,
-                                          const Slot *   &   slot) const
+                                          Same const         same) const
     {
         assert(code);
         assert(same);
-        slot = & code->entry[hkey&code->mask];
+        const Slot * const slot = & code->entry[hkey&code->mask];
         for(const Node *node=slot->head;node;node=node->next)
         {
             if(hkey == node->hkey && same(data,node->data) )

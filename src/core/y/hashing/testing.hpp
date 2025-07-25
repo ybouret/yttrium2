@@ -25,7 +25,7 @@ namespace Yttrium
             const char *hash; //!< hexadecimal result
                             
             //! run tests
-            static void Run( Function &H, const Testing tests[], const unsigned count );
+            static void Run(Function &, const Testing  [], const unsigned);
         };
         
         //! helper to run tests

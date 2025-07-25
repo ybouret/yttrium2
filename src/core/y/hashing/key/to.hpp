@@ -40,7 +40,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            //! type dependent conversion
+            //! \param obj admissible object \return type dependent conversion hash
             template <typename U> inline
             T operator()(U &obj) noexcept
             {
@@ -49,16 +49,19 @@ namespace Yttrium
             }
 
         private:
-            Y_Disable_Copy_And_Assign(ToKey);
+            Y_Disable_Copy_And_Assign(ToKey); //!< discarding
 
+            //! \param buf memory buffer \return its hash
             template <typename U>
             inline T compute( const U &buf, const KeyVariety::MemoryBuffer & ) noexcept
             { return To<T>(*this,buf); }
 
+            //! \param pod integral data \return its hash
             template <typename U>
-            inline T compute( const U &buf, const KeyVariety::IntegralType &) noexcept
-            { return To<T>(*this,&buf,sizeof(U)); }
+            inline T compute( const U &pod, const KeyVariety::IntegralType &) noexcept
+            { return To<T>(*this,&pod,sizeof(U)); }
 
+            //! \param buf C-string \return its hash
             template <typename U>
             inline T compute(const U &buf, const KeyVariety::LegacyString &) noexcept
             { return To<T>(*this,buf); }

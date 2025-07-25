@@ -3,7 +3,7 @@
 #ifndef Y_Associative_SuffixMap_Included
 #define Y_Associative_SuffixMap_Included 1
 
-#include "y/container/associative.hpp"
+#include "y/container/associative/lexicon.hpp"
 #include "y/container/tree/suffix.hpp"
 #include "y/protean/cache/warped.hpp"
 #include "y/threading/single-threaded-class.hpp"
@@ -38,7 +38,7 @@ namespace Yttrium
     };
 
     template <typename KEY, typename T>
-    class SuffixMap //: public Associative<KEY,T>
+    class SuffixMap : public Lexicon<KEY,T>
     {
     public:
         Y_Args_Declare(T,Type);

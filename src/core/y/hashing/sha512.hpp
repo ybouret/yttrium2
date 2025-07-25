@@ -25,8 +25,8 @@ namespace Yttrium
 			Y_HASHING_FUNCTION_DECL(SHA512,64,128); //!< specs
 			
 		private:
-			SHA512_CTX ctx;
-            Y_Disable_Copy_And_Assign(SHA512);
+			SHA512_CTX ctx; //!< inner state
+            Y_Disable_Copy_And_Assign(SHA512); //!< discarding
 		};
 
         //! SHA-384
@@ -36,8 +36,8 @@ namespace Yttrium
 			Y_HASHING_FUNCTION_DECL(SHA384,48,128); //!< specs
 			
 		private:
-			SHA512_CTX ctx;
-            Y_Disable_Copy_And_Assign(SHA384);
+			SHA512_CTX ctx; //!< inner state
+            Y_Disable_Copy_And_Assign(SHA384); //!< discarding
 		};
 		
 	}

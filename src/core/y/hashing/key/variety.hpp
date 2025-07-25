@@ -35,15 +35,15 @@ namespace Yttrium
         //______________________________________________________________________
         enum Type
         {
-            IsNotAvailable,
-            IsMemoryBuffer,
-            IsIntegralType,
-            IsLegacyString
+            IsNotAvailable, //!< bad
+            IsMemoryBuffer, //!< memory buffer
+            IsIntegralType, //!< integral type
+            IsLegacyString  //!< C-string
         };
 
         //______________________________________________________________________
         //
-        //! helper
+        //! helper \return text
         //______________________________________________________________________
         static const char *Type2Text(const Type) noexcept;
 

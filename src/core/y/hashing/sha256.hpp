@@ -27,8 +27,8 @@ namespace Yttrium
             static void Tests(); //!< tests
             
 		private:
-			SHA256_CTX ctx;
-            Y_Disable_Copy_And_Assign(SHA256);
+			SHA256_CTX ctx; //!< inner state
+            Y_Disable_Copy_And_Assign(SHA256); //!< discarding
 		};
 
         //! SHA-224
@@ -40,8 +40,8 @@ namespace Yttrium
             static void Tests(); //!< tests
 
 		private:
-			SHA256_CTX ctx;
-            Y_Disable_Copy_And_Assign(SHA224);
+			SHA256_CTX ctx; //!< inner state
+            Y_Disable_Copy_And_Assign(SHA224); //!< discarding
 		};
 		
 		

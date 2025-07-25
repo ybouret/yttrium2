@@ -31,7 +31,7 @@ namespace Yttrium
             inline virtual ~KeyWith() noexcept {}                            //!< cleanup
 
         private:
-            Y_Disable_Copy_And_Assign(KeyWith);
+            Y_Disable_Copy_And_Assign(KeyWith); //!< discarding
         };
     }
 

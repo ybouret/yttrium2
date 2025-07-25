@@ -112,13 +112,11 @@ namespace Yttrium
          \param hkey must have this key
          \param data for comparison
          \param same same(data,node->data) to test
-         \param slot slot where it should be
          \return found node
          */
         const Node * search(const size_t       hkey,
                             const void * const data,
-                            Same const         same,
-                            const Slot *   &   slot) const;
+                            Same const         same) const;
 
         //! search node with pre-fetching
         /**

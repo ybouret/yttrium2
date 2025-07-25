@@ -12,6 +12,12 @@ namespace Yttrium
     namespace Algo
     {
 
+        //! apply method for each object in range
+        /**
+         \param iter current iterator
+         \param size number of items
+         \param meth method to call
+         */
         template <
         typename ITER,
         typename METH> inline

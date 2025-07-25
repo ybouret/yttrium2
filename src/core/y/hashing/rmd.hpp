@@ -10,8 +10,8 @@ namespace Yttrium
     
     namespace Hashing
     {
-     
-        //! input class for rmd
+
+        //! interface class for rmd
         class RMD
         {
         public:
@@ -24,28 +24,28 @@ namespace Yttrium
             
             //! store in bytes, then in words
             /**
-             return true when 16 * 4 bytes are ready
+             \return true when 16 * 4 bytes are ready
              */
-            bool store( uint8_t b ) noexcept;
+            bool store(uint8_t) noexcept;
             
-            //! return a full block
+            //! \return a full block
             const uint32_t *block() const noexcept;
             
-            //! assemble the last block
+            //! \return assemble the last block
             const uint8_t *flush() noexcept;
 
             //! internal length
             const size_t   length;
             
-            uint32_t lswlen() const noexcept; //!< least significant word len
-            uint32_t mswlen() const noexcept; //!<  most signigicant word len
-            
+            uint32_t lswlen() const noexcept; //!< \return least significant word len
+            uint32_t mswlen() const noexcept; //!< \return  most signigicant word len
+
         private:
-            size_t   nx;
-            size_t   nb;
+            size_t   nx;     //!< current state
+            size_t   nb;     //!< current state
             uint32_t X[16];  //!< words store
             uint8_t  B[4];   //!< bytes store
-            Y_Disable_Copy_And_Assign(RMD);
+            Y_Disable_Copy_And_Assign(RMD); //!< discarding
 
         };
         

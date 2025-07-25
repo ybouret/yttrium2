@@ -2,7 +2,7 @@
 #ifndef Y_Associative_SuffixSet_Included
 #define Y_Associative_SuffixSet_Included 1
 
-#include "y/container/associative.hpp"
+#include "y/container/associative/glossary.hpp"
 #include "y/container/tree/suffix.hpp"
 #include "y/protean/cache/warped.hpp"
 #include "y/threading/single-threaded-class.hpp"
@@ -38,7 +38,7 @@ namespace Yttrium
     };
 
     template <typename KEY, typename T>
-    class SuffixSet : public Associative<KEY,T>
+    class SuffixSet : public Glossary<KEY,T>
     {
     public:
         Y_Args_Declare(T,Type);

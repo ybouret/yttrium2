@@ -56,8 +56,8 @@
 #define        Y_U64(X) X##ui64
 #define        Y_I64(X) X##i64
 #else
-#    define    Y_U64(X) X##ULL
-#    define    Y_I64(X) X##LL
+#    define    Y_U64(X) X##ULL //!< helper
+#    define    Y_I64(X) X##LL  //!< helper
 #endif
 
 #endif

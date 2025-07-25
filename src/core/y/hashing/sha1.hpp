@@ -30,8 +30,8 @@ namespace Yttrium
             static void Tests(); //!< tests from RFC
             
 		private:
-			RFC3174::SHA1_CTX ctx;
-            Y_Disable_Copy_And_Assign(SHA1);
+			RFC3174::SHA1_CTX ctx; //!< inner state
+            Y_Disable_Copy_And_Assign(SHA1); //!< discarding
 		};
 		
 	}

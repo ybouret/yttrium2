@@ -67,8 +67,7 @@ Y_UTEST(container_hash_set)
     }
 
 
-
-
+    
 }
 Y_UDONE()
 

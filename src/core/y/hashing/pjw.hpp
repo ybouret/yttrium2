@@ -20,8 +20,8 @@ namespace Yttrium
             static void Tests();
             
 		private:
-			uint32_t hash;
-            Y_Disable_Copy_And_Assign(PJW);
+			uint32_t hash; //!< inner state
+            Y_Disable_Copy_And_Assign(PJW); //!< discarding
 		};
 		
 	}

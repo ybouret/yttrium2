@@ -19,9 +19,9 @@ namespace Yttrium
             
             
 		private:
-            Y_Disable_Copy_And_Assign(RMD128);
-            RMD      RMD_;
-            uint32_t MDbuf[RMDsize/32];
+            Y_Disable_Copy_And_Assign(RMD128); //!< discarding
+            RMD      RMD_;                     //!< inner rmd
+            uint32_t MDbuf[RMDsize/32];        //!< inner state
 		};
     }
 }

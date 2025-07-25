@@ -20,9 +20,9 @@ namespace Yttrium
             static void Tests(); //!< testing
             
 		private:
-            Y_Disable_Copy_And_Assign(RMD160);
-            RMD      RMD_;
-            uint32_t MDbuf[RMDsize/32];
+            Y_Disable_Copy_And_Assign(RMD160); //!< discarding
+            RMD      RMD_;                     //!< inner rmd
+            uint32_t MDbuf[RMDsize/32];        //!< inner state
 		};
     }
 }
