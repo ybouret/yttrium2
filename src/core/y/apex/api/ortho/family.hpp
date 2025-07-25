@@ -78,6 +78,8 @@ namespace Yttrium
                     return ! isOrtho( fetch() = arr );
                 }
 
+                bool includes(const Family &F);
+
 
                 void           grow()                       noexcept; //!< grow last accepted vector
                 const char *   humanReadableQuality() const noexcept; //!< \return quality
@@ -110,9 +112,40 @@ namespace Yttrium
                 void    clear()   noexcept; //!< prune and return all vectors to  cache
                 bool    isBasis() noexcept; //!< \return true iff size>=dims iff quality == Basis
                 bool    isOrtho(Vector &);  //!< \return true if something remains after all projections
+
+            public:
+                //______________________________________________________________
+                //
+                //
+                //! cache
+                //
+                //______________________________________________________________
+                class Cache : public CountedObject, public Metrics, public Caching
+                {
+                public:
+                    explicit Cache(const VCache &) noexcept;
+                    virtual ~Cache() noexcept;
+
+
+                    virtual size_t count()     const noexcept;
+                    virtual void   gc(const uint8_t) noexcept;
+                    virtual void   cache(const size_t);
+
+                    Family * query();
+                    void     store(Family * const) noexcept;
+
+                    VCache   vCache;
+
+                private:
+                    Y_Disable_Copy_And_Assign(Cache);
+                    CxxListOf<Family> fCache;
+                };
             };
 
+            typedef ArcPtr<Family::Cache> FCache;
+
         }
+
 
     }
 

@@ -147,7 +147,64 @@ namespace Yttrium
                 return *ortho;
             }
 
-            
+
+            bool Family:: includes(const Family &F)
+            {
+                if(Basis == quality) return true;
+                for(const Vector *v = F.vlist.head;v;v=v->next)
+                {
+                    if(!contains(*v)) return false;
+                }
+                return true;
+            }
+
+
+            //------------------------------------------------------------------
+
+            Family:: Cache:: Cache(const VCache &vc) noexcept :
+            CountedObject(),
+            Metrics(*vc),
+            Caching(),
+            vCache(vc),
+            fCache()
+            {
+            }
+
+            Family:: Cache:: ~Cache() noexcept
+            {
+            }
+
+            void Family:: Cache:: store(Family *const F) noexcept
+            {
+                assert(0!=F);
+                fCache.pushHead(F)->clear();
+            }
+
+            Family * Family:: Cache:: query()
+            {
+                return fCache.size > 0 ? fCache.popHead() : new Family(vCache);
+            }
+
+
+            size_t Family:: Cache:: count() const noexcept
+            {
+                return fCache.size;
+            }
+
+            void Family:: Cache:: cache(const size_t n)
+            {
+                for(size_t i=n;i>0;--i) {
+                    fCache.pushTail( new Family(vCache) );
+                }
+            }
+
+            void Family:: Cache:: gc(const uint8_t amount) noexcept
+            {
+                fCache.sortByIncreasingAddress();
+                const size_t newSize = NewSize(amount,fCache.size);
+                while(fCache.size>newSize) delete fCache.popTail();
+            }
+
         }
 
     }

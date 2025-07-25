@@ -40,7 +40,7 @@ Y_UTEST(apex_ortho_family)
         std::cerr << std::endl;
         while( F.quality != Apex::Ortho::HyperPlane )
         {
-            for(size_t i=dims;i>0;--i) v[i] = ran.in<int>(-5,5);
+            MakeRan(ran,v);
             if(F.accepts(v))
                 F.grow();
         }
@@ -63,8 +63,46 @@ Y_UTEST(apex_ortho_family)
             } while( !F.accepts(v) );
 
             const Apex::Ortho::Vector other = F.last();
+            std::cerr << "other=" << other << std::endl;
             Y_ASSERT(other==first);
         }
+
+
+        {
+            Apex::Ortho::FCache fc = new Apex::Ortho::Family::Cache(vcache);
+
+        }
+
+        std::cerr << std::endl;
+        Apex::Ortho::Family G(vcache);
+
+        for(size_t n=1;n<=dims;++n)
+        {
+            F.free();
+            while( F->size < n )
+            {
+                MakeRan(ran,v);
+                if(F.accepts(v))
+                    F.grow();
+            }
+
+            do
+            {
+                G.free();
+                while( F->size < n )
+                {
+                    MakeRan(ran,v);
+                    if(G.accepts(v))
+                        G.grow();
+                }
+            } while( false );
+
+
+        }
+
+
+
+
 
 
     }
