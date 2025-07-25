@@ -99,9 +99,14 @@ namespace Yttrium
 
         inline bool remove(ParamKey key) noexcept
         {
-            Node * node = tree.search(key.begin(),key.size());
-
+            void * const addr = tree.remove(key.begin(),key.size());
+            if(!addr) return false;
+            pool.banish( list.pop(static_cast<Knot *>(addr)) );
+            assert(tree.size == list.size);
+            return true;
         }
+
+
 
 
     private:
@@ -183,8 +188,11 @@ Y_UTEST(container_associative)
     {
         SuffixSet<String,Dummy> set;
         const Dummy dum1("dum1");
-        Y_ASSERT(set.insert(dum1));
-        Y_ASSERT(!set.insert(dum1));
+        Y_CHECK(set.insert(dum1));
+        Y_CHECK(!set.insert(dum1));
+
+        Y_CHECK(set.remove("dum1"));
+        Y_CHECK(!set.remove("dum1"));
 
     }
 
