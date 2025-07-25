@@ -5,7 +5,7 @@
 #define Y_HASHING_TO_HASH_KEY_INCLUDED 1
 
 
-#include "y/hashing/to/key.hpp"
+#include "y/hashing/key/to.hpp"
 
 namespace Yttrium
 {
@@ -20,18 +20,18 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename FUNCTION>
-        class ToHashKey : public ToKey<size_t,FUNCTION>
+        class KeyWith  : public ToKey<size_t,FUNCTION>
         {
         public:
             //__________________________________________________________________
             //
             // C++
             //__________________________________________________________________
-            inline explicit ToHashKey() noexcept : ToKey<size_t,FUNCTION>() {} //!< setup
-            inline virtual ~ToHashKey() noexcept {}                            //!< cleanup
+            inline explicit KeyWith() noexcept : ToKey<size_t,FUNCTION>() {} //!< setup
+            inline virtual ~KeyWith() noexcept {}                            //!< cleanup
 
         private:
-            Y_DISABLE_COPY_AND_ASSIGN(ToHashKey);
+            Y_Disable_Copy_And_Assign(KeyWith);
         };
     }
 

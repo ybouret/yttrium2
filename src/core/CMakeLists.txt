@@ -52,6 +52,7 @@ Y_CreateLibrary(y
     y/object
     y/utest
     y/hashing
+    y/hashing/key
     y/xml
     y/stream/
     y/stream/io

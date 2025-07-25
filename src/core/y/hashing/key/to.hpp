@@ -5,6 +5,7 @@
 
 
 #include "y/hashing/to.hpp"
+#include "y/hashing/key/variety.hpp"
 
 namespace Yttrium
 {
@@ -35,20 +36,21 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //
-            // methods
+            // Methods
             //
             //__________________________________________________________________
 
-            //! type dependent convertion
+            //! type dependent conversion
             template <typename U> inline
             T operator()(U &obj) noexcept
             {
-                static const Int2Type< KeyVariety::Cull<U>::Kind > which = {};
+                static const IntToType< KeyVariety::Cull<U>::Kind > which = {};
                 return compute<U>(obj,which);
             }
 
         private:
-            Y_DISABLE_COPY_AND_ASSIGN(ToKey);
+            Y_Disable_Copy_And_Assign(ToKey);
+
             template <typename U>
             inline T compute( const U &buf, const KeyVariety::MemoryBuffer & ) noexcept
             { return To<T>(*this,buf); }

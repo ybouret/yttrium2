@@ -1,5 +1,7 @@
 
 
+#include "y/hashing/key/hasher.hpp"
+
 #include "y/container/associative/hash/set.hpp"
 #include "y/utest/run.hpp"
 #include "y/string.hpp"
@@ -10,23 +12,6 @@ using namespace Yttrium;
 
 namespace
 {
-    class StringHasher
-    {
-    public:
-        StringHasher() : H() {}
-        ~StringHasher() noexcept {}
-
-        Hashing::FNV H;
-
-        size_t operator()(const String &key)
-        {
-            return Hashing::To<size_t>(H,key);
-        }
-
-
-    private:
-        Y_Disable_Copy_And_Assign(StringHasher);
-    };
 
     class Dummy : public CountedObject
     {
@@ -59,15 +44,15 @@ namespace
 Y_UTEST(container_hash_set)
 {
 
-    HashSet<String,Dummy,StringHasher> set;
+    HashSet<String,Dummy, Hashing::KeyWith< Hashing::FNV > > set;
 
-#if 0
 
     {
         const Dummy dum1("dum1");
         Y_CHECK(set.insert(dum1));
         Y_CHECK(!set.insert(dum1));
 
+#if 0
         {
             const SuffixSet<String,Dummy> &cset = set;
             Y_ASSERT(cset.search("dum1"));
@@ -80,10 +65,9 @@ Y_UTEST(container_hash_set)
 
         Y_CHECK(set.remove("dum1"));
         Y_CHECK(!set.remove("dum1"));
+#endif
     }
 
-    set.free();
-#endif
 
 
 

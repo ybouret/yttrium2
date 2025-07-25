@@ -66,6 +66,13 @@ namespace Yttrium
         typedef typename HashSetAPI::Knot<KEY,T> Knot;
         typedef typename Knot::Pool              KPool;
         typedef typename Knot::List              KList;
+        typedef typename KPool::Lock             Lock;
+
+
+        static inline bool Same(const void * const lhs, const void * const rhs)
+        {
+            return static_cast<const Knot *>(lhs)->key() == static_cast<const Knot *>(rhs)->key();
+        }
 
         inline explicit HashSet() : table(), list(), pool()
         {
@@ -73,22 +80,22 @@ namespace Yttrium
 
         inline virtual ~HashSet() noexcept
         {
-            //purge();
+            purge();
         }
 
         inline virtual void free()    noexcept { clear(); }
         inline virtual void release() noexcept { purge(); }
 
-#if 0 
         inline bool insert(ParamType value)
         {
-            Knot * const knot = pool.summon(value);
+            ConstKey &   key  = value.key();
+            const size_t hkey = hashKey(key);
+            Knot * const knot = pool.summon(value,hkey);
             try {
-                ConstKey &   key  = knot->key();
-                Node * const node = tree.insert(key.begin(), key.size(), knot);
+                Node * const node = table.insert(hkey,knot,Same);
                 if(!node) { pool.banish(knot); return false; }
                 list.pushTail(knot);
-                assert(tree.size == list.size);
+                assert(table.size == list.size);
                 return true;
             }
             catch(...)
@@ -98,6 +105,7 @@ namespace Yttrium
             return false;
         }
 
+#if 0
         inline bool remove(ParamKey key) noexcept
         {
             void * const addr = tree.remove(key.begin(),key.size());
@@ -127,12 +135,21 @@ namespace Yttrium
 
 
     private:
-        HTable     table;
-        KList      list;
-        KPool      pool;
-        KEY_HASHER hash;
-        
+        HTable             table;
+        KList              list;
+        KPool              pool;
+        mutable KEY_HASHER hash;
+
+
+
         Y_Disable_Copy_And_Assign(HashSet);
+
+        inline size_t hashKey(ConstKey &key) const
+        {
+            volatile Lock lock(pool);
+            return hash(key);
+        }
+
 
         inline void clear() noexcept {
             table.free();
