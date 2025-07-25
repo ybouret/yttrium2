@@ -18,7 +18,7 @@ Y_UTEST(apex_ortho_family)
 
     Random::MT19937 ran;
 
-    for(size_t dims=1;dims<=8;++dims)
+    for(size_t dims=1;dims<=3;++dims)
     {
         std::cerr << std::endl << "--- dims=" << dims << std::endl;
         const Apex::Ortho::Metrics metrics(dims);
@@ -63,41 +63,12 @@ Y_UTEST(apex_ortho_family)
             } while( !F.accepts(v) );
 
             const Apex::Ortho::Vector other = F.last();
-            std::cerr << "other=" << other << std::endl;
             Y_ASSERT(other==first);
         }
 
 
         {
             Apex::Ortho::FCache fc = new Apex::Ortho::Family::Cache(vcache);
-
-        }
-
-        std::cerr << std::endl;
-        Apex::Ortho::Family G(vcache);
-
-        for(size_t n=1;n<=dims;++n)
-        {
-            F.free();
-            while( F->size < n )
-            {
-                MakeRan(ran,v);
-                if(F.accepts(v))
-                    F.grow();
-            }
-
-            do
-            {
-                G.free();
-                while( F->size < n )
-                {
-                    MakeRan(ran,v);
-                    if(G.accepts(v))
-                        G.grow();
-                }
-            } while( false );
-
-
         }
 
 

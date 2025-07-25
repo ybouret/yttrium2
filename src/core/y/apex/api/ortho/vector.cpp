@@ -145,8 +145,8 @@ namespace Yttrium
 
 
 
-                    const bool neg = (n>p) || ( (n<=p) && (Negative==s) );
-#if 1
+                    const bool neg = (n>p) || ( (n==p) && (Negative==s) );
+#if 0
                     std::cerr
                     << " #p = " << p
                     << " #n = " << n
@@ -229,8 +229,9 @@ namespace Yttrium
                 {
                     case Negative: Coerce(wb.s) = Positive; break;
                     case Positive: Coerce(wb.s) = Negative; break;
-                    case __Zero__: return ncof>0; // already orthogonal
+                    case __Zero__: return ncof>0; // already orthogonal or 0
                 }
+
                 try {
                     for(size_t i=dimensions;i>0;--i)
                     {

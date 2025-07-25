@@ -104,13 +104,28 @@ namespace Yttrium
             bool Family:: isOrtho(Vector &a)
             {
                 assert( ortho ); assert( &a == ortho );
-                for(const Vector *b=vlist.head;b;b=b->next)
+                const Vector *b = vlist.head;
+                if(!b)
                 {
-                    if( a.keepOrtho(*b) ) continue;
-                    prune();
-                    return false;
+                    return a.ncof>0;
                 }
-                return true;
+                else
+                {
+                    for(;b;b=b->next)
+                    {
+                        if( a.keepOrtho(*b) )
+                        {
+                            assert(a.ncof>0);
+                            continue;
+                        }
+                        prune();
+                        return false;
+                    }
+                    assert(a.ncof>0);
+                    return true;
+                }
+
+
             }
 
 
