@@ -7,26 +7,30 @@ namespace Yttrium
         namespace Ortho
         {
             Family:: Family(const VCache &sharedCache) noexcept :
-            CountedObject(),
+            Object(),
             Metrics( *sharedCache ),
             IFamily(),
             Recyclable(),
             quality( qualify(0) ),
             ortho(0),
             vlist(),
-            cache(sharedCache)
+            cache(sharedCache),
+            next(0),
+            prev(0)
             {
             }
 
             Family:: Family(const Family &F) :
-            CountedObject(),
+            Object(),
             Metrics(F),
             IFamily(),
             Recyclable(),
             quality(F.quality),
             ortho(0),
             vlist(),
-            cache(F.cache)
+            cache(F.cache),
+            next(0),
+            prev(0)
             {
                 try {
                     for(const Vector *v = F.vlist.head;v;v=v->next)
@@ -121,7 +125,21 @@ namespace Yttrium
             }
 
 
+            const char * Family:: humanReadableQuality() const noexcept
+            {
+                return HumanReadableQuality(quality);
+            }
 
+            std::ostream & operator<<(std::ostream &os, const Family &F)
+            {
+                os << "# <Family #" << F->size << "/" << F.dimensions << " is " << F.humanReadableQuality() << ">" << std::endl;
+                size_t i=1;
+                for(const Vector *v=F->head;v;v=v->next,++i)
+                {
+                    os << "\te" << i << " = " << *v << std::endl;
+                }
+                return os << "# </Family>";
+            }
         }
 
     }

@@ -144,6 +144,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(apex_rsa);
     Y_UTEST(apex_ortho_vector);
     Y_UTEST(apex_ortho_keep);
+    Y_UTEST(apex_ortho_family);
 
     Y_UTEST(random_bits);
     Y_UTEST(random_gaussian);

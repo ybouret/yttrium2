@@ -20,6 +20,15 @@ namespace Yttrium
         //______________________________________________________________________
         struct PoolToOrderedList
         {
+            //__________________________________________________________________
+            //
+            //
+            //! one-pass pool to list then sortByIncreasingAddress
+            /**
+             \param list an empty Linked::LIST
+             \param pool a Linked::POOL, 
+             */
+            //__________________________________________________________________
             template <typename LIST, typename POOL> static inline
             void Convert(LIST &list, POOL &pool) noexcept
             {

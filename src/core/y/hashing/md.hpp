@@ -23,10 +23,10 @@ namespace Yttrium
         //______________________________________________________________________
         struct MD
         {
-            static Digest Of(Function &H);                                 //!< H content to digest
-            static Digest Of(Function &H, const void * ,const size_t  );   //!< block to digest
-            static Digest Of(Function &H, const char *);                   //!< text to digest
-            static Digest Of(Function &H, const Memory::ReadOnlyBuffer &); //!< buffer to digest
+            static Digest Of(Function &);                                   //!< \return content to digest
+            static Digest Of(Function &, const void * const ,const size_t); //!< \return block to digest
+            static Digest Of(Function &, const char * const);               //!< \return text to digest
+            static Digest Of(Function &, const Memory::ReadOnlyBuffer &);   //!< \return buffer to digest
         };
 
 

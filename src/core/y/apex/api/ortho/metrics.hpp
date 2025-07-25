@@ -13,6 +13,7 @@ namespace Yttrium
         namespace Ortho
         {
 
+            //! Quality of size w.r.t dimensions
             enum Quality
             {
                 Basis,      //!< size == dimensions
@@ -20,20 +21,43 @@ namespace Yttrium
                 Generating  //!< size < hyperplane
             };
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! metrics for derived objects
+            //
+            //
+            //__________________________________________________________________
             class Metrics
             {
             public:
-                Metrics(const size_t dims);
-                virtual ~Metrics() noexcept;
-                Metrics(const Metrics &) noexcept;
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+                Metrics(const size_t dims);        //!< setup with dimensions \param dims user's dimensions
+                virtual ~Metrics() noexcept;       //!< cleanup
+                Metrics(const Metrics &) noexcept; //!< duplicate
 
-                const size_t dimensions;
-                const size_t hyperplane;
+                //______________________________________________________________
+                //
+                //
+                // Methords
+                //
+                //______________________________________________________________
 
-                Quality qualify(const size_t size) const noexcept;
+                static const char * HumanReadableQuality(const Quality) noexcept; //!< \return quality
+                Quality      qualify(const size_t size) const noexcept; //!< \param size current size \return quality of size
+
+                const size_t dimensions; //!< ambient space dimensions
+                const size_t hyperplane; //!< hyperplane dimension
+
 
             private:
-                Y_Disable_Assign(Metrics);
+                Y_Disable_Assign(Metrics); //!< discarding
             };
         }
 

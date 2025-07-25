@@ -14,19 +14,54 @@ namespace Yttrium
         namespace Ortho
         {
 
-            typedef Ingress< const Core::ListOf<Vector> > IFamily;
+            typedef Ingress< const Core::ListOf<Vector> > IFamily; //!< alias
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Family of orthogonal vectors
+            //
+            //
+            //__________________________________________________________________
             class Family :
-            public CountedObject,
+            public Object,
             public Metrics,
             public IFamily,
             public Recyclable
             {
             public:
-                explicit Family(const VCache &) noexcept;
-                virtual ~Family() noexcept;
-                Family(const Family &);
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+                explicit Family(const VCache &) noexcept; //!< setup with shared cache
+                virtual ~Family() noexcept;               //!< cleanup
+                Family(const Family &);                   //!< duplicate
+                Y_OSTREAM_PROTO(Family);                  //!< display
 
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
+                virtual void free() noexcept;
+
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+
+                //! try to accept compatible array
+                /**
+                 \param arr compatible array in type and size
+                 \return true if something remains (in ortho) after projections
+                 */
                 template <typename ARRAY> inline
                 bool accepts(ARRAY &arr)
                 {
@@ -35,24 +70,34 @@ namespace Yttrium
                     return isOrtho( fetch() = arr );
                 }
 
-                void         grow() noexcept;
-                virtual void free() noexcept;
+                void         grow()                       noexcept; //!< grow last accepted vector
+                const char * humanReadableQuality() const noexcept; //!< \return quality
 
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
 
-                const Quality quality;
+                const Quality quality; //!< current quality
             private:
                 Vector *      ortho;  //!< last orthogonal vector
                 Vector::List  vlist;  //!< current list
                 VCache        cache;  //!< share cache
+            public:
+                Family *      next; //!< for list
+                Family *      prev; //!< for list
 
-                Y_Disable_Assign(Family);
+            private:
+                Y_Disable_Assign(Family); //!< discarding
                 virtual ConstInterface &locus() const noexcept;
-                Vector &fetch();
-                void    prune() noexcept;
-                void    clear() noexcept;
 
-                bool    isBasis() noexcept;
-                bool    isOrtho(Vector &a);
+                Vector &fetch();            //!< ensure ortho is not NULL \return *ortho
+                void    prune()   noexcept; //!< ensure ortho==NULL
+                void    clear()   noexcept; //!< prune and return all vectors to  cache
+                bool    isBasis() noexcept; //!< \return true iff size>=dims iff quality == Basis
+                bool    isOrtho(Vector &);  //!< \return true if something remains after all projections
             };
 
         }

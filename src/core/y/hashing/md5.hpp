@@ -28,8 +28,8 @@ namespace Yttrium
             static void Tests();                //!< tests from RFC
             
 		private:
-			RFC1321::MD5_CTX ctx;
-            Y_Disable_Copy_And_Assign(MD5);
+			RFC1321::MD5_CTX ctx;             //!< inner state
+            Y_Disable_Copy_And_Assign(MD5);   //!< discarding
 		};
 
 	}

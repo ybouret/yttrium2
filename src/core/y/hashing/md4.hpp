@@ -27,8 +27,8 @@ namespace Yttrium
 			Y_HASHING_FUNCTION_DECL(MD4,16,64); //!< specs
 			
 		private:
-			RFC1320::MD4_CTX ctx;
-            Y_Disable_Copy_And_Assign(MD4);
+			RFC1320::MD4_CTX ctx;           //!< inner state
+            Y_Disable_Copy_And_Assign(MD4); //!< discarding
 		};
 		
 	}

@@ -42,7 +42,7 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
-                typedef CxxListOf<Vector> List;
+                typedef CxxListOf<Vector> List; //!< alias
 
                 //______________________________________________________________
                 //
@@ -54,7 +54,7 @@ namespace Yttrium
                 Vector(const Vector &);            //!< duplicate
                 virtual ~Vector() noexcept;        //!< cleanup
                 Vector & operator=(const Vector&); //!< assign with same dimensions \return *this
-
+                Y_OSTREAM_PROTO(Vector);           //!< display
 
                 //! assign from compatible array (int,apz,apn,apq...) and update
                 /**
@@ -76,8 +76,8 @@ namespace Yttrium
 
                 //! assign compatible array with same size/metrics
                 /**
-                 copy all components and update
-                 \param array
+                 \param arr compatible array in type and size
+                 \return *this, copy and updated
                  */
                 template <typename ARRAY> inline
                 Vector & operator=(ARRAY &arr)
@@ -92,8 +92,7 @@ namespace Yttrium
                     return *this;
                 }
 
-                //! display with extra info
-                friend std::ostream & operator<<(std::ostream &, const Vector &);
+
 
                 //______________________________________________________________
                 //
@@ -107,8 +106,10 @@ namespace Yttrium
                 //! test equality
                 friend bool operator==(const Vector &, const Vector &) noexcept;
 
+                //! \param b vector to project on \return true is not null after projection
                 bool keepOrtho(const Vector &b);
 
+                //! comparison for list \return ncof/nrm2/lexicographic comparison
                 static SignType Compare(const Vector * const, const Vector * const) noexcept;
 
                 //______________________________________________________________
@@ -125,27 +126,43 @@ namespace Yttrium
                 //______________________________________________________________
                 //
                 //
-                // Cache
+                //! Cache for families
                 //
                 //______________________________________________________________
                 class Cache : public CountedObject, public Metrics, public Caching
                 {
                 public:
-                    explicit Cache(const Metrics &) noexcept;
-                    virtual ~Cache() noexcept;
+                    //__________________________________________________________
+                    //
+                    // C++
+                    //__________________________________________________________
+                    explicit Cache(const Metrics &) noexcept; //!< setup
+                    virtual ~Cache() noexcept;                //!< cleanup
 
-
+                    //__________________________________________________________
+                    //
+                    // Interface
+                    //__________________________________________________________
                     virtual size_t count() const noexcept;
                     virtual void   cache(const size_t);
                     virtual void   gc(const uint8_t) noexcept;
 
-                    Vector * query();
-                    void     store(Vector * const) noexcept;
+                    //__________________________________________________________
+                    //
+                    // Methods
+                    //__________________________________________________________
+                    Vector * query();                        //!< \return fetched/created vector
+                    void     store(Vector * const) noexcept; //!< store/clean vector
 
-
+                    //! prepare vector from array
+                    /**
+                     \param arr compatbile array in type and size
+                     \return copied and updated vector
+                     */
                     template <typename ARRAY> inline
                     Vector * query(ARRAY &arr)
                     {
+                        assert(dimensions==arr.size());
                         Vector * const v = query();
                         try {
                             *v = arr;
@@ -159,13 +176,13 @@ namespace Yttrium
                     }
 
                 private:
-                    Y_Disable_Copy_And_Assign(Cache);
-                    List list;
+                    Y_Disable_Copy_And_Assign(Cache); //!< discarding
+                    List list; //!< current cache
                 };
 
             };
 
-            typedef ArcPtr<Vector::Cache> VCache;
+            typedef ArcPtr<Vector::Cache> VCache; //!< alias for shared cache
             
         }
 

@@ -9,6 +9,19 @@ namespace Yttrium
         namespace Ortho
         {
 
+
+            const char * Metrics:: HumanReadableQuality(const Quality q) noexcept
+            {
+                switch(q)
+                {
+                        Y_Return_Named_Case(Basis);
+                        Y_Return_Named_Case(HyperPlane);
+                        Y_Return_Named_Case(Generating);
+                }
+                return Core::Unknown;
+            }
+
+            
             Metrics:: ~Metrics() noexcept
             {
 

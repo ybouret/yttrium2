@@ -71,7 +71,7 @@ namespace Yttrium
             {
                 const VectorType &self = v;
                 os << self;
-                os << " // |#" << v.ncof << "|^2=" << v.nrm2;
+                os << " # |#" << v.ncof << "|^2=" << v.nrm2;
                 return os;
             }
 

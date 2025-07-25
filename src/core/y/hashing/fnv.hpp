@@ -18,8 +18,8 @@ namespace Yttrium
             
             
 		private:
-			uint32_t hash;
-            Y_Disable_Copy_And_Assign(FNV);
+			uint32_t hash; //!< inner state
+            Y_Disable_Copy_And_Assign(FNV); //!< discarding
 		};
 		
 	}

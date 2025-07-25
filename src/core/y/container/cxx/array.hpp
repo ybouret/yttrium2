@@ -64,6 +64,11 @@ namespace Yttrium
 
         }
 
+        //! duplicate array
+        /**
+         \param copyOf helper
+         \param arr compatible array
+         */
         template <typename ARRAY> inline
         CxxArray(const CopyOf_ &copyOf, ARRAY &arr) :
         code( new Code(copyOf,arr) )
@@ -102,8 +107,8 @@ namespace Yttrium
         class Code : public Object, public Memory::SchoolOf<MutableType>, public Memory::Operating<MutableType>
         {
         public:
-            typedef  Memory::SchoolOf<MutableType>  ScType;
-            typedef  Memory::Operating<MutableType> OpType;
+            typedef  Memory::SchoolOf<MutableType>  ScType; //!< alias
+            typedef  Memory::Operating<MutableType> OpType; //!< alias
             using ScType::entry;
 
             //! setup \param count default objects
@@ -117,7 +122,7 @@ namespace Yttrium
 
             //! setup
             /**
-             \param count from constructor
+             \param num from constructor
              \param arg from constructor
              */
             inline Code(const size_t num, ConstType &arg) :
@@ -138,6 +143,10 @@ namespace Yttrium
             {
             }
 
+            //! duplucate \param arr compatible array
+            /**
+             using procedural copy
+             */
             template <typename ARRAY>
             inline Code(const CopyOf_ &, ARRAY &arr) :
             Object(),
@@ -149,6 +158,13 @@ namespace Yttrium
 
         private:
             Y_Disable_Assign(Code); //!< discarding
+
+            //! procedural copy for operating
+            /**
+             \param target memory where to build object
+             \param indx   in [1..arr.size()]
+             \param arr    compatible array
+             */
             template <typename ARRAY> static inline
             void Proc(void *target, const size_t indx, ARRAY &arr)
             {

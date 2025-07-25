@@ -61,6 +61,8 @@ namespace Yttrium
             // Methods
             //__________________________________________________________________
             OutputStream & viz(OutputStream &) const; //!< emit graphViz \return output stream
+
+            //!  \param root tree root \return true if could find root as ancestor
             bool descendsFrom(const Node * const root) const noexcept;
 
 
