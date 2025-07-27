@@ -3,7 +3,7 @@
 #include "y/apex/api/ortho/family.hpp"
 #include "y/utest/run.hpp"
 #include "y/random/mt19937.hpp"
-
+#include "y/pointer/auto.hpp"
 using namespace Yttrium;
 
 
@@ -18,7 +18,7 @@ Y_UTEST(apex_ortho_family)
 
     Random::MT19937 ran;
 
-    for(size_t dims=1;dims<=3;++dims)
+    for(size_t dims=1;dims<=8;++dims)
     {
         std::cerr << std::endl << "--- dims=" << dims << std::endl;
         const Apex::Ortho::Metrics metrics(dims);
@@ -29,8 +29,8 @@ Y_UTEST(apex_ortho_family)
         while(F.quality != Apex::Ortho::Basis)
         {
             MakeRan(ran,v);
-            if(F.accepts(v))
-                F.grow();
+            if(Apex::Ortho::Vector * ortho = F.accepts(v))
+                F.progeny(ortho);
             std::cerr << F << std::endl;
         }
 
@@ -41,36 +41,35 @@ Y_UTEST(apex_ortho_family)
         while( F.quality != Apex::Ortho::HyperPlane )
         {
             MakeRan(ran,v);
-            if(F.accepts(v))
-                F.grow();
+            if(Apex::Ortho::Vector * ortho = F.accepts(v))
+                F.progeny(ortho);
         }
         std::cerr << F << std::endl;
 
         // find another vector
+        AutoPtr<Apex::Ortho::Vector>  first = 0;
         do
-        {
             MakeRan(ran,v);
-        } while( !F.accepts(v) );
+        while( (first = F.accepts(v)).isEmpty() );
 
-        const Apex::Ortho::Vector first = F.last();
         std::cerr << "first=" << first << std::endl;
+
+
 
         for(size_t iter=0;iter<4;++iter)
         {
+            AutoPtr<Apex::Ortho::Vector> second = 0;
             do
             {
                 MakeRan(ran,v);
-            } while( !F.accepts(v) );
-
-            const Apex::Ortho::Vector other = F.last();
-            Y_ASSERT(other==first);
+            } while( (second=F.accepts(v)).isEmpty() );
+            Y_ASSERT( *second == *first );
         }
 
 
         {
             Apex::Ortho::FCache fc = new Apex::Ortho::Family::Cache(vcache);
         }
-
 
 
 

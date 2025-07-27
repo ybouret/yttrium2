@@ -12,7 +12,7 @@ namespace Yttrium
             IFamily(),
             Recyclable(),
             quality( qualify(0) ),
-            ortho(0),
+            lastVec(0),
             vlist(),
             cache(sharedCache),
             next(0),
@@ -20,18 +20,9 @@ namespace Yttrium
             {
             }
 
-            Family:: Family(const Family &F) :
-            Object(),
-            Metrics(F),
-            IFamily(),
-            Recyclable(),
-            quality(F.quality),
-            ortho(0),
-            vlist(),
-            cache(F.cache),
-            next(0),
-            prev(0)
+            Family * Family:: replicate(const Family &F)
             {
+                assert(0==vlist.size);
                 try {
                     for(const Vector *v = F.vlist.head;v;v=v->next)
                     {
@@ -49,6 +40,22 @@ namespace Yttrium
                 {
                     clear(); throw;
                 }
+                return this;
+            }
+
+            Family:: Family(const Family &F) :
+            Object(),
+            Metrics(F),
+            IFamily(),
+            Recyclable(),
+            quality(F.quality),
+            lastVec(0),
+            vlist(),
+            cache(F.cache),
+            next(0),
+            prev(0)
+            {
+                (void) replicate(F);
             }
 
 
@@ -58,16 +65,12 @@ namespace Yttrium
                 return vlist;
             }
 
-            void Family:: prune() noexcept
-            {
-                if(ortho) { cache->store(ortho); ortho = 0; }
-            }
 
             void Family:: clear() noexcept
             {
-                prune();
                 while(vlist.size) cache->store(vlist.popTail());
                 Coerce(quality) = qualify(0);
+                Coerce(lastVec) = 0;
             }
 
 
@@ -81,63 +84,68 @@ namespace Yttrium
                 clear();
             }
 
-            Vector & Family:: fetch()
-            {
-                if(!ortho) ortho = cache->query();
-                assert(ortho);
-                assert(ortho->dimensions==dimensions);
-                return *ortho;
-            }
-
-            bool Family:: isBasis() noexcept
-            {
-                if(Basis==quality)
-                {
-                    prune();
-                    return true;
-                }
-                else
-                    return false;
-            }
 
 
-            bool Family:: isOrtho(Vector &a)
+            Vector * Family:: isOrtho(Vector * const a)
             {
-                assert( ortho ); assert( &a == ortho );
+                assert(0!=a);
                 const Vector *b = vlist.head;
                 if(!b)
                 {
-                    return a.ncof>0;
+                    if(a->ncof>0)
+                        return a;
+                    else
+                    {
+                        cache->store(a);
+                        return 0;
+                    }
                 }
                 else
                 {
-                    for(;b;b=b->next)
+                    try
                     {
-                        if( a.keepOrtho(*b) )
+                        for(;b;b=b->next)
                         {
-                            assert(a.ncof>0);
-                            continue;
+                            if( a->keepOrtho(*b) )
+                            {
+                                assert(a->ncof>0);
+                                continue;
+                            }
+                            cache->store(a);
+                            return 0;
                         }
-                        prune();
-                        return false;
+                        assert(a->ncof>0);
+                        return a;
                     }
-                    assert(a.ncof>0);
-                    return true;
+                    catch(...)
+                    {
+                        cache->store(a); throw;
+                    }
                 }
+            }
 
-
+            bool Family:: verify(const Vector &v) const
+            {
+                if(v.ncof<=0) return false;
+                assert(v.nrm2.bits()>0);
+                for(const Vector *b=vlist.head;b;b=b->next)
+                {
+                    if( __Zero__ != b->dot(v) ) return false;
+                }
+                return true;
             }
 
 
-            void Family:: grow() noexcept
+            void Family:: progeny(Vector * const v) noexcept
             {
-                assert(0!=ortho);
-                assert(ortho->ncof>0);
-                assert(ortho->nrm2.bits()>0);
-                vlist.pushTail(ortho); ortho = 0;
+                assert(v);
+                assert(verify(*v));
+                Coerce(lastVec) = vlist.pushTail(v);
                 vlist.sort(Vector::Compare);
                 Coerce(quality) = qualify(vlist.size);
             }
+
+
 
 
             const char * Family:: humanReadableQuality() const noexcept
@@ -156,21 +164,21 @@ namespace Yttrium
                 return os << "# </Family>";
             }
 
-            const Vector & Family:: last() const noexcept
+
+            Family * Family:: createNewFamilyWith(Vector * const ortho, Cache &fc)
             {
                 assert(0!=ortho);
-                return *ortho;
-            }
-
-
-            bool Family:: includes(const Family &F)
-            {
-                if(Basis == quality) return true;
-                for(const Vector *v = F.vlist.head;v;v=v->next)
-                {
-                    if(!contains(*v)) return false;
+                //assert( verify(ortho) );
+                try {
+                    Family * F = fc.query(*this);
+                    F->progeny(ortho);
+                    return F;
                 }
-                return true;
+                catch(...)
+                {
+                    cache->store(ortho); throw;
+                }
+
             }
 
 
@@ -195,9 +203,17 @@ namespace Yttrium
                 fCache.pushHead(F)->clear();
             }
 
-            Family * Family:: Cache:: query()
+            Family * Family:: Cache:: query(const Family &F)
             {
-                return fCache.size > 0 ? fCache.popHead() : new Family(vCache);
+                Family * const R = (fCache.size > 0 ? fCache.popHead() : new Family(vCache));
+                try {
+                    return R->replicate(F);
+                }
+                catch(...)
+                {
+                    store(R);
+                    throw;
+                }
             }
 
 

@@ -219,12 +219,23 @@ namespace Yttrium
             }
 
 
+            apz Vector:: dot(const Vector &rhs) const
+            {
+                apz sum;
+                {
+                    const VectorType &lhs = *this;
+                    for(size_t i=dimensions;i>0;--i)
+                        sum += lhs[i] * rhs[i];
+                }
+                return sum;
+            }
+
             bool Vector:: keepOrtho(const Vector &b)
             {
                 assert( dimensions == b.dimensions );
                 VectorType &a  = *this;
                 const apz   wa = b.nrm2;
-                apz         wb; for(size_t i=dimensions;i>0;--i) wb += a[i] * b[i];
+                const apz   wb = dot(b);
                 switch(wb.s)
                 {
                     case Negative: Coerce(wb.s) = Positive; break;

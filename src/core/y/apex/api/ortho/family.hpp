@@ -63,30 +63,19 @@ namespace Yttrium
                  \return true if something remains (in ortho) after projections
                  */
                 template <typename ARRAY> inline
-                bool accepts(ARRAY &arr)
+                Vector * accepts(ARRAY &arr)
                 {
                     assert(dimensions==arr.size());
-                    if(isBasis()) return false;
-                    return isOrtho( fetch() = arr );
+                    if( Basis == dimensions) return 0;
+                    return isOrtho( cache->query(arr) );
                 }
 
-                //! check if arr is within family space
-                /**
-                 \param arr compatible array in type and size
-                 \return true if is in family image
-                 */
-                template <typename ARRAY> inline
-                bool contains(ARRAY &arr)
-                {
-                    assert(dimensions==arr.size());
-                    if(isBasis()) return true;
-                    return ! isOrtho( fetch() = arr );
-                }
+                bool verify(const Vector &v) const;
+                void progeny(Vector * const v) noexcept; //!< \param v new vector added to family
 
-                bool           includes(const Family &);              //!< \return true if all vectors are withing this space
-                void           grow()                       noexcept; //!< grow last accepted vector
                 const char *   humanReadableQuality() const noexcept; //!< \return quality
-                const Vector & last()                 const noexcept; //!< \return last ortho after successful accepts and before groe
+
+
 
 
 
@@ -97,9 +86,10 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-                const Quality quality; //!< current quality
+                const Quality        quality; //!< current quality
+                const Vector * const lastVec; //!< last progeny vector
+
             private:
-                Vector *      ortho;  //!< last orthogonal vector
                 Vector::List  vlist;  //!< current list
                 VCache        cache;  //!< share cache
             public:
@@ -110,11 +100,9 @@ namespace Yttrium
                 Y_Disable_Assign(Family); //!< discarding
                 virtual ConstInterface &locus() const noexcept;
 
-                Vector &fetch();            //!< ensure ortho is not NULL \return *ortho
-                void    prune()   noexcept; //!< ensure ortho==NULL
-                void    clear()   noexcept; //!< prune and return all vectors to  cache
-                bool    isBasis() noexcept; //!< \return true iff size>=dims iff quality == Basis
-                bool    isOrtho(Vector &);  //!< \return true if something remains after all projections
+                void    clear()   noexcept;        //!<  return all vectors to  cache
+                Vector *isOrtho(Vector * const);   //!< \return remaining non zero vector, NULL otherwise
+                Family *replicate(const Family &); //!< from empty to copy
 
             public:
                 //______________________________________________________________
@@ -145,8 +133,8 @@ namespace Yttrium
                     //
                     // Methods
                     //__________________________________________________________
-                    Family * query();                        //!< \return new empty family
-                    void     store(Family * const) noexcept; //!< store and clean family;
+                    Family * query(const Family &F);         //!< \return new empty family
+                    void     store(Family * const) noexcept; //!< store and clear family
 
                     //__________________________________________________________
                     //
@@ -157,6 +145,18 @@ namespace Yttrium
                     Y_Disable_Copy_And_Assign(Cache); //!< discarding
                     CxxListOf<Family> fCache;         //!< pool
                 };
+
+
+                template <typename ARRAY>
+                Family *newFamilyWith(ARRAY &arr, Cache &fc)
+                {
+                    Vector * const ortho = accepts(arr);
+                    if(!ortho) return 0;
+                    return createNewFamilyWith(ortho,fc);
+                }
+
+            private:
+                Family *createNewFamilyWith(Vector * const, Cache &);
             };
 
             typedef ArcPtr<Family::Cache> FCache; //!< alias

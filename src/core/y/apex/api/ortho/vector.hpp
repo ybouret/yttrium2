@@ -102,6 +102,7 @@ namespace Yttrium
                 //______________________________________________________________=
                 void ldz() noexcept; //!< no-throw clear
                 void update();       //!< update to univocal vector
+                apz  dot(const Vector &) const; //!< \return *this . vector
 
                 //! test equality
                 friend bool operator==(const Vector &, const Vector &) noexcept;
@@ -154,6 +155,8 @@ namespace Yttrium
                     Vector * query();                        //!< \return fetched/created vector
                     void     store(Vector * const) noexcept; //!< store/clean vector
 
+
+
                     //! prepare vector from array
                     /**
                      \param arr compatbile array in type and size
@@ -179,6 +182,8 @@ namespace Yttrium
                     Y_Disable_Copy_And_Assign(Cache); //!< discarding
                     List list; //!< current cache
                 };
+
+
 
             };
 
