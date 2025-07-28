@@ -258,34 +258,34 @@ namespace Yttrium
             }
 
 
-            Vector:: Cache:: Cache(const Metrics &m) noexcept :
+            Vector:: Pool:: Pool(const Metrics &m) noexcept :
             CountedObject(),
             Metrics(m),
             list()
             {}
 
-            Vector:: Cache:: ~Cache() noexcept
+            Vector:: Pool:: ~Pool() noexcept
             {
             }
 
-            Vector * Vector::Cache:: query()
+            Vector * Vector::Pool:: query()
             {
                 return list.size ? list.popTail() : new Vector(*this);
             }
 
-            void Vector:: Cache:: store(Vector *const vec) noexcept
+            void Vector:: Pool:: store(Vector *const vec) noexcept
             {
                 assert(0!=vec);
                 assert(dimensions == vec->dimensions);
                 list.pushHead(vec)->ldz();
             }
 
-            size_t Vector:: Cache:: count() const noexcept
+            size_t Vector:: Pool:: count() const noexcept
             {
                 return list.size;
             }
 
-            void Vector:: Cache:: cache(const size_t n)
+            void Vector:: Pool:: cache(const size_t n)
             {
                 for(size_t i=n;i>0;--i)
                 {
@@ -293,7 +293,7 @@ namespace Yttrium
                 }
             }
 
-            void Vector:: Cache::gc(const uint8_t amount) noexcept
+            void Vector:: Pool::gc(const uint8_t amount) noexcept
             {
                 const size_t newSize = NewSize(amount,list.size);
                 list.sortByIncreasingAddress();

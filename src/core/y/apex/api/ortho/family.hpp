@@ -37,7 +37,7 @@ namespace Yttrium
                 // C++
                 //
                 //______________________________________________________________
-                explicit Family(const VCache &) noexcept; //!< setup with shared cache
+                explicit Family(Vector::Pool &) noexcept; //!< setup with shared cache
                 virtual ~Family() noexcept;               //!< cleanup
                 Family(const Family &);                   //!< duplicate
                 Y_OSTREAM_PROTO(Family);                  //!< display
@@ -67,7 +67,7 @@ namespace Yttrium
                 {
                     assert(dimensions==arr.size());
                     if( Basis == dimensions) return 0;
-                    return orthogonalPart( cache->query(arr) );
+                    return orthogonalPart( vpool.query(arr) );
                 }
 
                 //! \return ncof>0, nrm2>0, orthogonal to all family vectors
@@ -94,8 +94,9 @@ namespace Yttrium
                 const Vector * const lastVec; //!< last progeny vector
 
             private:
-                Vector::List  vlist;  //!< current list
-                VCache        cache;  //!< share cache
+                Vector::List   vlist;  //!< current list
+                Vector::Pool & vpool;  //!< persistent pool
+
             public:
                 Family *      next; //!< for list
                 Family *      prev; //!< for list
@@ -129,7 +130,7 @@ namespace Yttrium
                     //
                     // C++
                     //__________________________________________________________
-                    explicit Cache(const VCache &) noexcept; //!< setup
+                    explicit Cache(Vector::Pool &) noexcept; //!< setup
                     virtual ~Cache() noexcept;               //!< cleanup
 
                     //__________________________________________________________
@@ -151,7 +152,7 @@ namespace Yttrium
                     //
                     // Members
                     //__________________________________________________________
-                    VCache   vCache; //!< shared cache of vectors
+                    Vector::Pool &vpool; //!< shared cache of vectors
                 private:
                     Y_Disable_Copy_And_Assign(Cache); //!< discarding
                     CxxListOf<Family> fCache;         //!< pool

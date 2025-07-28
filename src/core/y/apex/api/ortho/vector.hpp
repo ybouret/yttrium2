@@ -127,18 +127,18 @@ namespace Yttrium
                 //______________________________________________________________
                 //
                 //
-                //! Cache for families
+                //! Pool for Families
                 //
                 //______________________________________________________________
-                class Cache : public CountedObject, public Metrics, public Caching
+                class Pool : public CountedObject, public Metrics, public Caching
                 {
                 public:
                     //__________________________________________________________
                     //
                     // C++
                     //__________________________________________________________
-                    explicit Cache(const Metrics &) noexcept; //!< setup
-                    virtual ~Cache() noexcept;                //!< cleanup
+                    explicit Pool(const Metrics &) noexcept; //!< setup
+                    virtual ~Pool() noexcept;                //!< cleanup
 
                     //__________________________________________________________
                     //
@@ -179,7 +179,7 @@ namespace Yttrium
                     }
 
                 private:
-                    Y_Disable_Copy_And_Assign(Cache); //!< discarding
+                    Y_Disable_Copy_And_Assign(Pool); //!< discarding
                     List list; //!< current cache
                 };
 
@@ -187,7 +187,6 @@ namespace Yttrium
 
             };
 
-            typedef ArcPtr<Vector::Cache> VCache; //!< alias for shared cache
             
         }
 

@@ -22,8 +22,8 @@ Y_UTEST(apex_ortho_family)
     {
         std::cerr << std::endl << "--- dims=" << dims << std::endl;
         const Apex::Ortho::Metrics metrics(dims);
-        Apex::Ortho::VCache        vcache = new Apex::Ortho::Vector::Cache(metrics);
-        Apex::Ortho::Family        F(vcache);
+        Apex::Ortho::Vector::Pool  vpool(metrics);
+        Apex::Ortho::Family        F(vpool);
         CxxArray<int>              v(dims);
 
         while(F.quality != Apex::Ortho::Basis)
@@ -66,10 +66,6 @@ Y_UTEST(apex_ortho_family)
             Y_ASSERT( *second == *first );
         }
 
-
-        {
-            Apex::Ortho::FCache fc = new Apex::Ortho::Family::Cache(vcache);
-        }
 
 
 

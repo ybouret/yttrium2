@@ -6,15 +6,15 @@ namespace Yttrium
     {
         namespace Ortho
         {
-            Family:: Family(const VCache &sharedCache) noexcept :
+            Family:: Family(Vector::Pool &vp) noexcept :
             Object(),
-            Metrics( *sharedCache ),
+            Metrics(vp),
             IFamily(),
             Recyclable(),
             quality( qualify(0) ),
             lastVec(0),
             vlist(),
-            cache(sharedCache),
+            vpool(vp),
             next(0),
             prev(0)
             {
@@ -26,9 +26,9 @@ namespace Yttrium
                 try {
                     for(const Vector *v = F.vlist.head;v;v=v->next)
                     {
-                        if(cache->count()>0)
+                        if(vpool.count()>0)
                         {
-                            *vlist.pushTail( cache->query() ) = *v;
+                            *vlist.pushTail( vpool.query() ) = *v;
                         }
                         else
                         {
@@ -51,7 +51,7 @@ namespace Yttrium
             quality(F.quality),
             lastVec(0),
             vlist(),
-            cache(F.cache),
+            vpool(F.vpool),
             next(0),
             prev(0)
             {
@@ -68,7 +68,7 @@ namespace Yttrium
 
             void Family:: clear() noexcept
             {
-                while(vlist.size) cache->store(vlist.popTail());
+                while(vlist.size) vpool.store(vlist.popTail());
                 Coerce(quality) = qualify(0);
                 Coerce(lastVec) = 0;
             }
@@ -96,7 +96,7 @@ namespace Yttrium
                         return a;
                     else
                     {
-                        cache->store(a);
+                        vpool.store(a);
                         return 0;
                     }
                 }
@@ -111,7 +111,7 @@ namespace Yttrium
                                 assert(a->ncof>0);
                                 continue;
                             }
-                            cache->store(a);
+                            vpool.store(a);
                             return 0;
                         }
                         assert(a->ncof>0);
@@ -119,7 +119,7 @@ namespace Yttrium
                     }
                     catch(...)
                     {
-                        cache->store(a); throw;
+                        vpool.store(a); throw;
                     }
                 }
             }
@@ -176,7 +176,7 @@ namespace Yttrium
                 }
                 catch(...)
                 {
-                    cache->store(ortho); throw;
+                    vpool.store(ortho); throw;
                 }
 
             }
@@ -184,11 +184,11 @@ namespace Yttrium
 
             //------------------------------------------------------------------
 
-            Family:: Cache:: Cache(const VCache &vc) noexcept :
+            Family:: Cache:: Cache(Vector::Pool &vp) noexcept :
             CountedObject(),
-            Metrics(*vc),
+            Metrics(vp),
             Caching(),
-            vCache(vc),
+            vpool(vp),
             fCache()
             {
             }
@@ -205,7 +205,7 @@ namespace Yttrium
 
             Family * Family:: Cache:: query(const Family &F)
             {
-                Family * const R = (fCache.size > 0 ? fCache.popHead() : new Family(vCache));
+                Family * const R = (fCache.size > 0 ? fCache.popHead() : new Family(vpool));
                 try {
                     return R->replicate(F);
                 }
@@ -225,7 +225,7 @@ namespace Yttrium
             void Family:: Cache:: cache(const size_t n)
             {
                 for(size_t i=n;i>0;--i) {
-                    fCache.pushTail( new Family(vCache) );
+                    fCache.pushTail( new Family(vpool) );
                 }
             }
 
