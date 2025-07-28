@@ -2,6 +2,8 @@
 #include "y/apex/api/coven/tribes.hpp"
 #include "y/apex/natural.hpp"
 #include "y/utest/run.hpp"
+#include "y/container/matrix.hpp"
+#include "../main.hpp"
 
 using namespace Yttrium;
 
@@ -22,26 +24,40 @@ namespace
 Y_UTEST(coven_tribes)
 {
 
-    Coven::IPool        idxPool;
-    Coven::Tribe::Cache trCache;
+    Random::MT19937     ran;
+    Coven::IPool        ip;
+    Coven::Tribe::Cache tc;
 
-    for(size_t n=1;n<=6;++n)
+    const double proba_z = 0.2;
+
+    for(size_t dims=1;dims<=3;++dims)
     {
         std::cerr << std::endl;
-        std::cerr << "--- dimensions=" << n << std::endl;
-        std::cerr << "root generation:" << std::endl;
-        size_t count = 0;
-        Coven::Tribes tribes(idxPool,trCache,n);
-        count += tribes.size;
-        std::cerr << "next generation" << std::endl;
-        while(tribes.generate()>0)
+        std::cerr << "-------- dimensions = " << dims << std::endl;
+        Coven::Carrier cr(dims);
+        for(size_t n=1;n<=dims;++n)
         {
-            count += tribes.size;
+            std::cerr << "---------------- n=" << n << std::endl;
+            Matrix<int> mu(n,dims);
+            Coven::Tribe::Context< Matrix<int> > ctx = { mu, ip, tc, cr };
+
+            {
+                for(size_t i=1;i<=n;++i)
+                {
+                    Writable<int> &a = mu[i];
+                    for(size_t j=dims;j>0;--j) a[j] = ran.in<int>(-5,5);
+                }
+
+                if( ran.to<double>() < proba_z) mu[ ran.in<size_t>(1,n) ].ld(0);
+
+                Coven::Tribes tribes(ctx);
+            }
+
+
         }
-        const apn mx = MaxTribes(n);
-        std::cerr << "done " << count << " / " << mx << std::endl;
-        Y_ASSERT(count == mx);
     }
+
+
 
 
     for(size_t n=1;n<=10;++n)

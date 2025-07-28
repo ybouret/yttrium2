@@ -11,8 +11,9 @@ namespace Yttrium
 
     namespace Coven
     {
-        typedef Apex::Ortho::Vector QVector;
-        typedef Apex::Ortho::Family QFamily;
+        typedef Apex::Ortho::Metrics QMetrics;
+        typedef Apex::Ortho::Vector  QVector;
+        typedef Apex::Ortho::Family  QFamily;
         
     }
 

@@ -202,9 +202,14 @@ namespace Yttrium
                 flist.pushHead(F)->clear();
             }
 
+            Family * Family:: Pool:: query()
+            {
+                return (flist.size > 0 ? flist.popHead() : new Family(vpool));
+            }
+
             Family * Family:: Pool:: query(const Family &F)
             {
-                Family * const R = (flist.size > 0 ? flist.popHead() : new Family(vpool));
+                Family * const R = query();
                 try {
                     return R->replicate(F);
                 }
@@ -234,6 +239,10 @@ namespace Yttrium
                 const size_t newSize = NewSize(amount,flist.size);
                 while(flist.size>newSize) delete flist.popTail();
             }
+
+
+            //------------------------------------------------------------------
+            
 
         }
 

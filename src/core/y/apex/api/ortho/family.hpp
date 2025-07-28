@@ -56,6 +56,7 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
+                size_t size() const noexcept { return vlist.size; }
 
                 //! try to accept compatible array
                 /**
@@ -76,13 +77,9 @@ namespace Yttrium
                 //! \param v new vector added to family
                 void progeny(Vector * const v) noexcept;
 
-
-                const char *   humanReadableQuality() const noexcept; //!< \return quality
-
-
-
-
-
+                //! \retun text for quality
+                const char *   humanReadableQuality() const noexcept;
+                
                 //______________________________________________________________
                 //
                 //
@@ -147,7 +144,8 @@ namespace Yttrium
                     //__________________________________________________________
                     Family * query(const Family &F);         //!< \param F source family \return new empty replicated family
                     void     store(Family * const) noexcept; //!< store and clear family
-
+                    Family * query();                        //!< \return new empty family
+                    
                     //__________________________________________________________
                     //
                     // Members
@@ -158,7 +156,7 @@ namespace Yttrium
                     CxxListOf<Family> flist;         //!< list
                 };
 
-
+                
                 //! try to create a new family from a test vector
                 /**
                  \param arr a compatible array in type and size

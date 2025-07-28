@@ -41,7 +41,11 @@ namespace Yttrium
         {
             for(INode *node = list.head;node;node=node->next)
             {
-                if(indx==**node) cut(node);
+                if(indx==**node)
+                {
+                    cut(node);
+                    return;
+                }
             }
 
         }

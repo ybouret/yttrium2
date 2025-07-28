@@ -18,41 +18,88 @@ namespace Yttrium
         class Tribes : public Tribe::List
         {
         public:
-            explicit Tribes(const IPool        &ip,
-                            const Tribe::Cache &tc,
-                            const size_t        n) :
+            template <typename MATRIX>
+            explicit Tribes(Tribe::Context<MATRIX> &ctx):
             Tribe::List(),
-            idxPool(ip),
-            trCache(tc)
+            tc(ctx.tc)
             {
+                const size_t n = ctx.mu.rows;
+                IList        bad(ctx.ip);
+
+                //--------------------------------------------------------------
+                //
+                //
+                // loop over all rows
+                //
+                //
+                //--------------------------------------------------------------
                 for(size_t first=1;first<=n;++first)
                 {
-                    Tribe *tr = trCache.summon(ip,n,first);
-                    pushTail(tr);
-                    std::cerr << *tr << std::endl;
+                    Tribe *tr = pushTail( tc.summon(ctx,first) );
+
+                    //----------------------------------------------------------
+                    //
+                    // detect zero row
+                    //
+                    //----------------------------------------------------------
+                    if( ! tr->family->size() )
+                    {
+                        std::cerr << "row[" << first << "] = " << ctx.mu[first] <<  std::endl;
+                        bad << first;
+                        tc.banish( popTail() );
+                        continue;
+                    }
+
+                    //----------------------------------------------------------
+                    //
+                    // detect colinear rows by unicity
+                    //
+                    //----------------------------------------------------------
+                    if(colinearity())
+                    {
+                        bad << first;
+                        tc.banish( popTail() );
+                        continue;
+                    }
+
+
 #if Y_Coven_Stamp
+                    //----------------------------------------------------------
+                    //
+                    // check stamp
+                    //
+                    //----------------------------------------------------------
                     const IList &stamp = tr->stamp;
                     for(const Tribe *prev=tr->prev;prev;prev=prev->prev)
                     {
                         if(prev->stamp==stamp) throw Exception("Multiple Original Stamps");
                     }
 #endif
+
                 }
+
+                //--------------------------------------------------------------
+                //
+                //
+                // finish
+                //
+                //
+                //--------------------------------------------------------------
+                finish(bad);
             }
 
-            explicit Tribes(const IPool        &ip,
-                            const Tribe::Cache &tc) noexcept;
 
             virtual ~Tribes() noexcept;
 
             inline size_t generate()
             {
 
+#if 0
                 {
-                    Tribes heirs(idxPool,trCache);
+                    Tribes heirs(ipool,tpool);
                     for(const Tribe *tr=head;tr;tr=tr->next)
                     {
-                        tr->generate(heirs,trCache);
+                        //tr->generate(heirs,trCache);
                     }
 #if Y_Coven_Stamp
                     for(const Tribe *heir=heirs.head;heir;heir=heir->next)
@@ -65,14 +112,17 @@ namespace Yttrium
 #endif
                     swapListFor(heirs);
                 }
+
                 return size;
+#endif
+                return 0;
             }
             
-
         private:
             Y_Disable_Copy_And_Assign(Tribes);
-            IPool        idxPool;
-            Tribe::Cache trCache;
+            Tribe::Cache tc;
+            void finish(const IList &toRemove) noexcept;
+            bool colinearity() const noexcept;
         };
 
     }
