@@ -6,10 +6,6 @@ namespace Yttrium
 {
 
     namespace Coven
-
-
-
-
     {
 
 
@@ -57,46 +53,19 @@ namespace Yttrium
                 {
                     tr->remove(**node);
                 }
-                // std::cerr << *tr << std::endl;
             }
         }
 
 
-        void Tribes:: makeNoReplica()
+#define Y_Coven_Follow(WHAT) do { if( 0 != (strategy&WHAT) ) make##WHAT(); } while(false)
+
+        void Tribes:: follow(const unsigned int strategy)
         {
-            std::cerr << "No Replica" << std::endl;
-            Tribe::List target;
-            while(size>0)
-            {
-                if(target.size<=0)
-                {
-                    target.pushTail( popHead() );
-                    continue;
-                }
-
-                assert(target.tail!=0);
-                Tribe &lhs = *target.tail;
-                Tribe &rhs = *head;
-
-                if(lhs.basis==rhs.basis && lhs.ready == rhs.ready)
-                {
-#if 0
-                    std::cerr
-                    <<
-                    "Found same " << lhs << std::endl <<
-                    " and       " << rhs << std::endl;
-#endif
-                    delete popHead();
-                    continue;
-                }
-
-                target.pushTail( popHead() );
-            }
-
-            swapListFor(target);
-            
-
+            Y_Coven_Follow(DitchReplicae);
+            Y_Coven_Follow(GroupFamilies);
         }
+
+      
 
     }
 

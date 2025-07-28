@@ -51,7 +51,15 @@ namespace Yttrium
         {
             assert(lhs);
             assert(rhs);
-            return IList::Compare(lhs->basis,rhs->basis);
+            
+            switch( IList::Compare(lhs->basis,rhs->basis) )
+            {
+                case Negative: return Negative;
+                case Positive: return Positive;
+                case __Zero__: break;
+            }
+
+            return IList::Compare(lhs->ready,rhs->ready);
         }
 
     }

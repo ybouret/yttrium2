@@ -74,9 +74,32 @@ namespace Yttrium
         }
 
 
+        bool operator!=(const IList &lhs, const IList &rhs) noexcept
+        {
+            if(lhs->size != rhs->size) return true;
+
+            for(const INode *l=lhs->head, *r=rhs->head;l;l=l->next,r=r->next)
+            {
+                assert(l);assert(r);
+                if( **l != **r ) return true;
+            }
+
+            return false;
+        }
+
+
+
+
         SignType IList:: Compare(const IList &lhs, const IList &rhs) noexcept
         {
-            assert(lhs->size==rhs->size);
+
+            switch( Sign::Of(lhs->size,rhs->size) )
+            {
+                case Negative: return Negative;
+                case Positive: return Positive;
+                case __Zero__: break;
+
+            }
 
             for(const INode *l=lhs->head, *r=rhs->head;l;l=l->next,r=r->next)
             {

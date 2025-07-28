@@ -37,7 +37,7 @@ namespace Yttrium
                     }
                 }
                 std::cerr << "[+] " << vec << std::endl;
-                list.pushTail( new QVector(vec) );
+                list.insertOrderedBy( QVector::Compare,  new QVector(vec) );
             }
 
 
@@ -62,7 +62,9 @@ namespace Yttrium
             stamp(ip),
 #endif
             fpool(fp),
-            family( fpool.start(mu[first]) )
+            family( fpool.start(mu[first]) ),
+            next(0),
+            prev(0)
             {
                 assert(ready->size==mu.rows);
                 if(family) {

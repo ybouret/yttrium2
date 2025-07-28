@@ -18,7 +18,8 @@ namespace Yttrium
         class Tribes : public Tribe::List
         {
         public:
-            static const unsigned NoReplica = 0x01;
+            static const unsigned DitchReplicae = 0x01;
+            static const unsigned GroupFamilies = 0x02;
 
             template <typename MATRIX> inline
             explicit Tribes(const MATRIX &  mu,
@@ -88,30 +89,7 @@ namespace Yttrium
                     }
                     swapListFor(heirs);
                 }
-
-
-                if( 0 != (strategy&NoReplica) )
-                {
-                    makeNoReplica();
-#if 1
-                    for(const Tribe *curr=head;curr;curr=curr->next)
-                    {
-                        for(const Tribe *prev=curr->prev;prev;prev=prev->prev)
-                        {
-                            if( !(curr->basis == prev->basis) && __Zero__ == QFamily::Compare(curr->family,prev->family) )
-                            {
-                                std::cerr << "---> same families!!" << std::endl;
-                                std::cerr << *curr << std::endl;
-                                std::cerr << *prev << std::endl;
-                            }
-                        }
-                    }
-#endif
-                }
-
-
-
-
+                follow(strategy);
                 return size;
             }
 
@@ -120,8 +98,10 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Tribes);
             bool colinearity() const noexcept;
             void finish(const IList &bad) noexcept;
-            void makeNoReplica();
+            void follow(const unsigned strategy);
 
+            void makeDitchReplicae();
+            void makeGroupFamilies();
         };
 
 

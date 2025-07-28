@@ -80,7 +80,7 @@ namespace Yttrium
                 //! \retun text for quality
                 const char *   humanReadableQuality() const noexcept;
 
-                static SignType Compare(const Family * const, const Family * const ) noexcept;
+                friend bool operator==(const Family &, const Family &) noexcept;
 
                 //______________________________________________________________
                 //

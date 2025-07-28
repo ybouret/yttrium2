@@ -54,11 +54,14 @@ Y_UTEST(coven_space)
     Run(mu,0,survey0);
 
     Coven::Survey survey1;
-    Run(mu,Coven::Tribes::NoReplica,survey1);
+    Run(mu,Coven::Tribes::DitchReplicae,survey1);
 
-    
+    Coven::Survey survey2;
+    //Run(mu,Coven::Tribes::GroupFamilies,survey2);
+
     std::cerr << "survey0 : " << survey0.list.size << " / " << survey0.trials << std::endl;
     std::cerr << "survey1 : " << survey1.list.size << " / " << survey1.trials << std::endl;
+    std::cerr << "survey2 : " << survey2.list.size << " / " << survey2.trials << std::endl;
 
 
 

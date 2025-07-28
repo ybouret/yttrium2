@@ -94,7 +94,7 @@ Y_CreateLibrary(y
     y/apex/z
     y/apex/q
     y/apex/api/ortho
-    y/apex/api/coven
+    y/apex/api/coven y/apex/api/coven/tribes
     y/mkl
     y/mkl/api
     y/random

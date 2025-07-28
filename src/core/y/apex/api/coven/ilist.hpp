@@ -58,6 +58,7 @@ namespace Yttrium
             void sorted(const size_t indx);
 
             friend bool operator==(const IList &, const IList&) noexcept;
+            friend bool operator!=(const IList &, const IList&) noexcept;
 
             static SignType Compare(const IList &,const IList &) noexcept;
 

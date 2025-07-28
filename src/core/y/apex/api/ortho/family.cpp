@@ -182,6 +182,23 @@ namespace Yttrium
             }
 
 
+            bool operator==(const Family & lhs, const Family & rhs) noexcept
+            {
+                if(lhs->size!=rhs->size) return false;
+
+                for(const Vector *l=lhs->head, *r=rhs->head;l;l=l->next,r=r->next)
+                {
+                    switch(Vector::Compare(l,r))
+                    {
+                        case Negative: return false;
+                        case Positive: return false;
+                        case __Zero__: continue;
+                    }
+                }
+                return true;
+            }
+
+#if 0
             SignType Family:: Compare(const Family * const lhs, const Family * const rhs) noexcept
             {
                 assert(lhs);
@@ -202,7 +219,8 @@ namespace Yttrium
                 
                 return __Zero__;
             }
-
+#endif
+            
             //------------------------------------------------------------------
 
             Family:: Pool:: Pool(Vector::Pool &vp) noexcept :
