@@ -5,7 +5,6 @@
 #define Y_Coven_Tribe_Included 1
 
 #include "y/apex/api/coven/carrier.hpp"
-#include "y/apex/api/coven/iset.hpp"
 
 #define Y_Coven_Stamp 1
 
@@ -16,6 +15,9 @@ namespace Yttrium
     {
 
 
+
+
+#if 0
         class Tribe
         {
         public:
@@ -127,7 +129,8 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Tribe);
             void quit() noexcept;
         };
-
+#endif
+        
     }
 
 }

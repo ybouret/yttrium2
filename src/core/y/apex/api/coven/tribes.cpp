@@ -7,6 +7,7 @@ namespace Yttrium
 
     namespace Coven
     {
+#if 0
         Tribes:: ~Tribes() noexcept
         {
             while(size>0)
@@ -47,7 +48,7 @@ namespace Yttrium
             return false;
         }
 
-
+#endif
     }
 
 }

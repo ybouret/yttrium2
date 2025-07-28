@@ -15,6 +15,7 @@ namespace Yttrium
     namespace Coven
     {
 
+#if 0
         class Tribes : public Tribe::List
         {
         public:
@@ -124,6 +125,8 @@ namespace Yttrium
             void finish(const IList &toRemove) noexcept;
             bool colinearity() const noexcept;
         };
+
+#endif
 
     }
 

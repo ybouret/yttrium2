@@ -204,6 +204,16 @@ namespace Yttrium
                 assert(lhs.size+rhs.size==oldSize);
             }
 
+            template <typename COMPARE_DATA>
+            struct CompareDataThruNodes
+            {
+                COMPARE_DATA &proc;
+                inline SignType operator()(const NODE * const lhs,
+                                           const NODE * const rhs) noexcept
+                {
+                    return proc(**lhs,**rhs);
+                }
+            };
 
             //! fusion of two sorted list
             /**
@@ -235,6 +245,14 @@ namespace Yttrium
                 assert(this->isOrderedBy(compareNodes,Sign::LooselyIncreasing));
             }
 
+            template <typename LIST, typename COMPARE_DATA> inline
+            void fusionWith(COMPARE_DATA &proc, LIST &lhs, LIST &rhs) noexcept
+            {
+                CompareDataThruNodes<COMPARE_DATA> compareNodes = { proc };
+                fusion(lhs,rhs,compareNodes);
+            }
+
+
             //! recursive merge sort
             /**
              \param compareNodes comparison function
@@ -249,6 +267,13 @@ namespace Yttrium
                     rhs.sort(compareNodes);
                     fusion(lhs,rhs,compareNodes);
                 }
+            }
+
+            template <typename COMPARE_DATA> inline
+            void sortWith(COMPARE_DATA &proc) noexcept
+            {
+                CompareDataThruNodes<COMPARE_DATA> compareNodes = { proc };
+                sort(compareNodes);
             }
 
             //! merging a list to tail
@@ -440,6 +465,12 @@ namespace Yttrium
             }
 
             
+            template <typename COMPARE_DATA> inline
+            NODE * insertOrderedWith(COMPARE_DATA &proc, NODE * const node) noexcept
+            {
+                CompareDataThruNodes<COMPARE_DATA> compareNodes = { proc };
+                return insertOrderedBy(compareNodes,node);
+            }
 
 
             //! insert using address comparison

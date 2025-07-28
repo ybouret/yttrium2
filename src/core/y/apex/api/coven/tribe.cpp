@@ -7,6 +7,7 @@ namespace Yttrium
     namespace Coven
     {
 
+#if 0
         void Tribe:: quit() noexcept
         {
             if(family) { fpool.store(family); Coerce(family) = 0; }
@@ -39,6 +40,9 @@ namespace Yttrium
             stamp.remove(indx);
 #endif
         }
+
+#endif
+        
     }
 
 }

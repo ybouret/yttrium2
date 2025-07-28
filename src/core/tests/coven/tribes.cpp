@@ -25,6 +25,8 @@ Y_UTEST(coven_tribes)
 {
 
     Random::MT19937     ran;
+
+#if 0
     Coven::IPool        ip;
     Coven::Tribe::Cache tc;
 
@@ -56,7 +58,7 @@ Y_UTEST(coven_tribes)
 
         }
     }
-
+#endif
 
 
 
