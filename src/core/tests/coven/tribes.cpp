@@ -25,7 +25,7 @@ Y_UTEST(coven_tribes)
     Coven::IPool        idxPool;
     Coven::Tribe::Cache trCache;
 
-    for(size_t n=1;n<=4;++n)
+    for(size_t n=1;n<=6;++n)
     {
         std::cerr << std::endl;
         std::cerr << "--- dimensions=" << n << std::endl;

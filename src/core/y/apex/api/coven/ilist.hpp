@@ -54,7 +54,11 @@ namespace Yttrium
             //
             //__________________________________________________________________
             void remove(const size_t indx) noexcept;
-            
+
+            friend bool operator==(const IList &, const IList&) noexcept;
+
+
+
 
         private:
             Y_Disable_Assign(IList); //!< discarding

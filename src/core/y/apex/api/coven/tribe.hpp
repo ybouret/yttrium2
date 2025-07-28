@@ -6,6 +6,7 @@
 
 #include "y/apex/api/coven/iset.hpp"
 
+#define Y_Coven_Stamp 1
 
 namespace Yttrium
 {
@@ -25,20 +26,31 @@ namespace Yttrium
                            const size_t first) :
             basis(pool),
             ready(pool,n,first),
+#if Y_Coven_Stamp
+            stamp(pool),
+#endif
             next(0),
             prev(0)
             {
                 basis << ready->popHead();
+                stamp << first;
             }
 
             explicit Tribe(const Tribe &tribe,
                            const size_t shift) :
             basis(tribe.basis),
             ready(tribe.ready),
+#if Y_Coven_Stamp
+            stamp(tribe.stamp),
+#endif
             next(0),
             prev(0)
             {
-                basis << ready->pop( ready->fetch(shift) );
+                INode * const node = ready->fetch(shift);
+#if Y_Coven_Stamp
+                stamp << **node;
+#endif
+                basis << ready->pop( node );
             }
 
 
@@ -49,7 +61,6 @@ namespace Yttrium
 
             inline void generate(Tribe::List &heirs, Cache &cache) const
             {
-                //const size_t nr = ready->size;
                 size_t       ir = 1;
                 for(const INode *node=ready->head;node;node=node->next,++ir)
                 {
@@ -60,6 +71,9 @@ namespace Yttrium
 
             ISet    basis;
             IList   ready;
+#if Y_Coven_Stamp
+            IList   stamp;
+#endif
             Tribe * next;
             Tribe * prev;
 

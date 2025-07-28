@@ -17,8 +17,10 @@ namespace Yttrium
         {
             os << "<Tribe basis=" << tribe.basis;
             if( tribe.ready->size) os << ":" << tribe.ready;
-            os << ">" << std::endl;
-
+            os << " @" << tribe.stamp;
+            os << "/>";
+            return os;
+            
             os << "</Tribe>";
             return os;
         }

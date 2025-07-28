@@ -70,6 +70,12 @@ namespace Yttrium
         }
 
 
+        bool operator==(const ISet &lhs, const ISet &rhs) noexcept
+        {
+            return lhs.list == rhs.list;
+        }
+
+
 
 
     }
