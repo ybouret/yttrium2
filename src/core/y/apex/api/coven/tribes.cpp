@@ -14,6 +14,15 @@ namespace Yttrium
                 trCache.banish(popTail());
             }
         }
+
+
+        Tribes:: Tribes(const IPool        &ip,
+                        const Tribe::Cache &tc) noexcept :
+        idxPool(ip),
+        trCache(tc)
+        {
+        }
+
     }
 
 }

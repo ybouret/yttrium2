@@ -192,6 +192,7 @@ namespace Yttrium
             static void    Simplify(Natural &, Natural&);         //!< atomic simplification
             static Natural Factorial(const size_t);               //!< \return n!
             static Natural Comb(const size_t n, const size_t k);  //!< \param n n>=0 \param k k<=m \return (n,k)
+            static Natural Enum(const size_t n, const size_t k);  //!< \param n n>=0 \param k k<=n \return enumerations of k-uplets of n items
 
             //! try cast to integral value
             /**

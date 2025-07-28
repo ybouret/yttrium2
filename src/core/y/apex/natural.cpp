@@ -82,7 +82,7 @@ namespace Yttrium
             assert(device);
             return device->bytes;
         }
-
+        
 
         const uint8_t * Natural:: data8() const noexcept
         {

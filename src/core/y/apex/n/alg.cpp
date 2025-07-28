@@ -122,6 +122,12 @@ namespace Yttrium
             return Factorial(n)/Factorial(k)/Factorial(n-k);
         }
 
+        Natural Natural:: Enum(const size_t n, const size_t k)
+        {
+            assert(k<=n);
+            return Factorial(n)/Factorial(n-k);
+        }
+
     }
 
 }
