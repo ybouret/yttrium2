@@ -150,6 +150,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(apex_ortho_family);
 
     Y_UTEST(coven_indx);
+    Y_UTEST(coven_tribes);
 
 
     Y_UTEST(random_bits);

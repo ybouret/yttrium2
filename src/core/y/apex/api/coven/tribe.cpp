@@ -15,7 +15,7 @@ namespace Yttrium
 
         std::ostream & operator<<(std::ostream &os, const Tribe &tribe)
         {
-            os << "<Tribe basis=" << tribe.basis << " ready=" << tribe.ready << ">";
+            os << "<Tribe basis=" << tribe.basis << " ready=" << tribe.ready << ">" << std::endl;
 
             os << "</Tribe>";
             return os;

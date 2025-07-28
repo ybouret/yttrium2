@@ -17,6 +17,8 @@ namespace Yttrium
         {
         public:
             typedef Protean::WarpedCacheOf<Tribe,SingleThreadedClass> Cache;
+            typedef Core::ListOf<Tribe> List;
+            typedef const Tribe & ParamType; //!< for Cache declaration
 
             explicit Tribe(const IPool &pool,
                            const size_t n,
