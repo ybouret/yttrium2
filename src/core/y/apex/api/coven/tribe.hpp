@@ -5,6 +5,7 @@
 #define Y_Coven_Tribe_Included 1
 
 #include "y/apex/api/coven/iset.hpp"
+#include "y/apex/api/ortho/family.hpp"
 
 #define Y_Coven_Stamp 1
 
