@@ -7,11 +7,31 @@
 
 using namespace Yttrium;
 
+namespace
+{
+    static inline void Run(const Matrix<int> &mu,
+                           const unsigned    strategy,
+                           Coven::Survey    &survey)
+    {
+
+        Coven::IPool         ip;
+        Coven::QVector::Pool vp(mu.cols);
+        Coven::QFamily::Pool fp(vp);
+
+        Coven::Tribes tribes(mu,ip,fp, &survey);
+        do
+        {
+            tribes.generate(mu,&survey,strategy);
+        } while( tribes.size > 0);
+
+        std::cerr << "found=" << survey.list.size << " / " << survey.trials << std::endl;
+    }
+}
+
 Y_UTEST(coven_space)
 {
 
     Random::MT19937     ran;
-    Coven::IPool        ip;
 
     size_t     dims  = 4;
     size_t     rows  = 4;
@@ -30,19 +50,15 @@ Y_UTEST(coven_space)
         }
     }
 
-    Coven::Survey        survey;
-    Coven::QVector::Pool vp(dims);
-    Coven::QFamily::Pool fp(vp);
+    Coven::Survey survey0;
+    Run(mu,0,survey0);
 
-    Coven::Tribes tribes(mu,ip,fp, &survey);
+    Coven::Survey survey1;
+    Run(mu,Coven::Tribes::NoReplica,survey1);
 
-    do
-    {
-        tribes.generate(mu,&survey);
-    } while( tribes.size > 0);
-
-
-
+    
+    std::cerr << "survey0 : " << survey0.list.size << " / " << survey0.trials << std::endl;
+    std::cerr << "survey1 : " << survey1.list.size << " / " << survey1.trials << std::endl;
 
 
 

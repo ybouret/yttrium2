@@ -18,6 +18,8 @@ namespace Yttrium
         class Tribes : public Tribe::List
         {
         public:
+            static const unsigned NoReplica = 0x01;
+
             template <typename MATRIX> inline
             explicit Tribes(const MATRIX &  mu,
                             const IPool &   ip,
@@ -70,9 +72,13 @@ namespace Yttrium
 
             virtual ~Tribes() noexcept;
 
+            friend std::ostream & operator<<(std::ostream &, const Tribes &);
+
 
             template <typename MATRIX> inline
-            size_t generate(const MATRIX &mu, Survey * const survey)
+            size_t generate(const MATRIX & mu,
+                            Survey * const survey,
+                            const unsigned strategy)
             {
                 {
                     Tribe::List heirs;
@@ -82,6 +88,10 @@ namespace Yttrium
                     }
                     swapListFor(heirs);
                 }
+                if( 0 != (strategy&NoReplica) )
+                {
+                    makeNoReplica();
+                }
                 return size;
             }
 
@@ -90,6 +100,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Tribes);
             bool colinearity() const noexcept;
             void finish(const IList &bad) noexcept;
+            void makeNoReplica();
 
         };
 

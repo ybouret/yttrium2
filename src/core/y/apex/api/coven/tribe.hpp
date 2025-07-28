@@ -19,13 +19,23 @@ namespace Yttrium
         class Survey
         {
         public:
-            explicit Survey() {}
+            explicit Survey() : list(), trials(0) {}
             virtual ~Survey() noexcept {}
 
             QVector::List list;
+            size_t        trials;
 
             void collect(const QVector &vec)
             {
+                ++trials;
+                for(const QVector * mine=list.head;mine;mine=mine->next)
+                {
+                    if(*mine==vec)
+                    {
+                        //std::cerr << "[-] " << vec << std::endl;
+                        return;
+                    }
+                }
                 std::cerr << "[+] " << vec << std::endl;
                 list.pushTail( new QVector(vec) );
             }
@@ -83,15 +93,19 @@ namespace Yttrium
                 Tribe::List H;
                 for(const INode *node = ready->head; node; node=node->next)
                 {
+                    //----------------------------------------------------------
+                    // try to expand family
+                    //----------------------------------------------------------
                     const size_t    indx    = **node;
                     QFamily * const lineage = family->newFamilyWith(mu[indx],fpool);
                     if(!lineage) continue;
 
+                    //----------------------------------------------------------
                     // a new vector was created into lineage
+                    //----------------------------------------------------------
                     assert(0!=lineage->lastVec);
                     try {
                         Coerce( H.pushTail( new Tribe(*this,indx) )->family ) = lineage;
-                        std::cerr << *H.tail << std::endl;
                     }
                     catch(...)
                     {
@@ -101,7 +115,6 @@ namespace Yttrium
                     if(survey) survey->collect(*(lineage->lastVec));
                 }
                 H.sort(Tribe::Compare);
-
                 Tribe::List all;
                 all.fusion(heirs,H,Tribe::Compare);
                 heirs.swapListFor(all);

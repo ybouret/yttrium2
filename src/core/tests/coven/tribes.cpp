@@ -59,7 +59,7 @@ Y_UTEST(coven_tribes)
                 size_t count = tribes.size;
                 while(tribes.size>0)
                 {
-                    count += tribes.generate(mu,&survey);
+                    count += tribes.generate(mu,&survey,0);
                 }
                 const apn mx = MaxTribes(n);
                 std::cerr << "count = " << count << "/" << mx << std::endl;
