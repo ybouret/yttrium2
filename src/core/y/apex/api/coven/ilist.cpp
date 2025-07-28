@@ -74,6 +74,25 @@ namespace Yttrium
         }
 
 
+        SignType IList:: Compare(const IList &lhs, const IList &rhs) noexcept
+        {
+            assert(lhs->size==rhs->size);
+
+            for(const INode *l=lhs->head, *r=rhs->head;l;l=l->next,r=r->next)
+            {
+                assert(l);assert(r);
+                switch( Sign::Of(**l,**r) )
+                {
+                    case Negative: return Negative;
+                    case Positive: return Positive;
+                    case __Zero__: continue;
+                }
+            }
+            
+            return __Zero__;
+        }
+
+
     }
 
 }

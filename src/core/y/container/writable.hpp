@@ -83,6 +83,16 @@ namespace Yttrium
                 a[i] = value;
         }
 
+        inline void ld(const Readable<T> &rhs)
+        {
+
+            Writable<T> &a = *this;
+            const size_t n = a.size();assert(rhs.size()>=n);
+            for(size_t i=1;i<=n;++i)
+                a[i] = rhs[i];
+        }
+
+
     private:
         Y_Disable_Copy_And_Assign(Writable); //!< discarding
     };

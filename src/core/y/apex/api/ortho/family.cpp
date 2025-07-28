@@ -155,13 +155,13 @@ namespace Yttrium
 
             std::ostream & operator<<(std::ostream &os, const Family &F)
             {
-                os << "# <Family #" << F->size << "/" << F.dimensions << " is " << F.humanReadableQuality() << ">" << std::endl;
+                os << "\t\t# <Family #" << F->size << "/" << F.dimensions << " is " << F.humanReadableQuality() << ">" << std::endl;
                 size_t i=1;
                 for(const Vector *v=F->head;v;v=v->next,++i)
                 {
-                    os << "\te" << i << " = " << *v << std::endl;
+                    os << "\t\t\te" << i << " = " << *v << std::endl;
                 }
-                return os << "# </Family>";
+                return os << "\t\t# </Family>";
             }
 
 

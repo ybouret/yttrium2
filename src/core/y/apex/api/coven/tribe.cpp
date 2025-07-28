@@ -14,13 +14,15 @@ namespace Yttrium
         
         std::ostream & operator<<(std::ostream &os, const Tribe &tribe)
         {
-            os << "<Tribe basis=" << tribe.basis;
+            os << "\t<Tribe basis=" << tribe.basis;
             if( tribe.ready->size) os << ":" << tribe.ready;
+#if Y_Coven_Stamp
             os << " @" << tribe.stamp;
+#endif
             os << ">" << std::endl;
             //os << *tribe.family << std::endl;
             if(tribe.family) os << *tribe.family << std::endl;
-            os << "</Tribe>";
+            os << "\t</Tribe>";
             return os;
         }
 
@@ -43,7 +45,15 @@ namespace Yttrium
             stamp.remove(indx);
 #endif
         }
-        
+
+
+        SignType Tribe:: Compare(const Tribe * const lhs, const Tribe * const rhs) noexcept
+        {
+            assert(lhs);
+            assert(rhs);
+            return IList::Compare(lhs->basis,rhs->basis);
+        }
+
     }
 
 }

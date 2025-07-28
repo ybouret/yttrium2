@@ -28,9 +28,11 @@ Y_UTEST(coven_tribes)
 
     Coven::IPool        ip;
 
-    const double proba_z = 0.2;
+    const double  proba_z   = 0.2;
+    const double  proba_dup = 0.3;
+    Coven::Survey survey;
 
-    for(size_t dims=1;dims<=3;++dims)
+    for(size_t dims=1;dims<=5;++dims)
     {
         std::cerr << std::endl;
         std::cerr << "-------- dimensions = " << dims << std::endl;
@@ -48,8 +50,21 @@ Y_UTEST(coven_tribes)
                     for(size_t j=dims;j>0;--j) a[j] = ran.in<int>(-5,5);
                 }
 
-                if( ran.to<double>() < proba_z) mu[ ran.in<size_t>(1,n) ].ld(0);
-                const Coven::Tribes tribes(mu,ip,fp);
+                if( ran.to<double>() < proba_z)   mu[ ran.in<size_t>(1,n) ].ld(0);
+                if( ran.to<double>() < proba_dup) mu[ ran.in<size_t>(1,n) ].ld( mu[ ran.in<size_t>(1,n) ] );
+
+                survey.list.release();
+
+                Coven::Tribes tribes(mu,ip,fp,&survey);
+                size_t count = tribes.size;
+                while(tribes.size>0)
+                {
+                    count += tribes.generate(mu,&survey);
+                }
+                const apn mx = MaxTribes(n);
+                std::cerr << "count = " << count << "/" << mx << std::endl;
+                Y_ASSERT(mx>=count);
+
             }
 
 
@@ -57,12 +72,11 @@ Y_UTEST(coven_tribes)
     }
 
 
-
     for(size_t n=1;n<=10;++n)
     {
         std::cerr << "MaxTribes(" << n << ")=" << MaxTribes(n) << std::endl;
     }
 
-
+    Y_SIZEOF(Coven::Tribe);
 }
 Y_UDONE()

@@ -200,6 +200,7 @@ Y_UTEST(apex:ortho:family)
 #coven
 Y_UTEST(coven:indx)
 Y_UTEST(coven:tribes)
+Y_UTEST(coven:space)
 
 #random
 Y_UTEST(random:bits)

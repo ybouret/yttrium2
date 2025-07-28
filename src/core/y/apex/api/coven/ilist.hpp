@@ -59,6 +59,8 @@ namespace Yttrium
 
             friend bool operator==(const IList &, const IList&) noexcept;
 
+            static SignType Compare(const IList &,const IList &) noexcept;
+
 
 
 
