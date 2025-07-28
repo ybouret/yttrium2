@@ -15,6 +15,54 @@ namespace Yttrium
     namespace Coven
     {
 
+        class Tribes : public Tribe::List
+        {
+        public:
+            template <typename MATRIX> inline
+            explicit Tribes(const MATRIX &  mu,
+                            const IPool &   ip,
+                            QFamily::Pool & fp) :
+            Tribe::List()
+            {
+                const size_t n = mu.rows;
+                IList        bad(ip);
+
+                // create a configuration for each row
+                for(size_t first=1;first<=n;++first)
+                {
+                    Tribe *tribe = pushTail( new Tribe(mu,first,ip,fp) );
+
+                    if(!tribe->family)
+                    {
+                        std::cerr << "mu[" << first << "] = " << mu[first] << std::endl;
+                        delete popTail();
+                        bad << first;
+                        continue;
+                    }
+
+                    if(colinearity())
+                    {
+                        delete popTail();
+                        bad << first;
+                        continue;
+                    }
+
+                }
+
+                // cleanup zero/duplicate rows
+                finish(bad);
+            }
+
+            virtual ~Tribes() noexcept;
+
+
+        private:
+            Y_Disable_Copy_And_Assign(Tribes);
+            bool colinearity() const noexcept;
+            void finish(const IList &bad) noexcept;
+
+        };
+
 #if 0
         class Tribes : public Tribe::List
         {
@@ -123,7 +171,6 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Tribes);
             Tribe::Cache tc;
             void finish(const IList &toRemove) noexcept;
-            bool colinearity() const noexcept;
         };
 
 #endif

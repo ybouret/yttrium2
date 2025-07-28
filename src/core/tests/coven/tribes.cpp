@@ -26,9 +26,7 @@ Y_UTEST(coven_tribes)
 
     Random::MT19937     ran;
 
-#if 0
     Coven::IPool        ip;
-    Coven::Tribe::Cache tc;
 
     const double proba_z = 0.2;
 
@@ -36,13 +34,13 @@ Y_UTEST(coven_tribes)
     {
         std::cerr << std::endl;
         std::cerr << "-------- dimensions = " << dims << std::endl;
-        Coven::Carrier cr(dims);
+        Coven::QVector::Pool vp(dims);
+        Coven::QFamily::Pool fp(vp);
+
         for(size_t n=1;n<=dims;++n)
         {
             std::cerr << "---------------- n=" << n << std::endl;
             Matrix<int> mu(n,dims);
-            Coven::Tribe::Context< Matrix<int> > ctx = { mu, ip, tc, cr };
-
             {
                 for(size_t i=1;i<=n;++i)
                 {
@@ -51,14 +49,12 @@ Y_UTEST(coven_tribes)
                 }
 
                 if( ran.to<double>() < proba_z) mu[ ran.in<size_t>(1,n) ].ld(0);
-
-                Coven::Tribes tribes(ctx);
+                const Coven::Tribes tribes(mu,ip,fp);
             }
 
 
         }
     }
-#endif
 
 
 

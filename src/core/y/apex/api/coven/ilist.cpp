@@ -50,6 +50,16 @@ namespace Yttrium
 
         }
 
+        static inline SignType CompareData(const INode * const lhs, const INode * const rhs) noexcept
+        {
+            return Sign::Of(**lhs,**rhs);
+        }
+
+        void IList:: sorted(const size_t indx)
+        {
+            list.insertOrderedBy(CompareData,pool.summon(indx));
+        }
+        
         bool operator==(const IList &lhs, const IList &rhs) noexcept
         {
             if(lhs->size != rhs->size) return false;

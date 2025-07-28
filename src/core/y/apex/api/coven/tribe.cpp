@@ -7,30 +7,33 @@ namespace Yttrium
     namespace Coven
     {
 
-#if 0
-        void Tribe:: quit() noexcept
-        {
-            if(family) { fpool.store(family); Coerce(family) = 0; }
-        }
-
-
         Tribe:: ~Tribe() noexcept
         {
             quit();
         }
-
-
+        
         std::ostream & operator<<(std::ostream &os, const Tribe &tribe)
         {
             os << "<Tribe basis=" << tribe.basis;
             if( tribe.ready->size) os << ":" << tribe.ready;
             os << " @" << tribe.stamp;
-            os << "/>" << std::endl;
-            os << *tribe.family << std::endl;
+            os << ">" << std::endl;
+            //os << *tribe.family << std::endl;
+            if(tribe.family) os << *tribe.family << std::endl;
             os << "</Tribe>";
             return os;
         }
 
+
+        void Tribe:: quit() noexcept
+        {
+            if(family) { fpool.store(family); Coerce(family) = 0; }
+            basis.free();
+            ready.free();
+#if Y_Coven_Stamp
+            stamp.free();
+#endif
+        }
 
         void Tribe:: remove(const size_t indx) noexcept
         {
@@ -40,8 +43,6 @@ namespace Yttrium
             stamp.remove(indx);
 #endif
         }
-
-#endif
         
     }
 

@@ -42,10 +42,11 @@ namespace Yttrium
 
             //! create list with pre-ordered items
             /**
-             \param n list will contain 1..n
-             \param first first index in 1..n
+             \param count list will contain 1..count
+             \param first first index in 1..count
              */
-            explicit IList(const IPool &, const size_t n, const size_t first);
+            explicit IList(const IPool &, const size_t count, const size_t first);
+
 
             //__________________________________________________________________
             //
@@ -54,6 +55,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             void remove(const size_t indx) noexcept;
+            void sorted(const size_t indx);
 
             friend bool operator==(const IList &, const IList&) noexcept;
 

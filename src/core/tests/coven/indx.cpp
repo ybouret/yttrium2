@@ -1,5 +1,5 @@
 
-#include "y/apex/api/coven/iset.hpp"
+#include "y/apex/api/coven/ilist.hpp"
 #include "y/utest/run.hpp"
 
 using namespace Yttrium;
@@ -10,32 +10,18 @@ Y_UTEST(coven_indx)
     Coven::IPool pool;
 
     {
-        Coven::IList     il(pool);
-        il << 7 << 2 << 4 << 7;
+        Coven::IList     il(pool), is(pool);
+        il << 7 << 2 << 4 << 1;
         std::cerr << il << std::endl;
-    }
-
-    std::cerr << "pool.size=" << pool.count() << std::endl;
-
-    {
-        Coven::IList     il(pool);
-        Coven::ISet      is(pool);
-        il << 1 << 7 << 3 << 10;
-        std::cerr << il << std::endl;
-        while(il.size()) is << il->popHead();
+        for(const Coven::INode *node=il->head;node;node=node->next)
+        {
+            is.sorted(**node);
+        }
         std::cerr << is << std::endl;
     }
 
-    for(size_t i=1;i<=6;++i)
-    {
-        std::cerr << std::endl;
-        for(size_t j=1;j<=i;++j)
-        {
-            Coven::IList     il(pool,i,j);
-            std::cerr << il << std::endl;
-        }
-    }
-
+    std::cerr << "pool.size=" << pool.count() << std::endl;
+    
 
 }
 Y_UDONE()

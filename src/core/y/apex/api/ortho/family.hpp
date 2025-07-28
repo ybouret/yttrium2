@@ -145,7 +145,27 @@ namespace Yttrium
                     Family * query(const Family &F);         //!< \param F source family \return new empty replicated family
                     void     store(Family * const) noexcept; //!< store and clear family
                     Family * query();                        //!< \return new empty family
-                    
+
+                    template <typename ARRAY> inline
+                    Family * start( ARRAY & arr)
+                    {
+                        Family * const F = query();
+                        try {
+                            if(Vector *v=F->accepts(arr))
+                            {
+                                F->progeny(v);
+                                assert(F->lastVec == v);
+                                return F;
+                            }
+                            store(F);
+                            return 0;
+                        }
+                        catch(...)
+                        {
+                            store(F); throw;
+                        }
+                    }
+
                     //__________________________________________________________
                     //
                     // Members
