@@ -121,6 +121,7 @@ namespace Yttrium
             }
 
             static SignType Compare(const Tribe * const, const Tribe * const) noexcept;
+            
 
 
             // members
