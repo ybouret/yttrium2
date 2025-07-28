@@ -165,7 +165,7 @@ namespace Yttrium
             }
 
 
-            Family * Family:: createNewFamilyWith(Vector * const ortho, Cache &fc)
+            Family * Family:: createNewFamilyWith(Vector * const ortho, Pool &fc)
             {
                 assert(0!=ortho);
                 //assert( verify(ortho) );
@@ -184,28 +184,27 @@ namespace Yttrium
 
             //------------------------------------------------------------------
 
-            Family:: Cache:: Cache(Vector::Pool &vp) noexcept :
-            CountedObject(),
+            Family:: Pool:: Pool(Vector::Pool &vp) noexcept :
             Metrics(vp),
             Caching(),
             vpool(vp),
-            fCache()
+            flist()
             {
             }
 
-            Family:: Cache:: ~Cache() noexcept
+            Family:: Pool:: ~Pool() noexcept
             {
             }
 
-            void Family:: Cache:: store(Family *const F) noexcept
+            void Family:: Pool:: store(Family *const F) noexcept
             {
                 assert(0!=F);
-                fCache.pushHead(F)->clear();
+                flist.pushHead(F)->clear();
             }
 
-            Family * Family:: Cache:: query(const Family &F)
+            Family * Family:: Pool:: query(const Family &F)
             {
-                Family * const R = (fCache.size > 0 ? fCache.popHead() : new Family(vpool));
+                Family * const R = (flist.size > 0 ? flist.popHead() : new Family(vpool));
                 try {
                     return R->replicate(F);
                 }
@@ -217,23 +216,23 @@ namespace Yttrium
             }
 
 
-            size_t Family:: Cache:: count() const noexcept
+            size_t Family:: Pool:: count() const noexcept
             {
-                return fCache.size;
+                return flist.size;
             }
 
-            void Family:: Cache:: cache(const size_t n)
+            void Family:: Pool:: cache(const size_t n)
             {
                 for(size_t i=n;i>0;--i) {
-                    fCache.pushTail( new Family(vpool) );
+                    flist.pushTail( new Family(vpool) );
                 }
             }
 
-            void Family:: Cache:: gc(const uint8_t amount) noexcept
+            void Family:: Pool:: gc(const uint8_t amount) noexcept
             {
-                fCache.sortByIncreasingAddress();
-                const size_t newSize = NewSize(amount,fCache.size);
-                while(fCache.size>newSize) delete fCache.popTail();
+                flist.sortByIncreasingAddress();
+                const size_t newSize = NewSize(amount,flist.size);
+                while(flist.size>newSize) delete flist.popTail();
             }
 
         }

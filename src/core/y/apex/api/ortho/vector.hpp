@@ -8,8 +8,6 @@
 #include "y/container/cxx/array.hpp"
 #include "y/apex/rational.hpp"
 #include "y/core/linked/list/cxx.hpp"
-#include "y/object/counted.hpp"
-#include "y/pointer/arc.hpp"
 #include "y/ability/caching.hpp"
 
 namespace Yttrium
@@ -130,7 +128,7 @@ namespace Yttrium
                 //! Pool for Families
                 //
                 //______________________________________________________________
-                class Pool : public CountedObject, public Metrics, public Caching
+                class Pool : public Metrics, public Caching
                 {
                 public:
                     //__________________________________________________________

@@ -259,7 +259,6 @@ namespace Yttrium
 
 
             Vector:: Pool:: Pool(const Metrics &m) noexcept :
-            CountedObject(),
             Metrics(m),
             list()
             {}

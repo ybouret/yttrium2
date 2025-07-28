@@ -120,18 +120,18 @@ namespace Yttrium
                 //______________________________________________________________
                 //
                 //
-                //! Cache
+                //! Pool
                 //
                 //______________________________________________________________
-                class Cache : public CountedObject, public Metrics, public Caching
+                class Pool : public Metrics, public Caching
                 {
                 public:
                     //__________________________________________________________
                     //
                     // C++
                     //__________________________________________________________
-                    explicit Cache(Vector::Pool &) noexcept; //!< setup
-                    virtual ~Cache() noexcept;               //!< cleanup
+                    explicit Pool(Vector::Pool &) noexcept; //!< setup
+                    virtual ~Pool() noexcept;               //!< cleanup
 
                     //__________________________________________________________
                     //
@@ -154,8 +154,8 @@ namespace Yttrium
                     //__________________________________________________________
                     Vector::Pool &vpool; //!< shared cache of vectors
                 private:
-                    Y_Disable_Copy_And_Assign(Cache); //!< discarding
-                    CxxListOf<Family> fCache;         //!< pool
+                    Y_Disable_Copy_And_Assign(Pool); //!< discarding
+                    CxxListOf<Family> flist;         //!< list
                 };
 
 
@@ -166,18 +166,17 @@ namespace Yttrium
                  \return replicate + new vector upon success
                  */
                 template <typename ARRAY>
-                Family *newFamilyWith(ARRAY &arr, Cache &fc)
+                Family *newFamilyWith(ARRAY &arr, Pool &fpool)
                 {
                     Vector * const ortho = accepts(arr); if(!ortho) return 0;
-                    return createNewFamilyWith(ortho,fc);
+                    return createNewFamilyWith(ortho,fpool);
                 }
 
             private:
                 //! \return augmented family
-                Family *createNewFamilyWith(Vector * const, Cache &);
+                Family *createNewFamilyWith(Vector * const, Pool &);
             };
 
-            typedef ArcPtr<Family::Cache> FCache; //!< alias
 
         }
 

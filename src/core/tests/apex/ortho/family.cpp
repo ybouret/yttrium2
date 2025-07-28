@@ -67,6 +67,15 @@ Y_UTEST(apex_ortho_family)
         }
 
 
+        Apex::Ortho::Family::Pool fpool(vpool);
+        Apex::Ortho::Family *G = 0;
+        do
+        {
+            MakeRan(ran,v);
+        } while(0 == (G=F.newFamilyWith(v,fpool)));
+
+        fpool.store(G);
+
 
 
 
