@@ -67,11 +67,15 @@ namespace Yttrium
                 {
                     assert(dimensions==arr.size());
                     if( Basis == dimensions) return 0;
-                    return isOrtho( cache->query(arr) );
+                    return orthogonalPart( cache->query(arr) );
                 }
 
-                bool verify(const Vector &v) const;
-                void progeny(Vector * const v) noexcept; //!< \param v new vector added to family
+                //! \return ncof>0, nrm2>0, orthogonal to all family vectors
+                bool verify(const Vector &) const;
+
+                //! \param v new vector added to family
+                void progeny(Vector * const v) noexcept;
+
 
                 const char *   humanReadableQuality() const noexcept; //!< \return quality
 
@@ -101,8 +105,15 @@ namespace Yttrium
                 virtual ConstInterface &locus() const noexcept;
 
                 void    clear()   noexcept;        //!<  return all vectors to  cache
-                Vector *isOrtho(Vector * const);   //!< \return remaining non zero vector, NULL otherwise
-                Family *replicate(const Family &); //!< from empty to copy
+                Family *replicate(const Family &); //!< \return from empty to copy or source family
+
+                //! check for a vector that may expand the family
+                /**
+                 the vector is returned to cache upon failure
+                 \param v test vector
+                 \return remaining orthogonal part
+                 */
+                Vector *orthogonalPart(Vector * const v);
 
             public:
                 //______________________________________________________________
@@ -133,7 +144,7 @@ namespace Yttrium
                     //
                     // Methods
                     //__________________________________________________________
-                    Family * query(const Family &F);         //!< \return new empty family
+                    Family * query(const Family &F);         //!< \param F source family \return new empty replicated family
                     void     store(Family * const) noexcept; //!< store and clear family
 
                     //__________________________________________________________
@@ -147,15 +158,21 @@ namespace Yttrium
                 };
 
 
+                //! try to create a new family from a test vector
+                /**
+                 \param arr a compatible array in type and size
+                 \param fc  a family cache
+                 \return replicate + new vector upon success
+                 */
                 template <typename ARRAY>
                 Family *newFamilyWith(ARRAY &arr, Cache &fc)
                 {
-                    Vector * const ortho = accepts(arr);
-                    if(!ortho) return 0;
+                    Vector * const ortho = accepts(arr); if(!ortho) return 0;
                     return createNewFamilyWith(ortho,fc);
                 }
 
             private:
+                //! \return augmented family
                 Family *createNewFamilyWith(Vector * const, Cache &);
             };
 

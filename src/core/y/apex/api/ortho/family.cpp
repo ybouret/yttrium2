@@ -86,7 +86,7 @@ namespace Yttrium
 
 
 
-            Vector * Family:: isOrtho(Vector * const a)
+            Vector * Family:: orthogonalPart(Vector * const a)
             {
                 assert(0!=a);
                 const Vector *b = vlist.head;
