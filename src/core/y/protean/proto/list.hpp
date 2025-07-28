@@ -117,6 +117,12 @@ namespace Yttrium
                 return res;
             }
 
+            inline void cut(NODE * const node) noexcept
+            {
+                assert(node); assert(list.owns(node));
+                Y_Must_Lock();
+                pool.banish( list.pop(node) );
+            }
 
             //! \return live objects
             inline virtual size_t size() const noexcept { return list.size; }

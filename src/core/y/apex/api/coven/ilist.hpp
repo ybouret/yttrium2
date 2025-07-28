@@ -12,19 +12,52 @@ namespace Yttrium
     namespace Coven
     {
 
-        typedef Protean::CoopHeavyList<size_t,SingleThreadedClass> IListType;
-        typedef IListType::PoolType                                IPoolType;
-        typedef IListType::NodeType                                INode;
 
+
+        typedef Protean::CoopHeavyList<size_t,SingleThreadedClass> IListType; //!< alias
+        typedef IListType::PoolType                                IPool;     //!< alias
+        typedef IListType::NodeType                                INode;     //!< aluas
+
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! List of indices
+        //
+        //
+        //______________________________________________________________________
         class IList : public IListType
         {
         public:
-            explicit IList(const IPoolType &) noexcept;
-            virtual ~IList() noexcept;
-            IList(const IList &);
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit IList(const IPool &) noexcept; //!< empty list
+            virtual ~IList() noexcept;              //!< cleanup
+            IList(const IList &);                   //!< duplicate
+
+            //! create list with pre-ordered items
+            /**
+             \param n list will contain 1..n
+             \param first first index in 1..n
+             */
+            explicit IList(const IPool &, const size_t n, const size_t first);
+
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            void remove(const size_t indx) noexcept;
             
+
         private:
-            Y_Disable_Assign(IList);
+            Y_Disable_Assign(IList); //!< discarding
         };
 
         

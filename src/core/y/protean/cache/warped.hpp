@@ -96,7 +96,7 @@ namespace Yttrium
             }
 
 
-            //! summon a live node
+            //! summon a live node with 2 arguments
             /**
              \param arg1 passed to node constructor
              \param arg2 passed to node constructor
@@ -110,6 +110,25 @@ namespace Yttrium
                 try { return new (addr) NodeType(arg1,arg2); }
                 catch(...) { zpool.store(addr); throw; }
             }
+
+
+            //! summon a live node with 3 arguments
+            /**
+             \param arg1 passed to node constructor
+             \param arg2 passed to node constructor
+             \param arg3 passed to node constructor
+             \return a new live node
+             */
+            template <typename ARG1, typename ARG2, typename ARG3> inline
+            NodeType * summon(ARG1 &arg1, ARG2 &arg2, ARG3 &arg3)
+            {
+                Y_Must_Lock();
+                void * const addr = zpool.query();
+                try { return new (addr) NodeType(arg1,arg2,arg3); }
+                catch(...) { zpool.store(addr); throw; }
+            }
+
+
 
 
             //! send back to zombies (local cache)

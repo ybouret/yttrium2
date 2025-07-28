@@ -7,7 +7,7 @@ using namespace Yttrium;
 Y_UTEST(coven_indx)
 {
 
-    Coven::IPoolType pool;
+    Coven::IPool pool;
 
     {
         Coven::IList     il(pool);
@@ -24,6 +24,16 @@ Y_UTEST(coven_indx)
         std::cerr << il << std::endl;
         while(il.size()) is << il->popHead();
         std::cerr << is << std::endl;
+    }
+
+    for(size_t i=1;i<=6;++i)
+    {
+        std::cerr << std::endl;
+        for(size_t j=1;j<=i;++j)
+        {
+            Coven::IList     il(pool,i,j);
+            std::cerr << il << std::endl;
+        }
     }
 
 

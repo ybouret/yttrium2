@@ -11,7 +11,7 @@ namespace Yttrium
         {
         }
 
-        ISet:: ISet(const IPoolType &pool ) noexcept :
+        ISet:: ISet(const IPool &pool ) noexcept :
         Ingress<const IList>(),
         list(pool)
         {
@@ -48,12 +48,27 @@ namespace Yttrium
 
         bool ISet:: has(const size_t indx) const noexcept
         {
+            switch(list->size)
+            {
+                case 0: return false;
+                case 1: return indx == **(list->head);
+                default:
+                    break;
+            }
+            
+            
             for(const INode *node=list->head;node;node=node->next)
             {
                 if( indx == **node ) return true;
             }
             return false;
         }
+
+        void ISet:: remove(const size_t indx) noexcept
+        {
+            list.remove(indx);
+        }
+
 
 
 

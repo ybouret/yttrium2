@@ -52,7 +52,7 @@ namespace Yttrium
             inline virtual ~CoopHeavyList() noexcept {}
 
             //! assign cache and duplicate \param other another list
-            inline CoopHeavyList(const CoopHeavyList &other) : BaseType(other)
+            inline CoopHeavyList(const CoopHeavyList &other) : Container(), BaseType(other)
             {
             }
 
