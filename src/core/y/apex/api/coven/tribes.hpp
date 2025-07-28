@@ -88,10 +88,30 @@ namespace Yttrium
                     }
                     swapListFor(heirs);
                 }
+
+
                 if( 0 != (strategy&NoReplica) )
                 {
                     makeNoReplica();
+#if 0
+                    for(const Tribe *curr=head;curr;curr=curr->next)
+                    {
+                        for(const Tribe *prev=curr->prev;prev;prev=prev->prev)
+                        {
+                            if( __Zero__ == QFamily::Compare(curr->family,prev->family) )
+                            {
+                                std::cerr << "---> same families!!" << std::endl;
+                                std::cerr << *curr << std::endl;
+                                std::cerr << *prev << std::endl;
+                            }
+                        }
+                    }
+#endif
                 }
+
+
+
+
                 return size;
             }
 

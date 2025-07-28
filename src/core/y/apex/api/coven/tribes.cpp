@@ -80,10 +80,12 @@ namespace Yttrium
 
                 if(lhs.basis==rhs.basis && lhs.ready == rhs.ready)
                 {
+#if 0
                     std::cerr
                     <<
                     "Found same " << lhs << std::endl <<
                     " and       " << rhs << std::endl;
+#endif
                     delete popHead();
                     continue;
                 }
@@ -92,7 +94,7 @@ namespace Yttrium
             }
 
             swapListFor(target);
-
+            
 
         }
 

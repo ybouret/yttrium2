@@ -182,6 +182,27 @@ namespace Yttrium
             }
 
 
+            SignType Family:: Compare(const Family * const lhs, const Family * const rhs) noexcept
+            {
+                assert(lhs);
+                assert(rhs);
+                assert(lhs->vlist.size==rhs->vlist.size);
+
+                for(const Vector *l = lhs->vlist.head, *r =rhs->vlist.head; l; l=l->next, r=r->next)
+                {
+                    assert(l);
+                    assert(r);
+                    switch( Vector::Compare(l,r) )
+                    {
+                        case Negative: return Negative;
+                        case Positive: return Positive;
+                        case __Zero__: continue;
+                    }
+                }
+                
+                return __Zero__;
+            }
+
             //------------------------------------------------------------------
 
             Family:: Pool:: Pool(Vector::Pool &vp) noexcept :
