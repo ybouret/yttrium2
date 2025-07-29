@@ -16,7 +16,7 @@ namespace Yttrium
 
     namespace Coven
     {
-        
+
         //______________________________________________________________________
         //
         //
@@ -182,9 +182,12 @@ namespace Yttrium
              */
             template <typename MATRIX> inline
             void generating(Tribe::List  & heirs,
-                             const MATRIX & mu,
-                             Survey * const survey)
+                            const MATRIX & mu,
+                            Survey * const survey)
             {
+
+                
+
                 Tribe::List H; // local heirs
                 for(const INode *node = ready->head; node; node=node->next)
                 {
@@ -252,7 +255,7 @@ namespace Yttrium
         };
 
 
- 
+
 
     }
 

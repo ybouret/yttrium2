@@ -57,16 +57,30 @@ namespace Yttrium
         }
 
 
-#define Y_Coven_Follow(WHAT) do { if( 0 != (strategy&WHAT) ) make##WHAT(); } while(false)
-
-        void Tribes:: follow(const unsigned int strategy)
+        static inline
+        void promoteReadyOf(Tribe * const tribe, const IList &peerBasis)
         {
-            Y_Coven_Follow(EndEarlyBasis);
-            Y_Coven_Follow(DitchReplicae);
-            Y_Coven_Follow(GroupFamilies);
+            std::cerr << "Promote " << *tribe << " with " << peerBasis << std::endl;
+
+            {
+                IList ready(peerBasis.pool);
+                while(tribe->ready->size)
+                {
+                    INode * const node = tribe->ready->popHead();
+                    if(peerBasis.has(**node))
+                    {
+                        tribe->basis.sorted(node);
+                    }
+                    else
+                        ready->pushTail(node);
+                }
+
+                (*tribe->ready).swapListFor(*ready);
+            }
+
+            std::cerr << "==> " << *tribe << std::endl;
+
         }
-
-
 
         void Tribes:: shrink()
         {
@@ -78,14 +92,12 @@ namespace Yttrium
 
                 if(source->ready->size<=0)
                 {
-                    std::cerr << "[-] achieved" << std::endl;
-                    goto DROP;
+                    goto DROP; // no more vector to feed
                 }
 
                 if(Apex::Ortho::Basis == source->family->quality)
                 {
-                    std::cerr << "[-] full basis" << std::endl;
-                    goto DROP;
+                    goto DROP; // full basis
                 }
 
 
@@ -94,20 +106,30 @@ namespace Yttrium
                     if(target->basis == source->basis)
                     {
                         if(target->ready == source->ready)
-                        {
-                            std::cerr << "[-] replica" << std::endl;
-                            goto DROP;
-                        }
-                        else
-                        {
-                            goto KEEP;
-                        }
+                            goto DROP; // replica
+                        goto KEEP;     //
                     }
-                    else
+
+#if 0
+                    if( *target->family == *source->family )
                     {
 
+                        std::cerr << "[[ Same Families, different basis!! ]]]" << std::endl;
+                        std::cerr << *source << std::endl;
+                        std::cerr << *target << std::endl;
 
+                        {
+                            const IList sourceBasis = source->basis;
+                            const IList targetBasis = target->basis;
+
+                            promoteReadyOf(source,targetBasis);
+                            promoteReadyOf(target,sourceBasis);
+                        }
+
+
+                        exit(0);
                     }
+#endif
                 }
 
                 

@@ -55,9 +55,16 @@ namespace Yttrium
             return Sign::Of(**lhs,**rhs);
         }
 
+        void IList:: sorted(INode * const node) noexcept
+        {
+            assert(0!=node);
+            list.insertOrderedBy(CompareData,node);
+        }
+
+
         void IList:: sorted(const size_t indx)
         {
-            list.insertOrderedBy(CompareData,pool.summon(indx));
+            sorted( pool.summon(indx) );
         }
         
         bool operator==(const IList &lhs, const IList &rhs) noexcept
@@ -84,6 +91,16 @@ namespace Yttrium
                 if( **l != **r ) return true;
             }
 
+            return false;
+        }
+
+
+        bool IList:: has(const size_t indx) const noexcept
+        {
+            for(const INode *node=list.head;node;node=node->next)
+            {
+                if(indx == **node) return true;
+            }
             return false;
         }
 
