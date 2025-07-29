@@ -180,7 +180,8 @@ namespace Yttrium
             static SignType Compare(const String &, const String &) noexcept; //!< \return lexicographic comparison
 
             String & reverse() noexcept; //!< reverse content \return *this
-
+            const String & key() const noexcept { return *this; }
+            
         private:
             Code * const code; //!< internal memory
 

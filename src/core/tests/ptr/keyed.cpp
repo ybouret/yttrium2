@@ -47,5 +47,11 @@ Y_UTEST(ptr_keyed)
     DAutoPtr p = new Dummy("hello");
     std::cerr << "key = '" << p.key() << "'" << std::endl;
 
+    typedef Keyed< String, ArcPtr<Dummy> > DArcPtr;
+
+    DArcPtr q = new Dummy("world");
+    std::cerr << "key = '" << q.key() << "'" << std::endl;
+
+
 }
 Y_UDONE()

@@ -7,18 +7,38 @@
 
 namespace Yttrium
 {
-
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! convert smart pointer into keyed-pointed
+    //
+    //
+    //__________________________________________________________________________
     template<typename KEY, class PTR>
     class Keyed : public PTR
     {
     public:
-        Y_Args_Expose(KEY,Key);
-        typedef typename PTR::Type Type;
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        Y_Args_Expose(KEY,Key);          //!< aliases
+        typedef typename PTR::Type Type; //!< alias
 
-        inline virtual ~Keyed() noexcept {}
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
 
-        inline Keyed(Type * const obj) : PTR(obj) {}
-        inline Keyed(const Keyed &ptr) : PTR(ptr) {}
+        inline Keyed(Type * const obj) : PTR(obj) {} //!< assign \param obj for underlying pointer
+        inline Keyed(const Keyed &ptr) : PTR(ptr) {} //!< copy   \param ptr another pointer
+
+        //! assign \param ptr another pointer \return *this
         inline Keyed & operator=(const Keyed &ptr)
         {
             PTR &       lhs = *this;
@@ -27,6 +47,17 @@ namespace Yttrium
             return *this;
         }
 
+        //! cleanup
+        inline virtual ~Keyed() noexcept {}
+
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+
+        //! \return forward call to pointee
         inline ConstKey & key() const noexcept { return (**this).key(); }
 
     };
