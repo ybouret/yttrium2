@@ -1,6 +1,4 @@
 
-
-
 Y_CreateTest(test-core
 core
 format
@@ -133,6 +131,7 @@ Y_UTEST(container:htable)
 Y_UTEST(container:suffix:set)
 Y_UTEST(container:suffix:map)
 Y_UTEST(container:hash:set)
+Y_UTEST(container:hash:map)
 
 #stream
 Y_UTEST(stream:io:char)
