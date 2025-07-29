@@ -102,6 +102,10 @@ namespace Yttrium
 
             //! \return compared by basis + ready
             static SignType Compare(const Tribe * const, const Tribe * const) noexcept;
+            
+
+            bool isSterile() const noexcept;
+            
 
             //! create next generation
             /**
@@ -185,41 +189,64 @@ namespace Yttrium
                             const MATRIX & mu,
                             Survey * const survey)
             {
-
-                
-
-                Tribe::List H; // local heirs
-                for(const INode *node = ready->head; node; node=node->next)
+                Tribe::List offspring;
                 {
                     //----------------------------------------------------------
-                    // try to expand family
+                    // try to create new family and keep track of colinear rows
                     //----------------------------------------------------------
-                    const size_t    indx    = **node;
-                    QFamily * const lineage = family->newFamilyWith(mu[indx],fpool);
-                    if(!lineage) continue;
-
-                    //----------------------------------------------------------
-                    // a new vector was created into lineage
-                    //----------------------------------------------------------
-                    assert(0!=lineage->lastVec);
-                    try {
-                        Coerce( H.pushTail( new Tribe(*this,indx) )->family ) = lineage;
-                    }
-                    catch(...)
+                    IList colinear(basis.pool);
+                    for(const INode *node = ready->head; node; node=node->next)
                     {
-                        fpool.store(lineage); throw;
+                        //------------------------------------------------------
+                        // try to expand family
+                        //------------------------------------------------------
+                        const size_t    indx    = **node;
+                        QFamily * const lineage = family->newFamilyWith(mu[indx],fpool);
+                        if(!lineage)
+                        {
+                            // row is in vector space
+                            colinear << indx;
+                            continue;
+                        }
+
+                        //------------------------------------------------------
+                        // a new vector was created into lineage
+                        //------------------------------------------------------
+                        assert(0!=lineage->lastVec);
+                        try {
+                            Coerce( offspring.pushTail( new Tribe(*this,indx) )->family ) = lineage;
+                        }
+                        catch(...)
+                        {
+                            fpool.store(lineage); throw;
+                        }
+
+                        //------------------------------------------------------
+                        // process the new vector
+                        //------------------------------------------------------
+                        if(survey) survey->collect(*(lineage->lastVec));
                     }
 
                     //----------------------------------------------------------
-                    // process the new vector
+                    // propagate colinear to each basis
                     //----------------------------------------------------------
-                    if(survey) survey->collect(*(lineage->lastVec));
-
+                    if(colinear->size>0)
+                    {
+                        for(Tribe *tr=offspring.head;tr;tr=tr->next)
+                        {
+                            for(const INode *node=colinear->head;node;node=node->next)
+                            {
+                                tr->basis.sorted(**node);
+                            }
+                        }
+                    }
                 }
-                H.sort(Tribe::Compare);
+
                 Tribe::List all;
-                all.fusion(heirs,H,Tribe::Compare);
+                offspring.sort(Tribe::Compare);
+                all.fusion(heirs,offspring,Tribe::Compare);
                 heirs.swapListFor(all);
+
             }
 
             //! hyperplane, would generate at most one new vector

@@ -103,6 +103,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(stream_output_file);
     Y_UTEST(stream_gets);
     Y_UTEST(stream_proc);
+    Y_UTEST(stream_xmlog);
     Y_UTEST(stream_gzip_read);
 
 

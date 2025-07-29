@@ -56,11 +56,10 @@ namespace Yttrium
             }
         }
 
-
         static inline
         void promoteReadyOf(Tribe * const tribe, const IList &peerBasis)
         {
-            std::cerr << "Promote " << *tribe << " with " << peerBasis << std::endl;
+            //std::cerr << "Promote " << *tribe << " with " << peerBasis << std::endl;
 
             {
                 IList ready(peerBasis.pool);
@@ -78,72 +77,85 @@ namespace Yttrium
                 (*tribe->ready).swapListFor(*ready);
             }
 
-            std::cerr << "==> " << *tribe << std::endl;
+            //std::cerr << "==> " << *tribe << std::endl;
 
         }
 
         void Tribes:: shrink()
         {
             Tribe::List list;
+            bool        changed = false;
 
-            while(size>0)
+            do
             {
-                Tribe * const source = head;
-
-                if(source->ready->size<=0)
+                changed = false;
+                while(size>0)
                 {
-                    goto DROP; // no more vector to feed
-                }
+                    Tribe * const source = head;
 
-                if(Apex::Ortho::Basis == source->family->quality)
-                {
-                    goto DROP; // full basis
-                }
+                    if(source->isSterile()) goto DROP;
 
 
-                for(Tribe *target=list.tail;target;target=target->prev)
-                {
-                    if(target->basis == source->basis)
+                    for(Tribe *target=list.tail;target;target=target->prev)
                     {
-                        if(target->ready == source->ready)
-                            goto DROP; // replica
-                        goto KEEP;     //
-                    }
-
-#if 0
-                    if( *target->family == *source->family )
-                    {
-
-                        std::cerr << "[[ Same Families, different basis!! ]]]" << std::endl;
-                        std::cerr << *source << std::endl;
-                        std::cerr << *target << std::endl;
-
+                        if(target->basis == source->basis)
                         {
-                            const IList sourceBasis = source->basis;
-                            const IList targetBasis = target->basis;
-
-                            promoteReadyOf(source,targetBasis);
-                            promoteReadyOf(target,sourceBasis);
+                            if(target->ready == source->ready)
+                            {
+                                assert( __Zero__ == Tribe::Compare(source,target) );
+                                goto DROP; // replica
+                            }
+                            goto KEEP;     // for next generation
                         }
 
+                        if( *target->family == *source->family )
+                        {
 
-                        exit(0);
+                            std::cerr << *source << std::endl;
+                            std::cerr << *target << std::endl;
+
+                            {
+                                const IList sourceBasis = source->basis;
+                                const IList targetBasis = target->basis;
+                                promoteReadyOf(source,targetBasis);
+                                promoteReadyOf(target,sourceBasis);
+                            }
+
+                            // check if same tribes were produced
+                            if( __Zero__ == Tribe::Compare(source,target) || target->isSterile() )
+                            {
+                                delete list.pop(target);
+                            }
+
+                            if(source->isSterile())
+                            {
+                                goto DROP;
+                            }
+
+
+
+                            changed = true;
+                            goto KEEP;
+                        }
+
                     }
-#endif
+
+
+
+                KEEP:
+                    list.pushTail( popHead() );
+                    continue;
+
+                DROP:
+                    delete popHead();
+                    continue;
                 }
 
-                
-
-            KEEP:
-                list.pushTail( popHead() );
-                continue;
-
-            DROP:
-                delete popHead();
-                continue;
+                swapListFor(list);
             }
+            while(changed);
 
-            swapListFor(list);
+            sort(Tribe::Compare);
 
         }
 
