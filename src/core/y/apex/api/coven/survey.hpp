@@ -22,6 +22,7 @@ namespace Yttrium
             void reset() noexcept;
             void collect(const QVector &vec);
 
+            friend bool operator==(const Survey &, const Survey &) noexcept;
 
         private:
             Y_Disable_Copy_And_Assign(Survey);

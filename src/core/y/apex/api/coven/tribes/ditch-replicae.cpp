@@ -7,7 +7,7 @@ namespace Yttrium
 
     namespace Coven
     {
-        void Tribes:: makeDitchReplicae()
+        void Tribes:: makeDitchReplicae() noexcept
         {
             std::cerr << "DitchReplicae :" <<  size << " => ";
             Tribe::List target;

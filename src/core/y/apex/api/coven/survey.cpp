@@ -44,6 +44,22 @@ namespace Yttrium
             list.insertOrderedBy( QVector::Compare,  pool.query(vec) );
         }
 
+
+        bool operator==(const Survey &lhs, const Survey &rhs) noexcept
+        {
+            if(lhs->size!=rhs->size) return false;
+
+            for(const QVector *l = lhs->head, *r=rhs->head;l;l=l->next,r=r->next)
+            {
+                assert(l);
+                assert(r);
+                if( *l != *r ) return false;
+            }
+
+            return true;
+        }
+
+
     }
 
 }

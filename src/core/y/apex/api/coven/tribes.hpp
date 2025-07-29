@@ -32,8 +32,9 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            static const unsigned DitchReplicae = 0x01; //!< no same basis+ready
-            static const unsigned GroupFamilies = 0x02;
+            static const unsigned EndEarlyBasis = 0x01; //!< won't produce
+            static const unsigned DitchReplicae = 0x02; //!< no same basis+ready
+            static const unsigned GroupFamilies = 0x04;
 
             //__________________________________________________________________
             //
@@ -153,8 +154,9 @@ namespace Yttrium
             void finish(const IList & ) noexcept; //!< remove bad indices from all root trubes
             void follow(const unsigned);          //!< call optimization
 
-            void makeDitchReplicae(); //!< apply DitchReplicae
-            void makeGroupFamilies(); //!< apply GroupFamilies
+            void makeEndEarlyBasis() noexcept; //!< apply EndEarlyBasis
+            void makeDitchReplicae() noexcept; //!< apply DitchReplicae
+            void makeGroupFamilies();          //!< apply GroupFamilies
         };
 
 

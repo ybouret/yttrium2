@@ -61,6 +61,7 @@ namespace Yttrium
 
         void Tribes:: follow(const unsigned int strategy)
         {
+            Y_Coven_Follow(EndEarlyBasis);
             Y_Coven_Follow(DitchReplicae);
             Y_Coven_Follow(GroupFamilies);
         }

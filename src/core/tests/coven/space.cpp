@@ -9,22 +9,24 @@ using namespace Yttrium;
 
 namespace
 {
-    static inline void Run(const Matrix<int> &    mu,
-                           Coven::QVector::Pool & vp,
-                           const unsigned         strategy,
-                           Coven::Survey &        survey)
+    static inline size_t Run(const Matrix<int> &    mu,
+                             Coven::QVector::Pool & vp,
+                             const unsigned         strategy,
+                             Coven::Survey &        survey)
     {
 
         Coven::IPool         ip;
         Coven::QFamily::Pool fp(vp);
 
         Coven::Tribes tribes(mu,ip,fp, &survey);
+        size_t count = tribes.size;
         do
         {
-            tribes.generate(mu,&survey,strategy);
+            count += tribes.generate(mu,&survey,strategy);
         } while( tribes.size > 0);
 
-        std::cerr << "found=" << survey->size << " / " << survey.calls << std::endl;
+        //std::cerr << "found=" << survey->size << " / " << survey.calls << std::endl;
+        return count;
     }
 }
 
@@ -52,18 +54,28 @@ Y_UTEST(coven_space)
 
     Coven::QVector::Pool vp(mu.cols);
 
+
+
     Coven::Survey survey0(vp);
-    Run(mu,vp,0,survey0);
+    const size_t  gen0 = Run(mu,vp,0,survey0);
 
     Coven::Survey survey1(vp);
-    Run(mu,vp,Coven::Tribes::DitchReplicae,survey1);
+    const size_t gen1  = Run(mu,vp,Coven::Tribes::EndEarlyBasis,survey1);
+
+    Y_ASSERT(survey1==survey0);
 
     Coven::Survey survey2(vp);
-    Run(mu,vp,Coven::Tribes::GroupFamilies,survey2);
+   // const size_t gen2 = Run(mu,vp,Coven::Tribes::DitchReplicae,survey2);
 
-    std::cerr << "survey0 : " << survey0->size << " / " << survey0.calls << std::endl;
-    std::cerr << "survey1 : " << survey1->size << " / " << survey1.calls << std::endl;
+    Coven::Survey survey3(vp);
+    //const size_t gen3 = Run(mu,vp,Coven::Tribes::GroupFamilies,survey3);
+
+
+
+    std::cerr << "survey0 : " << survey0->size << " / " << survey0.calls << " / gen=" << gen0 << std::endl;
+    std::cerr << "survey1 : " << survey1->size << " / " << survey1.calls << " / gen=" << gen1 << std::endl;
     std::cerr << "survey2 : " << survey2->size << " / " << survey2.calls << std::endl;
+    std::cerr << "survey3 : " << survey2->size << " / " << survey2.calls << std::endl;
 
 
 
