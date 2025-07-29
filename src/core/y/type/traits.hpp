@@ -60,6 +60,7 @@ namespace Yttrium
         ~TypeTraits(); //!< disabled
         Y_Disable_Copy_And_Assign(TypeTraits); //!< disabled
 
+#if !defined(DOXYGEN_SHOULD_SKIP_THIS)
         //______________________________________________________________________
         //
         //
@@ -168,7 +169,8 @@ namespace Yttrium
         enum { IsFundamental        = (IsArithmetic  || IsSameType<T,void>::Value) };
         enum { IsPointingTo         = (IsPointer     || IsPointerToMember) };
         enum { IsPrimitive          = (IsFundamental || IsPointingTo) /*!< IsPrimitive */ };
-
+#endif
+        
         typedef typename
         Pick<IsReference,          // T is 'U &' or 'const U &' ?
         T                          // true => parameter is T

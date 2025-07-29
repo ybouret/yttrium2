@@ -57,13 +57,15 @@ namespace Yttrium
         struct Cull
         {
         private:
+#if !defined(DOXYGEN_SHOULD_SKIP_THIS)
             template <class U>    struct IsCompoundTrait               { enum { Value = false }; };
             template <typename Z> struct IsCompoundTrait< V2D<Z> >     { enum { Value = true };  };
             template <typename Z> struct IsCompoundTrait< V3D<Z> >     { enum { Value = true };  };
             template <typename Z> struct IsCompoundTrait< V4D<Z> >     { enum { Value = true };  };
             template <typename Z> struct IsCompoundTrait< Complex<Z> > { enum { Value = true };  };
             template <typename Z> struct IsCompoundTrait< XReal<Z> >   { enum { Value = true };  };
-
+#endif
+            
         public:
             //__________________________________________________________________
             //
@@ -72,7 +74,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             typedef typename TypeTraits<KEY>::MutableType MutableKey; //!< alias
-            enum { IsCompound = IsCompoundTrait<MutableKey>::Value };
+            enum { IsCompound = IsCompoundTrait<MutableKey>::Value /*!< alias */ };
             static const bool _IsMemoryBuffer = Y_Is_SuperSubClass(Memory::ReadOnlyBuffer,MutableKey);   //!< inheritance
             static const bool _IsCharPointer_ = IsSameType<MutableKey,char *>::Value;                    //!< partial test
             static const bool _IsCharTableau_ = TypeTraits<MutableKey>::template IsArrayOf<char>::Value; //!< partial test

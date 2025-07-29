@@ -12,26 +12,51 @@ namespace Yttrium
     namespace Coven
     {
 
-
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Survey of vectors, ordered
+        //
+        //
+        //______________________________________________________________________
         class Survey : public Ingress< const Core::ListOf<QVector> >
         {
         public:
-            explicit Survey(QVector::Pool &vp) noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup with vector pool for memory
+            explicit Survey(QVector::Pool &) noexcept;
+
+            //! cleanup
             virtual ~Survey() noexcept;
 
-            void reset() noexcept;
-            void collect(const QVector &vec);
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            void reset() noexcept;         //!< vector in pool, calls=0;
+            void collect(const QVector &); //!< collect vector, no duplicate
 
+            //! test equality, mostly to debug
             friend bool operator==(const Survey &, const Survey &) noexcept;
 
         private:
-            Y_Disable_Copy_And_Assign(Survey);
+            Y_Disable_Copy_And_Assign(Survey); //!< discarding
             virtual ConstInterface & locus() const noexcept;
 
-            QVector::List   list;
-            QVector::Pool & pool;
+            QVector::List   list; //!< current list
+            QVector::Pool & pool; //!< pool for memory
+            
         public:
-            const size_t    calls;
+            const size_t    calls; //!< current calls
         };
     }
 

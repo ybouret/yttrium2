@@ -117,6 +117,7 @@ namespace Yttrium
                 return res;
             }
 
+            //! pop and banish node from list \param node owned node
             inline void cut(NODE * const node) noexcept
             {
                 assert(node); assert(list.owns(node));

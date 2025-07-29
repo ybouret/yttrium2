@@ -16,10 +16,7 @@ namespace Yttrium
 
     namespace Coven
     {
-
-
-   
-
+        
         //______________________________________________________________________
         //
         //
@@ -108,9 +105,10 @@ namespace Yttrium
 
             //! create next generation
             /**
-             \param heirs list of heirs, pre-sorted
-             \param mu    original matrix to process
-             \param survey optional survey to take on newly created vectors
+             \param heirs         list of heirs, pre-sorted
+             \param mu            original matrix to process
+             \param survey        optional survey to take on newly created vectors
+             \param useHyperPlane optimizing last search
              */
             template <typename MATRIX> inline
             void generate(Tribe::List  & heirs,

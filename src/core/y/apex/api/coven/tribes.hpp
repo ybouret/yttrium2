@@ -35,7 +35,7 @@ namespace Yttrium
             static const unsigned EndEarlyBasis = 0x01; //!< won't produce
             static const unsigned DitchReplicae = 0x02; //!< no same basis+ready
             static const unsigned GroupFamilies = 0x04; //!< group similar families
-            static const unsigned UseHyperPlane = 0x08; //!< 
+            static const unsigned UseHyperPlane = 0x08; //!< optimize last search
 
             //__________________________________________________________________
             //
