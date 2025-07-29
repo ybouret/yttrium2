@@ -20,21 +20,7 @@ namespace Yttrium
             virtual ~Survey() noexcept;
 
             void reset() noexcept;
-
-            void collect(const QVector &vec)
-            {
-                ++Coerce(calls);
-                for(const QVector * mine=list.head;mine;mine=mine->next)
-                {
-                    if(*mine==vec)
-                    {
-                        //std::cerr << "[-] " << vec << std::endl;
-                        return;
-                    }
-                }
-                std::cerr << "[+] " << vec << std::endl;
-                list.insertOrderedBy( QVector::Compare,  pool.query(vec) );
-            }
+            void collect(const QVector &vec);
 
 
         private:

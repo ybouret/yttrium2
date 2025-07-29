@@ -28,6 +28,22 @@ namespace Yttrium
         {
             return list;
         }
+
+
+        void Survey:: collect(const QVector &vec)
+        {
+            ++Coerce(calls);
+            for(const QVector * mine=list.head;mine;mine=mine->next)
+            {
+                if(*mine==vec)
+                {
+                    return;
+                }
+            }
+            std::cerr << "[+] " << vec << std::endl;
+            list.insertOrderedBy( QVector::Compare,  pool.query(vec) );
+        }
+
     }
 
 }
