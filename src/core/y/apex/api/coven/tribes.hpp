@@ -133,18 +133,18 @@ namespace Yttrium
             template <typename MATRIX> inline
             size_t generate(const MATRIX & mu,
                             Survey * const survey,
-                            const unsigned strategy)
+                            const bool     optimize)
             {
                 {
-                    const bool  useHyperPlane = 0 != (strategy & UseHyperPlane);
                     Tribe::List heirs;
                     for(Tribe *tribe=head;tribe;tribe=tribe->next)
                     {
-                        tribe->generate(heirs,mu,survey,useHyperPlane);
+                        tribe->generate(heirs,mu,survey,optimize);
                     }
                     swapListFor(heirs);
                 }
-                follow(strategy);
+                if(optimize)
+                    shrink(); // remove tribes that won't produce new vectors
                 return size;
             }
 
@@ -155,6 +155,7 @@ namespace Yttrium
             bool colinearity() const noexcept;    //!< \return colinear last vector
             void finish(const IList & ) noexcept; //!< remove bad indices from all root trubes
             void follow(const unsigned);          //!< call optimization
+            void shrink();
 
             void makeEndEarlyBasis() noexcept; //!< apply EndEarlyBasis
             void makeDitchReplicae() noexcept; //!< apply DitchReplicae

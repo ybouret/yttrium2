@@ -66,7 +66,65 @@ namespace Yttrium
             Y_Coven_Follow(GroupFamilies);
         }
 
-      
+
+
+        void Tribes:: shrink()
+        {
+            Tribe::List list;
+
+            while(size>0)
+            {
+                Tribe * const source = head;
+
+                if(source->ready->size<=0)
+                {
+                    std::cerr << "[-] achieved" << std::endl;
+                    goto DROP;
+                }
+
+                if(Apex::Ortho::Basis == source->family->quality)
+                {
+                    std::cerr << "[-] full basis" << std::endl;
+                    goto DROP;
+                }
+
+
+                for(Tribe *target=list.tail;target;target=target->prev)
+                {
+                    if(target->basis == source->basis)
+                    {
+                        if(target->ready == source->ready)
+                        {
+                            std::cerr << "[-] replica" << std::endl;
+                            goto DROP;
+                        }
+                        else
+                        {
+                            goto KEEP;
+                        }
+                    }
+                    else
+                    {
+
+
+                    }
+                }
+
+                
+
+            KEEP:
+                list.pushTail( popHead() );
+                continue;
+
+            DROP:
+                delete popHead();
+                continue;
+            }
+
+            swapListFor(list);
+
+        }
+
 
     }
 
