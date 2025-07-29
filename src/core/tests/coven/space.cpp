@@ -73,14 +73,16 @@ Y_UTEST(coven_space)
     const size_t  gen3 = Run(mu,vp,Coven::Tribes::DitchReplicae,survey3);
     Y_ASSERT(survey3==survey0);
 
-    //const size_t gen3 = Run(mu,vp,Coven::Tribes::GroupFamilies,survey3);
+    Coven::Survey survey4(vp);
+    const size_t gen4 = Run(mu,vp,Coven::Tribes::EndEarlyBasis|Coven::Tribes::GroupFamilies,survey4);
 
 
 
     std::cerr << "survey0 : " << survey0->size << " / " << survey0.calls << " / gen=" << gen0 << std::endl;
     std::cerr << "survey1 : " << survey1->size << " / " << survey1.calls << " / gen=" << gen1 << std::endl;
     std::cerr << "survey2 : " << survey2->size << " / " << survey2.calls << " / gen=" << gen2 << std::endl;
-    std::cerr << "survey3 : " << survey2->size << " / " << survey2.calls << " / gen=" << gen3 << std::endl;
+    std::cerr << "survey3 : " << survey3->size << " / " << survey3.calls << " / gen=" << gen3 << std::endl;
+    std::cerr << "survey4 : " << survey4->size << " / " << survey4.calls << " / gen=" << gen4 << std::endl;
 
 
 
