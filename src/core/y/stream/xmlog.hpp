@@ -19,23 +19,23 @@ namespace Yttrium
 
         std::ostream  & operator()(void) noexcept;
 
-
         bool          & verbose;
         size_t          depth;
+        std::ostream  & os;      //!< output stream
 
         
         class Section
         {
         public:
             template <typename NAME>
-            explicit Section(XMLog &xmlog, const NAME &name) :
+            explicit Section(XMLog &xmlog, const NAME &name, const bool partial=false) :
             xml(xmlog),
             str(xml.verbose ? new String(name) : 0)
             {
-                init();
+                init(partial);
             }
 
-
+            void quit();
 
 
             virtual ~Section() noexcept;
@@ -43,14 +43,13 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(Section);
-            void           init();
+            void           init(const bool);
             XMLog   &      xml;
             String * const str;
         };
 
     private:
         Y_Disable_Copy_And_Assign(XMLog);
-        std::ostream & os; //!< output stream
     };
 
 #define Y_XMLog(XML,MSG) do { if(xml.verbose) { XML() << MSG << std::endl; } } while(false)

@@ -34,10 +34,19 @@ namespace Yttrium
     }
 
 
-    void XMLog:: Section:: init()
+    void XMLog:: Section:: init(const bool partial)
     {
-        if(xml.verbose) xml() << "<" << *str << ">" << std::endl;
+        if(xml.verbose)
+        {
+            std::ostream & os = xml() << "<" << *str;
+            if(!partial) os << ">" << std::endl;
+        }
         ++xml.depth;
+    }
+
+    void XMLog:: Section:: quit()
+    {
+        xml.os << ">" << std::endl;
     }
 
 }
