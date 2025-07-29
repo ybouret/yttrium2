@@ -116,6 +116,7 @@ Y_UTEST_DECL(256)
 
     Y_UTEST(ptr_auto);
     Y_UTEST(ptr_arc);
+    Y_UTEST(ptr_keyed);
 
     Y_UTEST(info_bwt);
     Y_UTEST(info_stream);

@@ -157,6 +157,7 @@ Y_UTEST(ordered:static_pqueue)
 #ptr
 Y_UTEST(ptr:auto)
 Y_UTEST(ptr:arc)
+Y_UTEST(ptr:keyed)
 
 #information
 Y_UTEST(info:bwt)

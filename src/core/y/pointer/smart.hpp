@@ -55,6 +55,7 @@ namespace Yttrium
             inline typename Redirect<T>::ConstReturnType operator->() const noexcept { assert(pointee); return this->fetch(pointee); }
 
 
+            
             //! content exchange \param other another pointer
             inline void xch(Pointer &other) noexcept
             {
