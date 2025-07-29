@@ -4,9 +4,11 @@
 #ifndef Y_Coven_Tribe_Included
 #define Y_Coven_Tribe_Included 1
 
-#include "y/apex/api/coven/types.hpp"
+#include "y/apex/api/coven/survey.hpp"
 #include "y/apex/api/coven/ilist.hpp"
 
+
+//! set to 1 to check that all basis are different
 #define Y_Coven_Stamp 1
 
 namespace Yttrium
@@ -16,40 +18,42 @@ namespace Yttrium
     {
 
 
-        class Survey
-        {
-        public:
-            explicit Survey() : list(), trials(0) {}
-            virtual ~Survey() noexcept {}
+   
 
-            QVector::List list;
-            size_t        trials;
-
-            void collect(const QVector &vec)
-            {
-                ++trials;
-                for(const QVector * mine=list.head;mine;mine=mine->next)
-                {
-                    if(*mine==vec)
-                    {
-                        //std::cerr << "[-] " << vec << std::endl;
-                        return;
-                    }
-                }
-                std::cerr << "[+] " << vec << std::endl;
-                list.insertOrderedBy( QVector::Compare,  new QVector(vec) );
-            }
-
-
-        private:
-            Y_Disable_Copy_And_Assign(Survey);
-        };
-
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Tribe = basis + ready + family
+        //
+        //
+        //______________________________________________________________________
         class Tribe : public Object
         {
         public:
-            typedef CxxListOf<Tribe> List;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef CxxListOf<Tribe> List; //!< alias
 
+
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup
+            /**
+             \param mu a compatible matrix
+             \param first index of first row to process
+             \param ip    shared IPool
+             \param fp    persistent family pool, fp.dimensions == mu.cols
+             */
             template <typename MATRIX>
             explicit Tribe(const MATRIX        &mu,
                            const size_t         first,
@@ -82,14 +86,36 @@ namespace Yttrium
                 }
             }
 
+            //! cleanup
             virtual ~Tribe() noexcept;
 
+            //! display
             friend std::ostream & operator<<(std::ostream &, const Tribe &);
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! remove index from all indices \param indx bad index (zero/colinear vector)
             void remove(const size_t indx) noexcept;
 
+
+            //! \return compared by basis + ready
+            static SignType Compare(const Tribe * const, const Tribe * const) noexcept;
+
+            //! create next generation
+            /**
+             \param heirs list of heirs, pre-sorted
+             \param mu    original matrix to process
+             \param survey optional survey to take on newly created vectors
+             */
             template <typename MATRIX> inline
-            void generate(Tribe::List & heirs, const MATRIX &mu, Survey * const survey)
+            void generate(Tribe::List  & heirs,
+                          const MATRIX & mu,
+                          Survey * const survey)
             {
                 assert(family);
                 Tribe::List H;
@@ -114,7 +140,12 @@ namespace Yttrium
                         fpool.store(lineage); throw;
                     }
 
+                    //----------------------------------------------------------
+                    // process the new vector
+                    //----------------------------------------------------------
                     if(survey) survey->collect(*(lineage->lastVec));
+
+
                 }
                 H.sort(Tribe::Compare);
                 Tribe::List all;
@@ -122,13 +153,18 @@ namespace Yttrium
                 heirs.swapListFor(all);
             }
 
-            static SignType Compare(const Tribe * const, const Tribe * const) noexcept;
-            
 
 
-            // members
-            IList           basis; //!< ordered indices
-            IList           ready; //!< availavle indices
+
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+
+            IList           basis; //!< ordered   indices
+            IList           ready; //!< available indices
 #if Y_Coven_Stamp
             IList           stamp; //!< stamp
 #endif
@@ -138,8 +174,14 @@ namespace Yttrium
             Tribe *         prev;    //!< for list
 
         private:
-            Y_Disable_Copy_And_Assign(Tribe);
+            Y_Disable_Copy_And_Assign(Tribe); //!< discarding
             void quit() noexcept; //!< make no family
+
+            //! partial setup, assign family after construction
+            /**
+             \param sire parent tribe to copy
+             \param indx index to remove from ready and add to basis
+             */
             explicit Tribe(const Tribe &sire, const size_t indx) :
             Object(),
             basis(sire.basis),

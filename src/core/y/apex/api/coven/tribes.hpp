@@ -15,12 +15,40 @@ namespace Yttrium
     namespace Coven
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Tribes from successive generations
+        //
+        //
+        //______________________________________________________________________
         class Tribes : public Tribe::List
         {
         public:
-            static const unsigned DitchReplicae = 0x01;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const unsigned DitchReplicae = 0x01; //!< no same basis+ready
             static const unsigned GroupFamilies = 0x02;
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! prepare root tribes
+            /**
+             \param mu size=mu.rows, dims=mu.cols
+             \param ip shared index pool
+             \param fp persistent family pool, fp.dimensions = mu.cols
+             \param survey optional survey to take on root vectors
+             */
             template <typename MATRIX> inline
             explicit Tribes(const MATRIX &  mu,
                             const IPool &   ip,
@@ -42,6 +70,11 @@ namespace Yttrium
                 {
                     Tribe *tribe = pushTail( new Tribe(mu,first,ip,fp) );
 
+                    //----------------------------------------------------------
+                    //
+                    // zero row
+                    //
+                    //----------------------------------------------------------
                     if(!tribe->family)
                     {
                         std::cerr << "mu[" << first << "] = " << mu[first] << std::endl;
@@ -50,6 +83,11 @@ namespace Yttrium
                         continue;
                     }
 
+                    //----------------------------------------------------------
+                    //
+                    // colinear row (detected by unicity)
+                    //
+                    //----------------------------------------------------------
                     if(colinearity())
                     {
                         delete popTail();
@@ -57,6 +95,11 @@ namespace Yttrium
                         continue;
                     }
 
+                    //----------------------------------------------------------
+                    //
+                    // collect
+                    //
+                    //----------------------------------------------------------
                     if(survey) {
                         survey->collect(*(tribe->family->lastVec));
                     }
@@ -71,11 +114,20 @@ namespace Yttrium
                 sort(Tribe::Compare);
             }
 
+            //! cleanup
             virtual ~Tribes() noexcept;
 
+            //! display
             friend std::ostream & operator<<(std::ostream &, const Tribes &);
 
 
+            //! produce next generation
+            /**
+             \param mu       original matrix
+             \param survey   optional survey to take on newly created vectors
+             \param strategy strateg[y|ies] to follow
+             \return number of new tribes
+             */
             template <typename MATRIX> inline
             size_t generate(const MATRIX & mu,
                             Survey * const survey,
@@ -95,13 +147,14 @@ namespace Yttrium
 
 
         private:
-            Y_Disable_Copy_And_Assign(Tribes);
-            bool colinearity() const noexcept;
-            void finish(const IList &bad) noexcept;
-            void follow(const unsigned strategy);
+            Y_Disable_Copy_And_Assign(Tribes); //!< cleanup
 
-            void makeDitchReplicae();
-            void makeGroupFamilies();
+            bool colinearity() const noexcept;    //!< \return colinear last vector
+            void finish(const IList & ) noexcept; //!< remove bad indices from all root trubes
+            void follow(const unsigned);          //!< call optimization
+
+            void makeDitchReplicae(); //!< apply DitchReplicae
+            void makeGroupFamilies(); //!< apply GroupFamilies
         };
 
 

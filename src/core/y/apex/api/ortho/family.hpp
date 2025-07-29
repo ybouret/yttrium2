@@ -56,7 +56,7 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
-                size_t size() const noexcept { return vlist.size; }
+                size_t size() const noexcept; //!< \return vlist.size
 
                 //! try to accept compatible array
                 /**
@@ -77,9 +77,10 @@ namespace Yttrium
                 //! \param v new vector added to family
                 void progeny(Vector * const v) noexcept;
 
-                //! \retun text for quality
+                //! \return text for quality
                 const char *   humanReadableQuality() const noexcept;
 
+                //! \return same sizes and vectors
                 friend bool operator==(const Family &, const Family &) noexcept;
 
                 //______________________________________________________________
@@ -148,8 +149,13 @@ namespace Yttrium
                     void     store(Family * const) noexcept; //!< store and clear family
                     Family * query();                        //!< \return new empty family
 
+                    //! start family from an initial vector
+                    /**
+                     \param arr compatible array
+                     \return new family if array was not zero, NULL otherwise
+                     */
                     template <typename ARRAY> inline
-                    Family * start( ARRAY & arr)
+                    Family * start(ARRAY & arr)
                     {
                         Family * const F = query();
                         try {
@@ -181,8 +187,8 @@ namespace Yttrium
                 
                 //! try to create a new family from a test vector
                 /**
-                 \param arr a compatible array in type and size
-                 \param fc  a family cache
+                 \param arr    a compatible array in type and size
+                 \param fpool  a compativle family cache
                  \return replicate + new vector upon success
                  */
                 template <typename ARRAY>

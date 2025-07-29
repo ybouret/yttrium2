@@ -83,9 +83,9 @@ namespace Yttrium
                 a[i] = value;
         }
 
+        //! load matching part \param rhs big enough source
         inline void ld(const Readable<T> &rhs)
         {
-
             Writable<T> &a = *this;
             const size_t n = a.size();assert(rhs.size()>=n);
             for(size_t i=1;i<=n;++i)

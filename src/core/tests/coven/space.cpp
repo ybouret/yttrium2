@@ -9,13 +9,13 @@ using namespace Yttrium;
 
 namespace
 {
-    static inline void Run(const Matrix<int> &mu,
-                           const unsigned    strategy,
-                           Coven::Survey    &survey)
+    static inline void Run(const Matrix<int> &    mu,
+                           Coven::QVector::Pool & vp,
+                           const unsigned         strategy,
+                           Coven::Survey &        survey)
     {
 
         Coven::IPool         ip;
-        Coven::QVector::Pool vp(mu.cols);
         Coven::QFamily::Pool fp(vp);
 
         Coven::Tribes tribes(mu,ip,fp, &survey);
@@ -24,7 +24,7 @@ namespace
             tribes.generate(mu,&survey,strategy);
         } while( tribes.size > 0);
 
-        std::cerr << "found=" << survey.list.size << " / " << survey.trials << std::endl;
+        std::cerr << "found=" << survey->size << " / " << survey.calls << std::endl;
     }
 }
 
@@ -50,18 +50,20 @@ Y_UTEST(coven_space)
         }
     }
 
-    Coven::Survey survey0;
-    Run(mu,0,survey0);
+    Coven::QVector::Pool vp(mu.cols);
 
-    Coven::Survey survey1;
-    Run(mu,Coven::Tribes::DitchReplicae,survey1);
+    Coven::Survey survey0(vp);
+    Run(mu,vp,0,survey0);
 
-    Coven::Survey survey2;
-    Run(mu,Coven::Tribes::GroupFamilies,survey2);
+    Coven::Survey survey1(vp);
+    Run(mu,vp,Coven::Tribes::DitchReplicae,survey1);
 
-    std::cerr << "survey0 : " << survey0.list.size << " / " << survey0.trials << std::endl;
-    std::cerr << "survey1 : " << survey1.list.size << " / " << survey1.trials << std::endl;
-    std::cerr << "survey2 : " << survey2.list.size << " / " << survey2.trials << std::endl;
+    Coven::Survey survey2(vp);
+    Run(mu,vp,Coven::Tribes::GroupFamilies,survey2);
+
+    std::cerr << "survey0 : " << survey0->size << " / " << survey0.calls << std::endl;
+    std::cerr << "survey1 : " << survey1->size << " / " << survey1.calls << std::endl;
+    std::cerr << "survey2 : " << survey2->size << " / " << survey2.calls << std::endl;
 
 
 

@@ -54,12 +54,13 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            void remove(const size_t indx) noexcept;
-            void sorted(const size_t indx);
+            void remove(const size_t indx) noexcept; //!< \param indx index to remove
+            void sorted(const size_t indx);          //!< \param indx insert sorted index
 
-            friend bool operator==(const IList &, const IList&) noexcept;
-            friend bool operator!=(const IList &, const IList&) noexcept;
+            friend bool operator==(const IList &, const IList&) noexcept; //!< \return same size and indices
+            friend bool operator!=(const IList &, const IList&) noexcept; //!< \return different
 
+            //! \return comparison by size then increasing indices
             static SignType Compare(const IList &,const IList &) noexcept;
 
 

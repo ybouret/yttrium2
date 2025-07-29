@@ -204,10 +204,18 @@ namespace Yttrium
                 assert(lhs.size+rhs.size==oldSize);
             }
 
+            //! wrapper to compare data
             template <typename COMPARE_DATA>
             struct CompareDataThruNodes
             {
-                COMPARE_DATA &proc;
+                COMPARE_DATA &proc; //!< compare node data
+
+                //! comparison call
+                /**
+                 \param lhs lhs node
+                 \param rhs rhs node
+                 \return proc(**lhs,**rhs)
+                 */
                 inline SignType operator()(const NODE * const lhs,
                                            const NODE * const rhs) noexcept
                 {
@@ -245,6 +253,12 @@ namespace Yttrium
                 assert(this->isOrderedBy(compareNodes,Sign::LooselyIncreasing));
             }
 
+            //! fusion with data comparison
+            /**
+             \param lhs first sorted list
+             \param rhs second sorted list
+             \param proc data comparison function
+            */
             template <typename LIST, typename COMPARE_DATA> inline
             void fusionWith(COMPARE_DATA &proc, LIST &lhs, LIST &rhs) noexcept
             {
@@ -269,6 +283,10 @@ namespace Yttrium
                 }
             }
 
+            //! recursive merge sort
+            /**
+             \param proc data comparison function
+             */
             template <typename COMPARE_DATA> inline
             void sortWith(COMPARE_DATA &proc) noexcept
             {
@@ -464,7 +482,13 @@ namespace Yttrium
                 return insertAfter(lower,node);
             }
 
-            
+
+            //! insertion in a previously ordered list
+            /**
+             \param proc data comparison
+             \param node a valid node
+             \return node inserted at its right position
+             */
             template <typename COMPARE_DATA> inline
             NODE * insertOrderedWith(COMPARE_DATA &proc, NODE * const node) noexcept
             {

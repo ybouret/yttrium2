@@ -181,6 +181,9 @@ namespace Yttrium
 
             }
 
+            size_t Family:: size() const noexcept { return vlist.size; }
+
+
 
             bool operator==(const Family & lhs, const Family & rhs) noexcept
             {
