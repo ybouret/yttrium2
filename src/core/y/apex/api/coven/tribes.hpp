@@ -34,7 +34,8 @@ namespace Yttrium
             //__________________________________________________________________
             static const unsigned EndEarlyBasis = 0x01; //!< won't produce
             static const unsigned DitchReplicae = 0x02; //!< no same basis+ready
-            static const unsigned GroupFamilies = 0x04;
+            static const unsigned GroupFamilies = 0x04; //!< group similar families
+            static const unsigned UseHyperPlane = 0x08; //!< 
 
             //__________________________________________________________________
             //
@@ -135,10 +136,11 @@ namespace Yttrium
                             const unsigned strategy)
             {
                 {
+                    const bool  useHyperPlane = 0 != (strategy & UseHyperPlane);
                     Tribe::List heirs;
                     for(Tribe *tribe=head;tribe;tribe=tribe->next)
                     {
-                        tribe->generate(heirs,mu,survey);
+                        tribe->generate(heirs,mu,survey,useHyperPlane);
                     }
                     swapListFor(heirs);
                 }

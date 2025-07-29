@@ -15,7 +15,6 @@ namespace Yttrium
             {
                 if( Apex::Ortho::Basis == head->family->quality )
                 {
-                    std::cerr << "removing " << *head << std::endl;
                     delete popHead();
                 }
                 else

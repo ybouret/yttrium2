@@ -115,42 +115,17 @@ namespace Yttrium
             template <typename MATRIX> inline
             void generate(Tribe::List  & heirs,
                           const MATRIX & mu,
-                          Survey * const survey)
+                          Survey * const survey,
+                          const    bool  useHyperPlane)
             {
                 assert(family);
-                Tribe::List H;
-                for(const INode *node = ready->head; node; node=node->next)
+                switch(family->quality)
                 {
-                    //----------------------------------------------------------
-                    // try to expand family
-                    //----------------------------------------------------------
-                    const size_t    indx    = **node;
-                    QFamily * const lineage = family->newFamilyWith(mu[indx],fpool);
-                    if(!lineage) continue;
-
-                    //----------------------------------------------------------
-                    // a new vector was created into lineage
-                    //----------------------------------------------------------
-                    assert(0!=lineage->lastVec);
-                    try {
-                        Coerce( H.pushTail( new Tribe(*this,indx) )->family ) = lineage;
-                    }
-                    catch(...)
-                    {
-                        fpool.store(lineage); throw;
-                    }
-
-                    //----------------------------------------------------------
-                    // process the new vector
-                    //----------------------------------------------------------
-                    if(survey) survey->collect(*(lineage->lastVec));
-
-
+                    case Apex::Ortho::Generating: return generating(heirs,mu,survey);
+                    case Apex::Ortho::Basis:      return;
+                    case Apex::Ortho::HyperPlane: return useHyperPlane ? hyperplane(mu,survey) : generating(heirs,mu,survey);
                 }
-                H.sort(Tribe::Compare);
-                Tribe::List all;
-                all.fusion(heirs,H,Tribe::Compare);
-                heirs.swapListFor(all);
+
             }
 
 
@@ -199,6 +174,81 @@ namespace Yttrium
 #if Y_Coven_Stamp
                 stamp << indx;
 #endif
+            }
+
+            //! default generating function
+            /**
+             \param heirs  pre-sorted heirs
+             \param mu     original matrix
+             \param survey optional survey
+             */
+            template <typename MATRIX> inline
+            void generating(Tribe::List  & heirs,
+                             const MATRIX & mu,
+                             Survey * const survey)
+            {
+                Tribe::List H; // local heirs
+                for(const INode *node = ready->head; node; node=node->next)
+                {
+                    //----------------------------------------------------------
+                    // try to expand family
+                    //----------------------------------------------------------
+                    const size_t    indx    = **node;
+                    QFamily * const lineage = family->newFamilyWith(mu[indx],fpool);
+                    if(!lineage) continue;
+
+                    //----------------------------------------------------------
+                    // a new vector was created into lineage
+                    //----------------------------------------------------------
+                    assert(0!=lineage->lastVec);
+                    try {
+                        Coerce( H.pushTail( new Tribe(*this,indx) )->family ) = lineage;
+                    }
+                    catch(...)
+                    {
+                        fpool.store(lineage); throw;
+                    }
+
+                    //----------------------------------------------------------
+                    // process the new vector
+                    //----------------------------------------------------------
+                    if(survey) survey->collect(*(lineage->lastVec));
+
+                }
+                H.sort(Tribe::Compare);
+                Tribe::List all;
+                all.fusion(heirs,H,Tribe::Compare);
+                heirs.swapListFor(all);
+            }
+
+            //! hyperplane, would generate at most one new vector
+            /**
+             \param mu     original matrix
+             \param survey optional survey
+             */
+            template <typename MATRIX> inline
+            void hyperplane(const MATRIX & mu,
+                            Survey * const survey)
+            {
+                assert(family);
+                for(const INode *node = ready->head; node; node=node->next)
+                {
+                    const size_t    indx = **node;
+                    QVector * const qvec = family->accepts(mu[indx]);
+                    if(!qvec) continue;
+                    //std::cerr << "hyperplane: found " << *qvec << std::endl;
+                    try
+                    {
+                        if(survey) survey->collect(*qvec);
+                        fpool.vpool.store(qvec);
+                    }
+                    catch(...)
+                    {
+                        fpool.vpool.store(qvec); throw;
+                    }
+                    return;
+                }
+
             }
 
         };
