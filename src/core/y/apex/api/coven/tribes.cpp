@@ -56,6 +56,7 @@ namespace Yttrium
             }
         }
 
+#if 0
         static inline
         void promoteReadyOf(Tribe * const tribe, const IList &peerBasis)
         {
@@ -77,86 +78,45 @@ namespace Yttrium
                 (*tribe->ready).swapListFor(*ready);
             }
 
-            //std::cerr << "==> " << *tribe << std::endl;
 
         }
+#endif
 
         void Tribes:: shrink()
         {
+            assert(isOrderedBy(Tribe::Compare,Sign::LooselyIncreasing));
             Tribe::List list;
-            bool        changed = false;
 
-            do
+            while(size>0)
             {
-                changed = false;
-                while(size>0)
+                Tribe * const source = head;
+                if(source->stalled()) goto DROP;
+
+
+                for(Tribe *target=list.tail;target;target=target->prev)
                 {
-                    Tribe * const source = head;
-
-                    if(source->isSterile()) goto DROP;
-
-
-                    for(Tribe *target=list.tail;target;target=target->prev)
+                    if(target->basis == source->basis)
                     {
-                        if(target->basis == source->basis)
+                        if(target->ready == source->ready)
                         {
-                            if(target->ready == source->ready)
-                            {
-                                assert( __Zero__ == Tribe::Compare(source,target) );
-                                goto DROP; // replica
-                            }
-                            goto KEEP;     // for next generation
+                            assert( __Zero__ == Tribe::Compare(source,target) );
+                            goto DROP; // replica
                         }
-
-                        if( *target->family == *source->family )
-                        {
-
-                            std::cerr << *source << std::endl;
-                            std::cerr << *target << std::endl;
-
-                            {
-                                const IList sourceBasis = source->basis;
-                                const IList targetBasis = target->basis;
-                                promoteReadyOf(source,targetBasis);
-                                promoteReadyOf(target,sourceBasis);
-                            }
-
-                            // check if same tribes were produced
-                            if( __Zero__ == Tribe::Compare(source,target) || target->isSterile() )
-                            {
-                                delete list.pop(target);
-                            }
-
-                            if(source->isSterile())
-                            {
-                                goto DROP;
-                            }
-
-
-
-                            changed = true;
-                            goto KEEP;
-                        }
-
+                        goto KEEP;     // for next generation
                     }
-
-
-
-                KEEP:
-                    list.pushTail( popHead() );
-                    continue;
-
-                DROP:
-                    delete popHead();
-                    continue;
                 }
 
-                swapListFor(list);
+            KEEP:
+                list.pushTail( popHead() );
+                continue;
+
+            DROP:
+                delete popHead();
+                continue;
             }
-            while(changed);
-
-            sort(Tribe::Compare);
-
+            swapListFor(list);
+            
+            assert(isOrderedBy(Tribe::Compare,Sign::LooselyIncreasing));
         }
 
 

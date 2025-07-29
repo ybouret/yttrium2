@@ -104,7 +104,7 @@ namespace Yttrium
             static SignType Compare(const Tribe * const, const Tribe * const) noexcept;
             
 
-            bool isSterile() const noexcept;
+            bool stalled() const noexcept;
             
 
             //! create next generation
@@ -264,7 +264,6 @@ namespace Yttrium
                     const size_t    indx = **node;
                     QVector * const qvec = family->accepts(mu[indx]);
                     if(!qvec) continue;
-                    //std::cerr << "hyperplane: found " << *qvec << std::endl;
                     try
                     {
                         if(survey) survey->collect(*qvec);

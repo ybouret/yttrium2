@@ -22,6 +22,11 @@ Y_UTEST(stream_xmlog)
 
     }
 
+    {
+        int a = 10;
+        Y_XML_Section_Attr(xml, "sub", " count=" << 10 << Y_XML_Attr(a) );
+    }
+
 }
 Y_UDONE()
 

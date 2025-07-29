@@ -62,7 +62,7 @@ namespace Yttrium
             return IList::Compare(lhs->ready,rhs->ready);
         }
 
-        bool Tribe:: isSterile() const noexcept
+        bool Tribe:: stalled() const noexcept
         {
             return ready->size<=0 || Apex::Ortho::Basis == family->quality;
         }

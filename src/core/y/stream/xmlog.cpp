@@ -17,7 +17,7 @@ namespace Yttrium
     }
 
 
-    std::ostream  & XMLog:: operator()(void) noexcept
+    std::ostream  & XMLog:: operator()(void)
     {
         return XML::Indent(os,depth);
     }
@@ -38,15 +38,15 @@ namespace Yttrium
     {
         if(xml.verbose)
         {
-            std::ostream & os = xml() << "<" << *str;
-            if(!partial) os << ">" << std::endl;
+            xml() << "<" << *str;
+            if(!partial) xml.quit();
         }
         ++xml.depth;
     }
 
-    void XMLog:: Section:: quit()
+    void XMLog:: quit()
     {
-        xml.os << ">" << std::endl;
+        os << ">" << std::endl;
     }
 
 }
