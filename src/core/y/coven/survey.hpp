@@ -3,7 +3,7 @@
 #ifndef Y_Coven_Survey_Included
 #define Y_Coven_Survey_Included 1
 
-#include "y/apex/api/coven/types.hpp"
+#include "y/coven/types.hpp"
 #include "y/stream/xmlog.hpp"
 
 namespace Yttrium

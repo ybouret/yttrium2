@@ -4,7 +4,7 @@
 #ifndef Y_Coven_Tribes_Included
 #define Y_Coven_Tribes_Included 1
 
-#include "y/apex/api/coven/tribe.hpp"
+#include "y/coven/tribe.hpp"
 #include "y/stream/xmlog.hpp"
 
 namespace Yttrium

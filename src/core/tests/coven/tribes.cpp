@@ -1,5 +1,5 @@
 
-#include "y/apex/api/coven/tribes.hpp"
+#include "y/coven/tribes.hpp"
 #include "y/apex/natural.hpp"
 #include "y/utest/run.hpp"
 #include "y/container/matrix.hpp"

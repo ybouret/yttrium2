@@ -1,5 +1,5 @@
 
-#include "y/apex/api/coven/tribes.hpp"
+#include "y/coven/tribes.hpp"
 
 
 namespace Yttrium

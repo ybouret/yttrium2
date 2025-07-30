@@ -4,8 +4,8 @@
 #ifndef Y_Coven_Tribe_Included
 #define Y_Coven_Tribe_Included 1
 
-#include "y/apex/api/coven/survey.hpp"
-#include "y/apex/api/coven/ilist.hpp"
+#include "y/coven/survey.hpp"
+#include "y/coven/ilist.hpp"
 
 
 namespace Yttrium
