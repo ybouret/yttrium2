@@ -65,6 +65,7 @@ namespace Yttrium
             static PlanType           Cmp;      //!< for comparisons
             static PlanType           BWO;      //!< for BitWise Ops
             static const char * const CallSign; //!< "apn"
+            static const char * HumanReadableOps() noexcept;
 
             //__________________________________________________________________
             //

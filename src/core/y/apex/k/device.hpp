@@ -36,7 +36,8 @@ namespace Yttrium
             //__________________________________________________________________
             static const size_t   NumOps = Ops32_64+1; //!< inner schems
             static const PlanType SmallPlan[NumOps];   //!< small plan for inner scheme
-            
+            static uint64_t *     ProbeMUL;
+
             //__________________________________________________________________
             //
             //

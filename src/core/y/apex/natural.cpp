@@ -8,13 +8,28 @@ namespace Yttrium
     namespace Apex
     {
 
+        Y_Shallow_Impl(Hook);
+
         OpsMode            Natural:: Ops      = Ops32_64;
         PlanType           Natural:: Cmp      = Device::SmallPlan[Ops];
         PlanType           Natural:: BWO      = Plan64;
         const char * const Natural:: CallSign = "apn";
-        Y_Shallow_Impl(Hook);
 
-      
+        const char * Natural:: HumanReadableOps() noexcept
+        {
+            switch(Ops)
+            {
+                    Y_Return_Named_Case(Ops8_16);
+                    Y_Return_Named_Case(Ops8_32);
+                    Y_Return_Named_Case(Ops8_64);
+                    Y_Return_Named_Case(Ops16_32);
+                    Y_Return_Named_Case(Ops16_64);
+                    Y_Return_Named_Case(Ops32_64);
+            }
+            return Core::Unknown;
+
+        }
+
         const char * Natural:: callSign() const noexcept { return CallSign; }
 
 
