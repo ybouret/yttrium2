@@ -85,48 +85,75 @@ namespace Yttrium
         void Tribes:: shrink(XMLog &)
         {
             assert(isOrderedBy(Tribe::Compare,Sign::LooselyIncreasing));
-            Tribe::List list;
 
-            while(size>0)
+            // remove stalled and replica in one pass
             {
-                Tribe * const source = head;
-                if(source->stalled())
+                Tribe::List list;
+                while(size>0)
                 {
-                    // won't produce new vector
-                    goto DROP;
-                }
-
-                for(Tribe *target=list.tail;target;target=target->prev)
-                {
-                    if(target->basis == source->basis)
+                    Tribe * const source = head;
+                    if(source->stalled())
                     {
-                        if(target->ready == source->ready)
+                        // won't produce new vector
+                        goto DROP;
+                    }
+
+                    for(Tribe *target=list.tail;target;target=target->prev)
+                    {
+                        if(target->basis == source->basis)
                         {
-                            assert( __Zero__ == Tribe::Compare(source,target) );
-                            goto DROP; // replica
+                            if(target->ready == source->ready)
+                            {
+                                assert( __Zero__ == Tribe::Compare(source,target) );
+                                goto DROP; // replica
+                            }
+                            goto KEEP;     // for next generation
                         }
-                        goto KEEP;     // for next generation
+
+                        assert(target->basis != source->basis);
                     }
 
-                    assert(target->basis != source->basis);
-                    if( * target->family == * source->family)
-                    {
-                        std::cerr << "[[ Same Families ]]" << std::endl;
-                        exit(0);
-                    }
+                KEEP:
+                    list.pushTail( popHead() );
+                    continue;
+
+                DROP:
+                    delete popHead();
                 }
-
-            KEEP:
-                list.pushTail( popHead() );
-                continue;
-
-            DROP:
-                delete popHead();
-                continue;
+                swapListFor(list);
             }
-            swapListFor(list);
-            
             assert(isOrderedBy(Tribe::Compare,Sign::LooselyIncreasing));
+
+            return;
+            
+            {
+                Tribe::List list;
+                while(size>0)
+                {
+                    Tribe * const source = head;
+                    assert(!source->stalled());
+
+                    for(Tribe *target=list.tail;target;target=target->prev)
+                    {
+                        if(target->basis==source->basis)
+                        {
+                            assert(target->ready != source->ready);
+                            continue; // ok for next gen
+                        }
+                        if( *target->family == *source->family )
+                        {
+                            std::cerr << "[Same Families]" << std::endl;
+                            std::cerr << *target << std::endl;
+                            std::cerr << *source << std::endl;
+                            std::cerr << std::endl;
+                            exit(0);
+                        }
+                    }
+
+                    list.pushTail( popHead() );
+                }
+                swapListFor(list);
+            }
         }
 
 
