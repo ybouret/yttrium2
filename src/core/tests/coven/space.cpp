@@ -70,6 +70,11 @@ Y_UTEST(coven_space)
 
     Y_ASSERT(survey1==survey0);
 
+    std::cerr << "releasing vectors..." << std::endl;
+    vp.release();
+    std::cerr << "done" << std::endl;
+    //Y_PRINTV(vp.count());
+
 #if 0
     Coven::Survey survey0(vp);
     const size_t  gen0 = Run(mu,vp,0,survey0);

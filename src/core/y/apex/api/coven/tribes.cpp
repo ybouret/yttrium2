@@ -92,10 +92,9 @@ namespace Yttrium
                 Tribe * const source = head;
                 if(source->stalled())
                 {
-                    //Y_XMLog(xml, "[-] " << source->basis << ":" << source->ready);
+                    // won't produce new vector
                     goto DROP;
                 }
-
 
                 for(Tribe *target=list.tail;target;target=target->prev)
                 {
@@ -104,10 +103,16 @@ namespace Yttrium
                         if(target->ready == source->ready)
                         {
                             assert( __Zero__ == Tribe::Compare(source,target) );
-                            //Y_XMLog(xml, "[-] replica " << source->basis << ":" << source->ready);
                             goto DROP; // replica
                         }
                         goto KEEP;     // for next generation
+                    }
+
+                    assert(target->basis != source->basis);
+                    if( * target->family == * source->family)
+                    {
+                        std::cerr << "[[ Same Families ]]" << std::endl;
+                        exit(0);
                     }
                 }
 
