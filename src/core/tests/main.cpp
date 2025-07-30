@@ -40,6 +40,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(calculus_base2);
     Y_UTEST(calculus_gcd);
     Y_UTEST(calculus_bits_for);
+    Y_UTEST(calculus_bytes_for);
     Y_UTEST(calculus_isqrt);
     Y_UTEST(calculus_iabs);
 
@@ -179,6 +180,7 @@ Y_UTEST_DECL(256)
 
     Y_UTEST(dft_fmt);
     Y_UTEST(dft_core);
+    Y_UTEST(dft_mul);
 
     Y_UTEST(ascii_convert);
 

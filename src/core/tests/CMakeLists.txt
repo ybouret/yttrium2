@@ -76,6 +76,7 @@ Y_UTEST(calculus:alignment)
 Y_UTEST(calculus:base2)
 Y_UTEST(calculus:gcd)
 Y_UTEST(calculus:bits_for)
+Y_UTEST(calculus:bytes_for)
 Y_UTEST(calculus:isqrt)
 Y_UTEST(calculus:iabs)
 
@@ -229,6 +230,7 @@ Y_UTEST(cameo:mul)
 #dft
 Y_UTEST(dft:core)
 Y_UTEST(dft:fmt)
+Y_UTEST(dft:mul)
 
 #ascii
 Y_UTEST(ascii_convert)
