@@ -86,7 +86,11 @@ namespace Yttrium
         {
             assert(isOrderedBy(Tribe::Compare,Sign::LooselyIncreasing));
 
+            //------------------------------------------------------------------
+            //
             // remove stalled and replica in one pass
+            //
+            //------------------------------------------------------------------
             {
                 Tribe::List list;
                 while(size>0)
@@ -94,7 +98,9 @@ namespace Yttrium
                     Tribe * const source = head;
                     if(source->stalled())
                     {
+                        //------------------------------------------------------
                         // won't produce new vector
+                        //------------------------------------------------------
                         goto DROP;
                     }
 
@@ -105,9 +111,11 @@ namespace Yttrium
                             if(target->ready == source->ready)
                             {
                                 assert( __Zero__ == Tribe::Compare(source,target) );
-                                goto DROP; // replica
+                                goto DROP; // replica, same future
                             }
-                            goto KEEP;     // for next generation
+
+                            //            same basis, different ready:
+                            goto KEEP; //   for next generation
                         }
 
                         assert(target->basis != source->basis);
