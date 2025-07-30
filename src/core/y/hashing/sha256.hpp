@@ -14,7 +14,7 @@ namespace Yttrium
 			uint32_t      total[2];     /*!< number of bytes processed  */
 			uint32_t      state[8];     /*!< intermediate digest state  */
 			uint8_t       buffer[64];   /*!< data block being processed */
-			int           is224;        /*!< false => SHA-256, else SHA-224 */
+			int           is224;        /*!< 0 => SHA-256, else SHA-224 */
 		} SHA256_CTX;
 		
 

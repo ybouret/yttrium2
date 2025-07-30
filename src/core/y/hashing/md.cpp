@@ -24,7 +24,7 @@ namespace Yttrium
             return d;
         }
 
-        Digest MD::Of(Function &H, const char *msg)
+        Digest MD::Of(Function &H, const char * const msg)
         {
             const size_t n = H.length;
             Digest       d(n);

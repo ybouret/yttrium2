@@ -15,12 +15,16 @@
 #include "y/hashing/sha256.hpp"
 #include "y/hashing/sha512.hpp"
 
-#include "y/hashing/md5.hpp"
 #include "y/utest/run.hpp"
+
+#include "y/hashing/md.hpp"
+
 
 #include "y/container/associative/suffix/map.hpp"
 #include "y/pointer/arc.hpp"
 #include "y/string.hpp"
+
+#include "y/stream/libc/input.hpp"
 
 using namespace Yttrium;
 
@@ -62,11 +66,29 @@ Y_UTEST(hashing_functions)
     Hashing::SHA256::Tests();
     Hashing::SHA224::Tests();
 
+    for(HFuncMap::Iterator it=hmap.begin();it!=hmap.end();++it)
+    {
+        (**it).set();
+    }
+
+    if( argc > 1 )
+    {
+        InputFile fp(argv[1]);
+        char c = 0;
+        while(fp.query(c))
+        {
+            for(HFuncMap::Iterator it=hmap.begin();it!=hmap.end();++it)
+            {
+                (**it).run(&c,1);
+            }
+        }
+    }
 
     for(HFuncMap::Iterator it=hmap.begin();it!=hmap.end();++it)
     {
-        Hashing::Function &H = **it;
-        std::cerr << H.callSign() << std::endl;
+        Hashing::Function &   H = **it;
+        const Hashing::Digest D = Hashing::MD::Of(H);
+        std::cerr << std::setw(20) << H.callSign()  << " : " << D << std::endl;
     }
 
 }

@@ -36,10 +36,10 @@ namespace Yttrium
             //
             // virtual interface
             //__________________________________________________________________
-            virtual            ~Function()                             noexcept;     //!< destructor
-            virtual void        set()                                  noexcept = 0; //!< initialize
-            virtual void        run(const void *buffer, size_t buflen) noexcept = 0; //!< process bytes \param buffer address \param buflen length
-            virtual void        get(void *output, size_t outlen)       noexcept = 0; //!< finalize/fill array \param output address \param outlen length
+            virtual      ~Function()                             noexcept;     //!< destructor
+            virtual void  set()                                  noexcept = 0; //!< initialize
+            virtual void  run(const void *buffer, size_t buflen) noexcept = 0; //!< process bytes \param buffer address \param buflen length
+            virtual void  get(void *output, size_t outlen)       noexcept = 0; //!< finalize/fill array \param output address \param outlen length
 
             //__________________________________________________________________
             //
