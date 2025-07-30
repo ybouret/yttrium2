@@ -11,7 +11,8 @@ namespace Yttrium
         {
             Y_Lock(*lhs);
             Y_Lock(*rhs);
-            return Device::Mul(*lhs.device,*rhs.device,Ops);
+            return Device::MulDFT(*lhs.device,*rhs.device);
+            //return Device::Mul(*lhs.device,*rhs.device,Ops);
         }
 
         Device * Natural:: Mul(const Natural &lhs, const natural_t rhs)

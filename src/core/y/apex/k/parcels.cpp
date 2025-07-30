@@ -162,6 +162,8 @@ namespace Yttrium
 
         void Parcels:: set(const PlanType userPlan) const noexcept
         {
+            assert(0!=api);
+            assert(api->sanity());
             assert(exch);
             (*this.*exch)(userPlan);
             Coerce(plan) = userPlan;

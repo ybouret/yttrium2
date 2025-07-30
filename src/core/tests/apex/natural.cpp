@@ -13,8 +13,7 @@ Y_UTEST(apex_n)
 {
     Random::ParkMiller ran;
 
-
-
+    
     {
         std::cerr << "Default" << std::endl;
         Apex::Natural n;
@@ -74,6 +73,7 @@ Y_UTEST(apex_n)
             }
         }
     }
+
 
     {
         std::cerr << "Additions 64" << std::endl;
@@ -204,6 +204,8 @@ Y_UTEST(apex_n)
         }
     }
 
+
+
     {
         std::cerr << "SHR" << std::endl;
         for(size_t i=0;i<=80;++i)
@@ -226,6 +228,7 @@ Y_UTEST(apex_n)
         Y_CHECK(13==lhs);
     }
 
+
     {
         std::cerr << "Mul64" << std::endl;
         for(size_t i=0;i<=32;++i)
@@ -247,6 +250,7 @@ Y_UTEST(apex_n)
             }
         }
     }
+
 
     {
         std::cerr << "Div64 [";
@@ -287,6 +291,7 @@ Y_UTEST(apex_n)
         std::cerr << "]" << std::endl;
     }
 
+
     {
         std::cerr << "MulDiv" << std::endl;
         for(size_t iter=0;iter<10;++iter)
@@ -298,6 +303,8 @@ Y_UTEST(apex_n)
             Y_ASSERT(p/r==l);
         }
     }
+
+
 
     {
         std::cerr << "Sqrt" << std::endl;

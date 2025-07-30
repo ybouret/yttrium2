@@ -1,0 +1,120 @@
+
+#include "y/apex/k/device.hpp"
+#include "y/apex/m/archon.hpp"
+#include "y/dft/dft.hpp"
+#include "y/core/utils.hpp"
+#include "y/pointer/auto.hpp"
+#include "y/system/exception.hpp"
+
+namespace Yttrium
+{
+    namespace Apex
+    {
+
+        typedef double          real_t;
+        typedef Complex<real_t> cplx_t;
+
+        static inline
+        Device * DFT_Mul(const uint8_t * u, const size_t n,
+                         const uint8_t * v, const size_t m)
+        {
+            static Archon &archon = Archon::Instance();
+            assert(0!=u);
+            assert(0!=v);
+            if(n<=0||m<=0) return new Device(0,Plan8);
+
+            assert(n>0);
+            assert(m>0);
+
+            // find array sizes
+            size_t       nn = 1;
+            unsigned     ns = 0;
+            {
+                const size_t mn  = Max(m,n);
+                while(nn<mn)
+                {
+                    nn <<= 1; ++ns;
+                }
+            }
+            const size_t nc = nn; // number of complexes
+            nn <<= 1; ++ns;       // number of reals
+            assert( size_t(1) << ns == nn);
+
+            const size_t    mpn = m+n;
+            AutoPtr<Device> dev = new Device(mpn,Plan8); assert(dev->api->sanity());
+
+            // allocate workspace for twice nn reals
+            ns += IntegerLog2For<cplx_t>::Value;
+            void * const wksp = archon.query(ns);
+
+            real_t * const a = ((real_t *)wksp)-1;
+            real_t * const b = a+nn;
+
+            // fill workspaces
+            for(size_t i=n;i>0;--i) a[i] = u[n-i];
+            for(size_t i=m;i>0;--i) b[i] = v[m-i];
+
+            // transform
+            DFT::RealForward(a,b,nn);
+
+            // convolution
+            b[1] *= a[1];
+            b[2] *= a[2];
+            {
+                cplx_t * za = (cplx_t*)wksp;
+                cplx_t * zb = za+nc;
+                for(size_t i=nc-1;i>0;--i)
+                {
+                    *(++zb) *= *(++za);
+                }
+            }
+
+            // transform
+            DFT::RealReverse(b,nn);
+
+
+            // compute
+            double       cy  = 0;
+            const double RX  = 256.0;
+            for(size_t j=nn;j>0;--j) {
+                const double t = floor( b[j]/nc+cy+0.5 );
+                cy=(unsigned long) (t*0.00390625);
+                *(uint8_t *)&b[j]= (uint8_t)(t-cy*RX);
+            }
+
+            if (cy >= RX)
+            {
+                archon.store(ns,wksp);
+                throw Specific::Exception("Apex::Device::DFT_Mul","unexpected overflow");
+            }
+
+            // transfer
+            {
+                Parcel<uint8_t> &p = dev->make<uint8_t>();
+                uint8_t * w = p.data + mpn;
+                *(--w) = (uint8_t) cy;
+                for(size_t j=2;j<=mpn;++j)
+                    *(--w) = *(const uint8_t *) &b[j-1];
+                assert(w==p.data);
+                p.size = mpn;
+                dev->fix();
+               // Hexadecimal::Display(std::cerr << "w=",p.data,p.size) << std::endl;
+            }
+
+            archon.store(ns,wksp);
+
+            return dev.yield();
+
+        }
+
+        Device * Device:: MulDFT(const Device &lhs, const Device &rhs)
+        {
+            const Parcel<uint8_t> &u = lhs.make<uint8_t>();
+            const Parcel<uint8_t> &v = rhs.make<uint8_t>();
+            return DFT_Mul(u.data,u.size,v.data,v.size);
+        }
+    }
+
+
+}
+

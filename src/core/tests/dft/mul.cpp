@@ -63,9 +63,12 @@ namespace
 
 
 
+#if 0
         DFT::RealForward(a()-1,nn);
         DFT::RealForward(b()-1,nn);
-
+#else
+        DFT::RealForward(a()-1, b()-1, nn);
+#endif
 
         b[1] *= a[1];
         b[2] *= a[2];
