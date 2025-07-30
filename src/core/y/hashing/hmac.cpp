@@ -2,7 +2,6 @@
 #include "y/hashing/hmac.hpp"
 #include <cstring>
 
-#if 0
 namespace Yttrium
 {
     namespace Hashing
@@ -37,7 +36,7 @@ tmp(L)
         HashMAC:: HashMAC(Function &H, const Memory::ReadOnlyBuffer &usr) :
         Y_HMAC_CTOR()
         {
-            setup(H,usr.ro_addr(),usr.measure());
+            setup(H,usr.ro(),usr.length());
         }
 
         void HashMAC:: setup(Function    &H,
@@ -45,6 +44,7 @@ tmp(L)
                              const size_t key_size) noexcept
         {
             assert(!(NULL==key_addr&&key_size>0));
+
             Coerce(key).ldz();
             if(key_size>B)
             {
@@ -86,5 +86,4 @@ tmp(L)
 }
 
 
-#endif
 

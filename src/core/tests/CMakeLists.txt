@@ -118,6 +118,8 @@ Y_UTEST(hashing:mix64)
 Y_UTEST(hashing:hash32)
 Y_UTEST(hashing:digest)
 Y_UTEST(hashing:perfect)
+Y_UTEST(hashing:functions)
+Y_UTEST(hashing:hmac)
 
 #xml
 Y_UTEST(xml:attribute)

@@ -83,6 +83,8 @@ Y_UTEST_DECL(256)
     Y_UTEST(hashing_hash32);
     Y_UTEST(hashing_digest);
     Y_UTEST(hashing_perfect);
+    Y_UTEST(hashing_functions);
+    Y_UTEST(hashing_hmac);
 
     Y_UTEST(xml_attribute);
 

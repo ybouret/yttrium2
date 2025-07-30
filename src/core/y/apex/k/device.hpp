@@ -137,8 +137,8 @@ namespace Yttrium
             //__________________________________________________________________
             static Device * Mul(const Device &, const Device  &, OpsMode); //!< \return multiplication
             static Device * Mul(const Device &, const natural_t, OpsMode); //!< \return multiplication
-            static Device * MulDFT(const Device &, const Device &);
-            static Device * MulDFT(const Device &, const natural_t);
+            static Device * MulDFT(const Device &, const Device &);        //!< \return mutliplication with DFT
+            static Device * MulDFT(const Device &, const natural_t);       //!< \return multiplication with DFT
 
             //__________________________________________________________________
             //

@@ -3,8 +3,7 @@
 #ifndef Y_HASHING_HMAC_INCLUDED
 #define Y_HASHING_HMAC_INCLUDED 1
 
-#if 0
-#include "y/memory/digest.hpp"
+#include "y/hashing/digest.hpp"
 #include "y/hashing/function.hpp"
 
 namespace Yttrium
@@ -49,7 +48,7 @@ namespace Yttrium
             const size_t B; //!< hash function window
 
         private:
-            Y_DISABLE_COPY_AND_ASSIGN(HashMAC);
+            Y_Disable_Copy_And_Assign(HashMAC);
             void setup(Function &H, const void *key_addr, const size_t key_size) noexcept;
 
             const Digest key; //!< precomputed key
@@ -62,5 +61,4 @@ namespace Yttrium
 
 }
 
-#endif
 #endif

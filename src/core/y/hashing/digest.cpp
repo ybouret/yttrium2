@@ -6,9 +6,10 @@
 #include "y/string/length.hpp"
 #include "y/calculus/alignment.hpp"
 #include "y/pointer/auto.hpp"
-#include <cstring>
 #include "y/ascii/printable.hpp"
 #include "y/system/exception.hpp"
+
+#include <cstring>
 
 namespace Yttrium
 {
@@ -153,5 +154,12 @@ namespace Yttrium
         {
             return os << d.str();
         }
+
+        void Digest:: ldz() noexcept
+        {
+            assert(0!=code);
+            memset(code->entry,0,code->width);
+        }
+
     }
 }

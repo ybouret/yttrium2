@@ -6,21 +6,20 @@
 
 
 #include "y/hashing/hmac.hpp"
-#include "y/ptr/light-string.hpp"
-#include "y/text/ops.hpp"
+#include "y/string/length.hpp"
 
 namespace Yttrium
 {
     namespace Hashing
     {
         //! helper for constructor
-#define YACK_HMAC_ON_PROLOG() \
+#define Y_HMAC_ON_PROLOG() \
 Function( FUNCTION::__length, FUNCTION::__window), H(), M(H,
 
         //! helper for constructor
-#define YACK_HMAC_ON_EPILOG() \
-), id(HashMAC::Prefix,H.callSign())
-        
+#define Y_HMAC_ON_EPILOG() \
+), id(String(HashMAC::Prefix)+H.callSign())
+
         //______________________________________________________________________
         //
         //
@@ -38,15 +37,15 @@ Function( FUNCTION::__length, FUNCTION::__window), H(), M(H,
 
             //! setup
             inline explicit HMAC(const void *key_addr, const size_t key_size) :
-            YACK_HMAC_ON_PROLOG() key_addr,key_size YACK_HMAC_ON_EPILOG() {}
+            Y_HMAC_ON_PROLOG() key_addr,key_size Y_HMAC_ON_EPILOG() {}
 
             //! setup
             inline explicit HMAC(const Memory::ReadOnlyBuffer &usr) :
-            YACK_HMAC_ON_PROLOG() usr  YACK_HMAC_ON_EPILOG() {}
+            Y_HMAC_ON_PROLOG() usr  Y_HMAC_ON_EPILOG() {}
 
             //! setup
             inline explicit HMAC(const char *k) :
-            YACK_HMAC_ON_PROLOG() k,StringLength(k) YACK_HMAC_ON_EPILOG() {}
+            Y_HMAC_ON_PROLOG() k,StringLength(k) Y_HMAC_ON_EPILOG() {}
 
             //! cleanup
             inline virtual ~HMAC() noexcept {}
@@ -69,11 +68,11 @@ Function( FUNCTION::__length, FUNCTION::__window), H(), M(H,
             inline virtual void get(void *output, const size_t outlen) noexcept
             {
                 const Memory::ReadOnlyBuffer &md = M.get(H);
-                fill(output,outlen,md.ro_addr(),md.measure());
+                fill(output,outlen,md.ro(),md.length());
             }
 
             //! compound name
-            virtual const char *callSign() const noexcept { return id(); }
+            virtual const char *callSign() const noexcept { return id.c_str(); }
 
             //__________________________________________________________________
             //
@@ -83,8 +82,8 @@ Function( FUNCTION::__length, FUNCTION::__window), H(), M(H,
             HashMAC  M; //!< base hash mac creator
             
         private:
-            Y_DISABLE_COPY_AND_ASSIGN(HMAC);
-            const LightString id;
+            Y_Disable_Copy_And_Assign(HMAC);
+            const String id;
         };
 
     }

@@ -62,6 +62,8 @@ namespace Yttrium
             //
             //__________________________________________________________________
             String               str() const noexcept; //!< \return converted to string
+            void                 ldz()       noexcept; //!< set to zero
+
 
         private:
             class Code;
