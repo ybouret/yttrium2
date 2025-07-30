@@ -3,7 +3,7 @@
 #ifndef Y_Coven_Types_Included
 #define Y_Coven_Types_Included 1
 
-#include "y/apex/api/ortho/family.hpp"
+#include "y/ortho/family.hpp"
 
 
 namespace Yttrium
@@ -11,9 +11,9 @@ namespace Yttrium
 
     namespace Coven
     {
-        typedef Apex::Ortho::Metrics QMetrics; //!< alias
-        typedef Apex::Ortho::Vector  QVector;  //!< alias
-        typedef Apex::Ortho::Family  QFamily;  //!< alias
+        typedef Ortho::Metrics QMetrics; //!< alias
+        typedef Ortho::Vector  QVector;  //!< alias
+        typedef Ortho::Family  QFamily;  //!< alias
     }
 
 }

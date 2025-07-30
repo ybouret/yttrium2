@@ -118,9 +118,9 @@ namespace Yttrium
                 assert(family);
                 switch(family->quality)
                 {
-                    case Apex::Ortho::Generating: return generating(xml,heirs,mu,survey);
-                    case Apex::Ortho::HyperPlane: return useHyperPlane ? hyperplane(xml,mu,survey) : generating(xml,heirs,mu,survey);
-                    case Apex::Ortho::Basis: break;
+                    case Ortho::Generating: return generating(xml,heirs,mu,survey);
+                    case Ortho::HyperPlane: return useHyperPlane ? hyperplane(xml,mu,survey) : generating(xml,heirs,mu,survey);
+                    case Ortho::Basis: break;
                 }
                 return 0;
             }

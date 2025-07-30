@@ -1,6 +1,6 @@
 
 
-#include "y/apex/api/ortho/family.hpp"
+#include "y/ortho/family.hpp"
 #include "y/utest/run.hpp"
 #include "y/random/mt19937.hpp"
 #include "y/pointer/auto.hpp"
@@ -21,15 +21,15 @@ Y_UTEST(apex_ortho_family)
     for(size_t dims=1;dims<=8;++dims)
     {
         std::cerr << std::endl << "--- dims=" << dims << std::endl;
-        const Apex::Ortho::Metrics metrics(dims);
-        Apex::Ortho::Vector::Pool  vpool(metrics);
-        Apex::Ortho::Family        F(vpool);
-        CxxArray<int>              v(dims);
+        const Ortho::Metrics metrics(dims);
+        Ortho::Vector::Pool  vpool(metrics);
+        Ortho::Family        F(vpool);
+        CxxArray<int>        v(dims);
 
-        while(F.quality != Apex::Ortho::Basis)
+        while(F.quality !=  Ortho::Basis)
         {
             MakeRan(ran,v);
-            if(Apex::Ortho::Vector * ortho = F.accepts(v))
+            if(Ortho::Vector * ortho = F.accepts(v))
                 F.progeny(ortho);
             std::cerr << F << std::endl;
         }
@@ -38,16 +38,16 @@ Y_UTEST(apex_ortho_family)
         if(dims<=1) continue;
 
         std::cerr << std::endl;
-        while( F.quality != Apex::Ortho::HyperPlane )
+        while( F.quality !=  Ortho::HyperPlane )
         {
             MakeRan(ran,v);
-            if(Apex::Ortho::Vector * ortho = F.accepts(v))
+            if( Ortho::Vector * ortho = F.accepts(v))
                 F.progeny(ortho);
         }
         std::cerr << F << std::endl;
 
         // find another vector
-        AutoPtr<Apex::Ortho::Vector>  first = 0;
+        AutoPtr<Ortho::Vector>  first = 0;
         do
             MakeRan(ran,v);
         while( (first = F.accepts(v)).isEmpty() );
@@ -58,7 +58,7 @@ Y_UTEST(apex_ortho_family)
 
         for(size_t iter=0;iter<4;++iter)
         {
-            AutoPtr<Apex::Ortho::Vector> second = 0;
+            AutoPtr<Ortho::Vector> second = 0;
             do
             {
                 MakeRan(ran,v);
@@ -67,8 +67,8 @@ Y_UTEST(apex_ortho_family)
         }
 
 
-        Apex::Ortho::Family::Pool fpool(vpool);
-        Apex::Ortho::Family *G = 0;
+        Ortho::Family::Pool fpool(vpool);
+        Ortho::Family      *G = 0;
         do
         {
             MakeRan(ran,v);

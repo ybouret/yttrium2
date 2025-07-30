@@ -93,7 +93,6 @@ Y_CreateLibrary(y
     y/apex/n
     y/apex/z
     y/apex/q
-    y/apex/api/ortho
     y/apex/api/coven
     y/mkl
     y/mkl/api
@@ -111,6 +110,7 @@ Y_CreateLibrary(y
     y/counting
     y/counting/c
     y/graphviz
+    y/ortho
 )
 
 add_subdirectory(tests)

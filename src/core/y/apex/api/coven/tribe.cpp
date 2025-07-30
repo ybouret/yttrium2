@@ -64,7 +64,7 @@ namespace Yttrium
 
         bool Tribe:: stalled() const noexcept
         {
-            return ready->size<=0 || Apex::Ortho::Basis == family->quality;
+            return ready->size<=0 || Ortho::Basis == family->quality;
         }
 
 

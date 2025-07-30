@@ -1,6 +1,6 @@
 
 #include "y/container/light-array.hpp"
-#include "y/apex/api/ortho/vector.hpp"
+#include "y/ortho/vector.hpp"
 #include "y/utest/run.hpp"
 #include "y/random/mt19937.hpp"
 #include "y/ascii/boolean.hpp"
@@ -21,7 +21,7 @@ Y_UTEST(apex_ortho_keep)
             for(size_t i=dims;i>0;--i)
                 arr[i] = ran.in<int>(-4,4);
             std::cerr << arr << " => ";
-            const Apex::Ortho::Vector b(CopyOf,arr);
+            const Ortho::Vector b(CopyOf,arr);
             std::cerr << b << std::endl;
 
 
@@ -29,7 +29,7 @@ Y_UTEST(apex_ortho_keep)
             {
                 for(size_t i=dims;i>0;--i)
                     arr[i] = ran.in<int>(-10,10);
-                Apex::Ortho::Vector a(CopyOf,arr);
+                Ortho::Vector a(CopyOf,arr);
                 std::cerr <<  "\ta=" << a << " => ";
                 const bool keep = a.keepOrtho(b);
                 std::cerr << ASCII::Boolean::Text(keep) << " aa=" << a << std::endl;
