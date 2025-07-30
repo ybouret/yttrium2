@@ -13,7 +13,7 @@ using namespace Yttrium;
 
 Y_UTEST(hashing_hmac)
 {
-    if(false)
+    if(true)
     {
         {
             Hashing::HMAC<Hashing::MD5> HMAC_MD5("key");

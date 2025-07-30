@@ -310,10 +310,9 @@ e += S(a,5) + F(b,c,d) + K + x; b = S(b,30);        \
     }
 }
 
-#if 0
+#if 1
 #include "y/hashing/testing.hpp"
 #include "y/hashing/md.hpp"
-#include "y/memory/digest.hpp"
 #include "y/system/exception.hpp"
 
 

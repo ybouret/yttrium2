@@ -78,7 +78,7 @@ namespace Yttrium
              */
             inline friend std::ostream & operator<<(std::ostream &os, const RejectNullPointer &self)
             {
-                assert(0!=pointee);
+                assert(0!=self.pointee);
                 return os << *self.pointee;
             }
 
