@@ -50,7 +50,7 @@ namespace
         {
             nn <<= 1; ++ns;
         }
-        //const size_t den = nn;
+        const size_t nc = nn;
         nn <<= 1; ++ns;
 
         Y_ASSERT( size_t(1) << ns == nn);
@@ -69,20 +69,25 @@ namespace
 
         b[1] *= a[1];
         b[2] *= a[2];
-        for(size_t j=3;j<=nn;j+=2) {
-            //const size_t j1 = j+1;
-            const double t  = b[j];
-            b[j]  =t*a[j]-b[j+1]*a[j+1];
-            b[j+1]=t*a[j+1]+b[j+1]*a[j];
+        {
+            Complex<double> * zb = (Complex<double> *) b();
+            Complex<double> * za = (Complex<double> *) a();
+            for(size_t i=nc-1;i>0;--i)
+            {
+                *(++zb) *= *(++za);
+            }
         }
 
+
+
+
         DFT::RealReverse(b()-1,nn);
-        double       cy = 0;
-        const double RX = 256.0;
-        for(size_t j=nn;j>=1;--j) {
-            const double t = floor( b[j]/(nn>>1)+cy+0.5 );
-            cy=(unsigned long) (t/RX);
-            b[j]=t-cy*RX;
+        double       cy  = 0;
+        const double RX  = 256.0;
+        for(size_t j=nn;j>0;--j) {
+            const double t = floor( b[j]/nc+cy+0.5 );
+            cy=(unsigned long) (t*0.00390625);
+            *(uint8_t *)&b[j]= (uint8_t)(t-cy*RX);
         }
 
         if (cy >= RX)
@@ -92,7 +97,7 @@ namespace
 
         w[1]=(uint8_t) cy;
         for(size_t j=2;j<=n+m;++j)
-            w[j]=(uint8_t) b[j-1];
+            w[j]=*(const uint8_t *) &b[j-1];
 
     }
 
@@ -113,7 +118,7 @@ Y_UTEST(dft_mul)
 
     for(size_t ubits=0;ubits<=32;++ubits)
         for(size_t vbits=0;vbits<=32;++vbits)
-            for(size_t iter=0;iter<16;++iter)
+            for(size_t iter=0;iter<32;++iter)
             {
                 Y_Memory_BZero(u0);
                 Y_Memory_BZero(v0);
