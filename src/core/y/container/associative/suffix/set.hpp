@@ -57,6 +57,7 @@ namespace Yttrium
             //! cleanup
             inline virtual ~Knot() noexcept {}
 
+            //! display \param os output stream \param knot *this \return os
             inline friend std::ostream & operator<<(std::ostream &os, const Knot &knot)
             {
                 return os << knot.data;
@@ -133,6 +134,20 @@ namespace Yttrium
         //! cleanup
         inline virtual ~SuffixSet() noexcept { purge(); }
 
+        //! duplicate \param other another set
+        inline SuffixSet(const SuffixSet &other) :
+        Glossary<KEY,T>(),
+        Base(),
+        Collectable(),
+        tree()
+        {
+            try {
+                for(const Knot *knot = other.list.head;knot;knot=knot->next)
+                    (void) insert(knot->data);
+            }
+            catch(...) { purge(); throw; }
+        }
+
         //______________________________________________________________________
         //
         //
@@ -203,7 +218,7 @@ namespace Yttrium
         SuffixTree tree; //!< inner tree
 
 
-        Y_Disable_Copy_And_Assign(SuffixSet); //!< discarding
+        Y_Disable_Assign(SuffixSet); //!< discarding
 
         //! free
         inline void clear() noexcept {

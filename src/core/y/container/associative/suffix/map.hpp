@@ -56,6 +56,7 @@ namespace Yttrium
             //! cleanup
             inline virtual ~Knot() noexcept {}
 
+            //! display \param os output stream \param knot *this \return os
             inline friend std::ostream & operator<<(std::ostream &os, const Knot &knot)
             {
                 return os << knot.key << ':' << knot.data;
@@ -128,6 +129,18 @@ namespace Yttrium
             purge();
         }
 
+        //! duplicate \param other another map
+        inline SuffixMap(const SuffixMap &other) :
+        Lexicon<KEY,T>(), Base(), Collectable(), tree()
+        {
+            try {
+                for(const Knot *knot = other.list.head;knot;knot=knot->next)
+                    (void) insert(knot->key,knot->data);
+            }
+            catch(...) { purge(); throw; }
+        }
+
+
         //______________________________________________________________________
         //
         //
@@ -196,7 +209,7 @@ namespace Yttrium
         //______________________________________________________________________
     private:
         SuffixTree tree; //!< inner tree
-        Y_Disable_Copy_And_Assign(SuffixMap); //!< discarding
+        Y_Disable_Assign(SuffixMap); //!< discarding
 
         //! clean content
         inline void clear() noexcept {

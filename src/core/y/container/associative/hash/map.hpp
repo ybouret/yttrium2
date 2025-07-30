@@ -75,6 +75,7 @@ namespace Yttrium
             //! cleanup
             inline virtual ~Knot() noexcept {}
 
+            //! display \param os output stream \param knot *this \return os
             inline friend std::ostream & operator<<(std::ostream &os, const Knot &knot)
             {
                 return os << knot.key << ':' << knot.data;
@@ -153,6 +154,18 @@ namespace Yttrium
             purge();
         }
 
+        //! duplicate \param other another map
+        inline HashMap(const HashMap &other) :
+        Lexicon<KEY,T>(), Base(), Collectable(),
+        table(), hash()
+        {
+            try {
+                for(const Knot *knot = other.list.head;knot;knot=knot->next)
+                    (void) insert(knot->key,knot->data);
+            }
+            catch(...) { purge(); throw; }
+        }
+
         //______________________________________________________________________
         //
         //
@@ -227,7 +240,7 @@ namespace Yttrium
         HTable             table; //!< inner hash table
         mutable KEY_HASHER hash;  //!< key hasher
 
-        Y_Disable_Copy_And_Assign(HashMap); //!< discarding
+        Y_Disable_Assign(HashMap); //!< discarding
 
         //! \param lhs knot address \param rhs knot address \return same keys
         static inline bool SameKnot(const void * const lhs, const void * const rhs)

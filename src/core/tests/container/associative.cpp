@@ -38,7 +38,11 @@ namespace
         Iter::Test::AllForward(db);
 
         std::cerr << db << std::endl;
-        
+
+        {
+            const ASSOC cpy(db);
+            Y_ASSERT(cpy.size()==db.size());
+        }
 
     }
 
@@ -83,7 +87,7 @@ Y_UTEST(container_associative)
     testAssoc(hshSet,keys);
     testAssoc(sfxMap,keys);
 
-
+    
 
 
 

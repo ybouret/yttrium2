@@ -30,15 +30,15 @@ namespace Yttrium
             // C++
             //__________________________________________________________________
             virtual ~HashMAC() noexcept; //!< cleanup
-            explicit HashMAC(Function &H, const void *key_addr, const size_t key_size); //!< setup
-            explicit HashMAC(Function &H, const Memory::ReadOnlyBuffer &);              //!< setup
+            explicit HashMAC(Function &H, const void * const key_addr, const size_t key_size); //!< setup
+            explicit HashMAC(Function &H, const Memory::ReadOnlyBuffer &);                     //!< setup
 
             //__________________________________________________________________
             //
             // methods
             //__________________________________________________________________
-            void                          set(Function &H) noexcept; //!< initialize H function
-            const Memory::ReadOnlyBuffer &get(Function &H) noexcept; //!< finalize
+            void                          set(Function &) noexcept; //!< initialize with function
+            const Memory::ReadOnlyBuffer &get(Function &) noexcept; //!< finalize
 
             //__________________________________________________________________
             //
@@ -48,8 +48,8 @@ namespace Yttrium
             const size_t B; //!< hash function window
 
         private:
-            Y_Disable_Copy_And_Assign(HashMAC);
-            void setup(Function &H, const void *key_addr, const size_t key_size) noexcept;
+            Y_Disable_Copy_And_Assign(HashMAC); //!< discarding
+            void setup(Function &H, const void * const key_addr, const size_t key_size) noexcept;
 
             const Digest key; //!< precomputed key
             const Digest ikp; //!< input  key pad

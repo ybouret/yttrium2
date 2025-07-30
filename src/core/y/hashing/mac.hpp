@@ -36,15 +36,15 @@ Function( FUNCTION::__length, FUNCTION::__window), H(), M(H,
             //__________________________________________________________________
 
             //! setup
-            inline explicit HMAC(const void *key_addr, const size_t key_size) :
+            inline explicit HMAC(const void * const key_addr, const size_t key_size) :
             Y_HMAC_ON_PROLOG() key_addr,key_size Y_HMAC_ON_EPILOG() {}
 
-            //! setup
+            //! setup \param usr user buffer
             inline explicit HMAC(const Memory::ReadOnlyBuffer &usr) :
             Y_HMAC_ON_PROLOG() usr  Y_HMAC_ON_EPILOG() {}
 
-            //! setup
-            inline explicit HMAC(const char *k) :
+            //! setup \param k user C-string key
+            inline explicit HMAC(const char * const k) :
             Y_HMAC_ON_PROLOG() k,StringLength(k) Y_HMAC_ON_EPILOG() {}
 
             //! cleanup
@@ -59,7 +59,7 @@ Function( FUNCTION::__length, FUNCTION::__window), H(), M(H,
             inline virtual void set() noexcept { M.set(H); }
 
             //! run function
-            inline virtual void run(const void *block_addr, size_t block_size) noexcept
+            inline virtual void run(const void * const block_addr, size_t block_size) noexcept
             {
                 H.run(block_addr,block_size);
             }
@@ -71,7 +71,7 @@ Function( FUNCTION::__length, FUNCTION::__window), H(), M(H,
                 fill(output,outlen,md.ro(),md.length());
             }
 
-            //! compound name
+            //! \return compound name
             virtual const char *callSign() const noexcept { return id.c_str(); }
 
             //__________________________________________________________________
@@ -82,8 +82,8 @@ Function( FUNCTION::__length, FUNCTION::__window), H(), M(H,
             HashMAC  M; //!< base hash mac creator
             
         private:
-            Y_Disable_Copy_And_Assign(HMAC);
-            const String id;
+            Y_Disable_Copy_And_Assign(HMAC); //!< discarding
+            const String id; //!< compound name
         };
 
     }
