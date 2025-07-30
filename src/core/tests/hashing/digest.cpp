@@ -13,16 +13,11 @@ Y_UTEST(hashing_digest)
 
     Hashing::Digest d = "abc";
 
+    Hexadecimal::Display(std::cerr, &d[1], d.size() ) << std::endl;
     std::cerr << d << std::endl;
 
-    static const char msg[] = "Hello World!";
-    Hashing::CRC32 crc32;
-    const uint32_t hash = Hashing::To<uint32_t>(crc32,msg);
-    std::cerr << Hexadecimal(hash) << std::endl;
-    Hashing::Digest D = "67fcdacc";
-    std::cerr << D << std::endl;
-    Hashing::Digest D2 = Hashing::MD::Of(crc32,msg);
-    std::cerr << D2 << std::endl;
+
+    
 }
 Y_UDONE()
 

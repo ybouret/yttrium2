@@ -3,8 +3,7 @@
 #define Y_HASHING_FUNCTION_INCLUDED 1
 
 
-#include "y/object.hpp"
-#include "y/counted.hpp"
+#include "y/object/counted.hpp"
 #include "y/ability/identifiable.hpp"
 #include "y/pointer/arc.hpp"
 
@@ -22,7 +21,7 @@ namespace Yttrium
         //! base class for hashing function
         //
         //______________________________________________________________________
-        class Function : public Object, public Counted, public Identifiable
+        class Function : public  CountedObject, public Identifiable
         {
         public:
             //__________________________________________________________________

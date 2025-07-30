@@ -53,6 +53,25 @@ namespace Yttrium
                 const size_t  w    = Alignment::On<2>::Ceil(n)/2;
                 AutoPtr<Code> code = new Code(w);
                 uint8_t *p   = code->entry;
+                size_t  rem  = n;
+                if(1&rem)
+                {
+                    const int lo = GetHex( *(hex++) );
+                    *(p++) = static_cast<uint8_t>(lo);
+                    --rem;
+                }
+                assert(!(1&rem));
+
+                while(rem>0)
+                {
+                    const int hi = GetHex( *(hex++) ); --rem;
+                    const int lo = GetHex( *(hex++) ); --rem;
+                    *(p++) = static_cast<uint8_t>(lo + (hi<<4) );
+                }
+
+
+#if 0
+                uint8_t *p   = code->entry;
                 size_t   rem = n;
                 hex += n;
                 while(rem>0)
@@ -61,10 +80,11 @@ namespace Yttrium
                     int       hi = 0;
                     if(rem>0)
                     {
-                        hi =GetHex( *(--hex) ); --rem;
+                        hi = GetHex( *(--hex) ); --rem;
                     }
                     *(p++) = static_cast<uint8_t>(lo + (hi<<4) );
                 }
+#endif
                 return code.yield();
             }
 
@@ -73,11 +93,11 @@ namespace Yttrium
                 const size_t w2 = width<<1;
                 String s(WithAtLeast,w2,true); assert(w2==s.size());
 
-                char * target = (char *)(s.c_str() + w2);
-                for(size_t i=0;i<width;++i)
+                char * target = (char *)(s.c_str());
+                for(size_t i=0;i<width;++i,target+=2)
                 {
                     const char * const hx = Hexadecimal::LowerByte[ uint8_t(entry[i]) ]; assert(hx); assert(2==strlen(hx));
-                    memcpy(target-=2,hx,2);
+                    memcpy(target,hx,2);
                 }
 
                 return s;

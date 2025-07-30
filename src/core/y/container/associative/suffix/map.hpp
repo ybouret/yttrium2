@@ -3,10 +3,12 @@
 #ifndef Y_Associative_SuffixMap_Included
 #define Y_Associative_SuffixMap_Included 1
 
+#include "y/container/associative/knot/master.hpp"
 #include "y/container/associative/lexicon.hpp"
 #include "y/container/tree/suffix.hpp"
 #include "y/protean/cache/warped.hpp"
 #include "y/threading/single-threaded-class.hpp"
+#include "y/type/ingress.hpp"
 
 namespace Yttrium
 {
@@ -29,7 +31,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename KEY, typename T>
-        class Knot
+        class Knot : public Ingress<T>
         {
         public:
             //__________________________________________________________________
@@ -52,7 +54,12 @@ namespace Yttrium
             inline  Knot(const Knot &knot) : key(knot.key), data(knot.data), next(0), prev(0) {}
 
             //! cleanup
-            inline ~Knot() noexcept {}
+            inline virtual ~Knot() noexcept {}
+
+            inline friend std::ostream & operator<<(std::ostream &os, const Knot &knot)
+            {
+                return os << knot.key << ':' << knot.data;
+            }
 
             //__________________________________________________________________
             //
@@ -65,6 +72,7 @@ namespace Yttrium
 
         private:
             Y_Disable_Assign(Knot); //!< discarding
+            inline virtual ConstType & locus() const noexcept { return data; }
         };
     };
 
@@ -78,7 +86,10 @@ namespace Yttrium
     //
     //__________________________________________________________________________
     template <typename KEY, typename T>
-    class SuffixMap : public Lexicon<KEY,T>, public Collectable
+    class SuffixMap :
+    public Lexicon<KEY,T>,
+    public Core::MasterOf< SuffixMapAPI::Knot<KEY,T> >,
+    public Collectable
     {
     public:
         //______________________________________________________________________
@@ -93,7 +104,11 @@ namespace Yttrium
         typedef typename SuffixMapAPI::Knot<KEY,T> Knot;  //!< alias
         typedef typename Knot::Pool                KPool; //!< alias
         typedef typename Knot::List                KList; //!< alias
-
+        typedef Core::MasterOf<Knot>               Base;  //!< alias
+        using Base::list;
+        using Base::pool;
+        using Base::clearList;
+        using Base::purgeList;
 
         //______________________________________________________________________
         //
@@ -103,7 +118,7 @@ namespace Yttrium
         //______________________________________________________________________
 
         //! setup
-        inline explicit SuffixMap() : tree(), list(), pool()
+        inline explicit SuffixMap() : Base(), tree()
         {
         }
 
@@ -181,21 +196,19 @@ namespace Yttrium
         //______________________________________________________________________
     private:
         SuffixTree tree; //!< inner tree
-        KList      list; //!< list of data
-        KPool      pool; //!< pool of data
         Y_Disable_Copy_And_Assign(SuffixMap); //!< discarding
 
         //! clean content
         inline void clear() noexcept {
             tree.free();
-            while(list.size) pool.banish( list.popTail() );
+            clearList();
         }
 
         //! release content
         inline void purge() noexcept
         {
             tree.release();
-            while(list.size) pool.remove( list.popTail() );
+            purgeList();
         }
 
     };

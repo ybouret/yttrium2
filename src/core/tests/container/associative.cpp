@@ -1,3 +1,6 @@
+
+#include "y/container/iter/tests.hpp"
+
 #include "y/container/associative/hash/set.hpp"
 #include "y/container/associative/hash/map.hpp"
 
@@ -21,15 +24,22 @@ using namespace Yttrium;
 
 namespace
 {
-    static inline void testAssoc(Associative<String,String> &db,
-                                 const Readable<String>     &keys)
+    template <typename ASSOC>
+    static inline void testAssoc(ASSOC                  &db,
+                                 const Readable<String> &keys)
     {
-        const Associative<String,String> &cdb = db;
+        const ASSOC &cdb = db;
         for(size_t i=keys.size();i>0;--i)
         {
             Y_ASSERT( cdb.search( keys[i] ) );
             Y_ASSERT( db.search( keys[i] ) );
         }
+
+        Iter::Test::AllForward(db);
+
+        std::cerr << db << std::endl;
+        
+
     }
 
 }
@@ -72,7 +82,6 @@ Y_UTEST(container_associative)
     testAssoc(sfxSet,keys);
     testAssoc(hshSet,keys);
     testAssoc(sfxMap,keys);
-
 
 
 

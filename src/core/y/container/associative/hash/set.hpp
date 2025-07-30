@@ -1,14 +1,16 @@
-
+//! \file
 
 #ifndef Y_Associative_HashSet_Included
 #define Y_Associative_HashSet_Included 1
 
+#include "y/container/associative/knot/master.hpp"
 #include "y/container/associative/glossary.hpp"
 #include "y/container/htable.hpp"
 #include "y/protean/cache/warped.hpp"
 #include "y/threading/multi-threaded-object.hpp"
 #include "y/hashing/key/hasher.hpp"
 #include "y/hashing/fnv.hpp"
+#include "y/type/ingress.hpp"
 
 namespace Yttrium
 {
@@ -32,7 +34,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename KEY, typename T>
-        class Knot
+        class Knot : public Ingress<T>
         {
         public:
             //__________________________________________________________________
@@ -67,13 +69,20 @@ namespace Yttrium
             {}
 
             //! cleanup
-            inline ~Knot() noexcept {}
+            inline virtual ~Knot() noexcept {}
+
+            inline friend std::ostream & operator<<(std::ostream &os, const Knot &knot)
+            {
+                return os << knot.data;
+            }
 
             //__________________________________________________________________
             //
             // Methods
             //__________________________________________________________________
             ConstKey & key() const noexcept { return data.key(); } //!< \return data key
+
+
 
             //__________________________________________________________________
             //
@@ -86,6 +95,7 @@ namespace Yttrium
 
         private:
             Y_Disable_Assign(Knot); //!< discarding
+            inline virtual ConstType &locus() const noexcept { return data; }
         };
     };
 
@@ -103,7 +113,10 @@ namespace Yttrium
     typename T,
     typename KEY_HASHER = Hashing::KeyWith<HashSetAPI::Function>
     >
-    class HashSet : public Glossary<KEY,T>
+    class HashSet :
+    public Glossary<KEY,T>,
+    public Core::MasterOf< HashSetAPI::Knot<KEY,T> >,
+    public Collectable
     {
     public:
         //______________________________________________________________________
@@ -119,6 +132,11 @@ namespace Yttrium
         typedef typename Knot::Pool              KPool; //!< alias
         typedef typename Knot::List              KList; //!< alias
         typedef typename KPool::Lock             Lock;  //!< alias
+        typedef Core::MasterOf<Knot>               Base;  //!< alias
+        using Base::list;
+        using Base::pool;
+        using Base::clearList;
+        using Base::purgeList;
 
         //______________________________________________________________________
         //
@@ -128,7 +146,7 @@ namespace Yttrium
         //______________________________________________________________________
 
         //! setup
-        inline explicit HashSet() : table(), list(), pool(), hash()
+        inline explicit HashSet() : table(), hash()
         {
         }
 
@@ -199,7 +217,12 @@ namespace Yttrium
             return & knot->data;
         }
 
-        
+        inline virtual void gc(const uint8_t amount) noexcept
+        {
+            table.gc(amount);
+            pool.gc(amount);
+        }
+
 
         //______________________________________________________________________
         //
@@ -210,8 +233,6 @@ namespace Yttrium
 
     private:
         HTable             table; //!< inner hash table
-        KList              list;  //!< list of knots
-        KPool              pool;  //!< pool of knots
         mutable KEY_HASHER hash;  //!< key hasher
 
         Y_Disable_Copy_And_Assign(HashSet); //!< discarding
@@ -239,14 +260,14 @@ namespace Yttrium
         //! clear content
         inline void clear() noexcept {
             table.free();
-            while(list.size) pool.banish( list.popTail() );
+            clearList();
         }
 
         //! purge content
         inline void purge() noexcept
         {
-            table.free();
-            while(list.size) pool.remove( list.popTail() );
+            table.release();
+            purgeList();
         }
 
     };
