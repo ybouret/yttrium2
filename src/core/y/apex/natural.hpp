@@ -123,6 +123,8 @@ namespace Yttrium
             Y_APN_Operator_Impl(-,Sub)
 
             Y_APN_Proto_Decl(static Device *,Mul);
+            Y_APN_Proto_Decl(static Device *,LMul);
+            Y_APN_Proto_Decl(static Device *,FMul);
             Y_APN_Operator_Impl(*,Mul)
             Y_APN_DivMod_Impl(/,Div)
             Y_APN_DivMod_Impl(%,Mod)

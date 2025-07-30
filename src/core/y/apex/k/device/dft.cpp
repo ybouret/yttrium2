@@ -26,7 +26,11 @@ namespace Yttrium
             assert(n>0);
             assert(m>0);
 
+            //------------------------------------------------------------------
+            //
             // find array sizes
+            //
+            //------------------------------------------------------------------
             size_t       nn = 1;
             unsigned     ns = 0;
             {
@@ -38,74 +42,104 @@ namespace Yttrium
             }
             const size_t nc = nn; // number of complexes
             nn <<= 1; ++ns;       // number of reals
-            assert( size_t(1) << ns == nn);
 
+            //------------------------------------------------------------------
+            //
+            // allocate device
+            //
+            //------------------------------------------------------------------
             const size_t    mpn = m+n;
-            AutoPtr<Device> dev = new Device(mpn,Plan8); assert(dev->api->sanity());
+            AutoPtr<Device> dev = new Device(mpn,Plan8);
 
-            // allocate workspace for twice nn reals
+            //------------------------------------------------------------------
+            //
+            // allocate workspace for twice nn reals a.k.a nn complexes
+            //
+            //------------------------------------------------------------------
             ns += IntegerLog2For<cplx_t>::Value;
             void * const wksp = archon.query(ns);
-
             real_t * const a = ((real_t *)wksp)-1;
             real_t * const b = a+nn;
 
+            //------------------------------------------------------------------
+            //
             // fill workspaces
+            //
+            //------------------------------------------------------------------
             for(size_t i=n;i>0;--i) a[i] = u[n-i];
             for(size_t i=m;i>0;--i) b[i] = v[m-i];
 
+            //------------------------------------------------------------------
+            //
             // transform
+            //
+            //------------------------------------------------------------------
             DFT::RealForward(a,b,nn);
 
+            //------------------------------------------------------------------
+            //
             // convolution
+            //
+            //------------------------------------------------------------------
             b[1] *= a[1];
             b[2] *= a[2];
             {
                 cplx_t * za = (cplx_t*)wksp;
                 cplx_t * zb = za+nc;
                 for(size_t i=nc-1;i>0;--i)
-                {
                     *(++zb) *= *(++za);
-                }
             }
 
+            //------------------------------------------------------------------
+            //
             // transform
+            //
+            //------------------------------------------------------------------
             DFT::RealReverse(b,nn);
 
-
-            // compute
-            double       cy  = 0;
-            const double RX  = 256.0;
+            //------------------------------------------------------------------
+            //
+            //
+            // compute bytes
+            //
+            //
+            //------------------------------------------------------------------
+            double              cy  = 0;
+            static const double RX  = 256.0;
             for(size_t j=nn;j>0;--j) {
                 const double t = floor( b[j]/nc+cy+0.5 );
                 cy=(unsigned long) (t*0.00390625);
                 *(uint8_t *)&b[j]= (uint8_t)(t-cy*RX);
             }
+            assert(cy<RX);
 
-            if (cy >= RX)
-            {
-                archon.store(ns,wksp);
-                throw Specific::Exception("Apex::Device::DFT_Mul","unexpected overflow");
-            }
-
+            //------------------------------------------------------------------
+            //
             // transfer
+            //
+            //------------------------------------------------------------------
             {
                 Parcel<uint8_t> &p = dev->make<uint8_t>();
-                uint8_t * w = p.data + mpn;
+                uint8_t *        w = p.data + (p.size = mpn);
+
                 *(--w) = (uint8_t) cy;
-                for(size_t j=2;j<=mpn;++j)
-                    *(--w) = *(const uint8_t *) &b[j-1];
+                for(size_t j=1;j<mpn;++j)
+                    *(--w) = *(const uint8_t *) &b[j];
                 assert(w==p.data);
-                p.size = mpn;
+
                 dev->fix();
-               // Hexadecimal::Display(std::cerr << "w=",p.data,p.size) << std::endl;
             }
 
+            //------------------------------------------------------------------
+            //
+            // free workspace and return
+            //
+            //------------------------------------------------------------------
             archon.store(ns,wksp);
-
             return dev.yield();
-
         }
+
+
 
         Device * Device:: MulDFT(const Device &lhs, const Device &rhs)
         {
@@ -113,6 +147,15 @@ namespace Yttrium
             const Parcel<uint8_t> &v = rhs.make<uint8_t>();
             return DFT_Mul(u.data,u.size,v.data,v.size);
         }
+
+        Device * Device:: MulDFT(const Device &lhs,  natural_t rhs)
+        {
+            const Parcel<uint8_t> &u = lhs.make<uint8_t>();
+            const Parcel<uint8_t>  v(rhs);
+            return DFT_Mul(u.data,u.size,v.data,v.size);
+        }
+
+
     }
 
 

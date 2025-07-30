@@ -11,8 +11,7 @@ namespace Yttrium
         {
             Y_Lock(*lhs);
             Y_Lock(*rhs);
-            return Device::MulDFT(*lhs.device,*rhs.device);
-            //return Device::Mul(*lhs.device,*rhs.device,Ops);
+            return Device::Mul(*lhs.device,*rhs.device,Ops);
         }
 
         Device * Natural:: Mul(const Natural &lhs, const natural_t rhs)
@@ -35,4 +34,57 @@ namespace Yttrium
     }
 
 }
+
+namespace Yttrium
+{
+    namespace Apex
+    {
+        Device * Natural:: LMul(const Natural &lhs, const Natural &rhs)
+        {
+            Y_Lock(*lhs);
+            Y_Lock(*rhs);
+            return Device::Mul(*lhs.device,*rhs.device,Ops);
+        }
+
+        Device * Natural:: LMul(const Natural &lhs, const natural_t rhs)
+        {
+            Y_Lock(*lhs);
+            return Device::Mul(*lhs.device,rhs,Ops);
+        }
+
+        Device * Natural:: LMul(const natural_t lhs, const Natural &rhs)
+        {
+            Y_Lock(*rhs);
+            return Device::Mul(*rhs.device,lhs,Ops);
+        }
+    }
+
+}
+
+namespace Yttrium
+{
+    namespace Apex
+    {
+        Device * Natural:: FMul(const Natural &lhs, const Natural &rhs)
+        {
+            Y_Lock(*lhs);
+            Y_Lock(*rhs);
+            return Device::MulDFT(*lhs.device,*rhs.device);
+        }
+
+        Device * Natural:: FMul(const Natural &lhs, const natural_t rhs)
+        {
+            Y_Lock(*lhs);
+            return Device::MulDFT(*lhs.device,rhs);
+        }
+
+        Device * Natural:: FMul(const natural_t lhs, const Natural &rhs)
+        {
+            Y_Lock(*rhs);
+            return Device::MulDFT(*rhs.device,lhs);
+        }
+    }
+
+}
+
 
