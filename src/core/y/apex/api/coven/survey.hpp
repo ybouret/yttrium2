@@ -4,7 +4,7 @@
 #define Y_Coven_Survey_Included 1
 
 #include "y/apex/api/coven/types.hpp"
-
+#include "y/stream/xmlog.hpp"
 
 namespace Yttrium
 {
@@ -43,7 +43,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             void reset() noexcept;         //!< vector in pool, calls=0;
-            void collect(const QVector &); //!< collect vector, no duplicate
+            void collect(XMLog &,const QVector &); //!< collect vector, no duplicate
 
             //! test equality, mostly to debug
             friend bool operator==(const Survey &, const Survey &) noexcept;

@@ -10,10 +10,10 @@
 
 namespace Yttrium
 {
-    
+
     namespace Memory { class ReadOnlyBuffer; }
 
-	namespace Hashing
+    namespace Hashing
     {
 
         //______________________________________________________________________
@@ -22,16 +22,16 @@ namespace Yttrium
         //! base class for hashing function
         //
         //______________________________________________________________________
-		class Function : public Object, public Counted, public Identifiable
-		{
-		public:
+        class Function : public Object, public Counted, public Identifiable
+        {
+        public:
             //__________________________________________________________________
             //
             // types and definitions
             //__________________________________________________________________
             typedef ArcPtr<Function> Pointer; //!< alias
             const size_t length;              //!< output generation
-			const size_t window;              //!< internal window size
+            const size_t window;              //!< internal window size
 
             //__________________________________________________________________
             //
@@ -39,7 +39,7 @@ namespace Yttrium
             //__________________________________________________________________
             virtual            ~Function()                             noexcept;     //!< destructor
             virtual void        set()                                  noexcept = 0; //!< initialize
-			virtual void        run(const void *buffer, size_t buflen) noexcept = 0; //!< process bytes \param buffer address \param buflen length
+            virtual void        run(const void *buffer, size_t buflen) noexcept = 0; //!< process bytes \param buffer address \param buflen length
             virtual void        get(void *output, size_t outlen)       noexcept = 0; //!< finalize/fill array \param output address \param outlen length
 
             //__________________________________________________________________
@@ -54,36 +54,54 @@ namespace Yttrium
              \param input input buffer
              \param inlen input length
              */
-			static void fill(void *output, size_t outlen, const void *input, size_t inlen) noexcept;
-            
+            static void fill(void * const output, size_t outlen, const void * const input, size_t inlen) noexcept;
+
             //! run(block_addr,block_size)
-            void operator()(const void *block_addr, const size_t block_size) noexcept;
-            
-            //! run(msg)
-            void operator()(const char *msg) noexcept;
-            
-            //! run(buffer.ro_addr(),buffer.measure());
+            /**
+             \param block_addr block address
+             \param block_size block length
+             */
+            void operator()(const void * const block_addr, const size_t block_size) noexcept;
+
+            //! run(msg) \param msg C-style string
+            void operator()(const char * const msg) noexcept;
+
+            //! run(buffer.ro(),buffer.length())
             void operator()(const Memory::ReadOnlyBuffer &) noexcept;
-            
-            
-            
+
+
+
             //! hash a block
-            void        block(void *output, size_t outlen, const void *block_addr, const size_t block_size) noexcept;
-            
+            /**
+             \param output     output buffer
+             \param outlen     output length
+             \param block_addr input buffer
+             \param block_size input length
+             */
+            void        block(void *output, size_t outlen, const void * const block_addr, const size_t block_size) noexcept;
+
             //! hash a memory buffer
+            /**
+             \param output     output buffer
+             \param outlen     output length
+             */
             void        block(void *output, size_t outlen, const Memory::ReadOnlyBuffer &) noexcept;
-            
+
             //! hash a message
-            void        block(void *output, size_t outlen, const char *msg) noexcept;
-            
+            /**
+             \param output     output buffer
+             \param outlen     output length
+             */
+            void        block(void *output, size_t outlen, const char * const) noexcept;
+
         protected:
             //! initialize function \param L length \param W window
-			explicit Function( size_t L, size_t W) noexcept;
-			
-		private:
+            explicit Function( size_t L, size_t W) noexcept;
+
+        private:
             Y_Disable_Copy_And_Assign(Function); //!< discarding
-		};
-		
+        };
+
         //! format hashing function prototype
 #define Y_HASHING_FUNCTION_DECL(NAME,L,W)                                \
 static const char * const CallSign;                                      \
@@ -95,11 +113,11 @@ static const size_t __window = W ;                                       \
 inline virtual const char *callSign() const noexcept { return CallSign;} \
 virtual void set() noexcept;                                             \
 virtual void run( const void *buf, size_t len ) noexcept;                \
-virtual void get( void *output, size_t outlen ) noexcept 
-        
-	}
+virtual void get( void *output, size_t outlen ) noexcept
 
-    
+    }
+
+
 }
 
 

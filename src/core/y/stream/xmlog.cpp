@@ -28,18 +28,23 @@ namespace Yttrium
         --xml.depth;
         if(str)
         {
-            if(xml.verbose) xml() << "</" << *str << ">" << std::endl;
+            if(Standalone!=pty && xml.verbose) xml() << "</" << *str << ">" << std::endl;
             delete str;
         }
     }
 
 
-    void XMLog:: Section:: init(const bool partial)
+    void XMLog:: Section:: init()
     {
         if(xml.verbose)
         {
             xml() << "<" << *str;
-            if(!partial) xml.quit();
+            switch(pty)
+            {
+                case Standalone: xml.os << "/";
+                case Normal:     xml.quit(); break;
+                case Partial:                break;
+            }
         }
         ++xml.depth;
     }

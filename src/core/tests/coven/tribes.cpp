@@ -24,8 +24,9 @@ namespace
 Y_UTEST(coven_tribes)
 {
 
+    bool                verbose = true;
     Random::MT19937     ran;
-
+    XMLog               xml(std::cerr,verbose);
     Coven::IPool        ip;
 
     const double  proba_z   = 0.2;
@@ -55,11 +56,11 @@ Y_UTEST(coven_tribes)
 
                 survey.reset();
 
-                Coven::Tribes tribes(mu,ip,fp,&survey);
+                Coven::Tribes tribes(xml,mu,ip,fp,&survey);
                 size_t count = tribes.size;
                 while(tribes.size>0)
                 {
-                    count += tribes.generate(mu,&survey,0);
+                    count += tribes.generate(xml,mu,&survey,0);
                 }
                 const apn mx = MaxTribes(n);
                 std::cerr << "count = " << count << "/" << mx << std::endl;

@@ -82,7 +82,7 @@ namespace Yttrium
         }
 #endif
 
-        void Tribes:: shrink()
+        void Tribes:: shrink(XMLog &)
         {
             assert(isOrderedBy(Tribe::Compare,Sign::LooselyIncreasing));
             Tribe::List list;
@@ -90,7 +90,11 @@ namespace Yttrium
             while(size>0)
             {
                 Tribe * const source = head;
-                if(source->stalled()) goto DROP;
+                if(source->stalled())
+                {
+                    //Y_XMLog(xml, "[-] " << source->basis << ":" << source->ready);
+                    goto DROP;
+                }
 
 
                 for(Tribe *target=list.tail;target;target=target->prev)
@@ -100,6 +104,7 @@ namespace Yttrium
                         if(target->ready == source->ready)
                         {
                             assert( __Zero__ == Tribe::Compare(source,target) );
+                            //Y_XMLog(xml, "[-] replica " << source->basis << ":" << source->ready);
                             goto DROP; // replica
                         }
                         goto KEEP;     // for next generation

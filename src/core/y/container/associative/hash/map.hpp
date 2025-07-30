@@ -50,7 +50,7 @@ namespace Yttrium
             // C++
             //__________________________________________________________________
 
-            //! setup \param v value \param h hkey
+            //! setup \param k key \param v value \param h hkey
             inline  Knot(ParamKey     k,
                          ParamType    v,
                          const size_t h) :

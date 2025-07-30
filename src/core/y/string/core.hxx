@@ -530,3 +530,5 @@ template <>
 size_t String<CH>:: length() const noexcept { assert(code); return code->size; }
 
 
+template <>
+const String<CH> & String<CH>:: key() const noexcept { return *this; }

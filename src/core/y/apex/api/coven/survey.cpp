@@ -30,7 +30,7 @@ namespace Yttrium
         }
 
 
-        void Survey:: collect(const QVector &vec)
+        void Survey:: collect(XMLog &xml, const QVector &vec)
         {
             ++Coerce(calls);
             for(const QVector * mine=list.head;mine;mine=mine->next)
@@ -40,7 +40,7 @@ namespace Yttrium
                     return;
                 }
             }
-            std::cerr << "[+] " << vec << std::endl;
+            Y_XMLog(xml,"[+] " << vec);
             list.insertOrderedBy( QVector::Compare,  pool.query(vec) );
         }
 

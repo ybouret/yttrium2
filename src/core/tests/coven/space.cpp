@@ -9,20 +9,24 @@ using namespace Yttrium;
 
 namespace
 {
+    static bool Verbose = true;
+
     static inline size_t Run(const Matrix<int> &    mu,
                              Coven::QVector::Pool & vp,
                              const bool             optimize,
                              Coven::Survey &        survey)
     {
 
+        std::cerr << std::endl;
+        std::cerr << "-- Running Coven Space -- " << std::endl;
         Coven::IPool         ip;
         Coven::QFamily::Pool fp(vp);
-
-        Coven::Tribes tribes(mu,ip,fp, &survey);
+        XMLog                xml(std::cerr,Verbose);
+        Coven::Tribes tribes(xml,mu,ip,fp, &survey);
         size_t count = tribes.size;
         do
         {
-            count += tribes.generate(mu,&survey,optimize);
+            count += tribes.generate(xml,mu,&survey,optimize);
         } while( tribes.size > 0);
 
         //std::cerr << "found=" << survey->size << " / " << survey.calls << std::endl;

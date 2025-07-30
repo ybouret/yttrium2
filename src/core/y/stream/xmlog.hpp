@@ -54,28 +54,38 @@ namespace Yttrium
         size_t          depth;   //!< current depth
         std::ostream  & os;      //!< output stream
 
+
         //______________________________________________________________________
         //
         //
-        // Section
+        //! Section
         //
         //______________________________________________________________________
         class Section
         {
         public:
+            //! format helper
+            enum Property
+            {
+                Normal,      //!< "<element>"
+                Partial,     //!< "<element"
+                Standalone   //!< "<element/>"
+            };
+
             //! setup
             /**
              - prepare/emit element and increase depth
              \param xmlog host
              \param name  compatible name
-             \param partial if true, doesn't close element
+             \param ppty  property
              */
             template <typename NAME>
-            explicit Section(XMLog &xmlog, const NAME &name, const bool partial=false) :
+            explicit Section(XMLog &xmlog, const NAME &name, const Property ppty) :
             xml(xmlog),
-            str(xml.verbose ? new String(name) : 0)
+            str(xml.verbose ? new String(name) : 0),
+            pty(ppty)
             {
-                init(partial);
+                init();
             }
 
             //! decrease depth and close element
@@ -83,9 +93,10 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(Section); //!< discarding
-            void           init(const bool);    //!< initial emit
+            void           init();              //!< initial emit
             XMLog   &      xml;                 //!< host
             String * const str;                 //!< if verbosity
+            const Property pty;                 //!< property
         };
 
     private:
@@ -103,10 +114,10 @@ namespace Yttrium
 #define Y_XML_Section_(HOST,NAME,PARTIAL,ID) volatile Yttrium::XMLog::Section  Y_XML_Section__(__xmlSection,ID)(HOST,NAME,PARTIAL)
 
     //! create a full section name
-#define Y_XML_Section(HOST,NAME) Y_XML_Section_(HOST,NAME,false,__LINE__)
+#define Y_XML_Section(HOST,NAME) Y_XML_Section_(HOST,NAME,Yttrium::XMLog::Section::Normal,__LINE__)
 
     //! create a seciton name with attributes
-#define Y_XML_Section_Attr(HOST,NAME,ATTR) Y_XML_Section_(HOST,NAME,true,__LINE__);\
+#define Y_XML_Section_Attr(HOST,NAME,ATTR) Y_XML_Section_(HOST,NAME,Yttrium::XMLog::Section::Partial,__LINE__);\
 do { if(HOST.verbose) { HOST.os << ATTR; HOST.quit(); } } while(false)
 
 }

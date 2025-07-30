@@ -8,9 +8,6 @@
 #include "y/apex/api/coven/ilist.hpp"
 
 
-//! set to 1 to check that all basis are different
-#define Y_Coven_Stamp 1
-
 namespace Yttrium
 {
 
@@ -59,9 +56,6 @@ namespace Yttrium
             Object(),
             basis(ip),
             ready(ip,mu.rows,first),
-#if Y_Coven_Stamp
-            stamp(ip),
-#endif
             fpool(fp),
             family( fpool.start(mu[first]) ),
             next(0),
@@ -71,9 +65,6 @@ namespace Yttrium
                 if(family) {
                     try {
                         basis->pushTail( ready->popHead() );
-#if Y_Coven_Stamp
-                        stamp << first;
-#endif
                     }
                     catch(...) { quit(); throw; }
                 }
@@ -102,32 +93,36 @@ namespace Yttrium
 
             //! \return compared by basis + ready
             static SignType Compare(const Tribe * const, const Tribe * const) noexcept;
-            
 
+
+            //! \return true if no more possible vector
             bool stalled() const noexcept;
-            
+
 
             //! create next generation
             /**
+             \param xml           output
              \param heirs         list of heirs, pre-sorted
              \param mu            original matrix to process
              \param survey        optional survey to take on newly created vectors
              \param useHyperPlane optimizing last search
+             \return number of new tribe(s)
              */
             template <typename MATRIX> inline
-            void generate(Tribe::List  & heirs,
-                          const MATRIX & mu,
-                          Survey * const survey,
-                          const    bool  useHyperPlane)
+            size_t generate(XMLog &        xml,
+                            Tribe::List  & heirs,
+                            const MATRIX & mu,
+                            Survey * const survey,
+                            const    bool  useHyperPlane)
             {
                 assert(family);
                 switch(family->quality)
                 {
-                    case Apex::Ortho::Generating: return generating(heirs,mu,survey);
-                    case Apex::Ortho::Basis:      return;
-                    case Apex::Ortho::HyperPlane: return useHyperPlane ? hyperplane(mu,survey) : generating(heirs,mu,survey);
+                    case Apex::Ortho::Generating: return generating(xml,heirs,mu,survey);
+                    case Apex::Ortho::HyperPlane: return useHyperPlane ? hyperplane(xml,mu,survey) : generating(xml,heirs,mu,survey);
+                    case Apex::Ortho::Basis: break;
                 }
-
+                return 0;
             }
 
 
@@ -139,12 +134,8 @@ namespace Yttrium
             // Members
             //
             //__________________________________________________________________
-
             IList           basis; //!< ordered   indices
             IList           ready; //!< available indices
-#if Y_Coven_Stamp
-            IList           stamp; //!< stamp
-#endif
             QFamily::Pool & fpool;   //!< persisent family pool
             QFamily * const family;  //!< current family or NULL
             Tribe *         next;    //!< for list
@@ -163,9 +154,6 @@ namespace Yttrium
             Object(),
             basis(sire.basis),
             ready(sire.ready),
-#if Y_Coven_Stamp
-            stamp(sire.stamp),
-#endif
             fpool(sire.fpool),
             family(0),
             next(0),
@@ -173,22 +161,23 @@ namespace Yttrium
             {
                 basis.sorted(indx);
                 ready.remove(indx);
-#if Y_Coven_Stamp
-                stamp << indx;
-#endif
             }
 
             //! default generating function
             /**
+             \param xml    output
              \param heirs  pre-sorted heirs
              \param mu     original matrix
              \param survey optional survey
+             \return number of generated tribe(s)
              */
             template <typename MATRIX> inline
-            void generating(Tribe::List  & heirs,
-                            const MATRIX & mu,
-                            Survey * const survey)
+            size_t generating(XMLog &        xml,
+                              Tribe::List  & heirs,
+                              const MATRIX & mu,
+                              Survey * const survey)
             {
+                Y_XMLog(xml,"[@] " << basis << ":" << ready);
                 Tribe::List offspring;
                 {
                     //----------------------------------------------------------
@@ -206,6 +195,7 @@ namespace Yttrium
                         {
                             // row is in vector space
                             colinear << indx;
+                            Y_XMLog(xml,"(*) colinear row#" << indx);
                             continue;
                         }
 
@@ -220,11 +210,11 @@ namespace Yttrium
                         {
                             fpool.store(lineage); throw;
                         }
-
+                        
                         //------------------------------------------------------
                         // process the new vector
                         //------------------------------------------------------
-                        if(survey) survey->collect(*(lineage->lastVec));
+                        if(survey) survey->collect(xml,*(lineage->lastVec));
                     }
 
                     //----------------------------------------------------------
@@ -242,21 +232,25 @@ namespace Yttrium
                     }
                 }
 
+                const size_t res = offspring.size;
                 Tribe::List all;
                 offspring.sort(Tribe::Compare);
                 all.fusion(heirs,offspring,Tribe::Compare);
                 heirs.swapListFor(all);
-
+                return res;
             }
 
             //! hyperplane, would generate at most one new vector
             /**
+             \param xml    output
              \param mu     original matrix
              \param survey optional survey
+             \return 0, no more tribes
              */
             template <typename MATRIX> inline
-            void hyperplane(const MATRIX & mu,
-                            Survey * const survey)
+            size_t hyperplane(XMLog        & xml,
+                              const MATRIX & mu,
+                              Survey * const survey)
             {
                 assert(family);
                 for(const INode *node = ready->head; node; node=node->next)
@@ -266,16 +260,16 @@ namespace Yttrium
                     if(!qvec) continue;
                     try
                     {
-                        if(survey) survey->collect(*qvec);
+                        if(survey) survey->collect(xml,*qvec);
                         fpool.vpool.store(qvec);
+                        return 0;
                     }
                     catch(...)
                     {
                         fpool.vpool.store(qvec); throw;
                     }
-                    return;
                 }
-
+                return 0;
             }
 
         };

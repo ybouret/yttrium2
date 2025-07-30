@@ -240,9 +240,9 @@ namespace Yttrium
             // Methods
             //
             //------------------------------------------------------------------
-            ChangeDirectory & operator<<(const String &dirName); //!< change working directory
-            ChangeDirectory & operator<<(const char * const   ); //!< change working directory
-            ChangeDirectory & up();                              //!< up one dir
+            ChangeDirectory & operator<<(const String &dirName); //!< change working directory \param dirName directory \return *this
+            ChangeDirectory & operator<<(const char * const   ); //!< change working directory wrapper \return *this
+            ChangeDirectory & up();                              //!< up one dir \return *this
             void              ok();                              //!< check consistency
 
             //------------------------------------------------------------------

@@ -5,9 +5,7 @@
 #define Y_Coven_Tribes_Included 1
 
 #include "y/apex/api/coven/tribe.hpp"
-#if Y_Coven_Stamp
-#include "y/exception.hpp"
-#endif
+#include "y/stream/xmlog.hpp"
 
 namespace Yttrium
 {
@@ -46,18 +44,21 @@ namespace Yttrium
 
             //! prepare root tribes
             /**
-             \param mu size=mu.rows, dims=mu.cols
-             \param ip shared index pool
-             \param fp persistent family pool, fp.dimensions = mu.cols
+             \param xml    output
+             \param mu     size=mu.rows, dims=mu.cols
+             \param ip     shared index pool
+             \param fp     persistent family pool, fp.dimensions = mu.cols
              \param survey optional survey to take on root vectors
              */
             template <typename MATRIX> inline
-            explicit Tribes(const MATRIX &  mu,
+            explicit Tribes(XMLog &         xml,
+                            const MATRIX &  mu,
                             const IPool &   ip,
                             QFamily::Pool & fp,
                             Survey * const  survey) :
             Tribe::List()
             {
+                Y_XML_Section_Attr(xml,"Tribes::Root", XML::Attribute("dims",mu.cols) << XML::Attribute("size",mu.rows));
                 const size_t n = mu.rows;
                 IList        bad(ip);
 
@@ -79,7 +80,7 @@ namespace Yttrium
                     //----------------------------------------------------------
                     if(!tribe->family)
                     {
-                        std::cerr << "mu[" << first << "] = " << mu[first] << std::endl;
+                        Y_XMLog(xml,"singular row#"<<first);
                         delete popTail();
                         bad << first;
                         continue;
@@ -92,6 +93,7 @@ namespace Yttrium
                     //----------------------------------------------------------
                     if(colinearity())
                     {
+                        Y_XMLog(xml,"colinear row#"<<first);
                         delete popTail();
                         bad << first;
                         continue;
@@ -103,7 +105,7 @@ namespace Yttrium
                     //
                     //----------------------------------------------------------
                     if(survey) {
-                        survey->collect(*(tribe->family->lastVec));
+                        survey->collect(xml,*(tribe->family->lastVec));
                     }
                 }
 
@@ -125,26 +127,29 @@ namespace Yttrium
 
             //! produce next generation
             /**
+             \param xml      output
              \param mu       original matrix
              \param survey   optional survey to take on newly created vectors
-             \param strategy strateg[y|ies] to follow
+             \param optimize shrink/use hyperplane
              \return number of new tribes
              */
             template <typename MATRIX> inline
-            size_t generate(const MATRIX & mu,
+            size_t generate(XMLog &        xml,
+                            const MATRIX & mu,
                             Survey * const survey,
                             const bool     optimize)
             {
+                Y_XML_Section_Attr(xml, "Tribes::Next", Y_XML_Attr(size) );
                 {
                     Tribe::List heirs;
                     for(Tribe *tribe=head;tribe;tribe=tribe->next)
                     {
-                        tribe->generate(heirs,mu,survey,optimize);
+                        (void) tribe->generate(xml,heirs,mu,survey,optimize);
                     }
                     swapListFor(heirs);
                 }
                 if(optimize)
-                    shrink(); // remove tribes that won't produce new vectors
+                    shrink(xml); // remove tribes that won't produce new vectors
                 return size;
             }
 
@@ -155,7 +160,7 @@ namespace Yttrium
             bool colinearity() const noexcept;    //!< \return colinear last vector
             void finish(const IList & ) noexcept; //!< remove bad indices from all root trubes
             void follow(const unsigned);          //!< call optimization
-            void shrink();
+            void shrink(XMLog &);                 //!< shrink optimizatiob
 
             void makeEndEarlyBasis() noexcept; //!< apply EndEarlyBasis
             void makeDitchReplicae() noexcept; //!< apply DitchReplicae
