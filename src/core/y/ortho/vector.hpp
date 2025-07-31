@@ -86,6 +86,7 @@ namespace Yttrium
                 }
                 catch(...) { ldz(); throw; }
                 update();
+                
                 return *this;
             }
 
