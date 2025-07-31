@@ -153,39 +153,59 @@ namespace Yttrium
             if(size<=0) return;
 
             {
-                Tribe::List list;
-
-
+                Tribe::List list; // collect [un]processed
                 while(size>0)
                 {
-                    Tribe::List same;
-                    Tribe::List diff;
-
-                    // initialize same with head node
-                    same.pushTail( popHead() );
-
-                    // dispatch remaining
+                    //----------------------------------------------------------
+                    //
+                    // initialize same to current head
+                    //
+                    //----------------------------------------------------------
+                    Tribe::List     same;       // shall be processed
+                    same.pushTail( popHead() ); // init
                     {
-                        const QFamily &lhs = *same.head->family;
-                        while(size>0)
+                        Tribe::List diff; // shall return to *this
+                        //------------------------------------------------------
+                        //
+                        // dispatch remaining
+                        //
+                        //------------------------------------------------------
                         {
-                            Tribe * const tribe = popHead();
-                            if( lhs == *tribe->family )
+                            const QFamily &lhs = *same.head->family;
+                            while(size>0)
                             {
-                                same.pushTail(tribe);
-                            }
-                            else
-                            {
-                                diff.pushTail(tribe);
+                                Tribe * const tribe = popHead();
+                                if( lhs == *tribe->family )
+                                {
+                                    same.pushTail(tribe);
+                                }
+                                else
+                                {
+                                    diff.pushTail(tribe);
+                                }
                             }
                         }
+
+                        //------------------------------------------------------
+                        //
+                        // return diff to *this for next loop
+                        //
+                        //------------------------------------------------------
+                        assert(0==size);
+                        swapListFor(diff);
                     }
 
+                    //----------------------------------------------------------
+                    //
+                    // process same
+                    //
+                    //----------------------------------------------------------
                     if(same.size>1)
+                    {
                         std::cerr << "\t\t###same families = " << same.size << std::endl;
+                    }
 
                     list.mergeTail(same);
-                    list.mergeTail(diff);
                 }
 
                 list.sort(Tribe::Compare);
