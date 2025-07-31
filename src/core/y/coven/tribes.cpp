@@ -166,6 +166,8 @@ namespace Yttrium
             }
             assert(isOrderedBy(Tribe::Compare,Sign::LooselyIncreasing));
 
+            return;
+            
             while( varied(xml) )
                 ;
 

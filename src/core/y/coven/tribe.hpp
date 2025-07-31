@@ -182,6 +182,7 @@ namespace Yttrium
                               Survey * const survey)
             {
                 Y_XMLog(xml,"[@] " << basis << ":" << ready);
+                assert( IList::AreDetached(basis,ready) );
                 Tribe::List offspring;
                 {
                     //----------------------------------------------------------
@@ -193,13 +194,13 @@ namespace Yttrium
                         //------------------------------------------------------
                         // try to expand family
                         //------------------------------------------------------
-                        const size_t    indx    = **node;
+                        const size_t    indx    = **node; assert(!basis.has(indx));
                         QFamily * const lineage = family->newFamilyWith(mu[indx],fpool);
                         if(!lineage)
                         {
                             // row is in vector space
                             colinear << indx;
-                            Y_XMLog(xml,"[-] colinear row#" << indx << " = " << mu[indx]);
+                           // Y_XMLog(xml,"[-] colinear row#" << indx << " = " << mu[indx]);
                             continue;
                         }
 
@@ -219,23 +220,35 @@ namespace Yttrium
                         // process the new vector
                         //------------------------------------------------------
                         if(survey) survey->collect(xml,*(lineage->lastVec));
+                        //std::cerr << "new tribe: " << offspring.tail->basis << ":" << offspring.tail->ready << std::endl;
                     }
 
-                    //----------------------------------------------------------
-                    // propagate colinear to each basis
-                    //----------------------------------------------------------
                     if(colinear->size>0)
                     {
-                        for(Tribe *tr=offspring.head;tr;tr=tr->next)
+                        //std::cerr << "processing colinear=" << colinear << std::endl;
+                        Tribe::List list;
+                        while(offspring.size>0)
                         {
+                            Tribe * const tr = offspring.head;
                             for(const INode *node=colinear->head;node;node=node->next)
                             {
                                 const size_t indx = **node;
-                                assert(!tr->ready.has(indx));
-                                if(tr->basis.has(indx)) continue;
+                                assert(!tr->basis.has(indx));
+                                tr->ready.remove(indx);
                                 tr->basis.sorted(indx);
                             }
+                            //std::cerr << "-> " << tr->basis << ":" << tr->ready << std::endl;
+                            assert( IList::AreDetached(tr->basis,tr->ready));
+                            if(tr->ready->size<=0)
+                            {
+                                delete offspring.popHead();
+                            }
+                            else
+                            {
+                                list.pushTail( offspring.popHead() );
+                            }
                         }
+                        offspring.swapListFor(list);
                     }
                 }
 

@@ -148,7 +148,7 @@ namespace Yttrium
             bool colinearity() const noexcept;    //!< \return colinear last vector
             void finish(const IList & ) noexcept; //!< remove bad indices from all root trubes
             void follow(const unsigned);          //!< call optimization
-            void shrink(XMLog &);                 //!< shrink optimizatiob
+            void shrink(XMLog &);                 //!< shrink optimization
             bool varied(XMLog &);
 
             void makeEndEarlyBasis() noexcept; //!< apply EndEarlyBasis
