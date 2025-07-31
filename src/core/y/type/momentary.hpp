@@ -20,20 +20,20 @@ namespace Yttrium
         class On : public Temporary<bool>
         {
         public:
-            explicit On(bool &flag) noexcept; //!< setup
-            virtual ~On()           noexcept; //!< restore
+            explicit On(bool &) noexcept; //!< setup
+            virtual ~On()       noexcept; //!< restore
         private:
-            Y_Disable_Copy_And_Assign(On);
+            Y_Disable_Copy_And_Assign(On); //!< discardin
         };
 
         //! force a flag to FALSE during a scope
         class Off : public Temporary<bool>
         {
         public:
-            explicit Off(bool &flag) noexcept; //!< setup
-            virtual ~Off()           noexcept; //!< restore
+            explicit Off(bool &) noexcept; //!< setup
+            virtual ~Off()       noexcept; //!< restore
         private:
-            Y_Disable_Copy_And_Assign(Off);
+            Y_Disable_Copy_And_Assign(Off); //!< discarding
         };
 
     };

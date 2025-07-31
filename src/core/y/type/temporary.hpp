@@ -21,6 +21,10 @@ namespace Yttrium
         Y_Args_Declare(T,Type); //!< aliases
 
         //! saving old value, assigning new one, assuming no exception
+        /**
+         \param target current target
+         \param value  temporary value to assign
+         */
         inline explicit Temporary(Type &target, ParamType value) noexcept :
         host(target), save(target) { target  = value; }
 
@@ -28,9 +32,9 @@ namespace Yttrium
         inline virtual ~Temporary() noexcept { host = save; }
 
     private:
-        Y_Disable_Copy_And_Assign(Temporary);
-        Type      &host;
-        ConstType  save;
+        Y_Disable_Copy_And_Assign(Temporary); //!< discarding
+        Type      &host; //!< initial persistent target
+        ConstType  save; //!< initial data
     };
 }
 

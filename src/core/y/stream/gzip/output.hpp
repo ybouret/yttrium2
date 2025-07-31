@@ -29,8 +29,15 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            explicit Output(const char * const fileName, const unsigned level, const bool append=false); //!< open input file
-            explicit Output(const String &, const unsigned , const bool=false);     //!< open input file
+
+            //! open gzip output stream
+            /**
+             \param fileName file name
+             \param level    in 0:9
+             \param append   open in append mode if true
+             */
+            explicit Output(const char * const fileName, const unsigned level, const bool append=false);
+            explicit Output(const String &, const unsigned , const bool=false);     //!< open input file, wrappe
             virtual ~Output() noexcept; //!< cleanup
 
             //__________________________________________________________________

@@ -10,20 +10,31 @@ namespace Yttrium
     namespace GZip
     {
 
-
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! make output mode from parameters
+        //
+        //
+        //______________________________________________________________________
         class OutputMode
         {
         public:
-            virtual ~OutputMode() noexcept;
-            
+            virtual ~OutputMode() noexcept; //!< cleanup
+
         protected:
+            //! setut \param level 0:9 \param append used append file
             explicit OutputMode(const unsigned level,
                                 const bool     append);
 
+            //! computed mode
             char mode[sizeof(void*)];
         private:
-            Y_Disable_Copy_And_Assign(OutputMode);
+            Y_Disable_Copy_And_Assign(OutputMode); //!< discarding
         };
+
+
         //______________________________________________________________________
         //
         //
@@ -41,10 +52,19 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
+
+            //! setup
+            /**
+             \param fileName output file name
+             \param level in 0:9
+             \param append if true, open fileName in append mode
+             */
             explicit OutputFile(const char * const fileName,
                                 const unsigned     level,
-                                const bool         append); //!< open \param fileName compatible file
-            virtual ~OutputFile() noexcept;                  //!< cleanup
+                                const bool         append);
+
+            //! cleaup
+            virtual ~OutputFile() noexcept;
 
             //__________________________________________________________________
             //
@@ -53,9 +73,9 @@ namespace Yttrium
             //
             //__________________________________________________________________
         protected:
-            void flush_();
-            void write_(const char);
-            
+            void flush_();            //!< inner flush
+            void write_(const char);  //!< inner write
+
         private:
             Y_Disable_Copy_And_Assign(OutputFile); //!< discarding
         };

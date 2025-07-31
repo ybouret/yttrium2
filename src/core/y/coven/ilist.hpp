@@ -57,7 +57,7 @@ namespace Yttrium
             void remove(const size_t indx) noexcept;    //!< \param indx index to remove
             void sorted(const size_t indx);             //!< \param indx insert sorted index
             void sorted(INode * const node) noexcept;   //!< \param node insert sorted node
-            bool has(const size_t indx) const noexcept;
+            bool has(const size_t indx) const noexcept; //!< \param indx index \return true if found
 
 
             friend bool operator==(const IList &, const IList&) noexcept; //!< \return same size and indices

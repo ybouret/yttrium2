@@ -149,7 +149,7 @@ namespace Yttrium
             void finish(const IList & ) noexcept; //!< remove bad indices from all root trubes
             void follow(const unsigned);          //!< call optimization
             void shrink(XMLog &);                 //!< shrink optimization
-            bool varied(XMLog &);
+            bool varied(XMLog &);                 //!< \return true if similar family for different basis were handled
 
             void makeEndEarlyBasis() noexcept; //!< apply EndEarlyBasis
             void makeDitchReplicae() noexcept; //!< apply DitchReplicae

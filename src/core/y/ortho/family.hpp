@@ -81,8 +81,7 @@ namespace Yttrium
             //! \return same sizes and vectors
             friend bool operator==(const Family &, const Family &) noexcept;
 
-            static SignType Compare(const Family &lhs, const Family &rhs) noexcept;
-
+            
 
             //__________________________________________________________________
             //
