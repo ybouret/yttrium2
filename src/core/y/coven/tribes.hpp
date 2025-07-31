@@ -93,7 +93,7 @@ namespace Yttrium
                     //
                     //----------------------------------------------------------
                     if(survey) {
-                        survey->collect(xml,*(tribe->family->lastVec));
+                        survey->collect(xml,*(tribe->family->lastVec),fp.vpool);
                     }
                 }
 

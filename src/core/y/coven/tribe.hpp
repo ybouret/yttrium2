@@ -219,7 +219,7 @@ namespace Yttrium
                         //------------------------------------------------------
                         // process the new vector
                         //------------------------------------------------------
-                        if(survey) survey->collect(xml,*(lineage->lastVec));
+                        if(survey) survey->collect(xml,*(lineage->lastVec),fpool.vpool);
                         //std::cerr << "new tribe: " << offspring.tail->basis << ":" << offspring.tail->ready << std::endl;
                     }
 
@@ -280,7 +280,7 @@ namespace Yttrium
                     if(!qvec) continue;
                     try
                     {
-                        if(survey) survey->collect(xml,*qvec);
+                        if(survey) survey->collect(xml,*qvec,fpool.vpool);
                         fpool.vpool.store(qvec);
                         return 0;
                     }

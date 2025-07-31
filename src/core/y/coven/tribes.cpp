@@ -38,7 +38,6 @@ namespace Yttrium
                 const QVector &rhs = * prev->family->lastVec;
                 if(lhs==rhs)
                 {
-                    std::cerr << "colinear rows" << std::endl;
                     return true;
                 }
             }

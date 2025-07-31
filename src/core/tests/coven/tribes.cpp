@@ -38,7 +38,7 @@ Y_UTEST(coven_tribes)
         std::cerr << "-------- dimensions = " << dims << std::endl;
         Coven::QVector::Pool vp(dims);
         Coven::QFamily::Pool fp(vp);
-        Coven::Survey         survey(vp);
+        Coven::Survey         survey;
 
         for(size_t n=1;n<=dims;++n)
         {
@@ -54,7 +54,7 @@ Y_UTEST(coven_tribes)
                 if( ran.to<double>() < proba_z)   mu[ ran.in<size_t>(1,n) ].ld(0);
                 if( ran.to<double>() < proba_dup) mu[ ran.in<size_t>(1,n) ].ld( mu[ ran.in<size_t>(1,n) ] );
 
-                survey.reset();
+                survey.reclaim(vp);
 
                 Coven::Tribes tribes(xml,mu,ip,fp,&survey);
                 size_t count = tribes.size;

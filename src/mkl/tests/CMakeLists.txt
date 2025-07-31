@@ -19,4 +19,5 @@ Y_UTEST(opt:minimize)
 Y_UTEST(algebra:lu)
 Y_UTEST(algebra:adjoint)
 Y_UTEST(algebra:ortho:space)
+Y_UTEST(algebra:coven)
 

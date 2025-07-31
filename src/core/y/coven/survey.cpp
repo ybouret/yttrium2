@@ -5,19 +5,25 @@ namespace Yttrium
 
     namespace Coven
     {
-        Survey:: Survey(QVector::Pool &vp) noexcept :
+        Survey:: Survey() noexcept :
         list(),
-        pool(vp),
         calls(0)
         {
         }
 
         Survey:: ~Survey() noexcept
         {
-            reset();
+            release();
         }
         
-        void Survey:: reset() noexcept
+        void Survey:: release() noexcept
+        {
+            Coerce(calls) = 0;
+            list.release();
+            // while(list.size) pool.store( list.popTail() );
+        }
+
+        void Survey:: reclaim(QVector::Pool &pool) noexcept
         {
             Coerce(calls) = 0;
             while(list.size) pool.store( list.popTail() );
@@ -30,7 +36,9 @@ namespace Yttrium
         }
 
 
-        void Survey:: collect(XMLog &xml, const QVector &vec)
+        void Survey:: collect(XMLog &        xml,
+                              const QVector &vec,
+                              QVector::Pool &vp)
         {
             ++Coerce(calls);
             for(const QVector * mine=list.head;mine;mine=mine->next)
@@ -41,7 +49,7 @@ namespace Yttrium
                 }
             }
             Y_XMLog(xml,"[+] " << vec);
-            list.insertOrderedBy( QVector::Compare,  pool.query(vec) );
+            list.insertOrderedBy( QVector::Compare,  vp.query(vec) );
         }
 
 

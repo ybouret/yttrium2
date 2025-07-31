@@ -59,10 +59,10 @@ Y_UTEST(coven_space)
     Coven::QVector::Pool vp(mu.cols);
 
 
-    Coven::Survey survey0(vp);
+    Coven::Survey survey0;
     const size_t  gen0 = Run(mu,vp,false,survey0);
 
-    Coven::Survey survey1(vp);
+    Coven::Survey survey1;
     const size_t  gen1 = Run(mu,vp,true,survey1);
 
     std::cerr << "survey0 : " << survey0->size << " / " << survey0.calls << " / gen=" << gen0 << std::endl;
