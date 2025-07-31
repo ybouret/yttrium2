@@ -27,10 +27,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Vector :
-        public Object,
-        public Metrics,
-        public VectorType
+        class Vector : public Object, public Metrics, public VectorType
         {
         public:
             //__________________________________________________________________
