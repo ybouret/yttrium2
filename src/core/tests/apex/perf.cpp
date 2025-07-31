@@ -25,7 +25,7 @@ Y_UTEST(apex_perf)
     System::WallTime   chrono;
 
     std::cerr << "SHR" << std::endl;
-    for(size_t bits=1;bits<=1024;bits<<=1)
+    for(size_t bits=1;bits<=4096;bits<<=1)
     {
 
         uint64_t  tmx[Apex::Metrics::Plans];
@@ -69,17 +69,17 @@ Y_UTEST(apex_perf)
     }
     std::cerr << "bits=" << nbits << std::endl;
 
-    for(int j=0;j<=Apex::Ops32_64;++j)
+    for(int i=1;i<=Apex::Ops32_64+1;++i)
     {
-        Apex::Natural::Ops = Apex::OpsMode(j);
+        Apex::Natural::Ops = Apex::OpsMode(i-1);
         uint64_t tmx = 0;
         const Temporary<uint64_t *> temp(Apex::Device::ProbeMUL,&tmx);
         Y_ASSERT(&tmx == Apex::Device::ProbeMUL);
 
         std::cerr << " " << apn::HumanReadableOps();
-        for(size_t i=1;i<=rows;++i)
+        for(size_t j=1;j<=cols;++j)
         {
-            const size_t bits = nbits[i];
+            const size_t bits = nbits[j];
             tmx = 0;
             uint64_t cycles = 0 ;
             long double ell = 0;
@@ -94,34 +94,45 @@ Y_UTEST(apex_perf)
             }
             while( ell < 0.005 );
             const long double rate = cycles / ell;
-            rates[i][j+1] = rate;
+            rates[i][j] = rate;
         }
     }
     std::cerr << std::endl;
 
 
+
     std::cerr << "--------" << std::endl;
-    for(int j=0;j<=Apex::Ops32_64;++j)
+
+    CxxArray<size_t> maxi(cols);
+    for(size_t j=1;j<=cols;++j)
     {
-        Apex::Natural::Ops = Apex::OpsMode(j);
-        std::cerr << std::setw(8) << apn::HumanReadableOps() << ' ';
-        const size_t icol = j+1;
-        long double  rmax = rates[1][icol];
+        long double  rmax = rates[1][j];
         size_t       imax = 1;
         for(size_t i=2;i<=rows;++i)
         {
-            const long double rtmp = rates[i][icol];
+            const long double rtmp = rates[i][j];
             if(rtmp>rmax)
             {
                 rmax = rtmp;
                 imax = i;
             }
         }
+        maxi[j] = imax;
+    }
 
-
-        for(size_t i=1;i<=rows;++i)
+    std::cerr << std::setw(8) << "/" << ' ';
+    for(size_t j=1;j<=cols;++j)
+    {
+        std::cerr << std::setw(8) << nbits[j] << "  ";
+    }
+    std::cerr << std::endl;
+    for(size_t i=1;i<=Apex::Ops32_64+1;++i)
+    {
+        Apex::Natural::Ops = Apex::OpsMode(i-1);
+        std::cerr << std::setw(8) << apn::HumanReadableOps() << ' ';
+        for(size_t j=1;j<=cols;++j)
         {
-            std::cerr << HumanReadable( rates[i][j+1] ) << (i==imax ? "* " : "  ");
+            std::cerr << HumanReadable( rates[i][j] ) << (i==maxi[j] ? "* " : "  ");
         }
         std::cerr << std::endl;
     }
