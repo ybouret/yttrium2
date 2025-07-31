@@ -59,28 +59,32 @@ namespace Yttrium
         static inline
         void promoteReadyOf(Tribe * const tribe, const IList &peerBasis)
         {
-            //std::cerr << "Promote " << *tribe << " with " << peerBasis << std::endl;
 
-            std::cerr << "promote " << tribe->basis << ":" << tribe->ready << " with " << peerBasis << std::endl;
+            //std::cerr << "promote " << tribe->basis << ":" << tribe->ready << " with " << peerBasis << std::endl;
+            assert(IList::AreDetached(tribe->basis,tribe->ready));
 
-            IList ready(peerBasis.pool);
-            while(tribe->ready->size)
             {
-                INode * const node = tribe->ready->popHead();
-                const size_t  indx = **node;
-                if(peerBasis.has(indx))
+                IList ready(peerBasis.pool);
+                while(tribe->ready->size)
                 {
-                    // updated ready to basis
-                    assert( !tribe->basis.has(indx) );
-                    tribe->basis.sorted(node);
+                    INode * const node = tribe->ready->popHead();
+                    const size_t  indx = **node;
+                    if(peerBasis.has(indx))
+                    {
+                        // updated ready to basis
+                        assert( !tribe->basis.has(indx) );
+                        tribe->basis.sorted(node);
+                    }
+                    else
+                    {
+                        // keep ready
+                        ready->pushTail(node);
+                    }
                 }
-                else
-                {
-                    // keep ready
-                    ready->pushTail(node);
-                }
+                tribe->ready->swapListFor( *ready );
             }
-            tribe->ready->swapListFor( *ready );
+
+            assert(IList::AreDetached(tribe->basis,tribe->ready));
         }
 
         static inline
@@ -166,18 +170,18 @@ namespace Yttrium
             }
             assert(isOrderedBy(Tribe::Compare,Sign::LooselyIncreasing));
 
-            return;
-            
+
             while( varied(xml) )
                 ;
 
+            Y_XMLog(xml, "#remaining = " << size);
 
         }
 
         bool Tribes:: varied(XMLog &xml)
         {
             Tribe::List list; // storage
-            Y_XMLog(xml,"try to compress size=" << size);
+            //Y_XMLog(xml,"try to compress size=" << size);
             while(size>0)
             {
                 Tribe * source = head;
@@ -190,19 +194,20 @@ namespace Yttrium
                     // promoting ready indices from peer basis
                     //
                     //----------------------------------------------------------
-                    Y_XMLog(xml, "(*) ---- same families ----");
-                    Y_XMLog(xml, "(-) source: " << source->basis << ":" << source->ready);
-                    Y_XMLog(xml, "(-) target: " << target->basis << ":" << target->ready);
+                    //Y_XMLog(xml, "(*) ---- same families ----");
+                    //Y_XMLog(xml, "(-) source: " << source->basis << ":" << source->ready);
+                    //Y_XMLog(xml, "(-) target: " << target->basis << ":" << target->ready);
+
 
                     {
                         const IList sourceBasis = source->basis;
                         const IList targetBasis = target->basis;
-                        Y_XMLog(xml, "(#) promoting");
+                        //Y_XMLog(xml, "(#) promoting");
                         promoteReadyOf(source,targetBasis);
                         promoteReadyOf(target,sourceBasis);
                     }
-                    Y_XMLog(xml, "(+) source: " << source->basis << ":" << source->ready);
-                    Y_XMLog(xml, "(+) target: " << target->basis << ":" << target->ready);
+                    //Y_XMLog(xml, "(+) source: " << source->basis << ":" << source->ready);
+                    //Y_XMLog(xml, "(+) target: " << target->basis << ":" << target->ready);
 
                     //----------------------------------------------------------
                     //
