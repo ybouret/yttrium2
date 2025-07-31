@@ -60,17 +60,16 @@ namespace Yttrium
             //------------------------------------------------------------------
             ns += IntegerLog2For<cplx_t>::Value;
             void * const wksp = archon.query(ns);
-            real_t * const b = ((real_t *)wksp)-1;
-            real_t * const a = b+nn;
+
+            //void *   wksp[4096];
+            real_t * const a = ((real_t *) wksp )-1;
+            real_t * const b = a+nn;
 
             //------------------------------------------------------------------
             //
             // fill workspaces
             //
             //------------------------------------------------------------------
-            //for(size_t i=n;i>0;--i) a[i] = u[n-i];
-            //for(size_t i=m;i>0;--i) b[i] = v[m-i];
-
             for(size_t i=n,k=0;i>0;--i) a[i] = u[k++];
             for(size_t i=m,k=0;i>0;--i) b[i] = v[k++];
 
@@ -89,8 +88,8 @@ namespace Yttrium
             b[1] *= a[1];
             b[2] *= a[2];
             {
-                cplx_t * zb = (cplx_t*)wksp;
-                cplx_t * za = zb+nc;
+                cplx_t * za = (cplx_t*)wksp;
+                cplx_t * zb = za+nc;
                 for(size_t i=nc-1;i>0;--i)
                     *(++zb) *= *(++za);
             }
@@ -109,14 +108,18 @@ namespace Yttrium
             //
             //
             //------------------------------------------------------------------
-            double              cy  = 0;
-            static const double RX  = 256.0;
-            for(size_t j=nn;j>0;--j) {
-                const double t = floor( b[j]/nc+cy+0.5 );
-                cy=(unsigned long) (t*0.00390625);
-                *(uint8_t *)&b[j]= (uint8_t)(t-cy*RX);
+            uint8_t * r8 = ((uint8_t *)wksp)-1;
+            double    cy = 0;
+            {
+                static const double RX  = 256.0;
+                for(size_t j=nn;j>0;--j) {
+                    const double t = floor( b[j]/nc+cy+0.5 );
+                    cy=(unsigned long) (t*0.00390625);
+                    //*(uint8_t *)&b[j] =
+                    r8[j] = (uint8_t)(t-cy*RX);
+                }
+                assert(cy<RX);
             }
-            assert(cy<RX);
 
             //------------------------------------------------------------------
             //
@@ -129,7 +132,7 @@ namespace Yttrium
 
                 *(--w) = (uint8_t) cy;
                 for(size_t j=1;j<mpn;++j)
-                    *(--w) = *(const uint8_t *) &b[j];
+                    *(--w) = r8[j]; //*(const uint8_t *) &b[j];
                 assert(w==p.data);
 
                 dev->fix();
