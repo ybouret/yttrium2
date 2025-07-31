@@ -82,6 +82,17 @@ namespace Yttrium
         }
 #endif
 
+        static inline
+        Tribe * findTarget(Tribe::List &list, const Tribe * const source)
+        {
+            for(Tribe * target=list.head;target;target=target->next)
+            {
+                if(target->basis==source->basis) continue;
+                if(*target->family == *source->family) return target;
+            }
+            return 0;
+        }
+
         void Tribes:: shrink(XMLog &xml)
         {
             assert(isOrderedBy(Tribe::Compare,Sign::LooselyIncreasing));
@@ -93,9 +104,12 @@ namespace Yttrium
             }
 
             Y_XML_Section_Attr(xml, "shrink", Y_XML_Attr(size));
+
             //------------------------------------------------------------------
             //
+            //
             // remove stalled and replica in one pass
+            //
             //
             //------------------------------------------------------------------
             {
@@ -152,65 +166,41 @@ namespace Yttrium
 
             if(size<=0) return;
 
+
+            //------------------------------------------------------------------
+            //
+            //
+            //
+            //
+            //
+            //------------------------------------------------------------------
             {
-                Tribe::List list; // collect [un]processed
+                Tribe::List list;
+
                 while(size>0)
                 {
-                    //----------------------------------------------------------
-                    //
-                    // initialize same to current head
-                    //
-                    //----------------------------------------------------------
-                    Tribe::List     same;       // shall be processed
-                    same.pushTail( popHead() ); // init
-                    {
-                        Tribe::List diff; // shall return to *this
-                        //------------------------------------------------------
-                        //
-                        // dispatch remaining
-                        //
-                        //------------------------------------------------------
-                        {
-                            const QFamily &lhs = *same.head->family;
-                            while(size>0)
-                            {
-                                Tribe * const tribe = popHead();
-                                if( lhs == *tribe->family )
-                                {
-                                    same.pushTail(tribe);
-                                }
-                                else
-                                {
-                                    diff.pushTail(tribe);
-                                }
-                            }
-                        }
+                    Tribe * const source = head;
+                    Tribe * const target = findTarget(list,source);
 
-                        //------------------------------------------------------
-                        //
-                        // return diff to *this for next loop
-                        //
-                        //------------------------------------------------------
-                        assert(0==size);
-                        swapListFor(diff);
+                    if( target )
+                    {
+                        std::cerr << "[[ same families ]]" << std::endl;
+
+                        std::cerr << *source << std::endl;
+                        std::cerr << *target << std::endl;
+
+                        std::cerr << "--------" << std::endl;
+                        //exit(0);
                     }
 
-                    //----------------------------------------------------------
-                    //
-                    // process same
-                    //
-                    //----------------------------------------------------------
-                    if(same.size>1)
-                    {
-                        std::cerr << "\t\t###same families = " << same.size << std::endl;
-                    }
-
-                    list.mergeTail(same);
+                    list.pushTail(popHead());
                 }
 
                 list.sort(Tribe::Compare);
+
                 swapListFor(list);
             }
+
 
         }
 
