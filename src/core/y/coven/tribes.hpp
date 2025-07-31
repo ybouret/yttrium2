@@ -5,7 +5,6 @@
 #define Y_Coven_Tribes_Included 1
 
 #include "y/coven/tribe.hpp"
-#include "y/stream/xmlog.hpp"
 
 namespace Yttrium
 {
@@ -150,6 +149,7 @@ namespace Yttrium
             void finish(const IList & ) noexcept; //!< remove bad indices from all root trubes
             void follow(const unsigned);          //!< call optimization
             void shrink(XMLog &);                 //!< shrink optimizatiob
+            bool varied(XMLog &);
 
             void makeEndEarlyBasis() noexcept; //!< apply EndEarlyBasis
             void makeDitchReplicae() noexcept; //!< apply DitchReplicae

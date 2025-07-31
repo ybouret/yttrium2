@@ -56,31 +56,32 @@ namespace Yttrium
             }
         }
 
-#if 1
         static inline
         void promoteReadyOf(Tribe * const tribe, const IList &peerBasis)
         {
             //std::cerr << "Promote " << *tribe << " with " << peerBasis << std::endl;
 
+            std::cerr << "promote " << tribe->basis << ":" << tribe->ready << " with " << peerBasis << std::endl;
+
+            IList ready(peerBasis.pool);
+            while(tribe->ready->size)
             {
-                IList ready(peerBasis.pool);
-                while(tribe->ready->size)
+                INode * const node = tribe->ready->popHead();
+                const size_t  indx = **node;
+                if(peerBasis.has(indx))
                 {
-                    INode * const node = tribe->ready->popHead();
-                    if(peerBasis.has(**node))
-                    {
-                        tribe->basis.sorted(node);
-                    }
-                    else
-                        ready->pushTail(node);
+                    // updated ready to basis
+                    assert( !tribe->basis.has(indx) );
+                    tribe->basis.sorted(node);
                 }
-
-                (*tribe->ready).swapListFor(*ready);
+                else
+                {
+                    // keep ready
+                    ready->pushTail(node);
+                }
             }
-
-
+            tribe->ready->swapListFor( *ready );
         }
-#endif
 
         static inline
         Tribe * findTarget(Tribe::List &list, const Tribe * const source)
@@ -88,6 +89,7 @@ namespace Yttrium
             for(Tribe * target=list.head;target;target=target->next)
             {
                 if(target->basis==source->basis) continue;
+                if(target->basis->size!=source->basis->size) continue;
                 if(*target->family == *source->family) return target;
             }
             return 0;
@@ -164,52 +166,95 @@ namespace Yttrium
             }
             assert(isOrderedBy(Tribe::Compare,Sign::LooselyIncreasing));
 
-            if(size<=0) return;
+            while( varied(xml) )
+                ;
 
 
-            //------------------------------------------------------------------
-            //
-            //
-            //
-            //
-            //
-            //------------------------------------------------------------------
+        }
+
+        bool Tribes:: varied(XMLog &xml)
+        {
+            Tribe::List list; // storage
+            Y_XMLog(xml,"try to compress size=" << size);
+            while(size>0)
             {
-                Tribe::List list;
+                Tribe * source = head;
+                Tribe * target = findTarget(list,source);
 
-                while(size>0)
+                if( target )
                 {
-                    Tribe * const source = head;
-                    Tribe * const target = findTarget(list,source);
+                    //----------------------------------------------------------
+                    //
+                    // promoting ready indices from peer basis
+                    //
+                    //----------------------------------------------------------
+                    Y_XMLog(xml, "(*) ---- same families ----");
+                    Y_XMLog(xml, "(-) source: " << source->basis << ":" << source->ready);
+                    Y_XMLog(xml, "(-) target: " << target->basis << ":" << target->ready);
 
-                    if( target )
                     {
-                        std::cerr << "[[ same families ]]" << std::endl;
-                        std::cerr << "\t" << source->basis << ":" << source->ready << std::endl;
-                        std::cerr << "\t" << target->basis << ":" << target->ready << std::endl;
-
                         const IList sourceBasis = source->basis;
                         const IList targetBasis = target->basis;
-                        std::cerr << "\t -- promoting..." << std::endl;
+                        Y_XMLog(xml, "(#) promoting");
                         promoteReadyOf(source,targetBasis);
                         promoteReadyOf(target,sourceBasis);
-                        std::cerr << "\t" << source->basis << ":" << source->ready << std::endl;
-                        std::cerr << "\t" << target->basis << ":" << target->ready << std::endl;
+                    }
+                    Y_XMLog(xml, "(+) source: " << source->basis << ":" << source->ready);
+                    Y_XMLog(xml, "(+) target: " << target->basis << ":" << target->ready);
 
-
-                        std::cerr << "--------" << std::endl;
-                        exit(0);
+                    //----------------------------------------------------------
+                    //
+                    // check result
+                    //
+                    //----------------------------------------------------------
+                    bool deleted = false;
+                    if(source->ready->size<=0)
+                    {
+                        Y_XMLog(xml,"(-) removing source");
+                        assert(head == source);
+                        delete popHead();
+                        source = 0;
+                        deleted = true;
                     }
 
-                    list.pushTail(popHead());
+                    if(target->ready->size<=0)
+                    {
+                        Y_XMLog(xml,"(-) removing target");
+                        assert(list.owns(target));
+                        delete list.pop( target );
+                        target = 0;
+                        deleted = true;
+                    }
+
+                    if( source&&target && Tribe::AreIdentical(source,target) )
+                    {
+                        Y_XMLog(xml,"(-) removing replica");
+                        delete popHead();
+                        source = 0;
+                        deleted = true;
+                     }
+
+                    if(!deleted) Y_XMLog(xml, "(+) keeping modified tribes");
+
+
+                    //----------------------------------------------------------
+                    //
+                    // build new tribes
+                    //
+                    //----------------------------------------------------------
+                    list.mergeTail(*this).sort(Tribe::Compare);
+                    swapListFor(list);
+                    return true; // something has changed
                 }
 
-                list.sort(Tribe::Compare);
-
-                swapListFor(list);
+                // move to list
+                list.pushTail(popHead());
             }
 
-
+            // at this point, nothing was done
+            assert(isOrderedBy(Tribe::Compare,Sign::LooselyIncreasing));
+            swapListFor(list);
+            return false;
         }
 
 

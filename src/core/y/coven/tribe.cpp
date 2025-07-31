@@ -62,6 +62,14 @@ namespace Yttrium
             return IList::Compare(lhs->ready,rhs->ready);
         }
 
+        bool Tribe:: AreIdentical(const Tribe * const lhs, const Tribe * const rhs) noexcept
+        {
+            assert(lhs);
+            assert(rhs);
+            return lhs->basis == rhs->basis && lhs->ready == rhs->ready;
+        }
+
+
         bool Tribe:: stalled() const noexcept
         {
             return ready->size<=0 || Ortho::Basis == family->quality;

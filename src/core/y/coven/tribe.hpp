@@ -72,6 +72,7 @@ namespace Yttrium
                 {
                     ready.free();
                 }
+                assert( IList::AreDetached(ready,basis) );
             }
 
             //! cleanup
@@ -94,7 +95,10 @@ namespace Yttrium
             //! \return compared by basis + ready
             static SignType Compare(const Tribe * const, const Tribe * const) noexcept;
 
-            
+            //! \return true is same basis and ready
+            static bool     AreIdentical(const Tribe * const, const Tribe * const) noexcept;
+
+
             //! \return true if no more possible vector
             bool stalled() const noexcept;
 
@@ -226,7 +230,10 @@ namespace Yttrium
                         {
                             for(const INode *node=colinear->head;node;node=node->next)
                             {
-                                tr->basis.sorted(**node);
+                                const size_t indx = **node;
+                                assert(!tr->ready.has(indx));
+                                if(tr->basis.has(indx)) continue;
+                                tr->basis.sorted(indx);
                             }
                         }
                     }

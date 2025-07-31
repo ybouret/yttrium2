@@ -64,6 +64,7 @@ namespace Yttrium
 
         void IList:: sorted(const size_t indx)
         {
+            assert(!has(indx));
             sorted( pool.summon(indx) );
         }
         
@@ -107,6 +108,19 @@ namespace Yttrium
 #endif
 
 
+        bool IList:: AreAttached(const IList &lhs, const IList &rhs) noexcept
+        {
+            for(const INode *node=lhs->head;node;node=node->next)
+            {
+                if(rhs.has(**node)) return true;
+            }
+            return false;
+        }
+
+        bool IList:: AreDetached(const IList &lhs, const IList &rhs) noexcept
+        {
+            return !AreAttached(lhs,rhs);
+        }
 
         SignType IList:: Compare(const IList &lhs, const IList &rhs) noexcept
         {

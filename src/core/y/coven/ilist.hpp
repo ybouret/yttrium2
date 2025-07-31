@@ -59,8 +59,12 @@ namespace Yttrium
             void sorted(INode * const node) noexcept;   //!< \param node insert sorted node
             bool has(const size_t indx) const noexcept;
 
+
             friend bool operator==(const IList &, const IList&) noexcept; //!< \return same size and indices
             friend bool operator!=(const IList &, const IList&) noexcept; //!< \return different size or indices
+
+            static bool AreAttached(const IList &, const IList &) noexcept; //!< \return at least one index in common
+            static bool AreDetached(const IList &, const IList &) noexcept; //!< \return no common index
 
             //! \return comparison by size then by increasing indices
             static SignType Compare(const IList &,const IList &) noexcept;
