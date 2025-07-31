@@ -7,23 +7,59 @@ namespace Yttrium
     namespace Apex
     {
 
+        static const Natural::MulAPI * theAPI =  & Natural::LMulAPI;
+        static MultiplicationAlgorithm theMul =    RegularMultiplication;
+
+        MultiplicationAlgorithm Natural:: Get() noexcept { return theMul; }
+
+        MultiplicationAlgorithm Natural:: Set(const MultiplicationAlgorithm algo) noexcept
+        {
+            Y_Giant_Lock();
+            const MultiplicationAlgorithm old = theMul;
+
+            switch(algo)
+            {
+                case RegularMultiplication:
+                    theAPI = & LMulAPI;
+                    break;
+
+                case FourierMultiplication:
+                    theAPI = & FMulAPI;
+                    break;
+            }
+
+            theMul = algo;
+
+            return old;
+        }
+
+        const char * Natural:: MulAlgoName() noexcept
+        {
+            switch(theMul)
+            {
+                    Y_Return_Named_Case(RegularMultiplication);
+                    Y_Return_Named_Case(FourierMultiplication);
+            }
+            return Core::Unknown;
+        }
+
+
         Device * Natural:: Mul(const Natural &lhs, const Natural &rhs)
         {
-            Y_Lock(*lhs);
-            Y_Lock(*rhs);
-            return Device::Mul(*lhs.device,*rhs.device,Ops);
+            assert(theAPI);
+            return theAPI->proc1(lhs,rhs);
         }
 
         Device * Natural:: Mul(const Natural &lhs, const natural_t rhs)
         {
-            Y_Lock(*lhs);
-            return Device::Mul(*lhs.device,rhs,Ops);
+            assert(theAPI);
+            return theAPI->proc2(lhs,rhs);
         }
 
         Device * Natural:: Mul(const natural_t lhs, const Natural &rhs)
         {
-            Y_Lock(*rhs);
-            return Device::Mul(*rhs.device,lhs,Ops);
+            assert(theAPI);
+            return theAPI->proc3(lhs,rhs);
         }
 
         Natural Natural:: sqr() const
@@ -57,7 +93,17 @@ namespace Yttrium
             Y_Lock(*rhs);
             return Device::Mul(*rhs.device,lhs,Ops);
         }
+
+        const Natural::MulAPI Natural::LMulAPI  =
+        {
+            Natural::LMul,
+            Natural::LMul,
+            Natural::LMul
+        };
+        
     }
+
+
 
 }
 
@@ -83,6 +129,13 @@ namespace Yttrium
             Y_Lock(*rhs);
             return Device::MulDFT(*rhs.device,lhs);
         }
+
+        const Natural::MulAPI Natural::FMulAPI  =
+        {
+            Natural::FMul,
+            Natural::FMul,
+            Natural::FMul
+        };
     }
 
 }

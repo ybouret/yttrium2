@@ -5,6 +5,7 @@
 #include "y/core/utils.hpp"
 #include "y/pointer/auto.hpp"
 #include "y/system/exception.hpp"
+#include "y/system/wall-time.hpp"
 
 namespace Yttrium
 {
@@ -50,6 +51,7 @@ namespace Yttrium
             //------------------------------------------------------------------
             const size_t    mpn = m+n;
             AutoPtr<Device> dev = new Device(mpn,Plan8);
+            Y_WallTime_Mark(Device::ProbeMUL);
 
             //------------------------------------------------------------------
             //
@@ -58,16 +60,19 @@ namespace Yttrium
             //------------------------------------------------------------------
             ns += IntegerLog2For<cplx_t>::Value;
             void * const wksp = archon.query(ns);
-            real_t * const a = ((real_t *)wksp)-1;
-            real_t * const b = a+nn;
+            real_t * const b = ((real_t *)wksp)-1;
+            real_t * const a = b+nn;
 
             //------------------------------------------------------------------
             //
             // fill workspaces
             //
             //------------------------------------------------------------------
-            for(size_t i=n;i>0;--i) a[i] = u[n-i];
-            for(size_t i=m;i>0;--i) b[i] = v[m-i];
+            //for(size_t i=n;i>0;--i) a[i] = u[n-i];
+            //for(size_t i=m;i>0;--i) b[i] = v[m-i];
+
+            for(size_t i=n,k=0;i>0;--i) a[i] = u[k++];
+            for(size_t i=m,k=0;i>0;--i) b[i] = v[k++];
 
             //------------------------------------------------------------------
             //
@@ -84,8 +89,8 @@ namespace Yttrium
             b[1] *= a[1];
             b[2] *= a[2];
             {
-                cplx_t * za = (cplx_t*)wksp;
-                cplx_t * zb = za+nc;
+                cplx_t * zb = (cplx_t*)wksp;
+                cplx_t * za = zb+nc;
                 for(size_t i=nc-1;i>0;--i)
                     *(++zb) *= *(++za);
             }
@@ -136,6 +141,7 @@ namespace Yttrium
             //
             //------------------------------------------------------------------
             archon.store(ns,wksp);
+            Y_WallTime_Gain(Device::ProbeMUL);
             return dev.yield();
         }
 

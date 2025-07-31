@@ -58,7 +58,7 @@ Y_UTEST(apex_perf)
     std::cerr << std::endl;
     std::cerr << "Long Multiplication" << std::endl;
 
-    const size_t     cols = 12;
+    const size_t     cols = 13;
     const size_t     rows = Apex::Ops32_64+1;
 
     CxxArray<size_t>    nbits(cols);
@@ -76,7 +76,7 @@ Y_UTEST(apex_perf)
         const Temporary<uint64_t *> temp(Apex::Device::ProbeMUL,&tmx);
         Y_ASSERT(&tmx == Apex::Device::ProbeMUL);
 
-        std::cerr << " " << apn::HumanReadableOps();
+        (std::cerr << " " << apn::HumanReadableOps()).flush();
         for(size_t j=1;j<=cols;++j)
         {
             const size_t bits = nbits[j];
@@ -92,10 +92,13 @@ Y_UTEST(apex_perf)
                 ell = chrono(tmx);
                 //(std::cerr << ell << "s    \r").flush();
             }
-            while( ell < 0.005 );
+            while( cycles < 1000 && ell < 0.1 );
             const long double rate = cycles / ell;
             rates[i][j] = rate;
+            (std::cerr << ' ' << bits << "/" << cycles).flush();
+
         }
+        std::cerr << std::endl;
     }
     std::cerr << std::endl;
 
@@ -133,6 +136,37 @@ Y_UTEST(apex_perf)
         for(size_t j=1;j<=cols;++j)
         {
             std::cerr << HumanReadable( rates[i][j] ) << (i==maxi[j] ? "* " : "  ");
+        }
+        std::cerr << std::endl;
+    }
+
+
+    apn::Set(Apex::FourierMultiplication);
+
+    {
+        uint64_t tmx = 0;
+        const Temporary<uint64_t *> temp(Apex::Device::ProbeMUL,&tmx);
+        Y_ASSERT(&tmx == Apex::Device::ProbeMUL);
+
+        std::cerr << "Fourier" << std::endl;
+        for(size_t j=1;j<=cols;++j)
+        {
+            const size_t bits = nbits[j];
+            tmx = 0;
+            uint64_t cycles = 0 ;
+            long double ell = 0;
+            do
+            {
+                ++cycles;
+                const apn lhs(ran,bits);
+                const apn rhs(ran,bits);
+                const apn prod = lhs * rhs;
+                ell = chrono(tmx);
+                //(std::cerr << ell << "s    \r").flush();
+            }
+            while( cycles < 1000 && ell < 0.1 );
+            const long double rate = cycles / ell;
+            std::cerr << ' ' << HumanReadable( rate ) << "/s @" << std::setw(6) << bits << " bits" << std::endl;
         }
         std::cerr << std::endl;
     }

@@ -43,6 +43,11 @@ namespace Yttrium
         template <typename T> struct RealDigits< XReal<T> > { static const unsigned Count = RealDigits<T>::Count; /*!< alias */  };
 
 
+        enum MultiplicationAlgorithm
+        {
+            RegularMultiplication,
+            FourierMultiplication
+        };
 
         //______________________________________________________________________
         //
@@ -66,6 +71,25 @@ namespace Yttrium
             static PlanType           BWO;      //!< for BitWise Ops
             static const char * const CallSign; //!< "apn"
             static const char * HumanReadableOps() noexcept; //!< \return current readable Ops
+
+            typedef Device * (*MulProc1)(const Natural &, const Natural &);
+            typedef Device * (*MulProc2)(const Natural &, const natural_t);
+            typedef Device * (*MulProc3)(const natural_t, const Natural &);
+
+            struct MulAPI
+            {
+                MulProc1 proc1;
+                MulProc2 proc2;
+                MulProc3 proc3;
+            };
+
+            static const MulAPI LMulAPI;
+            static const MulAPI FMulAPI;
+
+            static MultiplicationAlgorithm Set(const MultiplicationAlgorithm) noexcept;
+            static MultiplicationAlgorithm Get() noexcept;
+            static const char *            MulAlgoName() noexcept;
+
 
             //__________________________________________________________________
             //

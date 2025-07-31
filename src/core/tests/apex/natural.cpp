@@ -4,7 +4,7 @@
 #include "y/random/park-miller.hpp"
 #include "y/format/hexadecimal.hpp"
 #include "y/apex/metrics.hpp"
-
+#include "y/string/env.hpp"
 using namespace Yttrium;
 
 
@@ -12,10 +12,21 @@ using namespace Yttrium;
 Y_UTEST(apex_n)
 {
     Random::ParkMiller ran;
-
-    
+    String             mul;
+    if( Environment::Get(mul, "MUL") && "DFT" == mul)
     {
-        std::cerr << "Default" << std::endl;
+        apn::Set(Apex::FourierMultiplication);
+        std::cerr << "Using Fourier Mul" << std::endl;
+    }
+    else
+    {
+        std::cerr << "Using Regular Mul" << std::endl;
+    }
+
+
+    const char * const id = apn::MulAlgoName();
+    {
+        std::cerr << "Default/" << id << std::endl;
         Apex::Natural n;
         std::cerr << n << std::endl;
         Y_CHECK(0==n);
@@ -230,7 +241,7 @@ Y_UTEST(apex_n)
 
 
     {
-        std::cerr << "Mul64" << std::endl;
+        std::cerr << "Mul64/" << id << std::endl;
         for(size_t i=0;i<=32;++i)
         {
             for(size_t j=0;j<=32;++j)
@@ -253,7 +264,7 @@ Y_UTEST(apex_n)
 
 
     {
-        std::cerr << "Div64 [";
+        std::cerr << "Div64/" << id << " [";
 
 
         for(size_t j=1;j<=64;++j)
@@ -293,7 +304,7 @@ Y_UTEST(apex_n)
 
 
     {
-        std::cerr << "MulDiv" << std::endl;
+        std::cerr << "MulDiv/" << id << std::endl;
         for(size_t iter=0;iter<10;++iter)
         {
             const Apex::Natural l(ran, 1+ran.leq<unsigned>(1000) );
@@ -362,7 +373,7 @@ Y_UTEST(apex_n)
             Y_ASSERT(s==n);
         }
     }
-
+    std::cerr << "all with " << id << std::endl;
 
 
 }
