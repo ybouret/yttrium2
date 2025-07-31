@@ -146,6 +146,7 @@ Y_UTEST(stream:gets)
 Y_UTEST(stream:proc)
 Y_UTEST(stream:xmlog)
 Y_UTEST(stream:gzip:read)
+Y_UTEST(stream:gzip:write)
 
 #sort
 Y_UTEST(sorting:heap)

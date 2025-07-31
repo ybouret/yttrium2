@@ -108,6 +108,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(stream_proc);
     Y_UTEST(stream_xmlog);
     Y_UTEST(stream_gzip_read);
+    Y_UTEST(stream_gzip_write);
 
 
     Y_UTEST(sorting_heap);
