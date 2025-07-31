@@ -12,7 +12,7 @@ namespace Yttrium
 
     namespace Coven
     {
-        typedef Functor<size_t,TL2(XMLog &, const Survey)> Analyzer;
+        typedef Functor<size_t,TL2(XMLog &,Survey &)> Analyzer;
 
         template <typename MATRIX> inline
         size_t Analysis(XMLog        &xml,

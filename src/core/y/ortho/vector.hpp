@@ -61,6 +61,8 @@ namespace Yttrium
             Metrics( arr.size() ),
             VectorType(copyOf,arr),
             ncof(0),
+            npos(0),
+            nneg(0),
             nrm2(),
             next(0),
             prev(0)
@@ -114,7 +116,9 @@ namespace Yttrium
             // Members
             //
             //__________________________________________________________________
-            const size_t ncof; //!< number of non-zero coefficient
+            const size_t ncof; //!< number of non-zero coefficient(s)
+            const size_t npos; //!< number of positive coefficient(s)
+            const size_t nneg; //!< number of negative coefficient(s)
             const apn    nrm2; //!< |*this|^2
             Vector *     next; //!< for list/pool
             Vector *     prev; //!< for list

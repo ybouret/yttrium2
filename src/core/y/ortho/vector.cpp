@@ -13,6 +13,8 @@ namespace Yttrium
         Metrics(metrics),
         VectorType(metrics.dimensions),
         ncof(0),
+        npos(0),
+        nneg(0),
         nrm2(),
         next(0),
         prev(0)
@@ -30,6 +32,8 @@ namespace Yttrium
         Metrics(v),
         VectorType(v),
         ncof(v.ncof),
+        npos(v.ncof),
+        nneg(v.nneg),
         nrm2(v.nrm2),
         next(0),
         prev(0)
@@ -112,9 +116,9 @@ namespace Yttrium
 
                 VectorType &v = *this;
                 Coerce(nrm2).ldz();
-                Coerce(ncof) = 0;
-                size_t   p = 0;
-                size_t   n = 0;
+                size_t & a = (Coerce(ncof) = 0 );
+                size_t & p = (Coerce(npos) = 0 );
+                size_t & n = (Coerce(nneg) = 0 );
                 apn      g = 0;
                 SignType s = __Zero__;
                 for(size_t i=dimensions;i>0;--i)
@@ -124,13 +128,13 @@ namespace Yttrium
                     {
                         case Negative:
                             ++n;
-                            ++Coerce(ncof);
+                            ++a;
                             s = Negative;
                             break;
 
                         case Positive:
                             ++p;
-                            ++Coerce(ncof);
+                            ++a;
                             s = Positive;
                             break;
 
@@ -196,6 +200,7 @@ namespace Yttrium
                     // else do nothing
                 }
 
+                if(neg) Swap(p,n);
 
 
 
