@@ -14,10 +14,9 @@ namespace
     static inline void fill8(uint8_t * p, uint64_t w, size_t n)
     {
         assert(n<=4);
-        p += n;
         while(n-- > 0)
         {
-            *(--p) = uint8_t(w);
+            *(p++) = uint8_t(w);
             w >>= 8;
         }
     }
@@ -26,10 +25,11 @@ namespace
     {
         assert(n<=8);
         uint64_t w = 0;
+        p += n;
         while(n-- > 0)
         {
             w <<= 8;
-            w |= *(p++);
+            w |= *(--p);
         }
         return w;
 
@@ -61,10 +61,8 @@ namespace
         for(size_t i=n;i>0;--i) a[i] = u[i];
         for(size_t i=m;i>0;--i) b[i] = v[i];
 
-
-
         DFT::RealForward(a()-1, b()-1, nn);
-
+        
         b[1] *= a[1];
         b[2] *= a[2];
         {
@@ -76,13 +74,13 @@ namespace
             }
         }
 
-
-
-
         DFT::RealReverse(b()-1,nn);
+
+        Core::Display(std::cerr << "b=", b(), nn) << std::endl;
+
         double       cy  = 0;
         const double RX  = 256.0;
-        for(size_t j=nn;j>0;--j) {
+        for(size_t j=1;j<=nn;++j) {
             const double t = floor( b[j]/nc+cy+0.5 );
             cy=(unsigned long) (t*0.00390625);
             *(uint8_t *)&b[j]= (uint8_t)(t-cy*RX);
@@ -93,15 +91,16 @@ namespace
             throw Exception("cannot happen in dftmul");
         }
 
-        w[1]=(uint8_t) cy;
-        for(size_t j=2;j<=n+m;++j)
-            w[j]=*(const uint8_t *) &b[j-1];
+        const size_t mpn = m+n;
+        w[mpn]=(uint8_t) cy;
+        for(size_t j=1;j<mpn;++j)
+            w[j]=*(const uint8_t *) &b[j+1];
 
     }
 
 }
 
-Y_UTEST(dft_mul)
+Y_UTEST(dft_mul2)
 {
 
     Random::MT19937 ran;
@@ -116,7 +115,7 @@ Y_UTEST(dft_mul)
 
     for(size_t ubits=0;ubits<=32;++ubits)
         for(size_t vbits=0;vbits<=32;++vbits)
-            for(size_t iter=0;iter<1;++iter)
+            for(size_t iter=0;iter<32;++iter)
             {
                 Y_Memory_BZero(u0);
                 Y_Memory_BZero(v0);
@@ -131,7 +130,10 @@ Y_UTEST(dft_mul)
                 Hexadecimal::Display(std::cerr << "u64=" << Hexadecimal(u64,Concise) << " => ",u0,n) << " = " << u64 << std::endl;
                 Hexadecimal::Display(std::cerr << "v64=" << Hexadecimal(v64,Concise) << " => ",v0,m) << " = " << v64 << std::endl;
 
+
                 dftmul(w,u,n,v,m);
+
+                //continue;
 
                 Hexadecimal::Display(std::cerr << "w64=" << Hexadecimal(w64,Concise) << " => ",w0,n+m) << " = " << w64 << std::endl;
                 Y_ASSERT(read8(w0,n+m) == w64);
