@@ -33,14 +33,14 @@ Y_UTEST(apex_ortho_vector)
             }
             {
                 vec.ldz();
-                vec = arr;
+                vec.assign(arr);
                 Y_ASSERT(vec==src);
             }
 
             {
                 CxxArray<apq> q(CopyOf,arr);
                 vec.ldz();
-                vec = q;
+                vec.assign(q);
                 Y_ASSERT(vec==src);
             }
         }

@@ -77,7 +77,7 @@ namespace Yttrium
              \return *this, copy and updated
              */
             template <typename ARRAY> inline
-            Vector & operator=(ARRAY &arr)
+            Vector & assign(ARRAY &arr)
             {
                 assert(arr.size()==dimensions);
                 try {
@@ -86,7 +86,7 @@ namespace Yttrium
                 }
                 catch(...) { ldz(); throw; }
                 update();
-                
+
                 return *this;
             }
 
@@ -166,7 +166,7 @@ namespace Yttrium
                     assert(dimensions==arr.size());
                     Vector * const v = query();
                     try {
-                        *v = arr;
+                        v->assign(arr);
                     }
                     catch(...)
                     {
