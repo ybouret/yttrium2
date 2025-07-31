@@ -170,9 +170,10 @@ namespace Yttrium
             }
             assert(isOrderedBy(Tribe::Compare,Sign::LooselyIncreasing));
 
-
+            if(xml.verbose) xml() << "compressing : " << '[';
             while( varied(xml) )
                 ;
+            if(xml.verbose) xml.os << ']' << std::endl;
 
             Y_XMLog(xml, "#remaining = " << size);
 
@@ -217,7 +218,8 @@ namespace Yttrium
                     bool deleted = false;
                     if(source->ready->size<=0)
                     {
-                        Y_XMLog(xml,"(-) removing source");
+                        //Y_XMLog(xml,"(-) removing source");
+                        if(xml.verbose) xml.os << '-';
                         assert(head == source);
                         delete popHead();
                         source = 0;
@@ -226,7 +228,8 @@ namespace Yttrium
 
                     if(target->ready->size<=0)
                     {
-                        Y_XMLog(xml,"(-) removing target");
+                        //Y_XMLog(xml,"(-) removing target");
+                        if(xml.verbose) xml.os << '-';
                         assert(list.owns(target));
                         delete list.pop( target );
                         target = 0;
@@ -235,13 +238,18 @@ namespace Yttrium
 
                     if( source&&target && Tribe::AreIdentical(source,target) )
                     {
-                        Y_XMLog(xml,"(-) removing replica");
+                        //Y_XMLog(xml,"(-) removing replica");
+                        if(xml.verbose) xml.os << '#';
                         delete popHead();
                         source = 0;
                         deleted = true;
                      }
 
-                    if(!deleted) Y_XMLog(xml, "(+) keeping modified tribes");
+                    if(!deleted)
+                    {
+                        if(xml.verbose) xml.os << '+';
+                        ///Y_XMLog(xml, "(+) keeping modified tribes");
+                    }
 
 
                     //----------------------------------------------------------
