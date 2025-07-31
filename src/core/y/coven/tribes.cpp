@@ -56,7 +56,7 @@ namespace Yttrium
             }
         }
 
-#if 0
+#if 1
         static inline
         void promoteReadyOf(Tribe * const tribe, const IList &peerBasis)
         {
@@ -185,12 +185,20 @@ namespace Yttrium
                     if( target )
                     {
                         std::cerr << "[[ same families ]]" << std::endl;
+                        std::cerr << "\t" << source->basis << ":" << source->ready << std::endl;
+                        std::cerr << "\t" << target->basis << ":" << target->ready << std::endl;
 
-                        std::cerr << *source << std::endl;
-                        std::cerr << *target << std::endl;
+                        const IList sourceBasis = source->basis;
+                        const IList targetBasis = target->basis;
+                        std::cerr << "\t -- promoting..." << std::endl;
+                        promoteReadyOf(source,targetBasis);
+                        promoteReadyOf(target,sourceBasis);
+                        std::cerr << "\t" << source->basis << ":" << source->ready << std::endl;
+                        std::cerr << "\t" << target->basis << ":" << target->ready << std::endl;
+
 
                         std::cerr << "--------" << std::endl;
-                        //exit(0);
+                        exit(0);
                     }
 
                     list.pushTail(popHead());

@@ -95,7 +95,7 @@ namespace Yttrium
         }
 
 
-#if 0
+#if 1
         bool IList:: has(const size_t indx) const noexcept
         {
             for(const INode *node=list.head;node;node=node->next)
