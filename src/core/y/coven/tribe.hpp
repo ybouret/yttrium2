@@ -94,6 +94,9 @@ namespace Yttrium
             //! \return compared by basis + ready
             static SignType Compare(const Tribe * const, const Tribe * const) noexcept;
 
+            //! \return compare by families
+            static SignType CompareByFamilies(const Tribe * const, const Tribe * const) noexcept;
+
 
             //! \return true if no more possible vector
             bool stalled() const noexcept;
@@ -195,7 +198,7 @@ namespace Yttrium
                         {
                             // row is in vector space
                             colinear << indx;
-                            Y_XMLog(xml,"(*) colinear row#" << indx);
+                            Y_XMLog(xml,"[-] colinear row#" << indx << " = " << mu[indx]);
                             continue;
                         }
 

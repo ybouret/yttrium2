@@ -82,10 +82,17 @@ namespace Yttrium
         }
 #endif
 
-        void Tribes:: shrink(XMLog &)
+        void Tribes:: shrink(XMLog &xml)
         {
             assert(isOrderedBy(Tribe::Compare,Sign::LooselyIncreasing));
 
+            if(size<=0)
+            {
+                Y_XMLog(xml, "(*) [no produced tribe]");
+                return;
+            }
+
+            Y_XML_Section_Attr(xml, "shrink", Y_XML_Attr(size));
             //------------------------------------------------------------------
             //
             // remove stalled and replica in one pass
@@ -93,6 +100,9 @@ namespace Yttrium
             //------------------------------------------------------------------
             {
                 Tribe::List list;
+                const size_t numAtStart = size;
+                size_t       numStalled = 0;
+                size_t       numReplica = 0;
                 while(size>0)
                 {
                     Tribe * const source = head;
@@ -101,6 +111,7 @@ namespace Yttrium
                         //------------------------------------------------------
                         // won't produce new vector
                         //------------------------------------------------------
+                        ++numStalled;
                         goto DROP;
                     }
 
@@ -111,6 +122,7 @@ namespace Yttrium
                             if(target->ready == source->ready)
                             {
                                 assert( __Zero__ == Tribe::Compare(source,target) );
+                                ++numReplica;
                                 goto DROP; // replica, same future
                             }
 
@@ -129,39 +141,57 @@ namespace Yttrium
                     delete popHead();
                 }
                 swapListFor(list);
+                if(numStalled) Y_XMLog(xml, "#stalled   = " << numStalled);
+                if(numReplica) Y_XMLog(xml, "#replica   = " << numReplica);
+                if(numReplica||numStalled) {
+                    /**/       Y_XMLog(xml, "#remaining = " << size << " / " << numAtStart);
+                    assert(numStalled+numReplica+size == numAtStart);
+                }
             }
             assert(isOrderedBy(Tribe::Compare,Sign::LooselyIncreasing));
 
-            return;
-            
+            if(size<=0) return;
+
             {
                 Tribe::List list;
+
+
                 while(size>0)
                 {
-                    Tribe * const source = head;
-                    assert(!source->stalled());
+                    Tribe::List same;
+                    Tribe::List diff;
 
-                    for(Tribe *target=list.tail;target;target=target->prev)
+                    // initialize same with head node
+                    same.pushTail( popHead() );
+
+                    // dispatch remaining
                     {
-                        if(target->basis==source->basis)
+                        const QFamily &lhs = *same.head->family;
+                        while(size>0)
                         {
-                            assert(target->ready != source->ready);
-                            continue; // ok for next gen
-                        }
-                        if( *target->family == *source->family )
-                        {
-                            std::cerr << "[Same Families]" << std::endl;
-                            std::cerr << *target << std::endl;
-                            std::cerr << *source << std::endl;
-                            std::cerr << std::endl;
-                            exit(0);
+                            Tribe * const tribe = popHead();
+                            if( lhs == *tribe->family )
+                            {
+                                same.pushTail(tribe);
+                            }
+                            else
+                            {
+                                diff.pushTail(tribe);
+                            }
                         }
                     }
 
-                    list.pushTail( popHead() );
+                    if(same.size>1)
+                        std::cerr << "\t\t###same families = " << same.size << std::endl;
+
+                    list.mergeTail(same);
+                    list.mergeTail(diff);
                 }
+
+                list.sort(Tribe::Compare);
                 swapListFor(list);
             }
+
         }
 
 

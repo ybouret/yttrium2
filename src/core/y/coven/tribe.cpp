@@ -67,6 +67,14 @@ namespace Yttrium
             return ready->size<=0 || Ortho::Basis == family->quality;
         }
 
+        SignType Tribe:: CompareByFamilies(const Tribe * const lhs, const Tribe * const rhs) noexcept
+        {
+            assert(lhs);
+            assert(rhs);
+
+            
+        }
+
 
     }
 
