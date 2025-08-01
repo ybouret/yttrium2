@@ -72,6 +72,11 @@ namespace Yttrium
                 return os << '}';
             }
 
+            template <typename COMPARE_DATA>
+            void sort(COMPARE_DATA &compareData)
+            {
+                list.sortWith(compareData);
+            }
 
             //__________________________________________________________________
             //

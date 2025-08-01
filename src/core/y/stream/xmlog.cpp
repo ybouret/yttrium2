@@ -41,7 +41,7 @@ namespace Yttrium
             xml() << "<" << *str;
             switch(pty)
             {
-                case Standalone: xml.os << "/";
+                case Standalone: xml.os << "/"; // FALLTHRU
                 case Normal:     xml.quit(); break;
                 case Partial:                break;
             }

@@ -38,10 +38,17 @@ namespace
 
 #if 1
         Coven::Survey comb;
+        const Matrix<int> NuT(TransposeOf,Nu);
         {
-            const Matrix<int> NuT(TransposeOf,Nu);
             Coven::Analysis::Run(xml,NuT,KeepComb,comb,Coven::Analysis::RejectRoot,optimize);
         }
+
+        
+        for(const Coven::QVector *v=comb->head;v;v=v->next)
+        {
+
+        }
+
 #endif
     }
 
