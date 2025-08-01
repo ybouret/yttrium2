@@ -48,13 +48,11 @@ namespace
         const size_t  M = Nu.cols;
         CxxArray<apz> stoi(M);
         DataPool      dpool;
-        DataBook      inp(dpool);
-        DataBook      out(dpool);
+
         for(const Coven::QVector *v=comb->head;v;v=v->next)
         {
             const Coven::QVector &coef = *v;
-            inp.free();
-            out.free();
+            DataBook              inp(dpool);
             Algo::ForEach(stoi, & apz::ldz );
             for(size_t i=1;i<=N;++i)
             {
@@ -68,9 +66,11 @@ namespace
                     stoi[j] += n * cf;
                 }
             }
+            DataBook out(dpool);
             for(size_t j=M;j>0;--j) if( stoi[j].s != __Zero__ ) out += j;
-            const bool effective = out->size() < inp->size();
-            Y_XMLog(xml, (effective ? "[+]" : "[-]") << " stoi=" << stoi << "  #" << inp << "->" << out);
+            const bool     effective = out->size() < inp->size();
+            const DataBook missing = inp-out;
+            Y_XMLog(xml, (effective ? "[+]" : "[-]") << " stoi=" << stoi << "  #" << inp << "->" << out << " : missing=" << missing << " @" << coef);
             if( !inp.includes(out) ) throw Exception("new indices in output!!");
         }
 
@@ -95,7 +95,7 @@ Y_UTEST(algebra_coven)
         analyze(xml,Nu,optimize);
     }
 
-    
+
     {
         // H20, AH : H HO AH Am NH4 NH3
         Matrix<int> Nu(3,6);

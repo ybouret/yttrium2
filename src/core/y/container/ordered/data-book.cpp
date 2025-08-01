@@ -15,6 +15,13 @@ namespace Yttrium
 
     }
 
+    DataBook :: DataBook(const DataBook &db) :
+    list(db.list)
+    {
+
+    }
+
+
     Y_Ingress_Impl(DataBook,list)
 
     void DataBook:: free() noexcept
@@ -85,6 +92,7 @@ namespace Yttrium
             if( **node == word )
             {
                 list.cut(node);
+                return true;
             }
         }
         return false;
@@ -113,5 +121,34 @@ namespace Yttrium
     {
         throw Specific::Exception(CallSign,"remove unknown '%s'", Hexadecimal(word,Concise).c_str());
     }
+
+
+    bool DataBook:: includes(const DataBook &other) const noexcept
+    {
+        if(other.list->size>list->size) return false;
+
+        for(const DataNode *node=other.list->head;node;node=node->next)
+        {
+            if(! search(**node) ) return false;
+        }
+        return true;
+    }
+
+    DataBook  operator | (const DataBook &lhs, const DataBook &rhs)
+    {
+        DataBook db(lhs);
+        db |= rhs;
+        return db;
+    }
+
+    DataBook  operator - (const DataBook &lhs, const DataBook &rhs)
+    {
+        //std::cerr << "{" << lhs << " - " << rhs << "}" << std::endl;
+        DataBook db(lhs);
+        db -= rhs;
+        return db;
+    }
+
+
 
 }

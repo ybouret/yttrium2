@@ -61,6 +61,13 @@ namespace Yttrium
             return *this;
         }
 
+        DataBook & operator|=(const DataBook &db)
+        {
+            for(const DataNode *node=db.list->head;node;node=node->next)
+                (void) insert_( **node );
+            return *this;
+        }
+
         template <typename T> inline
         DataBook & operator-=(const T &value)
         {
@@ -69,19 +76,20 @@ namespace Yttrium
             return *this;
         }
 
-        inline bool includes(const DataBook &other) const noexcept
+        DataBook & operator -= (const DataBook &db)
         {
-            if(other.list->size>list->size) return false;
-
-            for(const DataNode *node=other.list->head;node;node=node->next)
-            {
-                if(! search(**node) ) return false;
-            }
-
-            return true;
+            for(const DataNode *node=db.list->head;node;node=node->next)
+                (void) remove_(**node);
+            return *this;
         }
 
 
+        bool includes(const DataBook &other) const noexcept;
+
+        DataBook(const DataBook &);
+
+        friend DataBook  operator | (const DataBook &, const DataBook &);
+        friend DataBook  operator - (const DataBook &, const DataBook &);
 
 
     private:
