@@ -30,7 +30,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            static apn MaxFor(const size_t n);
+            static apn MaxFor(const size_t n); //!< \param n dimensions \return max configurations
 
             //__________________________________________________________________
             //
@@ -153,7 +153,13 @@ namespace Yttrium
                 return size;
             }
 
-            const apn cardinal;
+            //__________________________________________________________________
+            //
+            //
+            // members
+            //
+            //__________________________________________________________________
+            const apn cardinal; //!< max configurations for Min(active rows,cols)
 
         private:
             Y_Disable_Copy_And_Assign(Tribes); //!< cleanup

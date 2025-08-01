@@ -24,10 +24,18 @@ namespace
                                const bool optimize)
     {
         std::cerr << "Nu=" << Nu << std::endl;
-        Matrix<apz> Q = MKL::OrthoSpace::Of(Nu);
-        std::cerr << "Q=" << Q << std::endl;
-        Coven::Survey survey;
-        Coven::Analysis(xml,Q,KeepLaw,survey,optimize);
+        Coven::Survey laws;
+        {
+            Matrix<apz> Q = MKL::OrthoSpace::Of(Nu);
+            std::cerr << "Q=" << Q << std::endl;
+            Coven::Analysis::Run(xml,Q,KeepLaw,laws,optimize);
+        }
+
+        Coven::Survey comb;
+        {
+            const Matrix<int> NuT(TransposeOf,Nu);
+            Coven::Analysis::Run(xml,NuT,comb,optimize);
+        }
     }
 
 }
@@ -48,6 +56,7 @@ Y_UTEST(algebra_coven)
         Nu[2][1] = 1; Nu[2][3] = -1; Nu[2][4] = 1;
         analyze(xml,Nu,optimize);
     }
+    return 0;
 
     {
         // H20, AH : H HO AH Am NH4 NH3

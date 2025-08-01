@@ -42,11 +42,11 @@ namespace Yttrium
         //! digits for associated XReal
         template <typename T> struct RealDigits< XReal<T> > { static const unsigned Count = RealDigits<T>::Count; /*!< alias */  };
 
-
+        //! Mutliplication Algorithms
         enum MultiplicationAlgorithm
         {
-            RegularMultiplication,
-            FourierMultiplication
+            RegularMultiplication, //!< long multiplication
+            FourierMultiplication  //!< dft multiplication
         };
 
         //______________________________________________________________________
@@ -72,23 +72,24 @@ namespace Yttrium
             static const char * const CallSign; //!< "apn"
             static const char * HumanReadableOps() noexcept; //!< \return current readable Ops
 
-            typedef Device * (*MulProc1)(const Natural &, const Natural &);
-            typedef Device * (*MulProc2)(const Natural &, const natural_t);
-            typedef Device * (*MulProc3)(const natural_t, const Natural &);
+            typedef Device * (*MulProc1)(const Natural &, const Natural &); //!< alias
+            typedef Device * (*MulProc2)(const Natural &, const natural_t); //!< alias
+            typedef Device * (*MulProc3)(const natural_t, const Natural &); //!< alias
 
+            //! API for multiplication
             struct MulAPI
             {
-                MulProc1 proc1;
-                MulProc2 proc2;
-                MulProc3 proc3;
+                MulProc1 proc1; //!< function
+                MulProc2 proc2; //!< function
+                MulProc3 proc3; //!< function
             };
 
-            static const MulAPI LMulAPI;
-            static const MulAPI FMulAPI;
+            static const MulAPI LMulAPI; //!< API for long multiplication
+            static const MulAPI FMulAPI; //!< API for dft multiplication
 
-            static MultiplicationAlgorithm Set(const MultiplicationAlgorithm) noexcept;
-            static MultiplicationAlgorithm Get() noexcept;
-            static const char *            MulAlgoName() noexcept;
+            static MultiplicationAlgorithm Set(const MultiplicationAlgorithm) noexcept; //!< set new method \return old methods
+            static MultiplicationAlgorithm Get() noexcept;                              //!< \return current method
+            static const char *            MulAlgoName() noexcept;                      //!< \return humann readable method
 
 
             //__________________________________________________________________
