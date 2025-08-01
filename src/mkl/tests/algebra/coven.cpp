@@ -11,37 +11,23 @@ using namespace Yttrium;
 
 namespace
 {
-    struct KeepLaws
+
+    static inline bool KeepLaw(const Coven::QVector &v)
     {
 
-        inline size_t Get(XMLog &xml, Coven::Survey &survey)
-        {
-            Y_XML_Section(xml, "KeepLaws");
-            for(const Coven::QVector *v=survey->head;v;v=v->next)
-            {
-                if(v->npos>=2 && v->nneg<=0)
-                {
-                    Y_XMLog(xml, "[+] " << *v);
-                }
-                else
-                {
-                    //Y_XMLog(xml, "[-] " << *v);
-                }
-            }
-            return 0;
-        }
-    };
+        return (v.npos>=2 && v.nneg<=0);
+    }
+
 
     static inline void analyze(XMLog &xml,
-                                 const Matrix<int> &Nu,
-                                 const bool optimize)
+                               const Matrix<int> &Nu,
+                               const bool optimize)
     {
         std::cerr << "Nu=" << Nu << std::endl;
-        KeepLaws        keepLaws;
-        Coven::Analyzer findLaws( &keepLaws, & KeepLaws::Get);
         Matrix<apz> Q = MKL::OrthoSpace::Of(Nu);
         std::cerr << "Q=" << Q << std::endl;
-        Coven::Analysis(xml,Q,findLaws,optimize);
+        Coven::Survey survey;
+        Coven::Analysis(xml,Q,KeepLaw,survey,optimize);
     }
 
 }
@@ -54,8 +40,6 @@ Y_UTEST(algebra_coven)
     bool            verbose = true;
     XMLog           xml(std::cerr,verbose);
     const bool      optimize = Environment::Flag("OPTIMIZE");
-    KeepLaws        keepLaws;
-    Coven::Analyzer findLaws( &keepLaws, & KeepLaws::Get);
 
     {
         // H20, AH : H HO AH Am

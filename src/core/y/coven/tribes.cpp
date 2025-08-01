@@ -7,7 +7,15 @@ namespace Yttrium
 
     namespace Coven
     {
-
+        apn Tribes:: MaxFor(const size_t n)
+        {
+            apn sum = 0;
+            for(size_t k=1;k<=n;++k)
+            {
+                sum += apn::Enum(n,k);
+            }
+            return sum;
+        }
 
         Tribes:: ~Tribes() noexcept
         {

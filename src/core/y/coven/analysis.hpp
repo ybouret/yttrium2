@@ -12,17 +12,16 @@ namespace Yttrium
 
     namespace Coven
     {
-        typedef Functor<size_t,TL2(XMLog &,Survey &)> Analyzer;
 
         template <typename MATRIX> inline
-        size_t Analysis(XMLog        &xml,
-                        const MATRIX &matrix,
-                        Analyzer     &analyze,
-                        const bool    optimize=true)
+        void Analysis(XMLog        & xml,
+                      const MATRIX & matrix,
+                      Survey &       survey,
+                      const bool     optimize)
         {
-            Y_XML_Section_Attr(xml,"Coven::Analysis",Y_XML_Attr(matrix.rows) << Y_XML_Attr(matrix.cols));
-            if(matrix.cols<=0) return 0;
-            Survey        survey;
+            Y_XML_Section_Attr(xml,"Coven::Analysis", Y_XML_Attr(matrix.rows) << Y_XML_Attr(matrix.cols));
+            survey.release();
+            if(matrix.cols<=0) return;
             {
                 QVector::Pool vpool(matrix.cols);
                 QFamily::Pool fpool(vpool);
@@ -35,11 +34,30 @@ namespace Yttrium
                     if(gen<=0) break;
                     generated += gen;
                 }
-                Y_XMLog(xml, "#configurations = " << generated);
+
+                {
+                    Y_XML_Section(xml,"Summary");
+                    Y_XMLog(xml, "#configuration  : " << tribes.cardinal);
+                    Y_XMLog(xml, "#generated      : " << generated);
+                    Y_XMLog(xml, "#issuedVectors  : " << survey.calls);
+                    Y_XMLog(xml, "#uniqueVectors  : " << survey->size);
+                }
             }
-            Y_XMLog(xml, "survey size=" << survey->size << " / trial=" << survey.calls);
-            return analyze(xml,survey);
+
         }
+
+        template <typename MATRIX, typename IS_OK> inline
+        size_t Analysis(XMLog &        xml,
+                        const MATRIX & matrix,
+                        IS_OK &        keep,
+                        Survey &       survey,
+                        const bool     optimize)
+        {
+            Analysis(xml,matrix,survey,optimize);
+            return survey.retain(xml,keep);
+        }
+
+
 
 
     }

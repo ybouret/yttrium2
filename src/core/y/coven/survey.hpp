@@ -50,7 +50,53 @@ namespace Yttrium
             //! test equality, mostly to debug
             friend bool operator==(const Survey &, const Survey &) noexcept;
 
-            
+
+
+            template <typename IS_OK> inline
+            size_t retain(XMLog &xml, IS_OK &keep)
+            {
+                {
+                    QVector::List ok;
+                    while(list.size>0)
+                    {
+                        const QVector &v = *list.head;
+                        if(keep( *list.head ))
+                        {
+                            Y_XMLog(xml, "[+] " << v);
+                            ok.pushTail( list.popHead() );
+                        }
+                        else
+                        {
+                            delete list.popHead();
+                        }
+                    }
+                    list.swapListFor(ok);
+                }
+                return list.size;
+            }
+
+            template <typename IS_BAD> inline
+            size_t reject(XMLog &xml, IS_BAD &drop)
+            {
+                {
+                    QVector::List ok;
+                    while(list.size>0)
+                    {
+                        const QVector &v = *list.head;
+                        if(drop(v))
+                            delete list.popHead();
+                        else
+                        {
+                            Y_XMLog(xml, "[+] " << v);
+                            ok.pushTail( list.popHead() );
+                        }
+                    }
+                    list.swapListFor(ok);
+                }
+                return list.size;
+            }
+
+
         private:
             Y_Disable_Copy_And_Assign(Survey); //!< discarding
             virtual ConstInterface & locus() const noexcept;

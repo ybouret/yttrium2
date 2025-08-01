@@ -5,6 +5,7 @@
 #define Y_Coven_Tribes_Included 1
 
 #include "y/coven/tribe.hpp"
+#include "y/core/utils.hpp"
 
 namespace Yttrium
 {
@@ -26,6 +27,14 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static apn MaxFor(const size_t n);
+
+            //__________________________________________________________________
+            //
+            //
             // C++
             //
             //__________________________________________________________________
@@ -44,7 +53,8 @@ namespace Yttrium
                             const IPool &   ip,
                             QFamily::Pool & fp,
                             Survey * const  survey) :
-            Tribe::List()
+            Tribe::List(),
+            cardinal()
             {
                 Y_XML_Section_Attr(xml,"Tribes::Root", XML::Attribute("dims",mu.cols) << XML::Attribute("size",mu.rows));
                 const size_t n = mu.rows;
@@ -104,6 +114,8 @@ namespace Yttrium
                 //--------------------------------------------------------------
                 finish(bad);
                 sort(Tribe::Compare);
+                Coerce(cardinal) = MaxFor( Min(size,mu.cols) );
+                Y_XMLog(xml, "cardinal=" << cardinal);
             }
 
             //! cleanup
@@ -141,6 +153,7 @@ namespace Yttrium
                 return size;
             }
 
+            const apn cardinal;
 
         private:
             Y_Disable_Copy_And_Assign(Tribes); //!< cleanup
