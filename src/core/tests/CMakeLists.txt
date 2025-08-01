@@ -189,6 +189,7 @@ Y_UTEST(protean:coop:heavy:list)
 Y_UTEST(string:stride)
 Y_UTEST(string)
 Y_UTEST(string:env)
+Y_UTEST(string:percent)
 
 #apex
 Y_UTEST(apex:parcel)

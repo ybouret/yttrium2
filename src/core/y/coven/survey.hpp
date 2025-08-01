@@ -57,6 +57,7 @@ namespace Yttrium
             {
                 {
                     QVector::List ok;
+                    QVector::List bad;
                     while(list.size>0)
                     {
                         const QVector &v = *list.head;
@@ -67,10 +68,22 @@ namespace Yttrium
                         }
                         else
                         {
-                            delete list.popHead();
+                            if(xml.verbose)
+                                bad.pushTail(list.popHead());
+                            else
+                                delete list.popHead();
                         }
                     }
                     list.swapListFor(ok);
+                    if(xml.verbose)
+                    {
+                        if(bad.size) Y_XMLog(xml, "(*) excluded:");
+                        while(bad.size)
+                        {
+                            Y_XMLog(xml,"[-] " << *bad.head);
+                            delete bad.popHead();
+                        }
+                    }
                 }
                 return list.size;
             }

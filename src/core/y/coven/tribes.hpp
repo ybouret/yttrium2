@@ -114,7 +114,7 @@ namespace Yttrium
                 //--------------------------------------------------------------
                 finish(bad);
                 sort(Tribe::Compare);
-                Coerce(cardinal) = MaxFor( Min(size,mu.cols) );
+                Coerce(cardinal) = MaxFor( Max(size,mu.cols) );
                 Y_XMLog(xml, "cardinal=" << cardinal);
             }
 
@@ -159,7 +159,7 @@ namespace Yttrium
             // members
             //
             //__________________________________________________________________
-            const apn cardinal; //!< max configurations for Min(active rows,cols)
+            const apn cardinal; //!< max configurations 
 
         private:
             Y_Disable_Copy_And_Assign(Tribes); //!< cleanup

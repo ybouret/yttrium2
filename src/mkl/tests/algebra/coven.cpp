@@ -14,9 +14,14 @@ namespace
 
     static inline bool KeepLaw(const Coven::QVector &v)
     {
-
         return (v.npos>=2 && v.nneg<=0);
     }
+
+    static inline bool KeepComb(const Coven::QVector &v)
+    {
+        return v.ncof >= 2;
+    }
+
 
 
     static inline void analyze(XMLog &xml,
@@ -28,14 +33,16 @@ namespace
         {
             Matrix<apz> Q = MKL::OrthoSpace::Of(Nu);
             std::cerr << "Q=" << Q << std::endl;
-            Coven::Analysis::Run(xml,Q,KeepLaw,laws,optimize);
+            Coven::Analysis::Run(xml,Q,KeepLaw,laws,Coven::Analysis::AcceptRoot,optimize);
         }
 
+#if 1
         Coven::Survey comb;
         {
             const Matrix<int> NuT(TransposeOf,Nu);
-            Coven::Analysis::Run(xml,NuT,comb,optimize);
+            Coven::Analysis::Run(xml,NuT,KeepComb,comb,Coven::Analysis::RejectRoot,optimize);
         }
+#endif
     }
 
 }
@@ -56,7 +63,6 @@ Y_UTEST(algebra_coven)
         Nu[2][1] = 1; Nu[2][3] = -1; Nu[2][4] = 1;
         analyze(xml,Nu,optimize);
     }
-    return 0;
 
     {
         // H20, AH : H HO AH Am NH4 NH3
