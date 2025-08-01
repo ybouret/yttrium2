@@ -6,6 +6,7 @@
 
 #include "y/coven/tribes.hpp"
 #include "y/functor.hpp"
+#include <iomanip>
 
 namespace Yttrium
 {
@@ -36,11 +37,12 @@ namespace Yttrium
                 }
 
                 {
+                    static const int w = 8;
                     Y_XML_Section(xml,"Summary");
-                    Y_XMLog(xml, "#configuration  : " << tribes.cardinal);
-                    Y_XMLog(xml, "#generated      : " << generated);
-                    Y_XMLog(xml, "#issuedVectors  : " << survey.calls);
-                    Y_XMLog(xml, "#uniqueVectors  : " << survey->size);
+                    Y_XMLog(xml, "#configuration  : " << std::setw(w)  << tribes.cardinal);
+                    Y_XMLog(xml, "#generated      : " << std::setw(w)  << generated);
+                    Y_XMLog(xml, "#issuedVectors  : " << std::setw(w)  << survey.calls);
+                    Y_XMLog(xml, "#uniqueVectors  : " << std::setw(w)  << survey->size);
                 }
             }
 
