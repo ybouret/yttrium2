@@ -189,7 +189,7 @@ namespace Yttrium
             const Node * const node = tree.search( key.begin(), key.size() );
             if(!node) return 0;
             assert(0!=node->addr);
-            return static_cast<ConstType *>(node->addr);
+            return & static_cast<const Knot *>(node->addr)->data;
         }
 
         inline  Type * search(ParamKey key) noexcept
@@ -197,7 +197,7 @@ namespace Yttrium
             Node * const node = tree.search( key.begin(), key.size() );
             if(!node) return 0;
             assert(0!=node->addr);
-            return static_cast<Type *>(node->addr);
+            return & static_cast<Knot *>(node->addr)->data;
         }
 
         

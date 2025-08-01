@@ -171,6 +171,7 @@ namespace Yttrium
                 Node * const node = tree.insert(key.begin(), key.size(), knot);
                 if(!node) { pool.banish(knot); return false; }
                 list.pushTail(knot);
+                assert(knot == node->addr);
                 assert(tree.size == list.size);
                 return true;
             }
@@ -192,10 +193,11 @@ namespace Yttrium
 
         inline ConstType * search(ParamKey key) const noexcept
         {
+            std::cerr << "search '" << key << "'" << std::endl;
             const Node * const node = tree.search( key.begin(), key.size() );
             if(!node) return 0;
             assert(0!=node->addr);
-            return static_cast<ConstType *>(node->addr);
+            return & static_cast<const Knot *>(node->addr)->data;
         }
 
         inline  Type * search(ParamKey key) noexcept
@@ -203,7 +205,7 @@ namespace Yttrium
             Node * const node = tree.search( key.begin(), key.size() );
             if(!node) return 0;
             assert(0!=node->addr);
-            return static_cast<Type *>(node->addr);
+            return & static_cast<Knot *>(node->addr)->data;
         }
 
 

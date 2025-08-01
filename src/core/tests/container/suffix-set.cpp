@@ -47,6 +47,7 @@ Y_UTEST(container_suffix_set)
         Y_CHECK(set.insert(dum1));
         Y_CHECK(!set.insert(dum1));
 
+
         {
             const SuffixSet<String,Dummy> &cset = set;
             Y_ASSERT(cset.search("dum1"));
