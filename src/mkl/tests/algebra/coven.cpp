@@ -6,6 +6,8 @@
 #include "y/random/mt19937.hpp"
 #include "y/coven/analysis.hpp"
 #include "y/string/env.hpp"
+#include "y/container/ordered/data-book.hpp"
+#include "y/container/algorithm/for-each.hpp"
 
 using namespace Yttrium;
 
@@ -36,20 +38,42 @@ namespace
             Coven::Analysis::Run(xml,Q,KeepLaw,laws,Coven::Analysis::AcceptRoot,optimize);
         }
 
-#if 1
         Coven::Survey comb;
         const Matrix<int> NuT(TransposeOf,Nu);
         {
             Coven::Analysis::Run(xml,NuT,KeepComb,comb,Coven::Analysis::RejectRoot,optimize);
         }
 
-        
+        const size_t  N = Nu.rows;
+        const size_t  M = Nu.cols;
+        CxxArray<apz> stoi(M);
+        DataPool      dpool;
+        DataBook      inp(dpool);
+        DataBook      out(dpool);
         for(const Coven::QVector *v=comb->head;v;v=v->next)
         {
-
+            const Coven::QVector &coef = *v;
+            inp.free();
+            out.free();
+            Algo::ForEach(stoi, & apz::ldz );
+            for(size_t i=1;i<=N;++i)
+            {
+                const apz &           cf = coef[i]; if(__Zero__==cf.s) continue;
+                const Readable<int> & nu = Nu[i];
+                for(size_t j=M;j>0;--j)
+                {
+                    const int n = nu[j];
+                    if(!n) continue;
+                    inp |= j;
+                    stoi[j] += n * cf;
+                }
+            }
+            for(size_t j=M;j>0;--j) if( stoi[j].s != __Zero__ ) out += j;
+            const bool effective = out->size() < inp->size();
+            Y_XMLog(xml, (effective ? "[+]" : "[-]") << " stoi=" << stoi << "  #" << inp << "->" << out);
+            if( !inp.includes(out) ) throw Exception("new indices in output!!");
         }
 
-#endif
     }
 
 }
@@ -71,6 +95,7 @@ Y_UTEST(algebra_coven)
         analyze(xml,Nu,optimize);
     }
 
+    
     {
         // H20, AH : H HO AH Am NH4 NH3
         Matrix<int> Nu(3,6);

@@ -17,16 +17,90 @@ namespace Yttrium
     class DataBook : public Ingress<const DataList>, public Recyclable
     {
     public:
+        static const char * const CallSign;
+
         explicit DataBook(const DataPool &pool) noexcept;
         virtual ~DataBook() noexcept;
 
         virtual void free() noexcept;
         
         bool insert_(const uint64_t word);
+        bool remove_(const uint64_t word) noexcept;
+        bool search_(const uint64_t word) const noexcept;
+
+        template <typename T> inline
+        bool insert(const T &value)
+        {
+            return insert_( ToWord(value) );
+        }
+
+        template <typename T> inline
+        bool remove(const T &value) noexcept
+        {
+            return remove_( ToWord(value) );
+        }
+
+        template <typename T> inline
+        bool search(const T &value) const noexcept
+        {
+            return search_( ToWord(value) );
+        }
+
+        template <typename T> inline
+        DataBook & operator+=(const T &value)
+        {
+            const uint64_t word = ToWord(value);
+            if(!insert_(word)) ThrowMultiple(word);
+            return *this;
+        }
+
+        template <typename T> inline
+        DataBook & operator|=(const T &value)
+        {
+            (void) insert(value);
+            return *this;
+        }
+
+        template <typename T> inline
+        DataBook & operator-=(const T &value)
+        {
+            const uint64_t word = ToWord(value);
+            if(!remove_(word)) ThrowNotFound(word);
+            return *this;
+        }
+
+        inline bool includes(const DataBook &other) const noexcept
+        {
+            if(other.list->size>list->size) return false;
+
+            for(const DataNode *node=other.list->head;node;node=node->next)
+            {
+                if(! search(**node) ) return false;
+            }
+
+            return true;
+        }
+
+
+
 
     private:
         Y_Disable_Assign(DataBook);
         Y_Ingress_Decl();
+        template <typename T> static inline
+        uint64_t ToWord(const T &value) noexcept
+        {
+            union {
+                uint64_t word;
+                T        user;
+            } alias = { 0 };
+            alias.user = value;
+            return alias.word;
+        }
+
+        static void ThrowMultiple(const uint64_t);
+        static void ThrowNotFound(const uint64_t);
+
         DataList list;
     };
 }

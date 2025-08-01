@@ -1,6 +1,7 @@
 
 #include "y/container/ordered/data-book.hpp"
-
+#include "y/system/exception.hpp"
+#include "y/format/hexadecimal.hpp"
 
 namespace Yttrium
 {
@@ -75,6 +76,42 @@ namespace Yttrium
             return true;
         }
 
-
     }
+
+    bool DataBook:: remove_(const uint64_t word) noexcept
+    {
+        for(DataNode *node=list->head;node;node=node->next)
+        {
+            if( **node == word )
+            {
+                list.cut(node);
+            }
+        }
+        return false;
+    }
+
+    bool DataBook:: search_(const uint64_t word) const noexcept
+    {
+        for(DataNode *node=list->head;node;node=node->next)
+        {
+            if( **node == word )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    const char * const DataBook::CallSign = "DataBook";
+
+    void DataBook:: ThrowMultiple(const uint64_t word)
+    {
+        throw Specific::Exception(CallSign,"insert multiple '%s'", Hexadecimal(word,Concise).c_str());
+    }
+
+    void DataBook:: ThrowNotFound(const uint64_t word)
+    {
+        throw Specific::Exception(CallSign,"remove unknown '%s'", Hexadecimal(word,Concise).c_str());
+    }
+
 }

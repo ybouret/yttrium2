@@ -28,6 +28,15 @@ namespace Yttrium
                 ( (*iter++).*meth )();
             }
         }
+
+        template <
+        typename SEQUENCE,
+        typename METHOD> inline
+        SEQUENCE & ForEach( SEQUENCE &seq, METHOD meth)
+        {
+            ForEach( seq.begin(), seq.size(), meth);
+            return seq;
+        }
     }
 
 }
