@@ -152,6 +152,17 @@ namespace Yttrium
             inline ConstReverseIterator rbegin() const noexcept { return list.tail; } //!< \return matching iterator
             inline ConstReverseIterator rend()   const noexcept { return 0;         } //!< \return matching iterator
 
+
+            //! \param args parameter \return true if found from list head
+            inline bool found(ParamType args) const
+            {
+                for(const NODE *node=list.head;node;node=node->next)
+                {
+                    if( NODE::Same(args,**node) ) return true;
+                }
+                return false;
+            }
+
             //__________________________________________________________________
             //
             //

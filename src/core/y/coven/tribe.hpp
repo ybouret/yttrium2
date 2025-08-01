@@ -194,7 +194,7 @@ namespace Yttrium
                         //------------------------------------------------------
                         // try to expand family
                         //------------------------------------------------------
-                        const size_t    indx    = **node; assert(!basis.has(indx));
+                        const size_t    indx    = **node; assert(!basis.found(indx));
                         QFamily * const lineage = family->newFamilyWith(mu[indx],fpool);
                         if(!lineage)
                         {
@@ -233,7 +233,7 @@ namespace Yttrium
                             for(const INode *node=colinear->head;node;node=node->next)
                             {
                                 const size_t indx = **node;
-                                assert(!tr->basis.has(indx));
+                                assert(!tr->basis.found(indx));
                                 tr->ready.remove(indx);
                                 tr->basis.sorted(indx);
                             }

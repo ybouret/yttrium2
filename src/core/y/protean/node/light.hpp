@@ -32,6 +32,17 @@ namespace Yttrium
             Y_Args_Expose(T,Type);         //!< alias
             typedef ConstType & ParamType; //!< alias
 
+            //! check that two references are the same
+            /**
+             \param lhs first  ref
+             \param rhs second ref
+             \return &lhs == &rhs
+             */
+            static inline bool Same(ParamType lhs, ParamType rhs) noexcept
+            {
+                return &lhs == &rhs;
+            }
+
             //__________________________________________________________________
             //
             //

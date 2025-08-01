@@ -76,10 +76,10 @@ namespace Yttrium
                 {
                     INode * const node = tribe->ready->popHead();
                     const size_t  indx = **node;
-                    if(peerBasis.has(indx))
+                    if(peerBasis.found(indx))
                     {
                         // updated ready to basis
-                        assert( !tribe->basis.has(indx) );
+                        assert( !tribe->basis.found(indx) );
                         tribe->basis.sorted(node);
                     }
                     else

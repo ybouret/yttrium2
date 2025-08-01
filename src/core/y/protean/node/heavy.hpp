@@ -33,6 +33,17 @@ namespace Yttrium
             //__________________________________________________________________
             Y_Args_Declare(T,Type); //!< aliases
 
+            //! check that two objects are the same
+            /**
+             \param lhs first  arg
+             \param rhs second arg
+             \return lhs == rhs
+             */
+            static inline bool Same(ParamType lhs, ParamType rhs)
+            {
+                return lhs == rhs;
+            }
+
             //__________________________________________________________________
             //
             //

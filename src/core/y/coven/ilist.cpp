@@ -64,7 +64,7 @@ namespace Yttrium
 
         void IList:: sorted(const size_t indx)
         {
-            assert(!has(indx));
+            assert(!found(indx));
             sorted( pool.summon(indx) );
         }
         
@@ -96,7 +96,7 @@ namespace Yttrium
         }
 
 
-#if 1
+#if 0
         bool IList:: has(const size_t indx) const noexcept
         {
             for(const INode *node=list.head;node;node=node->next)
@@ -112,7 +112,7 @@ namespace Yttrium
         {
             for(const INode *node=lhs->head;node;node=node->next)
             {
-                if(rhs.has(**node)) return true;
+                if(rhs.found(**node)) return true;
             }
             return false;
         }
