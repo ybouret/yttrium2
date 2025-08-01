@@ -45,13 +45,18 @@ namespace Yttrium
             void release() noexcept;                  //!< delete vectors, calls=0;
             void reclaim(QVector::Pool &) noexcept;   //!<  store vectors, calls=0
 
-            void collect(XMLog &,const QVector &, QVector::Pool &vp); //!< collect vector, no duplicate
+            void collect(XMLog &,const QVector &, QVector::Pool &); //!< collect vector, no duplicate
 
             //! test equality, mostly to debug
             friend bool operator==(const Survey &, const Survey &) noexcept;
 
 
-
+            //! retain vector
+            /**
+             \param xml to display
+             \param keep keep vector if result is true
+             \return kept vectors count
+             */
             template <typename IS_OK> inline
             size_t retain(XMLog &xml, IS_OK &keep)
             {
@@ -75,9 +80,9 @@ namespace Yttrium
                         }
                     }
                     list.swapListFor(ok);
-                    if(xml.verbose)
+                    if(xml.verbose && bad.size)
                     {
-                        if(bad.size) Y_XMLog(xml, "(*) excluded:");
+                        Y_XMLog(xml, "(*) excluded:");
                         while(bad.size)
                         {
                             Y_XMLog(xml,"[-] " << *bad.head);
@@ -88,26 +93,7 @@ namespace Yttrium
                 return list.size;
             }
 
-            template <typename IS_BAD> inline
-            size_t reject(XMLog &xml, IS_BAD &drop)
-            {
-                {
-                    QVector::List ok;
-                    while(list.size>0)
-                    {
-                        const QVector &v = *list.head;
-                        if(drop(v))
-                            delete list.popHead();
-                        else
-                        {
-                            Y_XMLog(xml, "[+] " << v);
-                            ok.pushTail( list.popHead() );
-                        }
-                    }
-                    list.swapListFor(ok);
-                }
-                return list.size;
-            }
+            
 
 
         private:

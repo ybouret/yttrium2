@@ -14,24 +14,45 @@ namespace Yttrium
     namespace Coven
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Embedded analysis
+        //
+        //
+        //______________________________________________________________________
         struct Analysis
         {
-
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
             static unsigned           Width; //!< helper for format
-            static const char * const CallSign;
-            static const char * const And;
-            static const char * const Filter;
+            static const char * const CallSign; //!< "Coven::Analysis"
+            static const char * const And;      //!< "&&"
+            static const char * const Filter;   //!< "Filter"
 
+            //! processing root policy
             enum RootPolicy
             {
-                AcceptRoot,
-                RejectRoot,
+                AcceptRoot, //!< root vector(s) sent to survey
+                RejectRoot, //!< no root vector sent to survey
             };
 
 
             //! embedded analysis method
+            /**
+             \param xml      output
+             \param matrix   compatible matrix
+             \param survey   collect results
+             \param policy   root vector policy
+             \param optimize optimize search
+             */
             template <typename MATRIX> static inline
-            void Run(XMLog        &  xml,
+            void Run(XMLog        &   xml,
                      const MATRIX &   matrix,
                      Survey &         survey,
                      const RootPolicy policy,
@@ -62,6 +83,17 @@ namespace Yttrium
                 Summary(xml, tribes, generated, survey);
             }
 
+
+            //! embedded analysis method and filter
+            /**
+             \param xml      output
+             \param matrix   compatible matrix
+             \param keep     would keep vectors if result is true
+             \param survey   collect results
+             \param policy   root vector policy
+             \param optimize optimize search
+             \return final survey size
+             */
             template <typename MATRIX, typename IS_OK> static inline
             size_t Run(XMLog &          xml,
                        const MATRIX &   matrix,
@@ -82,12 +114,11 @@ namespace Yttrium
             }
 
         private:
-            static void Summary(XMLog &        xml,
-                                const Tribes & tribes,
-                                const size_t   generated,
-                                const Survey & survey);
-
-            static void FilterOut(XMLog &xml, const size_t oldSize, const size_t newSize);
+            //! display analysis summary
+            static void Summary(XMLog &, const Tribes &,const size_t,const Survey &);
+            
+            //! display filter result
+            static void FilterOut(XMLog &,const size_t,const size_t);
         };
 
 
