@@ -1,3 +1,6 @@
+#if defined(_MSC_VER)
+#pragma warning ( disable : 4464 )
+#endif
 
 #include "y/mkl/tao/3.hpp"
 

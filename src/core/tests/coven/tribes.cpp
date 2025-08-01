@@ -1,4 +1,9 @@
 
+#if defined(_MSC_VER)
+#pragma warning ( disable : 4464 )
+#endif
+
+
 #include "y/coven/tribes.hpp"
 #include "y/apex/natural.hpp"
 #include "y/utest/run.hpp"

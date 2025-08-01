@@ -157,9 +157,9 @@ namespace Yttrium
         }
 
 
-        inline bool insert(ParamKey key, ParamType value)
+        inline bool insert(ParamKey k, ParamType v)
         {
-            Knot * const knot = pool.summon(key,value);
+            Knot * const knot = pool.summon(k,v);
             try {
                 ConstKey &   key  = knot->key();
                 Node * const node = tree.insert(key.begin(), key.size(), knot);

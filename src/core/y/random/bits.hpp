@@ -172,7 +172,7 @@ namespace Yttrium
             T in(const T a, const T b) noexcept
             {
                 assert(b >= a);
-                return a + leq(b - a);
+                return a + leq<T>(b - a);
             }
 
 
