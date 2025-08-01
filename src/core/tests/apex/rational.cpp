@@ -169,7 +169,7 @@ Y_UTEST(apex_q)
 
 	for (size_t i = 0; i < 10; ++i)
 	{
-		apq q(ran, ran.leq(10), 1 + ran.leq(10));
+		apq q(ran, ran.leq<size_t>(10), 1 + ran.leq<size_t>(10));
 		q = q.abs();
 		std::cerr << "sqrt(" << q << ") = ";
 		const apq s = q.sqrt();
