@@ -69,7 +69,7 @@ Y_UTEST(apex_perf)
     }
     std::cerr << "bits=" << nbits << std::endl;
 
-    for(int i=1;i<=Apex::Ops32_64+1;++i)
+    for(unsigned i=1;i<=Apex::Ops32_64+1;++i)
     {
         Apex::Natural::Ops = Apex::OpsMode(i-1);
         uint64_t tmx = 0;

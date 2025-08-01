@@ -251,7 +251,7 @@ namespace Yttrium
             {
                 static const unsigned  Digits = RealDigits<T>::Count;
                 static const T         Factor = 256;
-                static const T         Tenth  = 0.1;
+                static const T         Tenth  = T(0.1);
                 static const natural_t ten    = 10;
                 Natural N = num;
                 Natural q,r;
