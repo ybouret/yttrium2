@@ -24,7 +24,7 @@ Y_UTEST(apex_n)
     }
 
 
-    const char * const id = apn::MulAlgoName();
+    const char * const id = apn::MultiplicationName();
     {
         std::cerr << "Default/" << id << std::endl;
         Apex::Natural n;

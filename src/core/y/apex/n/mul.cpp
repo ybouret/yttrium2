@@ -33,7 +33,7 @@ namespace Yttrium
             return old;
         }
 
-        const char * Natural:: MulAlgoName() noexcept
+        const char * Natural:: MultiplicationName() noexcept
         {
             switch(theMul)
             {

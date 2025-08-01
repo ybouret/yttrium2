@@ -9,9 +9,11 @@
 namespace Yttrium
 {
 
+    //! convert ratios to percent string
     struct StringPercent
     {
 
+        //! \param num numerator \param den denominator \return percent of num<=den
         template <typename U, typename V> static
         inline String Get(const U &num, const V &den)
         {
@@ -20,6 +22,7 @@ namespace Yttrium
             return APGet(count,total);
         }
 
+        //! \param count numerator \param total denominator \return percent of count<=total
         static String APGet(const apn &count, const apn &total);
     };
 

@@ -75,7 +75,7 @@ namespace Yttrium
             typedef Device * (*MulProc1)(const Natural &, const Natural &); //!< alias
             typedef Device * (*MulProc2)(const Natural &, const natural_t); //!< alias
             typedef Device * (*MulProc3)(const natural_t, const Natural &); //!< alias
-            typedef Device * (*SqrProc)(const Natural &);
+            typedef Device * (*SqrProc)(const Natural &);                   //!< alias
 
             //! API for multiplication
             struct MulAPI
@@ -91,7 +91,7 @@ namespace Yttrium
 
             static MultiplicationAlgorithm Set(const MultiplicationAlgorithm) noexcept; //!< set new method \return old methods
             static MultiplicationAlgorithm Get() noexcept;                              //!< \return current method
-            static const char *            MulAlgoName() noexcept;                      //!< \return humann readable method
+            static const char *            MultiplicationName() noexcept;               //!< \return humann readable method
 
 
             //__________________________________________________________________
@@ -310,9 +310,8 @@ namespace Yttrium
                 return true;
             }
 
-            static Device * LSqr(const Natural &);
-            static Device * FSqr(const Natural &);
-
+            static Device * LSqr(const Natural &); //!< \return long square
+            static Device * FSqr(const Natural &); //!< \return dft square
 
         };
     }

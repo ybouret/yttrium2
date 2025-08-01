@@ -35,7 +35,7 @@ Function( FUNCTION::__length, FUNCTION::__window), H(), M(H,
             // C++
             //__________________________________________________________________
 
-            //! setup
+            //! setup \param key_addr key \param key_size length
             inline explicit HMAC(const void * const key_addr, const size_t key_size) :
             Y_HMAC_ON_PROLOG() key_addr,key_size Y_HMAC_ON_EPILOG() {}
 
@@ -58,14 +58,14 @@ Function( FUNCTION::__length, FUNCTION::__window), H(), M(H,
             //! prepare function
             inline virtual void set() noexcept { M.set(H); }
 
-            //! run function
+            //! run function \param block_addr block \param block_size length
             inline virtual void run(const void * const block_addr, size_t block_size) noexcept
             {
                 H.run(block_addr,block_size);
             }
 
-            //! get function from hmac
-            inline virtual void get(void *output, const size_t outlen) noexcept
+            //! get function from hmac \param output buffer \param outlen length
+            inline virtual void get(void * const output, const size_t outlen) noexcept
             {
                 const Memory::ReadOnlyBuffer &md = M.get(H);
                 fill(output,outlen,md.ro(),md.length());
