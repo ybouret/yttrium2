@@ -58,7 +58,7 @@ namespace Yttrium
         return String(&buffer[1], result);
 #endif
 
-        throw Specific::Exception(fn, "not implemented on %s", Y_Platform);
+        //throw Specific::Exception(fn, "not implemented on %s", Y_Platform);
     }
 
     void LocalFS:: setCWD(const String &dirName)

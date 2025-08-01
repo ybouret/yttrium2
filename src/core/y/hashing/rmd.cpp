@@ -16,7 +16,7 @@ namespace Yttrium
         
 #if defined(_MSC_VER)
         // init B
-#pragma warning ( disable : 4351 )
+//#pragma warning ( disable : 4351 )
 #endif
         RMD:: RMD() noexcept :
         length(0),

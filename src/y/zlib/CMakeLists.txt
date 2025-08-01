@@ -10,7 +10,7 @@ Y_Message("Building zlib ${VERSION}")
 Y_ThirdParty(y-z)
 
 if(Y_MSC)
-	string( APPEND CMAKE_C_FLAGS " -wd4820 -wd4668 -wd4710 -wd4242 -wd4244 -wd4127 -wd5045 -wd4061") 
+	string( APPEND CMAKE_C_FLAGS " -wd4820 -wd4668 -wd4710 -wd4242 -wd4244 -wd4127 -wd5045 -wd4061 -wd4711") 
 endif()
 
 option(ZLIB_BUILD_EXAMPLES "Enable Zlib Examples" ON)

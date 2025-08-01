@@ -16,9 +16,6 @@ namespace Yttrium
         {
             os << "\t<Tribe basis=" << tribe.basis;
             if( tribe.ready->size) os << ":" << tribe.ready;
-#if Y_Coven_Stamp
-            os << " @" << tribe.stamp;
-#endif
             os << ">" << std::endl;
             //os << *tribe.family << std::endl;
             if(tribe.family) os << *tribe.family << std::endl;
@@ -32,18 +29,12 @@ namespace Yttrium
             if(family) { fpool.store(family); Coerce(family) = 0; }
             basis.free();
             ready.free();
-#if Y_Coven_Stamp
-            stamp.free();
-#endif
         }
 
         void Tribe:: remove(const size_t indx) noexcept
         {
             basis.remove(indx);
             ready.remove(indx);
-#if Y_Coven_Stamp
-            stamp.remove(indx);
-#endif
         }
 
 

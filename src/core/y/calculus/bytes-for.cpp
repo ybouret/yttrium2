@@ -8,7 +8,7 @@ namespace Yttrium
 
         unsigned BytesFor:: Count(const uint8_t &b) noexcept
         {
-            return b<=0 ? 0 : 1;
+            return (b<=0) ? unsigned(0) : unsigned(1);
         }
 
 

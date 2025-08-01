@@ -1,4 +1,8 @@
 
+#if defined(_MSC_VER)
+#pragma warning ( disable : 4464 )
+#endif
+
 #include "y/stream/gzip/file/input.hpp"
 #include "y/system/exception.hpp"
 #include "y/ability/lockable.hpp"

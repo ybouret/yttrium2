@@ -278,7 +278,7 @@ d += temp1; h = temp1 + temp2;              \
 			last = (int)( ctx->total[0] & 0x7F );
 			padn = ( last < 112 ) ? ( 112 - last ) : ( 240 - last );
 			
-			sha512_run( ctx, sha512_padding, padn );
+			sha512_run( ctx, sha512_padding, (size_t)padn );
 			sha512_run( ctx, msglen, 16 );
 			
 			PUT_UINT64_BE( ctx->state[0], output,  0 );

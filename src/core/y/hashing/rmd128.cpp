@@ -265,7 +265,7 @@ namespace Yttrium
         
 #if defined(_MSC_VER)
 		// init MDbuf
-#pragma warning ( disable : 4351 )
+//#pragma warning ( disable : 4351 )
 #endif
         RMD128 :: RMD128()  noexcept :
         Function(__length,__window),
