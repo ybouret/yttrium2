@@ -5,20 +5,27 @@
 #ifndef Y_Associative_DataBook_Included
 #define Y_Associative_DataBook_Included 1
 
-#include "y/container/associative/hash/map.hpp"
+#include "y/protean/coop/heavy/list.hpp"
 
 namespace Yttrium
 {
-    class DataBook
+
+    typedef  Protean::CoopHeavyList<uint64_t> DataList;
+    typedef  DataList::PoolType               DataPool;
+    typedef  DataList::NodeType               DataNode;
+    
+    class DataBook : public Ingress<const DataList>
     {
     public:
-        explicit DataBook();
+        explicit DataBook(const DataPool &pool) noexcept;
         virtual ~DataBook() noexcept;
 
+
+        bool insert_(const uint64_t word);
+
     private:
-        class Code;
         Y_Disable_Assign(DataBook);
-        Code * const code;
+        DataList list;
     };
 }
 
