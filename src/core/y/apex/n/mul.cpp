@@ -65,7 +65,7 @@ namespace Yttrium
         Natural Natural:: sqr() const
         {
             Y_Lock(**this);
-            return Natural(Hook, Device::Sqr(*device,Ops) );
+            return Natural(Hook,theAPI->sproc(*this));
         }
     }
 
@@ -94,11 +94,20 @@ namespace Yttrium
             return Device::Mul(*rhs.device,lhs,Ops);
         }
 
+
+        Device * Natural:: LSqr(const Natural &n)
+        {
+            return Device::Sqr(*n.device,Ops);
+        }
+
+         
+
         const Natural::MulAPI Natural::LMulAPI  =
         {
             Natural::LMul,
             Natural::LMul,
-            Natural::LMul
+            Natural::LMul,
+            Natural::LSqr
         };
         
     }
@@ -130,11 +139,17 @@ namespace Yttrium
             return Device::MulDFT(*rhs.device,lhs);
         }
 
+        Device * Natural:: FSqr(const Natural &n)
+        {
+            return Device::SqrDFT(*n.device);
+        }
+
         const Natural::MulAPI Natural::FMulAPI  =
         {
             Natural::FMul,
             Natural::FMul,
-            Natural::FMul
+            Natural::FMul,
+            Natural::FSqr
         };
     }
 

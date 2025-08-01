@@ -75,6 +75,7 @@ namespace Yttrium
             typedef Device * (*MulProc1)(const Natural &, const Natural &); //!< alias
             typedef Device * (*MulProc2)(const Natural &, const natural_t); //!< alias
             typedef Device * (*MulProc3)(const natural_t, const Natural &); //!< alias
+            typedef Device * (*SqrProc)(const Natural &);
 
             //! API for multiplication
             struct MulAPI
@@ -82,6 +83,7 @@ namespace Yttrium
                 MulProc1 proc1; //!< function
                 MulProc2 proc2; //!< function
                 MulProc3 proc3; //!< function
+                SqrProc  sproc; //!< function
             };
 
             static const MulAPI LMulAPI; //!< API for long multiplication
@@ -308,6 +310,8 @@ namespace Yttrium
                 return true;
             }
 
+            static Device * LSqr(const Natural &);
+            static Device * FSqr(const Natural &);
 
 
         };

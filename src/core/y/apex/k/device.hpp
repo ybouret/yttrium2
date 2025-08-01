@@ -148,7 +148,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             static Device * Sqr(const Device &, OpsMode); //!< \return square
-
+            static Device * SqrDFT(const Device &);       //!< \return square with DFT
 
             //__________________________________________________________________
             //

@@ -1,5 +1,6 @@
 
 #include "y/apex/k/device.hpp"
+#include "y/system/wall-time.hpp"
 
 namespace Yttrium
 {
@@ -24,6 +25,7 @@ namespace Yttrium
                     const size_t   q      = p;
                     const size_t   n      = p+q;
                     Device *       device = new Device(n*sizeof(SMALL),SmallPlan);
+                    Y_WallTime_Mark(Device::ProbeMUL);
                     {
                         Parcel<SMALL> & block = device->get<SMALL>();
                         {
@@ -44,6 +46,7 @@ namespace Yttrium
                         block.size = n;
                     }
                     device->fix();
+                    Y_WallTime_Gain(Device::ProbeMUL);
                     return device;
                 }
 

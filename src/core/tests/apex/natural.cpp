@@ -359,7 +359,7 @@ Y_UTEST(apex_n)
         std::cerr << std::endl;
     }
 
-    std::cerr << "Square..." << std::endl;
+    std::cerr << "Square/" << id << std::endl;
     {
         apn n;
         Y_ASSERT( 0 == n.sqr() );
