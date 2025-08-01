@@ -14,17 +14,19 @@ namespace Yttrium
     typedef  DataList::PoolType               DataPool;
     typedef  DataList::NodeType               DataNode;
     
-    class DataBook : public Ingress<const DataList>
+    class DataBook : public Ingress<const DataList>, public Recyclable
     {
     public:
         explicit DataBook(const DataPool &pool) noexcept;
         virtual ~DataBook() noexcept;
 
-
+        virtual void free() noexcept;
+        
         bool insert_(const uint64_t word);
 
     private:
         Y_Disable_Assign(DataBook);
+        Y_Ingress_Decl();
         DataList list;
     };
 }

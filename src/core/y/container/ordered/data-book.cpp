@@ -1,5 +1,5 @@
 
-#include "y/container/associative/data-book.hpp"
+#include "y/container/ordered/data-book.hpp"
 
 
 namespace Yttrium
@@ -14,6 +14,12 @@ namespace Yttrium
 
     }
 
+    Y_Ingress_Impl(DataBook,list)
+
+    void DataBook:: free() noexcept
+    {
+        list.free();
+    }
 
     bool DataBook:: insert_(const uint64_t word)
     {

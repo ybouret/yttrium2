@@ -66,11 +66,10 @@ namespace Yttrium
          \param newSize new size to reach
          \param padding default value
         */
-        inline void adjust(size_t newSize, ParamType padding)
+        inline void adjust(const size_t newSize, ParamType padding)
         {
-            const size_t oldSize = this->size();
-            while(newSize>oldSize) popTail();
-            while(newSize<oldSize) pushTail(padding);
+            while(this->size()>newSize) popTail();
+            while(this->size()<newSize) pushTail(padding);
         }
 
         //! syntactic helper \param rhs value to append \return *this
