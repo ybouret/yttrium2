@@ -39,6 +39,7 @@ namespace Yttrium
             //__________________________________________________________________
             explicit Pattern(const uint32_t) noexcept; //!< setup with uuid
             virtual ~Pattern() noexcept;               //!< cleanup
+            Pattern(const Pattern &) noexcept;         //!< copy all but self
 
             //__________________________________________________________________
             //
