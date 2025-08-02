@@ -1,6 +1,7 @@
 
 #include "y/jive/token.hpp"
 #include "y/ability/lockable.hpp"
+#include "y/ascii/printable.hpp"
 
 namespace Yttrium
 {
@@ -45,6 +46,15 @@ namespace Yttrium
 
 
         void Token:: free() noexcept { clear();  }
+
+        std::ostream & operator<<(std::ostream &os, const Token &token)
+        {
+            for(const Char *ch=token.head;ch;ch=ch->next)
+            {
+                os << ASCII::Printable::Char[ **ch ];
+            }
+            return os;
+        }
 
     }
 }

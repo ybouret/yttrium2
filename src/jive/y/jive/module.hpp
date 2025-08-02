@@ -46,6 +46,7 @@ namespace Yttrium
             }
 
 
+            //! read char with automatic dot()
             Char *query();
 
 

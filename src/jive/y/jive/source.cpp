@@ -15,7 +15,24 @@ namespace Yttrium
         {
         }
 
-        
+        void Source:: endl() noexcept
+        {
+            handle->endl();
+        }
+
+
+        Char * Source:: query()
+        {
+            return buffer.size ? buffer.popHead() : handle->query();
+        }
+
+        void Source:: store(Char *const ch) noexcept
+        {
+            assert(0!=ch);
+            buffer.pushHead(ch);
+        }
+
+
 
     }
 

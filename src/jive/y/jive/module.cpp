@@ -23,7 +23,14 @@ namespace Yttrium
             char   c = 0;
             if(!input->query(c)) return 0;
             dot();
-            return pool.summon(c,*this);
+            const Context &ctx = *this;
+            return pool.summon(c,ctx);
+        }
+
+        Module:: Module(const Tag &tag, const Input &inp) noexcept:
+        Context(tag),
+        input(inp)
+        {
         }
 
     }
