@@ -11,16 +11,19 @@ using namespace Yttrium;
 Y_UTEST(ordered_data_book)
 {
     Random::ParkMiller ran;
-    DataPool           dp;
+
+    DataBook<>::PoolType dp;
+    DataBook<>           db(dp);
+
 
     {
-        DataBook db(dp);
         Vector<size_t> keys;
 
         for(size_t iter=0;iter<10;++iter)
         {
             db.free();
-            keys.adjust( 3+ ran.leq<size_t>(10), 0);
+            keys.adjust( 3+ ran.leq<size_t>(30), 0);
+            //keys.adjust(3,0);
             std::cerr << db << std::endl;
             for(size_t i=keys.size();i>0;--i)
             {
@@ -41,5 +44,7 @@ Y_UTEST(ordered_data_book)
 
         }
     }
+
+
 }
 Y_UDONE()

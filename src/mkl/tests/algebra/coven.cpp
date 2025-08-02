@@ -47,12 +47,12 @@ namespace
         const size_t  N = Nu.rows;
         const size_t  M = Nu.cols;
         CxxArray<apz> stoi(M);
-        DataPool      dpool;
+       // DataPool      dpool;
 
         for(const Coven::QVector *v=comb->head;v;v=v->next)
         {
             const Coven::QVector &coef = *v;
-            DataBook              inp(dpool);
+            //DataBook              inp(dpool);
             Algo::ForEach(stoi, & apz::ldz );
             for(size_t i=1;i<=N;++i)
             {
@@ -62,16 +62,17 @@ namespace
                 {
                     const int n = nu[j];
                     if(!n) continue;
-                    inp |= j;
+                    //inp |= j;
                     stoi[j] += n * cf;
                 }
             }
-            DataBook out(dpool);
-            for(size_t j=M;j>0;--j) if( stoi[j].s != __Zero__ ) out += j;
-            const bool     effective = out->size() < inp->size();
-            const DataBook missing = inp-out;
-            Y_XMLog(xml, (effective ? "[+]" : "[-]") << " stoi=" << stoi << "  #" << inp << "->" << out << " : missing=" << missing << " @" << coef);
-            if( !inp.includes(out) ) throw Exception("new indices in output!!");
+            //DataBook out(dpool);
+            //for(size_t j=M;j>0;--j) if( stoi[j].s != __Zero__ ) out += j;
+            //const bool     effective = out->size() < inp->size();
+           // const DataBook missing = inp-out;
+            const bool effective = true;
+            Y_XMLog(xml, (effective ? "[+]" : "[-]") << " stoi=" << stoi);// << "  #" << inp << "->" << out << " : missing=" << missing << " @" << coef);
+            //if( !inp.includes(out) ) throw Exception("new indices in output!!");
         }
 
     }

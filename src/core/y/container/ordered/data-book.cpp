@@ -5,6 +5,130 @@
 
 namespace Yttrium
 {
+
+    namespace Core
+    {
+
+        DataBook::  DataBook() noexcept {}
+        DataBook:: ~DataBook() noexcept {}
+
+        const char * const DataBook::CallSign = "DataBook";
+
+        void DataBook:: ThrowMultiple(const uint64_t word)
+        {
+            throw Specific::Exception(CallSign,"insert multiple '%s'", Hexadecimal(word,Concise).c_str());
+        }
+
+        void DataBook:: ThrowNotFound(const uint64_t word)
+        {
+            throw Specific::Exception(CallSign,"remove unknown '%s'", Hexadecimal(word,Concise).c_str());
+        }
+
+
+        bool DataBook:: Locate( DataNode * &node, ListOf<DataNode> &list, const uint64_t word) noexcept
+        {
+            assert( 0 == node );
+
+            //std::cerr << "Looking for " << word << " in " << list << std::endl;
+            switch(list.size)
+            {
+                case 0: assert(0==node); return false; // shall pushHead
+                    
+                case 1:
+                    switch( Sign::Of(word,**list.head) )
+                    {
+                        case Negative: assert(0==node);  return false; // shall pushHead
+                        case Positive: node = list.head; return false; // shall insertAfter head
+                        case __Zero__: break;
+                    }
+                    node = list.head; return true; // success
+                default:
+                    break;
+            }
+
+            DataNode * const upper = list.tail;
+            switch( Sign::Of(word,**upper) )
+            {
+                case __Zero__: node = upper; return true;
+                case Positive: node = upper; return false; // shall insert after upper
+                case Negative: break;
+            }
+            //std::cerr << "-> before tail@" << **upper << std::endl;
+
+
+            DataNode *lower = list.head; assert(lower!=upper);
+            switch( Sign::Of(word,**lower) )
+            {
+                case __Zero__: node = lower;    return true;
+                case Negative: assert(0==node); return false; // shall pushHead
+                case Positive: break;
+            }
+            //std::cerr << "-> after head@" << **lower << std::endl;
+
+
+            while(lower->next!=upper)
+            {
+                assert(word<**upper);
+                assert(word>**lower);
+                DataNode * const probe = lower->next;
+                switch(Sign::Of(word,**probe) )
+                {
+                    case Negative: node  = lower; return false; // shall insert after lower
+                    case __Zero__: node  = probe; return true;  // success
+                    case Positive: lower = probe; continue;
+                }
+            }
+            node = lower;
+            return false;
+
+        }
+
+#if 0
+        const DataNode * DataBook:: Search(const ListOf<DataNode> &list, const uint64_t word) noexcept
+        {
+            switch(list.size)
+            {
+                case 0: return 0;
+                case 1: return word == **list.head ? list.head : 0;
+                default:
+                    break;
+            }
+
+            DataNode * const upper = list.tail;
+            switch( Sign::Of(word,**upper) )
+            {
+                case __Zero__: return upper;
+                case Positive: return 0;
+                case Negative: break;
+            }
+
+            DataNode *lower = list.head; assert(lower!=upper);
+            switch( Sign::Of(word,**lower) )
+            {
+                case __Zero__: return lower;
+                case Negative: return 0;
+                case Positive: break;
+            }
+
+            for(lower=lower->next;lower!=upper;lower=lower->next)
+            {
+                switch(Sign::Of(word,**lower) )
+                {
+                    case Negative: return 0;
+                    case __Zero__: return lower;
+                    case Positive: continue;
+                }
+            }
+            return 0;
+
+
+
+        }
+#endif
+
+
+    }
+#if 0
     DataBook:: DataBook(const DataPool &pool) noexcept :
     list(pool)
     {
@@ -148,7 +272,7 @@ namespace Yttrium
         db -= rhs;
         return db;
     }
-
+#endif
 
 
 }

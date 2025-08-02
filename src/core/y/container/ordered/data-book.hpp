@@ -10,6 +10,105 @@
 namespace Yttrium
 {
 
+    typedef Protean::HeavyNode<uint64_t> DataNode;
+
+    namespace Core
+    {
+        class DataBook
+        {
+        public:
+            static const char * const            CallSign;
+
+            explicit DataBook() noexcept;
+            virtual ~DataBook() noexcept;
+
+            template <typename T> static inline
+            uint64_t ToWord(const T &value) noexcept
+            {
+                union {
+                    uint64_t word;
+                    T        user;
+                } alias = { 0 };
+                alias.user = value;
+                return alias.word;
+            }
+
+            static bool Locate(DataNode * &node, ListOf<DataNode> &list, const uint64_t word) noexcept;
+
+            static void ThrowMultiple(const uint64_t);
+            static void ThrowNotFound(const uint64_t);
+
+        private:
+            Y_Disable_Copy_And_Assign(DataBook);
+        };
+    }
+
+    template <typename Threading = SingleThreadedClass>
+    class DataBook :
+    public Ingress< const Protean::CoopHeavyList<uint64_t,Threading> >,
+    public Recyclable,
+    public Core::DataBook
+    {
+    public:
+        typedef Protean::CoopHeavyList<uint64_t,Threading> ListType;
+        typedef typename ListType::PoolType                PoolType;
+        typedef Ingress<const ListType>                    BaseType;
+        typedef typename ListType::Lock                    Lock;
+
+        inline DataBook(const PoolType &pool) : list(pool) {}
+        inline virtual ~DataBook() noexcept {}
+
+        inline virtual void free() noexcept { list.free(); }
+
+        template <typename T>
+        inline bool search(const T &value) const noexcept
+        {
+            volatile Lock lock(list);
+            DataNode *    mine = 0;
+            return Locate(mine,Coerce(*list),ToWord<T>(value));
+        }
+
+        template <typename T>
+        inline bool remove(const T &value) noexcept
+        {
+            volatile Lock lock(list);
+            DataNode *    mine = 0;
+            if(!Locate(mine,*list,ToWord<T>(value))) return false;
+            assert(0!=mine);
+            list.pool.banish( list->pop(mine) );
+            return true;
+        }
+
+        static SignType CompareNodes(const DataNode * const lhs, const DataNode * const rhs) noexcept
+        {
+            return Sign::Of( **lhs, **rhs );
+        }
+
+        template <typename T>
+        inline bool insert(const T &value)
+        {
+            volatile Lock lock(list);
+            DataNode *     mine = 0;
+            const uint64_t word = ToWord<T>(value);
+            if(Locate(mine,*list,word)) return false;
+            DataNode * const node = list.pool.summon(word);
+            if(!mine) list->pushHead( node );
+            else      list->insertAfter(mine,node);
+            assert(list->isOrderedBy(CompareNodes,Sign::StriclyIncreasing));
+            return true;
+        }
+
+
+
+
+    private:
+        Y_Disable_Assign(DataBook);
+        inline virtual typename BaseType::ConstInterface & locus() const noexcept { return list; }
+        ListType list;
+
+    };
+
+#if 0
     typedef  Protean::CoopHeavyList<uint64_t> DataList;
     typedef  DataList::PoolType               DataPool;
     typedef  DataList::NodeType               DataNode;
@@ -111,6 +210,8 @@ namespace Yttrium
 
         DataList list;
     };
+#endif
+    
 }
 
 #endif
