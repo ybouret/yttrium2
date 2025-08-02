@@ -5,4 +5,4 @@ enable_testing()
 
 Y_Message("Preparing ${Y_Test}")
 
-
+Y_UTEST(source)

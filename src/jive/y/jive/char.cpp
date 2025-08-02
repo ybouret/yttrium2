@@ -47,5 +47,11 @@ namespace Yttrium
         }
 
 
+        Char::Cache  & Char:: CacheLocation() noexcept
+        {
+            return  Concurrent::Inventory<Char>::Location();
+        }
+
+
     }
 }

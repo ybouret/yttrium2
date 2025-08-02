@@ -29,7 +29,7 @@ namespace Yttrium
             // C++
             //
             //______________________________________________________________________
-            explicit Token();                  //!< setup
+            explicit Token() noexcept;         //!< setup
             virtual ~Token() noexcept;         //!< cleanup
             Token(const Token & );             //!< duplicate
 
@@ -42,7 +42,6 @@ namespace Yttrium
             virtual void free() noexcept; //!< free content
 
         private:
-            Char::Cache & pool;      //!< global shared pool
             Y_Disable_Assign(Token); //!< discarding
             void clear() noexcept;   //!< return to pool
         };

@@ -57,7 +57,7 @@ namespace Yttrium
             ConstType    & operator*() const noexcept; //!< \return content
             Type         & operator*()       noexcept; //!< \return content
             static Cache & CacheInstance();            //!< global instance \return Inventory<Char>
-
+            static Cache & CacheLocation() noexcept;   //!< global instance \return Inventory<Char>
             //__________________________________________________________________
             //
             //

@@ -6,14 +6,18 @@ namespace Yttrium
 {
     namespace Jive
     {
-        Token:: Token() : Char::List(), Recyclable(), pool( Char::CacheInstance() )
+        Token:: Token() noexcept : Char::List(), Recyclable()
         {
         }
 
 
         void Token:: clear() noexcept
         {
-            while(size>0) pool.banish(popTail());
+            while(size>0)
+            {
+                static Char::Cache & pool = Char::CacheLocation();
+                pool.banish(popTail());
+            }
         }
 
         Token:: ~Token() noexcept
@@ -23,9 +27,10 @@ namespace Yttrium
 
 
 
-        Token:: Token(const Token &other) : Char::List(), Recyclable(), pool( other.pool )
+        Token:: Token(const Token &other) : Char::List(), Recyclable()
         {
             try {
+                static Char::Cache & pool = Char:: CacheInstance();
                 for(const Char *ch=other.head;ch;ch=ch->next)
                 {
                     pushTail( pool.mirror(ch) );
