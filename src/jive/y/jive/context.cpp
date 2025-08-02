@@ -15,7 +15,7 @@ namespace Yttrium
         Context:: Context(const Tag &t) noexcept :
         tag(t),
         line(1),
-        column(1)
+        column(0)
         {
         }
 
@@ -40,7 +40,7 @@ namespace Yttrium
         Context & Context:: endl() noexcept
         {
             ++Coerce(line);
-            Coerce(column)=1;
+            Coerce(column)=0;
             return *this;
         }
 

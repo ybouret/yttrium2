@@ -1,28 +1,29 @@
+
 //! \file
 
-#ifndef Y_Stream_IO_Char_Included
-#define Y_Stream_IO_Char_Included 1
+#ifndef Y_Jive_Char_Included
+#define Y_Jive_Char_Included 1
 
-#include "y/core/setup.hpp"
-#include "y/type/args.hpp"
+#include "y/jive/context.hpp"
 #include "y/concurrent/life-time.hpp"
 #include "y/protean/cache/warped.hpp"
 #include "y/threading/multi-threaded-handle.hpp"
+#include "y/core/linked/list.hpp"
 
 namespace Yttrium
 {
-
-    namespace IO
+    namespace Jive
     {
+
         //______________________________________________________________________
         //
         //
         //
-        //! node for Chars, managed by Inventory
+        //! byte with full context
         //
         //
         //______________________________________________________________________
-        class Char
+        class Char : public Context
         {
         public:
             //__________________________________________________________________
@@ -31,10 +32,11 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            Y_Args_Declare_Spec(uint8_t,Type);                                                       //!< aliases
-            static const System::AtExit::Longevity                   LifeTime = LifeTimeOf::IOChars; //!< lifetime
-            static const char * const                                CallSign;                       //!< "IO::Char"
-            typedef Protean::WarpedCacheOf<Char,MultiThreadedHandle> Cache;                          //!< alias
+            Y_Args_Declare_Spec(uint8_t,Type);                                                         //!< aliases
+            static const System::AtExit::Longevity                   LifeTime = LifeTimeOf::JiveChars; //!< lifetime
+            static const char * const                                CallSign;                         //!< "Jive::Char"
+            typedef Protean::WarpedCacheOf<Char,MultiThreadedHandle> Cache;                            //!< alias
+            typedef Core::ListOf<Char>                               List;                             //!< alis
 
             //__________________________________________________________________
             //
@@ -42,10 +44,9 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            Char(ParamType)    noexcept;             //!< setup
-            Char(const Char &) noexcept;             //!< duplicate
-            ~Char() noexcept;                        //!< cleanup
-            Char & operator=(const Char &) noexcept; //!< assign \return *this
+            Char(ParamType, const Context &)    noexcept; //!< setup
+            Char(const Char &) noexcept;                  //!< duplicate
+            virtual ~Char() noexcept;                     //!< cleanup
 
             //__________________________________________________________________
             //
@@ -65,8 +66,11 @@ namespace Yttrium
             //__________________________________________________________________
             Char *      next; //!< for list
             Char *      prev; //!< for list
+
         private:
-            MutableType code; //!< content
+            Y_Disable_Assign(Char); //!< discarding
+            MutableType code;       //!< content
+
         };
     }
 

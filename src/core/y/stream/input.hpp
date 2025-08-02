@@ -6,6 +6,7 @@
 
 #include "y/stream/io/chars.hpp"
 #include "y/string/fwd.hpp"
+#include "y/object/counted.hpp"
 
 namespace Yttrium
 {
@@ -18,7 +19,7 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    class InputStream
+    class InputStream : public CountedObject
     {
         //______________________________________________________________________
         //

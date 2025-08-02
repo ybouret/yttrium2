@@ -40,8 +40,8 @@ namespace Yttrium
             //__________________________________________________________________
             String       str() const; //!< \return "tag:line:column:"
 
-            Context & dot()  noexcept; //!< increase colunm
-            Context & endl() noexcept; //!< new line
+            Context & dot()  noexcept; //!< increase column \return *this
+            Context & endl() noexcept; //!< new line        \return *this
 
             //__________________________________________________________________
             //

@@ -73,7 +73,9 @@ namespace Yttrium
                 Y_Must_Lock();
                 list.pushTail( pool.summon(args) );
             }
+            
 
+            
             //! preprend new node \param args for node constructor
             inline void pushHead(ParamType args)
             {
