@@ -57,6 +57,7 @@ namespace Yttrium
 
         inline DataBook(const PoolType &pool) : list(pool) {}
         inline virtual ~DataBook() noexcept {}
+        inline DataBook(const DataBook &db) : list(db.list) {}
 
         inline virtual void free() noexcept { list.free(); }
 
@@ -97,6 +98,57 @@ namespace Yttrium
             assert(list->isOrderedBy(CompareNodes,Sign::StriclyIncreasing));
             return true;
         }
+
+        template <typename T>
+        inline DataBook & operator|=(const T &value)
+        {
+            (void) insert(value);
+            return *this;
+        }
+
+        template <typename T>
+        inline DataBook & operator+=(const T &value)
+        {
+            if( !insert(value) ) ThrowMultiple(ToWord<T>(value));
+            return *this;
+        }
+
+        inline bool includes(const DataBook &db) const noexcept
+        {
+            if(db.list->size>list->size) return false;
+            for(const DataNode *node=db.list->head;node;node=node->next)
+            {
+                if(!search(**node)) return false;
+            }
+            return true;
+        }
+
+        template <typename T>
+        inline DataBook & operator -=(const T &value)
+        {
+            if(!remove(value)) ThrowNotFound( ToWord<T>(value) );
+            return *this;
+        }
+
+        inline DataBook & operator -=(const DataBook &db)
+        {
+            if(this == &db)
+                free();
+            else
+            {
+                for(const DataNode *node=db.list->head;node;node=node->next)
+                    *this -= **node;
+            }
+            return *this;
+        }
+
+        inline friend DataBook operator-(const DataBook &lhs, const DataBook &rhs)
+        {
+            DataBook db(lhs);
+            return db -= rhs;
+        }
+
+
 
 
 
