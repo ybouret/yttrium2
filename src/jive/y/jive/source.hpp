@@ -41,13 +41,14 @@ namespace Yttrium
             void endl() noexcept; //!< signal endl to module
 
 
-            Char * query(); //!< query new char from module/buffer
+            Char * query();                      //!< query new char from module/buffer
             void   store(Char * const) noexcept; //!< store into buffer
             void   store(Token &token) noexcept; //!< store previously read
             void   stash(const Token &token);    //!< store a copy of token
-
-            size_t cached() const noexcept; //!< \return buffer.size
-            void   skip(size_t n) noexcept; //!< \param n<=cached(), skipped
+            bool   ready();                      //!< check if more char available
+            void   fetch(size_t);                //!< prefetch chars
+            size_t cache()  const noexcept; //!< \return buffer.size
+            void   sweep(size_t n) noexcept; //!< \param n<=cached(), skipped
 
 
         private:

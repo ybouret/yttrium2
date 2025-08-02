@@ -43,14 +43,30 @@ namespace Yttrium
             buffer.mergeHead(tmp);
         }
 
-        size_t Source:: cached() const noexcept { return buffer.size; }
+        size_t Source:: cache() const noexcept { return buffer.size; }
 
-        void   Source:: skip(size_t n) noexcept
+        void   Source:: sweep(size_t n) noexcept
         {
             assert(n>=buffer.size);
             static Char::Cache &pool = Char::CacheLocation();
             while(n-- > 0)
                 pool.banish( buffer.popHead() );
+        }
+
+        bool Source:: ready()
+        {
+            if(buffer.size)                            return true;
+            Char * const ch = handle->query(); if(!ch) return false;
+            (void) buffer.pushTail(ch);        return         true;
+        }
+
+        void Source:: fetch(size_t n)
+        {
+            while(n-- > 0)
+            {
+                if(Char * const ch = handle->query()) { buffer.pushTail(ch); continue; }
+                break;
+            }
         }
 
 
