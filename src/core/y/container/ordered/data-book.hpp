@@ -244,10 +244,10 @@ namespace Yttrium
         // Iterator
         //
         //______________________________________________________________________
-        inline Iterator      begin()       noexcept { return list->head; }
-        inline Iterator      end()         noexcept { return 0; }
-        inline ConstIterator begin() const noexcept { return list->head; }
-        inline ConstIterator end()   const noexcept { return 0; }
+        inline Iterator      begin()       noexcept { return list->head; } //!< \return begin
+        inline Iterator      end()         noexcept { return 0; }          //!< \return end
+        inline ConstIterator begin() const noexcept { return list->head; } //!< \return begin
+        inline ConstIterator end()   const noexcept { return 0; }          //!< \return end
 
     private:
         inline virtual typename BaseType::ConstInterface & locus() const noexcept { return list; }

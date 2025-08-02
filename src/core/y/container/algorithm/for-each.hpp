@@ -61,6 +61,7 @@ namespace Yttrium
         /**
          \param seq sequence with begin() and size()
          \param meth a method of sequence's object type
+         \param args provided to method
          \return seq
          */
         template <
