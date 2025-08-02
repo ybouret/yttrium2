@@ -105,10 +105,12 @@ namespace Yttrium
         // Definitions
         //
         //______________________________________________________________________
-        typedef Protean::CoopHeavyList<uint64_t,Threading> ListType; //!< alias
-        typedef typename ListType::PoolType                PoolType; //!< alias
-        typedef Ingress<const ListType>                    BaseType; //!< alias
-        typedef typename ListType::Lock                    Lock;     //!< alias
+        typedef Protean::CoopHeavyList<uint64_t,Threading> ListType;      //!< alias
+        typedef typename ListType::PoolType                PoolType;      //!< alias
+        typedef Ingress<const ListType>                    BaseType;      //!< alias
+        typedef typename ListType::Lock                    Lock;          //!< alias
+        typedef typename ListType::Iterator                Iterator;      //!< alias
+        typedef typename ListType::ConstIterator           ConstIterator; //!< alias
 
         //______________________________________________________________________
         //
@@ -235,7 +237,18 @@ namespace Yttrium
             DataBook db(lhs);
             return db -= rhs;
         }
-        
+
+        //______________________________________________________________________
+        //
+        //
+        // Iterator
+        //
+        //______________________________________________________________________
+        inline Iterator      begin()       noexcept { return list->head; }
+        inline Iterator      end()         noexcept { return 0; }
+        inline ConstIterator begin() const noexcept { return list->head; }
+        inline ConstIterator end()   const noexcept { return 0; }
+
     private:
         inline virtual typename BaseType::ConstInterface & locus() const noexcept { return list; }
         Y_Disable_Assign(DataBook); //!< discarding

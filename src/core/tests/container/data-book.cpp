@@ -4,8 +4,10 @@
 #include "y/random/park-miller.hpp"
 #include "y/container/sequence/vector.hpp"
 #include "y/random/shuffle.hpp"
+#include "y/container/iter/tests.hpp"
 
 using namespace Yttrium;
+
 
 
 Y_UTEST(ordered_data_book)
@@ -49,11 +51,14 @@ Y_UTEST(ordered_data_book)
         db.free();
         const int a[] = { 1, 2, 3, 4, 5 };
 
-        for(int i=0;i<sizeof(a)/sizeof(a[0]);++i)
+        for(unsigned i=0;i<sizeof(a)/sizeof(a[0]);++i)
         {
             db += &a[i];
         }
+        std::cerr << "addr=" << db << std::endl;
 
+        Iter::Test::AllForward(db);
+        
     }
 
 
