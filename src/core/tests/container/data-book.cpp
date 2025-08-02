@@ -45,6 +45,18 @@ Y_UTEST(ordered_data_book)
         }
     }
 
+    {
+        db.free();
+        const int a[] = { 1, 2, 3, 4, 5 };
+
+        for(int i=0;i<sizeof(a)/sizeof(a[0]);++i)
+        {
+            db += &a[i];
+        }
+
+    }
+
+
 
 }
 Y_UDONE()
