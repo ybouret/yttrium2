@@ -32,6 +32,26 @@ namespace Yttrium
             buffer.pushHead(ch);
         }
 
+        void Source:: store(Token &token) noexcept
+        {
+            buffer.mergeHead(token);
+        }
+
+        void Source:: stash(const Token &token)
+        {
+            Token tmp(token);
+            buffer.mergeHead(tmp);
+        }
+
+        size_t Source:: cached() const noexcept { return buffer.size; }
+
+        void   Source:: skip(size_t n) noexcept
+        {
+            assert(n>=buffer.size);
+            static Char::Cache &pool = Char::CacheLocation();
+            while(n-- > 0)
+                pool.banish( buffer.popHead() );
+        }
 
 
     }

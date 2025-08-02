@@ -11,17 +11,44 @@ namespace Yttrium
     namespace Jive
     {
 
-
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Buffered source of Char from a Module
+        //
+        //
+        //______________________________________________________________________
         class Source
         {
         public:
-            explicit Source(Module * const) noexcept;
-            virtual ~Source() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit Source(Module * const) noexcept; //!< setup from module
+            virtual ~Source()               noexcept; //!< cleanup
+
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
 
             void endl() noexcept; //!< signal endl to module
 
-            Char * query();
-            void   store(Char * const) noexcept;
+
+            Char * query(); //!< query new char from module/buffer
+            void   store(Char * const) noexcept; //!< store into buffer
+            void   store(Token &token) noexcept; //!< store previously read
+            void   stash(const Token &token);    //!< store a copy of token
+
+            size_t cached() const noexcept; //!< \return buffer.size
+            void   skip(size_t n) noexcept; //!< \param n<=cached(), skipped
+
 
         private:
             Y_Disable_Copy_And_Assign(Source);

@@ -37,6 +37,11 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
+            //! OpenFile
+            /**
+             \param name file name
+             \return module with file name
+             */
             template <typename NAME>
             static Module * OpenFile(const NAME &name)
             {
@@ -46,7 +51,7 @@ namespace Yttrium
             }
 
 
-            //! read char with automatic dot()
+            //! read char with automatic dot() \return NULL if EOF, new char otherwise
             Char *query();
 
 

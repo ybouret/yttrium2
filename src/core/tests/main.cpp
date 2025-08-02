@@ -23,6 +23,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(core_linked);
 
     Y_UTEST(type_ints);
+    Y_UTEST(type_fourcc);
 
     Y_UTEST(static_moniker);
     Y_UTEST(static_solitary);

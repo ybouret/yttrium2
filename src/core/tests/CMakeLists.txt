@@ -63,6 +63,7 @@ Y_UTEST(system:wall_time)
 
 # type
 Y_UTEST(type:ints)
+Y_UTEST(type:fourcc)
 
 # static
 Y_UTEST(static:moniker)
