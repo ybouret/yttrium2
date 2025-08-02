@@ -29,6 +29,12 @@ namespace Yttrium
             }
         }
 
+        //! apply method for each object in sequence
+        /**
+         \param seq sequence with begin() and size()
+         \param meth a method of sequence's object type
+         \return seq
+         */
         template <
         typename SEQUENCE,
         typename METHOD> inline

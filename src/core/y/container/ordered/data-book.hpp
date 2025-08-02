@@ -10,18 +10,46 @@
 namespace Yttrium
 {
 
-    typedef Protean::HeavyNode<uint64_t> DataNode;
+    typedef Protean::HeavyNode<uint64_t> DataNode; //!< alias
 
     namespace Core
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! common DataBook ops
+        //
+        //
+        //______________________________________________________________________
         class DataBook
         {
         public:
-            static const char * const            CallSign;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const char * const CallSign; //!< "DataBook"
 
-            explicit DataBook() noexcept;
-            virtual ~DataBook() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit DataBook() noexcept; //!< setup
+            virtual ~DataBook() noexcept; //!< cleanup
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! \param value integral value \return word
             template <typename T> static inline
             uint64_t ToWord(const T &value) noexcept
             {
@@ -33,16 +61,37 @@ namespace Yttrium
                 return alias.word;
             }
 
-            static bool Locate(DataNode * &node, ListOf<DataNode> &list, const uint64_t word) noexcept;
+            //! locate function
+            /**
+             \param node output node
+             \param list input list
+             \param word searched value
+             \return true => node, false: if node, insert after node, else push head
+             */
+            static bool Locate(DataNode * &       node,
+                               ListOf<DataNode> & list,
+                               const uint64_t     word) noexcept;
 
-            static void ThrowMultiple(const uint64_t);
-            static void ThrowNotFound(const uint64_t);
+            static void     ThrowMultiple(const uint64_t); //!< throw multiple index
+            static void     ThrowNotFound(const uint64_t); //!< throw index not found
+
+            //! \return comparison of content
+            static SignType CompareNodes(const DataNode * const, const DataNode * const) noexcept;
 
         private:
-            Y_Disable_Copy_And_Assign(DataBook);
+            Y_Disable_Copy_And_Assign(DataBook); //!< discarding
         };
     }
 
+
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! DataBook
+    //
+    //
+    //__________________________________________________________________________
     template <typename Threading = SingleThreadedClass>
     class DataBook :
     public Ingress< const Protean::CoopHeavyList<uint64_t,Threading> >,
@@ -50,17 +99,50 @@ namespace Yttrium
     public Core::DataBook
     {
     public:
-        typedef Protean::CoopHeavyList<uint64_t,Threading> ListType;
-        typedef typename ListType::PoolType                PoolType;
-        typedef Ingress<const ListType>                    BaseType;
-        typedef typename ListType::Lock                    Lock;
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        typedef Protean::CoopHeavyList<uint64_t,Threading> ListType; //!< alias
+        typedef typename ListType::PoolType                PoolType; //!< alias
+        typedef Ingress<const ListType>                    BaseType; //!< alias
+        typedef typename ListType::Lock                    Lock;     //!< alias
 
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+
+        //! setup \param pool shared pool
         inline DataBook(const PoolType &pool) : list(pool) {}
-        inline virtual ~DataBook() noexcept {}
+
+        //! duplicate \param db another book
         inline DataBook(const DataBook &db) : list(db.list) {}
 
+        //! cleanup
+        inline virtual ~DataBook() noexcept {}
+
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
         inline virtual void free() noexcept { list.free(); }
 
+
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+
+        //! search \param value target \return true if located matching word
         template <typename T>
         inline bool search(const T &value) const noexcept
         {
@@ -69,6 +151,7 @@ namespace Yttrium
             return Locate(mine,Coerce(*list),ToWord<T>(value));
         }
 
+        //! remove \param value target \return true if removed matching word
         template <typename T>
         inline bool remove(const T &value) noexcept
         {
@@ -80,11 +163,8 @@ namespace Yttrium
             return true;
         }
 
-        static SignType CompareNodes(const DataNode * const lhs, const DataNode * const rhs) noexcept
-        {
-            return Sign::Of( **lhs, **rhs );
-        }
 
+        //! insert \param value target \return true if matching word was inserted
         template <typename T>
         inline bool insert(const T &value)
         {
@@ -99,6 +179,7 @@ namespace Yttrium
             return true;
         }
 
+        //! permissive insert \param value target \return *this
         template <typename T>
         inline DataBook & operator|=(const T &value)
         {
@@ -106,6 +187,7 @@ namespace Yttrium
             return *this;
         }
 
+        //! loose insert \param value target \return *this
         template <typename T>
         inline DataBook & operator+=(const T &value)
         {
@@ -113,6 +195,7 @@ namespace Yttrium
             return *this;
         }
 
+        //! \param db another book \return true if all db words are inside
         inline bool includes(const DataBook &db) const noexcept
         {
             if(db.list->size>list->size) return false;
@@ -123,6 +206,7 @@ namespace Yttrium
             return true;
         }
 
+        //! strict removal \param value target \return *this
         template <typename T>
         inline DataBook & operator -=(const T &value)
         {
@@ -130,6 +214,7 @@ namespace Yttrium
             return *this;
         }
 
+        //! strict removal \param db another book \return *this
         inline DataBook & operator -=(const DataBook &db)
         {
             if(this == &db)
@@ -142,128 +227,22 @@ namespace Yttrium
             return *this;
         }
 
+        //! \param lhs book \param rhs book \return strict difference
         inline friend DataBook operator-(const DataBook &lhs, const DataBook &rhs)
         {
             DataBook db(lhs);
             return db -= rhs;
         }
-
-
-
-
-
-
-    private:
-        Y_Disable_Assign(DataBook);
-        inline virtual typename BaseType::ConstInterface & locus() const noexcept { return list; }
-        ListType list;
-
-    };
-
-#if 0
-    typedef  Protean::CoopHeavyList<uint64_t> DataList;
-    typedef  DataList::PoolType               DataPool;
-    typedef  DataList::NodeType               DataNode;
-    
-    class DataBook : public Ingress<const DataList>, public Recyclable
-    {
-    public:
-        static const char * const CallSign;
-
-        explicit DataBook(const DataPool &pool) noexcept;
-        virtual ~DataBook() noexcept;
-
-        virtual void free() noexcept;
         
-        bool insert_(const uint64_t word);
-        bool remove_(const uint64_t word) noexcept;
-        bool search_(const uint64_t word) const noexcept;
-
-        template <typename T> inline
-        bool insert(const T &value)
-        {
-            return insert_( ToWord(value) );
-        }
-
-        template <typename T> inline
-        bool remove(const T &value) noexcept
-        {
-            return remove_( ToWord(value) );
-        }
-
-        template <typename T> inline
-        bool search(const T &value) const noexcept
-        {
-            return search_( ToWord(value) );
-        }
-
-        template <typename T> inline
-        DataBook & operator+=(const T &value)
-        {
-            const uint64_t word = ToWord(value);
-            if(!insert_(word)) ThrowMultiple(word);
-            return *this;
-        }
-
-        template <typename T> inline
-        DataBook & operator|=(const T &value)
-        {
-            (void) insert(value);
-            return *this;
-        }
-
-        DataBook & operator|=(const DataBook &db)
-        {
-            for(const DataNode *node=db.list->head;node;node=node->next)
-                (void) insert_( **node );
-            return *this;
-        }
-
-        template <typename T> inline
-        DataBook & operator-=(const T &value)
-        {
-            const uint64_t word = ToWord(value);
-            if(!remove_(word)) ThrowNotFound(word);
-            return *this;
-        }
-
-        DataBook & operator -= (const DataBook &db)
-        {
-            for(const DataNode *node=db.list->head;node;node=node->next)
-                (void) remove_(**node);
-            return *this;
-        }
-
-
-        bool includes(const DataBook &other) const noexcept;
-
-        DataBook(const DataBook &);
-
-        friend DataBook  operator | (const DataBook &, const DataBook &);
-        friend DataBook  operator - (const DataBook &, const DataBook &);
-
-
     private:
-        Y_Disable_Assign(DataBook);
-        Y_Ingress_Decl();
-        template <typename T> static inline
-        uint64_t ToWord(const T &value) noexcept
-        {
-            union {
-                uint64_t word;
-                T        user;
-            } alias = { 0 };
-            alias.user = value;
-            return alias.word;
-        }
+        inline virtual typename BaseType::ConstInterface & locus() const noexcept { return list; }
+        Y_Disable_Assign(DataBook); //!< discarding
+        ListType list;              //!< operating list
 
-        static void ThrowMultiple(const uint64_t);
-        static void ThrowNotFound(const uint64_t);
-
-        DataList list;
     };
-#endif
-    
+
+
+
 }
 
 #endif

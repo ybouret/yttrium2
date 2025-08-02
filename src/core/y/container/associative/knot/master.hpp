@@ -72,6 +72,7 @@ namespace Yttrium
                 return os << '}';
             }
 
+            //! sort list of knots by data \param compareData called on **knots
             template <typename COMPARE_DATA>
             void sort(COMPARE_DATA &compareData)
             {

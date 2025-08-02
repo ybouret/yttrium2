@@ -9,6 +9,11 @@ namespace Yttrium
     namespace Core
     {
 
+        SignType DataBook:: CompareNodes(const DataNode * const lhs, const DataNode * const rhs) noexcept
+        {
+            return Sign::Of( **lhs, **rhs );
+        }
+
         DataBook::  DataBook() noexcept {}
         DataBook:: ~DataBook() noexcept {}
 
