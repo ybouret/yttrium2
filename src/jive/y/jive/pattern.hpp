@@ -64,6 +64,29 @@ namespace Yttrium
 
         private:
             Y_Disable_Assign(Pattern); //!< discard
+
+        protected:
+            template <typename DERIVED> inline
+            void I_am() noexcept {
+                assert(DERIVED::UUID==uuid);
+                Coerce(self) = static_cast<DERIVED *>(*this);
+            }
+        public:
+            template <typename DERIVED> inline
+            DERIVED *as() noexcept
+            {
+                assert(DERIVED::UUID==uuid);
+                assert(self);
+                return static_cast<DERIVED *>(self);
+            }
+
+            template <typename DERIVED> inline
+            const DERIVED *as() const noexcept
+            {
+                assert(DERIVED::UUID==uuid);
+                assert(self);
+                return static_cast<const DERIVED *>(self);
+            }
         };
 
 
