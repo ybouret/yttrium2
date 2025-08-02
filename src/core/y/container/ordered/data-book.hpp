@@ -121,7 +121,9 @@ namespace Yttrium
         inline DataBook(const PoolType &pool) : list(pool) {}
 
         //! duplicate \param db another book
-        inline DataBook(const DataBook &db) : list(db.list) {}
+        inline DataBook(const DataBook &db) :
+        BaseType(), Recyclable(), Core::DataBook(),
+        list(db.list) {}
 
         //! cleanup
         inline virtual ~DataBook() noexcept {}
