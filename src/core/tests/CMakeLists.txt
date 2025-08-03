@@ -80,6 +80,7 @@ Y_UTEST(calculus:bits_for)
 Y_UTEST(calculus:bytes_for)
 Y_UTEST(calculus:isqrt)
 Y_UTEST(calculus:iabs)
+Y_UTEST(calculus:bits_in)
 
 #concurrent
 Y_UTEST(concurrent:nucleus)

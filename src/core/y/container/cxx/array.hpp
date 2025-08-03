@@ -64,6 +64,7 @@ namespace Yttrium
 
         }
 
+        
         //! duplicate array
         /**
          \param copyOf helper

@@ -49,7 +49,7 @@ namespace Yttrium
             //__________________________________________________________________
             virtual Pattern * clone()                    const = 0; //!< \return clone
             virtual bool      accepts(Token &, Source &) const = 0; //!< \return true if accepted
-
+            virtual void      viz(OutputStream&)         const = 0; //!< save as GraphViz
 
             //__________________________________________________________________
             //
@@ -60,18 +60,22 @@ namespace Yttrium
             const uint32_t uuid; //!< identifier
             Pattern *      next; //!< for list
             Pattern *      prev; //!< for list
-            void * const   self; //!< original type'
+            void * const   self; //!< original type
 
         private:
             Y_Disable_Assign(Pattern); //!< discard
 
         protected:
+
+            //! record self
             template <typename DERIVED> inline
             void I_am() noexcept {
                 assert(DERIVED::UUID==uuid);
                 Coerce(self) = static_cast<DERIVED *>(*this);
             }
         public:
+
+            //! \return derived from recorded self
             template <typename DERIVED> inline
             DERIVED *as() noexcept
             {
@@ -80,6 +84,7 @@ namespace Yttrium
                 return static_cast<DERIVED *>(self);
             }
 
+            //! \return derived from recorded self
             template <typename DERIVED> inline
             const DERIVED *as() const noexcept
             {

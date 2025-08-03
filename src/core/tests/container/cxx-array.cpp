@@ -27,7 +27,11 @@ Y_UTEST(container_cxx_array)
     {
         CxxArray<char> arr(5,64);       std::cerr << "arr=" << arr << std::endl;
         CxxArray<int>  irr(CopyOf,arr); std::cerr << "irr=" << irr << std::endl;
+    }
 
+    {
+        //const int arr[4] = {1,2,3,4};
+        //CxxArray<apz> v(arr);
     }
 
 }
