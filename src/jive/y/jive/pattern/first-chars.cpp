@@ -142,6 +142,15 @@ namespace Yttrium
         }
 
 
+        unsigned FirstChars:: findNext(unsigned i)
+        {
+            for(;i<256;++i)
+            {
+
+            }
+        }
+
+
 
     }
 
