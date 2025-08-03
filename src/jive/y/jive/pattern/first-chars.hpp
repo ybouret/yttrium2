@@ -42,6 +42,9 @@ namespace Yttrium
             bool getbit(const uint8_t b) const noexcept;
             void setbit(const uint8_t b) noexcept;
             void clrbit(const uint8_t b) noexcept;
+
+            unsigned findNext(const unsigned);
+
         };
     }
 }
