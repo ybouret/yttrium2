@@ -11,7 +11,7 @@ namespace Yttrium
 {
     namespace Jive
     {
-        
+
         class FirstChars
         {
         public:
@@ -26,6 +26,13 @@ namespace Yttrium
 
             void free() noexcept;
             void all()  noexcept;
+            void add(const uint8_t)    noexcept;
+            void add(uint8_t, uint8_t) noexcept;
+            void sub(const uint8_t)    noexcept;
+            void sub(uint8_t, uint8_t) noexcept;
+
+            FirstChars & operator +=(const FirstChars &) noexcept;
+            FirstChars & operator -=(const FirstChars &) noexcept;
 
 
 

@@ -78,6 +78,71 @@ namespace Yttrium
             return os;
         }
 
+        void FirstChars:: add(const uint8_t b) noexcept
+        {
+            if(!getbit(b))
+            {
+                ++Coerce(size);
+                setbit(b);
+                assert(size==Calculus::BitsIn::Block(data,sizeof(data)));
+            }
+        }
+
+        void FirstChars:: add(uint8_t a, uint8_t b) noexcept
+        {
+            if(a>b) Swap(a,b);
+            const unsigned A(a), B(b);
+            for(unsigned  i=A;i<=B;++i)
+            {
+                add( uint8_t(i) );
+            }
+        }
+
+        void FirstChars:: sub(const uint8_t b) noexcept
+        {
+            if(getbit(b))
+            {
+                clrbit(b);
+                --Coerce(size);
+                assert(size==Calculus::BitsIn::Block(data,sizeof(data)));
+            }
+        }
+
+
+        void FirstChars:: sub(uint8_t a, uint8_t b) noexcept
+        {
+            if(a>b) Swap(a,b);
+            const unsigned A(a), B(b);
+            for(unsigned  i=A;i<=B;++i)
+            {
+                sub( uint8_t(i) );
+            }
+        }
+
+        FirstChars & FirstChars:: operator +=(const FirstChars &fc) noexcept
+        {
+
+            for(size_t i=0;i<sizeof(data);++i)
+            {
+                data[i] |= fc.data[i];
+            }
+            Coerce(size) = Calculus::BitsIn::Block(data,sizeof(data));
+            return *this;
+        }
+
+        FirstChars & FirstChars:: operator -=(const FirstChars &fc) noexcept
+        {
+
+            for(size_t i=0;i<sizeof(data);++i)
+            {
+                data[i] &= ~fc.data[i];
+            }
+            Coerce(size) = Calculus::BitsIn::Block(data,sizeof(data));
+            return *this;
+        }
+
+
+
     }
 
 }
