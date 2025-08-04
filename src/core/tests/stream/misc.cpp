@@ -1,4 +1,4 @@
-#include "y/stream/misc/output-sequence.hpp"
+#include "y/stream/misc/sequence.hpp"
 #include "y/utest/run.hpp"
 
 #include "y/string.hpp"

@@ -68,5 +68,7 @@ namespace Yttrium
 
         bool Range:: strong() const { return true; }
 
+        bool Range:: univocal() const { return lower == upper; }
+
     }
 }

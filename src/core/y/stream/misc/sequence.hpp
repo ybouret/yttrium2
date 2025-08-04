@@ -55,6 +55,16 @@ namespace Yttrium
     private:
         SEQUENCE & host; //!< persistent
     };
+
+    template <typename SEQUENCE, typename SERIALIZABLE> inline
+    void SerializeTo(SEQUENCE &seq, const SERIALIZABLE &src)
+    {
+        OutputSequence<SEQUENCE> out(seq);
+        (void) src.serialize(out);
+    }
+    
+
+
 }
 
 #endif

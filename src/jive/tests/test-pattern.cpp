@@ -1,8 +1,10 @@
 #include "y/jive/pattern/basic/all.hpp"
 #include "y/jive/pattern/joker/all.hpp"
+#include "y/jive/pattern/logic/all.hpp"
 
 #include "y/utest/run.hpp"
 #include "y/stream/libc/output.hpp"
+#include "y/pointer/auto.hpp"
 
 using namespace Yttrium;
 using namespace Jive;
@@ -54,6 +56,22 @@ Y_UTEST(pattern)
         const Motif m = new Single('b');
         testPattern( new Amount(m,0,3) );
     }
+
+    {
+        AutoPtr<Logic> p = new And();
+        *p << new Single('a');
+        *p << new Range('0','9');
+        testPattern( p.yield() );
+    }
+
+    {
+        AutoPtr<Logic> p = new Or();
+        *p << new Single('a');
+        *p << new Range('0','9');
+        testPattern( p.yield() );
+    }
+
+
 
 }
 Y_UDONE()

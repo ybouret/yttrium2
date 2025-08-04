@@ -31,10 +31,11 @@ namespace Yttrium
         Y_Ingress_Impl(Logic,ops)
 
 
-        void Logic:: vizLink(OutputStream &fp) const
+        OutputStream & Logic:: lnk(OutputStream &fp) const
         {
             for(const Pattern *op = ops.head;op; op=op->next)
-                Endl( to(op,fp) );
+                Endl( to(op,op->viz(fp)) );
+            return fp;
         }
 
         Logic & Logic:: operator<<(Pattern * const p) noexcept
@@ -42,6 +43,16 @@ namespace Yttrium
             assert(0!=p);
             ops.pushTail(p);
             return *this;
+        }
+
+        size_t Logic:: srz(OutputStream &fp) const
+        {
+            size_t res = 0;
+            for(const Pattern *op = ops.head;op;op=op->next)
+            {
+                res += op->serialize(fp);
+            }
+            return res;
         }
 
 

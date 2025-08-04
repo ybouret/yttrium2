@@ -55,6 +55,8 @@ namespace Yttrium
             virtual OutputStream & viz(OutputStream&)         const = 0; //!< save as GraphViz \return output stream
             virtual FirstChars     firstChars()      const noexcept = 0; //!< \return first chars
             virtual bool           strong()                   const = 0; //!< \return true if doesn't accept empty token
+            virtual bool           univocal()                 const = 0; //!< \return true if non empty token is univocal
+
             //__________________________________________________________________
             //
             //
@@ -62,7 +64,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             bool feeble() const; //!< \return true if accepts empty token
-            
+            bool flexible() const; //!< \return !univoca()
 
             //__________________________________________________________________
             //
@@ -128,7 +130,8 @@ namespace Yttrium
 /**/    virtual OutputStream & viz(OutputStream&)        const; \
 /**/    virtual FirstChars     firstChars()     const noexcept; \
 /**/    virtual size_t         serialize(OutputStream &) const; \
-/**/    virtual bool           strong()                  const
+/**/    virtual bool           strong()                  const; \
+/**/    virtual bool           univocal()                const
 
         typedef ArcPtr<Pattern>          Motif;    //!< alias
         typedef ListOfCloneable<Pattern> Patterns; //!< alias

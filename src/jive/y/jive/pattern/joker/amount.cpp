@@ -17,6 +17,7 @@ namespace Yttrium
         minCount(nmin),
         maxCount(nmax)
         {
+            I_am<Amount>();
         }
 
         Amount:: Amount(const Amount &rep) noexcept :
@@ -24,6 +25,7 @@ namespace Yttrium
         minCount(rep.minCount),
         maxCount(rep.maxCount)
         {
+            I_am<Amount>();
         }
 
 
@@ -79,6 +81,10 @@ namespace Yttrium
             return motif->firstChars();
         }
 
+        bool Amount:: univocal() const
+        {
+            return motif->univocal() && minCount==maxCount;
+        }
 
     }
 

@@ -14,3 +14,17 @@ namespace Yttrium
         
     }
 }
+
+#include "y/stream/misc/sequence.hpp"
+#include "y/string.hpp"
+
+namespace Yttrium
+{
+    Core::String<char> Serializable:: toBinary() const
+    {
+        String str;
+        SerializeTo(str,*this);
+        return str;
+    }
+}
+

@@ -10,11 +10,13 @@ namespace Yttrium
         Option:: Option(const Motif &m) noexcept :
         Joker(UUID,m)
         {
+            I_am<Option>();
         }
 
         Option:: Option(const Option &opt) noexcept :
         Joker(opt)
         {
+            I_am<Option>();
         }
 
 
@@ -47,6 +49,7 @@ namespace Yttrium
             return motif->firstChars();
         }
 
+        bool Option:: univocal() const { return motif->univocal(); }
 
     }
 

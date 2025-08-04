@@ -14,12 +14,14 @@ namespace Yttrium
         Joker(UUID,m),
         minCount(n)
         {
+            I_am<Repeat>();
         }
 
         Repeat:: Repeat(const Repeat &rep) noexcept :
         Joker(rep),
         minCount(rep.minCount)
         {
+            I_am<Repeat>();
         }
 
 
@@ -77,6 +79,10 @@ namespace Yttrium
         FirstChars Repeat:: firstChars() const noexcept
         {
             return motif->firstChars();
+        }
+
+        bool Repeat:: univocal() const {
+            return false;
         }
 
 

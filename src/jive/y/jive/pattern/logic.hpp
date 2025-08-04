@@ -29,10 +29,11 @@ namespace Yttrium
 
             virtual ~Logic() noexcept; //!< cleanup
         protected:
-            explicit Logic(const uint32_t) noexcept; //!< setup
-            explicit Logic(const Logic &);           //!< duplicate
-            void vizLink(OutputStream &) const;      //!< linking in GraphViz
-            Y_Ingress_Decl();                        //!< alis
+            explicit Logic(const uint32_t) noexcept;  //!< setup
+            explicit Logic(const Logic &);            //!< duplicate
+            OutputStream & lnk(OutputStream &) const; //!< linking in GraphViz
+            size_t         srz(OutputStream &) const; //!< serialize operands
+            Y_Ingress_Decl();                         //!< alis
 
 
             Patterns ops; //!< operands

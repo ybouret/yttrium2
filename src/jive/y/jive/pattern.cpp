@@ -30,6 +30,9 @@ namespace Yttrium
         }
 
         bool Pattern:: feeble() const { return !strong(); }
+
+        bool Pattern:: flexible() const { return !univocal(); }
+
     }
 
 }

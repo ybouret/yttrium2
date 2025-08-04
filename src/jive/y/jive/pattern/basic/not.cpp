@@ -1,5 +1,6 @@
 
-#include "y/jive/pattern/basic/single.hpp"
+
+#include "y/jive/pattern/basic/not.hpp"
 #include "y/stream/output.hpp"
 #include "y/ascii/embedding.hpp"
 
@@ -7,32 +8,32 @@ namespace Yttrium
 {
     namespace Jive
     {
-        Single:: Single(const uint8_t a) noexcept : Pattern(UUID), code(a)   { I_am<Single>(); }
-        Single:: Single(const Single &_) noexcept : Pattern(_), code(_.code) { I_am<Single>(); }
+        Not:: Not(const uint8_t a) noexcept : Pattern(UUID), code(a)   { I_am<Not>(); }
+        Not:: Not(const Not &_)    noexcept : Pattern(_), code(_.code) { I_am<Not>(); }
 
-        OutputStream & Single:: viz(OutputStream &fp) const
+        OutputStream & Not:: viz(OutputStream &fp) const
         {
             nodeName(fp) << '[';
             Label(fp, ASCII::Embedding::Char[code] );
-            fp << ",shape=square";
+            fp << ",shape=triangle";
             return Endl(fp << ']');
         }
 
-        size_t Single:: serialize(OutputStream &fp) const
+        size_t Not:: serialize(OutputStream &fp) const
         {
             size_t res = fp.emitCBR(uuid);
             fp.write(code);
             return res+1;
         }
 
-        bool Single:: accepts(Token &token, Source &source) const
+        bool Not:: accepts(Token &token, Source &source) const
         {
             assert(0==token.size);
             Char *ch = source.query();
             if(!ch)
                 return false;
 
-            if(code != **ch) {
+            if(code == **ch) {
                 source.store(ch);
                 return false;
             }
@@ -41,16 +42,17 @@ namespace Yttrium
             return true;
         }
 
-        FirstChars Single:: firstChars() const noexcept
+        FirstChars Not:: firstChars() const noexcept
         {
             FirstChars fc;
-            fc.add(code);
+            fc.all();
+            fc.sub(code);
             return fc;
         }
 
-        bool Single:: strong() const { return true; }
+        bool Not:: strong()   const { return true; }
+        bool Not:: univocal() const { return false; }
 
-        bool Single:: univocal() const { return true; }
 
     }
 }
