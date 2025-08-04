@@ -41,14 +41,13 @@ namespace Yttrium
                         //------------------------------------------------------
                     case ALT: {
                         AutoPtr<Logic>   res = new Or();
-                        if( (**motif).size <= 0 ) throw Specific::Exception(CallSign,"empty left sub-expression in '%s'", expr);
+                        if( motif->size <= 0 ) throw Specific::Exception(CallSign,"empty left sub-expression in '%s'", expr);
                         {
-                            AutoPtr<Logic>   lhs = motif;       assert(lhs.isValid()); assert(motif.isEmpty());
-                            AutoPtr<Pattern> rhs = subExpr();   assert(rhs.isValid());
-                            *res << lhs.yield() << rhs.yield();
+                            AutoPtr<Logic> alt = new Or();
+                            *alt <<  motif.yield(); // lhs: current motif
+                            *alt <<  subExpr();     // rhs: next expression
+                            return alt.yield();
                         }
-                        motif = new And();
-                        *motif << res.yield();
                     } break;
 
                         //------------------------------------------------------
@@ -71,6 +70,13 @@ namespace Yttrium
                         simpleJoker(*motif,C);
                         break;
 
+                        //------------------------------------------------------
+                        //
+                        // sub Banck
+                        //
+                        //------------------------------------------------------
+                        
+
 
 
                         //------------------------------------------------------
@@ -84,7 +90,7 @@ namespace Yttrium
             }
 
         RETURN:
-            if((**motif).size<=0)
+            if(motif->size<=0)
                 throw Specific::Exception(CallSign,"empty sub-expression in '%s'", expr);
 
             return motif.yield();

@@ -14,13 +14,12 @@ namespace Yttrium
         Or:: Or(const Or &_) : Logic(_) { I_am<Or>();}
 
 
-
         bool Or:: accepts(Token &token, Source &source) const
         {
             assert(0==token.size);
             bool result = false;
 
-            for(const Pattern *p=ops.head;p;p=p->next)
+            for(const Pattern *p=head;p;p=p->next)
             {
                 if(p->accepts(token,source))
                 {
@@ -52,7 +51,7 @@ namespace Yttrium
         FirstChars Or:: firstChars() const noexcept
         {
             FirstChars fc;
-            for(const Pattern *op=ops.head;op;op=op->next)
+            for(const Pattern *op=head;op;op=op->next)
             {
                 FirstChars pfc = op->firstChars();
                 fc += pfc;
@@ -62,7 +61,7 @@ namespace Yttrium
 
         bool Or:: strong() const
         {
-            for(const Pattern *p=ops.head;p;p=p->next)
+            for(const Pattern *p=head;p;p=p->next)
             {
                 if(p->feeble()) return false;
             }
@@ -71,10 +70,10 @@ namespace Yttrium
 
         bool Or:: univocal() const
         {
-            switch(ops.size)
+            switch(size)
             {
                 case 0: return true;
-                case 1: return ops.head->univocal();
+                case 1: return head->univocal();
                 default:
                     break;
             }

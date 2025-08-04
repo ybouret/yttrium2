@@ -19,7 +19,7 @@ namespace Yttrium
         {
             assert(0==token.size);
 
-            for(const Pattern *p=ops.head;p;p=p->next)
+            for(const Pattern *p=head;p;p=p->next)
             {
                 if(p->accepts(token,source))
                 {
@@ -56,7 +56,7 @@ namespace Yttrium
         {
             FirstChars fc;
             fc.all();
-            for(const Pattern *op=ops.head;op;op=op->next)
+            for(const Pattern *op=head;op;op=op->next)
             {
                 FirstChars pfc = op->firstChars();
                 fc -= pfc;

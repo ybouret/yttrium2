@@ -12,16 +12,16 @@ namespace Yttrium
 
         void RegExp::Compiler:: simpleJoker(Logic &p, const char jk)
         {
-            if(p->size<=0) throw Specific::Exception(CallSign,"no expression before '%s' in '%s'", ASCII::Printable::Text(jk), expr);
+            if(p.size<=0) throw Specific::Exception(CallSign,"no expression before '%s' in '%s'", ASCII::Printable::Text(jk), expr);
 
-            const Motif q = p.popLast();
+            const Motif q = p.popTail();
             switch(jk)
             {
                 case '?' : p << new Option(q);   break;
                 case '*' : p << new Repeat(q,0); break;
                 case '+' : p << new Repeat(q,1); break;
                 default:
-                    throw Specific::Exception(CallSign,"unexecpted joker '%s'", ASCII::Printable::Text(jk));
+                    throw Specific::Exception(CallSign,"unexpected joker '%s'", ASCII::Printable::Text(jk));
             }
         }
     }

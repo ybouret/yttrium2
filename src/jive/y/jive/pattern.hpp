@@ -55,12 +55,15 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //
-            // Interface
+            // Methods
             //
             //__________________________________________________________________
             bool feeble() const; //!< \return true if accepts empty token
             bool flexible() const; //!< \return !univoca()
 
+            static Pattern * Optimize(Pattern * const);
+            static Pattern * ReadFrom(InputStream &);
+            
             //__________________________________________________________________
             //
             //

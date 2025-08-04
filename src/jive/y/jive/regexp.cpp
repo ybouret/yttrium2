@@ -20,7 +20,7 @@ namespace Yttrium
             Compiler         compiler(expr,dict);
             AutoPtr<Pattern> motif = compiler.subExpr();
             if(compiler.deep>0) throw Specific::Exception(Compiler::CallSign,"unfinished '%s'",compiler.expr);
-            return motif.yield();
+            return Pattern::Optimize( motif.yield() );
         }
     }
 

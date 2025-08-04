@@ -5,7 +5,6 @@
 #define Y_Jive_Pattern_Logic_Included 1
 
 #include "y/jive/pattern.hpp"
-#include "y/type/ingress.hpp"
 
 namespace Yttrium
 {
@@ -19,26 +18,19 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Logic : public Pattern, public Ingress< const Core::ListOf<Pattern> >
+        class Logic : public Pattern, public Patterns
         {
         public:
-            //__________________________________________________________________
-            //
-            //
-            // Definitions
-            //
-            //__________________________________________________________________
-            typedef Ingress< const Core::ListOf<Pattern> > BaseType; //!< alias
-
+            
             //__________________________________________________________________
             //
             //
             // public methods
             //
             //__________________________________________________________________
-            Logic & operator<<(Pattern * const ) noexcept; //!< append new pattern to operanfs \return *this
-
-            Pattern * popLast() noexcept;
+            Logic & operator<<(Pattern * const ) noexcept; //!< append new pattern to operands \return *this
+            Logic & add(const uint8_t);
+            Logic & add(const uint8_t, const uint8_t);
 
 
             //__________________________________________________________________
@@ -60,15 +52,8 @@ namespace Yttrium
             //__________________________________________________________________
             OutputStream & lnk(OutputStream &) const; //!< linking in GraphViz \return output stream
             size_t         srz(OutputStream &) const; //!< serialize operands \return written bytes
-            Y_Ingress_Decl();                         //!< alis
 
-            //__________________________________________________________________
-            //
-            //
-            // Members
-            //
-            //__________________________________________________________________
-            Patterns ops; //!< operands
+
 
         private:
             Y_Disable_Assign(Logic); //!< discarding

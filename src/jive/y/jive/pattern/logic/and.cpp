@@ -18,7 +18,7 @@ namespace Yttrium
         {
             assert(0==token.size);
 
-            for(const Pattern *op=ops.head;op;op=op->next)
+            for(const Pattern *op=head;op;op=op->next)
             {
                 Token tmp;
                 if(op->accepts(tmp,source))
@@ -52,7 +52,7 @@ namespace Yttrium
         FirstChars And:: firstChars() const noexcept
         {
             FirstChars fc;
-            for(const Pattern *op=ops.head;op;op=op->next)
+            for(const Pattern *op=head;op;op=op->next)
             {
                 FirstChars pfc = op->firstChars();
                 fc += pfc;
@@ -63,7 +63,7 @@ namespace Yttrium
 
         bool And:: strong() const
         {
-            for(const Pattern *op=ops.head;op;op=op->next)
+            for(const Pattern *op=head;op;op=op->next)
             {
                 if(op->strong()) return true;
             }
@@ -73,7 +73,7 @@ namespace Yttrium
         //! all strong and univocal
         bool And:: univocal() const
         {
-            for(const Pattern * op=ops.head;op;op=op->next)
+            for(const Pattern * op=head;op;op=op->next)
             {
                 if(op->feeble())   return false;
                 if(op->flexible()) return false;
