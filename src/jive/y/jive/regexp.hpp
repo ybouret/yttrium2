@@ -10,12 +10,12 @@ namespace Yttrium
 {
     namespace Jive
     {
-
+        //! Regular Expression API
         struct RegExp
         {
             class Compiler;
-            static Pattern * Compile(const String &,     const Dictionary * const =0);
-            static Pattern * Compile(const char * const, const Dictionary * const =0);
+            static Pattern * Compile(const String &,     const Dictionary * const =0); //!< \return compiler expression
+            static Pattern * Compile(const char * const, const Dictionary * const =0); //!< \return compiled expression
         };
 
     }

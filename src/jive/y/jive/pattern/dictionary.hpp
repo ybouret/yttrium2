@@ -10,22 +10,42 @@ namespace Yttrium
 {
     namespace Jive
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Dictionary of pre-compiled pattern
+        //
+        //
+        //______________________________________________________________________
         class Dictionary
         {
         public:
-            explicit Dictionary();
-            virtual ~Dictionary() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit Dictionary();          //!< setup
+            virtual ~Dictionary() noexcept; //!< cleanup
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
             void operator()(const String &,     Pattern * const); //!< store a new pattern
             void operator()(const char * const, Pattern * const); //!< store a new pattern
 
-            Pattern * query(const char * const) const;
-            Pattern * query(const String &)     const;
-            
+            Pattern * query(const char * const) const; //!< \return cloned pattern, NULL if not found
+            Pattern * query(const String &)     const; //!< \return cloned pattern, NULL if not found
+
         private:
             class Code;
-            Y_Disable_Copy_And_Assign(Dictionary);
-            Code * const code;
+            Y_Disable_Copy_And_Assign(Dictionary); //!< discarding
+            Code * const code;                     //!< inner implementation
         };
     }
 
