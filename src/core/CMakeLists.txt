@@ -63,6 +63,7 @@ Y_CreateLibrary(y
     y/stream/proc
     y/stream/gzip
     y/stream/gzip/file
+    y/stream/misc
     y/sorting
     y/threading
     y/pointer

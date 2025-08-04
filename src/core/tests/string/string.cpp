@@ -23,6 +23,7 @@ Y_UTEST(string)
     {
         String s = "first";
         s += " second";
+        s << " third";
         std::cerr << s << std::endl;
     }
 

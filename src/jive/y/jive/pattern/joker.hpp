@@ -10,21 +10,28 @@ namespace Yttrium
 {
     namespace Jive
     {
-
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Joker
+        //
+        //
+        //______________________________________________________________________
         class Joker : public Pattern
         {
         public:
-            virtual ~Joker() noexcept;
+            virtual ~Joker() noexcept; //!< cleanup
 
         protected:
-            explicit Joker(const uint32_t, const Motif &);
-            explicit Joker(const Joker &) noexcept;
+            explicit Joker(const uint32_t, const Motif &); //!< setup with a STRONG motif
+            explicit Joker(const Joker &) noexcept;        //!< cleanup
 
         private:
-            Y_Disable_Assign(Joker);
+            Y_Disable_Assign(Joker); //!< discarding
 
         public:
-            const Motif motif;
+            const Motif motif; //!< acting motif
         };
     }
 

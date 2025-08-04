@@ -54,14 +54,15 @@ namespace Yttrium
             virtual bool           accepts(Token &, Source &) const = 0; //!< \return true if accepted
             virtual OutputStream & viz(OutputStream&)         const = 0; //!< save as GraphViz \return output stream
             virtual FirstChars     firstChars()      const noexcept = 0; //!< \return first chars
-            virtual bool           strong()                   const = 0;
+            virtual bool           strong()                   const = 0; //!< \return true if doesn't accept empty token
             //__________________________________________________________________
             //
             //
             // Interface
             //
             //__________________________________________________________________
-            bool feeble() const;
+            bool feeble() const; //!< \return true if accepts empty token
+            
 
             //__________________________________________________________________
             //

@@ -19,8 +19,8 @@ namespace Yttrium
         explicit Amount(const Amount &) noexcept;                  //!< duplicate
         Y_Jive_Pattern_API();
 
-        const size_t minCount;
-        const size_t maxCount;
+        const size_t minCount; //!< min valid count
+        const size_t maxCount; //!< max valid xcount
         Y_Jive_Pattern_End(Amount); //!< Leave: Repeat
     }
 
