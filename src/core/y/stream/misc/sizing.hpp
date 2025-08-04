@@ -22,15 +22,15 @@ namespace Yttrium
     class SizingOutput : public OutputStream
     {
     public:
-        explicit SizingOutput() noexcept;
-        virtual ~SizingOutput() noexcept;
+        explicit SizingOutput() noexcept; //!< setup
+        virtual ~SizingOutput() noexcept; //!< cleanup
 
-        virtual void write(const char);
-        virtual void flush();
+        virtual void write(const char);   //!< increase result
+        virtual void flush();             //!< do noting
 
-        const size_t result;
+        const size_t result; //!< store result, increased upon write()
     private:
-        Y_Disable_Copy_And_Assign(SizingOutput);
+        Y_Disable_Copy_And_Assign(SizingOutput); //!< discarding
     };
 
 }

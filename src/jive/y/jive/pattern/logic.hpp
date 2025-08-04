@@ -31,8 +31,8 @@ namespace Yttrium
         protected:
             explicit Logic(const uint32_t) noexcept;  //!< setup
             explicit Logic(const Logic &);            //!< duplicate
-            OutputStream & lnk(OutputStream &) const; //!< linking in GraphViz
-            size_t         srz(OutputStream &) const; //!< serialize operands
+            OutputStream & lnk(OutputStream &) const; //!< linking in GraphViz \return output stream
+            size_t         srz(OutputStream &) const; //!< serialize operands \return written bytes
             Y_Ingress_Decl();                         //!< alis
 
 

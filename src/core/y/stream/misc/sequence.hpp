@@ -56,6 +56,11 @@ namespace Yttrium
         SEQUENCE & host; //!< persistent
     };
 
+    //! transform serializable into sequence
+    /**
+     \param seq output sequence
+     \param src serializable object
+     */
     template <typename SEQUENCE, typename SERIALIZABLE> inline
     void SerializeTo(SEQUENCE &seq, const SERIALIZABLE &src)
     {
