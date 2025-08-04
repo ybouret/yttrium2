@@ -18,7 +18,9 @@ namespace Yttrium
         }
 
         Pattern:: Pattern(const Pattern &p) noexcept :
-        CountedObject(), Vizible(),
+        CountedObject(),
+        Vizible(),
+        Serializable(),
         uuid(p.uuid),
         next(0),
         prev(0),

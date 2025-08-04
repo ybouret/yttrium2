@@ -32,7 +32,7 @@ namespace Yttrium
             explicit Token() noexcept;         //!< setup
             virtual ~Token() noexcept;         //!< cleanup
             Token(const Token & );             //!< duplicate
-            Y_OSTREAM_PROTO(Token);
+            Y_OSTREAM_PROTO(Token);            //!< display
             
             //__________________________________________________________________
             //

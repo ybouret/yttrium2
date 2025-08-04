@@ -52,7 +52,7 @@ namespace Yttrium
             //__________________________________________________________________
             virtual Pattern *      clone()                    const = 0; //!< \return clone
             virtual bool           accepts(Token &, Source &) const = 0; //!< \return true if accepted
-            virtual OutputStream & viz(OutputStream&)         const = 0; //!< save as GraphViz
+            virtual OutputStream & viz(OutputStream&)         const = 0; //!< save as GraphViz \return output stream
             virtual FirstChars     firstChars()      const noexcept = 0; //!< \return first chars
 
             //__________________________________________________________________
@@ -98,6 +98,8 @@ namespace Yttrium
             }
         };
 
+
+        //! helper to declare pattern
 #define Y_Jive_Pattern_Decl(MOTIF,A,B,C,D)                               \
 /**/    class MOTIF : public Pattern                                     \
 /**/    {                                                                \
@@ -106,17 +108,19 @@ namespace Yttrium
 /**/        inline Pattern *  clone() const { return new MOTIF(*this); } \
 /**/        static const uint32_t UUID = Y_FOURCC(A,B,C,D)               \
 
+        //! helper to declare pattern
 #define Y_Jive_Pattern_End(MOTIF)                    \
 /**/      private: MOTIF & operator=(const MOTIF &); \
 /**/     }
 
+        //! full pattern APU
 #define Y_Jive_Pattern_API() \
 /**/    virtual bool           accepts(Token &,Source &) const; \
 /**/    virtual OutputStream & viz(OutputStream&)        const; \
 /**/    virtual FirstChars     firstChars()     const noexcept; \
 /**/    virtual size_t         serialize(OutputStream &) const
 
-        typedef ArcPtr<Pattern>          Motif;
+        typedef ArcPtr<Pattern>          Motif;    //!< alias
         typedef ListOfCloneable<Pattern> Patterns; //!< alias
 
     }

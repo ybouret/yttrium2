@@ -41,20 +41,20 @@ namespace Yttrium
             void endl() noexcept; //!< signal endl to module
 
 
-            Char * query();                      //!< query new char from module/buffer
+            Char * query();                      //!< \return new char from module/buffer
             void   store(Char * const) noexcept; //!< store into buffer
-            void   store(Token &token) noexcept; //!< store previously read
-            void   stash(const Token &token);    //!< store a copy of token
-            bool   ready();                      //!< check if more char available
+            void   store(Token &)     noexcept;  //!< store previously read
+            void   stash(const Token &);         //!< store a copy of token
+            bool   ready();                      //!< \return true if more char available
             void   fetch(size_t);                //!< prefetch chars
-            size_t cache()  const noexcept; //!< \return buffer.size
-            void   sweep(size_t n) noexcept; //!< \param n<=cached(), skipped
+            size_t cache()  const noexcept;      //!< \return buffer.size
+            void   sweep(size_t n) noexcept;     //!< \param n n<=cached(), skipped
 
 
         private:
-            Y_Disable_Copy_And_Assign(Source);
-            ArcPtr<Module> handle;
-            Token          buffer;
+            Y_Disable_Copy_And_Assign(Source); //!< discarding
+            ArcPtr<Module> handle;             //!< module handle
+            Token          buffer;             //!< I/O buffer
 
         };
     }

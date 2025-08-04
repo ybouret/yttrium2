@@ -17,27 +17,40 @@ namespace Yttrium
     //! make 32bits flag
 #define Y_FOURCC(a,b,c,d) (Y_FourCC3(d)|Y_FourCC2(c)|Y_FourCC1(b)|Y_FourCC0(a))
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! convert 32-bits into string
+    //
+    //
+    //__________________________________________________________________________
     class FourCC : public LegacyString
     {
     public:
-        FourCC(const uint32_t) noexcept;
-        FourCC(const FourCC &) noexcept;
-        virtual ~FourCC()      noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+        FourCC(const uint32_t) noexcept; //!< setup
+        FourCC(const FourCC &) noexcept; //!< duplicate
+        virtual ~FourCC()      noexcept; //!< cleanup
 
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
         virtual const char * c_str() const noexcept;
 
     private:
-        char text[16-sizeof(void*)];
-        Y_Disable_Assign(FourCC);
+        char text[16-sizeof(void*)]; //!< data
+        Y_Disable_Assign(FourCC);    //!< discarding
     };
 
-#if 0    //! helper to Four Characters Codes
-    struct FourCC
-    {
-        //! unsafe uuid to text conversion
-        static const char * ToText(const uint32_t uuid) noexcept;
-    };
-#endif
 
 }
 
