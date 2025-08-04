@@ -1,6 +1,7 @@
 
 #include "y/jive/module.hpp"
 #include "y/stream/libc/input.hpp"
+#include "y/stream/memory/input.hpp"
 
 namespace Yttrium
 {
@@ -12,9 +13,17 @@ namespace Yttrium
         }
 
 
+
+
         InputStream  * Module:: OpenFile_(const String &fileName)
         {
             return new InputFile(fileName);
+        }
+
+        InputStream * Module:: OpenData_(const void * const entry, const size_t count)
+        {
+            assert( Good(entry,count) );
+            return new MemoryInput(entry,count);
         }
 
         Char * Module:: query()

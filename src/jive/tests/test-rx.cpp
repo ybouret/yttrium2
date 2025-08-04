@@ -3,6 +3,7 @@
 #include "y/jive/regexp.hpp"
 #include "y/utest/run.hpp"
 #include "y/stream/libc/output.hpp"
+#include "y/stream/libc/input.hpp"
 
 using namespace Yttrium;
 using namespace Jive;
@@ -25,6 +26,27 @@ Y_UTEST(rx)
             (void)motif->serialize(fp);
         }
 
+        if(argc>2)
+        {
+            InputFile fp(argv[2]);
+            String line;
+            while(fp.gets(line))
+            {
+                Source source( Module::OpenData(line,line) );
+                Token  token;
+                std::cerr << "source='" << line << "' ";
+                if( motif->accepts(token,source) )
+                {
+                    std::cerr << "[+] '" << token << "'";
+                }
+                else
+                {
+                    std::cerr << "[-]";
+                }
+                std::cerr << std::endl;
+
+            }
+        }
 
     }
 }

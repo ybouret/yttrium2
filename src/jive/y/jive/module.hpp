@@ -50,6 +50,25 @@ namespace Yttrium
                 return new Module(tag,inp);
             }
 
+            template <typename NAME>
+            static Module * OpenData(const NAME &name, const void * const entry, const size_t count)
+            {
+                const Tag   tag(CopyOf,name);
+                const Input inp( OpenData_(entry,count) );
+                return new Module(tag,inp);
+            }
+
+            template <typename NAME>
+            static Module * OpenData(const NAME &name, const Memory::ReadOnlyBuffer &buffer)
+            {
+                const Tag   tag(CopyOf,name);
+                const Input inp( OpenData_(buffer.ro(), buffer.length()) );
+                return new Module(tag,inp);
+            }
+
+            
+
+
 
             //! read char with automatic dot() \return NULL if EOF, new char otherwise
             Char *query();
@@ -70,6 +89,9 @@ namespace Yttrium
 
             //! \return Libc::InputFile
             static InputStream * OpenFile_(const String &);
+
+            //! \return MemoryInput
+            static InputStream * OpenData_(const void * const, const size_t);
 
         };
     }
