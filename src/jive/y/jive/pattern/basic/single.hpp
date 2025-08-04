@@ -13,14 +13,10 @@ namespace Yttrium
 
         Y_Jive_Pattern_Decl(Single,'S','N','G','L');
 
-        explicit Single(const uint8_t) noexcept;
-        Single(const Single &)         noexcept;
+        explicit Single(const uint8_t)  noexcept;
+        explicit Single(const Single &) noexcept;
+        Y_Jive_Pattern_API();
 
-        virtual bool       accepts(Token &,Source &) const;
-        virtual void       viz(OutputStream&)        const;
-        virtual FirstChars firstChars()     const noexcept;
-        virtual size_t     serialize(OutputStream &) const;
-        
         const uint8_t code;
 
         Y_Jive_Pattern_End(Single);

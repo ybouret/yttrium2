@@ -50,7 +50,7 @@ namespace Yttrium
         //! save Vizible object to output stream
         /**
          \param fp output stream
-         \param obj object with 'viz(OutputStream&)' method
+         \param obj object with 'OutputStream & viz(OutputStream&)' method
          \return output stream
          */
         template <typename CLASS> static inline

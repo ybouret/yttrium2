@@ -10,12 +10,12 @@ namespace Yttrium
         Single:: Single(const uint8_t a) noexcept : Pattern(UUID), code(a) {}
         Single:: Single(const Single &_) noexcept : Pattern(_), code(_.code) {}
 
-        void Single:: viz(OutputStream &fp) const
+        OutputStream & Single:: viz(OutputStream &fp) const
         {
             nodeName(fp) << '[';
             Label(fp, ASCII::Embedding::Char[code] );
             fp << ",shape=square";
-            Endl(fp << ']');
+            return Endl(fp << ']');
         }
 
         size_t Single:: serialize(OutputStream &fp) const

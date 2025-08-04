@@ -9,6 +9,8 @@
 #include "y/graphviz/vizible.hpp"
 #include "y/jive/pattern/first-chars.hpp"
 #include "y/type/fourcc.hpp"
+#include "y/object/counted.hpp"
+#include "y/pointer/arc.hpp"
 
 namespace Yttrium
 {
@@ -22,7 +24,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Pattern : public Object, public Vizible, public Serializable
+        class Pattern : public CountedObject, public Vizible, public Serializable
         {
         public:
             //__________________________________________________________________
@@ -31,7 +33,6 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            typedef ListOfCloneable<Pattern> List; //!< alias
 
             //__________________________________________________________________
             //
@@ -49,10 +50,10 @@ namespace Yttrium
             // interface
             //
             //__________________________________________________________________
-            virtual Pattern *  clone()                    const = 0; //!< \return clone
-            virtual bool       accepts(Token &, Source &) const = 0; //!< \return true if accepted
-            virtual void       viz(OutputStream&)         const = 0; //!< save as GraphViz
-            virtual FirstChars firstChars()      const noexcept = 0; //!< \return first chars
+            virtual Pattern *      clone()                    const = 0; //!< \return clone
+            virtual bool           accepts(Token &, Source &) const = 0; //!< \return true if accepted
+            virtual OutputStream & viz(OutputStream&)         const = 0; //!< save as GraphViz
+            virtual FirstChars     firstChars()      const noexcept = 0; //!< \return first chars
 
             //__________________________________________________________________
             //
@@ -108,7 +109,16 @@ namespace Yttrium
 #define Y_Jive_Pattern_End(MOTIF)                    \
 /**/      private: MOTIF & operator=(const MOTIF &); \
 /**/     }
-        
+
+#define Y_Jive_Pattern_API() \
+/**/    virtual bool           accepts(Token &,Source &) const; \
+/**/    virtual OutputStream & viz(OutputStream&)        const; \
+/**/    virtual FirstChars     firstChars()     const noexcept; \
+/**/    virtual size_t         serialize(OutputStream &) const
+
+        typedef ArcPtr<Pattern>          Motif;
+        typedef ListOfCloneable<Pattern> Patterns; //!< alias
+
     }
 
 }
