@@ -11,18 +11,22 @@ namespace Yttrium
 
         Pattern * RegExp::Compiler:: subExpr()
         {
+
             AutoPtr<Logic> motif = new And();
-            Logic         &p     = *motif;
             while(curr<last)
             {
                 const char C = *(curr++);
 
                 switch(C)
                 {
-
+                        //------------------------------------------------------
+                        //
+                        // grouping
+                        //
+                        //------------------------------------------------------
                     case LPAREN:
                         ++deep;
-                        p << subExpr();
+                        *motif << subExpr();
                         break;
 
                     case RPAREN:
@@ -30,13 +34,38 @@ namespace Yttrium
                         --deep;
                         goto RETURN;
 
+                        //------------------------------------------------------
+                        //
+                        // alternation
+                        //
+                        //------------------------------------------------------
+                    case ALT: {
+                        AutoPtr<Logic>   res = new Or();
+                        if( (**motif).size <= 0 ) throw Specific::Exception(CallSign,"empty left sub-expression in '%s'", expr);
+                        {
+                            AutoPtr<Logic>   lhs = motif;       assert(lhs.isValid()); assert(motif.isEmpty());
+                            AutoPtr<Pattern> rhs = subExpr();   assert(rhs.isValid());
+                            *res << lhs.yield() << rhs.yield();
+                        }
+                        motif = new And();
+                        *motif << res.yield();
+                    } break;
+
+
+
+
+                        //------------------------------------------------------
+                        //
+                        // default
+                        //
+                        //------------------------------------------------------
                     default:
-                        p << new Single(C);
+                        *motif << new Single(C);
                 }
             }
 
         RETURN:
-            if(p->size<=0)
+            if((**motif).size<=0)
                 throw Specific::Exception(CallSign,"empty sub-expression in '%s'", expr);
 
             return motif.yield();

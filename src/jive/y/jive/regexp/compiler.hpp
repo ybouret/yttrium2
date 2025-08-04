@@ -32,7 +32,8 @@ namespace Yttrium
             static const char * const CallSign; //!< "Jive::RegExp"
             static const char LPAREN = '('; //!< alias
             static const char RPAREN = ')'; //!< alias
-
+            static const char ALT    = '|'; //!< alias
+            
             //__________________________________________________________________
             //
             //
