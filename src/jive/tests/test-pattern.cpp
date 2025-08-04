@@ -41,15 +41,15 @@ namespace  {
 Y_UTEST(pattern)
 {
     testPattern(new Byte('a') );
-    testPattern(new Range('0','9') );
+    testPattern(new Lump('0','9') );
 
     {
-        const Motif m = new Range('a','z');
+        const Motif m = new Lump('a','z');
         testPattern( new Option(m) );
     }
 
     {
-        const Motif m = new Range('0','1');
+        const Motif m = new Lump('0','1');
         testPattern( new Repeat(m,0), "0");
         testPattern( new Repeat(m,1), "1");
         testPattern( new Repeat(m,7), "N");
@@ -63,21 +63,21 @@ Y_UTEST(pattern)
     {
         AutoPtr<Logic> p = new And();
         *p << new Byte('a');
-        *p << new Range('0','9');
+        *p << new Lump('0','9');
         testPattern( p.yield() );
     }
 
     {
         AutoPtr<Logic> p = new Or();
         *p << new Byte('a');
-        *p << new Range('0','9');
+        *p << new Lump('0','9');
         testPattern( p.yield() );
     }
 
     {
         AutoPtr<Logic> p = new None();
         *p << new Byte('a');
-        *p << new Range('0','9');
+        *p << new Lump('0','9');
         testPattern( p.yield() );
     }
 

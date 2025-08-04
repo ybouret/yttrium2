@@ -51,7 +51,7 @@ namespace Yttrium
 
         Logic & Logic:: add(const uint8_t a, const uint8_t b)
         {
-            pushTail( new Range(a,b) );
+            pushTail( new Lump(a,b) );
             return *this;
         }
 

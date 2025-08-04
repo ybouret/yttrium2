@@ -1,5 +1,5 @@
 
-#include "y/jive/pattern/basic/range.hpp"
+#include "y/jive/pattern/basic/lump.hpp"
 #include "y/stream/output.hpp"
 #include "y/ascii/embedding.hpp"
 
@@ -7,21 +7,21 @@ namespace Yttrium
 {
     namespace Jive
     {
-        Range:: Range(const uint8_t a, const uint8_t b) noexcept :
+        Lump:: Lump(const uint8_t a, const uint8_t b) noexcept :
         Pattern(UUID),
         lower(a), upper(b)
         {
             if(lower>upper) CoerceSwap(lower,upper);
-            I_am<Range>();
+            I_am<Lump>();
         }
 
-        Range:: Range(const Range &_) noexcept : Pattern(_), lower(_.lower), upper(_.upper)
+        Lump:: Lump(const Lump &_) noexcept : Pattern(_), lower(_.lower), upper(_.upper)
         {
             assert(lower<=upper);
-            I_am<Range>();
+            I_am<Lump>();
         }
 
-        OutputStream & Range:: viz(OutputStream &fp) const
+        OutputStream & Lump:: viz(OutputStream &fp) const
         {
             nodeName(fp) << '[';
             {
@@ -34,7 +34,7 @@ namespace Yttrium
             return Endl(fp << ']');
         }
 
-        size_t Range:: serialize(OutputStream &fp) const
+        size_t Lump:: serialize(OutputStream &fp) const
         {
             size_t res = fp.emitCBR(uuid);
             fp.write(lower);
@@ -42,7 +42,7 @@ namespace Yttrium
             return res+2;
         }
 
-        bool Range:: accepts(Token &token, Source &source) const
+        bool Lump:: accepts(Token &token, Source &source) const
         {
             assert(0==token.size);
             Char *ch = source.query();
@@ -59,16 +59,16 @@ namespace Yttrium
             return true;
         }
 
-        FirstChars Range:: firstChars() const noexcept
+        FirstChars Lump:: firstChars() const noexcept
         {
             FirstChars fc;
             fc.add(lower,upper);
             return fc;
         }
 
-        bool Range:: strong() const { return true; }
+        bool Lump:: strong() const { return true; }
 
-        bool Range:: univocal() const { return lower == upper; }
+        bool Lump:: univocal() const { return lower == upper; }
 
     }
 }
