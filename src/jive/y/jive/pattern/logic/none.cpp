@@ -1,0 +1,64 @@
+
+
+
+#include "y/jive/pattern/logic/none.hpp"
+#include "y/stream/output.hpp"
+
+namespace Yttrium
+{
+    namespace Jive
+    {
+
+
+        None:: None() noexcept : Logic(UUID) { I_am<None>(); }
+        None:: None(const None &_) : Logic(_) { I_am<None>();}
+
+
+
+        bool None:: accepts(Token &token, Source &source) const
+        {
+            assert(0==token.size);
+
+
+        }
+
+        size_t None:: serialize(OutputStream &fp) const
+        {
+            const size_t res = fp.emitCBR(uuid);
+            return res + srz(fp);
+        }
+
+        OutputStream & None:: viz(OutputStream &fp) const
+        {
+            nodeName(fp) << '[';
+            Label(fp, "!!") << ",shape=octagon";
+            Endl( fp << ']');
+            return lnk(fp);
+        }
+
+        FirstChars None:: firstChars() const noexcept
+        {
+            FirstChars fc;
+            fc.all();
+            for(const Pattern *op=ops.head;op;op=op->next)
+            {
+                FirstChars pfc = op->firstChars();
+                fc -= pfc;
+            }
+            return fc;
+        }
+
+        bool None:: strong() const
+        {
+
+        }
+
+        bool None:: univocal() const
+        {
+            
+        }
+    }
+
+}
+
+

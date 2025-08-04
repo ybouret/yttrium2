@@ -31,6 +31,9 @@ namespace  {
             const size_t written = p->serialize(fp);
             std::cerr << "\twritten: " << written << std::endl;
         }
+
+        const FirstChars fc = p->firstChars();
+        std::cerr << "\tfc: " << fc << std::endl;
     }
 
 }
@@ -66,6 +69,13 @@ Y_UTEST(pattern)
 
     {
         AutoPtr<Logic> p = new Or();
+        *p << new Single('a');
+        *p << new Range('0','9');
+        testPattern( p.yield() );
+    }
+
+    {
+        AutoPtr<Logic> p = new None();
         *p << new Single('a');
         *p << new Range('0','9');
         testPattern( p.yield() );
