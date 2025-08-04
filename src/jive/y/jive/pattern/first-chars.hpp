@@ -44,7 +44,7 @@ namespace Yttrium
             FirstChars(const FirstChars &) noexcept;             //!< duplicate
             FirstChars & operator=(const FirstChars &) noexcept; //!< assign \return *this
             Y_OSTREAM_PROTO(FirstChars);                         //!< display
-
+            
             //__________________________________________________________________
             //
             //

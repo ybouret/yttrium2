@@ -12,11 +12,13 @@ namespace Yttrium
         lower(a), upper(b)
         {
             if(lower>upper) CoerceSwap(lower,upper);
+            I_am<Range>();
         }
 
         Range:: Range(const Range &_) noexcept : Pattern(_), lower(_.lower), upper(_.upper)
         {
             assert(lower<=upper);
+            I_am<Range>();
         }
 
         OutputStream & Range:: viz(OutputStream &fp) const
@@ -63,6 +65,8 @@ namespace Yttrium
             fc.add(lower,upper);
             return fc;
         }
+
+        bool Range:: strong() const { return true; }
 
     }
 }

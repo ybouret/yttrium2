@@ -28,6 +28,8 @@ namespace Yttrium
         {
 
         }
+
+        bool Pattern:: feeble() const { return !strong(); }
     }
 
 }

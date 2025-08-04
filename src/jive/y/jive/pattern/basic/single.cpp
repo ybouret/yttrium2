@@ -7,8 +7,8 @@ namespace Yttrium
 {
     namespace Jive
     {
-        Single:: Single(const uint8_t a) noexcept : Pattern(UUID), code(a) {}
-        Single:: Single(const Single &_) noexcept : Pattern(_), code(_.code) {}
+        Single:: Single(const uint8_t a) noexcept : Pattern(UUID), code(a)   { I_am<Single>(); }
+        Single:: Single(const Single &_) noexcept : Pattern(_), code(_.code) { I_am<Single>(); }
 
         OutputStream & Single:: viz(OutputStream &fp) const
         {
@@ -47,6 +47,8 @@ namespace Yttrium
             fc.add(code);
             return fc;
         }
+
+        bool Single:: strong() const { return true; }
 
     }
 }

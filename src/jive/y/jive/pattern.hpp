@@ -47,13 +47,21 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //
-            // interface
+            // Interface
             //
             //__________________________________________________________________
             virtual Pattern *      clone()                    const = 0; //!< \return clone
             virtual bool           accepts(Token &, Source &) const = 0; //!< \return true if accepted
             virtual OutputStream & viz(OutputStream&)         const = 0; //!< save as GraphViz \return output stream
             virtual FirstChars     firstChars()      const noexcept = 0; //!< \return first chars
+            virtual bool           strong()                   const = 0;
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
+            bool feeble() const;
 
             //__________________________________________________________________
             //
@@ -75,7 +83,7 @@ namespace Yttrium
             template <typename DERIVED> inline
             void I_am() noexcept {
                 assert(DERIVED::UUID==uuid);
-                Coerce(self) = static_cast<DERIVED *>(*this);
+                Coerce(self) = static_cast<DERIVED *>(this);
             }
         public:
 
@@ -100,13 +108,13 @@ namespace Yttrium
 
 
         //! helper to declare pattern
-#define Y_Jive_Pattern_Decl(MOTIF,A,B,C,D)                               \
-/**/    class MOTIF : public Pattern                                     \
-/**/    {                                                                \
-/**/      public:                                                        \
-/**/        inline virtual   ~MOTIF() noexcept {}                        \
-/**/        inline Pattern *  clone() const { return new MOTIF(*this); } \
-/**/        static const uint32_t UUID = Y_FOURCC(A,B,C,D)               \
+#define Y_Jive_Pattern_Decl(MOTIF,PATTERN, A,B,C,D)                             \
+/**/    class MOTIF : public PATTERN                                            \
+/**/    {                                                                       \
+/**/      public:                                                               \
+/**/        inline virtual          ~MOTIF() noexcept {}                        \
+/**/        inline virtual Pattern * clone() const { return new MOTIF(*this); } \
+/**/        static const uint32_t UUID = Y_FOURCC(A,B,C,D)                      \
 
         //! helper to declare pattern
 #define Y_Jive_Pattern_End(MOTIF)                    \
@@ -118,7 +126,8 @@ namespace Yttrium
 /**/    virtual bool           accepts(Token &,Source &) const; \
 /**/    virtual OutputStream & viz(OutputStream&)        const; \
 /**/    virtual FirstChars     firstChars()     const noexcept; \
-/**/    virtual size_t         serialize(OutputStream &) const
+/**/    virtual size_t         serialize(OutputStream &) const; \
+/**/    virtual bool           strong()                  const
 
         typedef ArcPtr<Pattern>          Motif;    //!< alias
         typedef ListOfCloneable<Pattern> Patterns; //!< alias

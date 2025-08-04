@@ -12,7 +12,7 @@ namespace Yttrium
     namespace Jive
     {
 
-        Y_Jive_Pattern_Decl(Range,'R','N','G','E'); //!< Enter: Range
+        Y_Jive_Pattern_Decl(Range,Pattern,'R','N','G','E'); //!< Enter: Range
         explicit Range(const uint8_t, const uint8_t ) noexcept; //!< setup
         explicit Range(const Range &)                 noexcept; //!< duplicate
         Y_Jive_Pattern_API();  //!< API
