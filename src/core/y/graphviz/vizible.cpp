@@ -23,7 +23,7 @@ namespace Yttrium
     }
 
 
-    OutputStream & Vizible:: name(OutputStream &fp) const
+    OutputStream & Vizible:: nodeName(OutputStream &fp) const
     {
         union {
             uint64_t       data;
@@ -39,7 +39,7 @@ namespace Yttrium
     OutputStream & Vizible:: to(const Vizible * const target, OutputStream &fp) const
     {
         assert(0!=target);
-        return target->name( name(fp) << " -> " );
+        return target->nodeName( nodeName(fp) << " -> " );
     }
 
     OutputStream & Vizible:: Label(OutputStream &fp, const String &id)

@@ -7,3 +7,4 @@ Y_Message("Preparing ${Y_Test}")
 
 Y_UTEST(source)
 Y_UTEST(fc)
+Y_UTEST(pattern)

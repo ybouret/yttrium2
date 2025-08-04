@@ -36,7 +36,7 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
-        OutputStream & name(OutputStream &) const;                      //!< address to name \return output stream
+        OutputStream & nodeName(OutputStream &) const;                  //!< address to node name \return output stream
         OutputStream & to(const Vizible * const, OutputStream &) const; //!< arrow from this \return output stream
 
         static OutputStream & Label(OutputStream &, const Core::String<char> &); //!< emit label \return output stream

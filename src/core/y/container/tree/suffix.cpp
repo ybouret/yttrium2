@@ -33,7 +33,7 @@ namespace Yttrium
 
     OutputStream &  SuffixTree::Node:: viz(OutputStream &fp) const
     {
-        name(fp) << '[';
+        nodeName(fp) << '[';
         if(addr) fp << "shape=circle,style=bold";
         else     fp << "shape=square";
         fp << ',';

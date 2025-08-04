@@ -7,6 +7,8 @@
 #include "y/jive/source.hpp"
 #include "y/core/linked/list/cloneable.hpp"
 #include "y/graphviz/vizible.hpp"
+#include "y/jive/pattern/first-chars.hpp"
+#include "y/type/fourcc.hpp"
 
 namespace Yttrium
 {
@@ -20,7 +22,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Pattern : public Object, public Vizible
+        class Pattern : public Object, public Vizible, public Serializable
         {
         public:
             //__________________________________________________________________
@@ -47,9 +49,10 @@ namespace Yttrium
             // interface
             //
             //__________________________________________________________________
-            virtual Pattern * clone()                    const = 0; //!< \return clone
-            virtual bool      accepts(Token &, Source &) const = 0; //!< \return true if accepted
-            virtual void      viz(OutputStream&)         const = 0; //!< save as GraphViz
+            virtual Pattern *  clone()                    const = 0; //!< \return clone
+            virtual bool       accepts(Token &, Source &) const = 0; //!< \return true if accepted
+            virtual void       viz(OutputStream&)         const = 0; //!< save as GraphViz
+            virtual FirstChars firstChars()      const noexcept = 0; //!< \return first chars
 
             //__________________________________________________________________
             //
@@ -94,8 +97,18 @@ namespace Yttrium
             }
         };
 
+#define Y_Jive_Pattern_Decl(MOTIF,A,B,C,D)                               \
+/**/    class MOTIF : public Pattern                                     \
+/**/    {                                                                \
+/**/      public:                                                        \
+/**/        inline virtual   ~MOTIF() noexcept {}                        \
+/**/        inline Pattern *  clone() const { return new MOTIF(*this); } \
+/**/        static const uint32_t UUID = Y_FOURCC(A,B,C,D)               \
 
-
+#define Y_Jive_Pattern_End(MOTIF)                    \
+/**/      private: MOTIF & operator=(const MOTIF &); \
+/**/     }
+        
     }
 
 }
