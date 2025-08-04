@@ -61,8 +61,7 @@ namespace Yttrium
             return Pattern::Optimize(p.yield());
         }
 
-#if 0
-        Pattern * posix:: blank()
+         Pattern * posix:: blank()
         {
             static const char data[] = " \t";
             return Pattern::Among(data);
@@ -134,25 +133,25 @@ namespace Yttrium
             return  Pattern::Optimize(p.yield() );
         }
 
-#define Y_Lingo_Posix(NAME) if(id == #NAME) return NAME()
+#define Y_Jive_Posix(NAME) if(id == #NAME) return NAME()
 
         Pattern * posix:: named(const String &id)
         {
-            Y_Lingo_Posix(lower);
-            Y_Lingo_Posix(upper);
-            Y_Lingo_Posix(alpha);
-            Y_Lingo_Posix(digit);
-            Y_Lingo_Posix(alnum);
-            Y_Lingo_Posix(word);
-            Y_Lingo_Posix(xdigit);
-            Y_Lingo_Posix(blank);
-            Y_Lingo_Posix(space);
-            Y_Lingo_Posix(punct);
-            Y_Lingo_Posix(core);
-            Y_Lingo_Posix(vowel);
-            Y_Lingo_Posix(consonant);
-            Y_Lingo_Posix(endl);
-            Y_Lingo_Posix(dot);
+            Y_Jive_Posix(lower);
+            Y_Jive_Posix(upper);
+            Y_Jive_Posix(alpha);
+            Y_Jive_Posix(digit);
+            Y_Jive_Posix(alnum);
+            Y_Jive_Posix(word);
+            Y_Jive_Posix(xdigit);
+            Y_Jive_Posix(blank);
+            Y_Jive_Posix(space);
+            Y_Jive_Posix(punct);
+            Y_Jive_Posix(core);
+            Y_Jive_Posix(vowel);
+            Y_Jive_Posix(consonant);
+            Y_Jive_Posix(endl);
+            Y_Jive_Posix(dot);
             throw Specific::Exception("posix expression", "no name '%s'", id.c_str());
         }
 
@@ -161,7 +160,6 @@ namespace Yttrium
             const String _(id);
             return named(_);
         }
-#endif
-        
+
     }
 }

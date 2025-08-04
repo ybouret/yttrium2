@@ -78,6 +78,54 @@ namespace Yttrium
 
             return motif.yield();
         }
+
+
+        namespace {
+
+            static inline void Fill(const uint8_t a, const uint8_t b, void * args)
+            {
+                assert(args);
+                Logic * const p = (Logic *)args;
+                p->add(a,b);
+            }
+
+        }
+
+        Pattern * Pattern:: Among(const String &data)
+        {
+            FirstChars fc;
+            for(size_t i=data.size();i>0;--i)
+                fc.add( data[i] );
+
+            Logic * const p = new Or();
+            AutoPtr<Pattern> motif = p;
+            fc.run(Fill,p);
+            return  motif.yield();
+
+        }
+
+        Pattern * Pattern:: Among(const char * const data)
+        {
+            const String _(data);
+            return Among(_);
+        }
+
+
+        Pattern * Pattern:: Exact(const String &data)
+        {
+            AutoPtr<Logic> p = new And();
+            for(size_t i=1;i<=data.size();++i) p->pushHead( new Byte(data[i]) );
+            return p.yield();
+        }
+
+        Pattern * Pattern:: Exact(const char * const data)
+        {
+            const String _(data);
+            return Exact(_);
+        }
+
+
+
     }
 
 }

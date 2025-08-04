@@ -33,6 +33,7 @@ namespace Yttrium
 
         bool Pattern:: flexible() const { return !univocal(); }
 
+
     }
 
 }

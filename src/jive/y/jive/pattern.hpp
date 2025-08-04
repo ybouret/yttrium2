@@ -63,7 +63,11 @@ namespace Yttrium
 
             static Pattern * Optimize(Pattern * const);
             static Pattern * ReadFrom(InputStream &);
-            
+            static Pattern * Among(const String &);
+            static Pattern * Among(const char * const);
+            static Pattern * Exact(const String &);
+            static Pattern * Exact(const char * const);
+
             //__________________________________________________________________
             //
             //
