@@ -18,7 +18,20 @@ namespace Yttrium
         bool Or:: accepts(Token &token, Source &source) const
         {
             assert(0==token.size);
+            bool result = false;
 
+            for(const Pattern *p=ops.head;p;p=p->next)
+            {
+                if(p->accepts(token,source))
+                {
+                    if(token.size>0) return true;
+                    assert(p->feeble());
+                    result = true; // but leave another chance to strong pattern
+                }
+            }
+
+            assert(0==token.size);
+            return result;
 
         }
 
@@ -49,13 +62,23 @@ namespace Yttrium
 
         bool Or:: strong() const
         {
-
+            for(const Pattern *p=ops.head;p;p=p->next)
+            {
+                if(p->feeble()) return false;
+            }
+            return true;
         }
 
-        //! all strong and univocal
         bool Or:: univocal() const
         {
-
+            switch(ops.size)
+            {
+                case 0: return true;
+                case 1: return ops.head->univocal();
+                default:
+                    break;
+            }
+            return  false;
         }
     }
 
