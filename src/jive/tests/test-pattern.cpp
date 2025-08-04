@@ -10,10 +10,11 @@ using namespace Jive;
 namespace  {
 
     static inline
-    void testPattern(Pattern *p)
+    void testPattern(Pattern *p, const char * const attr = 0)
     {
+        const String extra = attr;
         Motif motif(p);
-        const String name = FourCC(p->uuid).c_str();
+        const String name = FourCC(p->uuid).c_str() + extra;
         std::cerr << name << std::endl;
 
 
@@ -34,12 +35,19 @@ namespace  {
 
 Y_UTEST(pattern)
 {
-    testPattern(new Single('a'));
-    testPattern(new Range('0','9'));
+    testPattern(new Single('a') );
+    testPattern(new Range('0','9') );
 
     {
         const Motif m = new Range('a','z');
         testPattern( new Option(m) );
+    }
+
+    {
+        const Motif m = new Range('0','1');
+        testPattern( new Repeat(m,0), "0");
+        testPattern( new Repeat(m,1), "1");
+        testPattern( new Repeat(m,7), "N");
     }
 
 
