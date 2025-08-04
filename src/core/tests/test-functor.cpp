@@ -9,7 +9,7 @@ using namespace Yttrium;
 
 Y_UTEST(functor)
 {
-
+    
 }
 Y_UDONE()
 
