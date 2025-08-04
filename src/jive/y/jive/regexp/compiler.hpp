@@ -30,6 +30,8 @@ namespace Yttrium
             //
             //__________________________________________________________________
             static const char * const CallSign; //!< "Jive::RegExp"
+            static const char LPAREN = '('; //!< alias
+            static const char RPAREN = ')'; //!< alias
 
             //__________________________________________________________________
             //
@@ -37,8 +39,8 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            Compiler(const String &, const Dictionary * const) noexcept;
-            ~Compiler() noexcept;
+            Compiler(const String &, const Dictionary * const) noexcept; //!< setup from persistent data
+            ~Compiler() noexcept;  //!< cleanup
 
             //__________________________________________________________________
             //
@@ -46,7 +48,7 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            Pattern *subExpr(); //!< new sub-expression from current position
+            Pattern *subExpr(); //!< \return new sub-expression from current position
 
             //__________________________________________________________________
             //

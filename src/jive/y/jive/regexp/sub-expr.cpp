@@ -20,11 +20,22 @@ namespace Yttrium
                 switch(C)
                 {
 
+                    case LPAREN:
+                        ++deep;
+                        p << subExpr();
+                        break;
+
+                    case RPAREN:
+                        if(deep<=0) throw Specific::Exception(CallSign,"extraneous '%c' in '%s'",RPAREN,expr);
+                        --deep;
+                        goto RETURN;
+
                     default:
                         p << new Single(C);
                 }
             }
 
+        RETURN:
             if(p->size<=0)
                 throw Specific::Exception(CallSign,"empty sub-expression in '%s'", expr);
 
