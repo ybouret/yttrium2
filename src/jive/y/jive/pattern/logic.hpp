@@ -38,6 +38,9 @@ namespace Yttrium
             //__________________________________________________________________
             Logic & operator<<(Pattern * const ) noexcept; //!< append new pattern to operanfs \return *this
 
+            Pattern * popLast() noexcept;
+
+
             //__________________________________________________________________
             //
             //

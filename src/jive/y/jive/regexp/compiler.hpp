@@ -11,7 +11,8 @@ namespace Yttrium
 {
     namespace Jive
     {
-
+        class Logic;
+        
         //______________________________________________________________________
         //
         //
@@ -30,10 +31,16 @@ namespace Yttrium
             //
             //__________________________________________________________________
             static const char * const CallSign; //!< "Jive::RegExp"
-            static const char LPAREN = '('; //!< alias
-            static const char RPAREN = ')'; //!< alias
-            static const char ALT    = '|'; //!< alias
-            
+            static const char LPAREN    = '('; //!< alias
+            static const char RPAREN    = ')'; //!< alias
+            static const char ALT       = '|'; //!< alias
+            static const char LBRACK    = '[';
+            static const char RBRACK    = ']';
+            static const char LBRACE    = '{';
+            static const char RBRACE    = '}';
+            static const char AMPERSAND = '&';
+            static const char BACKSLASH = '\\';
+
             //__________________________________________________________________
             //
             //
@@ -50,6 +57,9 @@ namespace Yttrium
             //
             //__________________________________________________________________
             Pattern *subExpr(); //!< \return new sub-expression from current position
+            void     escExpr(Logic &);
+            void     simpleJoker(Logic &, const char);
+            //void     bracesJoker();
 
             //__________________________________________________________________
             //

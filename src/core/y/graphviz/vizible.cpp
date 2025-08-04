@@ -4,6 +4,7 @@
 #include "y/string.hpp"
 #include "y/stream/output.hpp"
 #include "y/ascii/embedding.hpp"
+#include "y/ascii/printable.hpp"
 
 namespace Yttrium
 {
@@ -47,7 +48,9 @@ namespace Yttrium
         fp << "label=\"";
         for(size_t i=1;i<=id.size();++i)
         {
-            fp << ASCII::Embedding::Text(id[i]);
+            //fp << ASCII::Embedding::Text(id[i]);
+            fp << ASCII::Printable::Text(id[i]);
+
         }
         return fp << "\"";
     }

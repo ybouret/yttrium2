@@ -55,6 +55,12 @@ namespace Yttrium
             return res;
         }
 
+        Pattern * Logic:: popLast() noexcept
+        {
+            assert(ops.size>0);
+            return ops.popTail();
+        }
+
 
     }
 
