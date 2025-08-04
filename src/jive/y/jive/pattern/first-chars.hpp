@@ -17,7 +17,7 @@ namespace Yttrium
         public:
             static const unsigned Count = 256;
             static const unsigned Bytes = Count/8;
-
+            typedef void (*Proc)(const uint8_t, const uint8_t, void *);
 
             FirstChars() noexcept;
             FirstChars(const FirstChars &) noexcept;
@@ -34,7 +34,7 @@ namespace Yttrium
             FirstChars & operator +=(const FirstChars &) noexcept;
             FirstChars & operator -=(const FirstChars &) noexcept;
 
-
+            void run(Proc proc, void * const args) const;
 
             const size_t size;
         private:
@@ -43,8 +43,9 @@ namespace Yttrium
             void setbit(const uint8_t b) noexcept;
             void clrbit(const uint8_t b) noexcept;
 
-            unsigned findNext(const unsigned);
-
+            unsigned findLowerBit(const unsigned) const noexcept;
+            unsigned findUpperBit(const unsigned) const noexcept;
+            static void Print(const uint8_t, const uint8_t, void *);
         };
     }
 }

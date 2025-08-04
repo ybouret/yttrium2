@@ -67,16 +67,7 @@ namespace Yttrium
             data[b>>3] &= fcmsk[b&7];
         }
 
-        std::ostream & operator<<(std::ostream &os, const FirstChars &fc)
-        {
-            os << '[';
-            for(unsigned i=0;i<256;++i)
-            {
-                if(fc.getbit(i)) os << ASCII::Printable::Char[i];
-            }
-            os << ']';
-            return os;
-        }
+
 
         void FirstChars:: add(const uint8_t b) noexcept
         {
@@ -142,14 +133,67 @@ namespace Yttrium
         }
 
 
-        unsigned FirstChars:: findNext(unsigned i)
+        unsigned FirstChars:: findLowerBit(unsigned i) const noexcept
         {
+            assert(i<256);
             for(;i<256;++i)
             {
-
+                if(getbit(i))
+                    break;
             }
+            return i;
         }
 
+        unsigned FirstChars:: findUpperBit(unsigned i) const noexcept
+        {
+            assert(i<256);
+            assert(getbit(i));
+            for(++i;i<256;++i)
+            {
+                if(!getbit(i))
+                    break;
+            }
+            return i-1;
+        }
+
+        void FirstChars:: run(Proc proc, void * const args) const
+        {
+            assert(proc);
+            unsigned lower = 0;
+
+            while(lower<256)
+            {
+                lower = findLowerBit(lower); if(lower>=256) return;
+                const unsigned upper = findUpperBit(lower);
+                proc( uint8_t(lower), uint8_t(upper), args);
+                lower = upper+1;
+            }
+
+
+        }
+
+        void FirstChars:: Print(const uint8_t lower, const uint8_t upper, void * args)
+        {
+            assert(upper>=lower);
+            assert(args);
+            std::ostream &os = *(std::ostream *)args;
+            os << '[';
+            if(lower>=upper)
+            {
+                os << ASCII::Printable::Char[lower];
+            }
+            else
+            {
+                os <<   ASCII::Printable::Char[lower] << '-' << ASCII::Printable::Char[upper];
+            }
+            os << ']';
+        }
+
+        std::ostream & operator<<(std::ostream &os, const FirstChars &fc)
+        {
+            fc.run(FirstChars::Print,&os);
+            return os;
+        }
 
 
     }
