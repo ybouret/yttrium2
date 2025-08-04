@@ -50,6 +50,10 @@ Y_UTEST(pattern)
         testPattern( new Repeat(m,7), "N");
     }
 
+    {
+        const Motif m = new Single('b');
+        testPattern( new Amount(m,0,3) );
+    }
 
 }
 Y_UDONE()

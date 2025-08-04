@@ -14,7 +14,7 @@ namespace Yttrium
 
 
         Y_Jive_Pattern_Decl(Repeat,Joker,'_', 'R','E','P');        //!< Enter:: Repeat
-        explicit Repeat(const Motif &, const size_t)  noexcept;    //!< setup
+        explicit Repeat(const Motif &, const size_t);              //!< setup
         explicit Repeat(const Repeat &) noexcept;                  //!< duplicate
         Y_Jive_Pattern_API();
 

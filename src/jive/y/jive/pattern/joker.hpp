@@ -17,7 +17,7 @@ namespace Yttrium
             virtual ~Joker() noexcept;
 
         protected:
-            explicit Joker(const uint32_t, const Motif &) noexcept;
+            explicit Joker(const uint32_t, const Motif &);
             explicit Joker(const Joker &) noexcept;
 
         private:

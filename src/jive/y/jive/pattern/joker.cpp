@@ -1,6 +1,6 @@
 
 #include "y/jive/pattern/joker.hpp"
-
+#include "y/system/exception.hpp"
 
 namespace Yttrium
 {
@@ -11,9 +11,16 @@ namespace Yttrium
 
         }
 
-        Joker:: Joker(const uint32_t t, const Motif &m) noexcept :
+        Joker:: Joker(const uint32_t t, const Motif &m)   :
         Pattern(t),
-        motif(m) {}
+        motif(m)
+        {
+            if(m->feeble())
+            {
+                const FourCC fcc(uuid);
+                throw Specific::Exception(fcc.c_str(),"forbidden feebl '%s' motif", FourCC(motif->uuid).c_str());
+            }
+        }
 
 
         Joker:: Joker(const Joker &jk) noexcept :

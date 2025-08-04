@@ -10,7 +10,7 @@ namespace Yttrium
     namespace Jive
     {
 
-        Repeat:: Repeat(const Motif &m, const size_t n) noexcept :
+        Repeat:: Repeat(const Motif &m, const size_t n) :
         Joker(UUID,m),
         minCount(n)
         {
@@ -32,13 +32,29 @@ namespace Yttrium
 
         bool Repeat:: accepts(Token &token, Source &source) const
         {
+            assert(0==token.size);
+            size_t count = 0;
+            while(true)
+            {
+                Token tmp;
+                if(motif->accepts(tmp,source))
+                {
+                    ++count;
+                    token.mergeTail(tmp);
+                    continue;
+                }
+                break;
+            }
+            if(count>=minCount) return true;
 
+            source.store(token);
+            return false;
         }
 
 
         bool Repeat:: strong() const
         {
-            return minCount >0 && motif->strong();
+            return minCount >0;
         }
 
         OutputStream & Repeat:: viz(OutputStream &fp) const
