@@ -45,7 +45,7 @@ namespace Yttrium
 
         Logic & Logic:: add(const uint8_t c)
         {
-            pushTail( new Single(c) );
+            pushTail( new Byte(c) );
             return *this;
         }
 

@@ -1,5 +1,5 @@
 
-#include "y/jive/pattern/basic/single.hpp"
+#include "y/jive/pattern/basic/byte.hpp"
 #include "y/stream/output.hpp"
 #include "y/ascii/embedding.hpp"
 
@@ -7,10 +7,10 @@ namespace Yttrium
 {
     namespace Jive
     {
-        Single:: Single(const uint8_t a) noexcept : Pattern(UUID), code(a)   { I_am<Single>(); }
-        Single:: Single(const Single &_) noexcept : Pattern(_), code(_.code) { I_am<Single>(); }
+        Byte:: Byte(const uint8_t a) noexcept : Pattern(UUID), code(a)   { I_am<Byte>(); }
+        Byte:: Byte(const Byte &_) noexcept : Pattern(_), code(_.code) { I_am<Byte>(); }
 
-        OutputStream & Single:: viz(OutputStream &fp) const
+        OutputStream & Byte:: viz(OutputStream &fp) const
         {
             nodeName(fp) << '[';
             Label(fp, ASCII::Embedding::Char[code] );
@@ -18,14 +18,14 @@ namespace Yttrium
             return Endl(fp << ']');
         }
 
-        size_t Single:: serialize(OutputStream &fp) const
+        size_t Byte:: serialize(OutputStream &fp) const
         {
             size_t res = fp.emitCBR(uuid);
             fp.write(code);
             return res+1;
         }
 
-        bool Single:: accepts(Token &token, Source &source) const
+        bool Byte:: accepts(Token &token, Source &source) const
         {
             assert(0==token.size);
             Char *ch = source.query();
@@ -41,16 +41,16 @@ namespace Yttrium
             return true;
         }
 
-        FirstChars Single:: firstChars() const noexcept
+        FirstChars Byte:: firstChars() const noexcept
         {
             FirstChars fc;
             fc.add(code);
             return fc;
         }
 
-        bool Single:: strong() const { return true; }
+        bool Byte:: strong() const { return true; }
 
-        bool Single:: univocal() const { return true; }
+        bool Byte:: univocal() const { return true; }
 
     }
 }

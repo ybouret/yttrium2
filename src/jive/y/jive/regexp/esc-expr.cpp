@@ -32,7 +32,7 @@ namespace Yttrium
                 case '*':
                 case '?':
                 case AMPERSAND:
-                    p << new Single(c);
+                    p << new Byte(c);
                     break;
 
                     // control

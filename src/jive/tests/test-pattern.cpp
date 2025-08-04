@@ -40,7 +40,7 @@ namespace  {
 
 Y_UTEST(pattern)
 {
-    testPattern(new Single('a') );
+    testPattern(new Byte('a') );
     testPattern(new Range('0','9') );
 
     {
@@ -56,27 +56,27 @@ Y_UTEST(pattern)
     }
 
     {
-        const Motif m = new Single('b');
+        const Motif m = new Byte('b');
         testPattern( new Amount(m,0,3) );
     }
 
     {
         AutoPtr<Logic> p = new And();
-        *p << new Single('a');
+        *p << new Byte('a');
         *p << new Range('0','9');
         testPattern( p.yield() );
     }
 
     {
         AutoPtr<Logic> p = new Or();
-        *p << new Single('a');
+        *p << new Byte('a');
         *p << new Range('0','9');
         testPattern( p.yield() );
     }
 
     {
         AutoPtr<Logic> p = new None();
-        *p << new Single('a');
+        *p << new Byte('a');
         *p << new Range('0','9');
         testPattern( p.yield() );
     }
