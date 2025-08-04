@@ -19,6 +19,22 @@ namespace Yttrium
         {
             assert(0==token.size);
 
+            for(const Pattern *p=ops.head;p;p=p->next)
+            {
+                if(p->accepts(token,source))
+                {
+                    source.store(token);
+                    return false;
+                }
+            }
+
+            Char * const ch = source.query();
+
+            if(!ch)
+                return false;
+
+            token.pushTail(ch);
+            return true;
 
         }
 
@@ -50,12 +66,12 @@ namespace Yttrium
 
         bool None:: strong() const
         {
-
+            return true;
         }
 
         bool None:: univocal() const
         {
-            
+            return false;
         }
     }
 
