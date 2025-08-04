@@ -2,6 +2,7 @@
 
 #include "y/jive/regexp.hpp"
 #include "y/utest/run.hpp"
+#include "y/stream/libc/output.hpp"
 
 using namespace Yttrium;
 using namespace Jive;
@@ -17,6 +18,11 @@ Y_UTEST(rx)
         {
             const String dotName = "rx.dot";
             Vizible::Render(dotName,*motif);
+        }
+
+        {
+            OutputFile fp("rx.bin");
+            (void)motif->serialize(fp);
         }
 
 

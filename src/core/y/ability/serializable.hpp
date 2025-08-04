@@ -35,6 +35,7 @@ namespace Yttrium
 
         //! \return binary code
         Core::String<char> toBinary() const;
+        
 
     private:
         Y_Disable_Copy_And_Assign(Serializable); //!< discarding
