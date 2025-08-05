@@ -27,8 +27,6 @@ namespace Yttrium
         class Pattern : public CountedObject, public Vizible, public Serializable
         {
         public:
-            
-
             //__________________________________________________________________
             //
             //

@@ -7,6 +7,7 @@ y/jive/pattern/basic
 y/jive/pattern/joker
 y/jive/pattern/logic
 y/jive/regexp
+y/jive/lexical
 )
 
 add_subdirectory(tests)
