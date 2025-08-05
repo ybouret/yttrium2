@@ -49,7 +49,7 @@ namespace Yttrium
             void         fetch(size_t);                //!< prefetch chars
             size_t       cache()  const noexcept;      //!< \return buffer.size
             void         sweep(size_t n) noexcept;     //!< \param n n<=cached(), skipped
-            const Char * peek();
+            const Char * peek();                       //!< make ready \return best effort buffer head
 
         private:
             Y_Disable_Copy_And_Assign(Source); //!< discarding

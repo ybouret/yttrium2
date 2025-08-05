@@ -35,9 +35,9 @@ namespace Yttrium
             //__________________________________________________________________
             Tag(String * const) noexcept; //!< direct setup
             Tag(const Tag &)    noexcept; //!< duplicate
-            Tag(const String &);
-            Tag(const char * const);
-            Tag(const char);
+            Tag(const String &);          //!< setup
+            Tag(const char * const);      //!< setup
+            Tag(const char);              //!< setup
             virtual ~Tag()      noexcept; //!< cleanup
 
 

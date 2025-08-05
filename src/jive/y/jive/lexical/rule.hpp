@@ -40,10 +40,14 @@ namespace Yttrium
             class Rule : public Object
             {
             public:
-                typedef CxxListOf<Rule> List;
-
-
-
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                typedef CxxListOf<Rule> List; //!< alias
+                
                 //______________________________________________________________
                 //
                 //
@@ -64,8 +68,8 @@ namespace Yttrium
                 //______________________________________________________________
                 const Tag       name;  //!< name
                 const Motif     motif; //!< motif to match
-                const Attribute attr;
-                const Demeanor  deed;
+                const Attribute attr;  //!< attribute
+                const Demeanor  deed;  //!< demeanor
                 Rule *          next;  //!< for list
                 Rule *          prev;  //!< for list
             private:

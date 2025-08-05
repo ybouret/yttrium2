@@ -88,10 +88,8 @@ namespace Yttrium
             return res;
         }
 
-        inline void dismiss() noexcept
-        {
-            pointee = 0;
-        }
+        //! stop watching
+        inline void dismiss() noexcept { pointee = 0; }
 
     private:
 

@@ -35,8 +35,9 @@ namespace Yttrium
                 Unit(const Tag &, const Context &) noexcept; //!< cleanup
                 Unit(const Unit &);                          //!< duplicate
                 virtual ~Unit() noexcept;                    //!< cleanup
-                Y_OSTREAM_PROTO(Unit);
+                Y_OSTREAM_PROTO(Unit);                       //!< display
 
+                //! access to display in list \return *this
                 const Unit & operator*() const noexcept { return *this; }
 
                 //______________________________________________________________
@@ -55,8 +56,8 @@ namespace Yttrium
 
         }
 
-        typedef Lexical::Unit     Lexeme;
-        typedef CxxListOf<Lexeme> Lexemes;
+        typedef Lexical::Unit     Lexeme;  //!< alias
+        typedef CxxListOf<Lexeme> Lexemes; //!< alias
     }
 
 }
