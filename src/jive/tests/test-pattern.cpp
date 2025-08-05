@@ -4,6 +4,8 @@
 
 #include "y/utest/run.hpp"
 #include "y/stream/libc/output.hpp"
+#include "y/stream/libc/input.hpp"
+
 #include "y/pointer/auto.hpp"
 
 using namespace Yttrium;
@@ -27,9 +29,17 @@ namespace  {
 
         {
             const String binName = name + ".bin";
-            OutputFile   fp(binName);
-            const size_t written = p->serialize(fp);
-            std::cerr << "\twritten: " << written << std::endl;
+            {
+                OutputFile   fp(binName);
+                const size_t written = p->serialize(fp);
+                std::cerr << "\twritten: " << written << std::endl;
+            }
+
+            {
+                InputFile fp(binName);
+                AutoPtr<Pattern> reloaded = Pattern::ReadFrom(fp);
+                Y_CHECK(motif->toBinary() == reloaded->toBinary());
+            }
         }
 
         const FirstChars fc = p->firstChars();

@@ -58,6 +58,7 @@ namespace Yttrium
         size_t Logic:: srz(OutputStream &fp) const
         {
             size_t res = 0;
+            res += fp.emitVBR(size);
             for(const Pattern *op=head;op;op=op->next)
             {
                 res += op->serialize(fp);

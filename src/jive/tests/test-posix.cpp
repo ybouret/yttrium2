@@ -28,7 +28,6 @@ namespace
 
 Y_UTEST(posix)
 {
-
     Y_Jive_Posix(lower);
     Y_Jive_Posix(upper);
     Y_Jive_Posix(alpha);
@@ -44,6 +43,5 @@ Y_UTEST(posix)
     Y_Jive_Posix(consonant);
     Y_Jive_Posix(endl);
     Y_Jive_Posix(dot);
-
 }
 Y_UDONE()
