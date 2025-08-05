@@ -13,7 +13,25 @@ namespace Yttrium
         {
             assert(':' == curr[0]);
             assert(LBRACK == curr[-1]);
-            throw Specific::Exception(CallSign,"not implemented");
+
+            const char * const ini = curr+1;
+            while(true)
+            {
+                if(++curr>=last) goto BAD;
+                if(':' == *curr)
+                {
+                    const char * const end = curr;
+                    if(++curr>=last)         goto BAD; // skipping ':'
+                    if(RBRACK != *(curr++) ) goto BAD; // skipping ']'
+
+                    const String id(ini,end-ini);
+                    if(id.size()<=0) throw Specific::Exception(CallSign,"empty posix alias in '%s'",expr);
+                    return posix::named(id);
+                }
+            }
+
+        BAD:
+            throw Specific::Exception(CallSign,"unfinished posix alias in '%s'",expr);
         }
 
         Pattern * RegExp::Compiler:: subBank()
@@ -55,6 +73,10 @@ namespace Yttrium
 
                 switch(C)
                 {
+
+                    case LBRACK:
+                        *motif << subBank();
+                        break;
 
                     case RBRACK:
                         if(motif->size<=0) throw Specific::Exception(CallSign,"empty bank in '%s'",expr);
