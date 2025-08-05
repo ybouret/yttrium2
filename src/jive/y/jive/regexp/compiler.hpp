@@ -58,11 +58,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             Pattern *subExpr(); //!< \return new sub-expr from current position
-            Pattern *subBank(); //!< \return new sub-bank from current position
-            Pattern *goPosix(); //!< \return [:posix:]
-            void     escExpr(Logic &);
-            void     simpleJoker(Logic &, const char);
-            //void     bracesJoker();
+
 
             //__________________________________________________________________
             //
@@ -78,6 +74,14 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(Compiler); //!< dicarding
+
+            Pattern *subBank(); //!< \return new sub-bank from current position
+            Pattern *goPosix(); //!< \return [:posix:]
+            Pattern *escExpr(); //!< \return escape sequence in expr
+            Pattern *escBank(); //!< \return escape sequence in bank
+            Pattern *escHexa(); //!< \return escaped hexadecimal
+            void     simpleJoker(Logic &, const char);
+            //void     bracesJoker();
         };
 
     }

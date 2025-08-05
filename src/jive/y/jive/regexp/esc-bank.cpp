@@ -1,4 +1,5 @@
 
+
 #include "y/jive/regexp/compiler.hpp"
 #include "y/jive/pattern/all.hpp"
 #include "y/pointer/auto.hpp"
@@ -9,9 +10,10 @@ namespace Yttrium
 {
     namespace Jive
     {
-        Pattern * RegExp:: Compiler:: escExpr()
+        Pattern * RegExp:: Compiler:: escBank()
         {
-            
+            std::cerr << "escExpr" << std::endl;
+
             assert( BACKSLASH == curr[-1] );
 
             if(curr>=last) throw Specific::Exception(CallSign,"unfinished escape sequence in '%s'",expr);
@@ -23,16 +25,10 @@ namespace Yttrium
                     // direct
                 case LBRACK:
                 case RBRACK:
-                case LPAREN:
-                case RPAREN:
-                case LBRACE:
-                case RBRACE:
-                case '+':
-                case '*':
-                case '?':
-                case AMPERSAND:
+                case CARET:
+                case '-':
                     return new Byte(c);
-                    
+
                     // control
 #include "esc-ctrl.hxx"
 
@@ -42,8 +38,6 @@ namespace Yttrium
             }
 
             throw Specific::Exception(CallSign,"unknown escaped sequence '\\%s' in '%s'", ASCII::Printable::Text(c), expr);
-
-            
         }
     }
 

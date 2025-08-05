@@ -82,6 +82,10 @@ namespace Yttrium
                         if(motif->size<=0) throw Specific::Exception(CallSign,"empty bank in '%s'",expr);
                         return motif.yield();
 
+                    case BACKSLASH:
+                        *motif << escBank();
+                        break;
+
                     default:
                         *motif << new Byte(C);
                         break;
