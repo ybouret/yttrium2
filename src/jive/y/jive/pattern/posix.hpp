@@ -19,30 +19,30 @@ namespace Yttrium
             // standard
             //
             //------------------------------------------------------------------
-            static Pattern *lower();  //!< \verbatim[a-z]\endverbatim
-            static Pattern *upper();  //!< \verbatim[A-Z]\endverbatim
-            static Pattern *alpha();  //!< \verbatim[a-zA-Z]\endverbatim
-            static Pattern *digit();  //!< \verbatim[0-9]\endverbatim
-            static Pattern *alnum();  //!< \verbatim[a-zA-Z0-9]\endverbatim
-            static Pattern *xdigit(); //!< \verbatim[0-9a-fA-F]\endverbatim
-            static Pattern *blank();  //!< \verbatim[ \t]\endverbatim
-            static Pattern *space();  //!< \verbatim[ \n\r\t\v\f]\endverbatim
-            static Pattern *punct();  //!< \verbatim][!"#$%&'()*+,./:;<=>?@\^_`{|}~-\endverbatim
+            static Pattern *lower();  //!< \return \verbatim[a-z]\endverbatim
+            static Pattern *upper();  //!< \return \verbatim[A-Z]\endverbatim
+            static Pattern *alpha();  //!< \return \verbatim[a-zA-Z]\endverbatim
+            static Pattern *digit();  //!< \return \verbatim[0-9]\endverbatim
+            static Pattern *alnum();  //!< \return \verbatim[a-zA-Z0-9]\endverbatim
+            static Pattern *xdigit(); //!< \return \verbatim[0-9a-fA-F]\endverbatim
+            static Pattern *blank();  //!< \return \verbatim[ \t]\endverbatim
+            static Pattern *space();  //!< \return \verbatim[ \n\r\t\v\f]\endverbatim
+            static Pattern *punct();  //!< \return \verbatim][!"#$%&'()*+,./:;<=>?@\^_`{|}~-\endverbatim
 
             //------------------------------------------------------------------
             //
             // extended
             //
             //------------------------------------------------------------------
-            static Pattern *word();      //!< \verbatim[a-zA-Z0-9_]\endverbatim
-            static Pattern *endl();      //!< \verbatim\n|\r|\r\n\endverbatim
-            static Pattern *dot();       //!< \verbatim^endl\endverbatim
-            static Pattern *core();      //!< core 7-bits string content, minus quote, dquote  and backslash
-            static Pattern *vowel();     //!< vowels
-            static Pattern *consonant(); //!< consonants
+            static Pattern *word();      //!< \return \verbatim[a-zA-Z0-9_]\endverbatim
+            static Pattern *endl();      //!< \return \verbatim\n|\r|\r\n\endverbatim
+            static Pattern *dot();       //!< \return \verbatim^endl\endverbatim
+            static Pattern *core();      //!< \return core 7-bits string content, minus quote, dquote  and backslash
+            static Pattern *vowel();     //!< \return vowels
+            static Pattern *consonant(); //!< \return consonants
 
-            static Pattern *named(const String &);      //!< look up pattern by name
-            static Pattern *named(const char * const);  //!< look up pattern by name
+            static Pattern *named(const String &);      //!< \return look up pattern by name
+            static Pattern *named(const char * const);  //!< \return look up pattern by name
         };
     }
 }

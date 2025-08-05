@@ -29,8 +29,8 @@ namespace Yttrium
             //
             //__________________________________________________________________
             Logic & operator<<(Pattern * const ) noexcept; //!< append new pattern to operands \return *this
-            Logic & add(const uint8_t);
-            Logic & add(const uint8_t, const uint8_t);
+            Logic & add(const uint8_t);                    //!< add a Byte \return *this*
+            Logic & add(const uint8_t, const uint8_t);     //!< add Byte/Lump \return *this
 
 
             //__________________________________________________________________

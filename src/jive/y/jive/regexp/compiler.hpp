@@ -31,16 +31,16 @@ namespace Yttrium
             //
             //__________________________________________________________________
             static const char * const CallSign; //!< "Jive::RegExp"
-            static const char LPAREN    = '('; //!< alias
-            static const char RPAREN    = ')'; //!< alias
-            static const char ALT       = '|'; //!< alias
-            static const char LBRACK    = '[';
-            static const char RBRACK    = ']';
-            static const char LBRACE    = '{';
-            static const char RBRACE    = '}';
-            static const char AMPERSAND = '&';
-            static const char BACKSLASH = '\\';
-            static const char CARET     = '^';
+            static const char LPAREN    = '(';  //!< alias
+            static const char RPAREN    = ')';  //!< alias
+            static const char ALT       = '|';  //!< alias
+            static const char LBRACK    = '[';  //!< alias
+            static const char RBRACK    = ']';  //!< alias
+            static const char LBRACE    = '{';  //!< alias
+            static const char RBRACE    = '}';  //!< alias
+            static const char AMPERSAND = '&';  //!< alias
+            static const char BACKSLASH = '\\'; //!< alias
+            static const char CARET     = '^';  //!< alias
 
             //__________________________________________________________________
             //
@@ -81,7 +81,7 @@ namespace Yttrium
             Pattern *escBank(); //!< \return escape sequence in bank
             Pattern *escHexa(); //!< \return escaped hexadecimal
             Pattern *nextByte(); //!< \return next byte in bank after '-'
-            void     simpleJoker(Logic &, const char);
+            void     simpleJoker(Logic &, const char); //!< + | - | ?
             //void     bracesJoker();
         };
 

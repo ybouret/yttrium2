@@ -124,7 +124,6 @@ namespace Yttrium
                             AutoPtr<Pattern> lhs = motif->popTail();  assert(Byte::UUID==lhs->uuid);
                             AutoPtr<Pattern> rhs = nextByte();        assert(Byte::UUID==rhs->uuid);
                             motif->add( lhs->as<Byte>()->code, rhs->as<Byte>()->code);
-                            //throw Exception("need to implement '-'");
                         }
                         break;
 

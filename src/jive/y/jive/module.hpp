@@ -50,6 +50,13 @@ namespace Yttrium
                 return new Module(tag,inp);
             }
 
+            //! OpenData
+            /**
+             \param name  data name
+             \param entry data entry
+             \param count data byte count
+             \return module with data name
+             */
             template <typename NAME>
             static Module * OpenData(const NAME &name, const void * const entry, const size_t count)
             {
@@ -58,6 +65,12 @@ namespace Yttrium
                 return new Module(tag,inp);
             }
 
+            //! OpenData
+            /**
+             \param name  data name
+             \param buffer data
+             \return module with file name
+             */
             template <typename NAME>
             static Module * OpenData(const NAME &name, const Memory::ReadOnlyBuffer &buffer)
             {
