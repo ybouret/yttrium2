@@ -14,6 +14,12 @@ namespace Yttrium
 
         Tag:: Tag(String * const p) noexcept : TagType(p) {}
 
+
+        Tag:: Tag(const String &s) : TagType( new String(s) ) {}
+
+        Tag:: Tag(const char * const s) : TagType( new String(s) ) {}
+
+        Tag:: Tag(const char c) : TagType( new String(c) ) {}
     }
 
 }

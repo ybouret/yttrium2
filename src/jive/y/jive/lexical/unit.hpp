@@ -5,6 +5,7 @@
 #define Y_Jive_Lexical_Unit_Included 1
 
 #include "y/jive/token.hpp"
+#include "y/core/linked/list/cxx.hpp"
 
 namespace Yttrium
 {
@@ -34,6 +35,9 @@ namespace Yttrium
                 Unit(const Tag &, const Context &) noexcept; //!< cleanup
                 Unit(const Unit &);                          //!< duplicate
                 virtual ~Unit() noexcept;                    //!< cleanup
+                Y_OSTREAM_PROTO(Unit);
+
+                const Unit & operator*() const noexcept { return *this; }
 
                 //______________________________________________________________
                 //
@@ -51,6 +55,8 @@ namespace Yttrium
 
         }
 
+        typedef Lexical::Unit     Lexeme;
+        typedef CxxListOf<Lexeme> Lexemes;
     }
 
 }

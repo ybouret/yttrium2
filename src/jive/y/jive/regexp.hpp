@@ -16,6 +16,7 @@ namespace Yttrium
             class Compiler;
             static Pattern * Compile(const String &,     const Dictionary * const =0); //!< \return compiler expression
             static Pattern * Compile(const char * const, const Dictionary * const =0); //!< \return compiled expression
+            static Pattern * Compile(const char,         const Dictionary * const =0); //!< \return Byte(C)
         };
 
     }

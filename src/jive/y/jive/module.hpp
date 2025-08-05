@@ -45,7 +45,7 @@ namespace Yttrium
             template <typename NAME>
             static Module * OpenFile(const NAME &name)
             {
-                const Tag   tag(CopyOf,name);
+                const Tag   tag(name);
                 const Input inp( OpenFile_(*tag) );
                 return new Module(tag,inp);
             }
@@ -60,7 +60,7 @@ namespace Yttrium
             template <typename NAME>
             static Module * OpenData(const NAME &name, const void * const entry, const size_t count)
             {
-                const Tag   tag(CopyOf,name);
+                const Tag   tag(name);
                 const Input inp( OpenData_(entry,count) );
                 return new Module(tag,inp);
             }
@@ -74,7 +74,7 @@ namespace Yttrium
             template <typename NAME>
             static Module * OpenData(const NAME &name, const Memory::ReadOnlyBuffer &buffer)
             {
-                const Tag   tag(CopyOf,name);
+                const Tag   tag(name);
                 const Input inp( OpenData_(buffer.ro(), buffer.length()) );
                 return new Module(tag,inp);
             }

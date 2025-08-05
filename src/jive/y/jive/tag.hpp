@@ -35,14 +35,11 @@ namespace Yttrium
             //__________________________________________________________________
             Tag(String * const) noexcept; //!< direct setup
             Tag(const Tag &)    noexcept; //!< duplicate
+            Tag(const String &);
+            Tag(const char * const);
+            Tag(const char);
             virtual ~Tag()      noexcept; //!< cleanup
 
-            //! setup \param name any compatible name
-            template <typename T>
-            inline Tag(const CopyOf_ &, const T &name) :
-            TagType( new String(name) )
-            {
-            }
 
 
         private:

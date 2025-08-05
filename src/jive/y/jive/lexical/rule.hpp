@@ -6,6 +6,7 @@
 
 #include "y/jive/token.hpp"
 #include "y/jive/pattern.hpp"
+#include "y/core/linked/list/cxx.hpp"
 
 namespace Yttrium
 {
@@ -13,6 +14,20 @@ namespace Yttrium
     {
         namespace Lexical
         {
+
+            enum Demeanor
+            {
+                Emit,
+                Drop
+            };
+
+            enum Attribute
+            {
+                Regular,
+                NewLine
+            };
+
+
 
             //__________________________________________________________________
             //
@@ -25,15 +40,21 @@ namespace Yttrium
             class Rule : public Object
             {
             public:
+                typedef CxxListOf<Rule> List;
+
+
+
                 //______________________________________________________________
                 //
                 //
                 // C++
                 //
                 //______________________________________________________________
-                Rule(const Tag &, const Motif &) noexcept; //!< setup
-                Rule(const Rule &)               noexcept; //!< duplicate
-                virtual ~Rule()                  noexcept; //!< cleanup
+                Rule(const Tag       &,
+                     const Motif     &,
+                     const Attribute,
+                     const bool)  noexcept; //!< setup
+                virtual ~Rule()   noexcept; //!< cleanup
 
                 //______________________________________________________________
                 //
@@ -41,13 +62,14 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const Tag   name;  //!< name
-                const Motif motif; //!< motif to match
-                Rule *      next;  //!< for list
-                Rule *      prev;  //!< for list
-
+                const Tag       name;  //!< name
+                const Motif     motif; //!< motif to match
+                const Attribute attr;
+                const Demeanor  deed;
+                Rule *          next;  //!< for list
+                Rule *          prev;  //!< for list
             private:
-                Y_Disable_Assign(Rule); //!< discarding
+                Y_Disable_Copy_And_Assign(Rule); //!< discarding
             };
         }
     }

@@ -51,12 +51,13 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            void free()                noexcept; //!< all off
-            void all()                 noexcept; //!< all on
-            void add(const uint8_t)    noexcept; //!< add single byte
-            void add(uint8_t, uint8_t) noexcept; //!< add range
-            void sub(const uint8_t)    noexcept; //!< remove single bute
-            void sub(uint8_t, uint8_t) noexcept; //!< remove range
+            void free()                      noexcept; //!< all off
+            void all()                       noexcept; //!< all on
+            void add(const uint8_t)          noexcept; //!< add single byte
+            void add(uint8_t, uint8_t)       noexcept; //!< add range
+            void sub(const uint8_t)          noexcept; //!< remove single bute
+            void sub(uint8_t, uint8_t)       noexcept; //!< remove range
+            bool getbit(const uint8_t) const noexcept; //!< \return get bit value
 
             FirstChars & operator +=(const FirstChars &) noexcept; //!< bitwise add \return *this
             FirstChars & operator -=(const FirstChars &) noexcept; //!< bitwise sub \return *this
@@ -73,7 +74,6 @@ namespace Yttrium
             const size_t size;   //!< bit count
         private:
             uint8_t data[Bytes]; //!< bit fields
-            bool getbit(const uint8_t) const noexcept; //!< \return get bit value
             void setbit(const uint8_t) noexcept;       //!< set bit to on
             void clrbit(const uint8_t) noexcept;       //!< clr bit to off
 

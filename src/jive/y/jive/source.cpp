@@ -47,7 +47,7 @@ namespace Yttrium
 
         void   Source:: sweep(size_t n) noexcept
         {
-            assert(n>=buffer.size);
+            assert(n<=buffer.size);
             static Char::Cache &pool = Char::CacheLocation();
             while(n-- > 0)
                 pool.banish( buffer.popHead() );
@@ -58,6 +58,19 @@ namespace Yttrium
             if(buffer.size)                            return true;
             Char * const ch = handle->query(); if(!ch) return false;
             (void) buffer.pushTail(ch);        return         true;
+        }
+
+        const Char * Source:: peek()
+        {
+            if( ready() )
+            {
+                assert(buffer.size>0);
+                return buffer.head;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         void Source:: fetch(size_t n)

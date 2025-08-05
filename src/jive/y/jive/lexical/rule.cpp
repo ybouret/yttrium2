@@ -8,17 +8,27 @@ namespace Yttrium
         namespace Lexical
         {
 
+
+            Rule:: Rule(const Tag   &   r,
+                        const Motif &   m,
+                        const Attribute a,
+                        const bool      emit) noexcept :
+            Object(),
+            name(r),
+            motif(m),
+            attr(a),
+            deed(emit?Emit:Drop),
+            next(0),
+            prev(0)
+            {
+            }
+
             Rule:: ~Rule() noexcept
             {
             }
 
-            Rule:: Rule(const Rule &_) noexcept :
-            Object(),
-            name(_.name),
-            motif(_.motif)
-            {
-            }
             
+
         }
 
     }

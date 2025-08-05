@@ -3,6 +3,7 @@
 #include "y/jive/regexp/compiler.hpp"
 #include "y/pointer/auto.hpp"
 #include "y/system/exception.hpp"
+#include "y/jive/pattern/basic/byte.hpp"
 
 namespace Yttrium
 {
@@ -21,6 +22,11 @@ namespace Yttrium
             AutoPtr<Pattern> motif = compiler.subExpr();
             if(compiler.deep>0) throw Specific::Exception(Compiler::CallSign,"unfinished '%s'",compiler.expr);
             return Pattern::Optimize( motif.yield() );
+        }
+
+        Pattern * RegExp:: Compile(const char C, const Dictionary * const)
+        {
+            return new Byte(C);
         }
     }
 

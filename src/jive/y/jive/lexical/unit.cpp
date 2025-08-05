@@ -32,6 +32,15 @@ namespace Yttrium
             {
             }
 
+            std::ostream & operator<<(std::ostream &os, const Unit &unit)
+            {
+                os << unit.name;
+                if(unit.size) {
+                    const Token &self = unit;
+                    os << "='" << self << "'";
+                }
+                return os;
+            }
 
         }
 
