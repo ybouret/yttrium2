@@ -40,6 +40,7 @@ namespace Yttrium
             static const char RBRACE    = '}';
             static const char AMPERSAND = '&';
             static const char BACKSLASH = '\\';
+            static const char CARET     = '^';
 
             //__________________________________________________________________
             //
@@ -56,7 +57,9 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            Pattern *subExpr(); //!< \return new sub-expression from current position
+            Pattern *subExpr(); //!< \return new sub-expr from current position
+            Pattern *subBank(); //!< \return new sub-bank from current position
+            Pattern *goPosix(); //!< \return [:posix:]
             void     escExpr(Logic &);
             void     simpleJoker(Logic &, const char);
             //void     bracesJoker();

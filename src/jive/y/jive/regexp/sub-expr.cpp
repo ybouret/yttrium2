@@ -3,6 +3,7 @@
 #include "y/jive/pattern/all.hpp"
 #include "y/pointer/auto.hpp"
 #include "y/system/exception.hpp"
+#include "y/jive/pattern/posix.hpp"
 
 namespace Yttrium
 {
@@ -11,7 +12,6 @@ namespace Yttrium
 
         Pattern * RegExp::Compiler:: subExpr()
         {
-
             AutoPtr<Logic> motif = new And();
             while(curr<last)
             {
@@ -61,6 +61,15 @@ namespace Yttrium
 
                         //------------------------------------------------------
                         //
+                        // dot
+                        //
+                        //------------------------------------------------------
+                    case '.':
+                        motif->pushTail( posix::dot() );
+                        break;
+
+                        //------------------------------------------------------
+                        //
                         // simple joker
                         //
                         //------------------------------------------------------
@@ -72,11 +81,25 @@ namespace Yttrium
 
                         //------------------------------------------------------
                         //
-                        // sub Banck
+                        // ignore case
                         //
                         //------------------------------------------------------
-                        
+                    case AMPERSAND:
+                        if( motif->size <= 0 ) throw Specific::Exception(CallSign,"empty sub-expression before '%c' in '%s'", C, expr);
+                        *motif <<  Pattern::Insensitive( motif->popTail() );
+                        break;
 
+                        //------------------------------------------------------
+                        //
+                        // sub Bank
+                        //
+                        //------------------------------------------------------
+                    case LBRACK:
+                        *motif << subBank();
+                        break;
+
+                    case RBRACK:
+                        throw Specific::Exception(CallSign,"'%c' must be escaped in '%s''", RBRACK, expr);
 
 
                         //------------------------------------------------------
