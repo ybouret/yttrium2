@@ -61,14 +61,15 @@ namespace Yttrium
             bool feeble() const; //!< \return true if accepts empty token
             bool flexible() const; //!< \return !univoca()
 
-            static Pattern * Optimize(Pattern * const);
-            static Pattern * ReadFrom(InputStream &);
-            static Pattern * Insensitive(Pattern * const);
+            bool             isBasic()  const noexcept;    //!< \return true is basic
+            static Pattern * Optimize(Pattern * const);    //!< \return performed logic optimization
+            static Pattern * ReadFrom(InputStream &);      //!< \return reloaded
+            static Pattern * Insensitive(Pattern * const); //!< \return case insensitive pattern
 
-            static Pattern * Among(const String &);
-            static Pattern * Among(const char * const);
-            static Pattern * Exact(const String &);
-            static Pattern * Exact(const char * const);
+            static Pattern * Among(const String &);        //!< \return Or'd
+            static Pattern * Among(const char * const);    //!< \return Or'd
+            static Pattern * Exact(const String &);        //!< \return And
+            static Pattern * Exact(const char * const);    //!< \return And
 
             //__________________________________________________________________
             //

@@ -9,9 +9,57 @@ namespace Yttrium
     namespace Jive
     {
 
+        bool Pattern:: isBasic()  const noexcept
+        {
+            switch(uuid)
+            {
+                case Byte::UUID:
+                case Lump::UUID:
+                case Not:: UUID:
+                    return true;
+                default:
+                    break;
+            }
+            return false;
+        }
+
         namespace
         {
 
+            // fill list with matching Byte/Lump
+            static inline
+            void FillList(const uint8_t a, const uint8_t b, void * const args)
+            {
+                assert(args);
+                Patterns &plist = *(Patterns *)args;
+                if(a==b)
+                    plist.pushTail( new Byte(a) );
+                else
+                    plist.pushTail( new Lump(a,b) );
+            }
+
+            // basic => use first char to get equivalent
+            static inline
+            void OptimizeOrList(Patterns &plist)
+            {
+                FirstChars fc;
+                Patterns   xlist;
+                while(plist.size)
+                {
+                    Pattern * const p = plist.popHead();
+                    if(p->isBasic())
+                    {
+                        fc += p->firstChars();
+                        delete p;
+                    }
+                    else
+                    {
+                        xlist.pushTail(p);
+                    }
+                }
+                fc.run(FillList,&plist);
+                plist.mergeTail(xlist);
+            }
 
             template <typename LOGIC>
             static Pattern * OptimizeCommonLogic(LOGIC * const p)
@@ -38,7 +86,12 @@ namespace Yttrium
                     p->swapListFor(plist);
                 }
 
+                // specific exception
+                if( Or::UUID == p->uuid)
+                    OptimizeOrList(*p);
+
                 if(1==p->size) return p->popHead();
+                
                 return motif.yield();
             }
 
@@ -82,7 +135,7 @@ namespace Yttrium
 
         namespace {
 
-            static inline void Fill(const uint8_t a, const uint8_t b, void * args)
+            static inline void FillLogic(const uint8_t a, const uint8_t b, void * args)
             {
                 assert(args);
                 Logic * const p = (Logic *)args;
@@ -99,7 +152,7 @@ namespace Yttrium
 
             Logic * const p = new Or();
             AutoPtr<Pattern> motif = p;
-            fc.run(Fill,p);
+            fc.run(FillLogic,p);
             return  motif.yield();
 
         }
