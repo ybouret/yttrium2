@@ -61,8 +61,8 @@ namespace Yttrium
                 plist.mergeTail(xlist);
             }
 
-            template <typename LOGIC>
-            static Pattern * OptimizeCommonLogic(LOGIC * const p)
+            static inline
+            Pattern * OptimizeLogic(And * const p)
             {
                 assert(p);
                 AutoPtr<Pattern> motif(p);
@@ -73,9 +73,9 @@ namespace Yttrium
                         Pattern * op =  Pattern::Optimize(p->popHead());
 
                         // merge nested same
-                        if(op->uuid == LOGIC::UUID)
+                        if(op->uuid == And::UUID)
                         {
-                            plist.mergeTail( *op->as<LOGIC>() );
+                            plist.mergeTail( *op->as<And>() );
                             delete op;
                             continue;
                         }
@@ -86,14 +86,63 @@ namespace Yttrium
                     p->swapListFor(plist);
                 }
 
-                // specific exception
-                if( Or::UUID == p->uuid)
-                    OptimizeOrList(*p);
-
                 if(1==p->size) return p->popHead();
-                
                 return motif.yield();
             }
+
+            static inline
+            Pattern * OptimizeLogic(Or * const p)
+            {
+                assert(p);
+                AutoPtr<Pattern> motif(p);
+                {
+                    Patterns         plist;
+                    while(p->size)
+                    {
+                        Pattern * op =  Pattern::Optimize(p->popHead());
+
+                        // merge nested same
+                        if(op->uuid == Or::UUID)
+                        {
+                            plist.mergeTail( *op->as<Or>() );
+                            delete op;
+                            continue;
+                        }
+
+                        // grow plist
+                        plist.pushTail(op);
+                    }
+                    p->swapListFor(plist);
+                }
+
+                // specific optimization
+                OptimizeOrList(*p);
+
+                if(1==p->size) return p->popHead();
+                return motif.yield();
+            }
+
+            static inline
+            Pattern * OptimizeLogic(None * const p)
+            {
+                assert(p);
+                AutoPtr<Pattern> motif(p);
+                {
+                    Patterns         plist;
+                    while(p->size)
+                    {
+                        Pattern * op =  Pattern::Optimize(p->popHead());
+                        plist.pushTail(op);
+                    }
+                    p->swapListFor(plist);
+                }
+
+
+                return motif.yield();
+            }
+
+
+
 
             template <typename JOKER>
             inline Pattern * OptimizeJoker(JOKER * const p)
@@ -107,8 +156,6 @@ namespace Yttrium
                 return guard.yield();
             }
 
-
-
         }
 
         Pattern * Pattern:: Optimize(Pattern * const p)
@@ -117,8 +164,14 @@ namespace Yttrium
 
             switch(p->uuid)
             {
-                case And::UUID: return OptimizeCommonLogic( motif.yield()->as<And>() );
-                case Or::UUID:  return OptimizeCommonLogic( motif.yield()->as<Or>() );
+                case Lump::UUID: {
+                    const Lump * const q = p->as<Lump>();
+                    if(q->lower == q->upper) return new Byte(q->lower);
+                } break;
+
+                case And::  UUID: return OptimizeLogic( motif.yield()->as<And>() );
+                case Or::   UUID: return OptimizeLogic( motif.yield()->as<Or>() );
+                case None:: UUID: return OptimizeLogic( motif.yield()->as<None>() );
 
                 case Option::UUID: return OptimizeJoker( motif.yield()->as<Option>() );
                 case Repeat::UUID: return OptimizeJoker( motif.yield()->as<Repeat>() );
