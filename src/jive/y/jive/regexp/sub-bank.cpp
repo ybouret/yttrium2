@@ -4,6 +4,7 @@
 #include "y/pointer/auto.hpp"
 #include "y/system/exception.hpp"
 #include "y/jive/pattern/posix.hpp"
+#include "y/ascii/printable.hpp"
 
 namespace Yttrium
 {
@@ -33,6 +34,31 @@ namespace Yttrium
         BAD:
             throw Specific::Exception(CallSign,"unfinished posix alias in '%s'",expr);
         }
+
+        Pattern * RegExp::Compiler:: nextByte()
+        {
+            assert('-' == curr[-1]);
+
+            if(curr>=last) throw Specific::Exception(CallSign,"unfinished after '-' in '%s'",expr);
+
+            const char C = *(curr++);
+
+            switch(C)
+            {
+                case LBRACK:
+                case RBRACK:
+                    throw Specific::Exception(CallSign,"invalid nextByte='%s' after '-' in '%s'", ASCII::Printable::Text(C), expr);
+
+                case BACKSLASH:
+                    return escBank();
+
+                default:
+                    break;
+            }
+
+            return new Byte(C);
+
+         }
 
         Pattern * RegExp::Compiler:: subBank()
         {
@@ -84,6 +110,22 @@ namespace Yttrium
 
                     case BACKSLASH:
                         *motif << escBank();
+                        break;
+
+                    case '-':
+                        if(motif->size<=0) throw Specific::Exception(CallSign,"no char before '-' in '%s'", expr);
+                        if(Byte::UUID != motif->tail->uuid)
+                        {
+                            const FourCC cc(motif->tail->uuid);
+                            throw Specific::Exception(CallSign,"found '%s' before '-' in '%s'", cc.c_str(), expr);
+                        }
+                        else
+                        {
+                            AutoPtr<Pattern> lhs = motif->popTail();  assert(Byte::UUID==lhs->uuid);
+                            AutoPtr<Pattern> rhs = nextByte();        assert(Byte::UUID==rhs->uuid);
+                            motif->add( lhs->as<Byte>()->code, rhs->as<Byte>()->code);
+                            //throw Exception("need to implement '-'");
+                        }
                         break;
 
                     default:

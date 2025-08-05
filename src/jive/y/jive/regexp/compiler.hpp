@@ -80,6 +80,7 @@ namespace Yttrium
             Pattern *escExpr(); //!< \return escape sequence in expr
             Pattern *escBank(); //!< \return escape sequence in bank
             Pattern *escHexa(); //!< \return escaped hexadecimal
+            Pattern *nextByte(); //!< \return next byte in bank after '-'
             void     simpleJoker(Logic &, const char);
             //void     bracesJoker();
         };
