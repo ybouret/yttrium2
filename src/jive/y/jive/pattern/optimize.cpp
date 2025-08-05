@@ -137,7 +137,7 @@ namespace Yttrium
                     p->swapListFor(plist);
                 }
 
-
+                
                 return motif.yield();
             }
 
