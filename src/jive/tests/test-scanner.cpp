@@ -13,7 +13,8 @@ namespace
 }
 Y_UTEST(scanner)
 {
-    Lexical::Scanner scan("Scanner");
+    Dictionary::Pointer pdb = new Dictionary();
+    Lexical::Scanner scan("Scanner",pdb);
     scan.decl("ID","[:alpha:]+",   Lexical::Regular, true);
     scan.decl("INT","[:digit:]+",  Lexical::Regular, true);
     scan.decl("FLT","[:digit:]+\\.[:digit:]*",Lexical::Regular, true);

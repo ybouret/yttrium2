@@ -34,10 +34,12 @@ namespace Yttrium
 
                 
                 template <typename SID> inline
-                explicit Scanner(const SID &sid) :
+                explicit Scanner(const SID &sid, const Dictionary::Pointer &pdb) :
                 CountedObject(),
                 name(sid),
-                code( Impl(name) )
+                code( Impl(name) ),
+                hDict(pdb),
+                noData("")
                 {
                 }
 
@@ -49,12 +51,11 @@ namespace Yttrium
                 void decl(const RID &              rid,
                           const RXP &              rxp,
                           const Attribute          attr,
-                          const bool               emit,
-                          const Dictionary * const dict = 0)
+                          const bool               emit)
                 {
                     const Tag    rname = rid;
-                    const Motif  motif = RegExp::Compile(rxp,dict);
-                    add( new Rule(rname,motif,attr,emit) );
+                    const Motif  motif = RegExp::Compile(rxp, & *hDict);
+                    add( new Rule(rname,motif,attr,emit,noData) );
                 }
 
                 Unit * operator()(Source &);
@@ -70,8 +71,11 @@ namespace Yttrium
 
                 Y_Disable_Copy_And_Assign(Scanner);
                 static Code *Impl(const Tag &);
-
                 void add(Rule * const rule);
+
+            public:
+                const Dictionary::Pointer hDict;
+                const Tag                 noData;
             };
 
 
