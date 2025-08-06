@@ -58,10 +58,10 @@ namespace Yttrium
                     add( new Rule(rname,motif,attr,emit,noData) );
                 }
 
-                Unit * operator()(Source &);
+                Status operator()(Source &         source,
+                                  Unit * &         hUnit,
+                                  const String * & hData);
 
-                Status operator()(Source &, void **hook);
-                
 
 
                 const Tag name;

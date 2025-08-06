@@ -146,8 +146,17 @@ namespace Yttrium
                 code->add(rule);
             }
 
-            Unit * Scanner:: operator()(Source &source)
+            
+
+
+
+            Status Scanner:: operator()(Source &         source,
+                                        Unit * &         hUnit,
+                                        const String * & hData)
             {
+                assert(0==hUnit);
+                assert(0==hData);
+
             PROBE:
                 //______________________________________________________________
                 //
@@ -156,7 +165,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 assert(0!=code);
-                const Char * const ch  = source.peek(); if(!ch) return 0; // EOF
+                const Char * const ch  = source.peek(); if(!ch) return FoundEOF; // EOF
                 const Context      ctx = *ch; // save context
 
                 const Rule *bestRule = 0;
@@ -239,19 +248,30 @@ namespace Yttrium
                 //______________________________________________________________
                 switch(bestRule->deed)
                 {
-                    case Drop: goto PROBE;
+                    case Drop:
+                        goto PROBE;
+
+                    case Back:
+                        assert(0 == bestRule->data->length() );
+                        return CtrlBack;
+
+                    case Call:
+                        assert( 0 < bestRule->data->length() );
+                        hData = & *bestRule->data;
+                        return CtrlCall;
+                        
                     case Emit: {
                         Unit * const unit = new Unit(bestRule->name,ctx);
                         unit->swapListFor(bestToken);
-                        return unit;
+                        hUnit = unit;
+                        return EmitUnit;
                     }
 
                 }
 
                 throw Exception("shouldn't get here!!");
+
             }
-
-
 
         }
 
