@@ -27,6 +27,9 @@ namespace
         {
         }
 
+        virtual void onCall(const Token &) {}
+        virtual void onBack(const Token &) {}
+        
     private:
         Y_Disable_Copy_And_Assign(MyScanner);
     };

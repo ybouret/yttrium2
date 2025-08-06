@@ -262,6 +262,7 @@ namespace Yttrium
 
                     case Back:
                         assert(0 == bestRule->data->length() );
+                        onBack(bestToken);
                         return CtrlBack;
 
                     case Call:

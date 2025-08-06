@@ -39,7 +39,10 @@ namespace Yttrium
 
             virtual ~Lexer() noexcept;
 
+
             virtual void free() noexcept;
+            virtual void onCall(const Token &);
+            virtual void onBack(const Token &);
 
             Lexeme * query(Source &);
             void     store(Lexeme * const) noexcept;

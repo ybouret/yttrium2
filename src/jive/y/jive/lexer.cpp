@@ -37,6 +37,15 @@ namespace Yttrium
         }
 
 
+        void Lexer:: onCall(const Token &)
+        {
+        }
+
+        void Lexer:: onBack(const Token&)
+        {
+        }
+
+
         void Lexer:: store(Lexeme * const lexeme) noexcept
         {
             assert(0!=lexeme);
@@ -54,6 +63,9 @@ namespace Yttrium
                 {
                     case Lexical::FoundEOF: assert(Lexical::AcceptEOF == scan->policy); return 0;    // done
                     case Lexical::EmitUnit: assert(0==ctrl); assert(0!=unit);           return unit; // emit
+                    case Lexical::CtrlBack: assert(0==ctrl); assert(0==unit);
+                        if(hist.size()<=0) throw Specific::Exception(name->c_str(),"no previous call for '%s'", scan->name->c_str());
+                        
                     default:
                         throw Specific::Exception(name->c_str(), "Not Implemented");
                 }
