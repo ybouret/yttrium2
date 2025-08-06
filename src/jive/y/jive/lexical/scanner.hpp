@@ -132,9 +132,9 @@ namespace Yttrium
 
 
 
-                Status operator()(Source &         source,
-                                  Unit * &         hUnit,
-                                  const String * & hData);
+                Status run(Source &         source,
+                           Unit * &         hUnit,
+                           const String * & hData);
 
 
                 //______________________________________________________________

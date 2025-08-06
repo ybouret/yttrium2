@@ -44,7 +44,7 @@ Y_UTEST(scanner)
         Lexeme *       lx = 0;
         const String * id = 0;
 
-        while( Lexical::EmitUnit == scan(source,lx,id) )
+        while( Lexical::EmitUnit == scan.run(source,lx,id) )
         {
             Y_ASSERT(0!=lx);
             Y_ASSERT(0==id);

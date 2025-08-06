@@ -4,6 +4,7 @@
 #define Y_Jive_Lexer_Included 1
 
 #include "y/jive/lexical/scanner.hpp"
+#include "y/jive/lexical/base.hpp"
 #include "y/container/associative/suffix/set.hpp"
 #include "y/container/sequence/vector.hpp"
 
@@ -13,21 +14,9 @@ namespace Yttrium
     namespace Jive
     {
 
-        class LexerBase
-        {
-        public:
-            explicit LexerBase();
-            virtual ~LexerBase() noexcept;
 
-            Dictionary::Pointer   pdb;
-        protected:
-            const Lexical::NoData nil;
 
-        private:
-            Y_Disable_Copy_And_Assign(LexerBase);
-        };
-
-        class Lexer : public LexerBase, public Lexical::Scanner, public Recyclable
+        class Lexer : public Lexical::Base, public Lexical::Scanner, public Recyclable
         {
         public:
             
@@ -38,11 +27,12 @@ namespace Yttrium
 
             template <typename LID> inline
             explicit Lexer(const LID &lid) :
-            LexerBase(),
+            Lexical::Base(),
             Scanner(lid,pdb,nil,Lexical::AcceptEOF),
             scan(this),
             lxms(),
-            hist()
+            hist(),
+            mydb()
             {
                 initialize();
             }
@@ -50,6 +40,9 @@ namespace Yttrium
             virtual ~Lexer() noexcept;
 
             virtual void free() noexcept;
+
+            Lexeme * query(Source &);
+            void     store(Lexeme * const) noexcept;
 
         private:
             Y_Disable_Copy_And_Assign(Lexer);

@@ -150,9 +150,9 @@ namespace Yttrium
 
 
 
-            Status Scanner:: operator()(Source &         source,
-                                        Unit * &         hUnit,
-                                        const String * & hData)
+            Status Scanner:: run(Source &         source,
+                                 Unit * &         hUnit,
+                                 const String * & hData)
             {
                 assert(0==hUnit);
                 assert(0==hData);
