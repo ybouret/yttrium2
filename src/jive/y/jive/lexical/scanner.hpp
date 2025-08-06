@@ -21,38 +21,84 @@ namespace Yttrium
         namespace Lexical
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //! scanner run result
+            //
+            //__________________________________________________________________
             enum Status
             {
-                FoundEOF,
-                EmitUnit,
-                CtrlCall,
-                CtrlBack
+                FoundEOF, //!< found eof
+                EmitUnit, //!< found unit to emit
+                CtrlCall, //!< found Call control
+                CtrlBack  //!< found Back control
             };
 
-           
+            //__________________________________________________________________
+            //
+            //
+            //! scanner EOF policy
+            //
+            //__________________________________________________________________
+            enum EOFPolicy
+            {
+                AcceptEOF, //!< ok to stop during scan
+                RejectEOF  //!< error if EOF during scan
+            };
 
+
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Scanner to apply a set of rules
+            //
+            //
+            //__________________________________________________________________
             class Scanner : public CountedObject
             {
             public:
+                //______________________________________________________________
+                //
+                //
+                // Defintitions
+                //
+                //______________________________________________________________
                 typedef Keyed< String,ArcPtr<Scanner> > Pointer;
 
-                
+
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
                 template <typename SID> inline
                 explicit Scanner(const SID                 &sid,
                                  const Dictionary::Pointer &pdb,
-                                 const NoData              &nil) :
+                                 const NoData              &nil,
+                                 const EOFPolicy            eof) :
                 CountedObject(),
                 name(sid),
                 code( Impl(name) ),
                 hDict(pdb),
-                noData(nil)
+                noData(nil),
+                policy(eof)
                 {
                 }
 
                 virtual ~Scanner() noexcept;
 
-                const String & key() const noexcept;
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
 
+                const String & key() const noexcept; //!< \return *name
+                
                 template <typename RID, typename RXP>
                 void decl(const RID &              rid,
                           const RXP &              rxp,
@@ -91,19 +137,25 @@ namespace Yttrium
                                   const String * & hData);
 
 
-
-                const Tag name;
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                const Tag    name; //!< uuid
             private:
                 class Code;
-                Code * const code;
+                Code * const code; //!< inner code
 
-                Y_Disable_Copy_And_Assign(Scanner);
-                static Code *Impl(const Tag &);
-                void add(Rule * const rule);
+                Y_Disable_Copy_And_Assign(Scanner); //!< discarding
+                static Code *Impl(const Tag &);     //!< create code from tag
+                void add(Rule * const rule);        //!< record new rule
 
             public:
-                const Dictionary::Pointer hDict;
-                const NoData              noData;
+                const Dictionary::Pointer hDict;  //!< shared dictionary
+                const NoData              noData; //!< NoData marker
+                const EOFPolicy           policy; //!< EOF policy
             };
 
 

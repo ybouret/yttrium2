@@ -165,7 +165,16 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 assert(0!=code);
-                const Char * const ch  = source.peek(); if(!ch) return FoundEOF; // EOF
+                const Char * const ch  = source.peek();
+                if(!ch)
+                {
+                    // deal with EOF
+                    switch(policy)
+                    {
+                        case AcceptEOF: return FoundEOF;
+                        case RejectEOF: throw Specific::Exception(name->c_str(),"EOF...");
+                    }
+                }
                 const Context      ctx = *ch; // save context
 
                 const Rule *bestRule = 0;
@@ -269,7 +278,7 @@ namespace Yttrium
 
                 }
 
-                throw Exception("shouldn't get here!!");
+                throw Specific::Exception(name->c_str(),"*** corrupted");
 
             }
 

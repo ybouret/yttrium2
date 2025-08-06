@@ -14,13 +14,13 @@ namespace
     public:
         explicit MyScanner(const Dictionary::Pointer &pdb,
                            const Lexical::NoData     &nil) :
-        Scanner("Scanner",pdb,nil)
+        Scanner("Scanner",pdb,nil,Lexical::AcceptEOF)
         {
-            decl("ID","[:alpha:]+",   Lexical::Regular, true);
-            decl("INT","[:digit:]+",  Lexical::Regular, true);
-            decl("FLT","[:digit:]+\\.[:digit:]*",Lexical::Regular, true);
-            decl("dot", ".",          Lexical::Regular, true);
-            decl("endl", "[:endl:]",  Lexical::NewLine, false);
+            decl("ID",   "[:alpha:]+",   Lexical::Regular, true);
+            decl("INT",  "[:digit:]+",   Lexical::Regular, true);
+            decl("FLT",  "[:digit:]+\\.[:digit:]*",Lexical::Regular, true);
+            decl("dot",  ".",          Lexical::Regular, true);
+            decl("endl", "[:endl:]",   Lexical::NewLine, false);
         }
 
         virtual ~MyScanner() noexcept

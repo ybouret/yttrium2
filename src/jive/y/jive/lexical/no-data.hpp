@@ -12,17 +12,24 @@ namespace Yttrium
     {
         namespace Lexical
         {
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! creating a shared, empty tag
+            //
+            //
+            //__________________________________________________________________
             class NoData
             {
             public:
-                NoData();
-                NoData(const NoData &) noexcept;
-                ~NoData() noexcept;
-
-                const Tag tag;
+                NoData();                        //!< setup
+                NoData(const NoData &) noexcept; //!< duplicate
+                ~NoData() noexcept;              //!< cleanup
+                const Tag tag;                   //!< zero-length tag
 
             private:
-                Y_Disable_Assign(NoData);
+                Y_Disable_Assign(NoData); //!< discarding
             };
         }
 
