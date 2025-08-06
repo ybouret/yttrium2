@@ -9,17 +9,30 @@ using namespace Jive;
 
 namespace
 {
-   
+    class MyScanner : public Lexical::Scanner
+    {
+    public:
+        explicit MyScanner(const Dictionary::Pointer &pdb) : Scanner("Scanner",pdb)
+        {
+            decl("ID","[:alpha:]+",   Lexical::Regular, true);
+            decl("INT","[:digit:]+",  Lexical::Regular, true);
+            decl("FLT","[:digit:]+\\.[:digit:]*",Lexical::Regular, true);
+            decl("dot", ".",          Lexical::Regular, true);
+            decl("endl", "[:endl:]",  Lexical::NewLine, false);
+        }
+
+        virtual ~MyScanner() noexcept
+        {
+        }
+
+    private:
+        Y_Disable_Copy_And_Assign(MyScanner);
+    };
 }
 Y_UTEST(scanner)
 {
     Dictionary::Pointer pdb = new Dictionary();
-    Lexical::Scanner    scan("Scanner",pdb);
-    scan.decl("ID","[:alpha:]+",   Lexical::Regular, true);
-    scan.decl("INT","[:digit:]+",  Lexical::Regular, true);
-    scan.decl("FLT","[:digit:]+\\.[:digit:]*",Lexical::Regular, true);
-    scan.decl("dot", ".",          Lexical::Regular, true);
-    scan.decl("endl", "[:endl:]",  Lexical::NewLine, false);
+    MyScanner           scan(pdb);
 
     Lexemes lxm;
     if(argc>1)
