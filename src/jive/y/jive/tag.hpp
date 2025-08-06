@@ -51,6 +51,17 @@ namespace Yttrium
             //__________________________________________________________________
             virtual size_t serialize(OutputStream &) const;
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            Tag & operator+=( const Tag & );
+            Tag & operator+=( const String & );
+            Tag & operator+=( const char * const);
+            Tag & operator+=( const char );
+
         private:
             Y_Disable_Assign(Tag); //!< discard
         };

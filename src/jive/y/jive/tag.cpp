@@ -54,6 +54,31 @@ namespace Yttrium
         {
 
         }
+
+        Tag & Tag:: operator+=( const Tag &rhs )
+        {
+            Coerce((**this)) += *rhs;
+            return *this;
+        }
+
+        Tag & Tag:: operator+=(const String &rhs)
+        {
+            Coerce((**this)) += rhs;
+            return *this;
+        }
+
+        Tag & Tag:: operator+=(const char * const rhs)
+        {
+            Coerce((**this)) += rhs;
+            return *this;
+        }
+
+        Tag & Tag:: operator+=(const char rhs)
+        {
+            Coerce((**this)) += rhs;
+            return *this;
+        }
+
     }
 
 }
