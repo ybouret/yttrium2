@@ -40,6 +40,19 @@ namespace Yttrium
             virtual ~Lexer() noexcept;
 
 
+            template <typename SCANNER>
+            SCANNER & operator()(SCANNER * const addr)
+            {
+                const Scanner::Pointer p = addr;
+                record(p);
+                return *addr;
+            }
+
+            
+
+
+
+
             virtual void free() noexcept;
             virtual void onCall(const Token &);
             virtual void onBack(const Token &);
@@ -50,7 +63,8 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(Lexer);
             void initialize();
-            
+            void record(const Scanner::Pointer &);
+
             Scanner * scan;
             Lexemes   lxms;
             History   hist;

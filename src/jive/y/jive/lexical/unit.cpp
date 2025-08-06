@@ -21,6 +21,17 @@ namespace Yttrium
             {
             }
 
+            Unit::Unit(const Tag &uid, const Context &ctx, Token &tkn) noexcept :
+            Object(),
+            Context(ctx),
+            Token(),
+            name(uid),
+            next(0),
+            prev(0)
+            {
+                swapListFor(tkn);
+            }
+
 
             Unit:: Unit(const Unit & _) :
             Object(),

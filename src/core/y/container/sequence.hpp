@@ -84,6 +84,11 @@ namespace Yttrium
         inline ConstType & head() const noexcept { assert(this->size()>0 ); return getHead(); }         //!< \return head item
         inline ConstType & tail() const noexcept { assert(this->size()>0 ); return getTail(); }         //!< \return tail item
 
+        inline Type pullTail() {
+            assert(this->size()>0 );
+            Type res = tail(); popTail(); return res;
+        }
+
     private:
         Y_Disable_Copy_And_Assign(Sequence); //!< discarding
 

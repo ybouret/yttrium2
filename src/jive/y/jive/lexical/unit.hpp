@@ -32,7 +32,8 @@ namespace Yttrium
                 // C++
                 //
                 //______________________________________________________________
-                Unit(const Tag &, const Context &) noexcept; //!< cleanup
+                Unit(const Tag &, const Context &) noexcept; //!< setup empty
+                Unit(const Tag &, const Context &, Token &) noexcept; //!< setup and steal token
                 Unit(const Unit &);                          //!< duplicate
                 virtual ~Unit() noexcept;                    //!< cleanup
                 Y_OSTREAM_PROTO(Unit);                       //!< display

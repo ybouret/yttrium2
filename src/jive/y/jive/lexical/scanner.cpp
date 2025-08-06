@@ -151,11 +151,11 @@ namespace Yttrium
 
 
             Status Scanner:: run(Source &         source,
-                                 Unit * &         hUnit,
+                                 AutoPtr<Unit> &  hUnit,
                                  const String * & hData)
             {
-                assert(0==hUnit);
                 assert(0==hData);
+                assert(hUnit.isEmpty());
 
             PROBE:
                 //______________________________________________________________
@@ -262,20 +262,20 @@ namespace Yttrium
 
                     case Back:
                         assert(0 == bestRule->data->length() );
+                        // direct onBack() before returning
                         onBack(bestToken);
                         return CtrlBack;
 
                     case Call:
                         assert( 0 < bestRule->data->length() );
+                        hUnit = new Unit(bestRule->name,ctx,bestToken);
                         hData = & *bestRule->data;
                         return CtrlCall;
                         
-                    case Emit: {
-                        Unit * const unit = new Unit(bestRule->name,ctx);
-                        unit->swapListFor(bestToken);
-                        hUnit = unit;
+                    case Emit:
+                        hUnit = new Unit(bestRule->name,ctx,bestToken);
                         return EmitUnit;
-                    }
+
 
                 }
 

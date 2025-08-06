@@ -29,6 +29,11 @@ namespace Yttrium
             }
         }
 
+        void Lexer:: record(const Scanner::Pointer &p)
+        {
+            if(!mydb.insert(p)) throw Specific::Exception( name->c_str(), "multiple '%s'", p->name->c_str());
+        }
+
         void Lexer:: free() noexcept
         {
             scan = this;
@@ -54,22 +59,51 @@ namespace Yttrium
 
         Lexeme * Lexer:: query(Source &source)
         {
+            assert(0!=scan);
             if(lxms.size>0) return lxms.popHead();
 
+
+        QUERY:
+            assert(0!=scan);
             {
-                Lexeme *      unit = 0;
-                const String *ctrl = 0;
+                AutoPtr<Lexeme> unit;
+                const String *  ctrl = 0;
                 switch(scan->run(source,unit,ctrl))
                 {
-                    case Lexical::FoundEOF: assert(Lexical::AcceptEOF == scan->policy); return 0;    // done
-                    case Lexical::EmitUnit: assert(0==ctrl); assert(0!=unit);           return unit; // emit
-                    case Lexical::CtrlBack: assert(0==ctrl); assert(0==unit);
+                    case Lexical::FoundEOF:
+                        assert(Lexical::AcceptEOF == scan->policy);
+                        return 0;            // done
+
+                    case Lexical::EmitUnit:
+                        assert(0==ctrl);
+                        assert(unit.isValid());
+                        return unit.yield(); // emit
+
+                    case Lexical::CtrlBack:
+                        // onBack(...) was carried out during run()
+                        assert(0==ctrl);
+                        assert(unit.isEmpty());
                         if(hist.size()<=0) throw Specific::Exception(name->c_str(),"no previous call for '%s'", scan->name->c_str());
-                        
-                    default:
-                        throw Specific::Exception(name->c_str(), "Not Implemented");
+                        scan = hist.pullTail();
+                        goto QUERY;
+
+                    case Lexical::CtrlCall: {
+                        assert(0!=ctrl);
+                        assert(unit.isValid());
+                        {
+                            ScanPtr * const ppScan = mydb.search(*ctrl);
+                            if(!ppScan) throw Specific::Exception(name->c_str(), "no '%s' to call from '%s'", ctrl->c_str(),scan->name->c_str());
+                            hist << scan;
+                            scan = & **ppScan;
+                        }
+                        scan->onCall(*unit);
+                    } goto QUERY;
                 }
+
+                throw Specific::Exception(name->c_str(),"*** corrupted query");
             }
+
+
         }
 
 

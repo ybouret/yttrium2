@@ -12,6 +12,7 @@
 
 #include "y/pointer/keyed.hpp"
 #include "y/pointer/arc.hpp"
+#include "y/pointer/auto.hpp"
 
 namespace Yttrium
 {
@@ -107,7 +108,7 @@ namespace Yttrium
                 //______________________________________________________________
 
                 const String & key() const noexcept; //!< \return *name
-                
+
                 template <typename RID, typename RXP>
                 void decl(const RID &              rid,
                           const RXP &              rxp,
@@ -122,7 +123,7 @@ namespace Yttrium
                 template <typename SID, typename RXP>
                 void call(const SID &     sid,
                           const RXP &     rxp,
-                          const Attribute attr)
+                          const Attribute attr = Regular)
                 {
                     const Tag    rname = "->"; Coerce(rname) += sid;
                     const Motif  motif = RegExp::Compile(rxp, & *hDict);
@@ -142,7 +143,7 @@ namespace Yttrium
 
 
                 Status run(Source &         source,
-                           Unit * &         hUnit,
+                           AutoPtr<Unit>  & hUnit,
                            const String * & hData);
 
 

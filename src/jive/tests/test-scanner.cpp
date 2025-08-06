@@ -44,14 +44,14 @@ Y_UTEST(scanner)
     if(argc>1)
     {
         Source source( Module::OpenFile(argv[1]) );
-        Lexeme *       lx = 0;
-        const String * id = 0;
+        AutoPtr<Lexeme> lx = 0;
+        const String *  id = 0;
 
         while( Lexical::EmitUnit == scan.run(source,lx,id) )
         {
-            Y_ASSERT(0!=lx);
+            Y_ASSERT(lx.isValid());
             Y_ASSERT(0==id);
-            lxm.pushTail(lx);
+            lxm.pushTail(lx.yield());
             lx = 0;
         }
 
