@@ -9,6 +9,9 @@ enable_testing()
 
 Y_Message("Preparing ${Y_Test}")
 
+Y_UTEST(interval)
+Y_UTEST(intervals)
+
 Y_UTEST(root:zfind)
 
 Y_UTEST(tao:1)

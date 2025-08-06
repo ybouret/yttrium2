@@ -6,7 +6,7 @@
 
 #include "y/mkl/limit.hpp"
 #include "y/mkl/triplet.hpp"
-#include "y/memory/out-of-reach.hpp"
+#include "y/memory/stealth.hpp"
 
 namespace Yttrium
 {
@@ -51,7 +51,7 @@ namespace Yttrium
 
 
             private:
-                Y_DISABLE_COPY_AND_ASSIGN(Interval);
+                Y_Disable_Copy_And_Assign(Interval);
             };
         }
 
@@ -74,7 +74,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            Y_ARGS_EXPOSE(T,Type); //!< aliases
+            Y_Args_Expose(T,Type); //!< aliases
 
             //__________________________________________________________________
             //
@@ -94,14 +94,14 @@ namespace Yttrium
             lower(lo),
             upper(up)
             {
-                if(lower.value>upper.value) Memory::OutOfReach::Swap(Coerce(lower), Coerce(upper));
+                if(lower.value>upper.value) Memory::Stealth::Swap(Coerce(lower), Coerce(upper));
             }
 
             //! assign to safely change values
             Interval & operator=(const Interval &I) noexcept
             {
-                Memory::OutOfReach::Copy( Coerce(lower), I.lower);
-                Memory::OutOfReach::Copy( Coerce(upper), I.upper);
+                Memory::Stealth::Copy( Coerce(lower), I.lower);
+                Memory::Stealth::Copy( Coerce(upper), I.upper);
                 return *this;
             }
 

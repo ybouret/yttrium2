@@ -5,6 +5,6 @@ namespace Yttrium
 {
     namespace MKL
     {
-        Y_SHALLOW_IMPL(Infinity);
+        Y_Shallow_Impl(Infinity);
     }
 }

@@ -18,8 +18,8 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        template <typename T, typename ALLOCATOR = Memory::Pooled>
-        class Intervals : public CxxArray< Interval<T>, ALLOCATOR>
+        template <typename T>
+        class Intervals : public CxxArray< Interval<T> >
         {
         public:
             //__________________________________________________________________
@@ -28,8 +28,8 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            typedef Interval<T>                       IntervalType; //!< alias
-            typedef CxxArray<IntervalType,ALLOCATOR>  AssemblyType; //!< alias
+            typedef Interval<T>              IntervalType; //!< alias
+            typedef CxxArray<IntervalType >  AssemblyType; //!< alias
 
             //__________________________________________________________________
             //
@@ -39,8 +39,9 @@ namespace Yttrium
             //__________________________________________________________________
             inline explicit Intervals(const size_t dims) : AssemblyType(dims) {} //!< initialize to R^dims
             inline virtual ~Intervals() noexcept                              {} //!< cleanup
-            inline Intervals(const Intervals &other) :                           //
-            Identifiable(), Collection(), AssemblyType(other)                 {} //!< copy
+            inline Intervals(const Intervals &other) :
+            AssemblyType(other)
+            {} //!< copy
 
             //! display
             inline friend std::ostream & operator<<(std::ostream &os, const Intervals &domain)
@@ -79,7 +80,7 @@ namespace Yttrium
 
 
         private:
-            Y_DISABLE_ASSIGN(Intervals);
+            Y_Disable_Assign(Intervals);
         };
     }
 }

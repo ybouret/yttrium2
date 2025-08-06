@@ -3,6 +3,9 @@
 Y_UTEST_DECL(128)
 {
 
+    Y_UTEST(interval);
+    Y_UTEST(intervals);
+
     Y_UTEST(root_zfind);
     Y_UTEST(tao_1);
 

@@ -5,7 +5,7 @@
 #define Y_MKL_Limit_Included 1
 
 #include "y/type/args.hpp"
-#include "y/config/shallow.hpp"
+#include "y/type/shallow.hpp"
 #include <iostream>
 
 namespace Yttrium
@@ -13,7 +13,7 @@ namespace Yttrium
 
     namespace MKL
     {
-        Y_SHALLOW_DECL(Infinity); //!< symbolic Infinity
+        Y_Shallow_Decl(Infinity); //!< symbolic Infinity
 
         //______________________________________________________________________
         //
@@ -48,7 +48,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            Y_ARGS_EXPOSE(T,Type); //!< aliases
+            Y_Args_Expose(T,Type); //!< aliases
 
             //__________________________________________________________________
             //
@@ -74,7 +74,7 @@ namespace Yttrium
             const LimitType type;  //!< type of limit
 
         private:
-            Y_DISABLE_ASSIGN(Limit);
+            Y_Disable_Assign(Limit);
         };
 
     }

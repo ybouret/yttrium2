@@ -97,6 +97,18 @@ namespace Yttrium
                                      void * const rhsBlock,
                                      const size_t blockSize) noexcept;
 
+
+            //! memory copy
+            /**
+             \param lhs first item
+             \param rhs second item
+             */
+            template <typename T> static inline
+            void Copy( T &lhs, const T &rhs ) noexcept
+            {
+                Copy( &lhs, &rhs, sizeof(T) );
+            }
+
             //! memory swap
             /**
              \param lhs first item
