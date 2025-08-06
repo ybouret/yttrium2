@@ -10,5 +10,6 @@ Y_UTEST_DECL(16)
     Y_UTEST(posix);
     Y_UTEST(rx);
     Y_UTEST(scanner);
+    Y_UTEST(lexer);
 }
 Y_UTEST_EXEC()
