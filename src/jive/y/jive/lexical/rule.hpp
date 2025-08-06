@@ -35,6 +35,11 @@ namespace Yttrium
             //
             //! Rule = name + motif + flags
             //
+            /**
+             - EOF
+             - standard: emit/drop
+             - control:  jump/back
+             */
             //
             //__________________________________________________________________
             class Rule : public Object

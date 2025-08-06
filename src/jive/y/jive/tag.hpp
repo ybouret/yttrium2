@@ -24,9 +24,11 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Tag : public TagType
+        class Tag : public TagType, public Serializable
         {
         public:
+            static const char * const CallSign;
+            
             //__________________________________________________________________
             //
             //
@@ -39,8 +41,15 @@ namespace Yttrium
             Tag(const char * const);      //!< setup
             Tag(const char);              //!< setup
             virtual ~Tag()      noexcept; //!< cleanup
+            Tag(InputStream &);           //!< load
 
-
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
+            virtual size_t serialize(OutputStream &) const;
 
         private:
             Y_Disable_Assign(Tag); //!< discard

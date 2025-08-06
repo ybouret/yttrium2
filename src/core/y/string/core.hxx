@@ -389,13 +389,13 @@ Y_String(),
 code(0)
 {
     // make full variable name in uid
-    char              uid[256] = "String.size";
+    char              uid[256] = "String.length";
 
     if(var)
     {
         memset(uid,0,sizeof(uid));
         Core::Text::Copy(uid,sizeof(uid),var);
-        Core::Text::Add(uid,sizeof(uid),".size");
+        Core::Text::Add(uid,sizeof(uid),".length");
     }
 
     // read variable size
