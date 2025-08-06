@@ -18,7 +18,9 @@ namespace Yttrium
             enum Demeanor
             {
                 Emit,
-                Drop
+                Drop,
+                Call,
+                Back
             };
 
             enum Attribute

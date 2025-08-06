@@ -19,7 +19,14 @@ namespace Yttrium
         namespace Lexical
         {
 
-            
+            enum Status
+            {
+                FoundEOF,
+                EmitUnit,
+                CtrlCall,
+                CtrlBack
+            };
+
             class Scanner : public CountedObject
             {
             public:
@@ -43,7 +50,7 @@ namespace Yttrium
                           const RXP &              rxp,
                           const Attribute          attr,
                           const bool               emit,
-                          const Dictionary * const dict)
+                          const Dictionary * const dict = 0)
                 {
                     const Tag    rname = rid;
                     const Motif  motif = RegExp::Compile(rxp,dict);
@@ -52,7 +59,10 @@ namespace Yttrium
 
                 Unit * operator()(Source &);
 
+                Status operator()(Source &, void **hook);
                 
+
+
                 const Tag name;
             private:
                 class Code;

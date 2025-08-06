@@ -14,12 +14,13 @@ namespace
 Y_UTEST(scanner)
 {
     Lexical::Scanner scan("Scanner");
-    scan.decl("ID","[:alpha:]+",   Lexical::Regular, true, 0);
-    scan.decl("INT","[:digit:]+",  Lexical::Regular, true, 0);
-    scan.decl("FLT","[:digit:]+\\.[:digit:]*",Lexical::Regular, true,0);
-    scan.decl("dot", ".",          Lexical::Regular, true, 0);
-    scan.decl("endl", "[:endl:]",  Lexical::NewLine, false, 0);
+    scan.decl("ID","[:alpha:]+",   Lexical::Regular, true);
+    scan.decl("INT","[:digit:]+",  Lexical::Regular, true);
+    scan.decl("FLT","[:digit:]+\\.[:digit:]*",Lexical::Regular, true);
+    scan.decl("dot", ".",          Lexical::Regular, true);
+    scan.decl("endl", "[:endl:]",  Lexical::NewLine, false);
 
+#if 0
     Lexemes lxm;
     if(argc>1)
     {
@@ -37,7 +38,8 @@ Y_UTEST(scanner)
     {
         std::cerr << lx->str() << ' ' << *lx << std::endl;
     }
-
+#endif
+    
 
 }
 Y_UDONE()

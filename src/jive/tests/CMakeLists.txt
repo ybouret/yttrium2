@@ -5,6 +5,7 @@ enable_testing()
 
 Y_Message("Preparing ${Y_Test}")
 
+Y_UTEST(tag)
 Y_UTEST(source)
 Y_UTEST(fc)
 Y_UTEST(pattern)
