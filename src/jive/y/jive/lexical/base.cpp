@@ -14,7 +14,9 @@ namespace Yttrium
             }
 
             Base:: Base() : pdb( new Dictionary() ), nil() {}
-            
+
+
+            Base:: Base(const Base &_) noexcept : pdb(_.pdb), nil(_.nil) {}
         }
 
     }

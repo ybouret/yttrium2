@@ -34,6 +34,8 @@ namespace
         Y_Disable_Copy_And_Assign(MyScanner);
     };
 }
+
+
 Y_UTEST(scanner)
 {
     Dictionary::Pointer pdb = new Dictionary();

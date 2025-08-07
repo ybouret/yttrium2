@@ -18,13 +18,14 @@ namespace Yttrium
             {
             public:
                 explicit Base();
+                explicit Base(const Base &) noexcept;
                 virtual ~Base() noexcept;
 
                 const Dictionary::Pointer pdb;
                 const NoData              nil;
 
             private:
-                Y_Disable_Copy_And_Assign(Base);
+                Y_Disable_Assign(Base);
             };
         }
 
