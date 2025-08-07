@@ -26,6 +26,8 @@ namespace Yttrium
             class MultiLinesComment : public Comment
             {
             public:
+                static const uint32_t UUID = Y_FOURCC('C', 'O', 'M','2');
+
                 //! construct
                 /**
                  \param sid comment name
@@ -38,7 +40,7 @@ namespace Yttrium
                                            const CXP    &cxp,
                                            const RXP    &bxp,
                                            const Design &com) :
-                Comment(sid,cxp,com,RejectEOF)
+                Comment(UUID,sid,cxp,com,RejectEOF)
                 {
                     const Tag quit = bxp;
                     back(*quit,Regular);

@@ -25,6 +25,7 @@ namespace Yttrium
             class SingleLineComment : public Comment
             {
             public:
+                static const uint32_t UUID = Y_FOURCC('C', 'O', 'M','1');
 
                 //! construct
                 /**
@@ -36,7 +37,7 @@ namespace Yttrium
                 explicit SingleLineComment(const SID    &sid,
                                            const CXP    &cxp,
                                            const Design &com) :
-                Comment(sid,cxp,com,AcceptEOF)
+                Comment(UUID,sid,cxp,com,AcceptEOF)
                 {
                     setup();
                 }

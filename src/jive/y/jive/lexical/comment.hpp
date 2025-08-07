@@ -39,11 +39,12 @@ namespace Yttrium
                  \param eof policy: accept for single line, reject for multi lines
                  */
                 template <typename SID, typename CXP> inline
-                explicit Comment(const SID    &  sid,
+                explicit Comment(const uint32_t  uid,
+                                 const SID    &  sid,
                                  const CXP    &  cxp,
                                  const Design &  com,
                                  const EOFPolicy eof) :
-                Scanner(sid,com,eof),
+                Scanner(uid,sid,com,eof),
                 join(cxp)
                 {
                 }

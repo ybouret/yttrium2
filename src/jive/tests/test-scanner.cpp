@@ -13,7 +13,7 @@ namespace
     {
     public:
         explicit MyScanner(const Lexical::Design &com) :
-        Scanner("Scanner",com,Lexical::AcceptEOF)
+        Scanner(0x00,"Scanner",com,Lexical::AcceptEOF)
         {
             decl("ID",   "[:alpha:]+",   Lexical::Regular, true);
             decl("INT",  "[:digit:]+",   Lexical::Regular, true);

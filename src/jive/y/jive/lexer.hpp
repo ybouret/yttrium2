@@ -37,6 +37,7 @@ namespace Yttrium
             typedef Scanner::Pointer          ScanPtr; //!< alias
             typedef SuffixSet<String,ScanPtr> ScanDB;  //!< alias
             typedef Vector<Scanner *>         History; //!< alias
+            static const uint32_t             UUID = Y_FOURCC('R','O','O','T');
 
             //__________________________________________________________________
             //
@@ -52,7 +53,7 @@ namespace Yttrium
             template <typename LID> inline
             explicit Lexer(const LID &lid) :
             Lexical::Design(),
-            Scanner(lid,*this,Lexical::AcceptEOF),
+            Scanner(UUID,lid,*this,Lexical::AcceptEOF),
             scan(this),
             lxms(),
             hist(),

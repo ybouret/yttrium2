@@ -83,10 +83,12 @@ namespace Yttrium
                  \param eof for policy
                  */
                 template <typename SID> inline
-                explicit Scanner(const SID    &  sid,
+                explicit Scanner(const uint32_t  uid,
+                                 const SID    &  sid,
                                  const Design &  com,
                                  const EOFPolicy eof) :
                 CountedObject(),
+                uuid(uid),
                 name(sid),
                 code( New(name) ),
                 design(com),
@@ -225,7 +227,9 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const Tag    name; //!< uuid
+                const uint32_t uuid; //!< class identifier
+                const Tag      name; //!< identifier
+
             private:
                 class Code;
                 Code * const code; //!< inner code
