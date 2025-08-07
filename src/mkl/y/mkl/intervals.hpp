@@ -40,6 +40,7 @@ namespace Yttrium
             inline explicit Intervals(const size_t dims) : AssemblyType(dims) {} //!< initialize to R^dims
             inline virtual ~Intervals() noexcept                              {} //!< cleanup
             inline Intervals(const Intervals &other) :
+            Container(),
             AssemblyType(other)
             {} //!< copy
 

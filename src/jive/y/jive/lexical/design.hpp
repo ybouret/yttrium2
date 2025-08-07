@@ -1,8 +1,8 @@
 
 //! \file
 
-#ifndef Y_Jive_Lexical_Base_Included
-#define Y_Jive_Lexical_Base_Included 1
+#ifndef Y_Jive_Lexical_Design_Included
+#define Y_Jive_Lexical_Design_Included 1
 
 #include "y/jive/lexical/no-data.hpp"
 #include "y/jive/pattern/dictionary.hpp"
@@ -14,18 +14,18 @@ namespace Yttrium
         namespace Lexical
         {
 
-            class Base
+            class Design
             {
             public:
-                explicit Base();
-                explicit Base(const Base &) noexcept;
-                virtual ~Base() noexcept;
+                explicit Design();
+                explicit Design(const Design &) noexcept;
+                virtual ~Design() noexcept;
 
                 const Dictionary::Pointer pdb;
                 const NoData              nil;
 
             private:
-                Y_Disable_Assign(Base);
+                Y_Disable_Assign(Design);
             };
         }
 

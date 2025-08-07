@@ -10,8 +10,15 @@ namespace Yttrium
         {
             Comment:: ~Comment() noexcept
             {
-                
+
             }
+
+
+            void Comment:: finalize()
+            {
+                decl("dot", ".", Regular, false);
+            }
+
         }
 
     }

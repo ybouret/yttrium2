@@ -6,7 +6,7 @@
 
 #include "y/jive/lexical/rule.hpp"
 #include "y/jive/lexical/unit.hpp"
-#include "y/jive/lexical/no-data.hpp"
+#include "y/jive/lexical/design.hpp"
 
 #include "y/jive/regexp.hpp"
 
@@ -76,15 +76,13 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 template <typename SID> inline
-                explicit Scanner(const SID                 &sid,
-                                 const Dictionary::Pointer &pdb,
-                                 const NoData              &nil,
-                                 const EOFPolicy            eof) :
+                explicit Scanner(const SID    &  sid,
+                                 const Design &  com,
+                                 const EOFPolicy eof) :
                 CountedObject(),
                 name(sid),
                 code( Impl(name) ),
-                hDict(pdb),
-                noData(nil),
+                design(com),
                 policy(eof)
                 {
                 }
@@ -116,8 +114,8 @@ namespace Yttrium
                           const bool               emit)
                 {
                     const Tag    rname = rid;
-                    const Motif  motif = RegExp::Compile(rxp, & *hDict);
-                    add( new Rule(rname,motif,attr,emit,noData.tag) );
+                    const Motif  motif = RegExp::Compile(rxp, & *design.pdb );
+                    add( new Rule(rname,motif,attr,emit,design.nil.tag) );
                 }
 
                 template <typename SID, typename RXP>
@@ -126,7 +124,7 @@ namespace Yttrium
                           const Attribute attr = Regular)
                 {
                     const Tag    rname = "->"; Coerce(rname) += sid;
-                    const Motif  motif = RegExp::Compile(rxp, & *hDict);
+                    const Motif  motif = RegExp::Compile(rxp, & *design.pdb);
                     const Tag    rdata = sid;
                     add( new Rule(rname,motif,attr,rdata) );
                 }
@@ -136,8 +134,8 @@ namespace Yttrium
                           const Attribute attr)
                 {
                     const Tag    rname = "<--";
-                    const Motif  motif = RegExp::Compile(rxp, & *hDict);
-                    add( new Rule(rname,motif,attr,noData) );
+                    const Motif  motif = RegExp::Compile(rxp, & *design.pdb);
+                    add( new Rule(rname,motif,attr,design.nil.tag) );
                 }
 
 
@@ -163,9 +161,8 @@ namespace Yttrium
                 void add(Rule * const rule);        //!< record new rule
 
             public:
-                const Dictionary::Pointer hDict;  //!< shared dictionary
-                const NoData              noData; //!< NoData marker
-                const EOFPolicy           policy; //!< EOF policy
+                Design          design; //!< helper for rules
+                const EOFPolicy policy; //!< EOF policy
             };
 
 

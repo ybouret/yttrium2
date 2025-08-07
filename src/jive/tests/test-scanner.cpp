@@ -12,9 +12,8 @@ namespace
     class MyScanner : public Lexical::Scanner
     {
     public:
-        explicit MyScanner(const Dictionary::Pointer &pdb,
-                           const Lexical::NoData     &nil) :
-        Scanner("Scanner",pdb,nil,Lexical::AcceptEOF)
+        explicit MyScanner(const Lexical::Design &com) :
+        Scanner("Scanner",com,Lexical::AcceptEOF)
         {
             decl("ID",   "[:alpha:]+",   Lexical::Regular, true);
             decl("INT",  "[:digit:]+",   Lexical::Regular, true);
@@ -39,8 +38,8 @@ namespace
 Y_UTEST(scanner)
 {
     Dictionary::Pointer pdb = new Dictionary();
-    Lexical::NoData     nil;
-    MyScanner           scan(pdb,nil);
+    Lexical::Design     com;
+    MyScanner           scan(com);
 
     Lexemes lxm;
     if(argc>1)

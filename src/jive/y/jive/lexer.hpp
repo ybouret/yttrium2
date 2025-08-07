@@ -4,7 +4,7 @@
 #define Y_Jive_Lexer_Included 1
 
 #include "y/jive/lexical/scanner.hpp"
-#include "y/jive/lexical/base.hpp"
+#include "y/jive/lexical/design.hpp"
 #include "y/container/associative/suffix/set.hpp"
 #include "y/container/sequence/vector.hpp"
 
@@ -16,7 +16,7 @@ namespace Yttrium
 
 
 
-        class Lexer : public Lexical::Base, public Lexical::Scanner, public Recyclable
+        class Lexer : public Lexical::Design, public Lexical::Scanner, public Recyclable
         {
         public:
             
@@ -27,8 +27,8 @@ namespace Yttrium
 
             template <typename LID> inline
             explicit Lexer(const LID &lid) :
-            Lexical::Base(),
-            Scanner(lid,pdb,nil,Lexical::AcceptEOF),
+            Lexical::Design(),
+            Scanner(lid,*this,Lexical::AcceptEOF),
             scan(this),
             lxms(),
             hist(),
@@ -39,7 +39,7 @@ namespace Yttrium
 
             virtual ~Lexer() noexcept;
 
-
+#if 0
             template <typename SCANNER>
             SCANNER & operator()(SCANNER * const addr)
             {
@@ -47,7 +47,7 @@ namespace Yttrium
                 record(p);
                 return *addr;
             }
-
+#endif
             
 
 
