@@ -14,9 +14,23 @@ namespace Yttrium
         namespace Lexical
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Single Line Comment
+            //
+            //
+            //__________________________________________________________________
             class SingleLineComment : public Comment
             {
             public:
+
+                //! construct
+                /**
+                 \param sid comment name
+                 \param com design
+                 */
                 template <typename SID> inline
                 explicit SingleLineComment(const SID    &sid,
                                            const Design &com) :
@@ -25,12 +39,12 @@ namespace Yttrium
                     setup();
                 }
 
-
+                //! cleanup
                 virtual ~SingleLineComment() noexcept;
-                
+
             private:
-                Y_Disable_Copy_And_Assign(SingleLineComment);
-                void setup();
+                Y_Disable_Copy_And_Assign(SingleLineComment); //!< discarding
+                void setup(); //!< return on newline, drop otherwise
 
             };
         }

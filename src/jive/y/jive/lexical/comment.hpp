@@ -12,10 +12,24 @@ namespace Yttrium
 
         namespace Lexical
         {
+            //__________________________________________________________________
+            //
+            //
+            //
             //! base class for comments
+            //
+            //
+            //__________________________________________________________________
             class Comment : public Scanner
             {
             protected:
+
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
 
                 //! setup
                 /**
@@ -37,7 +51,7 @@ namespace Yttrium
             private:
                 Y_Disable_Copy_And_Assign(Comment); //!< discarding
             protected:
-                void finalize(); //!< drop dot
+                void finalize(); //!< drop "[:dot:]"
             };
 
         }
