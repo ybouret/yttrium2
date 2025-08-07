@@ -1,7 +1,7 @@
 #include "y/mkl/derivatives/interface.hpp"
 #include "y/mkl/api/fabs.hpp"
 #include "y/mkl/triplet.hpp"
-#include "y/mkl/algebra/lu.hpp"
+#include "y/container/matrix.hpp"
 #include "y/mkl/numeric.hpp"
 #include "y/mkl/interpolation/polynomial.hpp"
 #include "y/cameo/addition.hpp"
@@ -10,8 +10,8 @@
 
 #include "y/system/exception.hpp"
 #include "y/container/cxx/array.hpp"
-#include "y/stream/libc/output.hpp"
-#include "y/string.hpp"
+//#include "y/stream/libc/output.hpp"
+//#include "y/string.hpp"
 
 
 
