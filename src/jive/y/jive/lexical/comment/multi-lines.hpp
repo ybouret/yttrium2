@@ -29,16 +29,19 @@ namespace Yttrium
                 //! construct
                 /**
                  \param sid comment name
-                 \param rxp returning expression, assuming not endl
+                 \param cxp call expression
+                 \param bxp back expression, assuming not endl
                  \param com design
                  */
-                template <typename SID, typename RXP> inline
+                template <typename SID, typename CXP, typename RXP> inline
                 explicit MultiLinesComment(const SID    &sid,
-                                           const RXP    &rxp,
+                                           const CXP    &cxp,
+                                           const RXP    &bxp,
                                            const Design &com) :
-                Comment(sid,com,RejectEOF)
+                Comment(sid,cxp,com,RejectEOF)
                 {
-                    back(rxp,Regular);
+                    const Tag quit = bxp;
+                    back(*quit,Regular);
                     setup();
                 }
 

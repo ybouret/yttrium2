@@ -197,7 +197,6 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
                     //__________________________________________________________
                     const uint8_t c = **ch;                 // char code
                     const RList  &L = code->rlist.entry[c]; // possible rule(s)
-                    //std::cerr << "L[" << ASCII::Printable::Char[c] << "]=" << L.size << std::endl;
                     const RNode * node  = L.head;
                     for(;node;node=node->next)
                     {
@@ -219,7 +218,7 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
                         throw Specific::Exception( name->c_str(), "%s unexpected '%s'", where.c_str(),which);
                     }
 
-                    Y_PRINT("selected '" << bestRule->name << "'='" << bestToken);
+                    Y_PRINT("=> selected '" << bestRule->name << "' = '" << bestToken);
 
                     //__________________________________________________________
                     //
@@ -242,13 +241,13 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
 
                         if(token.size>bestToken.size)
                         {
-                            bestRule = rule; std::cerr << "new Rule=" << rule->name << std::endl;
+                            bestRule = rule;
                             bestToken.swapListFor(token);
-                            Y_PRINT("improved '" << bestRule->name << "'='" << bestToken);
+                            Y_PRINT("=> improved '" << bestRule->name << "' = '" << bestToken);
                         }
                         else
                         {
-                            Y_PRINT("loosing  '" << rule->name << "'='" << token);
+                            Y_PRINT("=> loosing  '" << rule->name << "' = '" << token);
 
                         }
                     }
@@ -262,7 +261,7 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
                 //______________________________________________________________
                 source.sweep(bestToken.size);
 
-                Y_PRINT( "=> |" << bestRule->humanReadableAttr() << ":" << bestRule->humanReadableDeed() << "| @ '" << bestToken << "'");
+                Y_PRINT( "=> |" << bestRule->humanReadableAttr() << ":" << bestRule->humanReadableDeed() << "| '" << bestRule->name << "' @ '" << bestToken << "'");
                 switch(bestRule->attr)
                 {
                     case Regular: break;

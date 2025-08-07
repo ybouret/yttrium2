@@ -50,7 +50,7 @@ namespace Yttrium
             size_t          cache()  const noexcept;      //!< \return buffer.size
             void            sweep(size_t n) noexcept;     //!< \param n n<=cached(), skipped
             const Char *    peek();                       //!< make ready \return best effort buffer head
-            const Context & context() const noexcept;
+            const Context & context() const noexcept;     //!< \return  current context
         private:
             Y_Disable_Copy_And_Assign(Source); //!< discarding
             ArcPtr<Module> handle;             //!< module handle

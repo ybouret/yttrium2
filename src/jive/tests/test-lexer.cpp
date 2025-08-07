@@ -18,8 +18,8 @@ namespace
             emit("int",  "[:digit:]+");
             emit("word", "[:word:]+");
 
-            comment("C++","//");
-
+            comment("C++ Comment","//");
+            comment("C Comment","/\\*", "\\*/");
 
             endl("endl",  "[:endl:]");
             drop("blank", "[:blank:]");

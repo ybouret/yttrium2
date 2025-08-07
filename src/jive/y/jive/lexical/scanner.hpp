@@ -114,6 +114,14 @@ namespace Yttrium
 
                 const String & key() const noexcept; //!< \return *name
 
+                //! declare a new standard rule
+                /**
+                 \param rid rule name
+                 \param rxp rule regular expression
+                 \param attr rule attribute
+                 \param rise Emit if true, Drop if false
+                 \return added rule
+                 */
                 template <typename RID, typename RXP>
                 const Rule & decl(const RID &              rid,
                                   const RXP &              rxp,
@@ -125,27 +133,45 @@ namespace Yttrium
                     return add( new Rule(rname,motif,attr,rise,design.nil.tag) );
                 }
 
+                //! declare a call rule
+                /**
+                 \param sid scanner to call
+                 \param rxp rule regular expression
+                 \param attr rule attribute, should be regular
+                 \return added rule
+                 */
                 template <typename SID, typename RXP>
                 const Rule &  call(const SID &     sid,
                                    const RXP &     rxp,
                                    const Attribute attr = Regular)
                 {
-                    const Tag    rname = "->"; Coerce(rname) += sid;
+                    const Tag    rname = "@"; Coerce(rname) += sid;
                     const Motif  motif = RegExp::Compile(rxp, & *design.pdb);
                     const Tag    rdata = sid;
                     return add( new Rule(rname,motif,attr,rdata) );
                 }
 
+                //! declare a back rule
+                /**
+                 \param rxp rule regular expression
+                 \param attr rule attribute
+                 \return added rule
+                 */
                 template <typename RXP>
                 const Rule &  back(const RXP      &rxp,
                                    const Attribute attr)
                 {
-                    const Tag    rname = "<--";
+                    const Tag    rname = "<-";
                     const Motif  motif = RegExp::Compile(rxp, & *design.pdb);
                     return add( new Rule(rname,motif,attr,design.nil.tag) );
                 }
 
                 //! emit regular
+                /**
+                 \param rid rule name
+                 \param rxp rule regular expression
+                 \return added regular, Emit rule
+                 */
                 template <typename RID, typename RXP>
                 const Rule & emit(const RID & rid,
                                   const RXP & rxp)
@@ -154,6 +180,11 @@ namespace Yttrium
                 }
 
                 //! drop regular
+                /**
+                 \param rid rule name
+                 \param rxp rule regular expression
+                 \return added regular, Drop rule
+                */
                 template <typename RID, typename RXP>
                 const Rule & drop(const RID & rid,
                                   const RXP & rxp)
@@ -161,7 +192,13 @@ namespace Yttrium
                     return decl(rid,rxp,Regular,false);
                 }
 
-                //!
+                //! flexible endl
+                /**
+                 \param rid endl name
+                 \param rxp endl regular expression
+                 \param rise optional Emit
+                 \return added endl rule
+                 */
                 template <typename RID, typename RXP>
                 const Rule & endl(const RID & rid,
                           const RXP & rxp,
@@ -170,11 +207,13 @@ namespace Yttrium
                     return decl(rid,rxp,NewLine,rise);
                 }
 
-
-
-
-
-
+                //! look up algorithm
+                /**
+                 \param source current source
+                 \param hUnit store created unit if needed
+                 \param hData scanner name for Call
+                 \return detected status with matching parameters
+                 */
                 Status run(Source &         source,
                            AutoPtr<Unit>  & hUnit,
                            const String * & hData);

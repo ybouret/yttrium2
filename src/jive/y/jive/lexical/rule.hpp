@@ -66,8 +66,8 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 typedef CxxListOf<Rule> List; //!< alias
-                static const char * HumarReadableDeed(const Demeanor) noexcept;
-                static const char * HumarReadableAttr(const Attribute) noexcept;
+                static const char * HumarReadableDeed(const Demeanor)  noexcept; //!< \return readadble demeanor
+                static const char * HumarReadableAttr(const Attribute) noexcept; //!< \return readable attribute
 
                 //______________________________________________________________
                 //
@@ -126,8 +126,8 @@ namespace Yttrium
                 void binaryPattern() const; //!< save pattern to name.bin
                 void renderPattern() const; //!< save pattern to name.dot and render to name.png
 
-                const char * humanReadableDeed() const noexcept;
-                const char * humanReadableAttr() const noexcept;
+                const char * humanReadableDeed() const noexcept; //!< \return readable deed
+                const char * humanReadableAttr() const noexcept; //!< \return readable attr
 
                 //______________________________________________________________
                 //

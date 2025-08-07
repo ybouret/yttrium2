@@ -57,11 +57,11 @@ namespace Yttrium
             //
             //__________________________________________________________________
             inline  Limit(const Infinity_ &) : value(0), type(UnboundedLimit) {} //!< set unbounded
-            inline  Limit(const Limit &l) : value(l.value), type(l.type)      {} //!< copy
+            inline  Limit(const Limit &l) : value(l.value), type(l.type)      {} //!< \param l limit to copy
             inline ~Limit() noexcept                                          {} //!< cleanup
-            inline  Limit(ConstType x) : value(x), type(IncludingLimit)       {} //!< setup default
+            inline  Limit(ConstType x) : value(x), type(IncludingLimit)       {} //!< \param x default including value
 
-            //! more generic setup
+            //! more generic setup \param x value \param includes flag to include x
             inline Limit(ConstType x, const bool includes) : value(x), type(includes?IncludingLimit:ExcludingLimit) {}
 
             //__________________________________________________________________
@@ -74,7 +74,7 @@ namespace Yttrium
             const LimitType type;  //!< type of limit
 
         private:
-            Y_Disable_Assign(Limit);
+            Y_Disable_Assign(Limit); //!< discarding
         };
 
     }

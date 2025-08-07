@@ -16,7 +16,7 @@ namespace Yttrium
 
             void Comment:: finalize()
             {
-                decl("dot", ".", Regular, false);
+                drop("dot", ".");
             }
 
 
