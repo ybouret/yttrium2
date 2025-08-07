@@ -42,6 +42,8 @@ namespace Yttrium
             //__________________________________________________________________
             virtual void free() noexcept; //!< free content
 
+            Token & operator<<(const Token &);
+
         private:
             Y_Disable_Assign(Token); //!< discarding
             void clear() noexcept;   //!< return to pool

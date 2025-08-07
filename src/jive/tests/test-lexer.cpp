@@ -4,6 +4,7 @@
 #include "y/jive/lexer.hpp"
 #include "y/utest/run.hpp"
 #include "y/string/env.hpp"
+#include "y/jive/lexical/plugin/jstring.hpp"
 
 using namespace Yttrium;
 using namespace Jive;
@@ -21,6 +22,8 @@ namespace
             comment("C++ Comment","//");
             comment("C Comment","/\\*", "\\*/");
 
+            new Lexical::JString("string",*this);
+            
             endl("endl",  "[:endl:]");
             drop("blank", "[:blank:]");
         }

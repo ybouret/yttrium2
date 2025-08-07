@@ -5,6 +5,7 @@
 
 #include "y/jive/lexical/comment/single-line.hpp"
 #include "y/jive/lexical/comment/multi-lines.hpp"
+#include "y/jive/lexical/plugin.hpp"
 #include "y/container/associative/suffix/set.hpp"
 #include "y/container/sequence/vector.hpp"
 
@@ -74,6 +75,14 @@ namespace Yttrium
             void comment(const CID &cid, const CXP &cxp)
             {
                 enroll( new Lexical::SingleLineComment(cid,cxp,*this) );
+            }
+
+            void enroll(Lexical::Plugin * const plugin)
+            {
+                assert(0!=plugin);
+                record(plugin);
+                try { call(plugin->name,*plugin->join); }
+                catch(...) { mydb.remove(*plugin->name); }
             }
 
 
