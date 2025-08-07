@@ -116,6 +116,7 @@ namespace Yttrium
                 const Demeanor  deed;  //!< demeanor
                 Rule *          next;  //!< for list
                 Rule *          prev;  //!< for list
+                
             private:
                 Y_Disable_Copy_And_Assign(Rule); //!< discarding
             };
