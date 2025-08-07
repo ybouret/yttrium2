@@ -46,6 +46,7 @@ namespace Yttrium
              \param xa abscissae
              \param ya ordinates
              \param dy error estimate
+             \return interpolation at x
              */
             T operator()(const T            x,
                          const Readable<T> &xa,
@@ -53,9 +54,9 @@ namespace Yttrium
                          T                 &dy);
 
         private:
-            Y_Disable_Copy_And_Assign(PolynomialInterpolation);
+            Y_Disable_Copy_And_Assign(PolynomialInterpolation); //!< discarding
             class Code;
-            Code *code;
+            Code * code; //!< inner code
         };
 
     }

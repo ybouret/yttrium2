@@ -29,12 +29,18 @@ namespace Yttrium
             virtual ~LinearInterpolation() noexcept; //!< cleanup
 
             //! locate and interpolate
+            /**
+             \param x value to find
+             \param xa array of ordered absiscae
+             \param ya array of ordinates
+             \return interpolated value at x
+             */
             T operator()(const T            x,
                          const Readable<T> &xa,
                          const Readable<T> &ya) const;
 
         private:
-            Y_Disable_Copy_And_Assign(LinearInterpolation);
+            Y_Disable_Copy_And_Assign(LinearInterpolation); //!< discarding
         };
 
 

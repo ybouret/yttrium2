@@ -42,6 +42,11 @@ namespace Yttrium
             //__________________________________________________________________
 
             //! setup from a scalar field and its parameters
+            /**
+             \param usrFcn a scalar field
+             \param usrVar reference vector
+             \param varIdx index of interest
+             **/
             inline explicit WrapperND(FUNCTION          &usrFcn,
                                       const Readable<T> &usrVar,
                                       const size_t       varIdx) noexcept :
@@ -61,7 +66,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            //! forward call
+            //! forward call \param t 1D variable \return 1D function evaluation
             inline virtual R operator()(ParamType t)
             {
                 const Temporary<MutableType> tmp( Coerce(var[idx]), t);
@@ -70,9 +75,9 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(WrapperND); //!< discarding
-            FUNCTION          &fcn;
-            const Readable<T> &var;
-            const size_t       idx;
+            FUNCTION          &fcn; //!< persistent function
+            const Readable<T> &var; //!< persistent variable
+            const size_t       idx; //!< working dimension index
         };
 
     }
