@@ -13,19 +13,26 @@ namespace Yttrium
     {
         namespace Lexical
         {
-
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! common resources to design scanners
+            //
+            //
+            //__________________________________________________________________
             class Design
             {
             public:
-                explicit Design();
-                explicit Design(const Design &) noexcept;
-                virtual ~Design() noexcept;
+                explicit Design();                        //!< new dictionary and noData
+                explicit Design(const Design &) noexcept; //!< duplicate
+                virtual ~Design() noexcept;               //!< cleanup
 
-                const Dictionary::Pointer pdb;
-                const NoData              nil;
+                const Dictionary::Pointer pdb; //!< shared dictionary
+                const NoData              nil; //!< empty nil.tag
 
             private:
-                Y_Disable_Assign(Design);
+                Y_Disable_Assign(Design); //!< discarding
             };
         }
 

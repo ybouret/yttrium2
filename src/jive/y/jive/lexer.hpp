@@ -3,8 +3,7 @@
 #ifndef Y_Jive_Lexer_Included
 #define Y_Jive_Lexer_Included 1
 
-#include "y/jive/lexical/scanner.hpp"
-#include "y/jive/lexical/design.hpp"
+#include "y/jive/lexical/comment/single-line.hpp"
 #include "y/container/associative/suffix/set.hpp"
 #include "y/container/sequence/vector.hpp"
 
@@ -16,15 +15,39 @@ namespace Yttrium
 
 
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Lexeme producer from root scanner and extension
+        //
+        //
+        //______________________________________________________________________
         class Lexer : public Lexical::Design, public Lexical::Scanner, public Recyclable
         {
         public:
-            
-            typedef Lexical::Scanner          Scanner;
-            typedef Scanner::Pointer          ScanPtr;
-            typedef SuffixSet<String,ScanPtr> ScanDB;
-            typedef Vector<Scanner *>         History;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef Lexical::Scanner          Scanner; //!< alias
+            typedef Scanner::Pointer          ScanPtr; //!< alias
+            typedef SuffixSet<String,ScanPtr> ScanDB;  //!< alias
+            typedef Vector<Scanner *>         History; //!< alias
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup a new lexer, with common design and accepting EOF scanner
+            /**
+             \param lid compatible lexer name
+             */
             template <typename LID> inline
             explicit Lexer(const LID &lid) :
             Lexical::Design(),
@@ -37,38 +60,50 @@ namespace Yttrium
                 initialize();
             }
 
+            //! cleanup
             virtual ~Lexer() noexcept;
 
-#if 0
-            template <typename SCANNER>
-            SCANNER & operator()(SCANNER * const addr)
+            //! new single line comment
+            /**
+             \param cid comment name
+             \param cxp call expression
+             */
+            template <typename CID, typename CXP> inline
+            void comment(const CID &cid, const CXP &cxp)
             {
-                const Scanner::Pointer p = addr;
-                record(p);
-                return *addr;
+                enroll( new Lexical::SingleLineComment(cid,cxp,*this) );
             }
-#endif
-            
 
 
-
-
-            virtual void free() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
+            virtual void free()       noexcept;
             virtual void onCall(const Token &);
             virtual void onBack(const Token &);
 
-            Lexeme * query(Source &);
-            void     store(Lexeme * const) noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            Lexeme * query(Source &);                //!< \return saved/new lexeme from source
+            void     store(Lexeme * const) noexcept; //!< store previously ready lexeme
 
         private:
-            Y_Disable_Copy_And_Assign(Lexer);
-            void initialize();
-            void record(const Scanner::Pointer &);
+            Y_Disable_Copy_And_Assign(Lexer);      //!< discarding
+            void initialize();                     //!< self registering
+            void record(Scanner * const);          //!< record a new scanner
+            void enroll(Lexical::Comment * const); //!< enroll a new comment
 
-            Scanner * scan;
-            Lexemes   lxms;
-            History   hist;
-            ScanDB    mydb;
+            Scanner * scan; //!< current scanner
+            Lexemes   lxms; //!< lexeme cache
+            History   hist; //!< history
+            ScanDB    mydb; //!< recorded scanners
         };
     }
 

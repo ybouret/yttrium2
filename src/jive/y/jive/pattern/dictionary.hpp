@@ -27,7 +27,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            typedef ArcPtr<Dictionary> Pointer;
+            typedef ArcPtr<Dictionary> Pointer; //!< alias
             
             //__________________________________________________________________
             //

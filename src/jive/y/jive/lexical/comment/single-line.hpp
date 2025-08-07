@@ -29,18 +29,22 @@ namespace Yttrium
                 //! construct
                 /**
                  \param sid comment name
+                 \param cxp call expression
                  \param com design
                  */
-                template <typename SID> inline
+                template <typename SID, typename CXP> inline
                 explicit SingleLineComment(const SID    &sid,
+                                           const CXP    &cxp,
                                            const Design &com) :
-                Comment(sid,com,AcceptEOF)
+                Comment(sid,cxp,com,AcceptEOF)
                 {
                     setup();
                 }
 
                 //! cleanup
                 virtual ~SingleLineComment() noexcept;
+
+               
 
             private:
                 Y_Disable_Copy_And_Assign(SingleLineComment); //!< discarding

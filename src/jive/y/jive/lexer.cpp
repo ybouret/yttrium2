@@ -29,10 +29,21 @@ namespace Yttrium
             }
         }
 
-        void Lexer:: record(const Scanner::Pointer &p)
+        void Lexer:: record(Scanner * const newScanner)
         {
+            assert(0!=newScanner);
+            const ScanPtr p = newScanner;
             if(!mydb.insert(p)) throw Specific::Exception( name->c_str(), "multiple '%s'", p->name->c_str());
         }
+
+        void Lexer:: enroll(Lexical::Comment * const comment)
+        {
+            record(comment);
+            try { call(comment->name,*comment->join); }
+            catch(...) { mydb.remove(*comment->name); }
+        }
+
+
 
         void Lexer:: free() noexcept
         {

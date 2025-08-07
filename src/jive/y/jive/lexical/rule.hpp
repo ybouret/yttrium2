@@ -15,18 +15,30 @@ namespace Yttrium
         namespace Lexical
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //! take action upon returned demeanor
+            //
+            //__________________________________________________________________
             enum Demeanor
             {
-                Emit,
-                Drop,
-                Call,
-                Back
+                Emit, //!< emit a lexeme
+                Drop, //!< drop detected token
+                Call, //!< call a new scanner
+                Back  //!< back to calling scanner
             };
 
+            //__________________________________________________________________
+            //
+            //
+            //! Attribute for rule/motif
+            //
+            //__________________________________________________________________
             enum Attribute
             {
-                Regular,
-                NewLine
+                Regular, //!< doesn't count as new line
+                NewLine  //!< count as new line
             };
 
 
@@ -54,6 +66,8 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 typedef CxxListOf<Rule> List; //!< alias
+                static const char * HumarReadableDeed(const Demeanor) noexcept;
+                static const char * HumarReadableAttr(const Attribute) noexcept;
 
                 //______________________________________________________________
                 //
@@ -102,6 +116,18 @@ namespace Yttrium
 
 
                 virtual ~Rule()   noexcept; //!< cleanup
+
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+                void binaryPattern() const; //!< save pattern to name.bin
+                void renderPattern() const; //!< save pattern to name.dot and render to name.png
+
+                const char * humanReadableDeed() const noexcept;
+                const char * humanReadableAttr() const noexcept;
 
                 //______________________________________________________________
                 //

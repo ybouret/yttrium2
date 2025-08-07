@@ -66,8 +66,8 @@ namespace Yttrium
                 // Defintitions
                 //
                 //______________________________________________________________
-                typedef Keyed< String,ArcPtr<Scanner> > Pointer;
-
+                typedef Keyed< String,ArcPtr<Scanner> > Pointer; //!< alias
+                static  bool                            Verbose; //!< default to false
 
                 //______________________________________________________________
                 //
@@ -75,13 +75,20 @@ namespace Yttrium
                 // C++
                 //
                 //______________________________________________________________
+
+                //! setup
+                /**
+                 \param sid scanner id
+                 \param com for design
+                 \param eof for policy
+                 */
                 template <typename SID> inline
                 explicit Scanner(const SID    &  sid,
                                  const Design &  com,
                                  const EOFPolicy eof) :
                 CountedObject(),
                 name(sid),
-                code( Impl(name) ),
+                code( New(name) ),
                 design(com),
                 policy(eof)
                 {
@@ -95,8 +102,8 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
-                virtual void onCall(const Token &enter) = 0;
-                virtual void onBack(const Token &leave) = 0;
+                virtual void onCall(const Token &enter) = 0; //!< what to do on call \param enter trigger in
+                virtual void onBack(const Token &leave) = 0; //!< waht to do on back \param leave trigger out
 
                 //______________________________________________________________
                 //
@@ -108,35 +115,63 @@ namespace Yttrium
                 const String & key() const noexcept; //!< \return *name
 
                 template <typename RID, typename RXP>
-                void decl(const RID &              rid,
-                          const RXP &              rxp,
-                          const Attribute          attr,
-                          const bool               emit)
+                const Rule & decl(const RID &              rid,
+                                  const RXP &              rxp,
+                                  const Attribute          attr,
+                                  const bool               rise)
                 {
                     const Tag    rname = rid;
                     const Motif  motif = RegExp::Compile(rxp, & *design.pdb );
-                    add( new Rule(rname,motif,attr,emit,design.nil.tag) );
+                    return add( new Rule(rname,motif,attr,rise,design.nil.tag) );
                 }
 
                 template <typename SID, typename RXP>
-                void call(const SID &     sid,
-                          const RXP &     rxp,
-                          const Attribute attr = Regular)
+                const Rule &  call(const SID &     sid,
+                                   const RXP &     rxp,
+                                   const Attribute attr = Regular)
                 {
                     const Tag    rname = "->"; Coerce(rname) += sid;
                     const Motif  motif = RegExp::Compile(rxp, & *design.pdb);
                     const Tag    rdata = sid;
-                    add( new Rule(rname,motif,attr,rdata) );
+                    return add( new Rule(rname,motif,attr,rdata) );
                 }
 
                 template <typename RXP>
-                void back(const RXP      &rxp,
-                          const Attribute attr)
+                const Rule &  back(const RXP      &rxp,
+                                   const Attribute attr)
                 {
                     const Tag    rname = "<--";
                     const Motif  motif = RegExp::Compile(rxp, & *design.pdb);
-                    add( new Rule(rname,motif,attr,design.nil.tag) );
+                    return add( new Rule(rname,motif,attr,design.nil.tag) );
                 }
+
+                //! emit regular
+                template <typename RID, typename RXP>
+                const Rule & emit(const RID & rid,
+                                  const RXP & rxp)
+                {
+                    return decl(rid,rxp,Regular,true);
+                }
+
+                //! drop regular
+                template <typename RID, typename RXP>
+                const Rule & drop(const RID & rid,
+                                  const RXP & rxp)
+                {
+                    return decl(rid,rxp,Regular,false);
+                }
+
+                //!
+                template <typename RID, typename RXP>
+                const Rule & endl(const RID & rid,
+                          const RXP & rxp,
+                          const bool  rise = false)
+                {
+                    return decl(rid,rxp,NewLine,rise);
+                }
+
+
+
 
 
 
@@ -157,8 +192,8 @@ namespace Yttrium
                 Code * const code; //!< inner code
 
                 Y_Disable_Copy_And_Assign(Scanner); //!< discarding
-                static Code *Impl(const Tag &);     //!< create code from tag
-                void add(Rule * const rule);        //!< record new rule
+                static Code * New(const Tag &);      //!< \return ne code from tag
+                const Rule &  add(Rule * const);     //!< \return recorded new rule
 
             public:
                 Design          design; //!< helper for rules

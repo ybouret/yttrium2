@@ -82,6 +82,10 @@ namespace Yttrium
             }
         }
 
+        const Context & Source:: context() const noexcept
+        {
+            return *handle;
+        }
 
     }
 

@@ -27,8 +27,14 @@ namespace Yttrium
         class Tag : public TagType, public Serializable
         {
         public:
-            static const char * const CallSign;
-            
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const char * const CallSign; //!< "Jive::Tag"
+
             //__________________________________________________________________
             //
             //
@@ -57,13 +63,13 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            Tag & operator+=( const Tag & );
-            Tag & operator+=( const String & );
-            Tag & operator+=( const char * const);
-            Tag & operator+=( const char );
+            Tag & operator+=( const Tag & );       //!< \return *this += tag
+            Tag & operator+=( const String & );    //!< \return *this += string
+            Tag & operator+=( const char * const); //!< \return *this += text
+            Tag & operator+=( const char );        //!< \return *this += char
 
         private:
-            Y_Disable_Assign(Tag); //!< discard
+            Y_Disable_Assign(Tag); //!< discarding
         };
 
     }

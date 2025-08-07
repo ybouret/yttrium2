@@ -51,7 +51,7 @@ namespace Yttrium
 
 
             private:
-                Y_Disable_Copy_And_Assign(Interval);
+                Y_Disable_Copy_And_Assign(Interval); //!< discarding
             };
         }
 
@@ -85,10 +85,10 @@ namespace Yttrium
             inline explicit Interval() : lower(Infinity), upper(Infinity) {} //!< default: full space
             inline virtual ~Interval() noexcept                           {} //!< cleanup
 
-            //! copy
+            //! copy \param I source interval
             inline Interval(const Interval &I) : Kernel::Interval(), lower(I.lower), upper(I.upper) {}
 
-            //! setup from limits
+            //! setup from limits \param lo lower limit \param up upper limit
             inline Interval(const Limit<T> lo, const Limit<T> up) :
             Kernel::Interval(),
             lower(lo),
@@ -97,7 +97,7 @@ namespace Yttrium
                 if(lower.value>upper.value) Memory::Stealth::Swap(Coerce(lower), Coerce(upper));
             }
 
-            //! assign to safely change values
+            //! assign to safely change values \param I source interval \return *this
             Interval & operator=(const Interval &I) noexcept
             {
                 Memory::Stealth::Copy( Coerce(lower), I.lower);
@@ -134,7 +134,7 @@ namespace Yttrium
 
             //__________________________________________________________________
             //
-            //! check x is inside the interval
+            //! \param x value \return true if x is inside the interval
             //__________________________________________________________________
             inline bool contains(ConstType x) const
             {
@@ -255,6 +255,10 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //! Try to pack triplet within interval and conserve length
+            /**
+             \param x target triplet
+             \return true if x wasn't changed
+             */
             //__________________________________________________________________
             inline bool tryPack( Triplet<T> &x ) const
             {

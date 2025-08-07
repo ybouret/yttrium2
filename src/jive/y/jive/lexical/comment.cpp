@@ -19,6 +19,16 @@ namespace Yttrium
                 decl("dot", ".", Regular, false);
             }
 
+
+            void Comment:: onCall(const Token &)
+            {
+
+            }
+
+            void Comment:: onBack(const Token &)
+            {
+                
+            }
         }
 
     }

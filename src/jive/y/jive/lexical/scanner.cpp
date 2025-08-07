@@ -14,6 +14,11 @@ namespace Yttrium
         namespace Lexical
         {
 
+            bool Scanner::Verbose = false;
+
+#define Y_PRINT(MSG) \
+do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl; } } while(false)
+
             namespace
             {
                 class RNode : public Object
@@ -39,14 +44,14 @@ namespace Yttrium
 
             }
 
+
             class Scanner:: Code : public Object
             {
             public:
                 inline explicit Code(const Tag &uid) :
-                name(uid),
-                rlist(256),
-                rules()
+                name(uid), rlist(256), rules()
                 {
+                    Y_PRINT(" scanner was created");
                     for(unsigned i=0;i<256;++i) new (rlist.entry+i) RList();
                 }
 
@@ -62,7 +67,7 @@ namespace Yttrium
                 inline void add(Rule * const rule)
                 {
 
-                    std::cerr << "add " << rule->name << std::endl;
+
                     // ensure no duplicate
                     {
                         AutoPtr<Rule> guard(rule);
@@ -79,7 +84,10 @@ namespace Yttrium
 
                     // append to local list
                     const FirstChars fc = rule->motif->firstChars();
-                    std::cerr << "fc=" << fc << std::endl;
+                    Y_PRINT("[+] |" << rule->humanReadableAttr()
+                            << ":" << rule->humanReadableDeed()
+                            << "|  '" << rule->name << "'"
+                            << " @" << fc);
                     try {
                         for(unsigned i=0;i<256;++i)
                         {
@@ -129,7 +137,7 @@ namespace Yttrium
                 Destroy(code);
             }
 
-            Scanner::Code * Scanner:: Impl(const Tag &tag)
+            Scanner::Code * Scanner:: New(const Tag &tag)
             {
                 return new Code(tag);
             }
@@ -139,11 +147,12 @@ namespace Yttrium
                 return *name;
             }
 
-            void Scanner:: add(Rule *const rule)
+            const Rule & Scanner:: add(Rule *const rule)
             {
                 assert(0!=rule);
                 assert(0!=code);
                 code->add(rule);
+                return *rule;
             }
 
             
@@ -171,8 +180,8 @@ namespace Yttrium
                     // deal with EOF
                     switch(policy)
                     {
-                        case AcceptEOF: return FoundEOF;
-                        case RejectEOF: throw Specific::Exception(name->c_str(),"EOF...");
+                        case AcceptEOF: Y_PRINT("EOF"); return FoundEOF;
+                        case RejectEOF: throw Specific::Exception(name->c_str(),"%s unexpected EOF",source.context().str().c_str());
                     }
                 }
                 const Context      ctx = *ch; // save context
@@ -188,7 +197,7 @@ namespace Yttrium
                     //__________________________________________________________
                     const uint8_t c = **ch;                 // char code
                     const RList  &L = code->rlist.entry[c]; // possible rule(s)
-                    std::cerr << "L[" << ASCII::Printable::Char[c] << "]=" << L.size << std::endl;
+                    //std::cerr << "L[" << ASCII::Printable::Char[c] << "]=" << L.size << std::endl;
                     const RNode * node  = L.head;
                     for(;node;node=node->next)
                     {
@@ -204,11 +213,13 @@ namespace Yttrium
                     if(!bestRule)
                     {
                         // syntax error
+                        const char * const which = ASCII::Printable::Char[c];
+                        Y_PRINT("no rule matching '" << which << "'");
                         const String where = ch->str();
-                        throw Specific::Exception( name->c_str(), "%s unexpected '%s'", where.c_str(), ASCII::Printable::Char[c]);
+                        throw Specific::Exception( name->c_str(), "%s unexpected '%s'", where.c_str(),which);
                     }
 
-                    std::cerr << "bestRule=" << bestRule->name << " : '" << bestToken << "'" << std::endl;
+                    Y_PRINT("selected '" << bestRule->name << "'='" << bestToken);
 
                     //__________________________________________________________
                     //
@@ -223,14 +234,22 @@ namespace Yttrium
                         assert(node->rule);
                         const Rule * const rule  = node->rule;
                         Token              token;
-                        std::cerr << "testing " << rule->name << std::endl;
-                        if(!rule->motif->accepts(token,source)) continue;
+                        if(!rule->motif->accepts(token,source))
+                        {
+                            continue;
+                        }
                         source.stash(token);
 
                         if(token.size>bestToken.size)
                         {
                             bestRule = rule; std::cerr << "new Rule=" << rule->name << std::endl;
                             bestToken.swapListFor(token);
+                            Y_PRINT("improved '" << bestRule->name << "'='" << bestToken);
+                        }
+                        else
+                        {
+                            Y_PRINT("loosing  '" << rule->name << "'='" << token);
+
                         }
                     }
                 }
@@ -243,6 +262,7 @@ namespace Yttrium
                 //______________________________________________________________
                 source.sweep(bestToken.size);
 
+                Y_PRINT( "=> |" << bestRule->humanReadableAttr() << ":" << bestRule->humanReadableDeed() << "| @ '" << bestToken << "'");
                 switch(bestRule->attr)
                 {
                     case Regular: break;
@@ -262,7 +282,6 @@ namespace Yttrium
 
                     case Back:
                         assert(0 == bestRule->data->length() );
-                        // direct onBack() before returning
                         onBack(bestToken);
                         return CtrlBack;
 

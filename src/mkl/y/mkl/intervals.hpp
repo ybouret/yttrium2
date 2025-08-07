@@ -37,12 +37,14 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            inline explicit Intervals(const size_t dims) : AssemblyType(dims) {} //!< initialize to R^dims
+            inline explicit Intervals(const size_t dims) : AssemblyType(dims) {} //!< initialize to R^dims \param dims dimensions
             inline virtual ~Intervals() noexcept                              {} //!< cleanup
+
+            //! duplicate \param other another set of intervals
             inline Intervals(const Intervals &other) :
             Container(),
             AssemblyType(other)
-            {} //!< copy
+            {}
 
             //! display
             inline friend std::ostream & operator<<(std::ostream &os, const Intervals &domain)
@@ -67,6 +69,10 @@ namespace Yttrium
             //__________________________________________________________________
 
             //! test each coordinate is in corresponding interval
+            /**
+             \param arr array in R^size
+             \return true iff vector is contained
+             */
             template <typename ARRAY> inline
             bool contains(ARRAY &arr) const noexcept
             {
@@ -81,7 +87,7 @@ namespace Yttrium
 
 
         private:
-            Y_Disable_Assign(Intervals);
+            Y_Disable_Assign(Intervals); //!< discarding
         };
     }
 }
