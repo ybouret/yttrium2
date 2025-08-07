@@ -77,13 +77,7 @@ namespace Yttrium
                 enroll( new Lexical::SingleLineComment(cid,cxp,*this) );
             }
 
-            void enroll(Lexical::Plugin * const plugin)
-            {
-                assert(0!=plugin);
-                record(plugin);
-                try { call(plugin->name,*plugin->join); }
-                catch(...) { mydb.remove(*plugin->name); }
-            }
+
 
 
             //! new multi line comment
@@ -125,7 +119,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Lexer);      //!< discarding
             void initialize();                     //!< self registering
             void record(Scanner * const);          //!< record a new scanner
-            void enroll(Lexical::Comment * const); //!< enroll a new comment
+            void enroll(Lexical::Extension * const); //!< enroll a new comment
 
             Scanner * scan; //!< current scanner
             Lexemes   lxms; //!< lexeme cache

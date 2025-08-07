@@ -3,7 +3,7 @@
 #ifndef Y_Jive_Lexical_Plugin_Included
 #define Y_Jive_Lexical_Plugin_Included 1
 
-#include "y/jive/lexical/scanner.hpp"
+#include "y/jive/lexical/extension.hpp"
 
 namespace Yttrium
 {
@@ -22,7 +22,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Plugin : public Scanner
+            class Plugin : public Extension
             {
             protected:
 
@@ -46,8 +46,7 @@ namespace Yttrium
                                 const SID    &  sid,
                                 const CXP    &  cxp,
                                 Lexer &         lxr) :
-                Scanner(uid,sid,lxr,RejectEOF),
-                join(cxp),
+                Extension(uid,sid,cxp,lxr,RejectEOF),
                 root(lxr),
                 data()
                 {
@@ -63,7 +62,6 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const Tag join; //!< call expression
             protected:
                 Lexer &   root; //!< root lexer
                 Token     data; //!< where to put data
@@ -74,7 +72,6 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(Plugin); //!< discarding
                 virtual void onCall(const Token &);
                 virtual void onBack(const Token &);
-
             };
 
         }

@@ -1,9 +1,10 @@
+
 //! \file
 
-#ifndef Y_Jive_Lexical_Comment_Included
-#define Y_Jive_Lexical_Comment_Included 1
+#ifndef Y_Jive_Lexical_Extension_Included
+#define Y_Jive_Lexical_Extension_Included 1
 
-#include "y/jive/lexical/extension.hpp"
+#include "y/jive/lexical/scanner.hpp"
 
 namespace Yttrium
 {
@@ -16,11 +17,11 @@ namespace Yttrium
             //
             //
             //
-            //! base class for comments
+            //! base class for extension
             //
             //
             //__________________________________________________________________
-            class Comment : public Extension
+            class Extension : public Scanner
             {
             protected:
 
@@ -39,34 +40,36 @@ namespace Yttrium
                  \param eof policy: accept for single line, reject for multi lines
                  */
                 template <typename SID, typename CXP> inline
-                explicit Comment(const uint32_t  uid,
-                                 const SID    &  sid,
-                                 const CXP    &  cxp,
-                                 const Design &  com,
-                                 const EOFPolicy eof) :
-                Extension(uid,sid,cxp,com,eof)
+                explicit Extension(const uint32_t  uid,
+                                   const SID    &  sid,
+                                   const CXP    &  cxp,
+                                   const Design &  com,
+                                   const EOFPolicy eof) :
+                Scanner(uid,sid,com,eof),
+                join(cxp)
                 {
                 }
 
 
             public:
-                virtual ~Comment() noexcept; //!< cleanup
+                virtual ~Extension() noexcept; //!< cleanup
 
-
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                const Tag join; //!< call expression
 
             private:
-                Y_Disable_Copy_And_Assign(Comment); //!< discarding
-                virtual void onCall(const Token &);
-                virtual void onBack(const Token &);
-
-            protected:
-                void finalize(); //!< drop "[:dot:]"
+                Y_Disable_Copy_And_Assign(Extension);
             };
-
         }
 
     }
 
 }
+
 #endif
 

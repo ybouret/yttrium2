@@ -36,7 +36,7 @@ namespace Yttrium
             if(!mydb.insert(p)) throw Specific::Exception( name->c_str(), "multiple '%s'", p->name->c_str());
         }
 
-        void Lexer:: enroll(Lexical::Comment * const comment)
+        void Lexer:: enroll(Lexical::Extension * const comment)
         {
             record(comment);
             try { call(comment->name,*comment->join); }
