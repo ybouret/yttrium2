@@ -16,5 +16,12 @@ Y_UTEST_DECL(128)
     Y_UTEST(algebra_adjoint);
     Y_UTEST(algebra_ortho_space);
     Y_UTEST(algebra_coven);
+
+    Y_UTEST(interp_ratio);
+    Y_UTEST(interp_poly);
+    Y_UTEST(interp_cspline);
+
+    Y_UTEST(drvs1D);
+    Y_UTEST(drvsND);
 }
 Y_UTEST_EXEC()

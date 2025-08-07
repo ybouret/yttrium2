@@ -2,7 +2,10 @@ Y_CreateTest(test-mkl
 root
 tao
 opt
-algebra)
+algebra
+interp
+drvs
+)
 Y_LinkLibraries(test-mkl y-mkl)
 
 enable_testing()
@@ -24,3 +27,5 @@ Y_UTEST(algebra:adjoint)
 Y_UTEST(algebra:ortho:space)
 Y_UTEST(algebra:coven)
 
+Y_UTEST(drvs1D)
+Y_UTEST(drvsND)
