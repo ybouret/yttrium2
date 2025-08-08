@@ -22,8 +22,9 @@ namespace
             comment("C++ Comment","//");
             comment("C Comment","/\\*", "\\*/");
 
-            new Lexical::JString("string",*this);
-            
+
+            plug(Lexical::JString::Class,"string");
+
             endl("endl",  "[:endl:]");
             drop("blank", "[:blank:]");
         }

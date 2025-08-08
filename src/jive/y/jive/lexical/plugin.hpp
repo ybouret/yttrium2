@@ -25,7 +25,6 @@ namespace Yttrium
             class Plugin : public Extension
             {
             protected:
-
                 //______________________________________________________________
                 //
                 //
@@ -66,14 +65,21 @@ namespace Yttrium
                 Lexer &   root; //!< root lexer
                 Token     data; //!< where to put data
 
-                void      yield(); //!< transform collected data in to lexeme
 
             private:
                 Y_Disable_Copy_And_Assign(Plugin); //!< discarding
-                virtual void onCall(const Token &);
-                virtual void onBack(const Token &);
+                virtual void onCall(const Token &); //!< initialize data
+                virtual void onBack(const Token &); //!< finalize data and yield lexeme
             };
 
+#define Y_Jive_Plugin_Decl(PLUGIN)      \
+/**/ typedef TypeToType<PLUGIN> Class_; \
+/**/ static const Class_        Class
+
+#define Y_Jive_Plugin_Impl(PLUGIN) \
+/**/ PLUGIN:: ~PLUGIN() noexcept {} \
+/**/ const PLUGIN::Class_  PLUGIN::Class = {}
+            
         }
 
     }

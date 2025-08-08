@@ -105,7 +105,8 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 virtual void onCall(const Token &enter) = 0; //!< what to do on call \param enter trigger in
-                virtual void onBack(const Token &leave) = 0; //!< waht to do on back \param leave trigger out
+                virtual void onBack(const Token &leave) = 0; //!< what to do on back \param leave trigger out
+                virtual void onSent(const Token &token) = 0; //!< what to on on sent \param token sent by run
 
                 //______________________________________________________________
                 //
@@ -113,6 +114,9 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
+
+                void forbidden(const char * const method) const;
+                
 
                 const String & key() const noexcept; //!< \return *name
 
@@ -128,11 +132,11 @@ namespace Yttrium
                 const Rule & decl(const RID &              rid,
                                   const RXP &              rxp,
                                   const Attribute          attr,
-                                  const bool               rise)
+                                  const Property           ppty)
                 {
                     const Tag    rname = rid;
                     const Motif  motif = RegExp::Compile(rxp, & *design.pdb );
-                    return add( new Rule(rname,motif,attr,rise,design.nil.tag) );
+                    return add( new Rule(rname,motif,attr,ppty,design.nil.tag) );
                 }
 
                 //! declare a call rule
@@ -178,7 +182,7 @@ namespace Yttrium
                 const Rule & emit(const RID & rid,
                                   const RXP & rxp)
                 {
-                    return decl(rid,rxp,Regular,true);
+                    return decl(rid,rxp,Regular,SpawnUnit);
                 }
 
                 //! drop regular
@@ -191,7 +195,7 @@ namespace Yttrium
                 const Rule & drop(const RID & rid,
                                   const RXP & rxp)
                 {
-                    return decl(rid,rxp,Regular,false);
+                    return decl(rid,rxp,Regular,DropToken);
                 }
 
                 //! flexible endl
@@ -203,10 +207,10 @@ namespace Yttrium
                  */
                 template <typename RID, typename RXP>
                 const Rule & endl(const RID & rid,
-                          const RXP & rxp,
-                          const bool  rise = false)
+                                  const RXP & rxp,
+                                  const bool  rise = false)
                 {
-                    return decl(rid,rxp,NewLine,rise);
+                    return decl(rid,rxp,NewLine,rise ? SpawnUnit : DropToken);
                 }
 
                 //! look up algorithm

@@ -2,7 +2,7 @@
 #ifndef Y_Jive_Lexical_JString_Included
 #define Y_Jive_Lexical_JString_Included 1
 
-#include "y/jive/lexical/plugin.hpp"
+#include "y/jive/lexical/plugin/strings.hpp"
 
 namespace Yttrium
 {
@@ -12,11 +12,12 @@ namespace Yttrium
         namespace Lexical
         {
 
-            class JString : public Plugin
+            class JString : public Strings
             {
             public:
-                static const uint32_t UUID = Y_FOURCC('J','S','T','R');
-                static const char     JOIN = '"';
+                static const uint32_t       UUID = Y_FOURCC('J','S','T','R');
+                static const char           JOIN = '"';
+                Y_Jive_Plugin_Decl(JString);
 
                 //! setup
                 /**
@@ -29,7 +30,7 @@ namespace Yttrium
                 template <typename SID> inline
                 explicit JString(const SID    &  sid,
                                  Lexer &         lxr) :
-                Plugin(UUID,sid,JOIN,lxr)
+                Strings(UUID,sid,JOIN,lxr)
                 {
                 }
 

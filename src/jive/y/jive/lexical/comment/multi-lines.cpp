@@ -16,7 +16,7 @@ namespace Yttrium
 
             void MultiLinesComment:: setup()
             {
-                decl("endl", "[:endl:]", NewLine, false);
+                decl("endl", "[:endl:]", NewLine, DropToken);
                 finalize();
             }
 

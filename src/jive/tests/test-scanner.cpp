@@ -15,11 +15,11 @@ namespace
         explicit MyScanner(const Lexical::Design &com) :
         Scanner(0x00,"Scanner",com,Lexical::AcceptEOF)
         {
-            decl("ID",   "[:alpha:]+",   Lexical::Regular, true);
-            decl("INT",  "[:digit:]+",   Lexical::Regular, true);
-            decl("FLT",  "[:digit:]+\\.[:digit:]*",Lexical::Regular, true);
-            decl("dot",  ".",          Lexical::Regular, true);
-            decl("endl", "[:endl:]",   Lexical::NewLine, false);
+            emit("ID",   "[:alpha:]+");
+            emit("INT",  "[:digit:]+");
+            emit("FLT",  "[:digit:]+\\.[:digit:]*");
+            emit("dot",  ".");
+            endl("endl", "[:endl:]");
         }
 
         virtual ~MyScanner() noexcept
@@ -28,7 +28,8 @@ namespace
 
         virtual void onCall(const Token &) {}
         virtual void onBack(const Token &) {}
-        
+        virtual void onSent(const Token &) {}
+
     private:
         Y_Disable_Copy_And_Assign(MyScanner);
     };

@@ -15,14 +15,7 @@ namespace Yttrium
 
             }
 
-            void Plugin:: yield()
-            {
-                if(data.size<=0)
-                    throw Specific::Exception(name->c_str(),"no collected data");
-                const Context ctx = *data.head;
-                root.store( new Unit(name,ctx,data) );
-            }
-
+            
             void Plugin:: onCall(const Token &token)
             {
                 data.free();
@@ -32,7 +25,10 @@ namespace Yttrium
             void Plugin:: onBack(const Token &leave)
             {
                 data << leave;
-                yield();
+                if(data.size<=0)
+                    throw Specific::Exception(name->c_str(),"no collected data");
+                const Context ctx = *data.head;
+                root.store( new Unit(name,ctx,data) );
             }
 
         }

@@ -15,6 +15,16 @@ namespace Yttrium
         namespace Lexical
         {
 
+
+
+            enum Property
+            {
+                DropToken, //!< with discard token
+                SpawnUnit, //!< will emit a new unit
+                SendToken, //!< will send token to specific treatment
+                BadSyntax  //!< will stop scanner and throw exception
+            };
+
             //__________________________________________________________________
             //
             //
@@ -25,6 +35,8 @@ namespace Yttrium
             {
                 Emit, //!< emit a lexeme
                 Drop, //!< drop detected token
+                Send, //!< send detected token
+                Halt, //!< syntax error
                 Call, //!< call a new scanner
                 Back  //!< back to calling scanner
             };
@@ -68,6 +80,7 @@ namespace Yttrium
                 typedef CxxListOf<Rule> List; //!< alias
                 static const char * HumarReadableDeed(const Demeanor)  noexcept; //!< \return readadble demeanor
                 static const char * HumarReadableAttr(const Attribute) noexcept; //!< \return readable attribute
+                static const char * HumanReadablePpty(const Property)  noexcept; //!< \return readable property
 
                 //______________________________________________________________
                 //
@@ -87,7 +100,7 @@ namespace Yttrium
                 Rule(const Tag       &usrTag,
                      const Motif     &usrMotif,
                      const Attribute  usrAttr,
-                     const bool       emitting,
+                     const Property   property,
                      const Tag  &     noData)  noexcept;
 
 

@@ -42,8 +42,10 @@ namespace Yttrium
             //__________________________________________________________________
             virtual void free() noexcept; //!< free content
 
-            Token & operator<<(const Token &);
+            Token & operator<<(const Token &); //!< append a copy
 
+            String toString(const size_t skip=0, const size_t trim=0) const;
+            
         private:
             Y_Disable_Assign(Token); //!< discarding
             void clear() noexcept;   //!< return to pool

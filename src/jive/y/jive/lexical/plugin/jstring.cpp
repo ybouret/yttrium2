@@ -10,10 +10,8 @@ namespace Yttrium
         {
             const char JString:: JOIN;
 
-            JString:: ~JString() noexcept
-            {
-            }
-            
+            Y_Jive_Plugin_Impl(JString);
+
         }
 
     }

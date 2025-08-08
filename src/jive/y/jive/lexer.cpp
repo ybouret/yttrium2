@@ -55,12 +55,18 @@ namespace Yttrium
 
         void Lexer:: onCall(const Token &)
         {
+            forbidden("Lexer::onCall");
         }
 
         void Lexer:: onBack(const Token&)
         {
+            forbidden("Lexer::onBack");
         }
 
+        void Lexer:: onSent(const Token &)
+        {
+            forbidden("Lexer::onSent");
+        }
 
         void Lexer:: store(Lexeme * const lexeme) noexcept
         {

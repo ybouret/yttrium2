@@ -66,14 +66,46 @@ namespace Yttrium
             //! cleanup
             virtual ~Lexer() noexcept;
 
+
+
+
+
+
+
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
+            virtual void free()       noexcept;
+            virtual void onCall(const Token &);
+            virtual void onBack(const Token &);
+            virtual void onSent(const Token &);
+
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            Lexeme * query(Source &);                //!< \return saved/new lexeme from source
+            void     store(Lexeme * const) noexcept; //!< store previously ready lexeme
+
+            //__________________________________________________________________
+            //
+            //
+            // Comments
+            //
+            //__________________________________________________________________
+
             //! new single line comment
             /**
              \param cid comment name
              \param cxp call expression
              */
             template <typename CID, typename CXP> inline
-            void comment(const CID &cid, const CXP &cxp)
-            {
+            void comment(const CID &cid, const CXP &cxp) {
                 enroll( new Lexical::SingleLineComment(cid,cxp,*this) );
             }
 
@@ -90,36 +122,29 @@ namespace Yttrium
             typename CID,
             typename CXP,
             typename BXP> inline
-            void comment(const CID &cid, const CXP &cxp, const BXP &bxp)
-            {
+            void comment(const CID &cid, const CXP &cxp, const BXP &bxp) {
                 enroll( new Lexical::MultiLinesComment(cid,cxp,bxp,*this) );
             }
 
+            //__________________________________________________________________
+            //
+            //
+            // Plugins
+            //
+            //__________________________________________________________________
 
-            //__________________________________________________________________
-            //
-            //
-            // Interface
-            //
-            //__________________________________________________________________
-            virtual void free()       noexcept;
-            virtual void onCall(const Token &);
-            virtual void onBack(const Token &);
+            template <typename CLASS, typename SID> inline
+            void plug(const CLASS &, const SID &sid) {
+                enroll( new typename CLASS::Type(sid,*this) );
+            }
 
-            //__________________________________________________________________
-            //
-            //
-            // Methods
-            //
-            //__________________________________________________________________
-            Lexeme * query(Source &);                //!< \return saved/new lexeme from source
-            void     store(Lexeme * const) noexcept; //!< store previously ready lexeme
+
 
         private:
-            Y_Disable_Copy_And_Assign(Lexer);      //!< discarding
-            void initialize();                     //!< self registering
-            void record(Scanner * const);          //!< record a new scanner
-            void enroll(Lexical::Extension * const); //!< enroll a new comment
+            Y_Disable_Copy_And_Assign(Lexer);        //!< discarding
+            void initialize();                       //!< self registering
+            void record(Scanner * const);            //!< record a new scanner
+            void enroll(Lexical::Extension * const); //!< enroll a new extension
 
             Scanner * scan; //!< current scanner
             Lexemes   lxms; //!< lexeme cache

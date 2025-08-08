@@ -58,6 +58,7 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(Comment); //!< discarding
                 virtual void onCall(const Token &);
                 virtual void onBack(const Token &);
+                virtual void onSent(const Token &);
 
             protected:
                 void finalize(); //!< drop "[:dot:]"

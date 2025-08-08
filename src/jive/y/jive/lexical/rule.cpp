@@ -14,6 +14,8 @@ namespace Yttrium
                 {
                         Y_Return_Named_Case(Emit);
                         Y_Return_Named_Case(Drop);
+                        Y_Return_Named_Case(Send);
+                        Y_Return_Named_Case(Halt);
                         Y_Return_Named_Case(Call);
                         Y_Return_Named_Case(Back);
                 }
@@ -31,17 +33,44 @@ namespace Yttrium
                 return Core::Unknown;
             }
 
+            const char * HumanReadablePpty(const Property ppty)  noexcept
+            {
+                switch(ppty)
+                {
+                        Y_Return_Named_Case(SpawnUnit);
+                        Y_Return_Named_Case(DropToken);
+                        Y_Return_Named_Case(SendToken);
+                        Y_Return_Named_Case(BadSyntax);
+                }
+                return Core::Unknown;
+            }
+
+            namespace {
+
+                static inline Demeanor DemeanorFrom(const Property property) noexcept
+                {
+                    switch(property)
+                    {
+                        case SpawnUnit: return Emit;
+                        case DropToken: return Drop;
+                        case SendToken: return Send;
+                        case BadSyntax: break;
+                    }
+                    return Halt;
+                }
+
+            }
             Rule:: Rule(const Tag   &   r,
                         const Motif &   m,
                         const Attribute a,
-                        const bool      emit,
+                        const Property  property,
                         const Tag      &noData) noexcept :
             Object(),
             name(r),
             motif(m),
             attr(a),
             data(noData),
-            deed(emit?Emit:Drop),
+            deed(DemeanorFrom(property)),
             next(0),
             prev(0)
             {

@@ -64,5 +64,18 @@ namespace Yttrium
             return os;
         }
 
+        String Token:: toString(const size_t skip, const size_t trim) const
+        {
+            const size_t rem = skip+trim;
+            if(rem>=size) return String();
+            const Char *curr = head; for(size_t i=skip;i>0;--i) curr=curr->next;
+            String      res;
+            for(size_t i=size-rem;i>0;--i,curr=curr->next)
+                res += char(**curr);
+            return res;
+
+        }
+
+
     }
 }

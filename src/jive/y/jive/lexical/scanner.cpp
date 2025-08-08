@@ -156,6 +156,11 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
             }
 
             
+            void Scanner:: forbidden(const char * const method) const
+            {
+                assert(method);
+                throw Specific::Exception(name->c_str(),"forbidden %s!!",method);
+            }
 
 
 
@@ -281,8 +286,12 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
 
                     case Back:
                         assert(0 == bestRule->data->length() );
-                        onBack(bestToken);
+                        onBack(bestToken); // directly call
                         return CtrlBack;
+
+                    case Send:
+                        onSent(bestToken);
+                        goto PROBE;
 
                     case Call:
                         assert( 0 < bestRule->data->length() );
@@ -294,10 +303,19 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
                         hUnit = new Unit(bestRule->name,ctx,bestToken);
                         return EmitUnit;
 
+                    case Halt: {
+                        const String bad   = bestToken.toString();
+                        const String where = ctx.str();
+                        throw Specific:: Exception(name->c_str(),
+                                                   "%s: %s syntax error '%s'",
+                                                   where.c_str(),
+                                                   bestRule->name->c_str(),
+                                                   bad.c_str());
+                    }
 
                 }
 
-                throw Specific::Exception(name->c_str(),"*** corrupted");
+                throw Specific::Exception(name->c_str(),"unhanled demeanor %s", Rule::HumarReadableDeed(bestRule->deed));
 
             }
 

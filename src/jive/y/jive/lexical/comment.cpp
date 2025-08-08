@@ -29,6 +29,12 @@ namespace Yttrium
             {
                 
             }
+
+            void Comment:: onSent(const Token &)
+            {
+                forbidden("Comment::onSent");
+            }
+
         }
 
     }
