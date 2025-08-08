@@ -101,6 +101,16 @@ namespace Yttrium
                 this->add(res*=res);
             }
 
+            template <typename U, typename V, typename W> inline
+            T operator()(U &u, V &v, W &w)
+            {
+                this->ldz();
+                this->add(u);
+                this->add(v);
+                this->add(w);
+                return this->sum();
+            }
+
         private:
             Y_Disable_Copy_And_Assign(Addition); //!< discarding
         };
