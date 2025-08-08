@@ -9,7 +9,8 @@
 
 using namespace Yttrium;
 using namespace MKL;
-#if 0
+
+
 namespace
 {
     template <typename T>
@@ -19,8 +20,9 @@ namespace
         typedef typename ScalarFor<T>::Type ScalarType;
         const ScalarType s0 = 0;
 
-        Cameo::Addition<T>     xadd;
-        //Tao::ComputeMod2<T> mod2;
+        Cameo::Addition<T>          xadd;
+        Cameo::Addition<ScalarType> sadd;
+
 
         for(size_t n=3;n<=nmax;++n)
         {
@@ -36,20 +38,20 @@ namespace
             {
                 for(size_t i=1;i<=n;++i)
                 {
-                    cy.a[i] = Bring<T>::Get(ran);
+                    cy.a[i] = Gen<T>::New(ran);
                     do
                     {
-                        cy.b[i] = Bring<T>::Get(ran);
+                        cy.b[i] = Gen<T>::New(ran);
                     }
                     while( Fabs<T>::Of(cy.b[i]) <= s0 );
-                    cy.c[i] = Bring<T>::Get(ran);
-                    r[i]    = Bring<T>::Get(ran);
+                    cy.c[i] = Gen<T>::New(ran);
+                    r[i]    = Gen<T>::New(ran);
                 }
 
                 const uint32_t chk = cy.crc32();
-                cy.alpha = Bring<T>::Get(ran);
-                cy.beta  = Bring<T>::Get(ran);
-                Y_CHECK(cy.crc32()==chk);
+                cy.alpha = Gen<T>::New(ran);
+                cy.beta  = Gen<T>::New(ran);
+                Y_ASSERT(cy.crc32()==chk);
 
             }
             while( !cy.solve(u,r) );
@@ -58,10 +60,10 @@ namespace
             cy.sendTo(M);
 
 
-            Tao::Mul(v,M,u,xm);
-            cy.mul(w,u);
-            const ScalarType residue1 = mod2(v,r);
-            const ScalarType residue2 = mod2(w,r);
+            Tao::Mul(xadd,v,M,u);
+            cy.mul(xadd,w,u);
+            const ScalarType residue1 = Tao::Norm2(sadd,v,r);
+            const ScalarType residue2 = Tao::Norm2(sadd,w,r);
 
             // std::cerr << "M=" << M << std::endl;
             // std::cerr << "r=" << r << std::endl;
@@ -75,13 +77,11 @@ namespace
 
     }
 }
-#endif
 
 Y_UTEST(algebra_cyclic)
 {
     Random::MT19937 ran;
 
-#if 0
     TestCyclic<float>(ran);
     TestCyclic<double>(ran);
     TestCyclic<long double>(ran);
@@ -100,8 +100,7 @@ Y_UTEST(algebra_cyclic)
     TestCyclic< Complex< XReal<long double> > >(ran);
 
 
-    TestCyclic<apq>(ran,6);
-#endif
+    TestCyclic<apq>(ran,8);
 
 }
 Y_UDONE()
