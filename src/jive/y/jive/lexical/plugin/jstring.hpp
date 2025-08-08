@@ -12,19 +12,37 @@ namespace Yttrium
         namespace Lexical
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! JSON/C string doubly quoted
+            //
+            //
+            //__________________________________________________________________
             class JString : public Strings
             {
             public:
-                static const uint32_t       UUID = Y_FOURCC('J','S','T','R');
-                static const char           JOIN = '"';
-                Y_Jive_Plugin_Decl(JString);
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                static const uint32_t       UUID = Y_FOURCC('J','S','T','R'); //!< alias
+                static const char           JOIN = '"'; //!< alias
+                Y_Jive_Plugin_Decl(JString);            //!< alias
+
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
 
                 //! setup
                 /**
-                 \param uid associated scanner uuid
                  \param sid associated scanner name
-                 \param cxp call expression
-                 \param com design
                  \param lxr root lexer
                  */
                 template <typename SID> inline
@@ -39,9 +57,15 @@ namespace Yttrium
                 //! cleanup
                 virtual ~JString() noexcept;
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
             private:
-                Y_Disable_Copy_And_Assign(JString);
-                void finalize();
+                Y_Disable_Copy_And_Assign(JString); //!< discarding
+                void finalize(); //!< register quote
             };
         }
 

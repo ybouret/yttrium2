@@ -16,7 +16,12 @@ namespace Yttrium
         {
 
 
-
+            //__________________________________________________________________
+            //
+            //
+            //! property of produced tokens (Emit/Drop)
+            //
+            //__________________________________________________________________
             enum Property
             {
                 DropToken, //!< with discard token
@@ -94,7 +99,7 @@ namespace Yttrium
                  \param usrTag   will be rule name
                  \param usrMotif will be rule motid
                  \param usrAttr  control source
-                 \param emitting produce unit if true, discard if false
+                 \param property what to do when token is produced
                  \param noData   empty tag
                  */
                 Rule(const Tag       &usrTag,

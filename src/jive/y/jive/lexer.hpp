@@ -38,7 +38,7 @@ namespace Yttrium
             typedef Scanner::Pointer          ScanPtr; //!< alias
             typedef SuffixSet<String,ScanPtr> ScanDB;  //!< alias
             typedef Vector<Scanner *>         History; //!< alias
-            static const uint32_t             UUID = Y_FOURCC('R','O','O','T');
+            static const uint32_t             UUID = Y_FOURCC('R','O','O','T'); //!< alias
 
             //__________________________________________________________________
             //
@@ -133,6 +133,10 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
+            //! create a new plugin
+            /**
+             \param sid plugin identifier for produced tokens
+             */
             template <typename CLASS, typename SID> inline
             void plug(const CLASS &, const SID &sid) {
                 enroll( new typename CLASS::Type(sid,*this) );

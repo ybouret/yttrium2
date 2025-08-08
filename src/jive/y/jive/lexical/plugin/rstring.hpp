@@ -12,20 +12,37 @@ namespace Yttrium
 
         namespace Lexical
         {
-
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Raw string, simply quoted
+            //
+            //
+            //__________________________________________________________________
             class RString : public Strings
             {
             public:
-                static const uint32_t       UUID = Y_FOURCC('R','S','T','R');
-                static const char           JOIN = '\'';
-                Y_Jive_Plugin_Decl(RString);
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                static const uint32_t       UUID = Y_FOURCC('R','S','T','R'); //!< alias
+                static const char           JOIN = '\''; //!< alias
+                Y_Jive_Plugin_Decl(RString);             //!< alias
+
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
 
                 //! setup
                 /**
-                 \param uid associated scanner uuid
                  \param sid associated scanner name
-                 \param cxp call expression
-                 \param com design
                  \param lxr root lexer
                  */
                 template <typename SID> inline
@@ -40,9 +57,15 @@ namespace Yttrium
                 //! cleanup
                 virtual ~RString() noexcept;
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
             private:
-                Y_Disable_Copy_And_Assign(RString);
-                void finalize();
+                Y_Disable_Copy_And_Assign(RString); //!< discarding
+                void finalize(); //!< register dquote
             };
         }
 

@@ -10,9 +10,24 @@ namespace Yttrium
 
         namespace Lexical
         {
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Common class for strinfs
+            //
+            //
+            //__________________________________________________________________
             class Strings : public Plugin
             {
             protected:
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
                 //! setup
                 /**
                  \param uid associated scanner uuid
@@ -36,12 +51,18 @@ namespace Yttrium
                 //! cleanup
                 virtual ~Strings() noexcept;
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
             protected:
-                void initialize();
+                void initialize(); //!< register all content to send to data
 
             private:
-                Y_Disable_Copy_And_Assign(Strings);
-                virtual void onSent(Token &);
+                Y_Disable_Copy_And_Assign(Strings); //!< discarding
+                virtual void onSent(Token &);       //!< process sent token
 
             };
         }

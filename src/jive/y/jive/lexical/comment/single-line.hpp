@@ -25,7 +25,7 @@ namespace Yttrium
             class SingleLineComment : public Comment
             {
             public:
-                static const uint32_t UUID = Y_FOURCC('C', 'O', 'M','1');
+                static const uint32_t UUID = Y_FOURCC('C', 'O', 'M','1'); //!< alias
 
                 //! construct
                 /**

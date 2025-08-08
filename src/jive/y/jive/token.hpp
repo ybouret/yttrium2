@@ -32,8 +32,8 @@ namespace Yttrium
             explicit Token() noexcept;         //!< setup
             virtual ~Token() noexcept;         //!< cleanup
             Token(const Token & );             //!< duplicate
-            Y_OSTREAM_PROTO(Token);            //!< display
-            
+            Y_OSTREAM_PROTO(Token);            //!< pretty display
+
             //__________________________________________________________________
             //
             //
@@ -42,9 +42,15 @@ namespace Yttrium
             //__________________________________________________________________
             virtual void free() noexcept; //!< free content
 
-            Token & skip() noexcept; //!< remove head
-            Token & trim() noexcept; //!< remove tail
+            Token & skip() noexcept; //!< remove head \return *this
+            Token & trim() noexcept; //!< remove tail \return *this
 
+            //! convert to raw string
+            /**
+             \param nskip optional skip count
+             \param ntrim optional trim count
+             \return raw string
+             */
             String toString(const size_t nskip=0, const size_t ntrim=0) const;
 
         private:

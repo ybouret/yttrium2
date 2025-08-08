@@ -78,6 +78,7 @@ namespace Yttrium
 
                 //! setup
                 /**
+                 \param uid class identifier
                  \param sid scanner id
                  \param com for design
                  \param eof for policy
@@ -115,7 +116,8 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-                void forbidden(const char * const method, const Token &) const;
+                //! throw exception for forbidden method access
+                void forbidden(const char * const, const Token &) const;
 
 
                 const String & key() const noexcept; //!< \return *name

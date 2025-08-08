@@ -58,7 +58,7 @@ namespace Yttrium
                 explicit Derivatives() noexcept; //!< setup
 
             private:
-                Y_Disable_Copy_And_Assign(Derivatives);
+                Y_Disable_Copy_And_Assign(Derivatives); //!< discarding
             };
         }
 

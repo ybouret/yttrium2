@@ -14,20 +14,38 @@ namespace Yttrium
         namespace Lexical
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! bracket string
+            //
+            //
+            //__________________________________________________________________
             class BString : public Strings
             {
             public:
-                static const uint32_t       UUID = Y_FOURCC('B','S','T','R');
-                static const char           JOIN = '<';
-                static const char           QUIT = '>';
-                Y_Jive_Plugin_Decl(BString);
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                static const uint32_t       UUID = Y_FOURCC('B','S','T','R'); //!< alias
+                static const char           JOIN = '<'; //!< alias
+                static const char           QUIT = '>'; //!< alias
+                Y_Jive_Plugin_Decl(BString);            //!< alias
+
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
 
                 //! setup
                 /**
-                 \param uid associated scanner uuid
                  \param sid associated scanner name
-                 \param cxp call expression
-                 \param com design
                  \param lxr root lexer
                  */
                 template <typename SID> inline
@@ -42,9 +60,15 @@ namespace Yttrium
                 //! cleanup
                 virtual ~BString() noexcept;
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
             private:
-                Y_Disable_Copy_And_Assign(BString);
-                void finalize();
+                Y_Disable_Copy_And_Assign(BString); //!< discarding
+                void finalize(); //!< register quote and dquote
             };
         }
 

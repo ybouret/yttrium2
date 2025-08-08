@@ -37,7 +37,6 @@ namespace Yttrium
                  \param uid associated scanner uuid
                  \param sid associated scanner name
                  \param cxp call expression
-                 \param com design
                  \param lxr root lexer
                  */
                 template <typename SID, typename CXP> inline

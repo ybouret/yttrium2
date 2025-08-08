@@ -34,6 +34,7 @@ namespace Yttrium
 
                 //! setup
                 /**
+                 \param uid class identifier
                  \param sid associated scanner name
                  \param cxp call expression
                  \param com design
@@ -63,7 +64,7 @@ namespace Yttrium
                 const Tag join; //!< call expression
 
             private:
-                Y_Disable_Copy_And_Assign(Extension);
+                Y_Disable_Copy_And_Assign(Extension); //!< discarding
             };
         }
 

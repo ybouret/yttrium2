@@ -23,7 +23,6 @@ namespace Yttrium
             class Comment : public Extension
             {
             protected:
-
                 //______________________________________________________________
                 //
                 //
@@ -33,6 +32,7 @@ namespace Yttrium
 
                 //! setup
                 /**
+                 \param uid class identifier
                  \param sid associated scanner name
                  \param cxp call expression
                  \param com design
@@ -54,12 +54,24 @@ namespace Yttrium
 
 
 
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
             private:
                 Y_Disable_Copy_And_Assign(Comment); //!< discarding
                 virtual void onCall(Token &);
                 virtual void onBack(Token &);
                 virtual void onSent(Token &);
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
             protected:
                 void finalize(); //!< drop "[:dot:]"
             };
