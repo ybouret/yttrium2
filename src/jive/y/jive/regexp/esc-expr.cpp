@@ -32,6 +32,7 @@ namespace Yttrium
                 case '?':
                 case AMPERSAND:
                 case '.':
+                case BACKSLASH:
                     return new Byte(c);
                     
                     // control

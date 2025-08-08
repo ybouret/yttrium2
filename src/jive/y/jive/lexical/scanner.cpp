@@ -308,7 +308,7 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
                         const String bad   = bestToken.toString();
                         const String where = ctx.str();
                         throw Specific:: Exception(name->c_str(),
-                                                   "%s: %s syntax error '%s'",
+                                                   "%s: %s '%s'",
                                                    where.c_str(),
                                                    bestRule->name->c_str(),
                                                    bad.c_str());

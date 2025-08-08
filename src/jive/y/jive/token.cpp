@@ -46,6 +46,28 @@ namespace Yttrium
 
         void Token:: free() noexcept { clear();  }
 
+        Token & Token:: skip() noexcept
+        {
+            if(size>0)
+            {
+                static Char::Cache & pool = Char:: CacheLocation();
+                pool.banish( popHead() );
+            }
+            return *this;
+        }
+
+        Token & Token:: trim() noexcept
+        {
+            if(size>0)
+            {
+                static Char::Cache & pool = Char:: CacheLocation();
+                pool.banish( popTail() );
+            }
+            return *this;
+        }
+
+
+
         std::ostream & operator<<(std::ostream &os, const Token &token)
         {
             for(const Char *ch=token.head;ch;ch=ch->next)
@@ -55,11 +77,11 @@ namespace Yttrium
             return os;
         }
 
-        String Token:: toString(const size_t skip, const size_t trim) const
+        String Token:: toString(const size_t nskip, const size_t ntrim) const
         {
-            const size_t rem = skip+trim;
+            const size_t rem = nskip+ntrim;
             if(rem>=size) return String();
-            const Char *curr = head; for(size_t i=skip;i>0;--i) curr=curr->next;
+            const Char *curr = head; for(size_t i=nskip;i>0;--i) curr=curr->next;
             String      res;
             for(size_t i=size-rem;i>0;--i,curr=curr->next)
                 res += char(**curr);

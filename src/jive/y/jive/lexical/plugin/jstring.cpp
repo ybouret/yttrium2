@@ -12,6 +12,10 @@ namespace Yttrium
 
             Y_Jive_Plugin_Impl(JString);
 
+            void JString:: finalize()
+            {
+                decl("quote", '\'', Regular, SendToken);
+            }
         }
 
     }

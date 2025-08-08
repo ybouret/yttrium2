@@ -33,6 +33,7 @@ namespace Yttrium
                 Strings(UUID,sid,JOIN,lxr)
                 {
                     initialize();
+                    finalize();
                 }
 
                 //! cleanup
@@ -40,6 +41,7 @@ namespace Yttrium
 
             private:
                 Y_Disable_Copy_And_Assign(JString);
+                void finalize();
             };
         }
 

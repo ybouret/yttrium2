@@ -56,7 +56,7 @@ Y_UTEST(lexer)
     std::cerr << "lexemes:" << std::endl;
     for(const Lexeme *lx=lxm.head;lx;lx=lx->next)
     {
-        std::cerr << lx->str() << ' ' << *lx << std::endl;
+        std::cerr << lx->str() << ' ' << *lx << " = '" << lx->toString() << "'"  << std::endl;
     }
 }
 Y_UDONE()

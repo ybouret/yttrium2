@@ -122,10 +122,10 @@ namespace Yttrium
 
                 //! declare a new standard rule
                 /**
-                 \param rid rule name
-                 \param rxp rule regular expression
+                 \param rid  rule name
+                 \param rxp  rule regular expression
                  \param attr rule attribute
-                 \param rise Emit if true, Drop if false
+                 \param ppty requested property
                  \return added rule
                  */
                 template <typename RID, typename RXP>
@@ -138,6 +138,38 @@ namespace Yttrium
                     const Motif  motif = RegExp::Compile(rxp, & *design.pdb );
                     return add( new Rule(rname,motif,attr,ppty,design.nil.tag) );
                 }
+
+                //! declare a new send rule, Regular
+                /**
+                 \param rid rule name
+                 \param rxp rule regular expression
+                 \return added rule
+                 */
+                template <typename RID, typename RXP>
+                const Rule & send(const RID &              rid,
+                                  const RXP &              rxp)
+                {
+                    const Tag    rname = rid;
+                    const Motif  motif = RegExp::Compile(rxp, & *design.pdb );
+                    return add( new Rule(rname,motif,Regular,SendToken,design.nil.tag) );
+                }
+
+                //! declare a new error rule, Regular
+                /**
+                 \param rid rule name
+                 \param rxp rule regular expression
+                 \return added rule
+                 */
+                template <typename RID, typename RXP>
+                const Rule & halt(const RID &              rid,
+                                  const RXP &              rxp)
+                {
+                    const Tag    rname = rid;
+                    const Motif  motif = RegExp::Compile(rxp, & *design.pdb );
+                    return add( new Rule(rname,motif,Regular,BadSyntax,design.nil.tag) );
+                }
+
+
 
                 //! declare a call rule
                 /**
