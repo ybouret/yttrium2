@@ -12,6 +12,8 @@ namespace Yttrium
 {
     namespace Jive
     {
+        class TagDB;
+
         namespace Lexical
         {
 
@@ -154,7 +156,8 @@ namespace Yttrium
 
                 const char * humanReadableDeed() const noexcept; //!< \return readable deed
                 const char * humanReadableAttr() const noexcept; //!< \return readable attr
-                
+
+                static Rule * Load(InputStream &, TagDB &);
 
                 //______________________________________________________________
                 //

@@ -325,7 +325,8 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
             {
                 size_t res = fp.emitCBR(uuid);                                  // uuid
                 res       += name->serialize(fp);                               // name
-                { const unsigned _ = policy; res += fp.emitVBR(_); }            //eof
+                { const unsigned _ = policy; res += fp.emitVBR(_); }            // eof
+                res += fp.emitVBR(code->rules.size);                            // #rules
                 for(const Rule *rule = code->rules.head;rule;rule=rule->next)
                     res += rule->serialize(fp);                                 // rule
                 return res;

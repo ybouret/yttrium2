@@ -1,6 +1,7 @@
 
 #include "y/jive/lexical/rule.hpp"
 #include "y/stream/libc/output.hpp"
+
 namespace Yttrium
 {
     namespace Jive
@@ -114,6 +115,35 @@ namespace Yttrium
                 res += data->serialize(fp);
                 { const unsigned _ = deed; res += fp.emitVBR(_); }
                 return res;
+            }
+
+
+
+
+        }
+
+    }
+
+}
+
+#include "y/jive/tagdb.hpp"
+#include "y/stream/input.hpp"
+
+namespace Yttrium
+{
+    namespace Jive
+    {
+        namespace Lexical
+        {
+
+            Rule * Rule:: Load(InputStream &fp, TagDB &db)
+            {
+                const Tag      ruleName  = db.read(fp,"rule.name");
+                const Motif    ruleMotif = Pattern::ReadFrom(fp);
+                const unsigned ruleAttr  = fp.readVBR<unsigned>("rule.attr");
+                const Tag      ruleData  = db.read(fp,"rule.data");
+                const unsigned ruleDeed  = fp.readVBR<unsigned>("rule.deed");
+                return 0;
             }
 
         }
