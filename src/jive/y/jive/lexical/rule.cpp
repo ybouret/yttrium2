@@ -106,6 +106,15 @@ namespace Yttrium
                 return HumarReadableAttr(attr);
             }
 
+            size_t Rule:: serialize(OutputStream &fp) const
+            {
+                size_t res = name->serialize(fp);
+                res       += motif->serialize(fp);
+                { const unsigned _ = attr; res += fp.emitVBR(_); }
+                res += data->serialize(fp);
+                { const unsigned _ = deed; res += fp.emitVBR(_); }
+                return res;
+            }
 
         }
 

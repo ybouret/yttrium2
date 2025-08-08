@@ -73,7 +73,7 @@ namespace Yttrium
              */
             //
             //__________________________________________________________________
-            class Rule : public Object
+            class Rule : public Object, public Serializable
             {
             public:
                 //______________________________________________________________
@@ -134,6 +134,14 @@ namespace Yttrium
 
 
                 virtual ~Rule()   noexcept; //!< cleanup
+
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
+                virtual size_t serialize(OutputStream&) const;
 
                 //______________________________________________________________
                 //

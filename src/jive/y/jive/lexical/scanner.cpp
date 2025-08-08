@@ -5,6 +5,7 @@
 #include "y/object/school-of.hpp"
 #include "y/type/destroy.hpp"
 #include "y/ascii/printable.hpp"
+#include "y/stream/output.hpp"
 
 namespace Yttrium
 {
@@ -317,7 +318,17 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
                 }
 
                 throw Specific::Exception(name->c_str(),"unhanled demeanor %s", Rule::HumarReadableDeed(bestRule->deed));
+            }
 
+
+            size_t Scanner:: serialize(OutputStream &fp) const
+            {
+                size_t res = fp.emitCBR(uuid);                                  // uuid
+                res       += name->serialize(fp);                               // name
+                { const unsigned _ = policy; res += fp.emitVBR(_); }            //eof
+                for(const Rule *rule = code->rules.head;rule;rule=rule->next)
+                    res += rule->serialize(fp);                                 // rule
+                return res;
             }
 
         }
