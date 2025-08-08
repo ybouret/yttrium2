@@ -14,7 +14,7 @@ namespace Yttrium
             {
                 send("core","[:core:]");
                 send("hexa","\\\\x[:xdigit:][:xdigit:]");
-                send("esc","\\\\[nrtfv\\x22\\x27<>]");
+                send("esc","\\\\[nrtfv\\x22\\x27<>\\\\]");
                 halt("unexpected","\\\\.?");
             }
 

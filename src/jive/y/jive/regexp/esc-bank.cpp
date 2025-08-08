@@ -27,6 +27,7 @@ namespace Yttrium
                 case RBRACK:
                 case CARET:
                 case '-':
+                case BACKSLASH:
                     return new Byte(c);
 
                     // control

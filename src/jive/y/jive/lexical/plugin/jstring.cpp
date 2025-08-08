@@ -14,7 +14,7 @@ namespace Yttrium
 
             void JString:: finalize()
             {
-                decl("quote", '\'', Regular, SendToken);
+                send("quote", '\'');
             }
         }
 
