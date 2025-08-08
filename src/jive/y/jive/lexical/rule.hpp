@@ -154,6 +154,7 @@ namespace Yttrium
 
                 const char * humanReadableDeed() const noexcept; //!< \return readable deed
                 const char * humanReadableAttr() const noexcept; //!< \return readable attr
+                
 
                 //______________________________________________________________
                 //

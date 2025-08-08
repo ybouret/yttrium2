@@ -2,7 +2,7 @@
 
 #include "y/jive/lexical/scanner.hpp"
 #include "y/utest/run.hpp"
-
+#include "y/stream/libc/output.hpp"
 
 using namespace Yttrium;
 using namespace Jive;
@@ -40,6 +40,12 @@ Y_UTEST(scanner)
 {
     Lexical::Design     com;
     MyScanner           scan(com);
+
+    {
+        OutputFile fp("scanner.bin");
+        scan.serialize(fp);
+    }
+
 
     Lexemes lxm;
     if(argc>1)
