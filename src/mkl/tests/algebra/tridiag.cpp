@@ -17,8 +17,8 @@ namespace
         std::cerr << "-- using " << typeid(T).name()  << std::endl;
         typedef typename ScalarFor<T>::Type ScalarType;
 
-        //Tao::ComputeMod2<T> sq;
-        Cameo::Addition<T>  xadd;
+        Cameo::Addition<T>           xadd;
+        Cameo::Addition<ScalarType>  sadd;
 
         for(size_t n=1;n<=nmax;++n)
         {
@@ -47,16 +47,16 @@ namespace
             Tao::Mul(xadd,v, M, u);
             tr.mul(xadd,w,u);
 
-            //const ScalarType residue1 = sq(v,r);
-            //const ScalarType residue2 = sq(w,r);
+            const ScalarType residue1 = Tao::Norm2(sadd,v,r);
+            const ScalarType residue2 = Tao::Norm2(sadd,w,r);
 
             //std::cerr << "M=" << M << std::endl;
            // std::cerr << "r=" << r << std::endl;
            // std::cerr << "u=" << u << std::endl;
            // std::cerr << "v=" << v << std::endl;
            // std::cerr << "w=" << w << std::endl;
-            //std::cerr << "--     residue1=" << residue1 << std::endl;
-            //std::cerr << "--     residue2=" << residue2 << std::endl;
+            std::cerr << "--     residue1=" << residue1 << std::endl;
+            std::cerr << "--     residue2=" << residue2 << std::endl;
         }
         std::cerr << std::endl;
 
@@ -85,7 +85,7 @@ Y_UTEST(algebra_tridiag)
     TestTriDiag< Complex< XReal<long double> > >(ran);
 
 
-    TestTriDiag<apq>(ran,5);
+    TestTriDiag<apq>(ran,8);
 
 
 }

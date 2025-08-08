@@ -102,7 +102,7 @@ namespace Yttrium
             //! \return |lhs|^2
             /**
              \param xadd perform additions
-             \param lhs  lhs sequence
+             \param lhs  lhs sequence with T as its Salar Type
              */
             template <typename T, typename LHS> inline
             T Norm2(Cameo::Addition<T> &xadd, LHS &lhs)
@@ -115,6 +115,31 @@ namespace Yttrium
                     API::Push(xadd,lhs[i]);
                 return xadd.sum();
             }
+
+
+            //! \return |lhs-rhs|^2
+            /**
+             \param xadd perform additions
+             \param lhs  lhs sequence with T as its Salar Type
+             */
+            template <typename T, typename LHS, typename RHS> inline
+            T Norm2(Cameo::Addition<T> &xadd, LHS &lhs, RHS &rhs)
+            {
+                typedef typename LHS::Type                                        InputType;
+                typedef          Hub::Norm2<InputType,IsScalar<InputType>::Value> API;
+
+                assert(lhs.size() == rhs.size());
+
+                xadd.ldz();
+                for(size_t i=lhs.size();i>0;--i)
+                {
+                    const InputType delta = lhs[i] - rhs[i];
+                    API::Push(xadd,delta);
+                }
+                return xadd.sum();
+            }
+
+
 
             //! \return |vect|^2
             /**
