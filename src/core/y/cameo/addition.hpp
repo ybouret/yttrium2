@@ -101,6 +101,7 @@ namespace Yttrium
                 this->add(res*=res);
             }
 
+            //! \param u first \param v second \param w third \return u+v+w
             template <typename U, typename V, typename W> inline
             T operator()(U &u, V &v, W &w)
             {

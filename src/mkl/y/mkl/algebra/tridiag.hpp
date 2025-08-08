@@ -29,7 +29,7 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            explicit TriDiag(const size_t n); //!< setup with size=m
+            explicit TriDiag(const size_t n); //!< setup \param n dimensions
             virtual ~TriDiag() noexcept;      //!< cleanup
 
 
@@ -40,17 +40,33 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            //! crc32 of used data
+            //! \return crc32 of used data
             uint32_t crc32() const noexcept;
             
-            //! try to solve this * u = r
+            //! try to solve
+            /**
+             \param u response
+             \param r rhs
+             \return true if r == *this * u
+             */
             bool  solve(Writable<T> &u, const Readable<T> &r);
 
             //! try to solve with a foreign diagonal
+            /**
+             \param u response
+             \param r rhs
+             \param B foreign diagonal
+             \return true if u was computed
+             */
             bool  solve(Writable<T> &u, const Readable<T> &r, const Readable<T> &B);
 
 
-            //! res = this * rhs
+            //! res = *this * rhs
+            /**
+             \param xadd for inner additions
+             \param res  result
+             \param rhs  rhs
+             */
             template <typename RES, typename RHS> inline
             void mul(Cameo::Addition<T> &xadd, RES &res, RHS &rhs) const
             {
@@ -86,9 +102,9 @@ namespace Yttrium
             }
 
         private:
-            Y_Disable_Copy_And_Assign(TriDiag);
+            Y_Disable_Copy_And_Assign(TriDiag); //!< discarding
             class Code;
-            Code *code;
+            Code *code; //!< inner code
             
         public:
             Writable<T>  & a;     //!< a[2..size]
@@ -97,10 +113,15 @@ namespace Yttrium
             const size_t & size;  //!< dimensions
             const T      & zero;  //!< constant zero value
 
-            //! return a copy of item, depending on i,j
+            //! full access mimicking
+            /**
+             \param i 1<=i<=size
+             \param j 1<=j<=size
+             \return copy of target value
+             */
             T operator()(const size_t i, const size_t j) const;
 
-            //! fill dense matrix
+            //! fill dense matrix \param M target matrix
             template <typename U>
             inline void sendTo(Matrix<U> &M) const
             {

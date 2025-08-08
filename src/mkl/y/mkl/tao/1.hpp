@@ -121,6 +121,7 @@ namespace Yttrium
             /**
              \param xadd perform additions
              \param lhs  lhs sequence with T as its Salar Type
+             \param rhs  rhs sequence 
              */
             template <typename T, typename LHS, typename RHS> inline
             T Norm2(Cameo::Addition<T> &xadd, LHS &lhs, RHS &rhs)

@@ -104,6 +104,7 @@ namespace Yttrium
             //
             //! internal computation by modified Ridder's Method
             //__________________________________________________________________
+            
             T compute1D(FunctionType &F, const T x0, const T h, const Interval<T> &I);
 
 
@@ -142,9 +143,9 @@ namespace Yttrium
 
             
         private:
-            Y_Disable_Copy_And_Assign(Derivatives);
+            Y_Disable_Copy_And_Assign(Derivatives); //!< discarding
             class Code;
-            Code *code;
+            Code *code; //!< inner code
         };
 
     }

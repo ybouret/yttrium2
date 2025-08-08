@@ -18,7 +18,7 @@ namespace Yttrium
         //! Cyclic (a,b,c)
         //
         //
-        //__________________________________________________________________
+        //______________________________________________________________________
         template <typename T>
         class Cyclic : public TriDiag<T>
         {
@@ -28,11 +28,28 @@ namespace Yttrium
             using TriDiag<T>::b;
             using TriDiag<T>::c;
 
-            explicit Cyclic(const size_t n); //!< n >= 3
-            virtual ~Cyclic() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit Cyclic(const size_t n); //!< \param n n >= 3
+            virtual ~Cyclic() noexcept;      //!< cleanup
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
 
             //! try to solve this * u = r
+            /**
+             \param u solution
+             \param r rhs
+             \return true if found
+             */
             bool  solve(Writable<T> &u, const Readable<T> &r);
 
             //! display as a dense matrix
@@ -44,7 +61,12 @@ namespace Yttrium
                 return os;
             }
 
-            //! res = this * rhs
+            //! multiplication res = *this * rhs
+            /**
+             \param xadd for inner additions
+             \param res result vector
+             \param rhs rhs vector
+             */
             template <typename RES, typename RHS> inline
             void mul(Cameo::Addition<T> &xadd, RES &res, RHS &rhs) const
             {
@@ -80,18 +102,23 @@ namespace Yttrium
             
 
         private:
-            Y_Disable_Copy_And_Assign(Cyclic);
+            Y_Disable_Copy_And_Assign(Cyclic); //!< discarding
             class  Code;
-            Code  *code;
+            Code  *code; //!< inner code
 
         public:
             T &    alpha; //!< (n,1) = c[n]
             T &    beta;  //!< (1,n) = a[1]
 
-            //! return a copy of item, depending on i,j
+            //! full access mimicking
+            /**
+             \param i 1<=i<=size
+             \param j 1<=j<=size
+             \return copy of target value
+             */
             T operator()(const size_t i, const size_t j) const;
 
-            //! send to size x size matrix
+            //! send to size x size matrix \param M target matrix
             template <typename U>
             inline void sendTo(Matrix<U> &M) const
             {
