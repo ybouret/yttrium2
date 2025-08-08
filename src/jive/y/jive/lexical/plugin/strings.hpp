@@ -40,7 +40,7 @@ namespace Yttrium
 
             private:
                 Y_Disable_Copy_And_Assign(Strings);
-                virtual void onSent(const Token &token) {}
+                virtual void onSent(Token &);
 
             };
         }

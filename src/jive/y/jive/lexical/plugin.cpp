@@ -16,15 +16,15 @@ namespace Yttrium
             }
 
             
-            void Plugin:: onCall(const Token &token)
+            void Plugin:: onCall(Token &token)
             {
                 data.free();
-                data << token;
+                data.mergeTail(token);
             }
 
-            void Plugin:: onBack(const Token &leave)
+            void Plugin:: onBack(Token &leave)
             {
-                data << leave;
+                data.mergeTail(leave);
                 if(data.size<=0)
                     throw Specific::Exception(name->c_str(),"no collected data");
                 const Context ctx = *data.head;

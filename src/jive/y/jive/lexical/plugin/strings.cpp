@@ -14,6 +14,10 @@ namespace Yttrium
                 decl("core","[:core:]",Regular,SendToken);
             }
 
+            void Strings:: onSent(Token &token)
+            {
+                data.mergeTail(token);
+            }
         }
     }
 

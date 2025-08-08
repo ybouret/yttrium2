@@ -26,9 +26,9 @@ namespace
         {
         }
 
-        virtual void onCall(const Token &) {}
-        virtual void onBack(const Token &) {}
-        virtual void onSent(const Token &) {}
+        virtual void onCall(Token &) {}
+        virtual void onBack(Token &) {}
+        virtual void onSent(Token &) {}
 
     private:
         Y_Disable_Copy_And_Assign(MyScanner);
@@ -38,7 +38,6 @@ namespace
 
 Y_UTEST(scanner)
 {
-    Dictionary::Pointer pdb = new Dictionary();
     Lexical::Design     com;
     MyScanner           scan(com);
 

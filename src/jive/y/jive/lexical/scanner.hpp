@@ -104,9 +104,9 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
-                virtual void onCall(const Token &enter) = 0; //!< what to do on call \param enter trigger in
-                virtual void onBack(const Token &leave) = 0; //!< what to do on back \param leave trigger out
-                virtual void onSent(const Token &token) = 0; //!< what to on on sent \param token sent by run
+                virtual void onCall(Token &enter) = 0; //!< what to do on call \param enter trigger in
+                virtual void onBack(Token &leave) = 0; //!< what to do on back \param leave trigger out
+                virtual void onSent(Token &token) = 0; //!< what to on on sent \param token sent by run
 
                 //______________________________________________________________
                 //
@@ -115,8 +115,8 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-                void forbidden(const char * const method) const;
-                
+                void forbidden(const char * const method, const Token &) const;
+
 
                 const String & key() const noexcept; //!< \return *name
 

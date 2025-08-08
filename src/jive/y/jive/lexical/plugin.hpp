@@ -68,8 +68,8 @@ namespace Yttrium
 
             private:
                 Y_Disable_Copy_And_Assign(Plugin); //!< discarding
-                virtual void onCall(const Token &); //!< initialize data
-                virtual void onBack(const Token &); //!< finalize data and yield lexeme
+                virtual void onCall(Token &);      //!< initialize data
+                virtual void onBack(Token &);      //!< finalize data and yield lexeme
             };
 
 #define Y_Jive_Plugin_Decl(PLUGIN)      \

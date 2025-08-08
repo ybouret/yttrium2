@@ -32,6 +32,7 @@ namespace Yttrium
                                  Lexer &         lxr) :
                 Strings(UUID,sid,JOIN,lxr)
                 {
+                    initialize();
                 }
 
                 //! cleanup

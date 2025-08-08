@@ -20,19 +20,19 @@ namespace Yttrium
             }
 
 
-            void Comment:: onCall(const Token &)
+            void Comment:: onCall(Token &)
             {
 
             }
 
-            void Comment:: onBack(const Token &)
+            void Comment:: onBack(Token &)
             {
                 
             }
 
-            void Comment:: onSent(const Token &)
+            void Comment:: onSent(Token &token)
             {
-                forbidden("Comment::onSent");
+                forbidden("Comment::onSent",token);
             }
 
         }

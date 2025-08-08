@@ -156,10 +156,11 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
             }
 
             
-            void Scanner:: forbidden(const char * const method) const
+            void Scanner:: forbidden(const char * const method, const Token &token) const
             {
                 assert(method);
-                throw Specific::Exception(name->c_str(),"forbidden %s!!",method);
+                const String s = token.toString();
+                throw Specific::Exception(name->c_str(),"forbidden %s('%s')!!",method,s.c_str());
             }
 
 

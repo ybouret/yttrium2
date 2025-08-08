@@ -44,15 +44,6 @@ namespace Yttrium
         }
 
 
-        Token & Token:: operator<<(const Token &other)
-        {
-            Token tmp(other);
-            mergeTail(tmp);
-            return *this;
-        }
-
-
-
         void Token:: free() noexcept { clear();  }
 
         std::ostream & operator<<(std::ostream &os, const Token &token)

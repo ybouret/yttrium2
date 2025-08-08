@@ -53,19 +53,19 @@ namespace Yttrium
         }
 
 
-        void Lexer:: onCall(const Token &)
+        void Lexer:: onCall(Token &token)
         {
-            forbidden("Lexer::onCall");
+            forbidden("Lexer::onCall",token);
         }
 
-        void Lexer:: onBack(const Token&)
+        void Lexer:: onBack(Token &token)
         {
-            forbidden("Lexer::onBack");
+            forbidden("Lexer::onBack",token);
         }
 
-        void Lexer:: onSent(const Token &)
+        void Lexer:: onSent(Token &token)
         {
-            forbidden("Lexer::onSent");
+            forbidden("Lexer::onSent",token);
         }
 
         void Lexer:: store(Lexeme * const lexeme) noexcept
@@ -74,15 +74,20 @@ namespace Yttrium
             lxms.pushHead(lexeme);
         }
 
+#define Y_PRINT(MSG) \
+do { if(Scanner::Verbose) { std::cerr << "<" << scan->name <<  "> " << MSG << std::endl; } } while(false)
+
+
         Lexeme * Lexer:: query(Source &source)
         {
             assert(0!=scan);
-            if(lxms.size>0) return lxms.popHead();
 
 
         QUERY:
+            //Y_PRINT("query");
             assert(0!=scan);
             {
+                if(lxms.size>0) return lxms.popHead();
                 AutoPtr<Lexeme> unit;
                 const String *  ctrl = 0;
                 switch(scan->run(source,unit,ctrl))

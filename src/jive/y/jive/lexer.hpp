@@ -79,9 +79,9 @@ namespace Yttrium
             //
             //__________________________________________________________________
             virtual void free()       noexcept;
-            virtual void onCall(const Token &);
-            virtual void onBack(const Token &);
-            virtual void onSent(const Token &);
+            virtual void onCall(Token &);
+            virtual void onBack(Token &);
+            virtual void onSent(Token &);
 
             //__________________________________________________________________
             //
