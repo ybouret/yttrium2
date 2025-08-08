@@ -30,7 +30,7 @@ namespace Yttrium
                 template <typename SID> inline
                 explicit JString(const SID    &  sid,
                                  Lexer &         lxr) :
-                Strings(UUID,sid,JOIN,lxr)
+                Strings(UUID,sid,JOIN,JOIN,lxr)
                 {
                     initialize();
                     finalize();

@@ -5,6 +5,8 @@
 #include "y/utest/run.hpp"
 #include "y/string/env.hpp"
 #include "y/jive/lexical/plugin/jstring.hpp"
+#include "y/jive/lexical/plugin/rstring.hpp"
+#include "y/jive/lexical/plugin/bstring.hpp"
 
 using namespace Yttrium;
 using namespace Jive;
@@ -23,7 +25,9 @@ namespace
             comment("C Comment","/\\*", "\\*/");
 
 
-            plug(Lexical::JString::Class,"string");
+            plug(Lexical::JString::Class,"jString");
+            plug(Lexical::RString::Class,"rString");
+            plug(Lexical::BString::Class,"bString");
 
             endl("endl",  "[:endl:]");
             drop("blank", "[:blank:]");

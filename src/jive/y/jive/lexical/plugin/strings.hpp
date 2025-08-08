@@ -17,18 +17,19 @@ namespace Yttrium
                 /**
                  \param uid associated scanner uuid
                  \param sid associated scanner name
-                 \param cxp call expression
-                 \param com design
+                 \param cxp back expression
+                 \param bxp back expression
                  \param lxr root lexer
                  */
-                template <typename SID,typename CXP> inline
+                template <typename SID,typename CXP, typename BXP> inline
                 explicit Strings(const uint32_t  uid,
                                  const SID    &  sid,
                                  const CXP    &  cxp,
+                                 const BXP    &  bxp,
                                  Lexer &         lxr) :
                 Plugin(uid,sid,cxp,lxr)
                 {
-                    back(cxp,Regular);
+                    back(bxp,Regular);
                 }
 
             public:

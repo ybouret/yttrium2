@@ -15,7 +15,7 @@ namespace Yttrium
 
             void RString:: finalize()
             {
-                send("dquote", '\'');
+                send("dquote", '\"');
             }
         }
 

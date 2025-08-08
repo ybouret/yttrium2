@@ -31,7 +31,7 @@ namespace Yttrium
                 template <typename SID> inline
                 explicit RString(const SID    &  sid,
                                  Lexer &         lxr) :
-                Strings(UUID,sid,JOIN,lxr)
+                Strings(UUID,sid,JOIN,JOIN,lxr)
                 {
                     initialize();
                     finalize();
