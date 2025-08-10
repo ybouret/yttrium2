@@ -34,6 +34,7 @@ namespace Yttrium
                 virtual ~Node() noexcept;
 
 
+                static  void Restore(Node * const, Lexer &) noexcept;
                 virtual void restore(Lexer &) noexcept = 0;
 
                 TerminalNode * Make(InternalNode * const, Lexeme * const);
@@ -44,6 +45,7 @@ namespace Yttrium
                 InternalNode * const sire;
                 Node *               next;
                 Node *               prev;
+
             private:
                 Y_Disable_Copy_And_Assign(Node);
             };
@@ -55,7 +57,6 @@ namespace Yttrium
             public:
                 virtual ~TerminalNode() noexcept;
 
-                virtual void restore(Lexer &) noexcept;
 
                 Lexeme * const lexeme;
 
@@ -63,7 +64,7 @@ namespace Yttrium
                 explicit TerminalNode( InternalNode * const, Lexeme * const) noexcept;
                 Y_Disable_Copy_And_Assign(TerminalNode);
                 friend class Node;
-
+                virtual void restore(Lexer &) noexcept;
             };
 
 
@@ -73,12 +74,13 @@ namespace Yttrium
             public:
                 virtual ~InternalNode() noexcept;
 
-                virtual void restore(Lexer &) noexcept;
 
             private:
                 Y_Disable_Copy_And_Assign(InternalNode);
                 explicit InternalNode(InternalNode * const) noexcept;
                 friend class Node;
+                virtual void restore(Lexer &) noexcept;
+
             };
 
         }

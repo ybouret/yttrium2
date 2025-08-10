@@ -20,7 +20,10 @@ namespace Yttrium
             prev(0)
             {
             }
-            
+
+            void Node:: Restore(Node * const, Lexer &) noexcept
+            {}
+
         }
 
     }
@@ -54,6 +57,16 @@ namespace Yttrium
                 try { return new TerminalNode(from,lx); }
                 catch(...){ delete lx; throw; }
             }
+
+            void TerminalNode:: restore(Lexer &lexer) noexcept
+            {
+                if(lexeme)
+                {
+                    lexer.store(lexeme);
+                    Coerce(lexeme) = 0;
+                }
+            }
+
         }
 
     }
@@ -80,6 +93,14 @@ namespace Yttrium
             InternalNode * Node::Make(InternalNode *const from)
             {
                 return new InternalNode(from);
+            }
+
+            void InternalNode:: restore(Lexer &lexer) noexcept
+            {
+                while(size) {
+                    tail->restore(lexer);
+                    delete popTail();
+                }
             }
         }
     }
