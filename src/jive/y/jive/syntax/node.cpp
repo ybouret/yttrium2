@@ -11,67 +11,78 @@ namespace Yttrium
         {
             Node:: ~Node() noexcept
             {
-                assert(0!=data);
-                switch(type)
-                {
-                    case IsTerminal: { Lexeme * const lx = queryLexeme(); if(lx) delete lx; } break;
-                    case IsInternal:  Destruct(static_cast<XList *>(data)); break;
-                }
-                Y_Memory_BZero(wksp);
             }
 
-            Node * Node:: Make(Lexeme * const lx)
-            {
-                try { return new Node(lx);     }
-                catch(...) { delete lx; throw; }
-            }
-
-            Node:: Node(Lexeme * const lx) noexcept :
-            type(IsTerminal),
-            sire(0),
-            data(0),
-            wksp(),
+            Node:: Node(const Category t, InternalNode * const from) noexcept :
+            type(t),
+            sire(from),
             next(0),
             prev(0)
             {
-                Coerce(data) = Y_Memory_BZero(wksp);
-                *(Lexeme **) data = lx;
             }
-
-            Node:: Node() noexcept :
-            type(IsInternal),
-            sire(0),
-            data(0),
-            wksp(),
-            next(0),
-            prev(0)
-            {
-                new ( Coerce(data) = Y_Memory_BZero(wksp) ) XList();
-            }
-
-            Node * Node:: Make()
-            {
-                return new Node();
-            }
-
-            Lexeme * Node:: queryLexeme() const noexcept
-            {
-                assert(IsTerminal);
-                Lexeme * const lx = *(Lexeme **) data;
-                return lx;
-            }
-
-            XList  & Node:: returnXList() const noexcept
-            {
-                assert(IsInternal);
-                return *(XList *) data;
-            }
-
-
             
-
         }
 
     }
 
 }
+
+#include "y/type/destroy.hpp"
+
+namespace Yttrium
+{
+    namespace Jive
+    {
+
+        namespace Syntax
+        {
+            TerminalNode:: ~TerminalNode() noexcept
+            {
+                if(lexeme) Destroy(lexeme);
+            }
+
+            TerminalNode:: TerminalNode(InternalNode * const from,
+                                        Lexeme *       const lx) noexcept :
+            Node(IsTerminal,from),
+            lexeme(lx)
+            {
+            }
+
+            TerminalNode * Node::Make(InternalNode *const from, Lexeme *const lx)
+            {
+                assert(0!=lx);
+                try { return new TerminalNode(from,lx); }
+                catch(...){ delete lx; throw; }
+            }
+        }
+
+    }
+
+}
+
+namespace Yttrium
+{
+    namespace Jive
+    {
+
+        namespace Syntax
+        {
+
+            InternalNode:: ~InternalNode() noexcept
+            {
+            }
+
+            InternalNode:: InternalNode(InternalNode * const from) noexcept:
+            Node(IsInternal,from)
+            {
+            }
+
+            InternalNode * Node::Make(InternalNode *const from)
+            {
+                return new InternalNode(from);
+            }
+        }
+    }
+
+}
+

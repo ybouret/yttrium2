@@ -22,38 +22,58 @@ namespace Yttrium
             };
 
             class   Node;
-            typedef CxxListOf<Node> XList;
+            typedef CxxListOf<Node> NodeList;
+            class   InternalNode;
+            class   TerminalNode;
 
             class Node : public Object, public Vizible
             {
+            protected:
+                explicit Node(const Category, InternalNode * const) noexcept;
             public:
-                static const unsigned   ListWords = Alignment::WordsFor<XList>::Count;
-
-
                 virtual ~Node() noexcept;
 
-                Node * Make(Lexeme * const lx);
-                Node * Make();
 
-                Lexeme &       lexeme() noexcept;
-                const Lexeme & lexeme() const noexcept;
+                virtual void restore(Lexer &) noexcept = 0;
 
-                const Category type;
-                Node * const   sire;
+                TerminalNode * Make(InternalNode * const, Lexeme * const);
+                InternalNode * Make(InternalNode * const);
+
+
+                const Category       type;
+                InternalNode * const sire;
+                Node *               next;
+                Node *               prev;
             private:
                 Y_Disable_Copy_And_Assign(Node);
-                explicit Node(Lexeme * const lx) noexcept;
-                explicit Node() noexcept;
-                void * const data;
-                void *wksp[ListWords];
+            };
 
-                Lexeme * queryLexeme() const noexcept;
-                XList  & returnXList() const noexcept;
 
+
+            class TerminalNode : public Node
+            {
             public:
-                Node *       next;
-                Node *       prev;
+                virtual ~TerminalNode() noexcept;
 
+                Lexeme * const lexeme;
+
+            private:
+                explicit TerminalNode( InternalNode * const, Lexeme * const) noexcept;
+                Y_Disable_Copy_And_Assign(TerminalNode);
+                friend class Node;
+            };
+
+
+
+            class InternalNode : public Node, public NodeList
+            {
+            public:
+                virtual ~InternalNode() noexcept;
+
+            private:
+                Y_Disable_Copy_And_Assign(InternalNode);
+                explicit InternalNode(InternalNode * const) noexcept;
+                friend class Node;
             };
 
         }
