@@ -57,7 +57,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Scanner : public CountedObject
+            class Scanner : public CountedObject, public Ingress< const Core::ListOf<Rule> >
             {
             public:
                 //______________________________________________________________
@@ -273,6 +273,7 @@ namespace Yttrium
                 Code * const code; //!< inner code
 
                 Y_Disable_Copy_And_Assign(Scanner); //!< discarding
+                Y_Ingress_Decl();
                 static Code * New(const Tag &);      //!< \return ne code from tag
                 const Rule &  add(Rule * const);     //!< \return recorded new rule
 

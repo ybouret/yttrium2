@@ -321,7 +321,7 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
             }
 
 
-          
+            Y_Ingress_Impl(Scanner,code->rules);
 
         }
 

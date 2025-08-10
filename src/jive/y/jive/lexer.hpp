@@ -25,7 +25,11 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Lexer : public Lexical::Design, public Lexical::Scanner, public Recyclable
+        class Lexer :
+        public Lexical::Design,
+        public Lexical::Scanner,
+        public Recyclable,
+        public Serializable
         {
         public:
             //__________________________________________________________________
@@ -78,10 +82,11 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
-            virtual void free()       noexcept;
-            virtual void onCall(Token &);
-            virtual void onBack(Token &);
-            virtual void onSent(Token &);
+            virtual void   free()       noexcept;
+            virtual void   onCall(Token &);
+            virtual void   onBack(Token &);
+            virtual void   onSent(Token &);
+            virtual size_t serialize(OutputStream&) const noexcept;
 
             //__________________________________________________________________
             //

@@ -132,3 +132,46 @@ do { if(Scanner::Verbose) { std::cerr << "<" << scan->name <<  "> " << MSG << st
     }
 
 }
+
+
+#include "y/stream/output.hpp"
+
+namespace Yttrium
+{
+
+    namespace Jive
+    {
+        size_t Lexer:: serialize(OutputStream &fp) const noexcept
+        {
+
+            size_t res = name->serialize(fp);
+
+            // save scanners id but UUID
+            {
+                assert(mydb.size()>0);
+                const size_t ns = mydb.size()-1;
+                res += fp.emitVBR(ns);
+                for(ScanDB::ConstIterator it=mydb.begin();it!=mydb.end();++it)
+                {
+                    const Scanner &sub = **it;
+                    const uint32_t uid = sub.uuid; if(UUID==uid) continue;
+                    res += fp.emitCBR(uid);
+                }
+            }
+
+            // save specific rules
+
+            {
+                const Scanner &self = *this;
+                res += fp.emitVBR(self->size);
+                for(const Lexical::Rule *r=self->head;r;r=r->next)
+                {
+                    res += r->serialize(fp);
+                }
+            }
+
+            return res;
+        }
+    }
+}
+
