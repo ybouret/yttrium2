@@ -77,6 +77,15 @@ namespace Yttrium
         throw excp;
     }
 
+    void InputStream:: throwMissing(const char * const varName,
+                                     const char * const varPart) const
+    {
+        Specific::Exception excp("InputStream::readCBR","missing input");
+        if(varName) excp.add(fmt,varName);
+        if(varPart) excp.add(".%s",varPart);
+        throw excp;
+    }
+
 
     size_t InputStream:: read(uint8_t &b)
     {

@@ -41,11 +41,7 @@ Y_UTEST(scanner)
     Lexical::Design     com;
     MyScanner           scan(com);
 
-    {
-        OutputFile fp("scanner.bin");
-        scan.serialize(fp);
-    }
-
+    
 
     Lexemes lxm;
     if(argc>1)

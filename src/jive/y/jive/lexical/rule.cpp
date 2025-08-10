@@ -128,6 +128,7 @@ namespace Yttrium
 
 #include "y/jive/tagdb.hpp"
 #include "y/stream/input.hpp"
+#include "y/system/exception.hpp"
 
 namespace Yttrium
 {
@@ -136,14 +137,42 @@ namespace Yttrium
         namespace Lexical
         {
 
+            Rule:: Rule(const Tag       &n,
+                        const Motif     &m,
+                        const Attribute  a,
+                        const Tag       &x,
+                        const Demeanor   d) :
+            name(n),
+            motif(m),
+            attr(a),
+            data(x),
+            deed(d),
+            next(0),
+            prev(0)
+            {
+            }
+
             Rule * Rule:: Load(InputStream &fp, TagDB &db)
             {
                 const Tag      ruleName  = db.read(fp,"rule.name");
                 const Motif    ruleMotif = Pattern::ReadFrom(fp);
                 const unsigned ruleAttr  = fp.readVBR<unsigned>("rule.attr");
+
+                if(ruleAttr>=NewLine)
+                    throw Specific::Exception("Jive::Rule","invalid attribute");
+
                 const Tag      ruleData  = db.read(fp,"rule.data");
                 const unsigned ruleDeed  = fp.readVBR<unsigned>("rule.deed");
-                return 0;
+
+                if(ruleDeed>=Back)
+                    throw Specific::Exception("Jive::Rule","invalid demeanor");
+
+                return new Rule(ruleName,
+                                ruleMotif,
+                                Attribute(ruleAttr),
+                                ruleData,
+                                Demeanor(ruleDeed)
+                                );
             }
 
         }

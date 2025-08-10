@@ -175,6 +175,11 @@ namespace Yttrium
                 
             private:
                 Y_Disable_Copy_And_Assign(Rule); //!< discarding
+                Rule(const Tag &,
+                     const Motif &,
+                     const Attribute,
+                     const Tag &,
+                     const Demeanor);
             };
         }
     }

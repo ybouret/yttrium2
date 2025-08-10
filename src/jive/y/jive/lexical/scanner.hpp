@@ -57,7 +57,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Scanner : public CountedObject, public Serializable
+            class Scanner : public CountedObject
             {
             public:
                 //______________________________________________________________
@@ -105,11 +105,10 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
-                virtual void   onCall(Token &enter) = 0; //!< what to do on call \param enter trigger in
-                virtual void   onBack(Token &leave) = 0; //!< what to do on back \param leave trigger out
-                virtual void   onSent(Token &token) = 0; //!< what to on on sent \param token sent by run
-                virtual size_t serialize(OutputStream &fp) const;
-
+                virtual void     onCall(Token &enter) = 0; //!< what to do on call \param enter trigger in
+                virtual void     onBack(Token &leave) = 0; //!< what to do on back \param leave trigger out
+                virtual void     onSent(Token &token) = 0; //!< what to on on sent \param token sent by run
+                
                 //______________________________________________________________
                 //
                 //

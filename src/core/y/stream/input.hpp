@@ -82,6 +82,17 @@ namespace Yttrium
             return res;
         }
 
+        template <typename T>
+        inline T loadCBR(const char * const varName = 0,
+                         const char * const varPart = 0)
+        {
+            T res(0);
+            const size_t n = readCBR(res);
+            if(n<sizeof(T)) throwMissing(varName,varPart);
+            return res;
+        }
+
+
         //! read Variable Bit Rate variable
         /**
          \param varName optional variable name
@@ -116,6 +127,9 @@ namespace Yttrium
                            const char * const,
                            const uint64_t,
                            const uint64_t) const;
+
+        void throwMissing(const char * const,
+                          const char * const) const;
     };
 }
 

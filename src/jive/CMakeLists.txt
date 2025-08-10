@@ -10,6 +10,7 @@ y/jive/regexp
 y/jive/lexical
 y/jive/lexical/comment
 y/jive/lexical/plugin
+y/jive/syntax
 )
 
 add_subdirectory(tests)
