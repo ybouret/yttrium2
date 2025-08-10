@@ -55,12 +55,15 @@ namespace Yttrium
             public:
                 virtual ~TerminalNode() noexcept;
 
+                virtual void restore(Lexer &) noexcept;
+
                 Lexeme * const lexeme;
 
             private:
                 explicit TerminalNode( InternalNode * const, Lexeme * const) noexcept;
                 Y_Disable_Copy_And_Assign(TerminalNode);
                 friend class Node;
+
             };
 
 
@@ -69,6 +72,8 @@ namespace Yttrium
             {
             public:
                 virtual ~InternalNode() noexcept;
+
+                virtual void restore(Lexer &) noexcept;
 
             private:
                 Y_Disable_Copy_And_Assign(InternalNode);
