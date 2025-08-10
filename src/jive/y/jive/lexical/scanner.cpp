@@ -321,7 +321,14 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
             }
 
 
-            Y_Ingress_Impl(Scanner,code->rules);
+            size_t Scanner:: emitUUID(OutputStream &fp) const
+            {
+                return fp.emitCBR(uuid);
+            }
+
+            Y_Ingress_Impl(Scanner,code->rules)
+
+
 
         }
 

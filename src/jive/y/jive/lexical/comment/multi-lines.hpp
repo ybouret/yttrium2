@@ -40,9 +40,9 @@ namespace Yttrium
                                            const CXP    &cxp,
                                            const RXP    &bxp,
                                            const Design &com) :
-                Comment(UUID,sid,cxp,com,RejectEOF)
+                Comment(UUID,sid,cxp,com,RejectEOF),
+                quit(bxp)
                 {
-                    const Tag quit = bxp;
                     back(*quit,Regular);
                     setup();
                 }
@@ -50,6 +50,9 @@ namespace Yttrium
                 //! cleanup
                 virtual ~MultiLinesComment() noexcept;
 
+                virtual size_t serialize(OutputStream &fp) const;
+
+                const Tag quit;
             private:
                 Y_Disable_Copy_And_Assign(MultiLinesComment); //!< discarding
                 void setup(); //!< drop endl, drop dot

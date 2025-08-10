@@ -57,7 +57,10 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Scanner : public CountedObject, public Ingress< const Core::ListOf<Rule> >
+            class Scanner :
+            public CountedObject,
+            public Ingress< const Core::ListOf<Rule> >,
+            public Serializable
             {
             public:
                 //______________________________________________________________
@@ -246,6 +249,8 @@ namespace Yttrium
                 {
                     return decl(rid,rxp,NewLine,rise ? SpawnUnit : DropToken);
                 }
+
+                size_t emitUUID(OutputStream&) const;
 
                 //! look up algorithm
                 /**

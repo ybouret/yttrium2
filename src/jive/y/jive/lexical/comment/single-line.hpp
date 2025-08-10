@@ -45,7 +45,8 @@ namespace Yttrium
                 //! cleanup
                 virtual ~SingleLineComment() noexcept;
 
-               
+                virtual size_t serialize(OutputStream&) const;
+                
 
             private:
                 Y_Disable_Copy_And_Assign(SingleLineComment); //!< discarding

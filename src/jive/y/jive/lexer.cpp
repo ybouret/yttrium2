@@ -146,21 +146,21 @@ namespace Yttrium
 
             size_t res = name->serialize(fp);
 
-            // save scanners id but UUID
+            // save extensions
             {
                 assert(mydb.size()>0);
-                const size_t ns = mydb.size()-1;
-                res += fp.emitVBR(ns);
+                const size_t nx = mydb.size()-1;
+                res += fp.emitVBR(nx);
                 for(ScanDB::ConstIterator it=mydb.begin();it!=mydb.end();++it)
                 {
                     const Scanner &sub = **it;
-                    const uint32_t uid = sub.uuid; if(UUID==uid) continue;
-                    res += fp.emitCBR(uid);
+                    const uint32_t uid = sub.uuid;
+                    if(UUID==uid) { assert(&sub == this); continue; }
+                    res += sub.serialize(fp);
                 }
             }
 
             // save specific rules
-
             {
                 const Scanner &self = *this;
                 res += fp.emitVBR(self->size);

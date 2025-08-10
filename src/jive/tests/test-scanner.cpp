@@ -30,6 +30,8 @@ namespace
         virtual void onBack(Token &) {}
         virtual void onSent(Token &) {}
 
+        virtual size_t serialize(OutputStream &) const { return 0; }
+
     private:
         Y_Disable_Copy_And_Assign(MyScanner);
     };

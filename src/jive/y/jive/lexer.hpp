@@ -28,8 +28,7 @@ namespace Yttrium
         class Lexer :
         public Lexical::Design,
         public Lexical::Scanner,
-        public Recyclable,
-        public Serializable
+        public Recyclable
         {
         public:
             //__________________________________________________________________

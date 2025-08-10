@@ -8,6 +8,8 @@
 #include "y/jive/lexical/plugin/rstring.hpp"
 #include "y/jive/lexical/plugin/bstring.hpp"
 
+#include "y/stream/libc/output.hpp"
+
 using namespace Yttrium;
 using namespace Jive;
 
@@ -47,7 +49,10 @@ Y_UTEST(lexer)
 {
     Lexical::Scanner::Verbose = Environment::Flag("VERBOSE");
     MyLexer lexer;
-
+    {
+        OutputFile fp("lexer.bin");
+        lexer.serialize(fp);
+    }
     Lexemes lxm;
     if(argc>1)
     {

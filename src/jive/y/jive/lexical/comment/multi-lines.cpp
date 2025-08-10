@@ -20,6 +20,14 @@ namespace Yttrium
                 finalize();
             }
 
+
+            size_t MultiLinesComment:: serialize(OutputStream &fp) const
+            {
+                size_t res = emitUUID(fp);
+                res += join->serialize(fp);
+                res += quit->serialize(fp);
+                return res;
+            }
         }
 
     }

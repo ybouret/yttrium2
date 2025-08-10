@@ -12,7 +12,7 @@ namespace Yttrium
     {
         Pattern * RegExp:: Compiler:: escBank()
         {
-            std::cerr << "escExpr" << std::endl;
+            //std::cerr << "escExpr" << std::endl;
 
             assert( BACKSLASH == curr[-1] );
 

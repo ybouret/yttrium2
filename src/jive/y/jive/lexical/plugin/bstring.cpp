@@ -1,6 +1,5 @@
-
-
 #include "y/jive/lexical/plugin/bstring.hpp"
+#include "y/stream/output.hpp"
 
 namespace Yttrium
 {
@@ -18,6 +17,14 @@ namespace Yttrium
             {
                 send("dquote", '\"');
                 send("quote",  '\'');
+            }
+
+            size_t BString:: serialize(OutputStream &fp) const
+            {
+                const size_t res = emitUUID(fp);
+                fp.write(JOIN);
+                fp.write(QUIT);
+                return res+2;
             }
         }
 
