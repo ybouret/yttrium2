@@ -1,6 +1,8 @@
 
 #include "y/jive/lexical/comment/single-line.hpp"
-//#include "y/stream/output.hpp"
+#include "y/stream/output.hpp"
+#include "y/stream/input.hpp"
+#include "y/jive/tagdb.hpp"
 
 namespace Yttrium
 {
@@ -26,6 +28,8 @@ namespace Yttrium
                 size_t res = emitUUID(fp);
                 return res + join->serialize(fp);
             }
+
+            
 
         }
 

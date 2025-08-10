@@ -26,6 +26,7 @@ namespace Yttrium
             {
             public:
                 static const uint32_t UUID = Y_FOURCC('C', 'O', 'M','1'); //!< alias
+                
 
                 //! construct
                 /**
@@ -46,7 +47,7 @@ namespace Yttrium
                 virtual ~SingleLineComment() noexcept;
 
                 virtual size_t serialize(OutputStream&) const;
-                
+
 
             private:
                 Y_Disable_Copy_And_Assign(SingleLineComment); //!< discarding
