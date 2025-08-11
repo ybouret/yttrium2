@@ -26,10 +26,7 @@ namespace Yttrium
             {
             public:
                 static const uint32_t UUID = Y_FOURCC('C', 'O', 'M','1'); //!< alias
-
-                static Scanner * Load(InputStream  &,
-                                      Lexer        &,
-                                      TagDB        &);
+                static Scanner *      Load(InputStream &,Lexer &,TagDB &);
 
                 //! construct
                 /**

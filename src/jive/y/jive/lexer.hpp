@@ -16,6 +16,7 @@ namespace Yttrium
     {
 
 
+        class Babel;
 
         //______________________________________________________________________
         //
@@ -158,6 +159,8 @@ namespace Yttrium
             Lexemes   lxms; //!< lexeme cache
             History   hist; //!< history
             ScanDB    mydb; //!< recorded scanners
+
+            friend class Babel;
         };
     }
 

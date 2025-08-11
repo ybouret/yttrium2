@@ -14,7 +14,7 @@ namespace Yttrium
 {
     namespace Jive
     {
-
+        
         class Babel : public Singleton<Babel,ClassLockPolicy>
         {
         public:
@@ -25,12 +25,15 @@ namespace Yttrium
             static const Longevity    LifeTime = LifeTimeOf::JiveBabel;
 
 
-            Lexer * LoadLexer(InputStream &fp);
+            virtual void display(std::ostream &,size_t) const;
+
+            Lexer * loadLexer(InputStream &fp);
 
             LexicalDB lexicalDB;
 
         private:
             Y_Disable_Copy_And_Assign(Babel);
+            friend class Singleton<Babel,ClassLockPolicy>;
             explicit Babel();
             virtual ~Babel() noexcept;
 

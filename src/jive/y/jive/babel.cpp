@@ -5,6 +5,8 @@ namespace Yttrium
 {
     namespace Jive
     {
+        const char * const Babel::CallSign = "Jive::Babel";
+        
         Babel:: ~Babel() noexcept
         {
         }
@@ -14,6 +16,13 @@ namespace Yttrium
         {
 
             lexicalInit();
+        }
+
+        void Babel:: display(std::ostream &os,size_t indent) const
+        {
+            init(os,indent);
+
+            quit(os,indent);
         }
 
     }

@@ -20,6 +20,8 @@ namespace Yttrium
         void Babel:: lexicalInit()
         {
             Y_Jive_Babel(Lexical::SingleLineComment);
+            Y_Jive_Babel(Lexical::MultiLinesComment);
+
         }
     }
 }
@@ -47,7 +49,32 @@ namespace Yttrium
 
 }
 
+namespace Yttrium
+{
+    namespace Jive
+    {
+
+        namespace Lexical
+        {
+            Scanner * MultiLinesComment:: Load(InputStream &fp, Lexer &lexer, TagDB &db)
+            {
+                const String cid = FourCC(UUID).c_str();
+                const String jid = cid + ".join";
+                const String qid = cid + ".quit";
+                const Tag    sid = db.read(fp,cid.c_str());
+                const Tag    cxp = db.read(fp,jid.c_str());
+                const Tag    qxp = db.read(fp,qid.c_str());
+                return new MultiLinesComment(sid,cxp,qxp,lexer);
+            }
+        }
+
+    }
+
+}
+
 #include "y/stream/input.hpp"
+#include <iomanip>
+
 namespace Yttrium
 {
     namespace Jive
@@ -56,7 +83,7 @@ namespace Yttrium
 #define Y_PRINT(MSG) \
 do { if(Lexical::Scanner::Verbose) { std::cerr << "<" << CallSign <<  "> " << MSG << std::endl; } } while(false)
 
-        Lexer * Babel:: LoadLexer(InputStream &fp)
+        Lexer * Babel:: loadLexer(InputStream &fp)
         {
             TagDB     db;
             const Tag theName = db.read(fp,"name");
@@ -68,8 +95,10 @@ do { if(Lexical::Scanner::Verbose) { std::cerr << "<" << CallSign <<  "> " << MS
                 Y_PRINT("loading #extensions="<< nx);
                 for(size_t i=1;i<=nx;++i)
                 {
-                    const uint32_t xid = fp.loadCBR<uint32_t>("extension","uuid");
-                    Y_PRINT("extension #" << i << " [" << FourCC(xid) << "]");
+                    const uint32_t        xid = fp.loadCBR<uint32_t>("extension","uuid");
+                    const FourCC          fcc(xid); Y_PRINT(theName << ".extension #" << std::setw(2) << i << " [" << fcc << "]");
+                    LexicalLoader * const pfn = lexicalDB.search(xid); if(!pfn) throw Specific::Exception(CallSign,"no registered '%s",fcc.c_str());
+                    lexer->record( (*pfn)(fp,*lexer,db) );;
                 }
             }
 
