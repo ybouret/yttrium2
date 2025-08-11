@@ -11,6 +11,7 @@ y/jive/lexical
 y/jive/lexical/comment
 y/jive/lexical/plugin
 y/jive/syntax
+y/jive/babel
 )
 
 add_subdirectory(tests)

@@ -36,7 +36,8 @@ namespace Yttrium
             Y_LifeTime(IOChars)             /*!< for IO::Char                */,
             Y_LifeTime(ApexMemory)          /*!< for Apex::Archon            */,
             Y_LifeTime(LocalFS)             /*!< for  LocalFS                */,
-            Y_LifeTime(JiveChars)           /*!< for Jive::Char              */
+            Y_LifeTime(JiveChars)           /*!< for Jive::Char              */,
+            Y_LifeTime(JiveBabel)           /*!< for Jive::Babel             */
         };
     };
 }

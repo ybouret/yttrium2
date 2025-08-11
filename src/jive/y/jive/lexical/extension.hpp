@@ -10,7 +10,8 @@ namespace Yttrium
 {
     namespace Jive
     {
-
+        class Lexer;
+        
         namespace Lexical
         {
             //__________________________________________________________________

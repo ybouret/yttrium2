@@ -323,7 +323,8 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
 
             size_t Scanner:: emitUUID(OutputStream &fp) const
             {
-                return fp.emitCBR(uuid);
+                const size_t res = fp.emitCBR(uuid);
+                return res + name->serialize(fp);
             }
 
             Y_Ingress_Impl(Scanner,code->rules)
