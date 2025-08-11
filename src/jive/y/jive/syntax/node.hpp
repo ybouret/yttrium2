@@ -5,7 +5,7 @@
 #define Y_Jive_Syntax_Node_Included 1
 
 #include "y/jive/lexer.hpp"
-#include "y/calculus/alignment.hpp"
+#include "y/jive/syntax/category.hpp"
 
 namespace Yttrium
 {
@@ -14,13 +14,7 @@ namespace Yttrium
 
         namespace Syntax
         {
-
-            enum Category
-            {
-                IsTerminal,
-                IsInternal
-            };
-
+            
             class   Node;
             typedef CxxListOf<Node> NodeList;
             class   InternalNode;
@@ -51,38 +45,7 @@ namespace Yttrium
             };
 
 
-
-            class TerminalNode : public Node
-            {
-            public:
-                virtual ~TerminalNode() noexcept;
-
-
-                Lexeme * const lexeme;
-
-            private:
-                explicit TerminalNode( InternalNode * const, Lexeme * const) noexcept;
-                Y_Disable_Copy_And_Assign(TerminalNode);
-                friend class Node;
-                virtual void restore(Lexer &) noexcept;
-            };
-
-
-
-            class InternalNode : public Node, public NodeList
-            {
-            public:
-                virtual ~InternalNode() noexcept;
-
-
-            private:
-                Y_Disable_Copy_And_Assign(InternalNode);
-                explicit InternalNode(InternalNode * const) noexcept;
-                friend class Node;
-                virtual void restore(Lexer &) noexcept;
-
-            };
-
+            
         }
 
     }

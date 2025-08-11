@@ -1,4 +1,5 @@
-#include "y/jive/syntax/node.hpp"
+#include "y/jive/syntax/node/terminal.hpp"
+#include "y/jive/syntax/node/internal.hpp"
 #include "y/utest/run.hpp"
 
 
