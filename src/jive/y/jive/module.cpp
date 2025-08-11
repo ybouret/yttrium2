@@ -33,7 +33,8 @@ namespace Yttrium
             if(!input->query(c)) return 0;
             dot();
             const Context &ctx = *this;
-            return pool.summon(c,ctx);
+			const uint8_t b = (uint8_t)c;
+            return pool.summon(b,ctx);
         }
 
         Module:: Module(const Tag &tag, const Input &inp) noexcept:
