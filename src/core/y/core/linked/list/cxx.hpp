@@ -51,7 +51,7 @@ namespace Yttrium
             }
         }
 
-        
+        //! delete all nodes
         inline virtual void release() noexcept {
             release_();
         }

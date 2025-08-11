@@ -26,8 +26,21 @@ namespace Yttrium
             class MultiLinesComment : public Comment
             {
             public:
-                static const uint32_t UUID = Y_FOURCC('C', 'O', 'M','2'); //!< alias
-                static Scanner *      Load(InputStream &,Lexer &,TagDB &);
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                static const uint32_t UUID = Y_FOURCC('C', 'O', 'M','2');  //!< alias
+                static Scanner *      Load(InputStream &,Lexer &,TagDB &); //!< loaded \return multi lines comment
+
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
 
                 //! construct
                 /**
@@ -51,9 +64,22 @@ namespace Yttrium
                 //! cleanup
                 virtual ~MultiLinesComment() noexcept;
 
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
                 virtual size_t serialize(OutputStream &fp) const;
 
-                const Tag quit;
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                const Tag quit; //!< back expression, saved
+                
             private:
                 Y_Disable_Copy_And_Assign(MultiLinesComment); //!< discarding
                 void setup(); //!< drop endl, drop dot

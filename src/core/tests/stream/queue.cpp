@@ -47,7 +47,7 @@ Y_UTEST(stream_queue)
         const uint8_t b = uint8_t(i);
         Y_ASSERT(1==Q.emitCBR(b));
         uint8_t r = 0;
-        Y_ASSERT(1==Q.readCBR(r));
+        Y_ASSERT(1==Q.loadCBR(r));
         Y_ASSERT(r==b);
     }
 
@@ -58,7 +58,7 @@ Y_UTEST(stream_queue)
         const uint16_t w = uint8_t(i);
         Y_ASSERT(2==Q.emitCBR(w));
         uint16_t r = 0;
-        Y_ASSERT(2==Q.readCBR(r));
+        Y_ASSERT(2==Q.loadCBR(r));
         Y_ASSERT(r==w);
     }
 
@@ -71,7 +71,7 @@ Y_UTEST(stream_queue)
             const uint32_t x = ran.gen<uint32_t>(i);
             Y_ASSERT(4==Q.emitCBR(x));
             uint32_t r = 0;
-            Y_ASSERT(4==Q.readCBR(r));
+            Y_ASSERT(4==Q.loadCBR(r));
             Y_ASSERT(r==x);
         }
     }
@@ -85,7 +85,7 @@ Y_UTEST(stream_queue)
             const uint64_t x = ran.gen<uint64_t>(i);
             Y_ASSERT(8==Q.emitCBR(x));
             uint64_t r = 0;
-            Y_ASSERT(8==Q.readCBR(r));
+            Y_ASSERT(8==Q.loadCBR(r));
             Y_ASSERT(r==x);
         }
     }

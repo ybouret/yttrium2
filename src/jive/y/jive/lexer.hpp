@@ -70,7 +70,6 @@ namespace Yttrium
             virtual ~Lexer() noexcept;
 
 
-            static Lexer *Load(InputStream &);
 
 
 
@@ -93,8 +92,9 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            Lexeme * query(Source &);                //!< \return saved/new lexeme from source
-            void     store(Lexeme * const) noexcept; //!< store previously ready lexeme
+            Lexeme *      query(Source &);                //!< \return saved/new lexeme from source
+            void          store(Lexeme * const) noexcept; //!< store previously ready lexeme
+            static Lexer *Load(InputStream &);            //!< \return new Lexer built with Babel
 
             //__________________________________________________________________
             //

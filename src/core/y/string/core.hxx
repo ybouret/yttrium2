@@ -405,7 +405,7 @@ code(0)
         for(code->size=0;code->size<numChars;++code->size)
         {
             assert(code->isValid());
-            if( 1 != fp.readCBR(code->base[code->size]) )
+            if( 1 != fp.loadCBR(code->base[code->size]) )
             {
                 const size_t cidx = code->size+1;
                 Specific::Exception excp("String(InputStream)","missing char %s/%s",

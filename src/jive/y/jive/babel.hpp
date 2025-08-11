@@ -14,30 +14,60 @@ namespace Yttrium
 {
     namespace Jive
     {
-        
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! helper to load Jive components
+        //
+        //
+        //______________________________________________________________________
         class Babel : public Singleton<Babel,ClassLockPolicy>
         {
         public:
-            typedef Lexical::Scanner * (*LexicalLoader)(InputStream&,Lexer &,TagDB&);
-            typedef HashMap<uint32_t,LexicalLoader> LexicalDB;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef Lexical::Scanner * (*LexicalLoader)(InputStream&,Lexer &,TagDB&); //!< alias
+            typedef HashMap<uint32_t,LexicalLoader> LexicalDB;                         //!< alias
+            static const char * const CallSign;                                        //!< "Jive::Babel"
+            static const Longevity    LifeTime = LifeTimeOf::JiveBabel;                //!< life time
 
-            static const char * const CallSign; //!< "Jive::Babel"
-            static const Longevity    LifeTime = LifeTimeOf::JiveBabel;
-
-
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             virtual void display(std::ostream &,size_t) const;
 
-            Lexer * loadLexer(InputStream &fp);
+            //__________________________________________________________________
+            //
+            //
+            // Method
+            //
+            //__________________________________________________________________
+            Lexer * loadLexer(InputStream &); //!< \return new lexer from serialized
 
-            LexicalDB lexicalDB;
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            LexicalDB lexicalDB; //!< known uuid+loaded for scanners
 
         private:
-            Y_Disable_Copy_And_Assign(Babel);
+            Y_Disable_Copy_And_Assign(Babel);   //!< discarding
             friend class Singleton<Babel,ClassLockPolicy>;
-            explicit Babel();
-            virtual ~Babel() noexcept;
+            explicit Babel();           //!< setup
+            virtual ~Babel() noexcept;  //!< cleanup
 
-            void lexicalInit();
+            void lexicalInit(); //!< initialize built-in scanners
 
         };
 

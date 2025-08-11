@@ -133,9 +133,12 @@ do { if(Lexical::Scanner::Verbose) { std::cerr << "<" << CallSign <<  "> " << MS
                 Y_PRINT("loading <" << theName << "> #extensions="<< nx);
                 for(size_t i=1;i<=nx;++i)
                 {
-                    const uint32_t        xid = fp.loadCBR<uint32_t>("extension","uuid");
-                    const FourCC          fcc(xid); Y_PRINT(theName << ".extension #" << std::setw(2) << i << " [" << fcc << "]");
-                    LexicalLoader * const pfn = lexicalDB.search(xid); if(!pfn) throw Specific::Exception(CallSign,"no registered '%s",fcc.c_str());
+                    const uint32_t        xid = fp.readCBR<uint32_t>("extension","uuid");
+                    const FourCC          fcc(xid);
+                    Y_PRINT(theName << ".extension #" << std::setw(2) << i << " [" << fcc << "]");
+                    LexicalLoader * const pfn = lexicalDB.search(xid);
+                    if(!pfn)
+                        throw Specific::Exception(CallSign,"no registered '%s",fcc.c_str());
                     lexer->record( (*pfn)(fp,*lexer,db) );
                 }
             }
@@ -145,13 +148,11 @@ do { if(Lexical::Scanner::Verbose) { std::cerr << "<" << CallSign <<  "> " << MS
                 const size_t nr = fp.readVBR<size_t>(theName->c_str(),"#rules");
                 Y_PRINT("loading <" << theName << "> #rules="<< nr);
                 for(size_t i=1;i<=nr;++i)
-                {
-                    lexer->add( Lexical::Rule::Load(fp,db) );
-                }
+                    (void) lexer->add( Lexical::Rule::Load(fp,db) );
             }
 
             Y_PRINT(" loaded <" << theName  << ">");
-            
+
             return 0;
         }
 

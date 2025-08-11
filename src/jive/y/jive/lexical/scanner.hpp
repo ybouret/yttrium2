@@ -251,6 +251,7 @@ namespace Yttrium
                     return decl(rid,rxp,NewLine,rise ? SpawnUnit : DropToken);
                 }
 
+                //! \return serialized uuid+name
                 size_t emitUUID(OutputStream&) const;
 
                 //! look up algorithm
@@ -279,7 +280,7 @@ namespace Yttrium
                 Code * const code; //!< inner code
 
                 Y_Disable_Copy_And_Assign(Scanner); //!< discarding
-                Y_Ingress_Decl();
+                Y_Ingress_Decl();                   //!< helper
                 friend class Jive::Babel;
                 
                 static Code * New(const Tag &);      //!< \return new code from tag

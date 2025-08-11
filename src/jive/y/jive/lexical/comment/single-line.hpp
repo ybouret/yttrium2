@@ -25,9 +25,21 @@ namespace Yttrium
             class SingleLineComment : public Comment
             {
             public:
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
                 static const uint32_t UUID = Y_FOURCC('C', 'O', 'M','1'); //!< alias
-                static Scanner *      Load(InputStream &,Lexer &,TagDB &);
+                static Scanner *      Load(InputStream &,Lexer &,TagDB &); //!< loader \return new single line comment
 
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
                 //! construct
                 /**
                  \param sid comment name
@@ -46,6 +58,12 @@ namespace Yttrium
                 //! cleanup
                 virtual ~SingleLineComment() noexcept;
 
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
                 virtual size_t serialize(OutputStream&) const;
 
 

@@ -64,13 +64,13 @@ namespace Yttrium
         //! codec64 decoding, throw exception on error, with optional variable name
         void decode64(uint64_t &, const char * const  = 0);
 
-        //! read Constant Bit Rate variable
+        //! load Constant Bit Rate variable
         /**
          \param  value output
          \return number of read bytes
          */
         template <typename T> inline
-        size_t readCBR(T &value)
+        size_t loadCBR(T &value)
         {
             union
             {
@@ -82,12 +82,18 @@ namespace Yttrium
             return res;
         }
 
+        //! read full Constant Bit Rate word
+        /**
+         \param varName optional variable name
+         \param varPart optional variable part
+         \return read word
+         */
         template <typename T>
-        inline T loadCBR(const char * const varName = 0,
+        inline T readCBR(const char * const varName = 0,
                          const char * const varPart = 0)
         {
             T res(0);
-            const size_t n = readCBR(res);
+            const size_t n = loadCBR(res);
             if(n<sizeof(T)) throwMissing(varName,varPart);
             return res;
         }
@@ -128,6 +134,7 @@ namespace Yttrium
                            const uint64_t,
                            const uint64_t) const;
 
+        //! throw missing bytes from readCBR
         void throwMissing(const char * const,
                           const char * const) const;
     };

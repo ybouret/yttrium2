@@ -157,7 +157,8 @@ namespace Yttrium
                 const char * humanReadableDeed() const noexcept; //!< \return readable deed
                 const char * humanReadableAttr() const noexcept; //!< \return readable attr
 
-                static Rule * Load(InputStream &, TagDB &);
+
+                static Rule * Load(InputStream &, TagDB &); //!< \return reloaded rule
 
                 //______________________________________________________________
                 //
@@ -175,6 +176,8 @@ namespace Yttrium
                 
             private:
                 Y_Disable_Copy_And_Assign(Rule); //!< discarding
+
+                //! construct from full data for reload
                 Rule(const Tag &,
                      const Motif &,
                      const Attribute,

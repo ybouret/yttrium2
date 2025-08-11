@@ -18,7 +18,7 @@ namespace Yttrium
             static inline Pattern * ReadByte(InputStream &fp, const FourCC &cc)
             {
                 uint8_t code = 0;
-                if( fp.readCBR(code) < sizeof(code) ) throw Libc::Exception(EIO,"%s%s code",missing,cc.c_str());
+                if( fp.loadCBR(code) < sizeof(code) ) throw Libc::Exception(EIO,"%s%s code",missing,cc.c_str());
                 return new Byte(code);
             }
 
@@ -26,7 +26,7 @@ namespace Yttrium
             static inline Pattern * ReadNot(InputStream &fp, const FourCC &cc)
             {
                 uint8_t code = 0;
-                if( fp.readCBR(code) < sizeof(code) ) throw Libc::Exception(EIO,"%s%s code",missing,cc.c_str());
+                if( fp.loadCBR(code) < sizeof(code) ) throw Libc::Exception(EIO,"%s%s code",missing,cc.c_str());
                 return new Not(code);
             }
 
@@ -35,8 +35,8 @@ namespace Yttrium
             {
                 uint8_t lower = 0;
                 uint8_t upper = 0;
-                if( fp.readCBR(lower) < sizeof(lower) ) throw Libc::Exception(EIO,"%s%s lower",missing,cc.c_str());
-                if( fp.readCBR(upper) < sizeof(upper) ) throw Libc::Exception(EIO,"%s%s upper",missing,cc.c_str());
+                if( fp.loadCBR(lower) < sizeof(lower) ) throw Libc::Exception(EIO,"%s%s lower",missing,cc.c_str());
+                if( fp.loadCBR(upper) < sizeof(upper) ) throw Libc::Exception(EIO,"%s%s upper",missing,cc.c_str());
                 return new Lump(lower,upper);
             }
 
@@ -80,7 +80,7 @@ namespace Yttrium
         Pattern * Pattern:: ReadFrom(InputStream &fp)
         {
             uint32_t id = 0;
-            if( fp.readCBR(id) < sizeof(id) ) throw Libc::Exception(EIO,"%s Jive::Pattern UUID",missing);
+            if( fp.loadCBR(id) < sizeof(id) ) throw Libc::Exception(EIO,"%s Jive::Pattern UUID",missing);
 
             const FourCC cc(id);
             switch(id)

@@ -31,7 +31,7 @@ namespace Yttrium
                 //______________________________________________________________
                 static const uint32_t       UUID = Y_FOURCC('R','S','T','R'); //!< alias
                 static const char           JOIN = '\''; //!< alias
-                static Scanner *            Load(InputStream &,Lexer &,TagDB &); //!< loader
+                static Scanner *            Load(InputStream &,Lexer &,TagDB &); //!< loader \return new RString
                 Y_Jive_Plugin_Decl(RString);             //!< alias
 
                 //______________________________________________________________
