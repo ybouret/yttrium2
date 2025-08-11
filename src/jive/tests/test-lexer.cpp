@@ -9,6 +9,7 @@
 #include "y/jive/lexical/plugin/bstring.hpp"
 
 #include "y/stream/libc/output.hpp"
+#include "y/stream/libc/input.hpp"
 
 using namespace Yttrium;
 using namespace Jive;
@@ -52,6 +53,10 @@ Y_UTEST(lexer)
     {
         OutputFile fp("lexer.bin");
         lexer.serialize(fp);
+    }
+    {
+        InputFile fp("lexer.bin");
+        Lexer::Load(fp);
     }
     Lexemes lxm;
     if(argc>1)

@@ -70,7 +70,7 @@ namespace Yttrium
             virtual ~Lexer() noexcept;
 
 
-
+            static Lexer *Load(InputStream &);
 
 
 

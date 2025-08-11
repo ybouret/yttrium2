@@ -84,7 +84,6 @@ do { if(Scanner::Verbose) { std::cerr << "<" << scan->name <<  "> " << MSG << st
 
 
         QUERY:
-            //Y_PRINT("query");
             assert(0!=scan);
             {
                 if(lxms.size>0) return lxms.popHead();
@@ -146,7 +145,12 @@ namespace Yttrium
 
             size_t res = name->serialize(fp);
 
+            //__________________________________________________________________
+            //
+            //
             // save extensions
+            //
+            //__________________________________________________________________
             {
                 assert(mydb.size()>0);
                 const size_t nx = mydb.size()-1;
@@ -160,7 +164,12 @@ namespace Yttrium
                 }
             }
 
+            //__________________________________________________________________
+            //
+            //
             // save specific rules
+            //
+            //__________________________________________________________________
             {
                 const Scanner &self = *this;
                 res += fp.emitVBR(self->size);
