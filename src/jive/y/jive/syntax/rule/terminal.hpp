@@ -1,8 +1,8 @@
 
 //! \file
 
-#ifndef Y_Jive_Syntax_Terminal_Included
-#define Y_Jive_Syntax_Terminal_Included 1
+#ifndef Y_Jive_Syntax_TerminalRule_Included
+#define Y_Jive_Syntax_TerminalRule_Included 1
 
 #include "y/jive/syntax/rule.hpp"
 

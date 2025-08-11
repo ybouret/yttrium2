@@ -2,8 +2,8 @@
 
 //! \file
 
-#ifndef Y_Jive_Syntax_Internal_Included
-#define Y_Jive_Syntax_Internal_Included 1
+#ifndef Y_Jive_Syntax_InternalRule_Included
+#define Y_Jive_Syntax_InternalRule_Included 1
 
 #include "y/jive/syntax/rule.hpp"
 

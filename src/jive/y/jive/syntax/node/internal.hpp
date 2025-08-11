@@ -26,7 +26,7 @@ namespace Yttrium
                 friend class Node;
                 Y_Disable_Copy_And_Assign(InternalNode);
                 
-                explicit InternalNode() noexcept;
+                explicit InternalNode(const Internal &) noexcept;
                 virtual void restore(Lexer &) noexcept;
 
             };

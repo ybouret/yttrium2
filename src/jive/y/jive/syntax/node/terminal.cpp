@@ -1,5 +1,7 @@
 
 #include "y/jive/syntax/node/terminal.hpp"
+#include "y/jive/syntax/rule/terminal.hpp"
+
 #include "y/type/destroy.hpp"
 
 namespace Yttrium
@@ -14,17 +16,20 @@ namespace Yttrium
                 if(lexeme) Destroy(lexeme);
             }
 
-            TerminalNode:: TerminalNode(Lexeme * const lx) noexcept :
-            Node(IsTerminal),
+            
+
+            TerminalNode:: TerminalNode(const Terminal &r, Lexeme * const lx) noexcept :
+            Node(IsTerminal,r),
             lexeme(lx)
             {
             }
 
-            TerminalNode * Node:: Make(Lexeme *const lx)
+
+            TerminalNode * Node:: Make(const Terminal &r, Lexeme *const l)
             {
-                assert(0!=lx);
-                try { return new TerminalNode(lx); }
-                catch(...){ delete lx; throw; }
+                assert(0!=l);
+                try { return new TerminalNode(r,l); }
+                catch(...){ delete l; throw; }
             }
 
             void TerminalNode:: restore(Lexer &lexer) noexcept

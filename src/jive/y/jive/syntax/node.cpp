@@ -13,8 +13,9 @@ namespace Yttrium
             {
             }
 
-            Node:: Node(const Category t) noexcept :
+            Node:: Node(const Category t, const Rule &r) noexcept :
             type(t),
+            rule(r),
             sire(0),
             next(0),
             prev(0)

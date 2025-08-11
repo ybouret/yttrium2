@@ -21,7 +21,7 @@ namespace Yttrium
                 Lexeme * const lexeme;
 
             private:
-                explicit TerminalNode(Lexeme * const) noexcept;
+                explicit TerminalNode(const Terminal &, Lexeme * const) noexcept;
                 Y_Disable_Copy_And_Assign(TerminalNode);
                 friend class Node;
                 virtual void restore(Lexer &) noexcept;

@@ -16,6 +16,8 @@ namespace Yttrium
         {
 
             class   Rule;
+            class   Internal;
+            class   Terminal;
             class   Node;
             typedef CxxListOf<Node> NodeList;
             class   InternalNode;
@@ -24,7 +26,7 @@ namespace Yttrium
             class Node : public Object, public Vizible
             {
             protected:
-                explicit Node(const Category) noexcept;
+                explicit Node(const Category, const Rule &) noexcept;
             public:
                 virtual ~Node() noexcept;
 
@@ -32,11 +34,12 @@ namespace Yttrium
                 static  void Restore(Node * const, Lexer &) noexcept;
                 virtual void restore(Lexer &) noexcept = 0;
 
-                TerminalNode * Make(Lexeme * const);
-                InternalNode * Make();
+                static TerminalNode * Make(const Terminal &, Lexeme * const);
+                static InternalNode * Make(const Internal &);
 
 
                 const Category       type;
+                const Rule          &rule;
                 InternalNode * const sire;
                 Node *               next;
                 Node *               prev;

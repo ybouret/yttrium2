@@ -1,5 +1,5 @@
 #include "y/jive/syntax/node/internal.hpp"
-
+#include "y/jive/syntax/rule/internal.hpp"
 namespace Yttrium
 {
 
@@ -13,14 +13,14 @@ namespace Yttrium
             {
             }
 
-            InternalNode:: InternalNode() noexcept:
-            Node(IsInternal)
+            InternalNode:: InternalNode(const Internal &r) noexcept:
+            Node(IsInternal,r)
             {
             }
 
-            InternalNode * Node::Make()
+            InternalNode * Node::Make(const Internal &r)
             {
-                return new InternalNode();
+                return new InternalNode(r);
             }
 
             void InternalNode:: restore(Lexer &lexer) noexcept
