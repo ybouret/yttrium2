@@ -19,30 +19,71 @@ namespace Yttrium
             class   Internal;
             class   Terminal;
             class   Node;
-            typedef CxxListOf<Node> NodeList;
             class   InternalNode;
             class   TerminalNode;
+            typedef CxxListOf<Node> NodeList; //!< alias
 
+
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! base class for Nodes
+            //
+            //
+            //__________________________________________________________________
             class Node : public Object, public Vizible
             {
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
             protected:
+                //! setup
                 explicit Node(const Category, const Rule &) noexcept;
+
             public:
+                // cleanup
                 virtual ~Node() noexcept;
 
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
+                virtual void restore(Lexer &) noexcept = 0; //!< restore content
 
+
+                //______________________________________________________________
+                //
+                //
+                // Helpers
+                //
+                //______________________________________________________________
+
+                //! restore content to lexer and delete node
                 static  void Restore(Node * const, Lexer &) noexcept;
-                virtual void restore(Lexer &) noexcept = 0;
 
+                //! \return new terminal node from Terminal Rule
                 static TerminalNode * Make(const Terminal &, Lexeme * const);
+
+                //! \return new internal node Internal Rule (TODO: aggregate)
                 static InternalNode * Make(const Internal &);
 
-
-                const Category       type;
-                const Rule          &rule;
-                InternalNode * const sire;
-                Node *               next;
-                Node *               prev;
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                const Category       type; //!< category
+                const Rule          &rule; //!< accepting rule
+                InternalNode * const sire; //!< parent list if any
+                Node *               next; //!< for list
+                Node *               prev; //!< for list
 
             private:
                 Y_Disable_Copy_And_Assign(Node);

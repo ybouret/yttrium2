@@ -15,14 +15,17 @@ namespace Yttrium
             //! TerminalNode a.k.a lexeme smart pointer
             class TerminalNode : public Node
             {
+            private:
+                explicit TerminalNode(const Terminal &,
+                                      Lexeme * const) noexcept;
+
             public:
                 virtual ~TerminalNode() noexcept;
 
                 Lexeme * const lexeme;
 
             private:
-                explicit TerminalNode(const Terminal &, Lexeme * const) noexcept;
-                Y_Disable_Copy_And_Assign(TerminalNode);
+                Y_Disable_Copy_And_Assign(TerminalNode); //!< discarding
                 friend class Node;
                 virtual void restore(Lexer &) noexcept;
             };

@@ -13,20 +13,38 @@ namespace Yttrium
 
         namespace Syntax
         {
+
+            //! internal node
             class InternalNode : public Node, public NodeList
             {
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+            private:
+                //! setup
+                explicit InternalNode(const Internal &) noexcept;
+
             public:
+                //! cleanup
                 virtual ~InternalNode() noexcept;
 
-                //! push tail and set sire
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+
+                //! push tail and set sire \return *this
                 InternalNode & operator<<(Node * const);
 
 
             private:
                 friend class Node;
-                Y_Disable_Copy_And_Assign(InternalNode);
-                
-                explicit InternalNode(const Internal &) noexcept;
+                Y_Disable_Copy_And_Assign(InternalNode); //!< discarding
                 virtual void restore(Lexer &) noexcept;
 
             };

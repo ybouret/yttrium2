@@ -15,10 +15,11 @@ namespace Yttrium
         namespace Syntax
         {
 
+            //! named category
             enum Category
             {
-                IsTerminal,
-                IsInternal
+                IsTerminal, //!< for terminal rule/node
+                IsInternal  //!< for internal rule/node
             };
         }
     }

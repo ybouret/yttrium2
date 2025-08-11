@@ -12,21 +12,24 @@ namespace Yttrium
     {
         namespace Syntax
         {
+            //! rule with matching lexeme name
             class Terminal : public Rule
             {
             public:
-                static const uint32_t UUID = Y_FOURCC('T', 'E', 'R', 'M');
+                static const uint32_t UUID = Y_FOURCC('T', 'E', 'R', 'M'); //!< alias
 
+                //! setup \param r rule name
                 template <typename RID> inline
                 explicit Terminal(const RID &r) :
                 Rule(r,IsTerminal,UUID)
                 {
                 }
-                
+
+                //! cleanup
                 virtual ~Terminal() noexcept;
                 
             private:
-                Y_Disable_Copy_And_Assign(Terminal);
+                Y_Disable_Copy_And_Assign(Terminal); //!< discarding
             };
 
 
