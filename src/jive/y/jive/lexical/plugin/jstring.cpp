@@ -1,6 +1,5 @@
 
 #include "y/jive/lexical/plugin/jstring.hpp"
-#include "y/stream/output.hpp"
 
 namespace Yttrium
 {
@@ -17,13 +16,7 @@ namespace Yttrium
             {
                 send("quote", '\'');
             }
-
-            size_t JString:: serialize(OutputStream &fp) const
-            {
-                const size_t res = emitUUID(fp);
-                fp.write(JOIN);
-                return res+1;
-            }
+            
         }
 
     }

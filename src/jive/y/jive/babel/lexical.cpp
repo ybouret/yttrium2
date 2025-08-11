@@ -4,6 +4,10 @@
 #include "y/jive/lexical/comment/single-line.hpp"
 #include "y/jive/lexical/comment/multi-lines.hpp"
 
+#include "y/jive/lexical/plugin/jstring.hpp"
+#include "y/jive/lexical/plugin/rstring.hpp"
+#include "y/jive/lexical/plugin/bstring.hpp"
+
 #include "y/system/exception.hpp"
 
 namespace Yttrium
@@ -21,6 +25,9 @@ namespace Yttrium
         {
             Y_Jive_Babel(Lexical::SingleLineComment);
             Y_Jive_Babel(Lexical::MultiLinesComment);
+            Y_Jive_Babel(Lexical::JString);
+            Y_Jive_Babel(Lexical::RString);
+            Y_Jive_Babel(Lexical::BString);
 
         }
     }
@@ -72,6 +79,36 @@ namespace Yttrium
 
 }
 
+
+
+namespace Yttrium
+{
+    namespace Jive
+    {
+        namespace Lexical
+        {
+            Scanner * JString:: Load(InputStream &fp, Lexer &lexer, TagDB &db)
+            {
+                const Tag sid = db.read(fp,"JString.name");
+                return new JString(sid,lexer);
+            }
+
+            Scanner * RString:: Load(InputStream &fp, Lexer &lexer, TagDB &db)
+            {
+                const Tag sid = db.read(fp,"JString.name");
+                return new RString(sid,lexer);
+            }
+
+            Scanner * BString:: Load(InputStream &fp, Lexer &lexer, TagDB &db)
+            {
+                const Tag sid = db.read(fp,"JString.name");
+                return new BString(sid,lexer);
+            }
+        }
+    }
+
+}
+
 #include "y/stream/input.hpp"
 #include <iomanip>
 
@@ -90,18 +127,31 @@ do { if(Lexical::Scanner::Verbose) { std::cerr << "<" << CallSign <<  "> " << MS
             Y_PRINT("loading <" << theName  << ">");
             AutoPtr<Lexer> lexer = new Lexer(theName);
 
+            // reloading extensions
             {
                 const size_t nx = fp.readVBR<size_t>(theName->c_str(),"#extensions");
-                Y_PRINT("loading #extensions="<< nx);
+                Y_PRINT("loading <" << theName << "> #extensions="<< nx);
                 for(size_t i=1;i<=nx;++i)
                 {
                     const uint32_t        xid = fp.loadCBR<uint32_t>("extension","uuid");
                     const FourCC          fcc(xid); Y_PRINT(theName << ".extension #" << std::setw(2) << i << " [" << fcc << "]");
                     LexicalLoader * const pfn = lexicalDB.search(xid); if(!pfn) throw Specific::Exception(CallSign,"no registered '%s",fcc.c_str());
-                    lexer->record( (*pfn)(fp,*lexer,db) );;
+                    lexer->record( (*pfn)(fp,*lexer,db) );
                 }
             }
 
+            // reloading rules
+            {
+                const size_t nr = fp.readVBR<size_t>(theName->c_str(),"#rules");
+                Y_PRINT("loading <" << theName << "> #rules="<< nr);
+                for(size_t i=1;i<=nr;++i)
+                {
+                    lexer->add( Lexical::Rule::Load(fp,db) );
+                }
+            }
+
+            Y_PRINT(" loaded <" << theName  << ">");
+            
             return 0;
         }
 

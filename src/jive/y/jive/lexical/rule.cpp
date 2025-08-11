@@ -158,13 +158,13 @@ namespace Yttrium
                 const Motif    ruleMotif = Pattern::ReadFrom(fp);
                 const unsigned ruleAttr  = fp.readVBR<unsigned>("rule.attr");
 
-                if(ruleAttr>=NewLine)
+                if(ruleAttr>NewLine)
                     throw Specific::Exception("Jive::Rule","invalid attribute");
 
                 const Tag      ruleData  = db.read(fp,"rule.data");
                 const unsigned ruleDeed  = fp.readVBR<unsigned>("rule.deed");
 
-                if(ruleDeed>=Back)
+                if(ruleDeed>Back)
                     throw Specific::Exception("Jive::Rule","invalid demeanor");
 
                 return new Rule(ruleName,

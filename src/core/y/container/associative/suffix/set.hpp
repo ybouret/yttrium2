@@ -195,16 +195,14 @@ namespace Yttrium
         {
             std::cerr << "search '" << key << "'" << std::endl;
             const Node * const node = tree.search( key.begin(), key.size() );
-            if(!node) return 0;
-            assert(0!=node->addr);
+            if(!node||!node->addr) return 0;
             return & static_cast<const Knot *>(node->addr)->data;
         }
 
         inline  Type * search(ParamKey key) noexcept
         {
             Node * const node = tree.search( key.begin(), key.size() );
-            if(!node) return 0;
-            assert(0!=node->addr);
+            if(!node||!node->addr) return 0;
             return & static_cast<Knot *>(node->addr)->data;
         }
 

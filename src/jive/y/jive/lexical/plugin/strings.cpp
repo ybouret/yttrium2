@@ -68,6 +68,12 @@ namespace Yttrium
                 }
                 data.mergeTail(token);
             }
+
+
+            size_t Strings:: serialize(OutputStream &fp) const
+            {
+                return emitUUID(fp);
+            }
         }
     }
 

@@ -1,5 +1,4 @@
 #include "y/jive/lexical/plugin/rstring.hpp"
-#include "y/stream/output.hpp"
 
 namespace Yttrium
 {
@@ -17,12 +16,7 @@ namespace Yttrium
                 send("dquote", '\"');
             }
 
-            size_t RString:: serialize(OutputStream &fp) const
-            {
-                const size_t res = emitUUID(fp);
-                fp.write(JOIN);
-                return res+1;
-            }
+
         }
 
     }

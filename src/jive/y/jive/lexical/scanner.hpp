@@ -18,6 +18,7 @@ namespace Yttrium
 {
     namespace Jive
     {
+        class Babel;
 
         namespace Lexical
         {
@@ -279,7 +280,9 @@ namespace Yttrium
 
                 Y_Disable_Copy_And_Assign(Scanner); //!< discarding
                 Y_Ingress_Decl();
-                static Code * New(const Tag &);      //!< \return ne code from tag
+                friend class Jive::Babel;
+                
+                static Code * New(const Tag &);      //!< \return new code from tag
                 const Rule &  add(Rule * const);     //!< \return recorded new rule
 
             public:

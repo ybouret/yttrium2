@@ -218,6 +218,7 @@ namespace Yttrium
             const size_t        hkey = hashKey(key);
             const Node * const  node = table.search(hkey,&key,SameKey);
             if(!node) return 0;
+            assert(node->data);
             const Knot * const knot = static_cast<const Knot *>(node->data);
             return & knot->data;
         }
@@ -229,6 +230,7 @@ namespace Yttrium
             HTable::Slot * slot = 0;
             Node * const   node = table.search(hkey,&key,SameKey,slot);
             if(!node) return 0;
+            assert(node->data);
             Knot * const knot = static_cast<Knot *>(node->data);
             return & knot->data;
         }
