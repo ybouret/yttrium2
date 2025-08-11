@@ -14,7 +14,8 @@ namespace Yttrium
 
         namespace Syntax
         {
-            
+
+            class   Rule;
             class   Node;
             typedef CxxListOf<Node> NodeList;
             class   InternalNode;
@@ -23,7 +24,7 @@ namespace Yttrium
             class Node : public Object, public Vizible
             {
             protected:
-                explicit Node(const Category, InternalNode * const) noexcept;
+                explicit Node(const Category) noexcept;
             public:
                 virtual ~Node() noexcept;
 
@@ -31,8 +32,8 @@ namespace Yttrium
                 static  void Restore(Node * const, Lexer &) noexcept;
                 virtual void restore(Lexer &) noexcept = 0;
 
-                TerminalNode * Make(InternalNode * const, Lexeme * const);
-                InternalNode * Make(InternalNode * const);
+                TerminalNode * Make(Lexeme * const);
+                InternalNode * Make();
 
 
                 const Category       type;

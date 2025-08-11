@@ -14,17 +14,16 @@ namespace Yttrium
                 if(lexeme) Destroy(lexeme);
             }
 
-            TerminalNode:: TerminalNode(InternalNode * const from,
-                                        Lexeme *       const lx) noexcept :
-            Node(IsTerminal,from),
+            TerminalNode:: TerminalNode(Lexeme * const lx) noexcept :
+            Node(IsTerminal),
             lexeme(lx)
             {
             }
 
-            TerminalNode * Node::Make(InternalNode *const from, Lexeme *const lx)
+            TerminalNode * Node:: Make(Lexeme *const lx)
             {
                 assert(0!=lx);
-                try { return new TerminalNode(from,lx); }
+                try { return new TerminalNode(lx); }
                 catch(...){ delete lx; throw; }
             }
 

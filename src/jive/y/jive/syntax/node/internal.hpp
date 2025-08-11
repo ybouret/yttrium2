@@ -18,11 +18,15 @@ namespace Yttrium
             public:
                 virtual ~InternalNode() noexcept;
 
+                //! push tail and set sire
+                InternalNode & operator<<(Node * const);
+
 
             private:
-                Y_Disable_Copy_And_Assign(InternalNode);
-                explicit InternalNode(InternalNode * const) noexcept;
                 friend class Node;
+                Y_Disable_Copy_And_Assign(InternalNode);
+                
+                explicit InternalNode() noexcept;
                 virtual void restore(Lexer &) noexcept;
 
             };

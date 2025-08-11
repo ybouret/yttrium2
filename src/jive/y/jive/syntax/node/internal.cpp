@@ -13,14 +13,14 @@ namespace Yttrium
             {
             }
 
-            InternalNode:: InternalNode(InternalNode * const from) noexcept:
-            Node(IsInternal,from)
+            InternalNode:: InternalNode() noexcept:
+            Node(IsInternal)
             {
             }
 
-            InternalNode * Node::Make(InternalNode *const from)
+            InternalNode * Node::Make()
             {
-                return new InternalNode(from);
+                return new InternalNode();
             }
 
             void InternalNode:: restore(Lexer &lexer) noexcept
@@ -29,6 +29,11 @@ namespace Yttrium
                     tail->restore(lexer);
                     delete popTail();
                 }
+            }
+
+            InternalNode & InternalNode :: operator<<(Node * const node)
+            {
+                return * ( Coerce(pushTail(node)->sire) = this );
             }
         }
     }

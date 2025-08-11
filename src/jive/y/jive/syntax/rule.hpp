@@ -16,12 +16,22 @@ namespace Yttrium
             class Rule : public Object
             {
             protected:
-
+                template <typename RID> inline
+                explicit Rule(const RID     &r,
+                              const Category t,
+                              const uint32_t u) :
+                name(r),
+                type(t),
+                uuid(u)
+                {
+                }
+                
             public:
                 virtual ~Rule() noexcept;
 
-                const Category type;
                 const Tag      name;
+                const Category type;
+                const uint32_t uuid;
 
             private:
                 Y_Disable_Copy_And_Assign(Rule);

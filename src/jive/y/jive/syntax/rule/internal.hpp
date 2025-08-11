@@ -15,6 +15,14 @@ namespace Yttrium
         {
             class Internal : public Rule
             {
+            protected:
+                template <typename RID> inline
+                explicit Internal(const RID     &r,
+                                  const uint32_t u) :
+                Rule(r,IsInternal,u)
+                {
+                }
+
             public:
 
                 virtual ~Internal() noexcept;

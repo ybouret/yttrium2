@@ -13,16 +13,19 @@ namespace Yttrium
             {
             }
 
-            Node:: Node(const Category t, InternalNode * const from) noexcept :
+            Node:: Node(const Category t) noexcept :
             type(t),
-            sire(from),
+            sire(0),
             next(0),
             prev(0)
             {
             }
 
-            void Node:: Restore(Node * const, Lexer &) noexcept
-            {}
+            void Node:: Restore(Node * const node, Lexer &lexer) noexcept
+            {
+                node->restore(lexer);
+                delete node;
+            }
 
         }
 

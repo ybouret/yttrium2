@@ -15,7 +15,14 @@ namespace Yttrium
             class Terminal : public Rule
             {
             public:
+                static const uint32_t UUID = Y_FOURCC('T', 'E', 'R', 'M');
 
+                template <typename RID> inline
+                explicit Terminal(const RID &r) :
+                Rule(r,IsTerminal,UUID)
+                {
+                }
+                
                 virtual ~Terminal() noexcept;
                 
             private:
