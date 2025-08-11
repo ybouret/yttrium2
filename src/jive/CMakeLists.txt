@@ -11,6 +11,8 @@ y/jive/lexical
 y/jive/lexical/comment
 y/jive/lexical/plugin
 y/jive/syntax
+y/jive/syntax/node
+y/jive/syntax/rule
 y/jive/babel
 )
 
