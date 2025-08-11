@@ -47,7 +47,7 @@ namespace Yttrium
         virtual const char * c_str() const noexcept;
 
     private:
-        char text[16-sizeof(void*)]; //!< data
+        char text[16]; //!< data
         Y_Disable_Assign(FourCC);    //!< discarding
     };
 
