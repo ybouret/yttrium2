@@ -25,7 +25,7 @@ namespace Yttrium
             const int  loByte = Hexadecimal::ToDec(loChar);
             if(loByte<0) throw Specific::Exception(CallSign,"invalid second hexa esc char '%s' in '%s'", ASCII::Printable::Text(loChar), expr);
 
-            const uint8_t code = (hiByte<<4) | loByte;
+            const uint8_t code = uint8_t( (hiByte<<4) | loByte );
             return new Byte( code );
         }
 

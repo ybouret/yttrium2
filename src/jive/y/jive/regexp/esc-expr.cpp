@@ -33,7 +33,7 @@ namespace Yttrium
                 case AMPERSAND:
                 case '.':
                 case BACKSLASH:
-                    return new Byte(c);
+                    return new Byte( (uint8_t)c );
                     
                     // control
 #include "esc-ctrl.hxx"

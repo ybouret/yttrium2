@@ -21,7 +21,7 @@ namespace Yttrium
         size_t Byte:: serialize(OutputStream &fp) const
         {
             size_t res = fp.emitCBR(uuid);
-            fp.write(code);
+            fp.write( (char)code);
             return res+1;
         }
 

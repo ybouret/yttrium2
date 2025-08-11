@@ -25,7 +25,7 @@ namespace Yttrium
                     if(++curr>=last)         goto BAD; // skipping ':'
                     if(RBRACK != *(curr++) ) goto BAD; // skipping ']'
 
-                    const String id(ini,end-ini);
+                    const String id(ini,static_cast<size_t>(end-ini));
                     if(id.size()<=0) throw Specific::Exception(CallSign,"empty posix alias in '%s'",expr);
                     return posix::named(id);
                 }
@@ -56,7 +56,7 @@ namespace Yttrium
                     break;
             }
 
-            return new Byte(C);
+            return new Byte( (uint8_t)C );
 
          }
 
@@ -128,7 +128,7 @@ namespace Yttrium
                         break;
 
                     default:
-                        *motif << new Byte(C);
+                        *motif << new Byte( (uint8_t)C );
                         break;
                 }
 

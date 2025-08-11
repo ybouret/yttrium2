@@ -108,7 +108,7 @@ namespace Yttrium
                         //
                         //------------------------------------------------------
                     default:
-                        *motif << new Byte(C);
+                        *motif << new Byte( (uint8_t)C );
                 }
             }
 

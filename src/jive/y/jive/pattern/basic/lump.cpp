@@ -37,8 +37,8 @@ namespace Yttrium
         size_t Lump:: serialize(OutputStream &fp) const
         {
             size_t res = fp.emitCBR(uuid);
-            fp.write(lower);
-            fp.write(upper);
+            fp.write( (char)lower );
+            fp.write( (char)upper );
             return res+2;
         }
 

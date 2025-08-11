@@ -107,7 +107,7 @@ namespace Yttrium
             for(int i='A';i<='Z';++i)
             {
                 if(strchr(__vowels__,i)) continue;
-                p->add(i);
+                p->add( (uint8_t)i );
             }
             return Pattern::Optimize( p.yield());
         }
