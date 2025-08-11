@@ -42,8 +42,8 @@ namespace Yttrium
             {
                 assert('\\' == **token.head);
                 assert('x'  == **token.head->next);
-                const unsigned hi = Hexadecimal::ToDec( **token.skip().skip().head );
-                const unsigned lo = Hexadecimal::ToDec( **token.skip().head );
+                const int hi = Hexadecimal::ToDec( (char) **token.skip().skip().head );
+                const int lo = Hexadecimal::ToDec( (char) **token.skip().head );
 
                 **token.head = uint8_t( hi << 4 | lo );
 

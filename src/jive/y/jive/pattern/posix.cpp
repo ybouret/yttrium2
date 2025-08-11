@@ -101,7 +101,7 @@ namespace Yttrium
             for(int i='a';i<='z';++i)
             {
                 if(strchr(__vowels__,i)) continue;
-                p->add(i);
+                p->add( uint8_t(i) );
             }
 
             for(int i='A';i<='Z';++i)

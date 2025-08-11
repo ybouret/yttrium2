@@ -92,7 +92,7 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
                     try {
                         for(unsigned i=0;i<256;++i)
                         {
-                            if(!fc.getbit(i)) continue;
+                            if(!fc.getbit( (uint8_t)i) ) continue;
                             rlist.entry[i].pushTail( new RNode(rule) );
                         }
                     }
@@ -115,7 +115,7 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
                 {
                     for(unsigned i=0;i<256;++i)
                     {
-                        if( !fc.getbit(i) ) continue;
+                        if( !fc.getbit( (uint8_t)i) ) continue;
                         
                         RList &list = rlist.entry[i];
                         for(RNode *node=list.head;node;node=node->next)

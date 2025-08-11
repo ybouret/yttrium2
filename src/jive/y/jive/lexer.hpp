@@ -50,6 +50,10 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
+#if defined(_MSC_VER)
+#pragma warning ( push )
+#pragma warning ( disable : 4355)
+#endif
             //! setup a new lexer, with common design and accepting EOF scanner
             /**
              \param lid compatible lexer name
@@ -65,7 +69,9 @@ namespace Yttrium
             {
                 initialize();
             }
-
+#if defined(_MSC_VER)
+#pragma warning ( pop )
+#endif
             //! cleanup
             virtual ~Lexer() noexcept;
 

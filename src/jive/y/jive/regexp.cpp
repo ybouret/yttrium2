@@ -26,7 +26,7 @@ namespace Yttrium
 
         Pattern * RegExp:: Compile(const char C, const Dictionary * const)
         {
-            return new Byte(C);
+            return new Byte( (uint8_t)C);
         }
     }
 
