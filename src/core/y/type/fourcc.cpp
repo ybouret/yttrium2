@@ -15,7 +15,9 @@ namespace Yttrium
         memcpy(text,fcc.text,sizeof(text));
     }
 
-
+#if defined(_MSC_VER)
+#pragma warning ( disable : 4996 )
+#endif
     FourCC:: FourCC(const uint32_t uuid) noexcept :
     text()
     {
@@ -23,7 +25,7 @@ namespace Yttrium
         for(int shift=0;shift<=24;shift+=8)
         {
             const uint8_t b = uint8_t(uuid>>shift);
-            const char    c = b;
+            const char    c = (char)b;
             if( isgraph(c) )
             {
                 char buff[4];
