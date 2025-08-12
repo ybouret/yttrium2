@@ -27,7 +27,7 @@ namespace {
                 std::cerr << "couldn't build SVD" << std::endl;
             }
             std::cerr << "u=" << u << std::endl;
-            std::cerr << "w=diagm(" << w << "]" << std::endl;
+            std::cerr << "w=diagm(" << w << ")" << std::endl;
             std::cerr << "v=" << v << std::endl;
 
         }
@@ -40,5 +40,7 @@ Y_UTEST(algebra_svd)
     Random::MT19937 ran;
 
     testSVD<float>(ran);
+    testSVD< XReal<double> >(ran);
+
 }
 Y_UDONE()
