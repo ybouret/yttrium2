@@ -4,7 +4,7 @@
 #ifndef Y_MKL_SGN_INCLUDED
 #define Y_MKL_SGN_INCLUDED 1
 
-#include "y/mkl/api.hpp"
+#include "y/mkl/api/fabs.hpp"
 
 namespace Yttrium
 {
