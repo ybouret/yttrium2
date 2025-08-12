@@ -13,9 +13,8 @@ namespace Yttrium
 
         //! return the signed value of a w.r.t the sign of b
         template <typename T, typename U> inline
-        T Sgn(T a, U b)
-        {
-            return (b >= 0) ? Fabs<T>::Of(a) : -Fabs<T>::Of(a)
+        T Sgn(T a, U b) {
+            return Sign::GEQZ(b) ? Fabs<T>::Of(a) : -Fabs<T>::Of(a);
         }
 
 

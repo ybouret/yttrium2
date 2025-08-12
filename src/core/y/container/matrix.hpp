@@ -311,6 +311,22 @@ namespace Yttrium
             Memory::Stealth::Swap(& rowp->cxx[lhs][1], & rowp->cxx[rhs][1], sizeof(T) * cols);
         }
 
+        //! swap cols \param lhs first col index \param rhs second col index
+        inline void swapCols(const size_t lhs, const size_t rhs) noexcept
+        {
+            assert(lhs>0);
+            assert(lhs<=cols);
+            assert(rhs>0);
+            assert(rhs<=cols);
+            for(size_t i=rows;i>0;--i)
+            {
+                Row &r = rowp->cxx[i];
+                Memory::Stealth::Swap(r[lhs],r[rhs]);
+            }
+        }
+
+
+
         //! \param nr required rows \param nc required cols \return same/new matrix
         inline Matrix & make(const size_t nr, const size_t nc)
         {
