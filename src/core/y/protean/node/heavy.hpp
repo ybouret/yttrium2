@@ -31,7 +31,8 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            Y_Args_Declare(T,Type); //!< aliases
+            Y_Args_Declare(T,Type);  //!< aliases
+            typedef Type ReturnType; //!< alias
 
             //! check that two objects are the same
             /**

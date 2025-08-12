@@ -31,7 +31,8 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            Y_Args_Declare_Spec(uint8_t,Type);                                                       //!< aliases
+            Y_Args_Declare_Spec(uint8_t,Type); //!< aliases
+            typedef uint8_t ReturnType;        //!< alias
             static const System::AtExit::Longevity                   LifeTime = LifeTimeOf::IOChars; //!< lifetime
             static const char * const                                CallSign;                       //!< "IO::Char"
             typedef Protean::WarpedCacheOf<Char,MultiThreadedHandle> Cache;                          //!< alias

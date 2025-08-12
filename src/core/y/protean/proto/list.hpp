@@ -48,13 +48,14 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            typedef Core::ListOf<NODE>             ListType;  //!< alias
-            typedef POOL                           PoolType;  //!< alias
-            typedef Ingress<ListType>              Entrance;  //!< alias
-            typedef typename NODE::Type            Type;      //!< alias
-            typedef typename NODE::ConstType       ConstType; //!< alias
-            typedef typename NODE::ParamType       ParamType; //!< alias
-            typedef typename ThreadingPolicy::Lock Lock;      //!< alias
+            typedef Core::ListOf<NODE>             ListType;   //!< alias
+            typedef POOL                           PoolType;   //!< alias
+            typedef Ingress<ListType>              Entrance;   //!< alias
+            typedef typename NODE::Type            Type;       //!< alias
+            typedef typename NODE::ConstType       ConstType;  //!< alias
+            typedef typename NODE::ParamType       ParamType;  //!< alias
+            typedef typename NODE::ReturnType      ReturnType; //!< alias
+            typedef typename ThreadingPolicy::Lock Lock;       //!< alias
             typedef Iter::Linked<Iter::Forward,NODE>       Iterator;             //!< alias
             typedef Iter::Linked<Iter::Forward,const NODE> ConstIterator;        //!< alias
             typedef Iter::Linked<Iter::Reverse,NODE>       ReverseIterator;      //!< alias
@@ -100,21 +101,21 @@ namespace Yttrium
             }
 
             //! remove tail node \return tail value
-            inline Type pullTail()
+            inline ReturnType pullTail()
             {
                 assert(list.size>0);
                 Y_Must_Lock();
-                Type res = **list.tail;
+                ReturnType res = **list.tail;
                 pool.banish( list.popTail() );
                 return res;
             }
 
             //! remove tail node \return head value
-            inline Type pullHead()
+            inline ReturnType pullHead()
             {
                 assert(list.size>0);
                 Y_Must_Lock();
-                Type res = **list.head;
+                ReturnType res = **list.head;
                 pool.banish( list.popHead() );
                 return res;
             }

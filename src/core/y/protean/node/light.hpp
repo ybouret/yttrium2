@@ -29,8 +29,9 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            Y_Args_Expose(T,Type);         //!< alias
-            typedef ConstType & ParamType; //!< alias
+            Y_Args_Expose(T,Type);          //!< alias
+            typedef ConstType & ParamType;  //!< alias
+            typedef Type &      ReturnType; //!< alias
 
             //! check that two references are the same
             /**
