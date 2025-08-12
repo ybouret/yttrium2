@@ -1,7 +1,7 @@
 
 set(third_party_list "")
 
-set(test_third_party OFF)
+set(test_third_party OFF CACHE BOOL "enable specific test for third party")
 
 set( TestThirdPartyFlag "$ENV{TestThirdParty}" )
 if( "1" STREQUAL "${TestThirdPartyFlag}" )

@@ -26,12 +26,12 @@ add_executable(bzip2 bzip2.c)
 target_link_libraries(bzip2 y-bz2)
 
 add_custom_command(TARGET bzip2 POST_BUILD
-COMMAND bzip2  -1  < sample1.ref > sample1.rb2
-COMMAND bzip2  -2  < sample2.ref > sample2.rb2
-COMMAND bzip2  -3  < sample3.ref > sample3.rb2
-COMMAND bzip2  -d  < sample1.bz2 > sample1.tst
-COMMAND bzip2  -d  < sample2.bz2 > sample2.tst
-COMMAND bzip2  -ds < sample3.bz2 > sample3.tst
+COMMAND $<TARGET_FILE:bzip2>  -1  < sample1.ref > sample1.rb2
+COMMAND $<TARGET_FILE:bzip2>  -2  < sample2.ref > sample2.rb2
+COMMAND $<TARGET_FILE:bzip2>  -3  < sample3.ref > sample3.rb2
+COMMAND $<TARGET_FILE:bzip2>  -d  < sample1.bz2 > sample1.tst
+COMMAND $<TARGET_FILE:bzip2>  -d  < sample2.bz2 > sample2.tst
+COMMAND $<TARGET_FILE:bzip2>  -ds < sample3.bz2 > sample3.tst
 COMMAND ${CMAKE_COMMAND} -E compare_files sample1.bz2 sample1.rb2 
 COMMAND ${CMAKE_COMMAND} -E compare_files sample2.bz2 sample2.rb2
 COMMAND ${CMAKE_COMMAND} -E compare_files sample3.bz2 sample3.rb2

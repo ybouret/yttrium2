@@ -35,6 +35,12 @@ namespace Yttrium
                 //! cleanup
                 virtual ~Terminal() noexcept;
 
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
                 virtual bool accepts(Y_Jive_XRule_Args) const;
 
 

@@ -15,7 +15,8 @@ namespace Yttrium
         {
 
             typedef Protean::BareLightList<Rule> Manifest; //!< alias
-
+            typedef Manifest::NodeType           RuleNode; //!< alias
+            
             //__________________________________________________________________
             //
             //

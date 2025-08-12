@@ -49,6 +49,15 @@ namespace Yttrium
                 //! cleanup
                 virtual ~Aggregate() noexcept;
 
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
+                virtual bool accepts(Y_Jive_XRule_Args) const;
+
+
             private:
                 Y_Disable_Copy_And_Assign(Aggregate); //!< discarding
             };
