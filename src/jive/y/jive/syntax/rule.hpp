@@ -43,7 +43,9 @@ namespace Yttrium
                               const uint32_t u) :
                 name(r),
                 type(t),
-                uuid(u)
+                uuid(u),
+                next(0),
+                prev(0)
                 {
                 }
                 
@@ -59,6 +61,8 @@ namespace Yttrium
                 const Tag      name; //!< name
                 const Category type; //!< category
                 const uint32_t uuid; //!< uuid
+                Rule *         next; //!< for list
+                Rule *         prev; //!< for list
 
             private:
                 Y_Disable_Copy_And_Assign(Rule); //!< discarding
