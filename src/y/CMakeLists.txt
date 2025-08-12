@@ -11,8 +11,9 @@ endmacro()
 add_subdirectory(zlib)
 add_subdirectory(bzip2)
 add_subdirectory(lua)
+add_subdirectory(jbig)
 
-cmake_print_variables(third_party_list)
+#cmake_print_variables(third_party_list)
 
 add_custom_target(third_party
 DEPENDS ${third_party_list})
