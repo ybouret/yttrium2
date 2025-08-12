@@ -67,13 +67,16 @@ namespace Yttrium
                 //! restore content to lexer and delete node
                 static  void Restore(Node * const, Lexer &) noexcept;
 
+                static  void Restore(NodeList &, Lexer &) noexcept;
+
                 //! \return new terminal node from Terminal Rule
                 static TerminalNode * Make(const Terminal &, Lexeme * const);
 
                 //! \return new internal node Internal Rule (TODO: aggregate)
                 static InternalNode * Make(const Internal &);
 
-                static void Grow(Node * & tree, Node * const) noexcept;
+                //! grow a tree with a new node
+                static void Grow(Node * &, Node * const) noexcept;
 
                 //______________________________________________________________
                 //
@@ -81,8 +84,8 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
-                bool isInternal() const noexcept;
-                bool isTerminal() const noexcept;
+                bool isInternal() const noexcept; //!< \return type == IsInternal
+                bool isTerminal() const noexcept; //!< \return type == IsTerminal
 
                 //______________________________________________________________
                 //

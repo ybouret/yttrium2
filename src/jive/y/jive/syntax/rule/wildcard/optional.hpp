@@ -2,10 +2,10 @@
 
 //! \file
 
-#ifndef Y_Jive_Syntax_Alternate_Included
-#define Y_Jive_Syntax_Alternate_Included 1
+#ifndef Y_Jive_Syntax_Optional_Included
+#define Y_Jive_Syntax_Optional_Included 1
 
-#include "y/jive/syntax/rule/logical.hpp"
+#include "y/jive/syntax/rule/wildcard.hpp"
 
 namespace Yttrium
 {
@@ -18,11 +18,11 @@ namespace Yttrium
             //
             //
             //
-            //! Choice of existing rules
+            //! Optional rule
             //
             //
             //__________________________________________________________________
-            class Alternate : public Logical
+            class Optional : public Wildcard
             {
             public:
                 //______________________________________________________________
@@ -31,7 +31,7 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
-                static const uint32_t UUID = Y_FOURCC('A', 'L', 'T', '_'); //!< alias
+                static const uint32_t UUID = Y_FOURCC('O', 'P', 'T', '_'); //!< alias
 
                 //______________________________________________________________
                 //
@@ -40,15 +40,15 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-                //! setup \param rid rule name
+                //! setup \param rid rule name \param f persistent rule
                 template <typename RID> inline
-                explicit Alternate(const RID &rid) :
-                Logical(rid,UUID)
+                explicit Optional(const RID &r, const Rule &f) :
+                Wildcard(r,UUID,f)
                 {
                 }
 
-
-                virtual ~Alternate() noexcept; //!< cleanup
+                //! cleanup
+                virtual ~Optional() noexcept;
 
                 //______________________________________________________________
                 //
@@ -58,8 +58,9 @@ namespace Yttrium
                 //______________________________________________________________
                 virtual bool accepts(Y_Jive_XRule_Args) const;
 
+
             private:
-                Y_Disable_Copy_And_Assign(Alternate); //!< discardin
+                Y_Disable_Copy_And_Assign(Optional); //!< discarding
             };
         }
 

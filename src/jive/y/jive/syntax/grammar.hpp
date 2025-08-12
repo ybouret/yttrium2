@@ -23,8 +23,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Grammar : public Vizible,
-            public Ingress< const Core::ListOf<Rule> >
+            class Grammar : public Vizible, public Ingress< const Core::ListOf<Rule> >
             {
             public:
                 //______________________________________________________________
@@ -49,9 +48,9 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
-                const Rule * query(const String &) const noexcept;
-                const Rule * query(const Tag &)    const noexcept;
-                const Rule * query(const char * const)      const;
+                const Rule * query(const String &) const noexcept; //!< \return rule by name
+                const Rule * query(const Tag &)    const noexcept; //!< \return rule by name
+                const Rule * query(const char * const)      const; //!< \return rule by name
 
                 //______________________________________________________________
                 //
@@ -59,7 +58,7 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const Tag name;
+                const Tag name; //!< grammar name
 
             private:
                 Y_Disable_Copy_And_Assign(Grammar); //!< discarding

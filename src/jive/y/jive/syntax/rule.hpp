@@ -17,6 +17,7 @@ namespace Yttrium
 
             class Grammar;
 
+            //! helper for Rule::accepts arguments
 #define Y_Jive_XRule_Args Node * &, Lexer &, Source &
 
             //__________________________________________________________________
@@ -64,6 +65,8 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
+
+                //! \return true if this rule accepted lexer/source
                 virtual bool accepts(Y_Jive_XRule_Args) const = 0;
 
 

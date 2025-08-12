@@ -25,16 +25,20 @@ namespace Yttrium
 
             void InternalNode:: restore(Lexer &lexer) noexcept
             {
-                while(size) {
-                    tail->restore(lexer);
-                    delete popTail();
-                }
+                Restore(*this,lexer);
             }
 
             InternalNode & InternalNode :: operator<<(Node * const node)
             {
                 return * ( Coerce(pushTail(node)->sire) = this );
             }
+
+            InternalNode & InternalNode:: steal(NodeList &list) noexcept
+            {
+                while(list.size>0) *this << list.popHead();
+                return *this;
+            }
+
         }
     }
 

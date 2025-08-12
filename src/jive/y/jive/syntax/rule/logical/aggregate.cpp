@@ -40,8 +40,7 @@ namespace Yttrium
 
                 // create node
                 InternalNode * node = Node::Make(*this);
-                node->swapListFor(list);
-                Node::Grow(tree,node);
+                Node::Grow(tree, & node->steal(list) );
                 return true;
             }
         }

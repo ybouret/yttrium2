@@ -47,6 +47,8 @@ namespace Yttrium
                 //! push tail and set sire \return *this
                 InternalNode & operator<<(Node * const);
 
+                InternalNode & steal(NodeList &) noexcept;
+
 
             private:
                 friend class Node;

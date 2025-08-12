@@ -28,6 +28,11 @@ namespace Yttrium
                 delete node;
             }
 
+            void Node:: Restore(NodeList &list, Lexer &lexer) noexcept
+            {
+                while( list.size ) Restore(list.popTail(),lexer);
+            }
+
             bool Node:: isInternal() const noexcept { return IsInternal == type; }
 
             bool Node:: isTerminal() const noexcept { return IsTerminal == type; }
