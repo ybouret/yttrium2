@@ -34,7 +34,10 @@ namespace Yttrium
 
                 //! cleanup
                 virtual ~Terminal() noexcept;
-                
+
+                virtual bool accepts(Y_Jive_XRule_Args) const;
+
+
             private:
                 Y_Disable_Copy_And_Assign(Terminal); //!< discarding
             };

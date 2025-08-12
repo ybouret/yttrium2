@@ -17,6 +17,8 @@ namespace Yttrium
 
             class Grammar;
 
+#define Y_Jive_XRule_Args Node * &, Lexer &, Source &
+
             //__________________________________________________________________
             //
             //
@@ -62,7 +64,8 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
-                //virtual bool accepts(Node * & tree, Lexer &);
+                virtual bool accepts(Y_Jive_XRule_Args) const = 0;
+
 
                 //______________________________________________________________
                 //

@@ -73,6 +73,17 @@ namespace Yttrium
                 //! \return new internal node Internal Rule (TODO: aggregate)
                 static InternalNode * Make(const Internal &);
 
+                static void Grow(Node * & tree, Node * const) noexcept;
+
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+                bool isInternal() const noexcept;
+                bool isTerminal() const noexcept;
+
                 //______________________________________________________________
                 //
                 //

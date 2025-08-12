@@ -26,6 +26,10 @@ namespace Yttrium
                 {
                 }
 
+                virtual bool accepts(Y_Jive_XRule_Args) const
+                {
+                    return false;
+                }
 
 
             private:

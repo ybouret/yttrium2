@@ -9,6 +9,8 @@ namespace Yttrium
         namespace Syntax
         {
             Rule:: ~Rule() noexcept {}
+
+            
         }
 
     }

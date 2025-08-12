@@ -28,6 +28,11 @@ namespace Yttrium
                 delete node;
             }
 
+            bool Node:: isInternal() const noexcept { return IsInternal == type; }
+
+            bool Node:: isTerminal() const noexcept { return IsTerminal == type; }
+            
+
         }
 
     }
