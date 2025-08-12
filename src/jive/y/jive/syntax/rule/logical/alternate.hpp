@@ -14,11 +14,33 @@ namespace Yttrium
         namespace Syntax
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Choice of existing rules
+            //
+            //
+            //__________________________________________________________________
             class Alternate : public Logical
             {
             public:
-                static const uint32_t UUID = Y_FOURCC('A', 'L', 'T', '_');
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                static const uint32_t UUID = Y_FOURCC('A', 'L', 'T', '_'); //!< alias
 
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! setup \param rid rule name
                 template <typename RID> inline
                 explicit Alternate(const RID &rid) :
                 Logical(rid,UUID)
@@ -26,10 +48,10 @@ namespace Yttrium
                 }
 
 
-                virtual ~Alternate() noexcept;
+                virtual ~Alternate() noexcept; //!< cleanup
 
             private:
-                Y_Disable_Copy_And_Assign(Alternate);
+                Y_Disable_Copy_And_Assign(Alternate); //!< discardin
             };
         }
 

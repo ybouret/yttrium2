@@ -12,22 +12,42 @@ namespace Yttrium
 
         namespace Syntax
         {
-            //! TerminalNode a.k.a lexeme smart pointer
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Terminal node, with Terminal rule and its lexeme
+            //
+            //
+            //__________________________________________________________________
             class TerminalNode : public Node
             {
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
             private:
+                //! setup with rule and lexeme != 0
                 explicit TerminalNode(const Terminal &,
                                       Lexeme * const) noexcept;
 
             public:
-                virtual ~TerminalNode() noexcept;
+                virtual ~TerminalNode() noexcept; //!< cleanup
 
-                Lexeme * const lexeme;
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                Lexeme * const lexeme; //!< lexeme, NULL once returned to Lexer
 
             private:
                 Y_Disable_Copy_And_Assign(TerminalNode); //!< discarding
                 friend class Node;
-                virtual void restore(Lexer &) noexcept;
+                virtual void restore(Lexer &) noexcept; 
             };
         }
 

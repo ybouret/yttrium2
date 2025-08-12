@@ -11,7 +11,12 @@ namespace Yttrium
     namespace MKL
     {
 
-        //! return the signed value of a w.r.t the sign of b
+        //! signed return
+        /**
+         \param a value to return
+         \param b sign to return
+         \return return sign(b) * |a|
+         */
         template <typename T, typename U> inline
         T Sgn(T a, U b) {
             return Sign::GEQZ(b) ? Fabs<T>::Of(a) : -Fabs<T>::Of(a);

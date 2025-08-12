@@ -13,8 +13,14 @@ namespace Yttrium
 
         namespace Syntax
         {
-
-            //! internal node
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Internal node
+            //
+            //
+            //__________________________________________________________________
             class InternalNode : public Node, public NodeList
             {
                 //______________________________________________________________
@@ -24,7 +30,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
             private:
-                //! setup
+                //! setup with internal rule
                 explicit InternalNode(const Internal &) noexcept;
 
             public:

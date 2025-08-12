@@ -13,9 +13,30 @@ namespace Yttrium
 
         namespace Syntax
         {
+
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Rule interface
+            //
+            //
+            //__________________________________________________________________
             class Rule : public Object
             {
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
             protected:
+                //! setup
+                /**
+                 \param r rule name
+                 \param t rule category
+                 \param u rule class identifier
+                 */
                 template <typename RID> inline
                 explicit Rule(const RID     &r,
                               const Category t,
@@ -27,14 +48,20 @@ namespace Yttrium
                 }
                 
             public:
-                virtual ~Rule() noexcept;
+                virtual ~Rule() noexcept; //!< cleanup
 
-                const Tag      name;
-                const Category type;
-                const uint32_t uuid;
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                const Tag      name; //!< name
+                const Category type; //!< category
+                const uint32_t uuid; //!< uuid
 
             private:
-                Y_Disable_Copy_And_Assign(Rule);
+                Y_Disable_Copy_And_Assign(Rule); //!< discarding
             };
         }
     }

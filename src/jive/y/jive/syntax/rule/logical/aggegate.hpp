@@ -13,22 +13,44 @@ namespace Yttrium
         namespace Syntax
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Aggregate of existing rules
+            //
+            //
+            //__________________________________________________________________
             class Aggregate : public Logical
             {
             public:
-                static const uint32_t UUID = Y_FOURCC('A', 'G', 'G', '_');
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                static const uint32_t UUID = Y_FOURCC('A', 'G', 'G', '_'); //!< alias
 
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! setup \param rid rule name
                 template <typename RID> inline
                 explicit Aggregate(const RID &rid) :
                 Logical(rid,UUID)
                 {
                 }
 
-
+                //! cleanup
                 virtual ~Aggregate() noexcept;
 
             private:
-                Y_Disable_Copy_And_Assign(Aggregate);
+                Y_Disable_Copy_And_Assign(Aggregate); //!< discarding
             };
         }
 

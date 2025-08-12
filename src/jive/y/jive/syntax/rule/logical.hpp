@@ -14,24 +14,32 @@ namespace Yttrium
         namespace Syntax
         {
 
-            typedef Protean::BareLightList<Rule> Manifest;
+            typedef Protean::BareLightList<Rule> Manifest; //!< alias
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Logical rule: manifest of existing rules
+            //
+            //
+            //__________________________________________________________________
             class Logical : public Internal, public Manifest
             {
             protected:
+                //! setup \param r rule name \param u rule class identifiers
                 template <typename RID> inline
                 explicit Logical(const RID &r, const uint32_t u) :
                 Internal(r,u),
                 Manifest()
                 {
-                    
                 }
 
             public:
-                virtual ~Logical() noexcept;
+                virtual ~Logical() noexcept; //!< cleanup
 
             private:
-                Y_Disable_Copy_And_Assign(Logical);
+                Y_Disable_Copy_And_Assign(Logical); //!< discarding
             };
 
         }

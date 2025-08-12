@@ -50,13 +50,21 @@ namespace Yttrium
              \param a [1..m][1..n], REPLACED by u ou output
              \param w [1..n]        the singular values
              \param v [1..n][1..m]  the svd vectors
+             \return success
              */
             //
             //__________________________________________________________________
             bool build(Matrix<T> &a, Writable<T> &w, Matrix<T> &v);
 
 
-            //! build with copy of UNTOUCHED a
+            //! build SVD decomposition a = u . w . v' with copy of UNTOUCHED a
+            /**
+             \param u [1..m][1..n]  output matrix
+             \param w [1..n]        the singular values
+             \param v [1..n][1..m]  the svd vectors
+             \param a [1..m][1..n]   original matrix
+             \return success
+             */
             template <typename U> inline
             bool build(Matrix<T> &u, Writable<T> &w, Matrix<T> &v, const Matrix<U> &a)
             {
@@ -74,12 +82,17 @@ namespace Yttrium
             static void Sort(Matrix<T> &u, Writable<T> &d, Matrix<T> &v, Compare compare);
 
             //! Sort singular values by increasing absolute value: kernel first
-            static void Sort(Matrix<T> &u, Writable<T> &d, Matrix<T> &v);
+            /**
+             \param u lhs
+             \param w singular values
+             \param v singluar vectors
+             */
+            static void Sort(Matrix<T> &u, Writable<T> &w, Matrix<T> &v);
 
         private:
-            Y_Disable_Copy_And_Assign(SVD);
             class Code;
-            Code *code;
+            Y_Disable_Copy_And_Assign(SVD); //!< discarding
+            Code *code;                     //!< inner code
         };
 
     }

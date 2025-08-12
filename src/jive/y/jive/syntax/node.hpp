@@ -86,7 +86,7 @@ namespace Yttrium
                 Node *               prev; //!< for list
 
             private:
-                Y_Disable_Copy_And_Assign(Node);
+                Y_Disable_Copy_And_Assign(Node); //!< discarding
             };
 
 
