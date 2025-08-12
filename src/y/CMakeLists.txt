@@ -1,16 +1,6 @@
 
 set(third_party_list "")
 
-set(test_third_party OFF CACHE BOOL "enable specific test for third party")
-
-set( TestThirdPartyFlag "$ENV{TestThirdParty}" )
-if( "1" STREQUAL "${TestThirdPartyFlag}" )
-    set(test_third_party ON)
-endif()
-
-#cmake_print_variables(test_third_party)
-
-
 # macro to add to list
 macro(Y_ThirdParty theTarget)
     set(local_third_party ${third_party_list})

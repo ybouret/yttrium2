@@ -37,25 +37,35 @@ target_link_libraries(y_jpegtran y-jpeg)
 #add_executable(y_wrjpgcom wrjpgcom.c)
 #target_link_libraries(y_wrjpgcom y-jpeg)
 
-add_custom_target(y_test_jpeg
-DEPENDS y_cjpeg y_djpeg y_jpegtran
-COMMAND ${CMAKE_COMMAND} -E rm -f testout*
-COMMAND y_djpeg -dct int -ppm -outfile testout.ppm testorig.jpg
-COMMAND y_djpeg -dct int -gif -outfile testout.gif testorig.jpg
-COMMAND y_djpeg -dct int -bmp -colors 256 -outfile testout.bmp testorig.jpg
-COMMAND y_cjpeg -dct int -outfile testout.jpg testimg.ppm
-COMMAND y_djpeg -dct int -ppm -outfile testoutp.ppm testprog.jpg
-COMMAND y_cjpeg -dct int -progressive -opt -outfile testoutp.jpg testimg.ppm
-COMMAND y_jpegtran -outfile testoutt.jpg testprog.jpg
-COMMAND ${CMAKE_COMMAND} -E compare_files testimg.ppm testout.ppm
-COMMAND ${CMAKE_COMMAND} -E compare_files testimg.gif testout.gif
-COMMAND ${CMAKE_COMMAND} -E compare_files testimg.bmp testout.bmp
-COMMAND ${CMAKE_COMMAND} -E compare_files testimg.jpg testout.jpg
-COMMAND ${CMAKE_COMMAND} -E compare_files testimg.ppm testoutp.ppm
-COMMAND ${CMAKE_COMMAND} -E compare_files testimgp.jpg testoutp.jpg
-#COMMAND ${CMAKE_COMMAND} -E compare_files testorig.jpg testoutt.jpg
-COMMAND ${CMAKE_COMMAND} -E rm -f testout*
-WORKING_DIRECTORY ${HERE}
-COMMENT "Testing JPEG"
-VERBATIM)
+add_custom_command(TARGET y_djpeg POST_BUILD
+    COMMAND y_djpeg -dct int -ppm             -outfile testout.ppm testorig.jpg
+    COMMAND y_djpeg -dct int -gif             -outfile testout.gif testorig.jpg
+    COMMAND y_djpeg -dct int -bmp -colors 256 -outfile testout.bmp testorig.jpg
+    COMMAND y_djpeg -dct int -ppm             -outfile testoutp.ppm testprog.jpg
+    COMMAND ${CMAKE_COMMAND} -E compare_files testimg.ppm  testout.ppm
+    COMMAND ${CMAKE_COMMAND} -E compare_files testimg.gif  testout.gif
+    COMMAND ${CMAKE_COMMAND} -E compare_files testimg.bmp  testout.bmp
+    COMMAND ${CMAKE_COMMAND} -E compare_files testimgp.jpg testoutp.jpg
+    WORKING_DIRECTORY ${HERE}
+    COMMENT "Testing DJPEG"
+    VERBATIM
+)
+
+add_custom_command(TARGET y_cjpeg POST_BUILD
+    COMMAND y_cjpeg -dct int                   -outfile testout.jpg  testimg.ppm
+    COMMAND y_cjpeg -dct int -progressive -opt -outfile testoutp.jpg testimg.ppm
+    COMMAND ${CMAKE_COMMAND} -E compare_files testimg.jpg testout.jpg
+    COMMAND ${CMAKE_COMMAND} -E compare_files testimgp.jpg testoutp.jpg
+    WORKING_DIRECTORY ${HERE}
+    COMMENT "Testing CJPEG"
+    VERBATIM
+)
+
+add_custom_command(TARGET y_jpegtran POST_BUILD
+    COMMAND y_jpegtran -outfile testoutt.jpg testprog.jpg
+    #COMMAND ${CMAKE_COMMAND} -E compare_files testorig.jpg testoutt.jpg
+    WORKING_DIRECTORY ${HERE}
+    COMMENT "Testing JPEGTRAN"
+    VERBATIM
+)
 

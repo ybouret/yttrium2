@@ -50,6 +50,9 @@ namespace Yttrium
 
                 virtual ~Alternate() noexcept; //!< cleanup
 
+                
+                virtual bool accepts(Y_Jive_XRule_Args) const;
+
             private:
                 Y_Disable_Copy_And_Assign(Alternate); //!< discardin
             };
