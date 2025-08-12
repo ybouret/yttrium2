@@ -67,6 +67,7 @@ namespace Yttrium
                 //! restore content to lexer and delete node
                 static  void Restore(Node * const, Lexer &) noexcept;
 
+                //! restore list to lexer
                 static  void Restore(NodeList &, Lexer &) noexcept;
 
                 //! \return new terminal node from Terminal Rule

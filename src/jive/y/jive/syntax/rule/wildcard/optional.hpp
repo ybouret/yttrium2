@@ -40,10 +40,10 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-                //! setup \param rid rule name \param f persistent rule
+                //! setup \param rid rule name \param f foreign rule
                 template <typename RID> inline
-                explicit Optional(const RID &r, const Rule &f) :
-                Wildcard(r,UUID,f)
+                explicit Optional(const RID &rid, const Rule &f) :
+                Wildcard(rid,UUID,f)
                 {
                 }
 

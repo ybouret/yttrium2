@@ -33,8 +33,7 @@ namespace Yttrium
                     }
 
                     // failure, return list to lexer
-                    while(list.size)
-                        Node::Restore(list.popTail(),lexer);
+                    Node::Restore(list,lexer);
                     return false;
                 }
 

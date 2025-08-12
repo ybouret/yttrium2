@@ -47,6 +47,7 @@ namespace Yttrium
                 //! push tail and set sire \return *this
                 InternalNode & operator<<(Node * const);
 
+                //! push all list's nodes \return *this
                 InternalNode & steal(NodeList &) noexcept;
 
 

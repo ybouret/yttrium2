@@ -25,6 +25,7 @@ namespace Yttrium
             class Wildcard : public Internal
             {
             protected:
+                //! setup \param r rule name  \param u rule uuid \param f foreign rule
                 template <typename RID> inline
                 explicit Wildcard(const RID     &r,
                                   const uint32_t u,
@@ -37,7 +38,7 @@ namespace Yttrium
             public:
                 virtual ~Wildcard() noexcept; //!< cleanup
 
-                const Rule &rule;
+                const Rule &rule; //!< foreign persistent rule
             private:
                 Y_Disable_Copy_And_Assign(Wildcard); //!< discarding
             };

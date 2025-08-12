@@ -38,10 +38,10 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-                //! setup \param rid rule name \param f persistent rule
+                //! setup \param rid rule name \param nmin minCount \param f persistent rule
                 template <typename RID> inline
-                explicit AtLeast(const RID &r, const size_t nmin, const Rule &f) :
-                Wildcard(r,UUID,f),
+                explicit AtLeast(const RID &rid, const size_t nmin, const Rule &f) :
+                Wildcard(rid,UUID,f),
                 minCount(nmin)
                 {
                 }
@@ -63,31 +63,49 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const size_t minCount;
+                const size_t minCount; //!< minimal valid count
 
             private:
                 Y_Disable_Copy_And_Assign(AtLeast); //!< discarding
             };
 
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! AtLeast>=0
+            //
+            //
+            //__________________________________________________________________
             class ZeroOrMore : public AtLeast
             {
             public:
+                //! setup \param r rule name \param f foreign rule
                 template <typename RID> inline
                 explicit ZeroOrMore(const RID &r, const Rule &f) : AtLeast(r,0,f) {}
-                virtual ~ZeroOrMore() noexcept;
+                virtual ~ZeroOrMore() noexcept;        //!< cleanup
             private:
-                Y_Disable_Copy_And_Assign(ZeroOrMore);
+                Y_Disable_Copy_And_Assign(ZeroOrMore); //!< discarding
             };
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! AtLeast>=1
+            //
+            //
+            //__________________________________________________________________
             class OneOrMore : public AtLeast
             {
             public:
+                //! setup \param r rule name \param f foreign rule
                 template <typename RID> inline
                 explicit OneOrMore(const RID &r, const Rule &f) : AtLeast(r,1,f) {}
-                virtual ~OneOrMore() noexcept;
+                virtual ~OneOrMore() noexcept;        //!< cleanup
             private:
-                Y_Disable_Copy_And_Assign(OneOrMore);
+                Y_Disable_Copy_And_Assign(OneOrMore); //!< discarding
             };
         }
 
