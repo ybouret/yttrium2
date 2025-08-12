@@ -19,7 +19,7 @@ namespace
             emit("INT",  "[:digit:]+");
             emit("FLT",  "[:digit:]+\\.[:digit:]*");
             emit("dot",  ".");
-            endl("endl", "[:endl:]");
+            endl("endl", "[:endl:]",false);
         }
 
         virtual ~MyScanner() noexcept

@@ -229,12 +229,19 @@ namespace Yttrium
                  \param rxp rule regular expression
                  \return added regular, Drop rule
                 */
-                template <typename RID, typename RXP>
+                template <typename RID, typename RXP> inline
                 const Rule & drop(const RID & rid,
                                   const RXP & rxp)
                 {
                     return decl(rid,rxp,Regular,DropToken);
                 }
+
+                template <typename RXP> inline
+                const Rule & drop(const RXP &rxp)
+                {
+                    return drop(rxp,rxp);
+                }
+
 
                 //! flexible endl
                 /**
@@ -246,10 +253,25 @@ namespace Yttrium
                 template <typename RID, typename RXP>
                 const Rule & endl(const RID & rid,
                                   const RXP & rxp,
-                                  const bool  rise = false)
+                                  const bool  rise)
                 {
                     return decl(rid,rxp,NewLine,rise ? SpawnUnit : DropToken);
                 }
+
+                //! flexible endl
+                /**
+                 \param rxp endl regular expression
+                 \param rise optional Emit
+                 \return added endl rule
+                 */
+                template <typename RXP>
+                const Rule & endl(const RXP & rxp,
+                                  const bool  rise)
+                {
+                    return endl(rxp,rxp,rise);
+                }
+
+
 
                 //! \return serialized uuid+name
                 size_t emitUUID(OutputStream&) const;

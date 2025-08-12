@@ -13,6 +13,20 @@ namespace Yttrium
             {
             }
 
+            const Rule & Grammar:: top() const noexcept
+            {
+                assert(rules.head);
+                return *rules.head;
+            }
+
+            void Grammar:: top(const Rule &rule) noexcept
+            {
+                assert(rules.owns(&rule));
+                rules.moveToFront( & Coerce(rule) );
+            }
+
+
+
             const Rule * Grammar:: query(const String &rid) const noexcept
             {
                 for(const Rule *r=rules.head;r;r=r->next)

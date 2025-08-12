@@ -32,7 +32,7 @@ namespace
             plug(Lexical::RString::Class,"rString");
             plug(Lexical::BString::Class,"bString");
 
-            endl("endl",  "[:endl:]");
+            endl("endl",  "[:endl:]",false);
             drop("blank", "[:blank:]");
         }
 

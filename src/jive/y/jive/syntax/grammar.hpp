@@ -5,7 +5,12 @@
 #ifndef Y_Jive_Syntax_Grammar_Included
 #define Y_Jive_Syntax_Grammar_Included 1
 
-#include "y/jive/syntax/rule.hpp"
+#include "y/jive/syntax/rule/terminal.hpp"
+#include "y/jive/syntax/rule/logical/aggegate.hpp"
+#include "y/jive/syntax/rule/logical/alternate.hpp"
+#include "y/jive/syntax/rule/wildcard/optional.hpp"
+#include "y/jive/syntax/rule/wildcard/at-least.hpp"
+
 
 namespace Yttrium
 {
@@ -26,6 +31,14 @@ namespace Yttrium
             class Grammar : public Vizible, public Ingress< const Core::ListOf<Rule> >
             {
             public:
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                typedef Syntax::Rule Rule;
+
                 //______________________________________________________________
                 //
                 //
@@ -52,6 +65,25 @@ namespace Yttrium
                 const Rule * query(const Tag &)    const noexcept; //!< \return rule by name
                 const Rule * query(const char * const)      const; //!< \return rule by name
 
+
+                //______________________________________________________________
+                //
+                //
+                // Construction
+                //
+                //______________________________________________________________
+
+                const Rule & top() const noexcept;
+                void         top(const Rule &) noexcept;
+
+
+
+                template <typename ID>
+                const Terminal & terminal(const ID &id)
+                {
+                    return add( new Terminal(id) );
+                }
+
                 //______________________________________________________________
                 //
                 //
@@ -65,6 +97,12 @@ namespace Yttrium
                 Y_Ingress_Decl();                   //!< ingress
                 CxxListOf<Rule> rules;              //!< grammar rules
                 void append(Rule * const);          //!< append new rule
+
+                template <typename RULE> inline
+                RULE & add(RULE * const rule) {
+                    append(rule);
+                    return *rule;
+                }
             };
 
         }
