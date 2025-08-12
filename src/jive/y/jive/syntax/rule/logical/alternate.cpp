@@ -20,7 +20,7 @@ namespace Yttrium
 
                 bool accepted = false;
 
-                // check all nodes
+                // check one node
                 for(const RuleNode *r=(*this)->head;r;r=r->next)
                 {
                     const Rule &rule = **r;
