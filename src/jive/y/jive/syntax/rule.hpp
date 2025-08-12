@@ -4,7 +4,7 @@
 #ifndef Y_Jive_Syntax_Rule_Included
 #define Y_Jive_Syntax_Rule_Included 1
 
-#include "y/jive/syntax/node/internal.hpp"
+#include "y/jive/syntax/node.hpp"
 
 namespace Yttrium
 {
@@ -55,6 +55,14 @@ namespace Yttrium
                 
             public:
                 virtual ~Rule() noexcept; //!< cleanup
+
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
+                //virtual bool accepts(Node * & tree, Lexer &);
 
                 //______________________________________________________________
                 //
