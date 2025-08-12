@@ -12,7 +12,14 @@ namespace Yttrium
     {
         namespace Syntax
         {
+            //__________________________________________________________________
+            //
+            //
+            //
             //! rule with matching lexeme name
+            //
+            //
+            //__________________________________________________________________
             class Terminal : public Rule
             {
             public:
