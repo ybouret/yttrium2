@@ -14,6 +14,9 @@ namespace Yttrium
         namespace Syntax
         {
 
+
+            class Grammar;
+
             //__________________________________________________________________
             //
             //
@@ -45,7 +48,8 @@ namespace Yttrium
                 type(t),
                 uuid(u),
                 next(0),
-                prev(0)
+                prev(0),
+                gptr(0)
                 {
                 }
                 
@@ -58,11 +62,12 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const Tag      name; //!< name
-                const Category type; //!< category
-                const uint32_t uuid; //!< uuid
-                Rule *         next; //!< for list
-                Rule *         prev; //!< for list
+                const Tag       name; //!< name
+                const Category  type; //!< category
+                const uint32_t  uuid; //!< uuid
+                Rule *          next; //!< for list
+                Rule *          prev; //!< for list
+                Grammar * const gptr; //!< owning grammar
 
             private:
                 Y_Disable_Copy_And_Assign(Rule); //!< discarding

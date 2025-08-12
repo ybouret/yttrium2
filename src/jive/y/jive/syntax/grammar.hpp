@@ -15,25 +15,57 @@ namespace Yttrium
         namespace Syntax
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Grammar is a list of rules
+            //
+            //
+            //__________________________________________________________________
             class Grammar : public Vizible,
             public Ingress< const Core::ListOf<Rule> >
             {
             public:
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! setup \param gid grammar name
                 template <typename GID> inline
                 explicit Grammar(const GID &gid) :
                 name(gid)
                 {
                 }
 
-                virtual ~Grammar() noexcept;
+                virtual ~Grammar() noexcept; //!< cleanup
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+                const Rule * query(const String &) const noexcept;
+                const Rule * query(const Tag &)    const noexcept;
+                const Rule * query(const char * const)      const;
 
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
                 const Tag name;
 
             private:
-                Y_Disable_Copy_And_Assign(Grammar);
-                Y_Ingress_Decl();
-                CxxListOf<Rule> rules;
+                Y_Disable_Copy_And_Assign(Grammar); //!< discarding
+                Y_Ingress_Decl();                   //!< ingress
+                CxxListOf<Rule> rules;              //!< grammar rules
+                void append(Rule * const);          //!< append new rule
             };
 
         }
