@@ -135,7 +135,7 @@ Y_UTEST(apex_perf)
         std::cerr << std::setw(8) << apn::HumanReadableOps() << ' ';
         for(size_t j=1;j<=cols;++j)
         {
-            std::cerr << HumanReadable( rates[i][j] ) << (i==maxi[j] ? "* " : "  ");
+            std::cerr << HumanReadable( (uint64_t)rates[i][j] ) << (i==maxi[j] ? "* " : "  ");
         }
         std::cerr << std::endl;
     }
@@ -166,7 +166,7 @@ Y_UTEST(apex_perf)
             }
             while( cycles < 1000 && ell < 0.1 );
             const long double rate = cycles / ell;
-            std::cerr << ' ' << HumanReadable( rate ) << "/s @" << std::setw(6) << bits << " bits" << std::endl;
+            std::cerr << ' ' << HumanReadable( (uint64_t)rate ) << "/s @" << std::setw(6) << bits << " bits" << std::endl;
         }
         std::cerr << std::endl;
     }

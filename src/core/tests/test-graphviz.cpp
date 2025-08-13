@@ -64,7 +64,7 @@ Y_UTEST(graphviz)
         {
             for(size_t j=0;j<16;++j,++c)
             {
-                const char C = c;
+                const char C = (char)c;
                 viz[c].nodeName(fp) << '[';
                 const String label = C; Y_ASSERT(1==label.size());
                 Vizible::Label(fp,label);
