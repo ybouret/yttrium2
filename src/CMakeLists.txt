@@ -18,12 +18,12 @@ else()
 endif()
 
 set(Y_UnitTests "")
-add_subdirectory(y)
 add_subdirectory(core)
 add_subdirectory(mkl)
 add_subdirectory(jive)
 cmake_print_variables(Y_UnitTests)
 
+add_subdirectory(y)
 add_subdirectory(cli)
 
 if( NOT "" STREQUAL "${Y_UnitTests}")
