@@ -3,6 +3,7 @@
 #include "y/jive/syntax/rule/terminal.hpp"
 
 #include "y/type/destroy.hpp"
+#include "y/stream/output.hpp"
 
 namespace Yttrium
 {
@@ -39,6 +40,14 @@ namespace Yttrium
                     lexer.store(lexeme);
                     Coerce(lexeme) = 0;
                 }
+            }
+
+            OutputStream & TerminalNode:: viz(OutputStream &fp) const
+            {
+                nodeName(fp) << '[';
+                Label(fp,*rule.name);
+                fp << ",shape=box";
+                return Endl( fp << ']' );
             }
         }
 

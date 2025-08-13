@@ -1,5 +1,6 @@
 #include "y/jive/syntax/grammar.hpp"
 #include "y/utest/run.hpp"
+#include "y/vfs/local/fs.hpp"
 
 using namespace Yttrium;
 using namespace Jive;
@@ -51,12 +52,19 @@ Y_UTEST(grammar)
 {
     MyGrammar G;
     MyLexer   L;
+    LocalFS  &fs = LocalFS::Instance();
+
+    fs.tryRemoveFile("tree.dot");
+    fs.tryRemoveFile("tree.png");
 
     if(argc>1)
     {
         Source source( Module::OpenFile(argv[1]) );
         AutoPtr<Syntax::Node> tree = G.run(L,source);
-
+        if(tree.isValid())
+        {
+            Vizible::Render("tree.dot",*tree);
+        }
     }
 }
 Y_UDONE()

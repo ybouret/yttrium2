@@ -54,8 +54,8 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
-                virtual void restore(Lexer &) noexcept = 0; //!< restore content
-
+                virtual void           restore(Lexer &)    noexcept = 0; //!< restore content
+                virtual OutputStream & viz(OutputStream &) const    = 0;
 
                 //______________________________________________________________
                 //

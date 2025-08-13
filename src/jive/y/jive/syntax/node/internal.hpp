@@ -43,6 +43,14 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
+                virtual OutputStream & viz(OutputStream &) const;
+
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
 
                 //! push tail and set sire \return *this
                 InternalNode & operator<<(Node * const);
