@@ -55,7 +55,7 @@ Y_UTEST(grammar)
     if(argc>1)
     {
         Source source( Module::OpenFile(argv[1]) );
-        
+        AutoPtr<Syntax::Node> tree = G.run(L,source);
 
     }
 }
