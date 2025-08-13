@@ -71,7 +71,14 @@ namespace Yttrium
                 u.assign(a);
                 return build(u,w,v);
             }
-            
+
+            void solve(const Matrix<T>    &u,
+                       const Readable<T>  &w,
+                       const Matrix<T>    &v,
+                       const Readable<T>  &b,
+                       Writable<T>        &x);
+
+
             //! Sort singular values d[1..n], COLUMN eigenvectors v[1..n][1..n] and matching COLUMN vectors u[1..m][1..n]
             /**
              \param u        left hand side

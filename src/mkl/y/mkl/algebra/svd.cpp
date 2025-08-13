@@ -66,7 +66,7 @@ namespace Yttrium
                 T      c,f,h,s,x,y,z;
                 size_t l = 0;
                 T      g=zero,scale=zero,anorm=zero; /* Householder reduction to bidiagonal form */
-               
+
                 for(size_t i=1;i<=n;i++)
                 {
                     l=i+1;
@@ -317,7 +317,6 @@ namespace Yttrium
                 assert( v.cols == n );
 
                 rv1.adjust(n,0);
-#if 1
                 for(size_t j=n;j>0;--j) {
                     T s=0;
                     if( FabsOf(w[j])>zero )
@@ -330,10 +329,10 @@ namespace Yttrium
                 for(size_t j=n;j>0;--j)
                 {
                     T s=0;
-                    for(size_t jj=n;jj>0;--jj) s += v[j][jj]*rv1[jj];
+                    for(size_t jj=n;jj>0;--jj)
+                        s += v[j][jj]*rv1[jj];
                     x[j]=s;
                 }
-#endif
             }
 
 #if 0

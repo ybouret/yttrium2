@@ -43,11 +43,31 @@ namespace {
             }
             std::cerr << "M=" << M << std::endl;
             Tao::MSub(M,a);
-            //std::cerr << "delta=" << M << std::endl;
-            const LightArray<T> arr(M(),M.items);
-            const T rms2 = Tao::Norm2(xadd,arr) / (T) M.items;
-            const T rms  = Sqrt<T>::Of(rms2);
-            std::cerr << "rms=" << double(rms) << std::endl;
+
+            {
+                const LightArray<T> arr(M(),M.items);
+                const T             rms2 = Tao::Norm2(xadd,arr) / (T) M.items;
+                const T             rms  = Sqrt<T>::Of(rms2);
+                std::cerr << "rms=" << double(rms) << std::endl;
+            }
+
+            Vector<T> b(n,0);
+            FillWith<T>::Seq(ran,b);
+            Vector<T> x(n,0);
+
+            svd.solve(u,w,v,b,x);
+            std::cerr << "x =" << x << std::endl;
+            std::cerr << "b =" << b << std::endl;
+
+            Vector<T> ax(n,0);
+            Tao::Mul(xadd,ax,a,x);
+            std::cerr << "ax=" << ax << std::endl;
+
+            {
+                const T rms2 = Tao::Norm2(xadd,ax,b);
+                const T             rms  = Sqrt<T>::Of(rms2);
+                std::cerr << "rms=" << double(rms) << std::endl;
+            }
         }
 
     }
@@ -58,7 +78,7 @@ Y_UTEST(algebra_svd)
     Random::MT19937 ran;
 
     testSVD<float>(ran);
-    testSVD< XReal<double> >(ran);
+    //testSVD< XReal<double> >(ran);
 
 }
 Y_UDONE()

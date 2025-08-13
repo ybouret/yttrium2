@@ -54,3 +54,14 @@ void SVD<real_t>:: Sort(Matrix<real_t> &u, Writable<real_t> &d, Matrix<real_t> &
 {
     Sort(u,d,v,CompareA_);
 }
+
+template <>
+void SVD<real_t>:: solve(const Matrix<real_t>    &u,
+                         const Readable<real_t>  &w,
+                         const Matrix<real_t>    &v,
+                         const Readable<real_t>  &b,
+                         Writable<real_t> &       x)
+{
+    assert(0!=code);
+    code->solve(u,w,v,b,x);
+}

@@ -159,7 +159,44 @@ namespace Yttrium
             }
 
 
+            namespace Hub
+            {
+                //! lhs+=rhs \param lhs lhs \param rhs rhs
+                template <typename T, typename U> inline
+                void AddOp1(T &lhs, const U &rhs) {
+                    lhs += rhs;
+                }
+                
+                //! lhs-=rhs \param lhs lhs \param rhs rhs
+                template <typename T, typename U> inline
+                void SubOp1(T &lhs, const U &rhs) {
+                    lhs -= rhs;
+                }
 
+                //! op(target,source) \param target target array \param source source array \param op operation
+                template <typename TARGET,typename SOURCE, typename OP> inline
+                void ArrayApply(TARGET &target, SOURCE &source, OP &op)
+                {
+                    assert(target.size()==source.size());
+                    for(size_t i=target.size();i>0;--i)
+                    {
+                        op(target[i],source[i]);
+                    }
+                }
+
+            }
+
+            template <typename TARGET, typename SOURCE> inline
+            void Add(TARGET &target, SOURCE &source)
+            {
+                Hub::ArrayApply(target,source, Hub::AddOp1<typename TARGET::Type,typename SOURCE::Type>);
+            }
+
+            template <typename TARGET, typename SOURCE> inline
+            void Sub(TARGET &target, SOURCE &source)
+            {
+                Hub::ArrayApply(target,source, Hub::SubOp1<typename TARGET::Type,typename SOURCE::Type>);
+            }
 
 
         }
