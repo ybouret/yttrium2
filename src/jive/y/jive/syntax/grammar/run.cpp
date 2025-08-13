@@ -21,7 +21,11 @@ namespace Yttrium
             Node * Grammar:: onSuccess(Node * const root, Lexer &lexer, Source &source)
             {
                 AutoPtr<Node> guard(root);
-
+                AutoPtr<Lexeme> lx = lexer.query(source);
+                if(lx.isValid())
+                {
+                    throw Specific::Exception(name->c_str(),"extraneous '%s'", lx->name->c_str());
+                }
 
                 return guard.yield();
             }
