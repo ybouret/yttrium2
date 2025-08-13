@@ -10,4 +10,5 @@ Y_LinkLibraries(${progname})
 endmacro()
 
 Y_CLI(y_trunc)
+Y_CLI(y_embed)
 
