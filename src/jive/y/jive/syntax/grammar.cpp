@@ -54,7 +54,7 @@ namespace Yttrium
                 assert(0!=rule);
                 AutoPtr<Rule> guard( rule );
                 if(query(rule->name)) throw Specific::Exception(name->c_str(),"mutliple rule '%s'", rule->name->c_str());
-                Coerce(rules.pushTail(rule)->gptr) = this;
+                Coerce(rules.pushTail(guard.yield())->gptr) = this;
 
             }
 

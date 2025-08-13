@@ -31,6 +31,8 @@ namespace
     public:
         explicit MyGrammar() : Syntax::Grammar("MyGrammar")
         {
+            const Rule & INT = terminal("INT");
+            Y_ASSERT( & top() == & INT );
         }
 
         virtual ~MyGrammar() noexcept

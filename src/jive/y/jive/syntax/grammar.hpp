@@ -109,6 +109,10 @@ namespace Yttrium
                     append(rule); assert(this == rule->gptr);
                     return *rule;
                 }
+
+                Node * onSuccess(Node *, Lexer & , Source & );
+                Node * onFailure(Lexer &, Source &);
+
             };
 
         }
