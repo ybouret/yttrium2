@@ -1,5 +1,9 @@
 project(jpeg C)
 
+if(Y_MSC)
+	string( APPEND CMAKE_C_FLAGS " -wd4820 -wd4100 -wd4711 -wd4996 -wd4774 -wd4710 -wd5045 -wd4127 -wd4702")
+endif()
+
 set(HERE ${CMAKE_CURRENT_SOURCE_DIR})
 
 configure_file(jconfig.txt jconfig.h)

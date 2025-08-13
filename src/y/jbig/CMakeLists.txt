@@ -1,3 +1,8 @@
+
+if(Y_MSC)
+	string( APPEND CMAKE_C_FLAGS " -wd4820 -wd4711 -wd4242 -wd4244 -wd4267 -wd4005 -wd4389 -wd4706 -wd5045 -wd4668 -wd4710 -wd4996 -wd4100")
+endif()
+
 add_library(y-jbig STATIC jbig.c jbig_ar.c)
 add_library(y-jbig85 STATIC jbig85.c jbig_ar.c)
 
