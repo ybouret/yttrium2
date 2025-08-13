@@ -19,7 +19,7 @@ namespace Yttrium
                                      Source &source) const
             {
                 // local list of aggregated node
-                NodeList list;
+                NodeList branch;
 
                 // check all nodes
                 for(const RuleNode *r=(*this)->head;r;r=r->next)
@@ -28,18 +28,18 @@ namespace Yttrium
                     Node *      node = 0;
                     if(rule.accepts(node,lexer,source))
                     {
-                        if(node) list.pushTail(node);
+                        if(node) branch.pushTail(node);
                         continue;
                     }
 
                     // failure, return list to lexer
-                    Node::Restore(list,lexer);
+                    Node::Restore(branch,lexer);
                     return false;
                 }
 
                 // create node
                 InternalNode * node = Node::Make(*this);
-                Node::Grow(tree, & node->steal(list) );
+                Node::Grow(tree, & node->steal(branch) );
                 return true;
             }
         }
