@@ -32,7 +32,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Node : public Object, public Vizible
+            class Node : public Category_, public Vizible
             {
                 //______________________________________________________________
                 //
@@ -79,14 +79,6 @@ namespace Yttrium
                 //! grow a tree with a new node
                 static void Grow(Node * &, Node * const) noexcept;
 
-                //______________________________________________________________
-                //
-                //
-                // Methods
-                //
-                //______________________________________________________________
-                bool isInternal() const noexcept; //!< \return type == IsInternal
-                bool isTerminal() const noexcept; //!< \return type == IsTerminal
 
                 //______________________________________________________________
                 //
@@ -94,7 +86,6 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const Category       type; //!< category
                 const Rule          &rule; //!< accepting rule
                 InternalNode * const sire; //!< parent list if any
                 Node *               next; //!< for list

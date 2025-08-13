@@ -14,7 +14,7 @@ namespace Yttrium
             }
 
             Node:: Node(const Category t, const Rule &r) noexcept :
-            type(t),
+            Category_(t),
             rule(r),
             sire(0),
             next(0),
@@ -33,10 +33,8 @@ namespace Yttrium
                 while( list.size ) Restore(list.popTail(),lexer);
             }
 
-            bool Node:: isInternal() const noexcept { return IsInternal == type; }
-
-            bool Node:: isTerminal() const noexcept { return IsTerminal == type; }
             
+
 
         }
 

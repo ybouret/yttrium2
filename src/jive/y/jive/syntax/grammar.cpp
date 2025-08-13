@@ -59,6 +59,35 @@ namespace Yttrium
             }
 
             Y_Ingress_Impl(Grammar,rules)
+
+
+            String Grammar:: PreFormat(const Rule &rule)
+            {
+                if( rule.isTerminal() ) return *rule.name;
+                return '(' + *rule.name + ')';
+            }
+
+            const Rule & Grammar:: opt(const Rule &rule)
+            {
+                assert( rules.owns( &rule ) );
+
+                const String rid = PreFormat(rule) + '?';
+                return add( new Optional(rid,rule) );
+            }
+
+            const Rule & Grammar:: oom(const Rule &rule)
+            {
+                const String rid = PreFormat(rule) + '+';
+                return add( new AtLeast(rid,1,rule) );
+            }
+
+            const Rule & Grammar:: zom(const Rule &rule)
+            {
+                const String rid = PreFormat(rule) + '*';
+                return add( new AtLeast(rid,0,rule) );
+            }
+
+
         }
 
     }

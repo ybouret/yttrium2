@@ -28,7 +28,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Rule : public Object
+            class Rule : public Category_
             {
                 //______________________________________________________________
                 //
@@ -47,8 +47,8 @@ namespace Yttrium
                 explicit Rule(const RID     &r,
                               const Category t,
                               const uint32_t u) :
+                Category_(t),
                 name(r),
-                type(t),
                 uuid(u),
                 next(0),
                 prev(0),
@@ -77,7 +77,6 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 const Tag       name; //!< name
-                const Category  type; //!< category
                 const uint32_t  uuid; //!< uuid
                 Rule *          next; //!< for list
                 Rule *          prev; //!< for list

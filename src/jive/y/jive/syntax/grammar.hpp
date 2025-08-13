@@ -89,17 +89,33 @@ namespace Yttrium
                     return add( new Terminal(id) );
                 }
 
+                //! create a new aggregate
+                /**
+                 \param id rule name
+                 \return a new empty aggregate
+                 */
                 template <typename ID>
                 const Aggregate & agg(const ID &id)
                 {
                     return add( new Aggregate(id) );
                 }
 
+                //! create a new alternate
+                /**
+                 \param id rule name
+                 \return a new empty alternate
+                 */
                 template <typename ID>
                 const Alternate & alt(const ID &id)
                 {
                     return add( new Alternate(id) );
                 }
+
+
+                const Rule & opt(const Rule &); //!< \return new optional   from existing rule
+                const Rule & oom(const Rule &); //!< \return new OneOrMore  from existing rule
+                const Rule & zom(const Rule &); //!< \return new ZeroOrMore from existing rule
+
 
 
 
@@ -124,9 +140,9 @@ namespace Yttrium
                     return *rule;
                 }
 
-                Node * onSuccess(Node *, Lexer & , Source & );
-                Node * onFailure(Lexer &, Source &);
-
+                Node *        onSuccess(Node *, Lexer & , Source & );
+                Node *        onFailure(Lexer &, Source &);
+                static String PreFormat(const Rule &); //!< \return pre formatted name
             };
 
         }
