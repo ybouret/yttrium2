@@ -123,7 +123,6 @@ namespace Yttrium
                 //! throw exception for forbidden method access
                 void forbidden(const char * const, const Token &) const;
 
-
                 const String & key() const noexcept; //!< \return *name
 
                 //! declare a new standard rule
@@ -308,7 +307,8 @@ namespace Yttrium
                 
                 static Code * New(const Tag &);      //!< \return new code from tag
                 const Rule &  add(Rule * const);     //!< \return recorded new rule
-
+                String        guess(Source &);       //!< \return guessed syntax error
+                
             public:
                 Design          design; //!< helper for rules
                 const EOFPolicy policy; //!< EOF policy

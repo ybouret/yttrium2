@@ -116,7 +116,7 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
                     for(unsigned i=0;i<256;++i)
                     {
                         if( !fc.getbit( (uint8_t)i) ) continue;
-                        
+
                         RList &list = rlist.entry[i];
                         for(RNode *node=list.head;node;node=node->next)
                         {
@@ -156,7 +156,22 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
                 return *rule;
             }
 
-            
+            String Scanner:: guess(Source &source)
+            {
+                assert(source.cache()>0);
+                Token token;
+                token.pushTail(source.query());
+                while(true)
+                {
+                    const Char * const ch = source.peek(); if( !ch )         break;
+                    const char         c = (char) **ch;    if( !isprint(c) ) break;
+                    token.pushTail(source.query());
+                }
+                return token.toString();
+            }
+
+
+
             void Scanner:: forbidden(const char * const method, const Token &token) const
             {
                 assert(method);
@@ -191,10 +206,12 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
                         case RejectEOF: throw Specific::Exception(name->c_str(),"%s unexpected EOF",source.context().str().c_str());
                     }
                 }
-                const Context      ctx = *ch; // save context
 
-                const Rule *bestRule = 0;
-                Token       bestToken;
+                assert(0!=ch);
+                const Context ctx      = *ch; // save context
+                const Rule *  bestRule = 0;   // initialize
+                Token         bestToken;      // initialize
+
                 {
                     //_________________________________________________________
                     //
@@ -219,10 +236,10 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
                     if(!bestRule)
                     {
                         // syntax error
-                        const char * const which = ASCII::Printable::Char[c];
-                        Y_PRINT("no rule matching '" << which << "'");
                         const String where = ch->str();
-                        throw Specific::Exception( name->c_str(), "%s unexpected '%s'", where.c_str(),which);
+                        const String which = guess(source);
+                        Y_PRINT("no rule matching '" << which << "'");
+                        throw Specific::Exception( name->c_str(), "%s unexpected '%s'", where.c_str(),which.c_str());
                     }
 
                     Y_PRINT("=> selected '" << bestRule->name << "' = '" << bestToken);

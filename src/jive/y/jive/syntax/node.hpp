@@ -55,7 +55,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 virtual void           restore(Lexer &)    noexcept = 0; //!< restore content
-                virtual OutputStream & viz(OutputStream &) const    = 0;
+                virtual OutputStream & viz(OutputStream &) const    = 0; //!< emit GraphViz code \return output stream
 
                 //______________________________________________________________
                 //
