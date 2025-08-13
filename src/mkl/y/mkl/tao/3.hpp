@@ -70,6 +70,70 @@ namespace Yttrium
                 }
             }
 
+            //! left multiplication of a diagonal matrix as a vector
+            /**
+             \param target matrix[r][c]
+             \param diag   vector[r]
+             \param source matrix[r][c]
+             */
+            template <
+            typename TARGET,
+            typename DIAG,
+            typename SOURCE> inline
+            void DMul( TARGET &target, DIAG &diag, SOURCE &source )
+            {
+                assert(target.rows==source.rows);
+                assert(target.cols==source.cols);
+                assert(diag.size()==target.rows);
+                const size_t nc = target.cols;
+                for(size_t i=target.rows;i>0;--i)
+                {
+                    const typename SOURCE::Row &src = source[i];
+                    typename       TARGET::Row &tgt = target[i];
+                    typename DIAG::ConstType   &fac = diag[i];
+                    for(size_t j=nc;j>0;--j) tgt[j] = fac * src[j];
+                }
+            }
+
+            namespace Hub
+            {
+                template <typename T, typename U> inline
+                void AddOp1(T &lhs, const U &rhs) {
+                    lhs += rhs;
+                }
+
+                template <typename T, typename U> inline
+                void SubOp1(T &lhs, const U &rhs) {
+                    lhs -= rhs;
+                }
+
+                template <typename TARGET,typename SOURCE, typename OP> inline
+                void MatrixApply(TARGET &target, SOURCE &source, OP &op)
+                {
+                    assert(target.rows==source.rows);
+                    assert(target.cols==source.cols);
+
+                    typename TARGET::Type *      tgt = target();
+                    typename SOURCE::ConstType * src = source();
+                    for(size_t i=target.items;i>0;--i)
+                    {
+                        op( *(tgt++), *(src++) );
+                    }
+                }
+            }
+
+            template <typename TARGET,typename SOURCE> inline
+            void MAdd(TARGET &target, SOURCE &source)
+            {
+                Hub::MatrixApply(target,source, Hub::AddOp1<typename TARGET::Type,typename SOURCE::Type> );
+            }
+
+            template <typename TARGET,typename SOURCE> inline
+            void MSub(TARGET &target, SOURCE &source)
+            {
+                Hub::MatrixApply(target,source, Hub::SubOp1<typename TARGET::Type,typename SOURCE::Type> );
+            }
+
         }
 
     }

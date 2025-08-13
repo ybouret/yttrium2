@@ -282,6 +282,12 @@ namespace Yttrium
             return code.isValid() ? code->entry : 0;
         }
 
+        //! \return first item of linear space
+        inline  Type * operator()(void)  noexcept
+        {
+            return code.isValid() ? code->entry : 0;
+        }
+
 
         //! \param irow row index \return irow-th row
         inline Row & operator[](const size_t irow) noexcept
