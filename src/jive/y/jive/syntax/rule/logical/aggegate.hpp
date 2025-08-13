@@ -57,7 +57,13 @@ namespace Yttrium
                 //______________________________________________________________
                 virtual bool accepts(Y_Jive_XRule_Args) const;
 
-
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+                
             private:
                 Y_Disable_Copy_And_Assign(Aggregate); //!< discarding
             };

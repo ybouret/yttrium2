@@ -36,6 +36,7 @@ namespace Yttrium
                 {
                 }
 
+                
             public:
                 virtual ~Logical() noexcept; //!< cleanup
 

@@ -61,9 +61,7 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
-                const Rule * query(const String &) const noexcept; //!< \return rule by name
-                const Rule * query(const Tag &)    const noexcept; //!< \return rule by name
-                const Rule * query(const char * const)      const; //!< \return rule by name
+                Node *run(Lexer &, Source &);
 
 
                 //______________________________________________________________
@@ -72,6 +70,9 @@ namespace Yttrium
                 // Construction
                 //
                 //______________________________________________________________
+                const Rule * query(const String &) const noexcept; //!< \return rule by name
+                const Rule * query(const Tag &)    const noexcept; //!< \return rule by name
+                const Rule * query(const char * const)      const; //!< \return rule by name
 
                 const Rule & top()       const noexcept; //!< \return top rule
                 void         top(const Rule &) noexcept; //!< set top rule
