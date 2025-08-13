@@ -37,7 +37,7 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
-                typedef Syntax::Rule Rule;
+                typedef Syntax::Rule Rule; //!< alias
 
                 //______________________________________________________________
                 //
@@ -49,7 +49,7 @@ namespace Yttrium
                 //! setup \param gid grammar name
                 template <typename GID> inline
                 explicit Grammar(const GID &gid) :
-                name(gid)
+                name(gid), rules()
                 {
                 }
 
@@ -73,11 +73,15 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-                const Rule & top() const noexcept;
-                void         top(const Rule &) noexcept;
+                const Rule & top()       const noexcept; //!< \return top rule
+                void         top(const Rule &) noexcept; //!< set top rule
 
 
-
+                //! declare a terminal
+                /**
+                 \param id terminal id
+                 \return created terminal
+                 */
                 template <typename ID>
                 const Terminal & terminal(const ID &id)
                 {
@@ -98,9 +102,10 @@ namespace Yttrium
                 CxxListOf<Rule> rules;              //!< grammar rules
                 void append(Rule * const);          //!< append new rule
 
+                //! append derived rule \param rule derived rule pointer \return derived rule reference
                 template <typename RULE> inline
                 RULE & add(RULE * const rule) {
-                    append(rule);
+                    append(rule); assert(this == rule->gptr);
                     return *rule;
                 }
             };

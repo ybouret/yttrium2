@@ -97,16 +97,19 @@ namespace Yttrium
 
             namespace Hub
             {
+                //! lhs+=rhs \param lhs lhs \param rhs rhs
                 template <typename T, typename U> inline
                 void AddOp1(T &lhs, const U &rhs) {
                     lhs += rhs;
                 }
 
+                //! lhs-=rhs \param lhs lhs \param rhs rhs
                 template <typename T, typename U> inline
                 void SubOp1(T &lhs, const U &rhs) {
                     lhs -= rhs;
                 }
 
+                //! op(target,source) \param target target matrix \param source source matrix \param op operation
                 template <typename TARGET,typename SOURCE, typename OP> inline
                 void MatrixApply(TARGET &target, SOURCE &source, OP &op)
                 {
@@ -122,12 +125,14 @@ namespace Yttrium
                 }
             }
 
+            //! target += source \param target target matrix \param source source matrix
             template <typename TARGET,typename SOURCE> inline
             void MAdd(TARGET &target, SOURCE &source)
             {
                 Hub::MatrixApply(target,source, Hub::AddOp1<typename TARGET::Type,typename SOURCE::Type> );
             }
 
+            //! target -= source \param target target matrix \param source source matrix
             template <typename TARGET,typename SOURCE> inline
             void MSub(TARGET &target, SOURCE &source)
             {

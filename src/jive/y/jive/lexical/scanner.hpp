@@ -236,6 +236,7 @@ namespace Yttrium
                     return decl(rid,rxp,Regular,DropToken);
                 }
 
+                //! drop regular \param rxp regular expression and rule name \return added rule
                 template <typename RXP> inline
                 const Rule & drop(const RXP &rxp)
                 {
@@ -260,7 +261,7 @@ namespace Yttrium
 
                 //! flexible endl
                 /**
-                 \param rxp endl regular expression
+                 \param rxp endl regular expression and rule name
                  \param rise optional Emit
                  \return added endl rule
                  */
