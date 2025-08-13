@@ -6,6 +6,7 @@
 #include "y/container/sequence/vector.hpp"
 #include "y/cameo/addition.hpp"
 #include "y/mkl/api/pythagoras.hpp"
+#include "y/mkl/tao/1.hpp"
 
 namespace Yttrium
 {
@@ -319,22 +320,24 @@ namespace Yttrium
                 rv1.adjust(n,0);
                 for(size_t j=n;j>0;--j) {
                     T s=0;
+                    xadd.ldz();
                     if( FabsOf(w[j])>zero )
                     {
-                        for(size_t i=m;i>0;--i) s += u[i][j]*b[i];
+                        for(size_t i=m;i>0;--i)
+                        {
+                            xadd.addProd(u[i][j],b[i]);
+                        }
+                        s = xadd.sum();
                         s /= w[j];
                     }
                     rv1[j]=s;
                 }
+
                 for(size_t j=n;j>0;--j)
                 {
-                    T s=0;
-                    for(size_t jj=n;jj>0;--jj)
-                        s += v[j][jj]*rv1[jj];
-                    x[j]=s;
+                    x[j] = Tao::Dot(xadd,v[j],rv1);
                 }
             }
-
 #if 0
 
             //! build a supplementary orthonormal basis
@@ -456,7 +459,7 @@ namespace Yttrium
         };
 
 
-
+        
 #define real_t float
 #include "svd.hxx"
 #undef  real_t

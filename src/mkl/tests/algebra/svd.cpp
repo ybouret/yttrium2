@@ -78,7 +78,7 @@ Y_UTEST(algebra_svd)
     Random::MT19937 ran;
 
     testSVD<float>(ran);
-    //testSVD< XReal<double> >(ran);
+    testSVD< XReal<double> >(ran);
 
 }
 Y_UDONE()
