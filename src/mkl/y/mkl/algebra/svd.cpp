@@ -20,16 +20,18 @@ namespace Yttrium
             zero(0),
             one(1),
             two(2),
-            rv1()
+            rv1(),
+            xadd()
             {
             }
 
             inline virtual ~Code() noexcept {}
 
-            const T   zero;
-            const T   one;
-            const T   two;
-            Vector<T> rv1;
+            const T            zero;
+            const T            one;
+            const T            two;
+            Vector<T>          rv1;
+            Cameo::Addition<T> xadd;
 
             static const size_t MAX_ITS = 1024; //!< maximum iterations
 
@@ -174,7 +176,6 @@ namespace Yttrium
                     }
                     else
                         for(size_t j=i;j<=m;j++) a[j][i]=zero;
-                    //++a[i][i];
                     a[i][i] += one;
                 }
                 for (k=n;k>=1;k--)
@@ -292,7 +293,6 @@ namespace Yttrium
                 return true;
             }
 
-#if 0
             //! solve a system after a singular value decomposition
             /**
              Solves A·X = B for a vector X, where A is specified
@@ -303,12 +303,12 @@ namespace Yttrium
              x[1..n] is the output solution vector.
              No input quantities are destroyed, so the routine may be called sequentially with different b’s.
              */
-            template <typename T> static inline
-            void solve(const matrix<T>      &u,
-                       const accessible<T>  &w,
-                       const matrix<T>      &v,
-                       const accessible<T>  &b,
-                       addressable<T>       &x)
+            inline
+            void solve(const Matrix<T>    &u,
+                       const Readable<T>  &w,
+                       const Matrix<T>    &v,
+                       const Readable<T>  &b,
+                       Writable<T>        &x)
             {
                 const size_t m = u.rows;
                 const size_t n = u.cols;
@@ -316,23 +316,27 @@ namespace Yttrium
                 assert( v.rows == n);
                 assert( v.cols == n );
 
-                array<T> &tmp = u.c_aux1;
+                rv1.adjust(n,0);
+#if 1
                 for(size_t j=n;j>0;--j) {
                     T s=0;
-                    if( fabs_of(w[j])>0 )
+                    if( FabsOf(w[j])>zero )
                     {
                         for(size_t i=m;i>0;--i) s += u[i][j]*b[i];
                         s /= w[j];
                     }
-                    tmp[j]=s;
+                    rv1[j]=s;
                 }
                 for(size_t j=n;j>0;--j)
                 {
                     T s=0;
-                    for(size_t jj=n;jj>0;--jj) s += v[j][jj]*tmp[jj];
+                    for(size_t jj=n;jj>0;--jj) s += v[j][jj]*rv1[jj];
                     x[j]=s;
                 }
+#endif
             }
+
+#if 0
 
             //! build a supplementary orthonormal basis
             /**
