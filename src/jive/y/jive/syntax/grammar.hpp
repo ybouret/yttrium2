@@ -89,6 +89,20 @@ namespace Yttrium
                     return add( new Terminal(id) );
                 }
 
+                template <typename ID>
+                const Aggregate & agg(const ID &id)
+                {
+                    return add( new Aggregate(id) );
+                }
+
+                template <typename ID>
+                const Alternate & alt(const ID &id)
+                {
+                    return add( new Alternate(id) );
+                }
+
+
+
                 //______________________________________________________________
                 //
                 //
