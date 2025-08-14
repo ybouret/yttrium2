@@ -11,12 +11,13 @@ namespace Yttrium
     namespace Jive
     {
 
+        class Parser;
+
         namespace Syntax
         {
 
 
-            class Grammar;
-
+            
             //! helper for Rule::accepts arguments
 #define Y_Jive_XRule_Args Node * &, Lexer &, Source &
 
@@ -52,7 +53,7 @@ namespace Yttrium
                 uuid(u),
                 next(0),
                 prev(0),
-                gptr(0)
+                pptr(0)
                 {
                 }
                 
@@ -80,7 +81,7 @@ namespace Yttrium
                 const uint32_t  uuid; //!< uuid
                 Rule *          next; //!< for list
                 Rule *          prev; //!< for list
-                Grammar * const gptr; //!< owning grammar
+                Parser * const pptr; //!< owning grammar
 
             private:
                 Y_Disable_Copy_And_Assign(Rule); //!< discarding

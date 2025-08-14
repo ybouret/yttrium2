@@ -72,6 +72,14 @@ namespace Yttrium
                 return build(u,w,v);
             }
 
+            //! solve from decomposition
+            /**
+             \param u U matrix
+             \param w singular values
+             \param v V matrix
+             \param b rhs vector
+             \param x = U' * (1/w) * V * b
+             */
             void solve(const Matrix<T>    &u,
                        const Readable<T>  &w,
                        const Matrix<T>    &v,

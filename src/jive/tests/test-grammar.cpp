@@ -13,7 +13,9 @@ namespace
         explicit MyLexer() : Lexer("MyLexer")
         {
             emit("INT","[:digit:]+");
-
+            emit("ID","[:alpha:][:word:]*");
+            emit('=');
+            comment("Shell Comment","#");
             drop("[:blank:]");
             endl("[:endl:]",false);
         }
@@ -30,10 +32,12 @@ namespace
     class MyGrammar : public Syntax::Grammar
     {
     public:
-        explicit MyGrammar() : Syntax::Grammar("MyGrammar")
+        explicit MyGrammar() : Syntax::Grammar("MyGrammar",0)
         {
-            const Rule & INT = terminal("INT");
-            Y_ASSERT( & top() == & INT );
+            const Rule & INT    = terminal("INT");
+            const Rule & EQ     = terminal('=');
+            const Rule & ID     = terminal("ID");
+            const Rule & ASSIGN = cat(ID,EQ,INT);
         }
 
         virtual ~MyGrammar() noexcept

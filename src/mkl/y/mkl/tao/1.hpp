@@ -186,12 +186,14 @@ namespace Yttrium
 
             }
 
+            //! add arrays \param target target array \param source source array
             template <typename TARGET, typename SOURCE> inline
             void Add(TARGET &target, SOURCE &source)
             {
                 Hub::ArrayApply(target,source, Hub::AddOp1<typename TARGET::Type,typename SOURCE::Type>);
             }
 
+            //! sub arrays \param target target array \param source source array
             template <typename TARGET, typename SOURCE> inline
             void Sub(TARGET &target, SOURCE &source)
             {

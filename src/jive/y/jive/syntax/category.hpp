@@ -22,21 +22,48 @@ namespace Yttrium
                 IsInternal  //!< for internal rule/node
             };
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Base class for Node/Rule
+            //
+            //
+            //__________________________________________________________________
             class Category_ : public Object
             {
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
             protected:
-                explicit Category_(const Category) noexcept;
+                explicit Category_(const Category) noexcept; //!< setup
 
             public:
-                virtual ~Category_() noexcept;
+                virtual ~Category_() noexcept; //!< cleanup
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
                 bool isInternal() const noexcept; //!< \return type == IsInternal
                 bool isTerminal() const noexcept; //!< \return type == IsTerminal
 
-                const Category type;
-                
+
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                const Category type; //!< category
+
             private:
-                Y_Disable_Copy_And_Assign(Category_);
+                Y_Disable_Copy_And_Assign(Category_); //!< discarding
             };
         }
     }

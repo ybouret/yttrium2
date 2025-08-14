@@ -12,9 +12,9 @@ namespace Yttrium
 
             Node * Grammar::run(Lexer &lexer, Source &source)
             {
-                if(rules.size<=0) throw Specific::Exception(name->c_str(),"no rule");
-                Node * root = 0;
-                return rules.head->accepts(root,lexer,source) ? onSuccess(root, lexer, source) : onFailure(lexer,source);
+                const Rule * self = rules.head; if(!self) throw Specific::Exception(lang->c_str(),"no rules");
+                Node *       root = 0;
+                return self->accepts(root,lexer,source) ? onSuccess(root, lexer, source) : onFailure(lexer,source);
             }
 
 
@@ -24,7 +24,7 @@ namespace Yttrium
                 AutoPtr<Lexeme> lx = lexer.query(source);
                 if(lx.isValid())
                 {
-                    throw Specific::Exception(name->c_str(),"extraneous '%s'", lx->name->c_str());
+                    throw Specific::Exception(lang->c_str(),"extraneous '%s'", lx->name->c_str());
                 }
 
                 return guard.yield();
@@ -32,7 +32,7 @@ namespace Yttrium
 
             Node * Grammar:: onFailure(Lexer &lexer, Source &source)
             {
-                throw Specific::Exception(name->c_str(),"failure");
+                throw Specific::Exception(lang->c_str(),"failure");
             }
         }
 

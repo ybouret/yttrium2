@@ -222,6 +222,19 @@ namespace Yttrium
                     return decl(rid,rxp,Regular,SpawnUnit);
                 }
 
+                //! emit regular
+                /**
+                 \param rxp rule regular expression and name
+                 \return added regular, Emit rule
+                 */
+                template <typename RXP>
+                const Rule & emit(const RXP & rxp)
+                {
+                    return decl(rxp,rxp,Regular,SpawnUnit);
+                }
+
+
+
                 //! drop regular
                 /**
                  \param rid rule name
