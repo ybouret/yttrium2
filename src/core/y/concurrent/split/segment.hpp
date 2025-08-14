@@ -38,30 +38,34 @@ namespace Yttrium
                 //______________________________________________________________
 
                 //! setup \param first offset \param count length \param olast last offset
-                inline Segment(const T      first,
-                               const size_t count,
-                               const T      olast) noexcept :
+                inline explicit Segment(const T      first,
+                                        const size_t count ) noexcept :
                 offset(first),
-                length(count),
-                latest(olast)
+                length(count)
                 {
                 }
 
                 //! cleanup
-                inline ~Segment() noexcept {}
+                inline virtual ~Segment() noexcept {}
 
                 //! duplicate \param s another segment
                 Segment(const Segment &s) noexcept :
                 offset(s.offset),
-                length(s.length),
-                latest(s.latest)
+                length(s.length)
                 {
+                }
+
+                Segment & operator=(const Segment &s) noexcept
+                {
+                    Coerce(offset) = s.offset;
+                    Coerce(length) = s.length;
+                    return *this;
                 }
 
                 //! display
                 inline friend std::ostream & operator<<(std::ostream &os, const Segment &self)
                 {
-                    return os << '#' << '[' << Decimal(self.offset) << ':' << Decimal(self.latest) << ']' << '=' << Decimal(self.length);
+                    return os << '@' << Decimal(self.offset) << '+' << Decimal(self.length);
                 }
 
                 //______________________________________________________________
@@ -72,11 +76,8 @@ namespace Yttrium
                 //______________________________________________________________
                 const T      offset; //!< initial offset
                 const size_t length; //!< length
-                const T      latest; //!< latest offset
 
 
-            private:
-                Y_Disable_Assign(Segment); //!< discarding
             };
 
         }
