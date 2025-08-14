@@ -29,6 +29,7 @@ Y_CreateLibrary(y
     y/concurrent/mutex
     y/concurrent/thread
     y/concurrent/data
+    y/concurrent/split
     y/container
     y/container/matrix
     y/container/iter

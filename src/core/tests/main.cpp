@@ -57,6 +57,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(concurrent_condition);
     Y_UTEST(concurrent_thread);
     Y_UTEST(concurrent_inventory);
+    Y_UTEST(concurrent_split1d);
 
 
     Y_UTEST(memory_gc);
@@ -94,6 +95,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(container_algo);
     Y_UTEST(container_iterator);
     Y_UTEST(container_cxx_array);
+    Y_UTEST(container_cxx_series);
     Y_UTEST(container_matrix);
     Y_UTEST(container_suffix_tree);
     Y_UTEST(container_htable);
@@ -102,6 +104,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(container_hash_set);
     Y_UTEST(container_hash_map);
     Y_UTEST(container_associative);
+    
 
     Y_UTEST(stream_io_char);
     Y_UTEST(stream_queue);
