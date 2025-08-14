@@ -30,7 +30,8 @@ namespace Yttrium
                 {
                     return false;
                 }
-
+                virtual OutputStream & vizDecl(OutputStream &fp)    const { return fp; }
+                virtual OutputStream & vizPost(OutputStream &fp)    const { return fp; }
 
             private:
                 Y_Disable_Copy_And_Assign(Synthetic);

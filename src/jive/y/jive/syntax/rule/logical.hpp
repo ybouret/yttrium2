@@ -40,6 +40,7 @@ namespace Yttrium
             public:
                 virtual ~Logical() noexcept; //!< cleanup
 
+                virtual OutputStream & vizPost(OutputStream &) const;
             private:
                 Y_Disable_Copy_And_Assign(Logical); //!< discarding
             };

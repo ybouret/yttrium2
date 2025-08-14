@@ -1,5 +1,6 @@
 
 #include "y/jive/syntax/rule/wildcard/optional.hpp"
+#include "y/stream/output.hpp"
 
 namespace Yttrium
 {
@@ -25,6 +26,14 @@ namespace Yttrium
                 }
 
                 return true;
+            }
+
+            OutputStream & Optional:: vizDecl(OutputStream &fp) const
+            {
+                nodeName(fp) << '[';
+                Label(fp,*name);
+                fp << ",shape=diamond";
+                return Endl(fp<<']');
             }
 
         }

@@ -1,6 +1,5 @@
-
-
 #include "y/jive/syntax/rule/logical/alternate.hpp"
+#include "y/stream/output.hpp"
 
 namespace Yttrium
 {
@@ -37,6 +36,16 @@ namespace Yttrium
 
                 return accepted;
             }
+
+            OutputStream & Alternate:: vizDecl(OutputStream &fp) const
+            {
+                nodeName(fp) << '[';
+                Label(fp,*name);
+                fp << ",shape=egg";
+                return Endl(fp<<']');
+            }
+
+
         }
 
     }

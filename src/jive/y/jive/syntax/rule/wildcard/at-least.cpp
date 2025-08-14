@@ -3,6 +3,7 @@
 #include "y/jive/syntax/rule/wildcard/at-least.hpp"
 #include "y/jive/syntax/node/internal.hpp"
 #include "y/system/exception.hpp"
+#include "y/stream/output.hpp"
 
 namespace Yttrium
 {
@@ -65,6 +66,14 @@ namespace Yttrium
             {
             }
 
+
+            OutputStream & AtLeast:: vizDecl(OutputStream &fp) const
+            {
+                nodeName(fp) << '[';
+                Label(fp,*name);
+                fp << ",shape=octagon";
+                return Endl(fp<<']');
+            }
         }
 
 

@@ -6,6 +6,7 @@
 #define Y_Jive_Syntax_Category_Included 1
 
 #include "y/object.hpp"
+#include "y/graphviz/vizible.hpp"
 
 namespace Yttrium
 {
@@ -30,7 +31,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Category_ : public Object
+            class Category_ : public Object, public Vizible
             {
                 //______________________________________________________________
                 //

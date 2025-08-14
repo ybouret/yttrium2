@@ -38,6 +38,8 @@ namespace Yttrium
             public:
                 virtual ~Wildcard() noexcept; //!< cleanup
 
+                virtual OutputStream & vizPost(OutputStream &) const;
+
                 const Rule &rule; //!< foreign persistent rule
             private:
                 Y_Disable_Copy_And_Assign(Wildcard); //!< discarding

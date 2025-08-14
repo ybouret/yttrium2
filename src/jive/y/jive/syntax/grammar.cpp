@@ -19,6 +19,11 @@ namespace Yttrium
 
            
 
+            void  Grammar:: top(const Rule &rule) noexcept
+            {
+                assert(rules.owns(&rule));
+                rules.moveToFront( & Coerce(rule) );
+            }
 
 
             const Rule * Grammar:: query(const String &rid) const noexcept
@@ -101,14 +106,14 @@ namespace Yttrium
             const Rule & Grammar:: cat(const Rule &a, const Rule &b)
             {
                 Manifest manifest; manifest << a << b;
-                return create<Aggregate>(manifest,'&');
+                return create<Aggregate>(manifest,' ');
             }
 
 
             const Rule & Grammar:: cat(const Rule &a, const Rule &b, const Rule &c)
             {
                 Manifest manifest; manifest << a << b << c;
-                return create<Aggregate>(manifest,'&');
+                return create<Aggregate>(manifest,' ');
             }
 
             const Rule & Grammar:: pick(const Rule &a, const Rule &b)
@@ -122,6 +127,22 @@ namespace Yttrium
             {
                 Manifest manifest; manifest << a << b << c;
                 return create<Alternate>(manifest,'|');
+            }
+
+
+            OutputStream & Grammar:: viz(OutputStream &fp) const
+            {
+                for(const Rule *rule=rules.head;rule;rule=rule->next)
+                {
+                    rule->vizDecl(fp);
+                }
+
+                for(const Rule *rule=rules.head;rule;rule=rule->next)
+                {
+                    rule->vizPost(fp);
+                }
+
+                return fp;
             }
 
         }

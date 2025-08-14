@@ -34,10 +34,14 @@ namespace
     public:
         explicit MyGrammar() : Syntax::Grammar("MyGrammar",0)
         {
+            Alt        & TOP    = alt("TOP");
             const Rule & INT    = terminal("INT");
             const Rule & EQ     = terminal('=');
             const Rule & ID     = terminal("ID");
             const Rule & ASSIGN = cat(ID,EQ,INT);
+            TOP << ASSIGN << ID << INT;
+
+            Render("grammar.dot",*this);
         }
 
         virtual ~MyGrammar() noexcept

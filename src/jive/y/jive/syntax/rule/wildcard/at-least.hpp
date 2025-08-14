@@ -55,7 +55,8 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
-                virtual bool accepts(Y_Jive_XRule_Args) const;
+                virtual bool           accepts(Y_Jive_XRule_Args) const;
+                virtual OutputStream & vizDecl(OutputStream &)    const;
 
                 //______________________________________________________________
                 //

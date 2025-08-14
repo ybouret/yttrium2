@@ -36,9 +36,10 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
-                typedef Syntax::Rule      Rule; //!< alias
-                typedef Syntax::Aggregate Agg;  //!< alias
-                typedef Syntax::Alternate Alt;  //!< alias
+                typedef Syntax::Rule      Rule;    //!< alias
+                typedef Syntax::Aggregate Agg;     //!< alias
+                typedef Syntax::Alternate Alt;     //!< alias
+                typedef Syntax::Logical   Logical; //!< alias
 
                 //______________________________________________________________
                 //
@@ -65,7 +66,9 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 Node *run(Lexer &, Source &);
+                void  top(const Rule &) noexcept;
 
+                OutputStream & viz(OutputStream &) const;
 
                 //______________________________________________________________
                 //
@@ -77,7 +80,7 @@ namespace Yttrium
                 const Rule * query(const Tag &)    const noexcept; //!< \return rule by name
                 const Rule * query(const char * const)      const; //!< \return rule by name
 
-                
+
 
 
                 //! declare a terminal
@@ -97,7 +100,7 @@ namespace Yttrium
                  \return a new empty aggregate
                  */
                 template <typename ID>
-                const Aggregate & agg(const ID &id)
+                Aggregate & agg(const ID &id)
                 {
                     return add( new Aggregate(id) );
                 }
@@ -108,7 +111,7 @@ namespace Yttrium
                  \return a new empty alternate
                  */
                 template <typename ID>
-                const Alternate & alt(const ID &id)
+                Alternate & alt(const ID &id)
                 {
                     return add( new Alternate(id) );
                 }

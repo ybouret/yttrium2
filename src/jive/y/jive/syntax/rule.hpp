@@ -68,7 +68,9 @@ namespace Yttrium
                 //______________________________________________________________
 
                 //! \return true if this rule accepted lexer/source
-                virtual bool accepts(Y_Jive_XRule_Args) const = 0;
+                virtual bool           accepts(Y_Jive_XRule_Args) const = 0;
+                virtual OutputStream & vizDecl(OutputStream &)    const = 0; //!< name and type    \return output stream
+                virtual OutputStream & vizPost(OutputStream &)    const = 0; //!< possible linking \return output stream
 
 
                 //______________________________________________________________

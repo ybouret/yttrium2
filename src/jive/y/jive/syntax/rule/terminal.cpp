@@ -1,6 +1,7 @@
 
 #include "y/jive/syntax/rule/terminal.hpp"
 #include "y/jive/syntax/node/terminal.hpp"
+#include "y/stream/output.hpp"
 
 namespace Yttrium
 {
@@ -23,6 +24,20 @@ namespace Yttrium
                 Node::Grow(tree, Node::Make(*this,lx) );
                 return true;
             }
+
+            OutputStream & Terminal:: vizDecl(OutputStream &fp) const
+            {
+                nodeName(fp) << '[';
+                Label(fp,*name);
+                fp << ",shape=box";
+                return Endl(fp<<']');
+            }
+
+            OutputStream & Terminal:: vizPost(OutputStream &fp) const
+            {
+                return fp;
+            }
+
 
         }
 

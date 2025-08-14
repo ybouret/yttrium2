@@ -1,6 +1,7 @@
 
 #include "y/jive/syntax/rule/logical/aggegate.hpp"
 #include "y/jive/syntax/node/internal.hpp"
+#include "y/stream/output.hpp"
 
 namespace Yttrium
 {
@@ -41,6 +42,14 @@ namespace Yttrium
                 InternalNode * node = Node::Make(*this);
                 Node::Grow(tree, & node->steal(branch) );
                 return true;
+            }
+
+            OutputStream & Aggregate:: vizDecl(OutputStream &fp) const
+            {
+                nodeName(fp) << '[';
+                Label(fp,*name);
+                fp << ",shape=house";
+                return Endl(fp<<']');
             }
         }
 

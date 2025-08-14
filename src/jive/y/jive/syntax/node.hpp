@@ -32,7 +32,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Node : public Category_, public Vizible
+            class Node : public Category_
             {
                 //______________________________________________________________
                 //
