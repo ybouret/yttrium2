@@ -7,6 +7,8 @@ Y_UTEST_DECL(128)
     Y_UTEST(intervals);
 
     Y_UTEST(root_zfind);
+    Y_UTEST(root_profile);
+
     Y_UTEST(tao_1);
 
     Y_UTEST(opt_parabolic);

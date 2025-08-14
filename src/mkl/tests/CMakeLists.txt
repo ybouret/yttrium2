@@ -16,6 +16,7 @@ Y_UTEST(interval)
 Y_UTEST(intervals)
 
 Y_UTEST(root:zfind)
+Y_UTEST(root:profile)
 
 Y_UTEST(tao:1)
 
