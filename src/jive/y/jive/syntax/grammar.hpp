@@ -36,12 +36,12 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
-                typedef Syntax::Rule      Rule;    //!< alias
-                typedef Syntax::Aggregate Agg;     //!< alias
-                typedef Syntax::Alternate Alt;     //!< alias
-                typedef Syntax::Logical   Logical; //!< alias
-                static const char         AltSep = '|';
-                static const char         AggSep = ' ';
+                typedef Syntax::Rule      Rule;         //!< alias
+                typedef Syntax::Aggregate Agg;          //!< alias
+                typedef Syntax::Alternate Alt;          //!< alias
+                typedef Syntax::Logical   Logical;      //!< alias
+                static const char         AltSep = '|'; //!< alias
+                static const char         AggSep = ' '; //!< alias
 
                 //______________________________________________________________
                 //
@@ -68,9 +68,9 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 Node *run(Lexer &, Source &);
-                void  top(const Rule &) noexcept;
+                void  top(const Rule &) noexcept; //!< set top-level rupe
 
-                OutputStream & viz(OutputStream &) const;
+                OutputStream & viz(OutputStream &) const; //!< emit GraphViz \return stream
 
                 //______________________________________________________________
                 //
@@ -123,11 +123,11 @@ namespace Yttrium
                 const Rule & oom(const Rule &); //!< \return new OneOrMore  from existing rule
                 const Rule & zom(const Rule &); //!< \return new ZeroOrMore from existing rule
 
-                const Rule & cat(const Rule &, const Rule &);
-                const Rule & cat(const Rule &, const Rule &, const Rule &);
+                const Rule & cat(const Rule &, const Rule &);               //!< \return aggregate
+                const Rule & cat(const Rule &, const Rule &, const Rule &); //!< \return aggregate
 
-                const Rule & pick(const Rule &, const Rule &);
-                const Rule & pick(const Rule &, const Rule &, const Rule &);
+                const Rule & pick(const Rule &, const Rule &);               //!< \return alternate
+                const Rule & pick(const Rule &, const Rule &, const Rule &); //!< \return alternate
 
 
                 //______________________________________________________________
@@ -156,9 +156,10 @@ namespace Yttrium
 
                 Node *        onSuccess(Node *, Lexer & , Source & );
                 Node *        onFailure(Lexer &, Source &);
-                static String PreFormat(const Rule &); //!< \return pre formatted name
-                String        buildName(const Manifest &, const char sep) const;
+                static String PreFormat(const Rule &);                       //!< \return pre formatted name
+                String        buildName(const Manifest &, const char) const; //!< \return manifest name
 
+                //! \param manifest manifest \param sep separator \return named LOGICAL with manifest
                 template <typename LOGICAL> inline
                 LOGICAL & create(Manifest &manifest, const char sep)
                 {

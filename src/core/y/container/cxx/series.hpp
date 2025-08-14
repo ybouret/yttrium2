@@ -23,10 +23,25 @@ namespace Yttrium
     class CxxSeries : public Contiguous< Writable<T> >, public Gradual
     {
     public:
-        Y_Args_Declare(T,Type);
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        Y_Args_Declare(T,Type); //!< aliases
 
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+
+        //! setup \param capa capacity
         inline CxxSeries(const size_t capa) : built(0),  data(capa) {}
 
+        //! duplicate \param arr another series
         inline CxxSeries(const CxxSeries &arr) : built(0), data(arr.built)
         {
             try {
@@ -38,6 +53,17 @@ namespace Yttrium
             catch(...) { free_(); throw; }
         }
 
+        //! cleanup
+        inline virtual ~CxxSeries() noexcept { free_(); }
+
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+
+        //! append \param args argument \return *this
         CxxSeries & operator<<(ParamType args) {
             assert(size()<capacity());
             new (data.entry+built) Type(args);
@@ -46,26 +72,29 @@ namespace Yttrium
         }
 
 
-        inline virtual ~CxxSeries() noexcept
-        {
-            free_();
-        }
 
-
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
         inline virtual size_t size()      const noexcept { return built; }
         inline virtual void   free()            noexcept { free_(); }
         inline virtual size_t capacity()  const noexcept { return data.maxBlocks; }
         inline virtual size_t available() const noexcept { return data.maxBlocks - built; }
 
     private:
-        Y_Disable_Assign(CxxSeries);
-        size_t                        built;
-        Memory::SchoolOf<MutableType> data;
+        Y_Disable_Assign(CxxSeries);         //!< discarding
+        size_t                        built; //!< built object
+        Memory::SchoolOf<MutableType> data;  //!< memory
 
+        //! free all objects
         inline void free_() noexcept {
             while(built) Memory::Stealth::DestructedAndZeroed( &data.entry[--built] );
         }
 
+        //! \param indx \return (*this)[indx]
         inline virtual ConstType & getItemAt(const size_t indx) const noexcept
         {
             assert(indx>0);

@@ -195,7 +195,7 @@ namespace Yttrium
             }
 
 
-            //! convert references from binary compatible objects
+            //! \param source compatible object \return converted reference
             template <typename T, typename U> static inline
             T & Conv(U &source) noexcept
             {
