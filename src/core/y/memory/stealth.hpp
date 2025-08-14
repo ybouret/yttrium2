@@ -194,6 +194,14 @@ namespace Yttrium
                 return (T*)Address(addr);
             }
 
+
+            //! convert references from binary compatible objects
+            template <typename T, typename U> static inline
+            T & Conv(U &source) noexcept
+            {
+                return *static_cast<T*>( Address( &source) );
+            }
+
         };
     }
 

@@ -60,5 +60,12 @@
 #    define    Y_I64(X) X##LL  //!< helper
 #endif
 
+#if defined(__cplusplus)
+namespace Yttrium
+{
+    typedef ptrdiff_t unit_t;
+}
+#endif
+
 #endif
 

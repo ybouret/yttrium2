@@ -40,6 +40,8 @@ namespace Yttrium
                 typedef Syntax::Aggregate Agg;     //!< alias
                 typedef Syntax::Alternate Alt;     //!< alias
                 typedef Syntax::Logical   Logical; //!< alias
+                static const char         AltSep = '|';
+                static const char         AggSep = ' ';
 
                 //______________________________________________________________
                 //
@@ -85,7 +87,7 @@ namespace Yttrium
 
                 //! declare a terminal
                 /**
-                 \param id terminal id
+                 \param  id terminal id
                  \return created terminal
                  */
                 template <typename ID>

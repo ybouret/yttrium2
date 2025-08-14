@@ -113,6 +113,8 @@ Y_CreateLibrary(y
     y/graphviz
     y/ortho
     y/coven
+    y/field
+    y/field/layout
 )
 
 add_subdirectory(tests)

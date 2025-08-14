@@ -31,6 +31,7 @@ cameo
 dft
 vfs
 counting
+field
 )
 
 
@@ -265,4 +266,7 @@ Y_UTEST(counting:permutation)
 
 #graphviz
 Y_UTEST(graphviz)
+
+#field
+Y_UTEST(field_layout)
 

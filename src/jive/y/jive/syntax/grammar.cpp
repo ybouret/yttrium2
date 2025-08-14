@@ -106,27 +106,27 @@ namespace Yttrium
             const Rule & Grammar:: cat(const Rule &a, const Rule &b)
             {
                 Manifest manifest; manifest << a << b;
-                return create<Aggregate>(manifest,' ');
+                return create<Aggregate>(manifest,AggSep);
             }
 
 
             const Rule & Grammar:: cat(const Rule &a, const Rule &b, const Rule &c)
             {
                 Manifest manifest; manifest << a << b << c;
-                return create<Aggregate>(manifest,' ');
+                return create<Aggregate>(manifest,AggSep);
             }
 
             const Rule & Grammar:: pick(const Rule &a, const Rule &b)
             {
                 Manifest manifest; manifest << a << b;
-                return create<Alternate>(manifest,'|');
+                return create<Alternate>(manifest,AltSep);
             }
 
 
             const Rule & Grammar:: pick(const Rule &a, const Rule &b, const Rule &c)
             {
                 Manifest manifest; manifest << a << b << c;
-                return create<Alternate>(manifest,'|');
+                return create<Alternate>(manifest,AltSep);
             }
 
 
