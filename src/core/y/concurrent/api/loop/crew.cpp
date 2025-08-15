@@ -27,6 +27,11 @@ namespace Yttrium
             team(size)
             {
                 assert(size>0);
+                if(Verbose)
+                {
+                    Y_Lock(mutex);
+                    Y_Print("[init] " << size);
+                }
                 try
                 {
                     Thread::Proc proc = Launch;
@@ -41,14 +46,16 @@ namespace Yttrium
                     throw;
                 }
 
-                mutex.lock();
-                if(ready<size)
                 {
-                    Y_Print("synchronizing...");
-                    comm.wait(mutex);
-                    Y_Print("...synchronized!");
+                    Y_Lock(mutex);
+                    if(ready<size)
+                    {
+                        Y_Print("synchronizing...");
+                        comm.wait(mutex);
+                        Y_Print("...synchronized!");
+                    }
                 }
-                mutex.unlock();
+
 
 
             }
@@ -86,7 +93,7 @@ namespace Yttrium
                 // wake up on a locked mutex
                 if(!kcode)
                 {
-                    Y_Print(size<< '.' << rank << " returns");
+                    Y_Print(size<< '.' << rank << " done!");
                     assert(ready>0);
                     if(--ready<=0)
                         comm.broadcast();
@@ -100,14 +107,23 @@ namespace Yttrium
 
             inline void quit() noexcept
             {
+                if(Verbose)
+                {
+                    Y_Lock(mutex);
+                    Y_Print("[quit]");
+                }
                 kcode = 0;
                 sync.broadcast();
-                mutex.lock();
-                if(ready>0)
                 {
-                    comm.wait(mutex);
+                    Y_Lock(mutex);
+                    if(ready>0)
+                    {
+                        Y_Print("[waiting]");
+                        comm.wait(mutex);
+                    }
+                    Y_Print("[done]");
                 }
-                mutex.unlock();
+
             }
 
             static void Launch(void * const args)
