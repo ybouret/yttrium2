@@ -95,6 +95,12 @@ namespace Yttrium
             code->signal();
         }
 
+        void Condition:: broadcast() noexcept
+        {
+            assert(0!=code);
+            code->broadcast();
+        }
+
 
     }
 }

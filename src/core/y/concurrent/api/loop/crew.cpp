@@ -16,8 +16,10 @@ namespace Yttrium
             explicit Code(const size_t n) :
             size(n),
             ready(0),
+            kcode(0),
             mutex(),
             sync(),
+            comm(),
             team(size)
             {
                 assert(size>0);
@@ -34,6 +36,18 @@ namespace Yttrium
                     quit();
                     throw;
                 }
+
+                mutex.lock();
+                if(ready<size)
+                {
+                    Y_Thread_Message("waiting for threads to be ok");
+                    comm.wait(mutex);
+                    Y_Thread_Message("ok, all sync'd");
+
+                }
+                mutex.unlock();
+
+
             }
 
             inline virtual ~Code() noexcept
@@ -43,8 +57,10 @@ namespace Yttrium
 
             const size_t      size;
             size_t            ready;
+            void *            kcode;
             Mutex             mutex;
             Condition         sync;
+            Condition         comm;
             CxxSeries<Thread> team;
 
         private:
@@ -52,18 +68,42 @@ namespace Yttrium
 
             void loop() noexcept
             {
-                mutex.lock();
-                ++ready;
-                Y_Thread_Message("in loop, ready=" << ready);
+                mutex.lock(); // primary lock
+                const size_t rank = ready++;
+                Y_Thread_Message("in loop, rank=" << rank);
+
+                if(ready>=size)
+                {
+                    Y_Thread_Message("signaling comm");
+                    comm.broadcast();
+                }
 
                 // wait on a locked mutex
                 sync.wait(mutex);
-                
+
+                // wake up on a locked mutex
+                Y_Thread_Message("wake up rank=" << rank);
+                if(!kcode)
+                {
+                    assert(ready>0);
+                    if(--ready<=0)
+                        comm.broadcast();
+                    mutex.unlock(); // primary unlock
+                    return;         // end
+                }
             }
 
 
-            void quit() noexcept
+            inline void quit() noexcept
             {
+                kcode = 0;
+                sync.broadcast();
+                mutex.lock();
+                if(ready>0)
+                {
+                    comm.wait(mutex);
+                }
+                mutex.unlock();
             }
 
             static void Launch(void * const args)
