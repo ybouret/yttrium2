@@ -7,6 +7,8 @@ namespace Yttrium
     namespace Concurrent
     {
 
+        bool Loop::Verbose = false;
+        
         Loop:: Loop(const size_t n) :
         size(n)
         {

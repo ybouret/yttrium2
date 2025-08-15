@@ -74,7 +74,7 @@ namespace Yttrium
 
         Condition:: Condition() : code( Provider::Instance().createAs<Code>() )
         {
-            std::cerr << "sizeof(Condition::Code)=" << sizeof(Code) << std::endl;
+            //std::cerr << "sizeof(Condition::Code)=" << sizeof(Code) << std::endl;
         }
 
         Condition:: ~Condition() noexcept

@@ -12,6 +12,8 @@ namespace Yttrium
     {
         class Loop
         {
+        public:
+            static bool Verbose;
         protected:
             explicit Loop(const size_t);
         public:
@@ -21,6 +23,7 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(Loop);
         };
+
     }
 
 }

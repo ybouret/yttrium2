@@ -13,6 +13,8 @@ namespace Yttrium
         class Crew : public Loop
         {
         public:
+            static const char * const CallSign;
+            
             explicit Crew(const size_t);
             virtual ~Crew() noexcept;
 

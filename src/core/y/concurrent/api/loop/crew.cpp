@@ -10,6 +10,10 @@ namespace Yttrium
     namespace Concurrent
     {
 
+        const char * const Crew:: CallSign = "Crew";
+
+#define Y_Print(MSG) do { if(Verbose) { (std::cerr << CallSign << ": " << MSG << std::endl).flush(); } } while(false)
+
         class Crew:: Code : public Object
         {
         public:
@@ -40,10 +44,9 @@ namespace Yttrium
                 mutex.lock();
                 if(ready<size)
                 {
-                    Y_Thread_Message("waiting for threads to be ok");
+                    Y_Print("synchronizing...");
                     comm.wait(mutex);
-                    Y_Thread_Message("ok, all sync'd");
-
+                    Y_Print("...synchronized!");
                 }
                 mutex.unlock();
 
@@ -70,11 +73,10 @@ namespace Yttrium
             {
                 mutex.lock(); // primary lock
                 const size_t rank = ready++;
-                Y_Thread_Message("in loop, rank=" << rank);
+                Y_Print(size<< '.' << rank << " is ready");
 
                 if(ready>=size)
                 {
-                    Y_Thread_Message("signaling comm");
                     comm.broadcast();
                 }
 
@@ -82,15 +84,17 @@ namespace Yttrium
                 sync.wait(mutex);
 
                 // wake up on a locked mutex
-                Y_Thread_Message("wake up rank=" << rank);
                 if(!kcode)
                 {
+                    Y_Print(size<< '.' << rank << " returns");
                     assert(ready>0);
                     if(--ready<=0)
                         comm.broadcast();
                     mutex.unlock(); // primary unlock
                     return;         // end
                 }
+                Y_Print(size<< '.' << rank << " is awake");
+
             }
 
 
