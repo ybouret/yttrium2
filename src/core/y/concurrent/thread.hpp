@@ -1,7 +1,7 @@
 //! \file
 
-#ifndef Y_Concurrent_Mutex_Included
-#define Y_Concurrent_Mutex_Included 1
+#ifndef Y_Concurrent_Thread_Included
+#define Y_Concurrent_Thread_Included 1
 
 #include "y/core/setup.hpp"
 

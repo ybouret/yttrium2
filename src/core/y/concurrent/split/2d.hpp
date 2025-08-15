@@ -60,9 +60,23 @@ namespace Yttrium
                 using MetricsType::items;
 
                 explicit In2D(Coord lo, Coord up) noexcept :
-                MetricsType(lo,up)
+                MetricsType(lo,up),
+                in1d(items)
                 {
                 }
+
+                void boot(const size_t nproc) noexcept
+                {
+                    in1d.boot(nproc);
+                }
+
+                bool next()
+                {
+                    if(!in1d.next()) return false;
+                    
+                    return true;
+                }
+
 
                 virtual ~In2D() noexcept
                 {
@@ -71,6 +85,7 @@ namespace Yttrium
 
 
             private:
+                In1D in1d;
                 Y_Disable_Copy_And_Assign(In2D);
             };
 

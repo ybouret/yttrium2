@@ -71,6 +71,15 @@ namespace Yttrium
             return *this;
         }
 
+        template <typename U, typename V>
+        CxxSeries & push(U &u, V &v)
+        {
+            assert(size()<capacity());
+            new (data.entry+built) Type(u,v);
+            ++built;
+            return *this;
+        }
+
 
 
         //______________________________________________________________________
