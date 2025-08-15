@@ -15,79 +15,23 @@ namespace Yttrium
         namespace Split
         {
 
-            //! split 1D count in nproc segments
-            /**
-             \param segments compatible sequence of segements
-             \param first    first offset
-             \param count    items to split
-             \param nproc    nproc>0 
-             */
-            template <typename SEQUENCE,typename T>
-            inline void In1D_(SEQUENCE    &segments,
-                             const T      first,
-                             const size_t count,
-                             const size_t nproc)
-            {
-                assert(nproc>0);
-                segments.free();
-                T      offset = first;
-                size_t length = count;
-                for(size_t num=1,den=nproc;num<=nproc;++num,--den)
-                {
-                    const size_t todo = length/den;
-                    { const Segment<T> segm(offset,todo,todo>0? (offset+todo)-1 : offset); segments << segm; }
-                    offset += todo;
-                    length -= todo;
-                }
-            }
 
-            template <typename T>
-            class In1D : public Segment<T>
+            class In1D
             {
             public:
-                typedef Segment<T> SegmentType;
-                using SegmentType::offset;
-                using SegmentType::length;
+                In1D(const size_t count) noexcept;
+                virtual ~In1D() noexcept;
 
-                inline In1D(const T first, const size_t count) noexcept :
-                SegmentType(0,0),
-                den(0),
-                off(0),
-                rem(0),
-                full(first,count)
-                {
-
-                }
-
-                inline virtual ~In1D() noexcept {}
-
-                void boot(const size_t nproc) noexcept
-                {
-                    assert(nproc>0);
-                    off = full.offset;
-                    rem = full.length;
-                    den = nproc;
-                }
-
-                bool next() noexcept
-                {
-                    if(den<=0) return false;
-                    const size_t len = rem/den--;
-                    Coerce(offset) = off;
-                    Coerce(length) = len;
-                    off += len;
-                    rem -= len;
-                    return true;
-                }
+                void boot(const size_t nproc) noexcept;
+                bool next() noexcept;
 
 
+                const size_t offset;
+                const size_t length;
             private:
-                size_t            den;
-                T                 off;
-                size_t            rem;
-            public:
-                const SegmentType full;
-            private:
+                size_t       divide;
+                size_t       remain;
+                const size_t origin;
                 Y_Disable_Copy_And_Assign(In1D);
             };
 

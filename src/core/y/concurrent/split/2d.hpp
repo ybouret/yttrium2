@@ -60,8 +60,7 @@ namespace Yttrium
                 using MetricsType::items;
 
                 explicit In2D(Coord lo, Coord up) noexcept :
-                MetricsType(lo,up),
-                in1d(0,items)
+                MetricsType(lo,up)
                 {
                 }
 
@@ -73,7 +72,6 @@ namespace Yttrium
 
             private:
                 Y_Disable_Copy_And_Assign(In2D);
-                In1D<size_t> in1d;
             };
 
 

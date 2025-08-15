@@ -85,9 +85,9 @@ namespace
     {
         C0 = c;
         setup();
-        const String fileName = Formatted::Get("profile%g.dat",C0);
+        const String fileName = Formatted::Get("profile%.0e.dat",C0);
         OutputFile   fp(fileName);
-        const unsigned np = 100;
+        const unsigned np = 200;
         for(unsigned i=0;i<=np;++i)
         {
             const double uu = double(i)/np;
@@ -112,10 +112,13 @@ Y_UTEST(root_profile)
     }
 
     save(0.0);
-    save(0.001);
-    save(0.01);
-    save(0.1);
-    
+    save(1e-6);
+    save(1e-5);
+    save(1e-4);
+    save(1e-3);
+    save(1e-2);
+
+
 
 }
 Y_UDONE()
