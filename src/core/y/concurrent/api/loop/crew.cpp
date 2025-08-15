@@ -15,6 +15,8 @@ namespace Yttrium
         public:
             explicit Code(const size_t n) :
             size(n),
+            ready(0),
+            mutex(),
             sync(),
             team(size)
             {
@@ -40,6 +42,8 @@ namespace Yttrium
             }
 
             const size_t      size;
+            size_t            ready;
+            Mutex             mutex;
             Condition         sync;
             CxxSeries<Thread> team;
 
@@ -48,7 +52,13 @@ namespace Yttrium
 
             void loop() noexcept
             {
-                Y_Thread_Message("in loop");
+                mutex.lock();
+                ++ready;
+                Y_Thread_Message("in loop, ready=" << ready);
+
+                // wait on a locked mutex
+                sync.wait(mutex);
+                
             }
 
 
