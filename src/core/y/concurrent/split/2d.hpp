@@ -19,13 +19,39 @@ namespace Yttrium
         namespace Split
         {
 
-
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Horizontal Segment
+            //
+            //
+            //__________________________________________________________________
             template <typename T>
             class HSegment
             {
             public:
-                typedef CxxSeries<HSegment> Array;
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                typedef CxxSeries<HSegment> Array; //!< alias
 
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! setup
+                /**
+                 \param x0 original x
+                 \param y0 original y
+                 \param x1 final x
+                 */
                 inline HSegment(const T x0, const T y0, const T x1) noexcept :
                 y(y0),
                 x(x0),
@@ -34,9 +60,13 @@ namespace Yttrium
                 {
                 }
 
+                //! cleanup
                 inline ~HSegment() noexcept {}
+
+                //! duplicate \param s another segment
                 inline  HSegment(const HSegment &s) noexcept : y(s.y), x(s.x), w(s.w),x_end(s.x_end) {}
 
+                //! display
                 inline friend std::ostream & operator<<(std::ostream &os, const HSegment &self)
                 {
                     os
@@ -47,16 +77,30 @@ namespace Yttrium
                     return os;
                 }
 
-
-                const T      y;
-                const T      x;
-                const size_t w;
-                const T      x_end;
+                //______________________________________________________________
+                //
+                //
+                //  Members
+                //
+                //______________________________________________________________
+                const T      y;     //!< original y
+                const T      x;     //!< original x
+                const size_t w;     //!< width
+                const T      x_end; //!< final x
 
             private:
-                Y_Disable_Assign(HSegment);
+                Y_Disable_Assign(HSegment); //!< discarding
             };
 
+
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Tile of Horizontal segments
+            //
+            //
+            //__________________________________________________________________
             template <typename T>
             class Tile : public CountedObject
             {
@@ -82,9 +126,15 @@ namespace Yttrium
                     return os;
                 }
 
-                const HSegment<T> * const s;
-                const size_t              h;
-                const size_t              items;
+                //______________________________________________________________
+                //
+                //
+                //  Members
+                //
+                //______________________________________________________________
+                const HSegment<T> * const s; //!< first segment address
+                const size_t              h; //!< number of segments = height
+                const size_t              items; //
 
             private:
                 Y_Disable_Copy_And_Assign(Tile);
