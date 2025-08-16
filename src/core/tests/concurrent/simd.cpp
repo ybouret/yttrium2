@@ -69,7 +69,7 @@ Y_UTEST(concurrent_simd)
     size_t n = 1;
     if(argc>1) n = ASCII::Convert::To<size_t>(argv[1],"n");
 
-    Compute compute(1000000,n);
+    Compute compute(10000000,n);
     Concurrent::Crew         crew(n);
     Concurrent::Sole         sole;
     Concurrent::SIMD::Kernel code = cfunctor(DoSomething);

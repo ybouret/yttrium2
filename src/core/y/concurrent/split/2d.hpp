@@ -102,10 +102,7 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(EmptyTile);
             };
 
-
-
-
-
+            
             template <typename T>
             class Metrics2D
             {
