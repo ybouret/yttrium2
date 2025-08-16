@@ -31,7 +31,7 @@ Y_CreateLibrary(y
     y/concurrent/data
     y/concurrent/split
     y/concurrent/api
-    y/concurrent/api/loop
+    y/concurrent/api/simd
     y/container
     y/container/matrix
     y/container/iter

@@ -26,7 +26,7 @@ namespace Yttrium
                 assert(nproc>0);
                 divide = nproc;
                 remain = origin;
-                Coerce(offset) = 0;
+                Coerce(offset) = 1;
                 Coerce(length) = 0;
             }
 

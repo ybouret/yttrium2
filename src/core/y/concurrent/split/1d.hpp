@@ -26,12 +26,15 @@ namespace Yttrium
                 bool next() noexcept;
 
 
-                const size_t offset;
-                const size_t length;
+                const size_t offset; //!< C++ [1..origin]
+                const size_t length; //!< dedicated length
+                
             private:
                 size_t       divide;
                 size_t       remain;
+            public:
                 const size_t origin;
+            private:
                 Y_Disable_Copy_And_Assign(In1D);
             };
 

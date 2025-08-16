@@ -2,6 +2,7 @@
 #ifndef Y_FUNCTOR_INCLUDED
 #define Y_FUNCTOR_INCLUDED 1
 
+#include <cassert>
 
 #include "y/functor/callback.hpp"
 #include "y/functor/command.hpp"

@@ -59,7 +59,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(concurrent_inventory);
     Y_UTEST(concurrent_split1d);
     Y_UTEST(concurrent_split2d);
-    Y_UTEST(concurrent_loop);
+    Y_UTEST(concurrent_simd);
 
 
 
