@@ -143,7 +143,7 @@ namespace Yttrium
             
             //! \return floating point ratio
             template <typename T> inline
-            T to()
+            T to() const
             {
                 switch(numer.s)
                 {

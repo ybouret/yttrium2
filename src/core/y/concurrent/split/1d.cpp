@@ -54,6 +54,15 @@ namespace Yttrium
                 return true;
             }
 
+
+            Zone In1D:: operator()(const Member &m, const size_t initialOffset) noexcept
+            {
+                boot(m.size,initialOffset);
+                for(size_t i=m.indx;i>0;--i) (void) next();
+                return *this;
+            }
+
+
         }
 
     }

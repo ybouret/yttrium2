@@ -4,8 +4,8 @@
 #ifndef Y_Concurrent_Context_Included
 #define Y_Concurrent_Context_Included 1
 
+#include "y/concurrent/member.hpp"
 #include "y/ability/lockable.hpp"
-#include "y/ostream-proto.hpp"
 
 namespace Yttrium
 {
@@ -20,7 +20,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Context
+        class Context : public Member
         {
         public:
             //__________________________________________________________________
@@ -32,7 +32,6 @@ namespace Yttrium
             //! setup \param sz size \param rk rank
             explicit Context(Lockable &, const size_t sz, const size_t rk) noexcept;
             virtual ~Context() noexcept; //!< cleanup
-            Y_OSTREAM_PROTO(Context);    //!< display
 
             //__________________________________________________________________
             //
@@ -41,10 +40,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             Lockable &   sync; //!< for local thread access
-            const size_t size; //!< total number of threads
-            const size_t rank; //!< local rank
-            const size_t indx; //!< local indx=rank+1
-
+            
 
 
         private:

@@ -15,10 +15,8 @@ namespace Yttrium
         Context:: Context(Lockable &   ll,
                           const size_t sz,
                           const size_t rk) noexcept:
-        sync(ll),
-        size(sz),
-        rank(rk),
-        indx(rank+1)
+        Member(sz,rk),
+        sync(ll)
         {
             assert(size>0);
             assert(rank<size);

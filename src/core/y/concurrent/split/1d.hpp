@@ -5,7 +5,7 @@
 #ifndef Y_Concurrent_Split1D_Included
 #define Y_Concurrent_Split1D_Included 1
 
-#include "y/core/setup.hpp"
+#include "y/concurrent/member.hpp"
 
 namespace Yttrium
 {
@@ -44,7 +44,8 @@ namespace Yttrium
                 void boot(const size_t numProcessors,
                           const size_t initialOffset) noexcept;
                 bool next() noexcept;
-                
+
+                Zone operator()(const Member &, const size_t initialOffset) noexcept;
 
             private:
                 size_t       divide;
