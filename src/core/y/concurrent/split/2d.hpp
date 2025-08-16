@@ -37,6 +37,17 @@ namespace Yttrium
                 inline ~HSegment() noexcept {}
                 inline  HSegment(const HSegment &s) noexcept : y(s.y), x(s.x), w(s.w),x_end(s.x_end) {}
 
+                inline friend std::ostream & operator<<(std::ostream &os, const HSegment &self)
+                {
+                    os
+                    << '[' << self.x << ':' << self.y << ']'
+                    << "->"
+                    << '[' << self.x_end << ':' << self.y << ']'
+                    << '#' << self.w;
+                    return os;
+                }
+
+
                 const T      y;
                 const T      x;
                 const size_t w;
@@ -50,12 +61,30 @@ namespace Yttrium
             class Tile : public CountedObject
             {
             protected:
-                inline explicit Tile(const size_t h) noexcept : segment(0), height(h) {}
+                inline explicit Tile(const size_t height) noexcept : s(0), h(height), items(0) {}
             public:
                 inline virtual ~Tile() noexcept {}
 
-                const HSegment<T> * const segment;
-                const size_t              height;
+                inline friend std::ostream & operator<<(std::ostream &os, const Tile &tile)
+                {
+                    if(tile.h<=0)
+                    {
+                        os << "[empty tile]";
+                    }
+                    else
+                    {
+                        os << "h=" << tile.h << ", items=" << tile.items;
+                        for(size_t j=0;j<tile.h;++j)
+                        {
+                            os << std::endl << '\t' << tile.s[j];
+                        }
+                    }
+                    return os;
+                }
+
+                const HSegment<T> * const s;
+                const size_t              h;
+                const size_t              items;
 
             private:
                 Y_Disable_Copy_And_Assign(Tile);
@@ -99,7 +128,6 @@ namespace Yttrium
                     assert(indx<items);
                     const size_t dy = indx / width.x;
                     const size_t dx = indx - dy * width.x;
-                    //std::cerr << "dx=" << dx << ", dy=" << dy << std::endl;
                     assert(dx+width.x*dy==indx);
                     return Coord( (T)(lower.x+dx),(T)(lower.y+dy));
                 }
@@ -126,29 +154,38 @@ namespace Yttrium
             class HeavyTile : public Tile<T>
             {
             public:
-                using Tile<T>::height;
+                using Tile<T>::s;
+                using Tile<T>::h;
+                using Tile<T>::items;
 
                 inline explicit HeavyTile(const V2D<T>       &lo,
                                           const V2D<T>       &up,
                                           const Metrics2D<T> &metrics) :
                 Tile<T>(up.y-lo.y+1),
-                arr(height)
+                arr(h)
                 {
-                    assert(height>0);
+                    assert(h>0);
                     T y = lo.y;
-                    for(size_t j=1;j<=height;++j,++y)
+                    for(size_t j=1;j<=h;++j,++y)
                     {
-                        
+                        const T x_lo = (j==1) ? lo.x : metrics.lower.x;
+                        const T x_up = (j==h) ? up.x : metrics.upper.x;
+                        const HSegment<T> s(x_lo,y,x_up);
+                        Coerce(arr)   << s;
+                        Coerce(items) += s.w;
                     }
-
+                    Coerce(s) = & arr[1];
                 }
 
                 inline virtual ~HeavyTile() noexcept
                 {}
 
+
             private:
                 Y_Disable_Copy_And_Assign(HeavyTile);
                 typename HSegment<T>::Array arr;
+
+
             };
 
 
@@ -184,13 +221,13 @@ namespace Yttrium
                         const size_t oflast = offset+length-1;
                         const Coord  lo     = this->coord(offset);
                         const Coord  up     = this->coord(oflast);
-                        std::cerr << "from " << offset << " to " << oflast << " #" << length << " " << lo << " -> " << up << std::endl;
+                        //std::cerr << "from " << offset << " to " << oflast << " #" << length << " " << lo << " -> " << up << std::endl;
                         assert(lo.y<=up.y);
                         return new HeavyTile<T>(lo,up,*this);
                     }
                     else
                     {
-                        std::cerr << "empty" << std::endl;
+                        //std::cerr << "empty" << std::endl;
                         return new EmptyTile<T>();
                     }
                 }
