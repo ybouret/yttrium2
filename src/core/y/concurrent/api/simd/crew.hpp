@@ -10,21 +10,47 @@ namespace Yttrium
 {
     namespace Concurrent
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Threaded SIMD
+        //
+        //
+        //______________________________________________________________________
         class Crew : public SIMD
         {
         public:
-            static const char * const CallSign;
-            
-            explicit Crew(const size_t);
-            virtual ~Crew() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const char * const CallSign; //!< "Crew"
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit Crew(const size_t); //!< setup
+            virtual ~Crew()    noexcept; //!< cleanup
+
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             virtual const char * callSign()       const noexcept;
             virtual void         operator()( Kernel & ) noexcept;
-            
+
         private:
             class Code;
-            Y_Disable_Copy_And_Assign(Crew);
-            Code * const code;
+            Y_Disable_Copy_And_Assign(Crew); //!< discarding
+            Code * const code;               //!< inner code
         };
     }
 

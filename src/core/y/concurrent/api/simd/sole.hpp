@@ -12,21 +12,47 @@ namespace Yttrium
 {
     namespace Concurrent
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Sole SIMD, sequential
+        //
+        //
+        //______________________________________________________________________
         class Sole : public SIMD
         {
         public:
-            static const char * const CallSign;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const char * const CallSign; //!< "Sole"
 
-            explicit Sole() noexcept;
-            virtual ~Sole() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit Sole() noexcept; //!< setup with size=1
+            virtual ~Sole() noexcept; //!< cleanup
 
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             virtual const char * callSign()       const noexcept;
             virtual void         operator()( Kernel & ) noexcept;
 
         private:
-            Y_Disable_Copy_And_Assign(Sole);
-            FakeLock mutex;
-            Context  context;
+            Y_Disable_Copy_And_Assign(Sole); //!< discarding
+            FakeLock mutex;   //!< sequential mutex
+            Context  context; //!< 1.0
         };
     }
 

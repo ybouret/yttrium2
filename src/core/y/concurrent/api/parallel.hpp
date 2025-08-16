@@ -10,18 +10,40 @@ namespace Yttrium
 {
     namespace Concurrent
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Base type for parallel objects
+        //
+        //
+        //______________________________________________________________________
         class Parallel  : public Identifiable
         {
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
         protected:
+            //! setup
             explicit Parallel(const size_t, const char * const);
 
         public:
+            //! cleanup
             virtual ~Parallel() noexcept;
 
-            const size_t size;
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const size_t size; //!< number of contexts/threads
 
         private:
-            Y_Disable_Copy_And_Assign(Parallel);
+            Y_Disable_Copy_And_Assign(Parallel); //!< discarding
         };
 
     }

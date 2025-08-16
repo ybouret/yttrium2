@@ -16,7 +16,7 @@ Y_UTEST(concurrent_split1d)
     {
         std::cerr << "nproc=" << nproc << std::endl;
         //Concurrent::Split::In1D_(segments,offset,length,nproc);
-        in1d.boot(nproc);
+        in1d.boot(nproc,0);
         while( in1d.next() )
         {
             std::cerr << "\t" << in1d.offset << "+" << in1d.length << std::endl;

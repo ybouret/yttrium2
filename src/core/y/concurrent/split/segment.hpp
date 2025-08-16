@@ -37,7 +37,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-                //! setup \param first offset \param count length \param olast last offset
+                //! setup \param first offset \param count length 
                 inline explicit Segment(const T      first,
                                         const size_t count ) noexcept :
                 offset(first),

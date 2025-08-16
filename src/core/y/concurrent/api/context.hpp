@@ -12,12 +12,34 @@ namespace Yttrium
     namespace Concurrent
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Context for threads to retrieve info
+        //
+        //
+        //______________________________________________________________________
         class Context
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            //! setup \param sz size \param rk rank
             explicit Context(Lockable &, const size_t sz, const size_t rk) noexcept;
-            virtual ~Context() noexcept;
-            Y_OSTREAM_PROTO(Context);
+            virtual ~Context() noexcept; //!< cleanup
+            Y_OSTREAM_PROTO(Context);    //!< display
+
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
             Lockable &   sync; //!< for local thread access
             const size_t size; //!< total number of threads
             const size_t rank; //!< local rank
@@ -26,7 +48,7 @@ namespace Yttrium
 
 
         private:
-            Y_Disable_Copy_And_Assign(Context);
+            Y_Disable_Copy_And_Assign(Context); //!< discarding
 
         };
 

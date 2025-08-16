@@ -71,6 +71,7 @@ namespace Yttrium
             return *this;
         }
 
+        //! append with binary constructor \param u first arg \param v second arg \return *this
         template <typename U, typename V>
         CxxSeries & push(U &u, V &v)
         {

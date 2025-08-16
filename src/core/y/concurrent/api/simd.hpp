@@ -13,22 +13,50 @@ namespace Yttrium
     namespace Concurrent
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Single Instruction Multiple Data
+        //
+        //
+        //______________________________________________________________________
         class SIMD : public Parallel
         {
         public:
-            static bool Verbose;
-            typedef Functor<void,TL1(Context)> Kernel;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static bool                        Verbose; //!< helper
+            typedef Functor<void,TL1(Context)> Kernel;  //!< alias
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
         protected:
+            //! setup
             explicit SIMD(const size_t, const char * const);
 
         public:
+            //cleanup
             virtual ~SIMD() noexcept;
 
-            virtual void operator()( Kernel & ) noexcept = 0;
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
+            virtual void operator()( Kernel & ) noexcept = 0; //!< execute kernel for each context
 
         private:
-            Y_Disable_Copy_And_Assign(SIMD);
+            Y_Disable_Copy_And_Assign(SIMD); //!< discarding
         };
 
     }

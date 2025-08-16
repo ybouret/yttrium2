@@ -17,16 +17,17 @@ namespace Yttrium
             length(0),
             divide(0),
             remain(0),
-            origin(count)
+            burden(count)
             {
             }
 
-            void In1D:: boot(const size_t nproc) noexcept
+            void In1D:: boot(const size_t numProcessors,
+                             const size_t initialOffset) noexcept
             {
-                assert(nproc>0);
-                divide = nproc;
-                remain = origin;
-                Coerce(offset) = 1;
+                assert(numProcessors>0);
+                divide = numProcessors;
+                remain = burden;
+                Coerce(offset) = initialOffset;
                 Coerce(length) = 0;
             }
 

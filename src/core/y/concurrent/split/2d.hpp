@@ -65,9 +65,9 @@ namespace Yttrium
                 {
                 }
 
-                void boot(const size_t nproc) noexcept
+                void boot(const size_t numProcessors) noexcept
                 {
-                    in1d.boot(nproc);
+                    in1d.boot(numProcessors,0);
                 }
 
                 bool next()
