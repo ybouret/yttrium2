@@ -15,6 +15,18 @@ namespace Yttrium
         namespace Split
         {
 
+            class Zone
+            {
+            public:
+                Zone()            noexcept;
+                Zone(const Zone&) noexcept;
+                virtual ~Zone()   noexcept;
+                const size_t offset; //!< cumulative offset
+                const size_t length; //!< dedicated  length from offset
+            private:
+                Y_Disable_Assign(Zone);
+            };
+
             //__________________________________________________________________
             //
             //
@@ -23,7 +35,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class In1D
+            class In1D : public Zone
             {
             public:
                 In1D(const size_t) noexcept;
@@ -32,10 +44,7 @@ namespace Yttrium
                 void boot(const size_t numProcessors,
                           const size_t initialOffset) noexcept;
                 bool next() noexcept;
-
-
-                const size_t offset; //!< cumulative offset
-                const size_t length; //!< dedicated  length from offset
+                
 
             private:
                 size_t       divide;

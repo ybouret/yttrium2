@@ -9,13 +9,26 @@ namespace Yttrium
         namespace Split
         {
 
+            Zone:: Zone() noexcept : offset(0), length(0)
+            {
+            }
+
+            Zone:: ~Zone() noexcept
+            {
+            }
+
+            Zone:: Zone(const Zone &zone) noexcept :
+            offset(zone.offset),
+            length(zone.length)
+            {
+            }
+            
+
             In1D:: ~In1D() noexcept
             {
             }
 
             In1D:: In1D(const size_t count) noexcept :
-            offset(0),
-            length(0),
             divide(0),
             remain(0),
             burden(count)
