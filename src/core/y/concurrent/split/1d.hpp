@@ -5,7 +5,7 @@
 #ifndef Y_Concurrent_Split1D_Included
 #define Y_Concurrent_Split1D_Included 1
 
-#include "y/concurrent/split/segment.hpp"
+#include "y/core/setup.hpp"
 
 namespace Yttrium
 {

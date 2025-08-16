@@ -10,8 +10,17 @@ Y_UTEST(concurrent_split2d)
 
     typedef V2D<int> VTX;
 
-    Split::In2D<int> in2d( VTX(1,1), VTX(10,5) );
-    
+    Split::In2D<int> in2d( VTX(1,1), VTX(2,2) );
+
+    for(size_t n=1;n<=8;++n)
+    {
+        std::cerr << "---- #" << n << std::endl;
+        in2d.boot(n);
+        while(in2d.next())
+        {
+        }
+    }
+
 
 }
 Y_UDONE()

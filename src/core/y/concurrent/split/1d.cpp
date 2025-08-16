@@ -1,4 +1,5 @@
 #include "y/concurrent/split/1d.hpp"
+#include <cassert>
 
 namespace Yttrium
 {

@@ -17,6 +17,8 @@ namespace Yttrium
         namespace Split
         {
 
+            
+
             template <typename T>
             class Metrics2D
             {
@@ -34,10 +36,21 @@ namespace Yttrium
 
                 inline virtual ~Metrics2D() noexcept {}
 
+                Coord coord(const size_t indx) const noexcept
+                {
+                    assert(indx<items);
+                    const size_t dy = indx / width.x;
+                    const size_t dx = indx - dy * width.x;
+                    //std::cerr << "dx=" << dx << ", dy=" << dy << std::endl;
+                    assert(dx+width.x*dy==indx);
+                    return Coord( (T)(lower.x+dx),(T)(lower.y+dy));
+                }
+
                 const Coord  lower;
                 const Coord  upper;
                 const Count  width;
                 const size_t items;
+
             private:
                 Y_Disable_Copy_And_Assign(Metrics2D);
                 inline void setup() noexcept
@@ -73,7 +86,20 @@ namespace Yttrium
                 bool next()
                 {
                     if(!in1d.next()) return false;
-                    
+
+                    const size_t offset = in1d.offset;
+                    const size_t length = in1d.length;
+                    if(length>0)
+                    {
+                        const size_t oflast = offset+length-1;
+                        std::cerr << "from " << offset << " to " << oflast << " #" << length << std::endl;
+                        const Coord  lo     = this->coord(offset);
+                        const Coord  up     = this->coord(oflast);
+                    }
+                    else
+                    {
+                        std::cerr << "empty" << std::endl;
+                    }
                     return true;
                 }
 
