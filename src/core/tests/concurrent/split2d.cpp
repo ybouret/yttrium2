@@ -16,8 +16,9 @@ Y_UTEST(concurrent_split2d)
     {
         std::cerr << "---- #" << n << std::endl;
         in2d.boot(n);
-        while(in2d.next())
+        while(Split::Tile<int> * tile = in2d.next())
         {
+            delete tile;
         }
     }
 

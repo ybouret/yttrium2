@@ -8,6 +8,8 @@
 
 #include "y/concurrent/split/1d.hpp"
 #include "y/mkl/v2d.hpp"
+#include "y/object/counted.hpp"
+#include "y/container/cxx/series.hpp"
 
 namespace Yttrium
 {
@@ -17,7 +19,63 @@ namespace Yttrium
         namespace Split
         {
 
-            
+
+            template <typename T>
+            class HSegment
+            {
+            public:
+                typedef CxxSeries<HSegment> Array;
+
+                inline HSegment(const T x0, const T y0, const T x1) noexcept :
+                y(y0),
+                x(x0),
+                w(x1-x0+1),
+                x_end(x1)
+                {
+                }
+
+                inline ~HSegment() noexcept {}
+                inline  HSegment(const HSegment &s) noexcept : y(s.y), x(s.x), w(s.w),x_end(s.x_end) {}
+
+                const T      y;
+                const T      x;
+                const size_t w;
+                const T      x_end;
+
+            private:
+                Y_Disable_Assign(HSegment);
+            };
+
+            template <typename T>
+            class Tile : public CountedObject
+            {
+            protected:
+                inline explicit Tile(const size_t h) noexcept : segment(0), height(h) {}
+            public:
+                inline virtual ~Tile() noexcept {}
+
+                const HSegment<T> * const segment;
+                const size_t              height;
+
+            private:
+                Y_Disable_Copy_And_Assign(Tile);
+            };
+
+
+            template <typename T>
+            class EmptyTile : public Tile<T>
+            {
+            public:
+                inline explicit EmptyTile() noexcept : Tile<T>(0) {}
+                inline virtual ~EmptyTile() noexcept              {}
+
+            private:
+                Y_Disable_Copy_And_Assign(EmptyTile);
+            };
+
+
+
+
 
             template <typename T>
             class Metrics2D
@@ -63,11 +121,43 @@ namespace Yttrium
                 }
             };
 
+
+            template <typename T>
+            class HeavyTile : public Tile<T>
+            {
+            public:
+                using Tile<T>::height;
+
+                inline explicit HeavyTile(const V2D<T>       &lo,
+                                          const V2D<T>       &up,
+                                          const Metrics2D<T> &metrics) :
+                Tile<T>(up.y-lo.y+1),
+                arr(height)
+                {
+                    assert(height>0);
+                    T y = lo.y;
+                    for(size_t j=1;j<=height;++j,++y)
+                    {
+                        
+                    }
+
+                }
+
+                inline virtual ~HeavyTile() noexcept
+                {}
+
+            private:
+                Y_Disable_Copy_And_Assign(HeavyTile);
+                typename HSegment<T>::Array arr;
+            };
+
+
             template <typename T>
             class In2D : public Metrics2D<T>
             {
             public:
                 typedef Metrics2D<T>                MetricsType;
+                typedef Tile<T>                     TileType;
                 typedef typename MetricsType::Coord Coord;
                 typedef typename MetricsType::Count Count;
                 using MetricsType::items;
@@ -83,24 +173,26 @@ namespace Yttrium
                     in1d.boot(numProcessors,0);
                 }
 
-                bool next()
+                Tile<T> * next()
                 {
-                    if(!in1d.next()) return false;
+                    if(!in1d.next()) return 0;
 
                     const size_t offset = in1d.offset;
                     const size_t length = in1d.length;
                     if(length>0)
                     {
                         const size_t oflast = offset+length-1;
-                        std::cerr << "from " << offset << " to " << oflast << " #" << length << std::endl;
                         const Coord  lo     = this->coord(offset);
                         const Coord  up     = this->coord(oflast);
+                        std::cerr << "from " << offset << " to " << oflast << " #" << length << " " << lo << " -> " << up << std::endl;
+                        assert(lo.y<=up.y);
+                        return new HeavyTile<T>(lo,up,*this);
                     }
                     else
                     {
                         std::cerr << "empty" << std::endl;
+                        return new EmptyTile<T>();
                     }
-                    return true;
                 }
 
 
