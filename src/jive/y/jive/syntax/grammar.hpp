@@ -91,7 +91,9 @@ namespace Yttrium
                  \return created terminal
                  */
                 template <typename ID>
-                const Terminal & terminal(const ID &id)
+                const Terminal & terminal(const ID &id,
+                                          const Activity activity,
+                                          const bool     univocal)
                 {
                     return add( new Terminal(id) );
                 }

@@ -37,7 +37,13 @@ namespace Yttrium
             {
             }
 
-            
+            template <typename RID, typename RXP>
+            const Rule & term(const RID &rid, const RXP &rxp)
+            {
+                const Lexical::Rule &lr = emit(rid,rxp);
+                return terminal(lr.name,Syntax::Regular,true);
+            }
+
 
 
             //! cleanup
