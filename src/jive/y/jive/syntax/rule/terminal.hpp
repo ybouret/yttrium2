@@ -12,6 +12,12 @@ namespace Yttrium
     {
         namespace Syntax
         {
+            enum Role
+            {
+                Regular,
+                Divider
+            };
+
             //__________________________________________________________________
             //
             //
