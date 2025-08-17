@@ -107,6 +107,16 @@ namespace Yttrium
                 //______________________________________________________________
                 //
                 //
+                // Definitions
+                //
+                //______________________________________________________________
+            public:
+                typedef ArcPtr<Tile>        Pointer; //!< alias
+                typedef CxxArray< Pointer > Array;   //!< alias
+
+                //______________________________________________________________
+                //
+                //
                 //  C++
                 //
                 //______________________________________________________________
@@ -304,9 +314,100 @@ namespace Yttrium
             private:
                 Y_Disable_Copy_And_Assign(HeavyTile); //!< discarding
                 typename HSegment<T>::Array arr;      //!< segments
-
-
             };
+
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! base class for tiles
+            //
+            //
+            //__________________________________________________________________
+            template <typename T>
+            class TilesComm
+            {
+            public:
+                inline explicit TilesComm() : empty( new EmptyTile<T>() ) {} //!< setup
+                inline virtual ~TilesComm() noexcept {}                      //!< cleanup
+
+            private:
+                Y_Disable_Copy_And_Assign(TilesComm); //!< discarding
+            protected:
+                const typename Tile<T>::Pointer empty; //!< empty tile
+            };
+
+
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! precomputed tiles
+            //
+            //
+            //__________________________________________________________________
+            template <typename T>
+            class Tiles :
+            public TilesComm<T>,
+            public Ingress< const Readable< typename Tile<T>::Pointer > >
+            {
+            public:
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                typedef Tile<T>                        TileType;    //!< alias
+                typedef typename TileType::Pointer     TilePointer; //!< alias
+                typedef typename TileType::Array       TileArray;   //!< alias
+
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! setup \param numProcessors parallel size
+                inline explicit Tiles(const size_t numProcessors) :
+                TilesComm<T>(),
+                arr(numProcessors,this->empty)
+                {
+                    assert(numProcessors>0);
+                }
+
+                //! cleanup
+                inline virtual ~Tiles() noexcept
+                {
+
+                }
+
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+
+                //! reset all to empty
+                inline void reset() noexcept
+                {
+                    for(size_t i=arr.size();i>0;--i)
+                    {
+                        arr[i] = this->empty;
+                    }
+                }
+
+            private:
+                Y_Disable_Copy_And_Assign(Tiles); //!< discarding
+                inline virtual const TileArray & locus() const noexcept { return arr; }
+
+                TileArray arr; //!< tiles
+            };
+
+
+
 
 
             //__________________________________________________________________
@@ -369,6 +470,23 @@ namespace Yttrium
                         return new EmptyTile<T>();
                     }
                 }
+
+                //! split metrics \param tiles tiling \return tiles
+                inline Tiles<T> & operator()(Tiles<T> &tiles)
+                {
+                    const size_t np  = tiles->size();
+                    tiles.reset();
+                    boot(np);
+                    for(size_t i=1;i<=np;++i)
+                    {
+                        Tile<T> * const tile = next(); assert(0!=tile);
+                        const typename Tile<T>::Pointer p(tile);
+                        Coerce( (*tiles)[i] ) = p;
+                    }
+                    return tiles;
+                }
+
+
 
 
                 //! cleanup

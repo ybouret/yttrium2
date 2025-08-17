@@ -70,7 +70,7 @@ namespace Yttrium
         inline ArcPtr & operator=(const ArcPtr &other) noexcept
         {
             ArcPtr temp(other);
-            xch(temp);
+            this->xch(temp);
             return *this;
         }
 

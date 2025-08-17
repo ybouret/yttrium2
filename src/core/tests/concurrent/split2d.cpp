@@ -25,6 +25,8 @@ Y_UTEST(concurrent_split2d)
             delete tile;
         }
         Y_ASSERT(total==count);
+        Split::Tiles<int> tiles(n);
+        in2d(tiles);
     }
 
 
