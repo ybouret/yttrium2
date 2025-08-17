@@ -69,10 +69,8 @@ Y_UTEST(grammar)
     {
         Source source( Module::OpenFile(argv[1]) );
         AutoPtr<Syntax::Node> tree = G.run(L,source);
-        if(tree.isValid())
-        {
-            Vizible::Render("tree.dot",*tree);
-        }
+        Y_ASSERT(tree.isValid());
+        Vizible::Render("tree.dot",*tree);
     }
 }
 Y_UDONE()

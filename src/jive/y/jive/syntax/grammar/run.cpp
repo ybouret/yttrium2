@@ -20,11 +20,14 @@ namespace Yttrium
 
             Node * Grammar:: onSuccess(Node * const root, Lexer &lexer, Source &source)
             {
+                if(!root) throw Specific::Exception(lang->c_str(), "*** NULL root from '%s'", source.context().tag->c_str());
                 AutoPtr<Node> guard(root);
                 AutoPtr<Lexeme> lx = lexer.query(source);
                 if(lx.isValid())
                 {
-                    throw Specific::Exception(lang->c_str(),"extraneous '%s'", lx->name->c_str());
+                    Specific::Exception excp(lang->c_str(),"extraneous '%s'", lx->name->c_str());
+
+                    throw excp;
                 }
 
                 return guard.yield();
