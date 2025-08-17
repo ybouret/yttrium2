@@ -61,6 +61,12 @@ namespace Yttrium
                 return fp;
             }
 
+            const Terminal * InternalNode:: lastTerm()    const noexcept
+            {
+                if(size<=0) return 0;
+                return tail->lastTerm();
+            }
+
         }
     }
 

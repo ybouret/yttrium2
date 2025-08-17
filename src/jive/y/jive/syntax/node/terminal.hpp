@@ -42,8 +42,8 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
-                virtual OutputStream & viz(OutputStream &) const;
-
+                virtual OutputStream &   viz(OutputStream &)    const;
+                virtual const Terminal * lastTerm()    const noexcept;
 
                 //______________________________________________________________
                 //
@@ -51,8 +51,8 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                Lexeme * const lexeme; //!< lexeme, NULL once returned to Lexer
-
+                Lexeme * const  lexeme; //!< lexeme, NULL once returned to Lexer
+                
             private:
                 Y_Disable_Copy_And_Assign(TerminalNode); //!< discarding
                 friend class Node;

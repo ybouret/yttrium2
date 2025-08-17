@@ -49,6 +49,13 @@ namespace Yttrium
                 fp << ",shape=box";
                 return Endl( fp << ']' );
             }
+
+            const Terminal * TerminalNode:: lastTerm()    const noexcept
+            {
+                assert(rule.isTerminal());
+                return dynamic_cast<const Terminal *>( &rule );
+            }
+
         }
 
     }
