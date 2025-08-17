@@ -104,11 +104,20 @@ namespace Yttrium
             template <typename T>
             class Tile : public CountedObject
             {
+                //______________________________________________________________
+                //
+                //
+                //  C++
+                //
+                //______________________________________________________________
             protected:
+                //! setup \param height number of segments
                 inline explicit Tile(const size_t height) noexcept : s(0), h(height), items(0) {}
             public:
+                //! cleanup[
                 inline virtual ~Tile() noexcept {}
 
+                //! display
                 inline friend std::ostream & operator<<(std::ostream &os, const Tile &tile)
                 {
                     if(tile.h<=0)
@@ -132,33 +141,63 @@ namespace Yttrium
                 //  Members
                 //
                 //______________________________________________________________
-                const HSegment<T> * const s; //!< first segment address
-                const size_t              h; //!< number of segments = height
-                const size_t              items; //
+                const HSegment<T> * const s;     //!< first segment address
+                const size_t              h;     //!< number of segments = height
+                const size_t              items; //!< total items
 
             private:
-                Y_Disable_Copy_And_Assign(Tile);
+                Y_Disable_Copy_And_Assign(Tile); //!< discarding
             };
 
-
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Empty Tile
+            //
+            //
+            //__________________________________________________________________
             template <typename T>
             class EmptyTile : public Tile<T>
             {
             public:
-                inline explicit EmptyTile() noexcept : Tile<T>(0) {}
-                inline virtual ~EmptyTile() noexcept              {}
+                //______________________________________________________________
+                //
+                //
+                //  C++
+                //
+                //______________________________________________________________
+                inline explicit EmptyTile() noexcept : Tile<T>(0) {} //!< setup
+                inline virtual ~EmptyTile() noexcept              {} //!< cleanup
 
             private:
-                Y_Disable_Copy_And_Assign(EmptyTile);
+                Y_Disable_Copy_And_Assign(EmptyTile); //!< discarding
             };
 
-            
+
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Metrics for In2D
+            //
+            //
+            //__________________________________________________________________
             template <typename T>
             class Metrics2D
             {
             public:
-                typedef V2D<T>      Coord;
-                typedef V2D<size_t> Count;
+                typedef V2D<T>      Coord; //!< alias
+                typedef V2D<size_t> Count; //!< alias
+
+                //______________________________________________________________
+                //
+                //
+                //  C++
+                //
+                //______________________________________________________________
+
+                //! setup \param lo lower coord \param up upper coords
                 explicit Metrics2D(Coord lo, Coord up) noexcept :
                 lower(lo),
                 upper(up),
@@ -168,8 +207,17 @@ namespace Yttrium
                     setup();
                 }
 
+                //! cleanup
                 inline virtual ~Metrics2D() noexcept {}
 
+                //______________________________________________________________
+                //
+                //
+                //  Methods
+                //
+                //______________________________________________________________
+
+                //! \param indx index in [0..items-1] \return matching coordinate
                 Coord coord(const size_t indx) const noexcept
                 {
                     assert(indx<items);
@@ -179,13 +227,21 @@ namespace Yttrium
                     return Coord( (T)(lower.x+dx),(T)(lower.y+dy));
                 }
 
-                const Coord  lower;
-                const Coord  upper;
-                const Count  width;
-                const size_t items;
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                const Coord  lower; //!< lower coordinates
+                const Coord  upper; //!< upper coordinates
+                const Count  width; //!< widths
+                const size_t items; //!< number of items
 
             private:
-                Y_Disable_Copy_And_Assign(Metrics2D);
+                Y_Disable_Copy_And_Assign(Metrics2D); //!< discarding
+
+                //! recomputing all
                 inline void setup() noexcept
                 {
                     if(lower.x>upper.x) CoerceSwap(lower.x,upper.x);
@@ -196,7 +252,14 @@ namespace Yttrium
                 }
             };
 
-
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Heavy Tile
+            //
+            //
+            //__________________________________________________________________
             template <typename T>
             class HeavyTile : public Tile<T>
             {
@@ -205,6 +268,12 @@ namespace Yttrium
                 using Tile<T>::h;
                 using Tile<T>::items;
 
+                //! setup
+                /**
+                 \param lo lower coordinate
+                 \param up upper coordinate
+                 \param metrics source metrics
+                 */
                 inline explicit HeavyTile(const V2D<T>       &lo,
                                           const V2D<T>       &up,
                                           const Metrics2D<T> &metrics) :
@@ -224,39 +293,61 @@ namespace Yttrium
                     Coerce(s) = & arr[1];
                 }
 
-                inline virtual ~HeavyTile() noexcept
-                {}
+                inline virtual ~HeavyTile() noexcept {} //!< cleanup
 
-
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
             private:
-                Y_Disable_Copy_And_Assign(HeavyTile);
-                typename HSegment<T>::Array arr;
+                Y_Disable_Copy_And_Assign(HeavyTile); //!< discarding
+                typename HSegment<T>::Array arr;      //!< segments
 
 
             };
 
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! In2D
+            //
+            //
+            //__________________________________________________________________
             template <typename T>
             class In2D : public Metrics2D<T>
             {
             public:
-                typedef Metrics2D<T>                MetricsType;
-                typedef Tile<T>                     TileType;
-                typedef typename MetricsType::Coord Coord;
-                typedef typename MetricsType::Count Count;
+                typedef Metrics2D<T>                MetricsType; //!< alias
+                typedef Tile<T>                     TileType;    //!< alias
+                typedef typename MetricsType::Coord Coord;       //!< alias
+                typedef typename MetricsType::Count Count;       //!< alias
                 using MetricsType::items;
 
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! setup \param lo lower coordinate \param up upper coordinate
                 explicit In2D(Coord lo, Coord up) noexcept :
                 MetricsType(lo,up),
                 in1d(items)
                 {
                 }
 
+                //! prepare \param numProcessors number of tiles
                 void boot(const size_t numProcessors) noexcept
                 {
                     in1d.boot(numProcessors,0);
                 }
 
+                //! \return Empty/Heavy tile, NULL when done
                 Tile<T> * next()
                 {
                     if(!in1d.next()) return 0;
@@ -280,15 +371,21 @@ namespace Yttrium
                 }
 
 
+                //! cleanup
                 virtual ~In2D() noexcept
                 {
 
                 }
 
-
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
             private:
-                In1D in1d;
-                Y_Disable_Copy_And_Assign(In2D);
+                In1D in1d; //!< indexing in 1D
+                Y_Disable_Copy_And_Assign(In2D); //!< discarding
             };
 
 
