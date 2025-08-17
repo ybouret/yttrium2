@@ -12,7 +12,7 @@ namespace Yttrium
     {
         namespace Syntax
         {
-            enum Role
+            enum Activity
             {
                 Regular,
                 Divider
@@ -33,8 +33,12 @@ namespace Yttrium
 
                 //! setup \param r rule name
                 template <typename RID> inline
-                explicit Terminal(const RID &r) :
-                Rule(r,IsTerminal,UUID)
+                explicit Terminal(const RID    & rid,
+                                  const Activity role = Regular,
+                                  const bool     spec = false) :
+                Rule(rid,IsTerminal,UUID),
+                activity(role),
+                univocal(spec)
                 {
                 }
 
@@ -57,7 +61,8 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                
+                const Activity activity;
+                const bool     univocal;
             private:
                 Y_Disable_Copy_And_Assign(Terminal); //!< discarding
             };

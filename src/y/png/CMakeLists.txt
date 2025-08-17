@@ -1,3 +1,6 @@
+
+Y_Message("Building png")
+
 # CMakeLists.txt - CMake lists for libpng
 #
 # Copyright (c) 2018-2025 Cosmin Truta
