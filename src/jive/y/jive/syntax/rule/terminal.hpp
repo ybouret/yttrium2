@@ -45,6 +45,13 @@ namespace Yttrium
                 virtual OutputStream & vizDecl(OutputStream &)    const;
                 virtual OutputStream & vizPost(OutputStream &)    const;
 
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                
             private:
                 Y_Disable_Copy_And_Assign(Terminal); //!< discarding
             };
