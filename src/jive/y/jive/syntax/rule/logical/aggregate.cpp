@@ -38,14 +38,14 @@ namespace Yttrium
 
                     // failure, return list to lexer
                     Node::Restore(branch,lexer);
-                    Y_Jive_XRule(Core::Failure);
+                    Y_Jive_XRule(name << ' ' << Core::Failure);
                     return false;
                 }
 
                 // create node
                 InternalNode * node = Node::Make(*this);
                 Node::Grow(tree, & node->steal(branch) );
-                Y_Jive_XRule(Core::Success);
+                Y_Jive_XRule(name << ' ' << Core::Success);
                 return true;
             }
 

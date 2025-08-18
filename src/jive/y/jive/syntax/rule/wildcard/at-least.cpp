@@ -32,12 +32,12 @@ namespace Yttrium
                         ++n_ok;
                         list.pushTail(node);
                     }
+                    else break;
                 }
 
                 if(n_ok<minCount)
                 {
-                    while(list.size)
-                        Node::Restore(list.popTail(),lexer);
+                    Node::Restore(list,lexer);
                     Y_Jive_XRule(Core::Failure);
                     return false;
                 }
@@ -45,12 +45,14 @@ namespace Yttrium
 
                 if(tree)
                 {
+                    std::cerr << "Growing Tree" << std::endl;
                     assert(tree->isInternal());
                     dynamic_cast<InternalNode *>(tree)->steal(list);
                 }
                 else
                 {
                     // bad grammar, but...
+                    std::cerr << "Need To Make node '"  << name << "'" << std::endl;
                     InternalNode * const node = Node::Make(*this);
                     node->steal(list);
                     tree = node;

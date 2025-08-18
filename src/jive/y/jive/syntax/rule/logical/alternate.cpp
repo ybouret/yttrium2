@@ -30,7 +30,7 @@ namespace Yttrium
                     {
                         if(node) {
                             Node::Grow(tree,node);
-                            std::cerr << "ok" << std::endl;
+                            Y_Jive_XRule( node->name() << " for " << name);
                             return true;
                         }
                         accepted = true; // give a chance

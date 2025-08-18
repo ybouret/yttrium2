@@ -3,6 +3,8 @@
 
 #include "y/jive/lexical/plugin/jstring.hpp"
 
+#include "y/string/env.hpp"
+
 using namespace Yttrium;
 
 
@@ -51,7 +53,8 @@ namespace
 Y_UTEST(parser)
 {
     MyParser parser;
-
+    Jive::Syntax::Rule::Verbose = Environment::Flag("VERBOSE");
+    
     if(argc>1)
     {
         Jive::Source source( Jive::Module::OpenFile(argv[1]) );
