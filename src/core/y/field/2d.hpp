@@ -62,6 +62,13 @@ namespace Yttrium
                 setup();
             }
 
+            //! slice within 3D
+            /**
+             \param uid     name
+             \param fmt     Format2D
+             \param rowFmt  Format1D
+             \param slice   memory
+             */
             template <typename UID>
             inline explicit In2D(const UID &         uid,
                                  const Format2D &    fmt,
@@ -74,7 +81,7 @@ namespace Yttrium
             rows( fmt->numRows() ),
             data( (MutableType *) slice )
             {
-                //setup();
+                setup();
             }
 
             //! cleanup
@@ -93,6 +100,13 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
+
+            //! print
+            /**
+             \param os output stream
+             \param indent indentation
+             \return os
+             */
             inline std::ostream & print(std::ostream &os, size_t indent) const
             {
                 const Layout2D & fmt = **this;
@@ -135,7 +149,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(In2D); //!< discarding
             Row * const         row;  //!< row location, shifted
             CxxSeries<Row>      rows; //!< constructed rows
-            MutableType * const data;
+            MutableType * const data; //!< memory
 
             //! setup all rows from memory
             void setup()

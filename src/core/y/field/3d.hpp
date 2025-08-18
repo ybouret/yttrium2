@@ -41,6 +41,12 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
+
+            //! standalone
+            /**
+             \param uid name
+             \param fmt format
+             */
             template <typename UID>
             inline explicit In3D(const UID &      uid,
                                  const Format3D & fmt) :
@@ -55,6 +61,7 @@ namespace Yttrium
                 setup();
             }
 
+            //! cleanup
             inline virtual ~In3D() noexcept {}
 
 
@@ -70,37 +77,49 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
+
+            //! print
+            /**
+             \param os output stream
+             \param indent indentation
+             \return os
+             */
             inline std::ostream & print(std::ostream &os, size_t indent) const
             {
                 const Layout3D & fmt = **this;
-                Core::Indent(os,indent<<1) << fmt << ":" << std::endl;
+                Core::Indent(os,indent<<1) << name << "@" << fmt << ":" << std::endl;
                 ++indent;
                 for(unit_t k=fmt.lower.z;k<=fmt.upper.z;++k)
                 {
-                    //slice[k].print(os,indent);
+                    slice[k].print(os,indent);
                     if(k<fmt.upper.z) os << std::endl;
                 }
                 return os;
             }
 
-
-            const Format2D sliceFormat;
-            const Format1D rowFormat;
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const Format2D sliceFormat; //!< format for each slice
+            const Format1D rowFormat;   //!< format for each row
 
         private:
-            Y_Disable_Copy_And_Assign(In3D);
-            Slice * const       slice;
-            CxxSeries<Slice>    slices;
-            MutableType * const data;
+            Y_Disable_Copy_And_Assign(In3D); //!< discardind
+            Slice * const       slice;  //!< shifted slice address
+            CxxSeries<Slice>    slices; //!< slices
+            MutableType * const data;   //!< all items
 
+            //! setup slices
             inline void setup()
             {
-                std::cerr << "items=" << (*this)->items << std::endl;
-                const unit_t  klo = (*this)->lower.z;
-                const unit_t  kup = (*this)->upper.z;
-                const size_t  ips = (*this)->shift.y; // items per slice
-                MutableType * ptr = data;
-                std::cerr << "ips=" << ips << std::endl;
+                const Layout3D &fmt = **this;
+                const unit_t    klo = fmt.lower.z;
+                const unit_t    kup = fmt.upper.z;
+                const size_t    ips = fmt.shift.y; // items per slice
+                MutableType *   ptr = data;
                 for(unit_t k=klo;k<=kup;++k, ptr += ips)
                 {
                     const String uid = name + Formatted::Get("[%s]", Decimal(k).c_str() );

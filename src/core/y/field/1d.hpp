@@ -94,6 +94,12 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
+            //! print
+            /**
+             \param os output stream
+             \param indent indentation
+             \return os
+             */
             inline std::ostream & print(std::ostream &os, size_t indent) const
             {
                 const Layout1D &    fmt = **this;
