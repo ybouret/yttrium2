@@ -51,7 +51,7 @@ Y_UTEST(xnode)
     Y_SIZEOF(Syntax::InternalNode);
 
     const Syntax::Synthetic synth;
-    const Syntax::Terminal  word("word");
+    const Syntax::Terminal  word("word",Syntax::Regular,true);
 
     const Context ctx("dummy");
     Token         tkn;

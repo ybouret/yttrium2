@@ -34,8 +34,8 @@ namespace Yttrium
                 //! setup \param r rule name
                 template <typename RID> inline
                 explicit Terminal(const RID    & rid,
-                                  const Activity role = Regular,
-                                  const bool     spec = false) :
+                                  const Activity role,
+                                  const bool     spec) :
                 Rule(rid,IsTerminal,UUID),
                 activity(role),
                 univocal(spec)

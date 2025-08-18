@@ -91,11 +91,11 @@ namespace Yttrium
                  \return created terminal
                  */
                 template <typename ID>
-                const Terminal & terminal(const ID &id,
-                                          const Activity activity,
-                                          const bool     univocal)
+                const Terminal & terminal(const ID   &   id,
+                                          const Activity activity = Regular,
+                                          const bool     univocal = false)
                 {
-                    return add( new Terminal(id) );
+                    return add( new Terminal(id,activity,univocal) );
                 }
 
                 //! create a new aggregate
