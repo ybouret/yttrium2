@@ -121,6 +121,25 @@ namespace Yttrium
         }
 
 
+        //! append with penternary constructor
+        /**
+         \param u first  arg
+         \param v second arg
+         \param w third  arg
+         \param x fourth arg
+         \param y fifth arg
+         \return *this
+         */
+        template <typename U, typename V, typename W, typename X, typename Y>
+        CxxSeries & push(U &u, V &v, W &w, X &x, Y &y)
+        {
+            assert(size()<capacity());
+            new (data.entry+built) Type(u,v,w,x,y);
+            ++built;
+            return *this;
+        }
+
+
 
         //______________________________________________________________________
         //

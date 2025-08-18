@@ -52,11 +52,36 @@ namespace Yttrium
                                  const Format3D & fmt) :
             Sketch(uid,fmt->items * sizeof(T)),
             Format3D(fmt),
-            sliceFormat( new Layout2D(SubLayout,**this) ),
+            sliceFormat( new Layout2D(SubLayout,**this)       ),
             rowFormat(   new Layout1D(SubLayout,*sliceFormat) ),
             slice(0),
             slices( fmt->numSlices() ),
             data( (MutableType *)wksp )
+            {
+                setup();
+            }
+
+            //! volume within 4D
+            /**
+             \param uid     name
+             \param fmt     Format3D
+             \param sliceFmt Format2d
+             \param rowFmt  Format1D
+             \param slice   memory
+             */
+            template <typename UID>
+            inline explicit In3D(const UID &         uid,
+                                 const Format3D &    fmt,
+                                 const Format2D &    sliceFmt,
+                                 const Format1D &    rowFmt,
+                                 MutableType * const volume) :
+            Sketch(uid),
+            Format3D(fmt),
+            sliceFormat(sliceFmt),
+            rowFormat(rowFmt),
+            slice(0),
+            slices( fmt->numSlices() ),
+            data( (MutableType *) volume )
             {
                 setup();
             }

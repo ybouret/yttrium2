@@ -276,5 +276,6 @@ Y_UTEST(field:layout)
 Y_UTEST(field:1d)
 Y_UTEST(field:2d)
 Y_UTEST(field:3d)
+Y_UTEST(field:4d)
 
 

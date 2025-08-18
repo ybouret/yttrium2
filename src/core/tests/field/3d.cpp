@@ -18,16 +18,7 @@ Y_UTEST(field_3d)
 
     std::cerr << fq << std::endl;
 
-
-#if 0
-    const Field::In2D<int> f2("f2",fmt);
-    const Field::In2D<apq> fq("fq",fmt);
-
-    std::cerr << f2 << std::endl;
-    std::cerr << fq << std::endl;
-
-    Y_SIZEOF(Field::In2D<int>);
-#endif
+    
 
 }
 Y_UDONE()
