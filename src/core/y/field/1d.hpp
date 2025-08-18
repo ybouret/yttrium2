@@ -36,6 +36,18 @@ namespace Yttrium
                 Coerce(obj) += (*this)->lower;
             }
 
+            template <typename UID>
+            inline explicit In1D(const UID &      uid,
+                                 const Format1D & fmt,
+                                 T * const        ptr) :
+            Sketch(uid),
+            Format1D(fmt),
+            obj( ptr ),
+            ops( obj, fmt->items )
+            {
+                Coerce(obj) -= (*this)->lower;
+            }
+
         private:
             Y_Disable_Copy_And_Assign(In1D);
             T * const            obj;
