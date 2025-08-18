@@ -106,7 +106,7 @@ namespace Yttrium
 
         }
 
-        typedef Syntax::Node XNode;
+        typedef Syntax::Node XNode; //!< alias
     }
 }
 

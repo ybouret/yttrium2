@@ -110,7 +110,8 @@ namespace Yttrium
 
             const Rule & extra(const char,const Rule &);
 
-            XNode * parse(Source &source);
+            //! \return AST from source and reset Lexer
+            XNode * parse(Source &);
 
             
 

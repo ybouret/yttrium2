@@ -197,6 +197,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(dft_fmt);
     Y_UTEST(dft_core);
     Y_UTEST(dft_mul);
+    Y_UTEST(dft_nd);
 
     Y_UTEST(ascii_convert);
 

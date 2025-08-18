@@ -122,6 +122,22 @@ namespace Yttrium
                 return os;
             }
 
+            //! \param k slice index \return slice[k]
+            inline Slice & operator[](const unit_t k) noexcept
+            {
+                assert(k>=(*this)->lower.z);
+                assert(k<=(*this)->upper.z);
+                return slice[k];
+            }
+
+            //! \param k slice index \return slice[k]
+            inline const Slice & operator[](const unit_t k) const noexcept
+            {
+                assert(k>=(*this)->lower.z);
+                assert(k<=(*this)->upper.z);
+                return slice[k];
+            }
+
             //__________________________________________________________________
             //
             //

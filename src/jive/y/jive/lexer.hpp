@@ -171,7 +171,7 @@ namespace Yttrium
             friend class Babel;
 
         public:
-            const Core::ListOf<Lexeme> &io;
+            const Core::ListOf<Lexeme> &io; //!< alias to internal cache
         };
     }
 

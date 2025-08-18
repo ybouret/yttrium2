@@ -21,7 +21,7 @@ namespace Yttrium
     struct DFTN
     {
 
-        //! Product of nn[1..ndim]
+        //! \param nn nn[1..dims] \param dims \return product of dimensions
         static inline size_t Prod(const size_t   nn[],
                                   const unsigned dims) noexcept
         {
@@ -34,12 +34,15 @@ namespace Yttrium
 
         //! Apply Transform
         /**
-         - Replaces data by its dims-dimensional discrete Fourier transform, if table = PositiveSin
-         - nn[1..ndim] is an integer array containing the lengths of each dimension (number of complex
+         Replaces data by its dims-dimensional discrete Fourier transform, if table = PositiveSin
+         
+         \param nn  nn[1..dims] is an integer array containing the lengths of each dimension (number of complex
          values), which MUST all be powers of 2.
-         - data is a real array of length twice the product of
+         \param dims dimensions
+         \param data is a real array of length twice the product of
          these lengths, in which the data are stored as in a multidimensional complex array: real and
          imaginary parts of each element are in consecutive locations, in a row-major mode
+         \param SinTable global pre-computed sine table
          */
         template <typename T> static inline
         void Transform(T * const      data,
@@ -127,6 +130,11 @@ namespace Yttrium
         }
 
         //! Forward Transform
+        /**
+         \param data input/output data
+         \param nn   nn[1..dims]
+         \param dims number of dimensions
+         */
         template <typename T> static inline
         void Forward(T * const      data,
                      const size_t   nn[],
@@ -137,6 +145,11 @@ namespace Yttrium
         }
 
         //! Reverse Transform
+        /**
+         \param data input/output data
+         \param nn   nn[1..dims]
+         \param dims number of dimensions
+         */
         template <typename T> static inline
         void Reverse(T * const      data,
                      const size_t   nn[],

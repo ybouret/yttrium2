@@ -37,7 +37,8 @@ namespace
             sum = 0;
             for(size_t n=zone.offset,i=zone.length;i>0;--i,++n)
             {
-                sum += 1.0 / (double)(n*n);
+                const double dn = (double)n;
+                sum += 1.0 / (dn*dn);
             }
         }
 

@@ -1,16 +1,12 @@
 
 #include "y/dft/dftn.hpp"
 #include "y/utest/run.hpp"
-#include "y/memory/allocator/dyadic.hpp"
-//#include "y/system/rtti.hpp"
+#include "y/field/3d.hpp"
 
-
-// #include "y/field/3d.hpp"
-
+#include <typeinfo>
 
 using namespace Yttrium;
 
-#if 0
 namespace  {
 
     static const unit_t Max2D = 64;
@@ -19,17 +15,17 @@ namespace  {
     static inline
     void Test2D()
     {
-        std::cerr << "Testing 2D with " << RTTI::Name<T>() << std::endl;
+        std::cerr << "Testing 2D with " << typeid(T).name() << std::endl;
         for(unit_t nx=1;nx<=Max2D;nx*=2)
         {
             for(unit_t ny=1;ny<=Max2D;ny*=2)
             {
                 Field::Format2D  L = new Field::Layout2D( Field::Coord2D(1,1), Field::Coord2D(nx,ny) );
 
-                typedef Field::In2D< Complex<T>, Memory::Dyadic > F2D;
+                typedef Field::In2D< Complex<T>  > F2D;
                 F2D F("F2D",L);
 
-                std::cerr << F << std::endl;
+                //std::cerr << F << std::endl;
                 for(unit_t j=F->lower.y;j<=F->upper.y;++j)
                 {
                     //std::cerr << "j=" << j << std::endl;
@@ -50,7 +46,6 @@ namespace  {
                 static const T half = 0.5;
                 for(unit_t j=F->lower.y;j<=F->upper.y;++j)
                 {
-                    //std::cerr << "j=" << j << std::endl;
                     for(unit_t i=F->lower.x;i<=F->upper.x;++i)
                     {
                         F[j][i] /= F->shift.y;
@@ -72,7 +67,7 @@ namespace  {
     static inline
     void Test3D()
     {
-        std::cerr << "Testing 3D with " << RTTI::Name<T>() << std::endl;
+        std::cerr << "Testing 3D with " << typeid(T).name() << std::endl;
         for(unit_t nx=1;nx<=Max3D;nx*=2)
         {
             for(unit_t ny=1;ny<=Max3D;ny*=2)
@@ -80,9 +75,8 @@ namespace  {
                 for(unit_t nz=1;nz<=Max3D;nz*=2)
                 {
                     Field::Format3D  L = new Field::Layout3D( Field::Coord3D(1,1,1), Field::Coord3D(nx,ny,nz) );
-                    typedef Field::In3D< Complex<T>, Memory::Dyadic > F3D;
+                    typedef Field::In3D< Complex<T>  > F3D;
                     F3D F("F3D",L);
-                    std::cerr << F << std::endl;
 
                     for(unit_t k=F->lower.z;k<=F->upper.z;++k)
                     {
@@ -125,11 +119,9 @@ namespace  {
     }
 
 }
-#endif
 
 Y_UTEST(dft_nd)
 {
-#if 0
     Test2D<float>();
     Test2D<double>();
     Test2D<long double>();
@@ -137,8 +129,7 @@ Y_UTEST(dft_nd)
     Test3D<float>();
     Test3D<double>();
     Test3D<long double>();
-#endif
-    
+
 }
 Y_UDONE()
 
