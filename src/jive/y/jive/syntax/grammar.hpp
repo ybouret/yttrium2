@@ -135,6 +135,9 @@ namespace Yttrium
                 const Rule & pick(const Rule &, const Rule &, const Rule &); //!< \return alternate
 
 
+                static Node * AST(Node * const) noexcept;
+                
+
                 //______________________________________________________________
                 //
                 //

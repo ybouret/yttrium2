@@ -16,47 +16,51 @@ namespace Yttrium
             {
             }
 
+
             bool AtLeast:: accepts(Node * & tree, Lexer &lexer, Source &source, size_t depth) const
             {
                 Y_Jive_XRule("[" << name << "]"); ++depth;
-                NodeList list;
-                size_t   n_ok = 0;
+                AutoPtr<Node>  keeper;
+                InternalNode * target = tree ? dynamic_cast<InternalNode *>(tree) : 0;
+                if(!target)
+                {
+                    target = Node::Make(*this);
+                    keeper = target;
+                }
 
+
+                size_t       count = 0;
                 while(true)
                 {
-                    Node * node = 0;
+                    Node * node = target;
+                    const size_t oldCount = target->size;
                     if(rule.accepts(node,lexer,source,depth))
                     {
-                        if(0==node)
+                        if(target->size<=oldCount)
                             throw Specific::Exception(name->c_str(),"will accept infinite '%s'", rule.name->c_str());
-                        ++n_ok;
-                        list.pushTail(node);
+                        ++count;
                     }
                     else
                         break;
                 }
 
-                if(n_ok<minCount)
+                if(count<minCount)
                 {
-                    Node::Restore(list,lexer);
-                    --depth; Y_Jive_XRule("[" << name << "]" << Core::Failure << "@" << n_ok);
+                    --depth; Y_Jive_XRule("[" << name << "]" << Core::Failure << "@" << count);
+                    while(count-- > 0)
+                        Node::Restore(target->popTail(),lexer);
                     return false;
                 }
 
+                if( keeper.isValid() )
+                {
+                    // target was allocated, bad grammar
+                    assert(0==tree);
+                    tree = target;
+                    keeper.dismiss();
+                }
 
-                if(tree)
-                {
-                    assert(tree->isInternal());
-                    dynamic_cast<InternalNode *>(tree)->steal(list);
-                }
-                else
-                {
-                    // bad grammar, but...
-                    InternalNode * const node = Node::Make(*this);
-                    node->steal(list);
-                    tree = node;
-                }
-                --depth; Y_Jive_XRule("[" << name << "]" << Core::Success << "@" << n_ok);
+                --depth; Y_Jive_XRule("[" << name << "]" << Core::Success << "@" << count);
                 return true;
             }
 

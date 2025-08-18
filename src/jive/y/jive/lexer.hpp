@@ -65,7 +65,8 @@ namespace Yttrium
             scan(this),
             lxms(),
             hist(),
-            mydb()
+            mydb(),
+            io(lxms)
             {
                 initialize();
             }
@@ -100,8 +101,8 @@ namespace Yttrium
             //__________________________________________________________________
             Lexeme *      query(Source &);                //!< \return saved/new lexeme from source
             void          store(Lexeme * const) noexcept; //!< store previously ready lexeme
-            const Lexeme *first()         const noexcept;
             static Lexer *Load(InputStream &);            //!< \return new Lexer built with Babel
+            
 
             //__________________________________________________________________
             //
@@ -168,6 +169,9 @@ namespace Yttrium
             ScanDB    mydb; //!< recorded scanners
 
             friend class Babel;
+
+        public:
+            const Core::ListOf<Lexeme> &io;
         };
     }
 

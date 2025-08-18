@@ -130,10 +130,7 @@ do { if(Scanner::Verbose) { std::cerr << "<" << scan->name <<  "> " << MSG << st
             
         }
 
-        const Lexeme * Lexer:: first() const noexcept
-        {
-            return lxms.head;
-        }
+        
     }
 
 }

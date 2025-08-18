@@ -11,7 +11,7 @@ namespace Yttrium
         namespace Syntax
         {
 
-            Node * Grammar::run(Lexer &lexer, Source &source)
+            Node * Grammar:: run(Lexer &lexer, Source &source)
             {
                 const Rule * self = rules.head; if(!self) throw Specific::Exception(lang->c_str(),"no rules");
                 Node *       root = 0;
@@ -57,15 +57,16 @@ namespace Yttrium
                     throw excp;
                 }
                 
-                return guard.yield();
+                return AST( guard.yield() );
             }
 
             Node * Grammar:: onFailure(Lexer &lexer, Source &source)
             {
                 Specific::Exception excp(lang->c_str(),"error: ");
 
-                const Lexeme * const lx = lexer.first();
-                if(!lx) {
+                const Lexeme * const lx = lexer.io.tail;
+                if(!lx)
+                {
                     excp.add("empty input is not allowed");
                 }
                 else
