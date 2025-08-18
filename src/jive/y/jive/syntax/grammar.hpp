@@ -165,7 +165,7 @@ namespace Yttrium
 
                 static String PreFormat(const Rule &);                       //!< \return pre formatted name
                 String        buildName(const Manifest &, const char) const; //!< \return manifest name
-                void          sendTo(Exception &, const Lexeme &) const;
+                void          sendTo(Exception &, const Lexeme &) const;     //!< append description to exception
 
 
                 //! \param manifest manifest \param sep separator \return named LOGICAL with manifest

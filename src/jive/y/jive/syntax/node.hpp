@@ -64,7 +64,7 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
-                const String & name() const noexcept;
+                const String & name() const noexcept; //!< \return *rule.name, helper
 
                 //______________________________________________________________
                 //

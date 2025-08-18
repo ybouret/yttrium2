@@ -44,7 +44,7 @@ namespace Yttrium
             Context & dot()  noexcept; //!< increase column \return *this
             Context & endl() noexcept; //!< new line        \return *this
 
-            void stamp(Exception &) const;
+            void stamp(Exception &) const; //!< stamp exception
 
             //__________________________________________________________________
             //

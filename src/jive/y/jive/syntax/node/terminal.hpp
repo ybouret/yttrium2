@@ -52,7 +52,7 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
-                String str() const;
+                String str() const; //!< \return string with or w/o content
 
                 //______________________________________________________________
                 //
@@ -66,7 +66,7 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(TerminalNode); //!< discarding
                 friend class Node;
                 virtual void restore(Lexer &) noexcept;
-                String       lex2str() const;
+                String       lex2str() const; //!< \return empty if univocal
             };
         }
 

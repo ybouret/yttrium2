@@ -38,7 +38,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
             public:
-                static bool Verbose;
+                static bool Verbose; //!< verbosity, mostly to debug
 
                 //______________________________________________________________
                 //
@@ -98,6 +98,7 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(Rule); //!< discarding
             };
 
+            //! helper for verbosity
 #define Y_Jive_XRule(MSG) do { if(Verbose) { Core::Indent(std::cerr,depth<<1,'.') << MSG << std::endl; } } while(false)
             
         }
