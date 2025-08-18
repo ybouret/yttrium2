@@ -87,7 +87,9 @@ namespace Yttrium
 
                 //! declare a terminal
                 /**
-                 \param  id terminal id
+                 \param id       terminal id
+                 \param activity activity of terminal
+                 \param univocal univocal associated pattern
                  \return created terminal
                  */
                 template <typename ID>

@@ -67,9 +67,11 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
 
                 inline void add(Rule * const rule)
                 {
-
-
+                    //----------------------------------------------------------
+                    //
                     // ensure no duplicate
+                    //
+                    //----------------------------------------------------------
                     {
                         AutoPtr<Rule> guard(rule);
                         const String &id = *rule->name;
@@ -80,10 +82,18 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
                         guard.dismiss();
                     }
 
+                    //----------------------------------------------------------
+                    //
                     // append to global list
+                    //
+                    //----------------------------------------------------------
                     Coerce(rules).pushTail(rule);
 
-                    // append to local list
+                    //----------------------------------------------------------
+                    //
+                    // append to local lists
+                    //
+                    //----------------------------------------------------------
                     const FirstChars fc = rule->motif->firstChars();
                     Y_PRINT("[+] |" << rule->humanReadableAttr()
                             << ":" << rule->humanReadableDeed()
@@ -104,6 +114,12 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
                     }
                 }
 
+                inline void removeLast() noexcept
+                {
+                    assert(rules.size>0);
+                    for(unsigned i=0;i<256;++i) RemoveFrom(rlist.entry[i],rules.tail);
+                    delete Coerce(rules).popTail();
+                }
 
                 const Tag               name;
                 Memory::SchoolOf<RList> rlist;
@@ -111,21 +127,24 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
 
             private:
                 Y_Disable_Copy_And_Assign(Code);
+                static inline void RemoveFrom(RList &L, const Rule * const rule)
+                {
+                    for(RNode *node=L.head;node;node=node->next)
+                    {
+                        if( rule == node->rule )
+                        {
+                            delete L.pop(node);
+                            return;
+                        }
+                    }
+                }
+
                 inline void purge(const Rule * const rule, const FirstChars &fc) noexcept
                 {
                     for(unsigned i=0;i<256;++i)
                     {
                         if( !fc.getbit( (uint8_t)i) ) continue;
-
-                        RList &list = rlist.entry[i];
-                        for(RNode *node=list.head;node;node=node->next)
-                        {
-                            if( rule == node->rule )
-                            {
-                                delete list.pop(node);
-                                break;
-                            }
-                        }
+                        RemoveFrom(rlist.entry[i],rule);
                     }
                 }
 
@@ -342,6 +361,12 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
             {
                 const size_t res = fp.emitCBR(uuid);
                 return res + name->serialize(fp);
+            }
+
+            void Scanner:: emergencyTrim() noexcept
+            {
+                assert(0!=code);
+                code->removeLast();
             }
 
             Y_Ingress_Impl(Scanner,code->rules)

@@ -12,10 +12,16 @@ namespace Yttrium
     {
         namespace Syntax
         {
+            //__________________________________________________________________
+            //
+            //
+            //! Activity of a terminal
+            //
+            //__________________________________________________________________
             enum Activity
             {
-                Regular,
-                Divider
+                Regular, //!< appears in tree
+                Divider  //!< syntax only
             };
 
             //__________________________________________________________________
@@ -31,7 +37,12 @@ namespace Yttrium
             public:
                 static const uint32_t UUID = Y_FOURCC('T', 'E', 'R', 'M'); //!< alias
 
-                //! setup \param r rule name
+                //! setup
+                /**
+                 \param rid rule name
+                 \param role activity
+                 \param spec univocal
+                 */
                 template <typename RID> inline
                 explicit Terminal(const RID    & rid,
                                   const Activity role,
@@ -61,8 +72,9 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const Activity activity;
-                const bool     univocal;
+                const Activity activity; //!< activity for syntax tree
+                const bool     univocal; //!< univocal or not
+                
             private:
                 Y_Disable_Copy_And_Assign(Terminal); //!< discarding
             };

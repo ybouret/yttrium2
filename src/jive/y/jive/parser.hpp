@@ -37,25 +37,36 @@ namespace Yttrium
             {
             }
 
+            //! create a new Regular terminal
+            /**
+             \param rid terminal name
+             \param rxp terminal regular expression
+             \return compiled Terminal as Rule
+             */
             template <typename RID, typename RXP>
-            const Rule & term(const RID &rid, const RXP &rxp)
-            {
-                const Lexical::Rule &lr = emit(rid,rxp);
-                return terminal(lr.name,Syntax::Regular,lr.motif->univocal());
+            const Rule & term(const RID &rid, const RXP &rxp) {
+                return link(emit(rid,rxp),Syntax::Regular);
             }
 
+            //! create a new Divider terminal
+            /**
+             \param rid terminal name
+             \param rxp terminal regular expression
+             \return compile Terminal as Rule
+             */
             template <typename RID, typename RXP>
-            const Rule & mark(const RID &rid, const RXP &rxp)
-            {
-                const Lexical::Rule &lr = emit(rid,rxp);
-                return terminal(lr.name,Syntax::Divider,lr.motif->univocal());
+            const Rule & mark(const RID &rid, const RXP &rxp) {
+                return link(emit(rid,rxp),Syntax::Divider);
             }
 
+            //! create a new Divider terminal
+            /**
+             \param rxp terminal name and regular expression
+             \return compile Terminal as Rule
+             */
             template <typename RXP>
-            const Rule & mark(const RXP &rxp)
-            {
-                const Lexical::Rule &lr = emit(rxp);
-                return terminal(lr.name,Syntax::Divider,lr.motif->univocal());
+            const Rule & mark(const RXP &rxp) {
+                return link(emit(rxp),Syntax::Divider);
             }
 
 
@@ -67,6 +78,9 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(Parser); //!< discarding
+
+            const Rule & link(const Lexical::Rule &, const Syntax::Activity);
+
         };
     }
 

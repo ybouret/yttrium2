@@ -19,6 +19,7 @@ namespace Yttrium
     namespace Jive
     {
         class Babel;
+        class Parser;
 
         namespace Lexical
         {
@@ -317,11 +318,14 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(Scanner); //!< discarding
                 Y_Ingress_Decl();                   //!< helper
                 friend class Jive::Babel;
-                
+                friend class Jive::Parser;
+
                 static Code * New(const Tag &);      //!< \return new code from tag
                 const Rule &  add(Rule * const);     //!< \return recorded new rule
                 String        guess(Source &);       //!< \return guessed syntax error
-                
+
+                void emergencyTrim() noexcept;  //!< remove last added rule
+
             public:
                 Design          design; //!< helper for rules
                 const EOFPolicy policy; //!< EOF policy
