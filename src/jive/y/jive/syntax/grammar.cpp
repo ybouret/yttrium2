@@ -26,7 +26,7 @@ namespace Yttrium
             }
 
 
-            const Rule * Grammar:: query(const String &rid) const noexcept
+            const Rule * Grammar:: queryRule(const String &rid) const noexcept
             {
                 for(const Rule *r=rules.head;r;r=r->next)
                 {
@@ -35,23 +35,29 @@ namespace Yttrium
                 return 0;
             }
 
-            const Rule * Grammar:: query(const Tag &rid) const noexcept
+            const Rule * Grammar:: queryRule(const Tag &rid) const noexcept
             {
-                return query(*rid);
+                return queryRule(*rid);
             }
 
-            const Rule * Grammar:: query(const char * const rid) const
+            const Rule * Grammar:: queryRule(const char * const rid) const
             {
                 const String _(rid);
-                return query(_);
+                return queryRule(_);
             }
 
+
+            const Rule * Grammar:: queryRule(const char c) const
+            {
+                const String _(c);
+                return queryRule(_);
+            }
 
             void Grammar:: append(Rule *const rule)
             {
                 assert(0!=rule);
                 AutoPtr<Rule> guard( rule );
-                if(query(rule->name))
+                if(queryRule(rule->name))
                     throw Specific::Exception(lang->c_str(),"mutliple rule '%s'", rule->name->c_str());
                 Coerce(rules.pushTail(guard.yield())->pptr) = pptr;
 
@@ -145,6 +151,8 @@ namespace Yttrium
                 return fp;
             }
 
+
+            
         }
 
     }

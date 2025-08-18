@@ -1,6 +1,7 @@
 
 #include "y/jive/parser.hpp"
-
+#include "y/ascii/printable.hpp"
+#include "y/system/exception.hpp"
 
 namespace Yttrium
 {
@@ -20,6 +21,18 @@ namespace Yttrium
         {
             return terminal(tag,Syntax::Regular,false);
         }
+
+
+        const Syntax::Rule & Parser:: operator[](const char c)
+        {
+            if(const Rule *rule=queryRule(c))
+            {
+                if(!rule->isTerminal()) throw Specific::Exception(lang->c_str(),"rule '%s' is not a Terminal",ASCII::Printable::Text(c));
+                return *rule;
+            }
+            return mark(c);
+        }
+
     }
 
 }

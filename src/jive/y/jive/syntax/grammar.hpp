@@ -78,11 +78,12 @@ namespace Yttrium
                 // Construction
                 //
                 //______________________________________________________________
-                const Rule * query(const String &) const noexcept; //!< \return rule by name
-                const Rule * query(const Tag &)    const noexcept; //!< \return rule by name
-                const Rule * query(const char * const)      const; //!< \return rule by name
+                const Rule * queryRule(const String &) const noexcept; //!< \return rule by name
+                const Rule * queryRule(const Tag &)    const noexcept; //!< \return rule by name
+                const Rule * queryRule(const char * const)      const; //!< \return rule by name
+                const Rule * queryRule(const char)              const; //!< \return rule by name
 
-
+                
 
 
                 //! declare a terminal

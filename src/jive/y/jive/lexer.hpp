@@ -146,6 +146,7 @@ namespace Yttrium
             //! create a new plugin
             /**
              \param sid plugin identifier for produced tokens
+             \return plugin name
              */
             template <typename CLASS, typename SID> inline
             const Tag & connect(const CLASS &, const SID &sid) {
@@ -158,7 +159,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Lexer);        //!< discarding
             void        initialize();                       //!< self registering
             void        record(Scanner * const);            //!< record a new scanner
-            const Tag & enroll(Lexical::Extension * const); //!< enroll a new extension
+            const Tag & enroll(Lexical::Extension * const); //!< enroll a new extension \return extension name
 
             Scanner * scan; //!< current scanner
             Lexemes   lxms; //!< lexeme cache

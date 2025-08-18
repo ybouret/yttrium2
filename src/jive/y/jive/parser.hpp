@@ -62,14 +62,21 @@ namespace Yttrium
             //! create a new Divider terminal
             /**
              \param rxp terminal name and regular expression
-             \return compile Terminal as Rule
+             \return compiled Terminal as Rule
              */
             template <typename RXP>
             const Rule & mark(const RXP &rxp) {
                 return link(emit(rxp),Syntax::Divider);
             }
 
+            const Rule & operator[](const char); //!< \return marker on the fly
 
+            //! create a terminal from a plugin
+            /**
+             \param clid class identifier
+             \param sid  plugin name
+             \return compiled Terminal as Rule
+             */
             template <typename CLASS, typename SID> inline
             const Rule & plugin(const CLASS &clid, const SID &sid)
             {
