@@ -101,7 +101,7 @@ namespace Yttrium
                     return add( new Terminal(id,activity,univocal) );
                 }
 
-                //! create a new aggregate
+                //! create a new Normal aggregate
                 /**
                  \param id rule name
                  \return a new empty aggregate
@@ -111,6 +111,29 @@ namespace Yttrium
                 {
                     return add( new AggregateIs<Normal>(id) );
                 }
+
+                //! create a new Acting aggregate
+                /**
+                 \param id rule name
+                 \return a new empty aggregate
+                 */
+                template <typename ID>
+                Aggregate & act(const ID &id)
+                {
+                    return add( new AggregateIs<Acting>(id) );
+                }
+
+                //! create a new Grouping aggregate
+                /**
+                 \param id rule name
+                 \return a new empty aggregate
+                 */
+                template <typename ID>
+                Aggregate & grp(const ID &id)
+                {
+                    return add( new AggregateIs<Grouping>(id) );
+                }
+
 
                 //! create a new alternate
                 /**
