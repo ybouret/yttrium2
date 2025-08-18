@@ -71,12 +71,34 @@ namespace Yttrium
             return *this;
         }
 
-        //! append with binary constructor \param u first arg \param v second arg \return *this
+        //! append with binary constructor
+        /**
+         \param u first arg
+         \param v second arg
+         \return *this
+         */
         template <typename U, typename V>
         CxxSeries & push(U &u, V &v)
         {
             assert(size()<capacity());
             new (data.entry+built) Type(u,v);
+            ++built;
+            return *this;
+        }
+
+
+        //! append with ternary constructor
+        /**
+         \param u first  arg
+         \param v second arg
+         \param w third  arg
+         \return *this
+        */
+        template <typename U, typename V, typename W>
+        CxxSeries & push(U &u, V &v, W &w)
+        {
+            assert(size()<capacity());
+            new (data.entry+built) Type(u,v,w);
             ++built;
             return *this;
         }

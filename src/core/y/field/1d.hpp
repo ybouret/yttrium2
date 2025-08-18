@@ -1,4 +1,3 @@
-
 //! \file
 
 #ifndef Y_Field_1D_Included
@@ -46,6 +45,27 @@ namespace Yttrium
             ops( obj, fmt->items )
             {
                 Coerce(obj) -= (*this)->lower;
+            }
+
+            inline friend std::ostream & operator<<(std::ostream &os, const In1D &f)
+            {
+                const Layout1D &fmt = *f;
+                os << f.name << "=" << fmt;
+                return os;
+            }
+
+            inline Type & operator[](const unit_t i) noexcept
+            {
+                assert(i>=(*this)->lower);
+                assert(i<=(*this)->upper);
+                return obj[i];
+            }
+
+            inline ConstType & operator[](const unit_t i) const noexcept
+            {
+                assert(i>=(*this)->lower);
+                assert(i<=(*this)->upper);
+                return obj[i];
             }
 
         private:
