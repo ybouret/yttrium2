@@ -148,17 +148,17 @@ namespace Yttrium
              \param sid plugin identifier for produced tokens
              */
             template <typename CLASS, typename SID> inline
-            void plug(const CLASS &, const SID &sid) {
-                enroll( new typename CLASS::Type(sid,*this) );
+            const Tag & connect(const CLASS &, const SID &sid) {
+                return enroll( new typename CLASS::Type(sid,*this) );
             }
 
 
 
         private:
             Y_Disable_Copy_And_Assign(Lexer);        //!< discarding
-            void initialize();                       //!< self registering
-            void record(Scanner * const);            //!< record a new scanner
-            void enroll(Lexical::Extension * const); //!< enroll a new extension
+            void        initialize();                       //!< self registering
+            void        record(Scanner * const);            //!< record a new scanner
+            const Tag & enroll(Lexical::Extension * const); //!< enroll a new extension
 
             Scanner * scan; //!< current scanner
             Lexemes   lxms; //!< lexeme cache

@@ -70,8 +70,12 @@ namespace Yttrium
             }
 
 
-
-
+            template <typename CLASS, typename SID> inline
+            const Rule & plugin(const CLASS &clid, const SID &sid)
+            {
+                return link( connect(clid,sid) );
+            }
+            
 
             //! cleanup
             virtual ~Parser() noexcept;
@@ -81,6 +85,9 @@ namespace Yttrium
 
             //! \return syntax rule for lexical rule
             const Rule & link(const Lexical::Rule &, const Syntax::Activity);
+
+            //! \return terminal matching plugin
+            const Rule & link(const Tag &);
 
         };
     }

@@ -15,6 +15,11 @@ namespace Yttrium
             try { return terminal(lr.name,activity,lr.motif->univocal()); }
             catch(...) { emergencyTrim(); throw; }
         }
+
+        const Syntax::Rule & Parser:: link(const Tag &tag)
+        {
+            return terminal(tag,Syntax::Regular,false);
+        }
     }
 
 }

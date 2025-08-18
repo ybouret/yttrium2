@@ -36,11 +36,14 @@ namespace Yttrium
             if(!mydb.insert(p)) throw Specific::Exception( name->c_str(), "multiple '%s'", p->name->c_str());
         }
 
-        void Lexer:: enroll(Lexical::Extension * const comment)
+        const Tag & Lexer:: enroll(Lexical::Extension * const ext)
         {
-            record(comment);
-            try { call(comment->name,*comment->join); }
-            catch(...) { mydb.remove(*comment->name); }
+            assert(0!=ext);
+            const Tag & rid = ext->name;
+            record(ext);
+            try { (void) call(rid,*ext->join); }
+            catch(...) { mydb.remove(*rid); }
+            return rid;
         }
 
 

@@ -28,9 +28,9 @@ namespace
             comment("C Comment","/\\*", "\\*/");
 
 
-            plug(Lexical::JString::Class,"jString");
-            plug(Lexical::RString::Class,"rString");
-            plug(Lexical::BString::Class,"bString");
+            connect(Lexical::JString::Class,"jString");
+            connect(Lexical::RString::Class,"rString");
+            connect(Lexical::BString::Class,"bString");
 
             endl("endl",  "[:endl:]",false);
             drop("blank", "[:blank:]");
