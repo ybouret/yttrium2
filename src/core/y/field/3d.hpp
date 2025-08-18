@@ -63,11 +63,11 @@ namespace Yttrium
 
             //! volume within 4D
             /**
-             \param uid     name
-             \param fmt     Format3D
+             \param uid      name
+             \param fmt      Format3D
              \param sliceFmt Format2d
-             \param rowFmt  Format1D
-             \param slice   memory
+             \param rowFmt   Format1D
+             \param volume   memory
              */
             template <typename UID>
             inline explicit In3D(const UID &         uid,
