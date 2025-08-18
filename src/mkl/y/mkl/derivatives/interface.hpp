@@ -104,7 +104,13 @@ namespace Yttrium
             //
             //! internal computation by modified Ridder's Method
             //__________________________________________________________________
-            
+            /**
+             \param F  function 1D
+             \param x0 where to take the derivatie
+             \param h  initial step
+             \param I  x0 in I
+             \return derivative estimate
+             */
             T compute1D(FunctionType &F, const T x0, const T h, const Interval<T> &I);
 
 
@@ -112,6 +118,13 @@ namespace Yttrium
             //
             //! code wrapper for 1D function
             //__________________________________________________________________
+            /**
+             \param F  function
+             \param x0 where to take the derivatie
+             \param h  initial step
+             \param I  x0 in I
+             \return derivative estimate
+             */
             template <typename FUNCTION> inline
             T operator()(FUNCTION &F, const T x0, const T h, const Interval<T> &I)
             {
@@ -123,6 +136,13 @@ namespace Yttrium
             //
             //! code wrapper for gradient
             //__________________________________________________________________
+            /**
+             \param dFdX output gradient
+             \param F    scalar field
+             \param X    vector to evaluate gradient at
+             \param H    vector of initial steps
+             \param I    X in I
+             */
             template <typename SCALAR_FIELD> inline
             void operator()(Writable<T>                   &dFdX,
                             SCALAR_FIELD                  &F,
