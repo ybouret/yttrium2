@@ -18,7 +18,7 @@ namespace Yttrium
                                      size_t  depth) const
             {
 
-                Y_Jive_XRule("[Alt '" << name << "']"); ++depth;
+                Y_Jive_XRule("[ [?] Alt '" << name << "']"); ++depth;
                 bool accepted = false;
 
                 // check one node
@@ -30,7 +30,7 @@ namespace Yttrium
                     {
                         if(node) {
                             Node::Grow(tree,node);
-                            Y_Jive_XRule( node->name() << " for " << name);
+                            --depth; Y_Jive_XRule("[ [+] Alt '" << name << "'] = " << node->name() );
                             return true;
                         }
                         accepted = true; // give a chance

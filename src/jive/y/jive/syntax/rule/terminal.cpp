@@ -19,23 +19,22 @@ namespace Yttrium
 
             bool Terminal:: accepts(Node * &tree, Lexer &lexer, Source &source, size_t depth) const
             {
-                Y_Jive_XRule("[Terminal '" << name << "']");
-                ++depth;
+                Y_Jive_XRule("[ [?] Terminal '" << name << "']"); ;
                 Lexeme * const lx = lexer.query(source);
                 if(0==lx)
                 {
-                    Y_Jive_XRule("[EOF]");
+                    Y_Jive_XRule("[ [-] Terminal '" << name << "'] : EOF");
                     return false;
                 }
 
                 if(  (*lx->name != *name) )
                 {
-                    Y_Jive_XRule(name << ' ' << Core::Failure);
+                    Y_Jive_XRule("[ [-] Terminal '" << name << "']");
                     lexer.store(lx);
                     return false;
                 }
 
-                Y_Jive_XRule(Core::Success << ' ' << *lx);
+                Y_Jive_XRule("[ [+] Terminal  " << *lx << "]");
                 Node::Grow(tree, Node::Make(*this,lx) );
                 return true;
             }

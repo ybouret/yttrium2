@@ -20,33 +20,32 @@ namespace Yttrium
                                      Source &source,
                                      size_t  depth) const
             {
-                Y_Jive_XRule("[Agg '" << name << "']"); ++depth;
+                Y_Jive_XRule("[ [?] Agg '" << name << "']"); ++depth;
 
-                // local list of aggregated node
-                NodeList branch;
+                InternalNode * const  self = Node::Make(*this);
+                AutoPtr<Node>         keep(self);
+                Node *                node = self;
 
                 // check all nodes
                 for(const RuleNode *r=(*this)->head;r;r=r->next)
                 {
                     const Rule &rule = **r;
-                    Node *      node = 0;
                     if(rule.accepts(node,lexer,source,depth))
                     {
-                        if(node) branch.pushTail(node);
                         continue;
                     }
 
                     // failure, return list to lexer
-                    Node::Restore(branch,lexer);
-                    Y_Jive_XRule(name << ' ' << Core::Failure);
+                    Node::Restore(keep.yield(),lexer);
+                    --depth; Y_Jive_XRule("[ [-] Agg '" << name << "']");
                     return false;
                 }
 
                 // create node
-                InternalNode * node = Node::Make(*this);
-                Node::Grow(tree, & node->steal(branch) );
-                Y_Jive_XRule(name << ' ' << Core::Success);
+                Node::Grow(tree, keep.yield() );
+                --depth; Y_Jive_XRule("[ [+] Agg '" << name << "']");
                 return true;
+
             }
 
             OutputStream & Aggregate:: vizDecl(OutputStream &fp) const

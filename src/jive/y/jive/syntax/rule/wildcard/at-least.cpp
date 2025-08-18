@@ -32,32 +32,31 @@ namespace Yttrium
                         ++n_ok;
                         list.pushTail(node);
                     }
-                    else break;
+                    else
+                        break;
                 }
 
                 if(n_ok<minCount)
                 {
                     Node::Restore(list,lexer);
-                    Y_Jive_XRule(Core::Failure);
+                    --depth; Y_Jive_XRule("[" << name << "]" << Core::Failure << "@" << n_ok);
                     return false;
                 }
 
 
                 if(tree)
                 {
-                    std::cerr << "Growing Tree" << std::endl;
                     assert(tree->isInternal());
                     dynamic_cast<InternalNode *>(tree)->steal(list);
                 }
                 else
                 {
                     // bad grammar, but...
-                    std::cerr << "Need To Make node '"  << name << "'" << std::endl;
                     InternalNode * const node = Node::Make(*this);
                     node->steal(list);
                     tree = node;
                 }
-                Y_Jive_XRule(Core::Success);
+                --depth; Y_Jive_XRule("[" << name << "]" << Core::Success << "@" << n_ok);
                 return true;
             }
 

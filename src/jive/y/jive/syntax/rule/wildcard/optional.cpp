@@ -23,7 +23,7 @@ namespace Yttrium
                     if(node)
                     {
                         Node::Grow(tree,node);
-                        Y_Jive_XRule("(not empty)");
+                        --depth; Y_Jive_XRule("(not empty)");
                     }
                 }
 

@@ -162,6 +162,22 @@ endif(MINGW)
 add_library(y-z STATIC ${ZLIB_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
 target_include_directories(y-z PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 
+set(SDK "${CMAKE_CURRENT_BINARY_DIR}/sdk")
+
+if(MSVC)
+    set(VERNACULAR zlib.lib)
+else()
+    set(VERNACULAR libz.a)
+endif()
+
+add_custom_command(TARGET y-z POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${SDK}
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/zlib.h  ${SDK}
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/zconf.h ${SDK}
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:y-z> ${SDK}/${VERNACULAR} 
+)
+
+
 if(OFF)
 
 add_library(zlib SHARED ${ZLIB_SRCS} ${ZLIB_DLL_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
