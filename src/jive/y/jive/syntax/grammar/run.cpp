@@ -15,7 +15,7 @@ namespace Yttrium
             {
                 const Rule * self = rules.head; if(!self) throw Specific::Exception(lang->c_str(),"no rules");
                 Node *       root = 0;
-                return self->accepts(root,lexer,source,0) ? onSuccess(root, lexer, source) : onFailure(root,lexer,source);
+                return self->accepts(root,lexer,source,0) ? onSuccess(root, lexer, source) : onFailure(lexer,source);
             }
 
 
@@ -60,11 +60,23 @@ namespace Yttrium
                 return guard.yield();
             }
 
-            Node * Grammar:: onFailure(Node * const root, Lexer &lexer, Source &source)
+            Node * Grammar:: onFailure(Lexer &lexer, Source &source)
             {
-                AutoPtr<Node> guard(root);
+                Specific::Exception excp(lang->c_str(),"error: ");
 
-                throw Specific::Exception(lang->c_str(),"failure");
+                const Lexeme * const lx = lexer.first();
+                if(!lx) {
+                    excp.add("empty input is not allowed");
+                }
+                else
+                {
+                    lx->stamp(excp);
+                    excp.add(" unexpected ");
+                    sendTo(excp,*lx);
+                }
+
+                throw excp;
+
             }
         }
 

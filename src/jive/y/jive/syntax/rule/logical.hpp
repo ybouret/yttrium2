@@ -61,8 +61,9 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
-                Logical & operator<<(const char);   //!< append marker from Parser  \return *this
-                Logical & operator<<(const Rule &); //!< append rule (from Parser)  \return *this
+                Logical & operator<<(const char);         //!< append marker from Parser  \return *this
+                Logical & operator<<(const Rule &);       //!< append rule (from Parser)  \return *this
+                Logical & operator<<(const char * const); //!< append term (form Parser)
 
             private:
                 Y_Disable_Copy_And_Assign(Logical); //!< discarding

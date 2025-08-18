@@ -37,6 +37,17 @@ namespace Yttrium
             {
             }
 
+
+            //! cleanup
+            virtual ~Parser() noexcept;
+
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
             //! create a new Regular terminal
             /**
              \param rid terminal name
@@ -47,6 +58,18 @@ namespace Yttrium
             const Rule & term(const RID &rid, const RXP &rxp) {
                 return link(emit(rid,rxp),Syntax::Regular);
             }
+
+            //! create a new Regular terminal
+            /**
+             \param rxp terminal regular expression and name
+             \return compiled Terminal as Rule
+             */
+            template <typename RXP>
+            const Rule & term(const RXP &rxp) {
+                return link(emit(rxp,rxp),Syntax::Regular);
+            }
+
+
 
             //! create a new Divider terminal
             /**
@@ -82,10 +105,14 @@ namespace Yttrium
             {
                 return link( connect(clid,sid) );
             }
-            
 
-            //! cleanup
-            virtual ~Parser() noexcept;
+
+
+            const Rule & extra(const char,const Rule &);
+
+            XNode * parse(Source &source);
+
+            
 
         private:
             Y_Disable_Copy_And_Assign(Parser); //!< discarding

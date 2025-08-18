@@ -160,7 +160,7 @@ namespace Yttrium
                 }
 
                 Node *        onSuccess(Node *, Lexer & , Source & );
-                Node *        onFailure(Node *, Lexer &, Source &);
+                Node *        onFailure(Lexer &, Source &);
 
 
                 static String PreFormat(const Rule &);                       //!< \return pre formatted name

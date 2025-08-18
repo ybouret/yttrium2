@@ -13,5 +13,6 @@ Y_UTEST_DECL(16)
     Y_UTEST(lexer);
     Y_UTEST(xnode);
     Y_UTEST(grammar);
+    Y_UTEST(parser);
 }
 Y_UTEST_EXEC()

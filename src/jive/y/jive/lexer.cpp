@@ -127,10 +127,13 @@ do { if(Scanner::Verbose) { std::cerr << "<" << scan->name <<  "> " << MSG << st
                 throw Specific::Exception(name->c_str(),"*** corrupted query");
             }
 
-
+            
         }
 
-
+        const Lexeme * Lexer:: first() const noexcept
+        {
+            return lxms.head;
+        }
     }
 
 }

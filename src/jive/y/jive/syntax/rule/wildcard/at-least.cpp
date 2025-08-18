@@ -73,7 +73,7 @@ namespace Yttrium
             {
                 nodeName(fp) << '[';
                 Label(fp,*name);
-                fp << ",shape=octagon";
+                fp << ",shape=oval";
                 return Endl(fp<<']');
             }
         }

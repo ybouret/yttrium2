@@ -100,6 +100,7 @@ namespace Yttrium
             //__________________________________________________________________
             Lexeme *      query(Source &);                //!< \return saved/new lexeme from source
             void          store(Lexeme * const) noexcept; //!< store previously ready lexeme
+            const Lexeme *first()         const noexcept;
             static Lexer *Load(InputStream &);            //!< \return new Lexer built with Babel
 
             //__________________________________________________________________

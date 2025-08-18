@@ -28,16 +28,12 @@ namespace Yttrium
             }
 
 
-
-
-
         }
 
     }
 
 }
 
-#include "y/system/exception.hpp"
 #include "y/jive/parser.hpp"
 namespace Yttrium
 {
@@ -47,7 +43,7 @@ namespace Yttrium
         {
             Logical & Logical:: operator<<(const char C)
             {
-                if(!pptr) throw Specific::Exception(name->c_str(),"no linked Parser!");
+                assert(pptr);
                 { Manifest &self = *this; self << (*pptr)[C]; }
                 return *this;
             }
@@ -58,7 +54,12 @@ namespace Yttrium
                 return *this;
             }
 
-
+            Logical & Logical:: operator<<(const char * const expr)
+            {
+                assert(pptr);
+                { Manifest &self = *this; self << pptr->term(expr); }
+                return *this;
+            }
         }
     }
 

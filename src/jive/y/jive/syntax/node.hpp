@@ -104,10 +104,9 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(Node); //!< discarding
             };
 
-
-            
         }
 
+        typedef Syntax::Node XNode;
     }
 }
 

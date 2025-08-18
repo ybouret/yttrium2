@@ -33,6 +33,21 @@ namespace Yttrium
             return mark(c);
         }
 
+        const Syntax::Rule & Parser:: extra(const char sep, const Rule &rule)
+        {
+            Parser &self = *this;
+            return zom( cat(self[sep], rule) );
+        }
+
+
+        Syntax::Node * Parser:: parse(Source &source)
+        {
+            Grammar &G = *this;
+            free();
+            return G.run(*this,source);
+        }
+
+
     }
 
 }
