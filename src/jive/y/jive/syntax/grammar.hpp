@@ -160,9 +160,13 @@ namespace Yttrium
                 }
 
                 Node *        onSuccess(Node *, Lexer & , Source & );
-                Node *        onFailure(Lexer &, Source &);
+                Node *        onFailure(Node *, Lexer &, Source &);
+
+
                 static String PreFormat(const Rule &);                       //!< \return pre formatted name
                 String        buildName(const Manifest &, const char) const; //!< \return manifest name
+                void          sendTo(Exception &, const Lexeme &) const;
+
 
                 //! \param manifest manifest \param sep separator \return named LOGICAL with manifest
                 template <typename LOGICAL> inline

@@ -14,9 +14,11 @@ namespace Yttrium
 
             bool Alternate:: accepts(Node * &tree,
                                      Lexer  &lexer,
-                                     Source &source) const
+                                     Source &source,
+                                     size_t  depth) const
             {
 
+                Y_Jive_XRule("[Alt '" << name << "']"); ++depth;
                 bool accepted = false;
 
                 // check one node
@@ -24,10 +26,11 @@ namespace Yttrium
                 {
                     const Rule &rule = **r;
                     Node *      node = 0;
-                    if(rule.accepts(node,lexer,source))
+                    if(rule.accepts(node,lexer,source,depth))
                     {
                         if(node) {
                             Node::Grow(tree,node);
+                            std::cerr << "ok" << std::endl;
                             return true;
                         }
                         accepted = true; // give a chance

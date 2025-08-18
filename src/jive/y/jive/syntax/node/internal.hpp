@@ -43,8 +43,8 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
-                virtual OutputStream &   viz(OutputStream &)    const;
-                virtual const Terminal * lastTerm()    const noexcept;
+                virtual OutputStream &       viz(OutputStream &)    const;
+                virtual const TerminalNode * lastTerm()    const noexcept;
 
                 //______________________________________________________________
                 //

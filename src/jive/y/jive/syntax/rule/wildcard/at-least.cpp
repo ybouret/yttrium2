@@ -16,15 +16,16 @@ namespace Yttrium
             {
             }
 
-            bool AtLeast:: accepts(Node * & tree, Lexer &lexer, Source &source) const
+            bool AtLeast:: accepts(Node * & tree, Lexer &lexer, Source &source, size_t depth) const
             {
+                Y_Jive_XRule("[" << name << "]"); ++depth;
                 NodeList list;
                 size_t   n_ok = 0;
 
                 while(true)
                 {
                     Node * node = 0;
-                    if(rule.accepts(node,lexer,source))
+                    if(rule.accepts(node,lexer,source,depth))
                     {
                         if(0==node)
                             throw Specific::Exception(name->c_str(),"will accept infinite '%s'", rule.name->c_str());
@@ -37,6 +38,7 @@ namespace Yttrium
                 {
                     while(list.size)
                         Node::Restore(list.popTail(),lexer);
+                    Y_Jive_XRule(Core::Failure);
                     return false;
                 }
 
@@ -53,7 +55,7 @@ namespace Yttrium
                     node->steal(list);
                     tree = node;
                 }
-
+                Y_Jive_XRule(Core::Success);
                 return true;
             }
 

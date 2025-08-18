@@ -54,10 +54,18 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
-                virtual void            restore(Lexer &)    noexcept = 0; //!< restore content
-                virtual OutputStream &  viz(OutputStream &) const    = 0; //!< emit GraphViz code \return output stream
-                virtual const Terminal *lastTerm()    const noexcept = 0; //!< \return  retrieved last terminal or NULL
-                
+                virtual void                restore(Lexer &)    noexcept = 0; //!< restore content
+                virtual OutputStream &      viz(OutputStream &) const    = 0; //!< emit GraphViz code \return output stream
+                virtual const TerminalNode *lastTerm()    const noexcept = 0; //!< \return  retrieved last terminal or NULL
+
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+                const String & name() const noexcept;
+
                 //______________________________________________________________
                 //
                 //

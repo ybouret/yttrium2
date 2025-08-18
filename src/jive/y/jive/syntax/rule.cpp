@@ -8,9 +8,16 @@ namespace Yttrium
 
         namespace Syntax
         {
+
+            bool Rule::Verbose = false;
+            
             Rule:: ~Rule() noexcept {}
 
-            
+            const String & Node:: name() const noexcept
+            {
+                return *rule.name;
+            }
+
         }
 
     }

@@ -27,6 +27,12 @@ namespace Yttrium
             //__________________________________________________________________
             class Logical : public Internal, public Manifest
             {
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
             protected:
                 //! setup \param r rule name \param u rule class identifiers
                 template <typename RID> inline
@@ -40,7 +46,24 @@ namespace Yttrium
             public:
                 virtual ~Logical() noexcept; //!< cleanup
 
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
                 virtual OutputStream & vizPost(OutputStream &) const;
+
+
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+                Logical & operator<<(const char);   //!< append marker from Parser  \return *this
+                Logical & operator<<(const Rule &); //!< append rule (from Parser)  \return *this
+
             private:
                 Y_Disable_Copy_And_Assign(Logical); //!< discarding
             };

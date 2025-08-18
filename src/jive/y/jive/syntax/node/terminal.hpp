@@ -42,8 +42,17 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
-                virtual OutputStream &   viz(OutputStream &)    const;
-                virtual const Terminal * lastTerm()    const noexcept;
+                virtual OutputStream &       viz(OutputStream &)    const;
+                virtual const TerminalNode * lastTerm()    const noexcept;
+
+
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+                String str() const;
 
                 //______________________________________________________________
                 //
@@ -56,7 +65,8 @@ namespace Yttrium
             private:
                 Y_Disable_Copy_And_Assign(TerminalNode); //!< discarding
                 friend class Node;
-                virtual void restore(Lexer &) noexcept; 
+                virtual void restore(Lexer &) noexcept;
+                String       lex2str() const;
             };
         }
 

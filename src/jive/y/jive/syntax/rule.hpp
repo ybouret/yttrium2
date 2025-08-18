@@ -19,7 +19,7 @@ namespace Yttrium
 
             
             //! helper for Rule::accepts arguments
-#define Y_Jive_XRule_Args Node * &, Lexer &, Source &
+#define Y_Jive_XRule_Args Node * &, Lexer &, Source &, size_t
 
             //__________________________________________________________________
             //
@@ -31,6 +31,15 @@ namespace Yttrium
             //__________________________________________________________________
             class Rule : public Category_
             {
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+            public:
+                static bool Verbose;
+
                 //______________________________________________________________
                 //
                 //
@@ -88,8 +97,12 @@ namespace Yttrium
             private:
                 Y_Disable_Copy_And_Assign(Rule); //!< discarding
             };
+
+#define Y_Jive_XRule(MSG) do { if(Verbose) { Core::Indent(std::cerr,depth<<1,'.') << MSG << std::endl; } } while(false)
+            
         }
     }
+
 
 }
 

@@ -58,6 +58,7 @@ namespace
 
 Y_UTEST(grammar)
 {
+    Syntax::Rule::Verbose = true;
     MyGrammar G;
     MyLexer   L;
     LocalFS  &fs = LocalFS::Instance();

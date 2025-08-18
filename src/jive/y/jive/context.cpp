@@ -26,10 +26,20 @@ namespace Yttrium
         {
         }
 
+        namespace {
+            static const char fmt[] ="%s:%s:%s:";
+#define     Y_Jive_Ctx fmt,tag->c_str(), Decimal(line).c_str(), Decimal(column).c_str()
+        }
         String Context::str() const
         {
-            return Formatted::Get("%s:%s:%s:", tag->c_str(), Decimal(line).c_str(), Decimal(column).c_str());
+            return Formatted::Get(Y_Jive_Ctx);
         }
+
+        void Context:: stamp(Exception &excp) const
+        {
+            excp.pre(Y_Jive_Ctx);
+        }
+
 
         Context & Context:: dot() noexcept
         {

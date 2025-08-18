@@ -17,8 +17,11 @@ namespace Yttrium
 
             bool Aggregate:: accepts(Node * &tree,
                                      Lexer  &lexer,
-                                     Source &source) const
+                                     Source &source,
+                                     size_t  depth) const
             {
+                Y_Jive_XRule("[Agg '" << name << "']"); ++depth;
+
                 // local list of aggregated node
                 NodeList branch;
 
@@ -27,7 +30,7 @@ namespace Yttrium
                 {
                     const Rule &rule = **r;
                     Node *      node = 0;
-                    if(rule.accepts(node,lexer,source))
+                    if(rule.accepts(node,lexer,source,depth))
                     {
                         if(node) branch.pushTail(node);
                         continue;
@@ -35,12 +38,14 @@ namespace Yttrium
 
                     // failure, return list to lexer
                     Node::Restore(branch,lexer);
+                    Y_Jive_XRule(Core::Failure);
                     return false;
                 }
 
                 // create node
                 InternalNode * node = Node::Make(*this);
                 Node::Grow(tree, & node->steal(branch) );
+                Y_Jive_XRule(Core::Success);
                 return true;
             }
 

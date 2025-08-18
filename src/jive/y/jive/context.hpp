@@ -5,6 +5,7 @@
 #define Y_Jive_Context_Included 1
 
 #include "y/jive/tag.hpp"
+#include "y/exception.hpp"
 
 namespace Yttrium
 {
@@ -38,10 +39,12 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            String       str() const; //!< \return "tag:line:column:"
+            String    str() const; //!< \return "tag:line:column:"
 
             Context & dot()  noexcept; //!< increase column \return *this
             Context & endl() noexcept; //!< new line        \return *this
+
+            void stamp(Exception &) const;
 
             //__________________________________________________________________
             //

@@ -42,18 +42,38 @@ namespace Yttrium
                 }
             }
 
+            String TerminalNode:: lex2str() const
+            {
+                String res;
+
+                assert(rule.isTerminal());
+                if( !dynamic_cast<const Terminal &>(rule).univocal )
+                {
+                    res += '=';
+                    res += '\'' + lexeme->toString() + '\'';
+                }
+
+                return res;
+            }
+
             OutputStream & TerminalNode:: viz(OutputStream &fp) const
             {
                 nodeName(fp) << '[';
-                Label(fp,*rule.name);
+                const String label = *rule.name + lex2str();
+                Label(fp,label);
                 fp << ",shape=box";
                 return Endl( fp << ']' );
             }
 
-            const Terminal * TerminalNode:: lastTerm()    const noexcept
+            const TerminalNode * TerminalNode:: lastTerm()    const noexcept
             {
                 assert(rule.isTerminal());
-                return dynamic_cast<const Terminal *>( &rule );
+                return dynamic_cast<const TerminalNode *>( this );
+            }
+
+            String TerminalNode:: str() const
+            {
+                return '\'' + name() + '\'' + lex2str();
             }
 
         }
