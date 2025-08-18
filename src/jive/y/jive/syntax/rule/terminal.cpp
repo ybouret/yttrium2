@@ -30,12 +30,12 @@ namespace Yttrium
 
                 if(  (*lx->name != *name) )
                 {
-                    Y_Jive_XRule(Core::Failure);
+                    Y_Jive_XRule(name << ' ' << Core::Failure);
                     lexer.store(lx);
                     return false;
                 }
 
-                Y_Jive_XRule(Core::Success);
+                Y_Jive_XRule(Core::Success << ' ' << *lx);
                 Node::Grow(tree, Node::Make(*this,lx) );
                 return true;
             }
