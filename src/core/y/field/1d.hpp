@@ -13,12 +13,38 @@ namespace Yttrium
     namespace Field
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! 1D Field
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class In1D : public Sketch, public Format1D
         {
         public:
-            Y_Args_Declare(T,Type);
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            Y_Args_Declare(T,Type); //!< aliases
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! standalone field
+            /**
+             \param uid name
+             \param fmt format
+             */
             template <typename UID>
             inline explicit In1D(const UID &      uid,
                                  const Format1D & fmt) :
@@ -30,11 +56,18 @@ namespace Yttrium
                 Coerce(obj) -= (*this)->lower;
             }
 
+            //! cleanup
             inline virtual ~In1D() noexcept
             {
                 Coerce(obj) += (*this)->lower;
             }
 
+            //! sub field
+            /**
+             \param uid name
+             \param fmt format
+             \param ptr data pointer
+             */
             template <typename UID>
             inline explicit In1D(const UID &      uid,
                                  const Format1D & fmt,
@@ -47,6 +80,7 @@ namespace Yttrium
                 Coerce(obj) -= (*this)->lower;
             }
 
+            //! display
             inline friend std::ostream & operator<<(std::ostream &os, const In1D &f)
             {
                 const Layout1D &fmt = *f;
@@ -54,6 +88,14 @@ namespace Yttrium
                 return os;
             }
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! \param i data index \return (*this)[i]
             inline Type & operator[](const unit_t i) noexcept
             {
                 assert(i>=(*this)->lower);
@@ -61,6 +103,7 @@ namespace Yttrium
                 return obj[i];
             }
 
+            //! \param i data index \return (*this)[i]
             inline ConstType & operator[](const unit_t i) const noexcept
             {
                 assert(i>=(*this)->lower);
@@ -68,10 +111,16 @@ namespace Yttrium
                 return obj[i];
             }
 
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
         private:
-            Y_Disable_Copy_And_Assign(In1D);
-            T * const            obj;
-            Memory::Operating<T> ops;
+            Y_Disable_Copy_And_Assign(In1D); //!< discarding
+            T * const            obj;        //!< memory location
+            Memory::Operating<T> ops;        //!< objects I/O
         };
 
     }

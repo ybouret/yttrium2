@@ -16,14 +16,40 @@ namespace Yttrium
     namespace Field
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! 2D Field
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class In2D : public Sketch, public Format2D
         {
         public:
-            Y_Args_Declare(T,Type);
-            typedef In1D<T> Row;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            Y_Args_Declare(T,Type); //!< aliases
+            typedef In1D<T> Row;    //!< alias
 
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! standalone field
+            /**
+             \param uid name
+             \param fmt format
+             */
             template <typename UID>
             inline explicit In2D(const UID &      uid,
                                  const Format2D & fmt) :
@@ -36,11 +62,12 @@ namespace Yttrium
                 setup();
             }
 
-
+            //! cleanup
             inline virtual ~In2D() noexcept
             {
             }
 
+            //! display
             inline friend std::ostream & operator<<(std::ostream &os, const In2D &f)
             {
                 const Layout2D &fmt = *f;
@@ -49,7 +76,14 @@ namespace Yttrium
             }
 
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
 
+            //! \param j row index \return row[j]
             inline Row & operator[](const unit_t j) noexcept
             {
                 assert(j>= (*this)->lower.y);
@@ -57,6 +91,7 @@ namespace Yttrium
                 return row[j];
             }
 
+            //! \param j row index \return row[j]
             inline const Row & operator[](const unit_t j) const noexcept
             {
                 assert(j>= (*this)->lower.y);
@@ -64,15 +99,20 @@ namespace Yttrium
                 return row[j];
             }
 
-            const Format1D rowFormat;
-
-
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const Format1D rowFormat; //!< shared row format
 
         private:
-            Y_Disable_Copy_And_Assign(In2D);
-            Row * const    row;
-            CxxSeries<Row> rows;
+            Y_Disable_Copy_And_Assign(In2D); //!< discarding
+            Row * const    row;  //!< row location, shifted
+            CxxSeries<Row> rows; //!< constructed rows
 
+            //! setup all rows from memory
             void setup()
             {
                 const size_t  nx = (*this)->width.x;

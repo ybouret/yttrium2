@@ -12,10 +12,25 @@ namespace Yttrium
     namespace Field
     {
 
-        
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! name and memory for fields
+        //
+        //
+        //______________________________________________________________________
         class Sketch : public CountedObject
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup empty \param fieldName name
             template <typename UID>
             explicit Sketch(const UID & fieldName) :
             name(fieldName),
@@ -24,6 +39,11 @@ namespace Yttrium
             {
             }
 
+            //! setup with required memory
+            /**
+             \param fieldName name
+             \param dataBytes items * sizeof(type)
+            */
             template <typename UID>
             explicit Sketch(const UID &  fieldName,
                             const size_t dataBytes) :
@@ -33,19 +53,33 @@ namespace Yttrium
             {
             }
 
+            //! cleanup
             virtual ~Sketch() noexcept;
 
-            const String & key() const noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            const String & key() const noexcept; //!< \return name
 
-            const String   name;
+
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const String   name; //!< identifier
         protected:
-            size_t         wlen;
-            void *         wksp;
+            size_t         wlen; //!< positive if standalone
+            void *         wksp; //!< standalone memory
 
         private:
-            Y_Disable_Copy_And_Assign(Sketch);
-            static void * Make(size_t &);
-            static void   Free(void * &, size_t &) noexcept;
+            Y_Disable_Copy_And_Assign(Sketch); //!< disarding
+            static void * Make(size_t &);                     //!< \return acquired memory
+            static void   Free(void * &, size_t &) noexcept;  //!< free memory
         };
     }
 

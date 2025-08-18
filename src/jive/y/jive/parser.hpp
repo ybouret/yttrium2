@@ -79,6 +79,7 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(Parser); //!< discarding
 
+            //! \return syntax rule for lexical rule
             const Rule & link(const Lexical::Rule &, const Syntax::Activity);
 
         };
