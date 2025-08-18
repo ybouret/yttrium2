@@ -20,13 +20,9 @@ namespace Yttrium
             bool AtLeast:: accepts(Node * & tree, Lexer &lexer, Source &source, size_t depth) const
             {
                 Y_Jive_XRule("[" << name << "]"); ++depth;
-                AutoPtr<Node>  keeper;
-                InternalNode * target = tree ? dynamic_cast<InternalNode *>(tree) : 0;
-                if(!target)
-                {
-                    target = Node::Make(*this);
-                    keeper = target;
-                }
+                if(0==tree) throw Specific::Exception(name->c_str(),"need a parent rule!!");
+                assert(tree->isInternal());
+                InternalNode * const target =  dynamic_cast<InternalNode *>(tree); assert(0!=target);
 
 
                 size_t       count = 0;
@@ -52,13 +48,7 @@ namespace Yttrium
                     return false;
                 }
 
-                if( keeper.isValid() )
-                {
-                    // target was allocated, bad grammar
-                    assert(0==tree);
-                    tree = target;
-                    keeper.dismiss();
-                }
+                
 
                 --depth; Y_Jive_XRule("[" << name << "]" << Core::Success << "@" << count);
                 return true;

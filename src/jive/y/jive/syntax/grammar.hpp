@@ -109,7 +109,7 @@ namespace Yttrium
                 template <typename ID>
                 Aggregate & agg(const ID &id)
                 {
-                    return add( new Aggregate(id) );
+                    return add( new AggregateIs<Normal>(id) );
                 }
 
                 //! create a new alternate
@@ -136,7 +136,7 @@ namespace Yttrium
 
 
                 static Node * AST(Node * const) noexcept;
-                
+
 
                 //______________________________________________________________
                 //

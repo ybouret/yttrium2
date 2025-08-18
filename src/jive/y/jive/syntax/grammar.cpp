@@ -112,14 +112,14 @@ namespace Yttrium
             const Rule & Grammar:: cat(const Rule &a, const Rule &b)
             {
                 Manifest manifest; manifest << a << b;
-                return create<Aggregate>(manifest,AggSep);
+                return create< AggregateIs<Grouping> >(manifest,AggSep);
             }
 
 
             const Rule & Grammar:: cat(const Rule &a, const Rule &b, const Rule &c)
             {
                 Manifest manifest; manifest << a << b << c;
-                return create<Aggregate>(manifest,AggSep);
+                return create< AggregateIs<Grouping> >(manifest,AggSep);
             }
 
             const Rule & Grammar:: pick(const Rule &a, const Rule &b)

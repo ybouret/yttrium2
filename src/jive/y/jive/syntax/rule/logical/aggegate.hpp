@@ -13,6 +13,13 @@ namespace Yttrium
         namespace Syntax
         {
 
+            enum Property
+            {
+                Normal,
+                Acting,
+                Grouping
+            };
+
             //__________________________________________________________________
             //
             //
@@ -41,8 +48,9 @@ namespace Yttrium
 
                 //! setup \param rid rule name
                 template <typename RID> inline
-                explicit Aggregate(const RID &rid) :
-                Logical(rid,UUID)
+                explicit Aggregate(const RID &rid, const Property pty) :
+                Logical(rid,UUID),
+                ppty(pty)
                 {
                 }
 
@@ -61,13 +69,28 @@ namespace Yttrium
                 //______________________________________________________________
                 //
                 //
-                // Methods
+                // Members
                 //
                 //______________________________________________________________
-                
+                const Property ppty;
+
             private:
                 Y_Disable_Copy_And_Assign(Aggregate); //!< discarding
             };
+
+            template <Property PTY>
+            class AggregateIs : public Aggregate
+            {
+            public:
+                template <typename RID> inline
+                explicit AggregateIs(const RID &rid) : Aggregate(rid,PTY) {}
+                inline virtual ~AggregateIs() noexcept {}
+            private:
+                Y_Disable_Copy_And_Assign(AggregateIs);
+            };
+
+
+
         }
 
     }
