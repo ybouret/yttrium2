@@ -6,6 +6,7 @@
 #include "y/field/sketch.hpp"
 #include "y/field/layout/1d.hpp"
 #include "y/memory/operating.hpp"
+#include "y/container/light-array.hpp"
 
 namespace Yttrium
 {
@@ -83,9 +84,7 @@ namespace Yttrium
             //! display
             inline friend std::ostream & operator<<(std::ostream &os, const In1D &f)
             {
-                const Layout1D &fmt = *f;
-                os << f.name << "=" << fmt;
-                return os;
+                return f.print(os,0);
             }
 
             //__________________________________________________________________
@@ -94,6 +93,13 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
+
+            inline std::ostream & print(std::ostream &os, size_t indent) const
+            {
+                const Layout1D &    fmt = **this;
+                const LightArray<T> arr(obj+fmt.lower,fmt.width);
+                return Core::Indent(os,indent<<1) << name << "@" << fmt << ": " << arr;
+            }
 
             //! \param i data index \return (*this)[i]
             inline Type & operator[](const unit_t i) noexcept

@@ -144,7 +144,7 @@ namespace Yttrium
             {
             }
 
-            //! duplucate \param arr compatible array
+            //! duplicate \param arr compatible array
             /**
              using procedural copy
              */

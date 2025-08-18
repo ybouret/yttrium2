@@ -1,6 +1,6 @@
 project(y-lua C)
 
-Y_Message("Building Lua")
+Y_Message("Building lua")
 if(Y_MSC)
         string( APPEND CMAKE_C_FLAGS " -wd4820 -wd4668 -wd4242 -wd4244 -wd4310 -wd4710 -wd4701 -wd5045 -wd4324 -wd4702 -wd4255 -wd4774 -wd4061 -wd4191 -wd4711")
 endif()

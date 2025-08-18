@@ -103,6 +103,23 @@ namespace Yttrium
             return *this;
         }
 
+        //! append with quaternary constructor
+        /**
+         \param u first  arg
+         \param v second arg
+         \param w third  arg
+         \param x fourth arg
+         \return *this
+         */
+        template <typename U, typename V, typename W, typename X>
+        CxxSeries & push(U &u, V &v, W &w, X &x)
+        {
+            assert(size()<capacity());
+            new (data.entry+built) Type(u,v,w,x);
+            ++built;
+            return *this;
+        }
+
 
 
         //______________________________________________________________________

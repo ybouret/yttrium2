@@ -44,7 +44,6 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-
             //! standalone field
             /**
              \param uid name
@@ -57,22 +56,34 @@ namespace Yttrium
             Format2D(fmt),
             rowFormat(  new Layout1D(SubLayout,**this) ),
             row(0),
-            rows( fmt->width.y )
+            rows( fmt->numRows() ),
+            data( (MutableType *) wksp )
             {
                 setup();
             }
 
-            //! cleanup
-            inline virtual ~In2D() noexcept
+            template <typename UID>
+            inline explicit In2D(const UID &         uid,
+                                 const Format2D &    fmt,
+                                 const Format1D &    rowFmt,
+                                 MutableType * const slice) :
+            Sketch(uid),
+            Format2D(fmt),
+            rowFormat(rowFmt),
+            row(0),
+            rows( fmt->numRows() ),
+            data( (MutableType *) slice )
             {
+                //setup();
             }
+
+            //! cleanup
+            inline virtual ~In2D() noexcept {}
 
             //! display
             inline friend std::ostream & operator<<(std::ostream &os, const In2D &f)
             {
-                const Layout2D &fmt = *f;
-                os << f.name << "=" << fmt;
-                return os;
+                return f.print(os,0);
             }
 
 
@@ -82,6 +93,19 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
+            inline std::ostream & print(std::ostream &os, size_t indent) const
+            {
+                const Layout2D & fmt = **this;
+                Core::Indent(os,indent<<1) << name << "@" << fmt << ":" << std::endl;
+                ++indent;
+                for(unit_t j=fmt.lower.y;j<=fmt.upper.y;++j)
+                {
+                    row[j].print(os,indent);
+                    if(j<fmt.upper.y) os << std::endl;
+                }
+                return os;
+            }
+
 
             //! \param j row index \return row[j]
             inline Row & operator[](const unit_t j) noexcept
@@ -109,21 +133,23 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(In2D); //!< discarding
-            Row * const    row;  //!< row location, shifted
-            CxxSeries<Row> rows; //!< constructed rows
+            Row * const         row;  //!< row location, shifted
+            CxxSeries<Row>      rows; //!< constructed rows
+            MutableType * const data;
 
             //! setup all rows from memory
             void setup()
             {
-                const size_t  nx = (*this)->width.x;
-                const size_t  ny = (*this)->width.y;
-                MutableType * p  = (MutableType*) wksp;
-                for(size_t j=1;j<=ny;++j, p += nx)
+                const size_t  ipr = (*this)->width.x; // items per row
+                const unit_t  jlo = (*this)->lower.y;
+                const unit_t  jup = (*this)->upper.y;
+                MutableType * ptr = data;
+                for(unit_t j=jlo;j<=jup;++j, ptr += ipr)
                 {
                     const String uid = name + Formatted::Get("[%s]", Decimal(j).c_str() );
-                    rows.push(uid,rowFormat,p);
+                    rows.push(uid,rowFormat,ptr);
                 }
-                Coerce(row) = &rows[1] - (*this)->lower.y;
+                Coerce(row) = &rows[1] - jlo;
             }
         };
     }
