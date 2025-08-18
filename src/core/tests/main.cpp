@@ -221,6 +221,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(graphviz);
 
     Y_UTEST(field_layout);
+    Y_UTEST(field_1d);
 }
 Y_UTEST_EXEC()
 

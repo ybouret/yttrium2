@@ -272,5 +272,7 @@ Y_UTEST(counting:permutation)
 Y_UTEST(graphviz)
 
 #field
-Y_UTEST(field_layout)
+Y_UTEST(field:layout)
+Y_UTEST(field:1d)
+
 
