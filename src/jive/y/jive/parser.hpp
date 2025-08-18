@@ -41,8 +41,24 @@ namespace Yttrium
             const Rule & term(const RID &rid, const RXP &rxp)
             {
                 const Lexical::Rule &lr = emit(rid,rxp);
-                return terminal(lr.name,Syntax::Regular,true);
+                return terminal(lr.name,Syntax::Regular,lr.motif->univocal());
             }
+
+            template <typename RID, typename RXP>
+            const Rule & mark(const RID &rid, const RXP &rxp)
+            {
+                const Lexical::Rule &lr = emit(rid,rxp);
+                return terminal(lr.name,Syntax::Divider,lr.motif->univocal());
+            }
+
+            template <typename RXP>
+            const Rule & mark(const RXP &rxp)
+            {
+                const Lexical::Rule &lr = emit(rxp);
+                return terminal(lr.name,Syntax::Divider,lr.motif->univocal());
+            }
+
+
 
 
 
