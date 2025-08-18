@@ -174,7 +174,8 @@ add_custom_command(TARGET y-z POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory ${SDK}
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/zlib.h  ${SDK}
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/zconf.h ${SDK}
-    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:y-z> ${SDK}/${VERNACULAR} 
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:y-z> ${SDK}/${VERNACULAR}
+    COMMENT "[[Building Local zlib SDK]]"
 )
 
 
@@ -237,7 +238,7 @@ if(ZLIB_BUILD_EXAMPLES)
 
     add_custom_command(TARGET example POST_BUILD
     COMMAND $<TARGET_FILE:example>
-    COMMENT "Testing zlib"
+    COMMENT "[[Testing zlib]]"
     )
 
     if(OFF)
