@@ -76,6 +76,12 @@ namespace Yttrium
                         Y_Print("...synchronized!");
                     }
                 }
+
+                for(size_t i=1;i<=size;++i)
+                {
+                    team[i].assign((i-1)%4);
+                }
+
             }
 
             //__________________________________________________________________

@@ -51,6 +51,14 @@ namespace Yttrium
             //! wait for thread to return
             virtual ~Thread() noexcept;
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            bool assign(const size_t j) noexcept;
+
         private:
             Y_Disable_Copy_And_Assign(Thread); //!< discarding
             Code * const code;                 //!< internal code

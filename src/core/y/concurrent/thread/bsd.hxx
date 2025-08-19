@@ -26,6 +26,8 @@ namespace Yttrium
                 assert(0==ret);
             }
 
+            inline pthread_t & get() noexcept { return *data; }
+
         private:
             Y_Disable_Copy_And_Assign(Code);
 
