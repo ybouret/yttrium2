@@ -68,7 +68,8 @@ namespace Yttrium
         };
 
 #define Y_Jive_Push(CLASS,ID) push(#ID,*this, & CLASS:: on##ID)
-        
+#define Y_Jive_Call(CLASS,ID) call(#ID,*this, & CLASS:: on##ID)
+
         class Walker : public Analyzer
         {
         public:
