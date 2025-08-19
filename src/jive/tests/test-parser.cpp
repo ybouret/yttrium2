@@ -27,13 +27,22 @@ namespace
             Value << "null" << "true" << "false";
 
             {
-                Alt &Array = alt("Object");
+                Alt &Array = alt("Array");
 
-                Array << (agg("EmptyObject") << '[' << ']');
+                Array << (agg("EmptyArray")  << '[' << ']');
                 Array << (agg("HeavyArray")  << '[' << Value << extra(',',Value) << ']');
 
                 JSON  << Array;
                 Value << Array;
+            }
+
+            {
+                Alt        & OBJECT = alt("Object");
+                const Rule & Pair  = ( agg("Pair") << JString << ':' << Value );
+                OBJECT << ( agg("EmptyObject") << '{' << '}' );
+                OBJECT << ( agg("HeavyObject") << '{' << Pair << extra(',',Pair) << '}');
+                JSON << OBJECT;
+                Value << OBJECT;
             }
 
 

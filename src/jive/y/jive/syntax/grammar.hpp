@@ -71,6 +71,8 @@ namespace Yttrium
                 void  top(const Rule &) noexcept; //!< set top-level rupe
 
                 OutputStream & viz(OutputStream &) const; //!< emit GraphViz \return stream
+                static Node *  AST(Node * const, const size_t=0) noexcept;
+                void           validate() const;
 
                 //______________________________________________________________
                 //
@@ -158,7 +160,6 @@ namespace Yttrium
                 const Rule & pick(const Rule &, const Rule &, const Rule &); //!< \return alternate
 
 
-                static Node * AST(Node * const, const size_t=0) noexcept;
 
 
                 //______________________________________________________________

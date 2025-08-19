@@ -48,9 +48,8 @@ namespace Yttrium
         fp << "label=\"";
         for(size_t i=1;i<=id.size();++i)
         {
-            //fp << ASCII::Embedding::Text(id[i]);
-            fp << ASCII::Printable::Text(id[i]);
-
+            fp << ASCII::Embedding::Text(id[i]);
+            //fp << ASCII::Printable::Text(id[i]);
         }
         return fp << "\"";
     }
