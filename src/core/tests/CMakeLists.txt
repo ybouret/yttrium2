@@ -61,6 +61,7 @@ Y_UTEST(system:error 1 2)
 Y_UTEST(system:at_exit)
 Y_UTEST(system:rand)
 Y_UTEST(system:wall_time)
+Y_UTEST(system:hardware)
 
 # type
 Y_UTEST(type:ints)
