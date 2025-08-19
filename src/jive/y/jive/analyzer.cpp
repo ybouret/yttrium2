@@ -3,8 +3,8 @@
 #include "y/jive/analyzer.hpp"
 #include "y/jive/syntax/node/internal.hpp"
 #include "y/jive/syntax/node/terminal.hpp"
-
-#include <iomanip>
+#include "y/container/associative/suffix/map.hpp"
+#include "y/system/exception.hpp"
 
 namespace Yttrium
 {
@@ -59,6 +59,9 @@ namespace Yttrium
                 Y_Print("[call] " << node->name() << "/" << node->size);
             }
 
+            SuffixMap<String,TerminalProc> tdb;
+            SuffixMap<String,InternalProc> idb;
+
 
             bool verbose;
         private:
@@ -66,7 +69,9 @@ namespace Yttrium
         };
 
 
-        Analyzer:: Analyzer(const bool verbose) : code( new Code() )
+        Analyzer:: Analyzer(const Syntax::Grammar &G, const bool verbose) :
+        lang(G.lang),
+        code( new Code() )
         {
             code->verbose = verbose;
         }
@@ -79,8 +84,34 @@ namespace Yttrium
         void Analyzer:: operator()(const XNode * const root)
         {
             assert(code);
+            init();
             code->walk(root,0);
+            quit();
         }
+
+        void Analyzer:: on(const Tag &id, const TerminalProc &proc)
+        {
+            if( !code->tdb.insert(*id,proc) )
+                throw Specific::Exception(lang->c_str(),"multiple analysis of terminal '%s'", id->c_str());
+        }
+
+        void Analyzer:: on(const Tag &id, const InternalProc &proc)
+        {
+            if( !code->idb.insert(*id,proc) )
+                throw Specific::Exception(lang->c_str(),"multiple analysis of internal '%s'", id->c_str());
+        }
+
+        void Analyzer:: init()
+        {
+            if(code->verbose) std::cerr << lang << " Analyzer init" << std::endl;
+        }
+
+        void Analyzer:: quit()
+        {
+            if(code->verbose) std::cerr << lang << " Analyzer quit" << std::endl;
+        }
+
+
     }
 
 }
