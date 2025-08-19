@@ -39,6 +39,20 @@ namespace Yttrium
             return zom( cat(self[sep], rule) );
         }
 
+        const Syntax::Rule & Parser:: bonus(const char sep, const Rule &rule)
+        {
+            Parser &self = *this;
+            return opt( cat(self[sep], rule) );
+        }
+
+
+
+        const Syntax::Rule & Parser:: parens(const Rule &rule)
+        {
+            Parser &self = *this;
+            return cat( self['('], rule, self[')'] );
+        }
+
 
         Syntax::Node * Parser:: parse(Source &source)
         {

@@ -14,5 +14,6 @@ Y_UTEST_DECL(16)
     Y_UTEST(xnode);
     Y_UTEST(grammar);
     Y_UTEST(parser);
+    Y_UTEST(eval);
 }
 Y_UTEST_EXEC()

@@ -110,6 +110,12 @@ namespace Yttrium
             //! helper \return zom( cat(sep,rule) )
             const Rule & extra(const char,const Rule &);
 
+            //! helper \return opt( cat(sep,rule) )
+            const Rule & bonus(const char,const Rule &);
+
+
+            const Rule & parens(const Rule &);
+
             //! \return AST from source and reset Lexer
             XNode * parse(Source &);
 

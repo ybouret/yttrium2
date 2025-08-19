@@ -48,7 +48,7 @@ namespace
             }
 
 
-            Render("json-grammar.dot",*this);
+            render();
             validate();
         }
 
@@ -97,7 +97,7 @@ Y_UTEST(parser)
         Jive::Source source( Jive::Module::OpenFile(argv[1]) );
         AutoPtr<Jive::XNode> tree = parser.parse(source);
         Y_ASSERT(tree.isValid());
-        Vizible::Render("json.dot",*tree);
+        Vizible::Render("json-tree.dot",*tree);
 
         analyze( & *tree );
         

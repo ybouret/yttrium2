@@ -136,6 +136,8 @@ namespace Yttrium
             }
 
 
+            
+
             OutputStream & Grammar:: viz(OutputStream &fp) const
             {
                 for(const Rule *rule=rules.head;rule;rule=rule->next)
@@ -151,6 +153,11 @@ namespace Yttrium
                 return fp;
             }
 
+            void Grammar:: render() const
+            {
+                const String dotFile = *lang + ".dot";
+                Render(dotFile,*this);
+            }
 
             
         }
