@@ -13,13 +13,21 @@ namespace Yttrium
     namespace Jive
     {
 
+        enum Analysis
+        {
+            Exhaustive,
+            Permissive
+        };
+
         class Analyzer
         {
         public:
             typedef Functor<void,TL1(Token)>  TerminalProc;
             typedef Functor<void,TL1(size_t)> InternalProc;
             
-            explicit Analyzer(const Syntax::Grammar &, const bool=false);
+            explicit Analyzer(const Syntax::Grammar &,
+                              const Analysis,
+                              const bool=false);
             virtual ~Analyzer() noexcept;
 
             void operator()(const XNode * const root);
@@ -45,9 +53,6 @@ namespace Yttrium
                 const InternalProc proc(&host,meth);
                 on(name,proc);
             }
-
-
-
 
             const Tag lang;
             

@@ -65,7 +65,7 @@ Y_UTEST(parser)
 {
     MyParser parser;
     Jive::Syntax::Rule::Verbose = Environment::Flag("VERBOSE");
-    Jive::Analyzer analyze(parser,true);
+    Jive::Analyzer analyze(parser,Jive::Permissive,true);
 
     if(argc>1)
     {

@@ -17,7 +17,13 @@ namespace Yttrium
         {
         public:
 
-            inline explicit Code() : verbose(true)
+            inline explicit Code(const Tag     &l,
+                                 const Analysis a) :
+            tdb(),
+            idb(),
+            lang(l),
+            kind(a),
+            verbose(false)
             {
             }
 
@@ -46,7 +52,18 @@ namespace Yttrium
             void on(const Syntax::TerminalNode * const node, const size_t depth)
             {
                 assert(0!=node);
-                Y_Print("[push] " << *node->lexeme);
+                const Lexeme & lexeme = *node->lexeme;
+                Y_Print("[push] " << lexeme);
+                const String &       name = *lexeme.name;
+                TerminalProc * const hook = tdb.search(name);
+                if(hook)
+                {
+                    (*hook)(lexeme);
+                }
+                else
+                {
+                    if(Exhaustive==kind) throw Specific::Exception(lang->c_str(),"can't analyze terminal %s", name.c_str());
+                }
             }
 
             void on(const Syntax::InternalNode * const node, size_t depth)
@@ -57,23 +74,36 @@ namespace Yttrium
                      walk(sub,depth);
                 --depth;
                 Y_Print("[call] " << node->name() << "/" << node->size);
+                const String &       name = node->name();
+                InternalProc * const hook = idb.search(name);
+                if(hook)
+                {
+                    (*hook)(node->size);
+                }
+                else
+                {
+                    if(Exhaustive==kind) throw Specific::Exception(lang->c_str(),"can't analyze internal %s", name.c_str());
+                }
             }
 
             SuffixMap<String,TerminalProc> tdb;
             SuffixMap<String,InternalProc> idb;
 
-
-            bool verbose;
+            const Tag      lang;
+            const Analysis kind;
+            bool           verbose;
         private:
             Y_Disable_Copy_And_Assign(Code);
         };
 
 
-        Analyzer:: Analyzer(const Syntax::Grammar &G, const bool verbose) :
+        Analyzer:: Analyzer(const Syntax::Grammar &G,
+                            const Analysis         a,
+                            const bool             v ) :
         lang(G.lang),
-        code( new Code() )
+        code( new Code(lang,a) )
         {
-            code->verbose = verbose;
+            code->verbose = v;
         }
 
         Analyzer:: ~Analyzer() noexcept
