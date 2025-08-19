@@ -24,20 +24,16 @@ namespace Yttrium
         public:
             typedef Functor<void,TL1(Token)>  TerminalProc;
             typedef Functor<void,TL1(size_t)> InternalProc;
-            
+
+        protected:
             explicit Analyzer(const Syntax::Grammar &,
                               const Analysis,
                               const bool=false);
+        public:
             virtual ~Analyzer() noexcept;
 
             void operator()(const XNode * const root);
 
-            void on(const Tag &, const TerminalProc &);
-            void on(const Tag &, const InternalProc &);
-
-            virtual void init();
-            virtual void quit();
-            
             template <typename RID, typename HOST, typename METH>
             void push(const RID &rid, HOST &host, METH meth)
             {
@@ -54,13 +50,35 @@ namespace Yttrium
                 on(name,proc);
             }
 
-            const Tag lang;
+            const Syntax::Grammar &grammar;
             
         private:
             class Code;
             Y_Disable_Copy_And_Assign(Analyzer);
             Code * const code;
-            
+
+            virtual void init() = 0;
+            virtual void quit() = 0;
+
+            void on(const Tag &, const TerminalProc &);
+            void on(const Tag &, const InternalProc &);
+
+        public:
+            bool &verbose;
+        };
+
+#define Y_Jive_Push(CLASS,ID) push(#ID,*this, & CLASS:: on##ID)
+        
+        class Walker : public Analyzer
+        {
+        public:
+            explicit Walker(const Syntax::Grammar &);
+            virtual ~Walker() noexcept;
+
+        private:
+            Y_Disable_Copy_And_Assign(Walker);
+            virtual void init();
+            virtual void quit();
         };
     }
 

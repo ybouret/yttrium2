@@ -100,10 +100,11 @@ namespace Yttrium
         Analyzer:: Analyzer(const Syntax::Grammar &G,
                             const Analysis         a,
                             const bool             v ) :
-        lang(G.lang),
-        code( new Code(lang,a) )
+        grammar(G),
+        code( new Code(grammar.lang,a) ),
+        verbose(code->verbose)
         {
-            code->verbose = v;
+            verbose = v;
         }
 
         Analyzer:: ~Analyzer() noexcept
@@ -121,27 +122,52 @@ namespace Yttrium
 
         void Analyzer:: on(const Tag &id, const TerminalProc &proc)
         {
+            const Syntax::Rule * const rule = grammar.queryRule(id);
+            if(!rule)
+                throw Specific::Exception(grammar.lang->c_str(),"no rule '%s' to analyze", id->c_str());
+
+            if(!rule->isTerminal())
+                throw Specific::Exception(grammar.lang->c_str(),"rule '%s' is not a terminal", id->c_str());
+
             if( !code->tdb.insert(*id,proc) )
-                throw Specific::Exception(lang->c_str(),"multiple analysis of terminal '%s'", id->c_str());
+                throw Specific::Exception(grammar.lang->c_str(),"multiple analysis of terminal '%s'", id->c_str());
         }
 
         void Analyzer:: on(const Tag &id, const InternalProc &proc)
         {
+            const Syntax::Rule * const rule = grammar.queryRule(id);
+
+            if(!rule)
+                throw Specific::Exception(grammar.lang->c_str(),"no rule '%s' to analyze", id->c_str());
+
+            if(!rule->isInternal())
+                throw Specific::Exception(grammar.lang->c_str(),"rule '%s' is not an internal", id->c_str());
+
             if( !code->idb.insert(*id,proc) )
-                throw Specific::Exception(lang->c_str(),"multiple analysis of internal '%s'", id->c_str());
+                throw Specific::Exception(grammar.lang->c_str(),"multiple analysis of internal '%s'", id->c_str());
         }
 
-        void Analyzer:: init()
+
+
+
+        Walker:: Walker(const Syntax::Grammar &G) :
+        Analyzer(G,Permissive,true)
         {
-            if(code->verbose) std::cerr << lang << " Analyzer init" << std::endl;
         }
 
-        void Analyzer:: quit()
+        Walker:: ~Walker() noexcept
         {
-            if(code->verbose) std::cerr << lang << " Analyzer quit" << std::endl;
         }
 
+        void Walker:: init()
+        {
+            if(verbose) std::cerr << grammar.lang << " Analyzer init" << std::endl;
+        }
 
+        void Walker:: quit()
+        {
+            if(verbose) std::cerr << grammar.lang << " Analyzer quit" << std::endl;
+        }
     }
 
 }

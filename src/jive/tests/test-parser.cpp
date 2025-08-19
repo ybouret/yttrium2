@@ -5,6 +5,8 @@
 
 #include "y/string/env.hpp"
 
+#include "y/jive/analyzer.hpp"
+
 using namespace Yttrium;
 
 
@@ -57,15 +59,38 @@ namespace
     private:
         Y_Disable_Copy_And_Assign(MyParser);
     };
+
+    class MyWalker : public Jive::Walker
+    {
+    public:
+        explicit MyWalker(const Jive::Syntax::Grammar &G) : Jive::Walker(G)
+        {
+            Y_Jive_Push(MyWalker,Number);
+        }
+
+        virtual ~MyWalker() noexcept
+        {
+
+        }
+
+        void onNumber(const Jive::Token &token)
+        {
+            std::cerr << "pushing Number " << token << std::endl;
+        }
+
+
+    private:
+        Y_Disable_Copy_And_Assign(MyWalker);
+    };
+
 }
 
-#include "y/jive/analyzer.hpp"
 
 Y_UTEST(parser)
 {
     MyParser parser;
     Jive::Syntax::Rule::Verbose = Environment::Flag("VERBOSE");
-    Jive::Analyzer analyze(parser,Jive::Permissive,true);
+    MyWalker  analyze(parser);
 
     if(argc>1)
     {
