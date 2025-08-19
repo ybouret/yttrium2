@@ -59,17 +59,24 @@ namespace
     };
 }
 
+#include "y/jive/analyzer.hpp"
+
 Y_UTEST(parser)
 {
     MyParser parser;
     Jive::Syntax::Rule::Verbose = Environment::Flag("VERBOSE");
-    
+
+    Jive::Analyzer analyze(true);
+
     if(argc>1)
     {
         Jive::Source source( Jive::Module::OpenFile(argv[1]) );
         AutoPtr<Jive::XNode> tree = parser.parse(source);
         Y_ASSERT(tree.isValid());
         Vizible::Render("json.dot",*tree);
+
+        analyze( & *tree );
+        
     }
 
 }

@@ -56,7 +56,9 @@ namespace Yttrium
                     }
                     throw excp;
                 }
-                
+                if(Syntax::Rule::Verbose) {
+                    std::cerr << "--> Building " << lang << " AST..." << std::endl;
+                }
                 return AST( guard.yield() );
             }
 

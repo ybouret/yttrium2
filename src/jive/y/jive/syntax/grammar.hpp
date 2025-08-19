@@ -159,7 +159,7 @@ namespace Yttrium
                 const Rule & pick(const Rule &, const Rule &);               //!< \return alternate
                 const Rule & pick(const Rule &, const Rule &, const Rule &); //!< \return alternate
 
-
+                void  expect();
 
 
                 //______________________________________________________________
