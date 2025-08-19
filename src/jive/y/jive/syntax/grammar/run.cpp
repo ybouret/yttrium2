@@ -65,18 +65,22 @@ namespace Yttrium
             Node * Grammar:: onFailure(Lexer &lexer, Source &source)
             {
                 Specific::Exception excp(lang->c_str(),"error: ");
+                Lexemes &io = lexer.lxms;
 
-                const Lexeme * const lx = lexer.io.tail;
-                if(!lx)
-                {
+                if(!io.tail) {
                     excp.add("empty input is not allowed");
+                    throw excp;
                 }
-                else
-                {
-                    lx->stamp(excp);
-                    excp.add(" unexpected ");
-                    sendTo(excp,*lx);
-                }
+
+                AutoPtr<Lexeme> curr = io.popTail();
+                AutoPtr<Lexeme> prev; if(io.tail) prev = io.popTail();
+                io.release();
+                AutoPtr<Lexeme> next = lexer.query(source);
+
+                std::cerr << "prev = " << prev << std::endl;
+                std::cerr << "curr = " << curr << std::endl;
+                std::cerr << "next = " << next << std::endl;
+                
 
                 throw excp;
 

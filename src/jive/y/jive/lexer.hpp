@@ -65,8 +65,7 @@ namespace Yttrium
             scan(this),
             lxms(),
             hist(),
-            mydb(),
-            io(lxms)
+            mydb()
             {
                 initialize();
             }
@@ -164,14 +163,15 @@ namespace Yttrium
             const Tag & enroll(Lexical::Extension * const); //!< enroll a new extension \return extension name
 
             Scanner * scan; //!< current scanner
+        public:
             Lexemes   lxms; //!< lexeme cache
+        private:
             History   hist; //!< history
             ScanDB    mydb; //!< recorded scanners
 
             friend class Babel;
 
-        public:
-            const Core::ListOf<Lexeme> &io; //!< alias to internal cache
+
         };
     }
 
