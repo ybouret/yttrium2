@@ -109,7 +109,7 @@ namespace Yttrium
                 template <typename ID>
                 Aggregate & agg(const ID &id)
                 {
-                    return add( new AggregateIs<Normal>(id) );
+                    return add( new AggregateIs<Standard>(id) );
                 }
 
                 //! create a new Acting aggregate
@@ -120,7 +120,7 @@ namespace Yttrium
                 template <typename ID>
                 Aggregate & act(const ID &id)
                 {
-                    return add( new AggregateIs<Acting>(id) );
+                    return add( new AggregateIs<ActingAs>(id) );
                 }
 
                 //! create a new Grouping aggregate
@@ -158,7 +158,7 @@ namespace Yttrium
                 const Rule & pick(const Rule &, const Rule &, const Rule &); //!< \return alternate
 
 
-                static Node * AST(Node * const) noexcept;
+                static Node * AST(Node * const, const size_t=0) noexcept;
 
 
                 //______________________________________________________________

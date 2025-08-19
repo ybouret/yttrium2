@@ -99,7 +99,7 @@ namespace Yttrium
             };
 
             //! helper for verbosity
-#define Y_Jive_XRule(MSG) do { if(Verbose) { Core::Indent(std::cerr,depth<<1,'.') << MSG << std::endl; } } while(false)
+#define Y_Jive_XRule(MSG) do { if(Syntax::Rule::Verbose) { Core::Indent(std::cerr,depth<<1,'.') << MSG << std::endl; } } while(false)
             
         }
     }

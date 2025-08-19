@@ -13,11 +13,12 @@ namespace Yttrium
         namespace Syntax
         {
 
+
             enum Property
             {
-                Normal,
-                Acting,
-                Grouping
+                Standard,
+                ActingAs,
+                Grouping,
             };
 
 
