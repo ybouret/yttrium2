@@ -64,7 +64,7 @@ namespace Yttrium
 
             Node * Grammar:: onFailure(Lexer &lexer, Source &source)
             {
-                Specific::Exception excp(lang->c_str(),"error: ");
+                Specific::Exception excp(lang->c_str()," ");
                 Lexemes &io = lexer.lxms;
 
                 if(!io.tail) {
@@ -77,10 +77,19 @@ namespace Yttrium
                 io.release();
                 AutoPtr<Lexeme> next = lexer.query(source);
 
-                std::cerr << "prev = " << prev << std::endl;
-                std::cerr << "curr = " << curr << std::endl;
-                std::cerr << "next = " << next << std::endl;
-                
+                //std::cerr << "prev = " << prev << std::endl;
+                //std::cerr << "curr = " << curr << std::endl;
+                //std::cerr << "next = " << next << std::endl;
+
+                curr->stamp(excp);
+                excp.add("unexpected/unfinished ");
+                sendTo(excp,*curr);
+                if(prev.isValid())
+                {
+                    excp.add(" after ");
+                    sendTo(excp,*prev);
+                }
+
 
                 throw excp;
 
