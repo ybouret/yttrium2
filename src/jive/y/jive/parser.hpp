@@ -107,7 +107,7 @@ namespace Yttrium
             }
 
 
-
+            //! helper \return zom( cat(sep,rule) )
             const Rule & extra(const char,const Rule &);
 
             //! \return AST from source and reset Lexer

@@ -9,9 +9,10 @@
 namespace Yttrium
 {
 
+    //! Hardware information
     struct Hardware
     {
-        static size_t NumProcs(); //!< number of logical processors
+        static size_t NumProcs(); //!< \return number of logical processors
     };
 
 }

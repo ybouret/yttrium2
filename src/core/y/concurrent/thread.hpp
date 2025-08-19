@@ -57,7 +57,7 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            bool assign(const size_t j) noexcept;
+            bool assign(const size_t) noexcept; //!< \return true if was assigned to CPU
 
         private:
             Y_Disable_Copy_And_Assign(Thread); //!< discarding

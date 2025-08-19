@@ -13,12 +13,17 @@ namespace Yttrium
         namespace Syntax
         {
 
-
+            //__________________________________________________________________
+            //
+            //
+            //! Aggregate property
+            //
+            //__________________________________________________________________
             enum Property
             {
-                Standard,
-                ActingAs,
-                Grouping,
+                Standard, //!< named aggregate
+                ActingAs, //!< named aggregate but if size<=1
+                Grouping, //!< grouping only
             };
 
 
@@ -49,7 +54,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-                //! setup \param rid rule name
+                //! setup \param rid rule name \param pty property
                 template <typename RID> inline
                 explicit Aggregate(const RID &rid, const Property pty) :
                 Logical(rid,UUID),
@@ -75,21 +80,28 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const Property ppty;
+                const Property ppty; //!< property
 
             private:
                 Y_Disable_Copy_And_Assign(Aggregate); //!< discarding
             };
 
+            //__________________________________________________________________
+            //
+            //
+            //! Specialized Aggregate
+            //
+            //__________________________________________________________________
             template <Property PTY>
             class AggregateIs : public Aggregate
             {
             public:
+                //! setup \param rid name
                 template <typename RID> inline
                 explicit AggregateIs(const RID &rid) : Aggregate(rid,PTY) {}
-                inline virtual ~AggregateIs() noexcept {}
+                inline virtual ~AggregateIs() noexcept {} //!< cleanup
             private:
-                Y_Disable_Copy_And_Assign(AggregateIs);
+                Y_Disable_Copy_And_Assign(AggregateIs); //!< discarding
             };
 
 

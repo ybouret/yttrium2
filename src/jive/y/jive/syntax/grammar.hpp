@@ -70,9 +70,9 @@ namespace Yttrium
                 Node *run(Lexer &, Source &);
                 void  top(const Rule &) noexcept; //!< set top-level rupe
 
-                OutputStream & viz(OutputStream &) const; //!< emit GraphViz \return stream
-                static Node *  AST(Node * const, const size_t=0) noexcept;
-                void           validate() const;
+                OutputStream & viz(OutputStream &) const;                   //!< emit GraphViz \return stream
+                static Node *  AST(Node * const, const size_t=0) noexcept;  //!< \return converted to AST
+                void           validate() const; //!< validate structure
 
                 //______________________________________________________________
                 //
