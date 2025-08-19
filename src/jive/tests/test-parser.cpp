@@ -47,7 +47,7 @@ namespace
 
 
             Render("json-grammar.dot",*this);
-
+            validate();
         }
 
         virtual ~MyParser() noexcept

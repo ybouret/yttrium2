@@ -41,7 +41,9 @@ namespace
             const Rule & ASSIGN = cat(ID,EQ,INT);
             TOP << ASSIGN << ID << INT;
 
+            
             Render("grammar.dot",*this);
+            validate();
         }
 
         virtual ~MyGrammar() noexcept
