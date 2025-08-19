@@ -19,7 +19,8 @@ namespace Yttrium
                 else
                 {
                     assert(tree->isInternal());
-                    *dynamic_cast<InternalNode *>(tree) << node;
+                    InternalNode * const target = dynamic_cast<InternalNode *>(tree); assert(target);
+                    *target << node;
                 }
             }
         }

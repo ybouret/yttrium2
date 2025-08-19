@@ -16,17 +16,7 @@ namespace Yttrium
             bool Optional:: accepts(Node * & tree, Lexer &lexer, Source &source, size_t depth) const
             {
                 Y_Jive_XRule("[" << name << "]"); ++depth;
-                Node * node = 0;
-                
-                if(rule.accepts(node,lexer,source,depth))
-                {
-                    if(node)
-                    {
-                        Node::Grow(tree,node);
-                        --depth; Y_Jive_XRule("(not empty)");
-                    }
-                }
-
+                (void) rule.accepts(tree,lexer,source,depth);
                 return true;
             }
 

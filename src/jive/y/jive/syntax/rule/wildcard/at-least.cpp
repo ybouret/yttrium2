@@ -17,41 +17,54 @@ namespace Yttrium
             }
 
 
+
+
             bool AtLeast:: accepts(Node * & tree, Lexer &lexer, Source &source, size_t depth) const
             {
                 Y_Jive_XRule("[" << name << "]"); ++depth;
-                if(0==tree) throw Specific::Exception(name->c_str(),"need a parent rule!!");
-                assert(tree->isInternal());
-                InternalNode * const target =  dynamic_cast<InternalNode *>(tree); assert(0!=target);
 
+                InternalNode * const self  = Node::Make(*this);
+                Node         *       goal  = self;
+                AutoPtr<Node>        keep  = goal;
+                size_t               count = 0;
 
-                size_t       count = 0;
                 while(true)
                 {
-                    Node * node = target;
-                    const size_t oldCount = target->size;
-                    if(rule.accepts(node,lexer,source,depth))
+                    size_t oldSize = self->size;
+                    if(rule.accepts(goal, lexer, source, depth))
                     {
-                        if(target->size<=oldCount)
-                            throw Specific::Exception(name->c_str(),"will accept infinite '%s'", rule.name->c_str());
+                        if(self->size<=oldSize)
+                            throw Specific::Exception(name->c_str(),"infinity of '%s'", rule.name->c_str());
                         ++count;
                     }
                     else
                         break;
                 }
 
+                --depth;
+
                 if(count<minCount)
                 {
-                    --depth; Y_Jive_XRule("[" << name << "]" << Core::Failure << "@" << count);
-                    while(count-- > 0)
-                        Node::Restore(target->popTail(),lexer);
+                    Y_Jive_XRule("[" << name << "] " << Core::Failure << "@" << count << "<" << minCount);
+                    Node::Restore(keep.yield(),lexer);
                     return false;
                 }
+                else
+                {
+                    Y_Jive_XRule("[" << name << "] " << Core::Success << "@" << count << ">=" << minCount);
+                    if(!tree)
+                    {
+                        tree = keep.yield();
+                    }
+                    else
+                    {
+                        assert(tree->isInternal());
+                        InternalNode * const target = dynamic_cast<InternalNode *>(tree); assert(target);
+                        target->steal(*self);
+                    }
+                    return true;
+                }
 
-                
-
-                --depth; Y_Jive_XRule("[" << name << "]" << Core::Success << "@" << count);
-                return true;
             }
 
 
