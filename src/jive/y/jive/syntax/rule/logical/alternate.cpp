@@ -18,27 +18,22 @@ namespace Yttrium
                                      size_t  depth) const
             {
 
-                Y_Jive_XRule("[ [?] Alt '" << name << "']"); ++depth;
-                bool accepted = false;
+                Y_Jive_XRule("[ [?] Alt " << name << "]"); ++depth;
 
-                // check one node
                 for(const RuleNode *r=(*this)->head;r;r=r->next)
                 {
                     const Rule &rule = **r;
-                    Node *      node = 0;
-                    if(rule.accepts(node,lexer,source,depth))
+                    if(rule.accepts(tree,lexer,source,depth))
                     {
-                        if(node) {
-                            Node::Grow(tree,node);
-                            --depth; Y_Jive_XRule("[ [+] Alt '" << name << "'] = " << node->name() );
-                            return true;
-                        }
-                        accepted = true; // give a chance
+                        --depth; Y_Jive_XRule("[ [+] Alt " << name << "] @" << rule.name);
+                        return true;
                     }
                 }
-
-                return accepted;
+                --depth; Y_Jive_XRule("[ [-] Alt " << name << "]");
+                return false;
             }
+
+
 
             OutputStream & Alternate:: vizDecl(OutputStream &fp) const
             {

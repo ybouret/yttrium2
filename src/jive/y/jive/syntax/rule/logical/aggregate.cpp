@@ -20,30 +20,30 @@ namespace Yttrium
                                      Source &source,
                                      size_t  depth) const
             {
-                Y_Jive_XRule("[ [?] Agg '" << name << "']"); ++depth;
+                Y_Jive_XRule("[ [?] Agg " << name << "]"); ++depth;
 
                 InternalNode * const  self = Node::Make(*this);
                 AutoPtr<Node>         keep(self);
-                Node *                node = self;
+                Node *                goal = self;
 
                 // check all nodes
                 for(const RuleNode *r=(*this)->head;r;r=r->next)
                 {
                     const Rule &rule = **r;
-                    if(rule.accepts(node,lexer,source,depth))
+                    if(rule.accepts(goal,lexer,source,depth))
                     {
                         continue;
                     }
 
-                    // failure, return list to lexer
+                    // failure, return collected to lexer
                     Node::Restore(keep.yield(),lexer);
-                    --depth; Y_Jive_XRule("[ [-] Agg '" << name << "']");
+                    --depth; Y_Jive_XRule("[ [-] Agg " << name << "]");
                     return false;
                 }
 
-                // create node
+                // grow tree
                 Node::Grow(tree, keep.yield() );
-                --depth; Y_Jive_XRule("[ [+] Agg '" << name << "']");
+                --depth; Y_Jive_XRule("[ [+] Agg " << name << "]");
                 return true;
 
             }
