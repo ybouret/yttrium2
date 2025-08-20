@@ -158,6 +158,13 @@ namespace Yttrium
                       Same const         same);
 
 
+        void swapFor(HTable &table) noexcept
+        {
+            CoerceSwap(size,table.size);
+            Swap(code,table.code);
+        }
+
+
 
         const size_t    size; //!< keep inserted count
     private:

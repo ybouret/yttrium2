@@ -265,6 +265,12 @@ built(0)
         virtual void free()    noexcept { free_();    }
         virtual void release() noexcept { release_(); } //!< [Releasable] release all memory
 
+        inline void swapFor(Vector &other) noexcept
+        {
+            Swap(built,other.built);
+            Swap(code,other.code);
+        }
+
 
     private:
         Y_Disable_Assign(Vector); //!< discarding

@@ -229,6 +229,13 @@ namespace Yttrium
             pool.gc(amount);
         }
 
+
+        inline void swapFor(HashMap &hmap) noexcept
+        {
+            table.swapFor(hmap.table);
+            list.swapListFor(hmap.list);
+        }
+
         //______________________________________________________________________
         //
         //

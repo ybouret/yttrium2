@@ -4,6 +4,7 @@
 #define Y_Object_Included 1
 
 #include "y/core/setup.hpp"
+#include <cassert>
 
 namespace Yttrium
 {
@@ -84,6 +85,13 @@ namespace Yttrium
 
         static Memory::Allocator & AllocatorInstance();          //!< \return Object::Factory::Instance()
         static Memory::Allocator & AllocatorLocation() noexcept; //!< \return Object::Factory::Location()
+
+        //! \return zeroed block for sizeof(T)
+        template <typename T> static inline
+        T * ZAcquire() { return static_cast<T*>( operator new( sizeof(T) ) ); }
+
+        template <typename T> static inline
+        void ZRelease(T * const impl) { assert(0!=impl); operator delete(impl,sizeof(T)); }
 
     private:
         Y_Disable_Copy_And_Assign(Object); //!< discarding

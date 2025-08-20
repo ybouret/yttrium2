@@ -241,7 +241,12 @@ namespace Yttrium
             pool.gc(amount);
         }
 
-
+        inline void swapFor(HashSet &hset) noexcept
+        {
+            table.swapFor(hset.table);
+            list.swapListFor(hset.list);
+        }
+        
         //______________________________________________________________________
         //
         //
