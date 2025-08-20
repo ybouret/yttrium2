@@ -1,6 +1,7 @@
 
 #include "y/jive/lexical/rule.hpp"
 #include "y/stream/libc/output.hpp"
+#include "y/system/exception.hpp"
 
 namespace Yttrium
 {
@@ -61,11 +62,19 @@ namespace Yttrium
                 }
 
             }
+
+
+            void Rule:: noFeeblePattern() const
+            {
+                if(motif->feeble()) throw Specific::Exception(name->c_str(),"feeble pattern");
+            }
+
+
             Rule:: Rule(const Tag   &   r,
                         const Motif &   m,
                         const Attribute a,
                         const Property  property,
-                        const Tag      &noData) noexcept :
+                        const Tag      &noData)  :
             Object(),
             name(r),
             motif(m),
@@ -76,6 +85,7 @@ namespace Yttrium
             prev(0)
             {
                 assert(0 == data->length() );
+                noFeeblePattern();
             }
 
             Rule:: ~Rule() noexcept
@@ -150,6 +160,7 @@ namespace Yttrium
             next(0),
             prev(0)
             {
+                noFeeblePattern();
             }
 
             Rule * Rule:: Load(InputStream &fp, TagDB &db)

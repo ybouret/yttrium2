@@ -108,7 +108,7 @@ namespace Yttrium
                      const Motif     &usrMotif,
                      const Attribute  usrAttr,
                      const Property   property,
-                     const Tag  &     noData)  noexcept;
+                     const Tag  &     noData);
 
 
                 //! setup a control rule
@@ -132,6 +132,7 @@ namespace Yttrium
                 next(0),
                 prev(0)
                 {
+                    noFeeblePattern();
                 }
 
 
@@ -176,6 +177,8 @@ namespace Yttrium
                 
             private:
                 Y_Disable_Copy_And_Assign(Rule); //!< discarding
+
+                void noFeeblePattern() const;
 
                 //! construct from full data for reload
                 Rule(const Tag &,

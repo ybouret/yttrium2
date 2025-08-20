@@ -9,6 +9,7 @@ Y_UTEST_DECL(16)
     Y_UTEST(pattern);
     Y_UTEST(posix);
     Y_UTEST(rx);
+    Y_UTEST(matching);
     Y_UTEST(scanner);
     Y_UTEST(lexer);
     Y_UTEST(xnode);
