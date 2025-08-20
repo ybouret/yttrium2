@@ -90,11 +90,13 @@ namespace Yttrium
                 //! grow a tree with a new node
                 static void Grow(Node * &, Node * const) noexcept;
 
-                //! reload serialized from source
+                //! \return reloaded serialized from source
                 static Node * Load(Source &, const Grammar &);
 
-                static bool AreEqual(const Node * const lhs, const Node * const rhs) noexcept;
+                //! \return recursive equality
+                static bool AreEqual(const Node * const, const Node * const) noexcept;
 
+                //! \return true if same content
                 friend bool operator==(const Node &lhs, const Node &rhs) noexcept;
 
                 //______________________________________________________________
