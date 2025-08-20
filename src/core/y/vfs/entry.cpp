@@ -5,13 +5,14 @@
 namespace Yttrium
 {
 
-    VFS::Entry:: Entry(const VFS &fs, const String &name) :
+    VFS::Entry:: Entry(VFS &fs, const String &name) :
     Object(),
+    vfs(fs),
     path(name),
     base( BaseName(path)  ),
     ext(  Extension(base) ),
     link(false),
-    type( fs.findEntryType(path, Coerce(link)) ),
+    type( vfs.findEntryType(path, Coerce(link)) ),
     next(0),
     prev(0)
     {
@@ -19,13 +20,14 @@ namespace Yttrium
     }
 
 
-    VFS::Entry:: Entry(const VFS &fs, const char *name) :
+    VFS::Entry:: Entry(VFS &fs, const char *name) :
     Object(),
+    vfs(fs),
     path( name ),
     base( BaseName(path)  ),
     ext(  Extension(base) ),
     link( false ),
-    type( fs.findEntryType(path, Coerce(link)) ),
+    type( vfs.findEntryType(path, Coerce(link)) ),
     next(0),
     prev(0)
     {
@@ -44,6 +46,7 @@ namespace Yttrium
 
     VFS::Entry:: Entry(const Entry &entry) :
     Object(),
+    vfs(entry.vfs),
     path(entry.path),
     base(path.c_str() + shifting(entry.base,entry.path)),
     ext(0==entry.ext? 0 : path.c_str() + shifting(entry.ext,entry.path)),

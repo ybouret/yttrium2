@@ -80,8 +80,9 @@ namespace Yttrium
         class LocalScanner : public VFS::Scanner
         {
         public:
-            explicit LocalScanner(const VFS &fsys, const String &dirName) :
-            VFS::Scanner(fsys,dirName), handle(Setup(dirName))
+            explicit LocalScanner(VFS &fsys, const String &dirName) :
+            VFS::Scanner(fsys,dirName),
+            handle(Setup(dirName))
             {
             }
 

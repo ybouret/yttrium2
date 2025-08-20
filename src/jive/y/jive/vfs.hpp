@@ -22,12 +22,13 @@ namespace Yttrium
         //______________________________________________________________________
         struct _VFS
         {
-            typedef void (*Proc)(const VFS::Entry &, void * const); //!< alias
+            typedef void (*Proc)(VFS::Entry &, void * const); //!< alias
 
             //! prototype, show entry
-            static  void   Show(const VFS::Entry &, void * const);
+            static  void   Show(VFS::Entry &, void * const);
 
-            static  void   Display(const VFS::Entry &);
+            static  void   Display(VFS::Entry &);
+            static  void   Remove(VFS::Entry &);
 
             //! base call: collect and apply
             /**
@@ -67,12 +68,20 @@ namespace Yttrium
                 Apply( vfs.openDirectory(dirName), matching, request, part, Wrapper<PROC>, (void*) &proc);
             }
 
-            
+            template <typename DIRNAME, typename REGEXP, typename PROC>
+            void OnExtension(VFS &           vfs,
+                             const DIRNAME & dirName,
+                             const REGEXP  & extRegExp,
+                             PROC &          proc)
+            {
+                Apply(vfs,dirName,extRegExp,Matching::Exactly,VFS::Entry::Ext,proc);
+            }
+
 
         private:
             //! wrapper \param entry found \param args PROC address
             template <typename PROC> static inline
-            void Wrapper(const VFS::Entry &entry, void * const args)
+            void Wrapper(VFS::Entry &entry, void * const args)
             {
                 assert(0!=args);
                 PROC & proc = *(PROC *)args;

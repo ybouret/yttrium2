@@ -4,7 +4,7 @@
 namespace Yttrium
 {
 
-    VFS::Scanner:: Scanner(const VFS &_, const String &__)  :
+    VFS::Scanner:: Scanner(VFS &_, const String &__)  :
     vfs(_), dir(__)
     {
         String tmp = MakeDirName(dir);

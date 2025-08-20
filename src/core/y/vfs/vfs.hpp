@@ -132,8 +132,8 @@ namespace Yttrium
             //
             // C++
             //__________________________________________________________________
-            explicit Entry(const VFS &, const String &); //!< setup
-            explicit Entry(const VFS &, const char   *); //!< setup
+            explicit Entry(VFS &, const String &); //!< setup
+            explicit Entry(VFS &, const char   *); //!< setup
             virtual ~Entry() noexcept;                   //!< cleanup
             Entry(const Entry &);                        //!< duplicate
             Y_OSTREAM_PROTO(Entry);                      //!< full display
@@ -164,6 +164,7 @@ namespace Yttrium
             //
             // members
             //__________________________________________________________________
+            VFS &               vfs;  //!< access to operation
             const String        path; //!< full   path
             const char  * const base; //!< within path
             const char  * const ext;  //!< within path
@@ -196,12 +197,12 @@ namespace Yttrium
         class Scanner : public Object
         {
         public:
-            virtual       ~Scanner() noexcept;            //!< cleanup
-            virtual Entry *get()          = 0;            //!< \return next entry, NULL when done
+            virtual       ~Scanner() noexcept;             //!< cleanup
+            virtual Entry *get()          = 0;             //!< \return next entry, NULL when done
         protected:
-            explicit       Scanner(const VFS &,const String &) ; //!< setup
-            const VFS     &vfs;                                  //!< original vfs
-            const String   dir;                                  //!< original directory
+            explicit       Scanner(VFS &,const String &) ; //!< setup
+            VFS &          vfs;                            //!< original vfs
+            const String   dir;                            //!< original directory
 
         private:
             Y_Disable_Copy_And_Assign(Scanner); //!< discarding

@@ -23,24 +23,8 @@ namespace Yttrium
                 {
                     AutoPtr<Yttrium::VFS::Entry> ep(_);
                     if(ep->isDot() || ep->isDDot()) continue;
-                    switch(part)
-                    {
-                        case VFS::Entry::Path:
-                            if( matching.found(request,ep->path,ep->path)) break;
-                            continue;
-
-                        case VFS::Entry::Base:
-                            if( matching.found(request,ep->path,ep->path)) break;
-                            continue;
-
-                        case VFS::Entry::Ext:
-                            if(!ep->ext) continue;
-                            if( matching.found(request,ep->path,ep->ext) ) break;
-                            continue;
-
-                        default:
-                            throw Specific::Exception("_VFS::Apply", "not for %s", VFS::Entry::PartText(part));
-                    }
+                    const String data = ep->pry(part);
+                    if( ! matching.found(request,ep->path,data) ) continue;
                     elist.pushTail(ep.yield());
                 }
             }
@@ -54,15 +38,21 @@ namespace Yttrium
                 }
         }
 
-        void   _VFS:: Show(const VFS::Entry &entry, void * const)
+        void   _VFS:: Show(VFS::Entry &entry, void * const)
         {
             std::cerr << "[" << entry << "]" << std::endl;
         }
 
-        void   _VFS:: Display(const VFS::Entry &entry)
+        void   _VFS:: Display(VFS::Entry &entry)
         {
             Show(entry,0);
         }
+
+        void   _VFS:: Remove(VFS::Entry &entry)
+        {
+            entry.vfs.tryRemoveFile(entry.path);
+        }
+        
 
     }
 
