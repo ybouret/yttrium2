@@ -67,6 +67,18 @@ namespace Yttrium
                 return tail->lastTerm();
             }
 
+            size_t InternalNode:: serialize(OutputStream &fp) const
+            {
+                size_t res = name().serialize(fp);
+                res += fp.emitVBR(size);
+                for(const Node * node=head;node;node=node->next)
+                {
+                    res += node->serialize(fp);
+                }
+                return res;
+            }
+
+
         }
     }
 

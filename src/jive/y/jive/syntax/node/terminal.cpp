@@ -76,6 +76,12 @@ namespace Yttrium
                 return '\'' + name() + '\'' + lex2str();
             }
 
+            size_t TerminalNode:: serialize(OutputStream &fp) const
+            {
+                const size_t res = name().serialize(fp);
+                return res + lexeme->serialize(fp);
+            }
+
         }
 
     }

@@ -32,7 +32,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Node : public Category_
+            class Node : public Category_, public Serializable
             {
                 //______________________________________________________________
                 //

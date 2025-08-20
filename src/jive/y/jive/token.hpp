@@ -20,7 +20,10 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Token : public Char::List, public Recyclable
+        class Token :
+        public Char::List,
+        public Recyclable,
+        public Serializable
         {
         public:
             //__________________________________________________________________
@@ -37,11 +40,18 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //
+            // Interface
+            //
+            //__________________________________________________________________
+            virtual void   free()                 noexcept; //!< free content
+            virtual size_t serialize(OutputStream &) const;
+
+            //__________________________________________________________________
+            //
+            //
             // Methods
             //
             //__________________________________________________________________
-            virtual void free() noexcept; //!< free content
-
             Token & skip() noexcept; //!< remove head \return *this
             Token & trim() noexcept; //!< remove tail \return *this
 
@@ -52,6 +62,7 @@ namespace Yttrium
              \return raw string
              */
             String toString(const size_t nskip=0, const size_t ntrim=0) const;
+
 
         private:
             Y_Disable_Assign(Token); //!< discarding

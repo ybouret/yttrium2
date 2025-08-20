@@ -2,12 +2,13 @@
 #include "y/jive/token.hpp"
 #include "y/ability/lockable.hpp"
 #include "y/ascii/printable.hpp"
+#include "y/stream/output.hpp"
 
 namespace Yttrium
 {
     namespace Jive
     {
-        Token:: Token() noexcept : Char::List(), Recyclable()
+        Token:: Token() noexcept : Char::List(), Recyclable(), Serializable()
         {
         }
 
@@ -28,7 +29,7 @@ namespace Yttrium
 
 
 
-        Token:: Token(const Token &other) : Char::List(), Recyclable()
+        Token:: Token(const Token &other) : Char::List(), Recyclable(), Serializable()
         {
             try {
                 static Char::Cache & pool = Char:: CacheInstance();
@@ -89,6 +90,13 @@ namespace Yttrium
 
         }
 
+        size_t Token:: serialize(OutputStream &fp) const
+        {
+            size_t res = fp.emitVBR(size);
+            for(const Char *ch=head;ch;ch=ch->next,++res)
+                fp.write( (char) **ch );
+            return res;
+        }
 
     }
 }

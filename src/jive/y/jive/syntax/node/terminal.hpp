@@ -42,9 +42,9 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
-                virtual OutputStream &       viz(OutputStream &)    const;
-                virtual const TerminalNode * lastTerm()    const noexcept;
-
+                virtual OutputStream &       viz(OutputStream &)       const;
+                virtual const TerminalNode * lastTerm()       const noexcept;
+                virtual size_t               serialize(OutputStream &) const;
 
                 //______________________________________________________________
                 //
