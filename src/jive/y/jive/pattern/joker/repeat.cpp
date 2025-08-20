@@ -49,7 +49,7 @@ namespace Yttrium
             }
             if(count>=minCount) return true;
 
-            source.store(token);
+            source.put(token);
             return false;
         }
 

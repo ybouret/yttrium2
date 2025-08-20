@@ -45,13 +45,13 @@ namespace Yttrium
         bool Lump:: accepts(Token &token, Source &source) const
         {
             assert(0==token.size);
-            Char *ch = source.query();
+            Char *ch = source.get();
             if(!ch)
                 return false;
 
             const uint8_t c = **ch;
             if(c<lower||c>upper) {
-                source.store(ch);
+                source.put(ch);
                 return false;
             }
 

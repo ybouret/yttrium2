@@ -23,12 +23,12 @@ namespace Yttrium
             {
                 if(p->accepts(token,source))
                 {
-                    source.store(token);
+                    source.put(token);
                     return false;
                 }
             }
 
-            Char * const ch = source.query();
+            Char * const ch = source.get();
 
             if(!ch)
                 return false;

@@ -391,6 +391,7 @@ code(0)
     // make full variable name in uid
     char              uid[256] = "String.length";
 
+    // adjust uid
     if(var)
     {
         memset(uid,0,sizeof(uid));
@@ -398,6 +399,7 @@ code(0)
         Core::Text::Add(uid,sizeof(uid),".length");
     }
 
+    
     // read variable size
     const size_t numChars = fp.readVBR<size_t>(uid);
     Coerce(code) = new Code(numChars);
@@ -419,7 +421,8 @@ code(0)
     }
     catch(...)
     {
-        Destroy(code);
+        if(code)
+            Destroy(code);
         throw;
     }
 }

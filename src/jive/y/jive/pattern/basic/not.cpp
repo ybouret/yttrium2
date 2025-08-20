@@ -29,12 +29,12 @@ namespace Yttrium
         bool Not:: accepts(Token &token, Source &source) const
         {
             assert(0==token.size);
-            Char *ch = source.query();
+            Char *ch = source.get();
             if(!ch)
                 return false;
 
             if(code == **ch) {
-                source.store(ch);
+                source.put(ch);
                 return false;
             }
 

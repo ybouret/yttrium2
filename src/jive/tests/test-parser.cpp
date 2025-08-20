@@ -95,17 +95,25 @@ Y_UTEST(parser)
 
     if(argc>1)
     {
-        Jive::Source source( Jive::Module::OpenFile(argv[1]) );
-        AutoPtr<Jive::XNode> tree = parser.parse(source);
-        Y_ASSERT(tree.isValid());
-        Vizible::Render("json-tree.dot",*tree);
-
-        analyze( & *tree );
+        AutoPtr<Jive::XNode> tree;
+        {
+            Jive::Source source( Jive::Module::OpenFile(argv[1]) );
+            tree = parser.parse(source);
+            Y_ASSERT(tree.isValid());
+            Vizible::Render("json-tree.dot",*tree);
+            analyze( & *tree );
+        }
 
         {
             OutputFile fp("json-tree.bin");
             const size_t nw = tree->serialize(fp);
             std::cerr << "written: " << nw << std::endl;
+        }
+
+        {
+            std::cerr << "Reloading..." << std::endl;
+            Jive::Source         source( Jive::Module::OpenFile("json-tree.bin") );
+            AutoPtr<Jive::XNode> reloaded = Jive::XNode::Load(source,parser);
         }
     }
 

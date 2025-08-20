@@ -11,7 +11,7 @@ Y_UTEST(source)
     {
         Source source( Module::OpenFile(argv[1]) );
         Token  token;
-        while(Char *ch=source.query())
+        while(Char *ch=source.get())
         {
             token.pushTail(ch);
         }

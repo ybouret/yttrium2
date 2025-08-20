@@ -179,12 +179,12 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
             {
                 assert(source.cache()>0);
                 Token token;
-                token.pushTail(source.query());
+                token.pushTail(source.get());
                 while(true)
                 {
                     const Char * const ch = source.peek(); if( !ch )         break;
                     const char         c = (char) **ch;    if( !isprint(c) ) break;
-                    token.pushTail(source.query());
+                    token.pushTail(source.get());
                 }
                 return token.toString();
             }
@@ -269,7 +269,7 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
                     // try to find better rule
                     //
                     //__________________________________________________________
-                    source.stash(bestToken);
+                    source.dup(bestToken);
 
                     for(node=node->next;node;node=node->next)
                     {
@@ -280,7 +280,7 @@ do { if(Scanner::Verbose) { std::cerr << "<" << name << "> " << MSG << std::endl
                         {
                             continue;
                         }
-                        source.stash(token);
+                        source.dup(token);
 
                         if(token.size>bestToken.size)
                         {

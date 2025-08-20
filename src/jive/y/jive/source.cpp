@@ -21,23 +21,23 @@ namespace Yttrium
         }
 
 
-        Char * Source:: query()
+        Char * Source:: get()
         {
             return buffer.size ? buffer.popHead() : handle->query();
         }
 
-        void Source:: store(Char *const ch) noexcept
+        void Source:: put(Char *const ch) noexcept
         {
             assert(0!=ch);
             buffer.pushHead(ch);
         }
 
-        void Source:: store(Token &token) noexcept
+        void Source:: put(Token &token) noexcept
         {
             buffer.mergeHead(token);
         }
 
-        void Source:: stash(const Token &token)
+        void Source:: dup(const Token &token)
         {
             Token tmp(token);
             buffer.mergeHead(tmp);
@@ -87,6 +87,21 @@ namespace Yttrium
             return *handle;
         }
 
+        bool Source:: query(char &c)
+        {
+            Char * const ch = get();
+            if(!ch) return false;
+            c = (char) **ch;
+            static Char::Cache &pool = Char::CacheLocation();
+            pool.banish(ch);
+            return true;
+        }
+
+
+        void Source:: store(const char)
+        {
+            throw Specific::Exception("Jive::Source","no possible binary store()");
+        }
     }
 
 }

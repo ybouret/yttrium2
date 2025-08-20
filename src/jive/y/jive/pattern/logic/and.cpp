@@ -27,7 +27,7 @@ namespace Yttrium
                     continue;
                 }
 
-                source.store(token);
+                source.put(token);
                 return false;
             }
 

@@ -21,6 +21,8 @@ namespace Yttrium
             class   Node;
             class   InternalNode;
             class   TerminalNode;
+            class   Grammar;
+
             typedef CxxListOf<Node> NodeList; //!< alias
 
 
@@ -88,6 +90,7 @@ namespace Yttrium
                 //! grow a tree with a new node
                 static void Grow(Node * &, Node * const) noexcept;
 
+                static Node * Load(Source &, const Grammar &);
 
                 //______________________________________________________________
                 //

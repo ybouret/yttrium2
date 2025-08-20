@@ -54,7 +54,7 @@ namespace Yttrium
             }
             if(count>=minCount && count<=maxCount) return true;
 
-            source.store(token);
+            source.put(token);
             return false;
         }
 
