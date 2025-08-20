@@ -63,6 +63,7 @@ namespace Yttrium
              */
             String toString(const size_t nskip=0, const size_t ntrim=0) const;
 
+            friend bool operator==(const Token &lhs, const Token &rhs) noexcept;
 
         private:
             Y_Disable_Assign(Token); //!< discarding

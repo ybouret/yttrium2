@@ -34,7 +34,10 @@ namespace Yttrium
             }
 
             
-
+            bool operator==(const Node &lhs, const Node &rhs) noexcept
+            {
+                return Node::AreEqual(&lhs,&rhs);
+            }
 
         }
 

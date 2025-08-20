@@ -114,6 +114,9 @@ Y_UTEST(parser)
             std::cerr << "Reloading..." << std::endl;
             Jive::Source         source( Jive::Module::OpenFile("json-tree.bin") );
             AutoPtr<Jive::XNode> reloaded = Jive::XNode::Load(source,parser);
+
+            Y_CHECK( *reloaded == *tree );
+
         }
     }
 

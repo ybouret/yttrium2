@@ -90,7 +90,12 @@ namespace Yttrium
                 //! grow a tree with a new node
                 static void Grow(Node * &, Node * const) noexcept;
 
+                //! reload serialized from source
                 static Node * Load(Source &, const Grammar &);
+
+                static bool AreEqual(const Node * const lhs, const Node * const rhs) noexcept;
+
+                friend bool operator==(const Node &lhs, const Node &rhs) noexcept;
 
                 //______________________________________________________________
                 //
