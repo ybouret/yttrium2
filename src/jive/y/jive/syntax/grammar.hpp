@@ -161,7 +161,7 @@ namespace Yttrium
 
                 
                 void  expect();
-                void  render() const;
+                void  render() const; //!< render to "lang.png"
 
                 //______________________________________________________________
                 //

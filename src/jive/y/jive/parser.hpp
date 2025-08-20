@@ -113,7 +113,7 @@ namespace Yttrium
             //! helper \return opt( cat(sep,rule) )
             const Rule & bonus(const char,const Rule &);
 
-
+            //! helper \return cat('(',rule,')')
             const Rule & parens(const Rule &);
 
             //! \return AST from source and reset Lexer

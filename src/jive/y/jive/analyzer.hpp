@@ -13,27 +13,69 @@ namespace Yttrium
     namespace Jive
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //! Analyzer behavior
+        //
+        //______________________________________________________________________
         enum Analysis
         {
-            Exhaustive,
-            Permissive
+            Exhaustive, //!< each aggregate/terminal must be processed
+            Permissive  //!< walk thru
         };
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Syntax::Node analyzer
+        //
+        //
+        //______________________________________________________________________
         class Analyzer
         {
         public:
-            typedef Functor<void,TL1(Token)>  TerminalProc;
-            typedef Functor<void,TL1(size_t)> InternalProc;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef Functor<void,TL1(Token)>  TerminalProc; //!< process terminal
+            typedef Functor<void,TL1(size_t)> InternalProc; //!< process internal
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
         protected:
+            //! setup from grammar, analysis type and verbosity
             explicit Analyzer(const Syntax::Grammar &,
                               const Analysis,
                               const bool=false);
         public:
+            //! cleanup
             virtual ~Analyzer() noexcept;
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! walk down \param root top level node
             void operator()(const XNode * const root);
 
+            //! create process for terminal
+            /**
+             \param rid terminal name
+             \param host host object
+             \param meth host method pointer
+             */
             template <typename RID, typename HOST, typename METH>
             void push(const RID &rid, HOST &host, METH meth)
             {
@@ -42,6 +84,12 @@ namespace Yttrium
                 on(name,proc);
             }
 
+            //! create process for internal
+            /**
+             \param rid internal name
+             \param host host object
+             \param meth host method pointer
+             */
             template <typename RID, typename HOST, typename METH>
             void call(const RID &rid, HOST &host, METH meth)
             {
@@ -50,36 +98,51 @@ namespace Yttrium
                 on(name,proc);
             }
 
-            const Syntax::Grammar &grammar;
-            
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const Syntax::Grammar &grammar; //!< persistent grammar
+                                            //!
         private:
             class Code;
-            Y_Disable_Copy_And_Assign(Analyzer);
-            Code * const code;
+            Y_Disable_Copy_And_Assign(Analyzer); //!< discarding
+            Code * const code; //!< inner code
 
-            virtual void init() = 0;
-            virtual void quit() = 0;
+            virtual void init() = 0; //!< initialize before walking
+            virtual void quit() = 0; //!< finalize   after  walking
 
-            void on(const Tag &, const TerminalProc &);
-            void on(const Tag &, const InternalProc &);
+            void on(const Tag &, const TerminalProc &); //!< register callback
+            void on(const Tag &, const InternalProc &); //!< register callback
 
         public:
-            bool &verbose;
+            bool &verbose; //!< verbosity
         };
 
-#define Y_Jive_Push(CLASS,ID) push(#ID,*this, & CLASS:: on##ID)
-#define Y_Jive_Call(CLASS,ID) call(#ID,*this, & CLASS:: on##ID)
 
+#define Y_Jive_Push(CLASS,ID) push(#ID,*this, & CLASS:: on##ID) //!< helper
+#define Y_Jive_Call(CLASS,ID) call(#ID,*this, & CLASS:: on##ID) //!< helper
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! permissive, verbose Analyzer
+        //
+        //
+        //______________________________________________________________________
         class Walker : public Analyzer
         {
         public:
-            explicit Walker(const Syntax::Grammar &);
-            virtual ~Walker() noexcept;
+            explicit Walker(const Syntax::Grammar &); //!< setup
+            virtual ~Walker() noexcept;               //!< cleanup
 
         private:
-            Y_Disable_Copy_And_Assign(Walker);
-            virtual void init();
-            virtual void quit();
+            Y_Disable_Copy_And_Assign(Walker); //!< discarding
+            virtual void init(); //!< do nothing
+            virtual void quit(); //!< do nothing
         };
     }
 
