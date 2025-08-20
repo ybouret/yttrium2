@@ -1,5 +1,5 @@
 Y_CreateTest(test-json)
-Y_LinkLibraries(test-json y-json)
+Y_LinkLibraries(test-json y-json y-jive)
 
 enable_testing()
 
