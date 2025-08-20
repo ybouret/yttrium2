@@ -178,7 +178,7 @@ namespace Yttrium
             private:
                 Y_Disable_Copy_And_Assign(Rule); //!< discarding
 
-                void noFeeblePattern() const;
+                void noFeeblePattern() const; //!< throw if motif if feeble
 
                 //! construct from full data for reload
                 Rule(const Tag &,

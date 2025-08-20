@@ -25,20 +25,51 @@ namespace Yttrium
         class Matching : public Token
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+
+            //! request type
             enum Request
             {
-                Exactly,
-                Somehow
+                Exactly, //!< full source must match
+                Somehow  //!< found an occurence
             };
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
             Matching(Pattern * const)  noexcept; //!< setup
             Matching(const Matching &) noexcept; //!< duplicate
             virtual ~Matching() noexcept;        //!< cleanup
-            Matching(const char * const);
-            Matching(const String &);
+            Matching(const char * const);        //!< setup with regular expression
+            Matching(const String &);            //!< setup with regular expression
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! \return true if request if fullfilled within module
             bool  found(const Request, Module * const);
 
+
+            //! buffer lookup
+            /**
+             \param request request
+             \param name    data name
+             \param buffer  buffer address
+             \param buflen  buffer lentgth
+             \return true iff request if fullfilled
+             */
             template <typename NAME>
             bool  found(const Request      request,
                         const NAME &       name,
@@ -48,34 +79,51 @@ namespace Yttrium
                 return found(request, Module::OpenData(name,buffer,buflen));
             }
 
+            //! text lookup
+            /**
+             \param request request
+             \param name    data name
+             \param text    C-string
+             \return true iff request if fullfilled
+             */
             template <typename NAME>
             bool  found(const Request      request,
                         const NAME &       name,
-                        const char * const buffer)
+                        const char * const text)
             {
-                return found(request, Module::OpenData(name,buffer,StringLength(buffer)));
+                return found(request, Module::OpenData(name,text,StringLength(text)));
             }
 
+            //! string lookup
+            /**
+             \param request request
+             \param name    data name
+             \param text    String
+             \return true iff request if fullfilled
+             */
             template <typename NAME>
             bool  found(const Request      request,
                         const NAME &       name,
-                        const String &     buffer)
+                        const String &     text)
             {
-                return found(request, Module::OpenData(name,buffer) );
+                return found(request, Module::OpenData(name,text) );
             }
 
 
 
-
-
-
-            const Motif      motif;
-            const FirstChars fc;
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const Motif      motif; //!< motif
+            const FirstChars fc;    //!< first chars
 
         private:
-            Y_Disable_Assign(Matching);
-            bool exactly_(Source&);
-            bool somehow_(Source&);
+            Y_Disable_Assign(Matching); //!< discarding
+            bool exactly_(Source&);     //!< \return true iff matched all source
+            bool somehow_(Source&);     //!< \return true iff found one occurence
         };
     }
 
