@@ -85,6 +85,7 @@ namespace
 
 }
 
+#include "y/stream/libc/output.hpp"
 
 Y_UTEST(parser)
 {
@@ -100,7 +101,12 @@ Y_UTEST(parser)
         Vizible::Render("json-tree.dot",*tree);
 
         analyze( & *tree );
-        
+
+        {
+            OutputFile fp("json-tree.bin");
+            const size_t nw = tree->serialize(fp);
+            std::cerr << "written: " << nw << std::endl;
+        }
     }
 
 }
