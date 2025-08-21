@@ -101,7 +101,7 @@ Y_UTEST(parser)
             tree = parser.parse(source);
             Y_ASSERT(tree.isValid());
             Vizible::Render("json-tree.dot",*tree);
-            analyze( & *tree );
+            analyze.walk( & *tree );
         }
 
         {

@@ -68,7 +68,7 @@ Y_UTEST(eval)
         Y_ASSERT(tree.isValid());
         Vizible::Render("eval-tree.dot",*tree);
 
-        analyze( & *tree );
+        analyze.walk( & *tree );
 
     }
 

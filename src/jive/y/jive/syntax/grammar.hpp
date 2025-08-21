@@ -40,6 +40,7 @@ namespace Yttrium
                 typedef Syntax::Aggregate Agg;          //!< alias
                 typedef Syntax::Alternate Alt;          //!< alias
                 typedef Syntax::Logical   Logical;      //!< alias
+                typedef Syntax::Node      XNode;        //!< alias
                 static const char         AltSep = '|'; //!< alias
                 static const char         AggSep = ' '; //!< alias
 

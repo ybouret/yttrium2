@@ -98,13 +98,11 @@ namespace Yttrium
 
 
         Analyzer:: Analyzer(const Syntax::Grammar &G,
-                            const Analysis         a,
-                            const bool             v ) :
+                            const Analysis         a) :
         grammar(G),
         code( new Code(grammar.lang,a) ),
         verbose(code->verbose)
         {
-            verbose = v;
         }
 
         Analyzer:: ~Analyzer() noexcept
@@ -112,7 +110,7 @@ namespace Yttrium
             Destroy(code);
         }
 
-        void Analyzer:: operator()(const XNode * const root)
+        void Analyzer:: walk(const XNode * const root)
         {
             assert(code);
             init();
@@ -140,19 +138,20 @@ namespace Yttrium
             if(!rule)
                 throw Specific::Exception(grammar.lang->c_str(),"no rule '%s' to analyze", id->c_str());
 
-            if(!rule->isInternal())
-                throw Specific::Exception(grammar.lang->c_str(),"rule '%s' is not an internal", id->c_str());
+            if(Syntax::Aggregate::UUID != rule->uuid)
+                throw Specific::Exception(grammar.lang->c_str(),"rule '%s' is not an aggregate", id->c_str());
 
             if( !code->idb.insert(*id,proc) )
-                throw Specific::Exception(grammar.lang->c_str(),"multiple analysis of internal '%s'", id->c_str());
+                throw Specific::Exception(grammar.lang->c_str(),"multiple analysis of aggregate '%s'", id->c_str());
         }
 
 
 
 
         Walker:: Walker(const Syntax::Grammar &G) :
-        Analyzer(G,Permissive,true)
+        Analyzer(G,Permissive)
         {
+            verbose = true;
         }
 
         Walker:: ~Walker() noexcept

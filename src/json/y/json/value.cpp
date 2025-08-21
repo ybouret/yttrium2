@@ -82,7 +82,7 @@ namespace Yttrium
             *static_cast<Number *>(impl) = x;
         }
 
-        void Value:: swapWith(Value &other) noexcept
+        void Value:: xch(Value &other) noexcept
         {
             CoerceSwap(type,other.type);
             Swap(impl,other.impl);
@@ -183,7 +183,7 @@ namespace Yttrium
                 const Value nil;
                 pushTail(nil);
             }
-            tail().swapWith(value);
+            tail().xch(value);
         }
 
         std::ostream & Array:: display(std::ostream &os) const

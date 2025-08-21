@@ -44,7 +44,8 @@ namespace Yttrium
             //__________________________________________________________________
             typedef Functor<void,TL1(Token)>  TerminalProc; //!< process terminal
             typedef Functor<void,TL1(size_t)> InternalProc; //!< process internal
-
+            typedef Jive::Token               Token;
+            
             //__________________________________________________________________
             //
             //
@@ -54,8 +55,7 @@ namespace Yttrium
         protected:
             //! setup from grammar, analysis type and verbosity
             explicit Analyzer(const Syntax::Grammar &,
-                              const Analysis,
-                              const bool=false);
+                              const Analysis = Exhaustive);
         public:
             //! cleanup
             virtual ~Analyzer() noexcept;
@@ -68,7 +68,7 @@ namespace Yttrium
             //__________________________________________________________________
 
             //! walk down \param root top level node
-            void operator()(const XNode * const root);
+            void walk(const XNode * const root);
 
             //! create process for terminal
             /**
@@ -84,14 +84,14 @@ namespace Yttrium
                 on(name,proc);
             }
 
-            //! create process for internal
+            //! create process for internal aggregate
             /**
              \param rid internal name
              \param host host object
              \param meth host method pointer
              */
             template <typename RID, typename HOST, typename METH>
-            void call(const RID &rid, HOST &host, METH meth)
+            void func(const RID &rid, HOST &host, METH meth)
             {
                 const Tag          name(rid);
                 const InternalProc proc(&host,meth);
@@ -123,7 +123,7 @@ namespace Yttrium
 
 
 #define Y_Jive_Push(CLASS,ID) push(#ID,*this, & CLASS:: on##ID) //!< helper
-#define Y_Jive_Call(CLASS,ID) call(#ID,*this, & CLASS:: on##ID) //!< helper
+#define Y_Jive_Func(CLASS,ID) func(#ID,*this, & CLASS:: on##ID) //!< helper
 
         //______________________________________________________________________
         //

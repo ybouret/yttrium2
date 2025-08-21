@@ -74,8 +74,8 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            void  swapWith(Value &) noexcept; //!< swap contents
-            void  nullify() noexcept;         //!< clear content
+            void  xch(Value &) noexcept; //!< swap contents
+            void  nullify() noexcept;      //!< clear content
 
             std::ostream &        display(std::ostream &os) const; //!< display
 

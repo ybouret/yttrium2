@@ -5,9 +5,7 @@
 #define Y_JSON_Compiler_Included 1
 
 #include "y/json/value.hpp"
-
-#include "y/jive/parser.hpp"
-#include "y/jive/analyzer.hpp"
+#include "y/jive/source.hpp"
 
 namespace Yttrium
 {
@@ -15,14 +13,20 @@ namespace Yttrium
     namespace JSON
     {
 
-        class Compiler : public Jive::Parser
+        class Compiler
         {
         public:
             explicit Compiler();
             virtual ~Compiler() noexcept;
-            
+
+            void operator()( Jive::Source & );
+
         private:
+            class Code;
             Y_Disable_Copy_And_Assign(Compiler);
+            Code * const code;
+        public:
+            bool &verbose;
         };
 
     }
