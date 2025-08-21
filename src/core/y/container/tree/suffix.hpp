@@ -10,7 +10,6 @@
 #include "y/ability/recyclable.hpp"
 #include "y/ability/collectable.hpp"
 
-
 namespace Yttrium
 {
 
@@ -232,9 +231,10 @@ namespace Yttrium
         void * remove(ITERATOR     path,
                       size_t       plen) noexcept
         {
-            Node * const node = (Node *) search(path,plen);
-            if(!node) return 0;
-            void * const addr = node->addr;
+            Node * const node = search(path,plen);
+            if(!node)       return 0; // no node
+            if(!node->addr) return 0; // no data;
+            void * const addr = node->addr; assert(addr);
             remove(node);
             return addr;
         }

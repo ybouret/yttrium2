@@ -104,6 +104,7 @@ namespace Yttrium
             assert(sire->chld.owns(node));
             pool.store(sire->chld.pop(node));
             node = sire;
+            if(node->addr) return;
             goto PRUNE;
         }
 

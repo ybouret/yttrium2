@@ -48,7 +48,7 @@ Y_UTEST(container_hash_map)
 
         Y_CHECK(map.remove(key));
         Y_CHECK(!map.remove(key));
-
+        
     }
 
 

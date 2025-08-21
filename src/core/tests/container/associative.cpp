@@ -44,6 +44,13 @@ namespace
             Y_ASSERT(cpy.size()==db.size());
         }
 
+        for(size_t i=keys.size();i>0;--i)
+        {
+            const String &key = keys[i];
+            Y_ASSERT( db.search( key ) );
+            Y_ASSERT( db.remove( key ) );
+        }
+
     }
 
 }
@@ -86,6 +93,21 @@ Y_UTEST(container_associative)
     testAssoc(sfxSet,keys);
     testAssoc(hshSet,keys);
     testAssoc(sfxMap,keys);
+    testAssoc(hshMap,keys);
+
+    {
+        Y_ASSERT(0==hshSet.size());
+        Random::Shuffle::Cxx(ran,keys);
+        for(size_t i=keys.size();i>0;--i)
+        {
+            hshSet.insert(keys[i]);
+        }
+
+        HshSet tmp;
+        tmp.swapFor(hshSet);
+        std::cerr << tmp << std::endl;
+
+    }
 
     
 

@@ -20,7 +20,7 @@ namespace Yttrium
             Alt &       JSON    = alt(lang);
             Alt &       Value   = alt("Value");
             const Rule &STRING  = plugin(Jive::Lexical::JString::Class, "String");
-            const Rule &NUMBER  = term("Number","[:digit:]+");
+            const Rule &NUMBER  = term("Number","[-+]?[:digit:]+([.][:digit:]+)?([eEdD][-+]?[:digit:]+)?");
 
             {
                 Alt & ARRAY = alt("Array");
