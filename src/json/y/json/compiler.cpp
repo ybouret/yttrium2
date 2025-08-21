@@ -2,6 +2,8 @@
 #include "y/json/compiler.hpp"
 #include "y/jive/lexical/plugin/jstring.hpp"
 
+#include "y/container/algorithm/reverse.hpp"
+
 #include "y/jive/parser.hpp"
 #include "y/jive/analyzer.hpp"
 #include "y/ascii/convert.hpp"
@@ -71,6 +73,8 @@ namespace Yttrium
 
                 Y_JSON_Func(EmptyArray);
                 Y_JSON_Func(EmptyObject);
+                Y_JSON_Func(Pair);
+                Y_JSON_Func(HeavyArray);
 
 
             }
@@ -87,11 +91,13 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(Code);
 
-            Array values;
+            Array              values;
+            Vector<SharedPair> pairs;
 
             inline virtual void init()
             {
                 values.free();
+                pairs.free();
             }
 
             inline virtual void quit()
@@ -130,7 +136,6 @@ namespace Yttrium
                 const String s = token.toString(1,1);
                 Value _(s);
                 values.add(_);
-                std::cerr << values << std::endl;
             }
 
             inline void onEmptyArray(const size_t)
@@ -144,6 +149,36 @@ namespace Yttrium
             {
                 Value _(AsObject);
                 values.add(_);
+            }
+
+            void onPair(const size_t)
+            {
+                assert(values.size()>=2);
+
+                // get value at top
+                Value v; v.xch( values.tail() ); values.popTail();
+
+                // get string at top
+                assert(values.tail().type == IsString);
+                SharedPair pair = new Pair( values.tail().as<String>() ); values.popTail();
+
+                pair->v.xch(v);
+
+                pairs << pair;
+                std::cerr << "pairs=" << pairs << std::endl;
+            }
+
+
+            void onHeavyArray(size_t n)
+            {
+                assert(n>=values.size());
+                Value   val(AsArray);
+                {
+                    Array & arr = val.as<Array>();
+                    while(n-- > 0) { arr.add( values.tail() ); values.popTail(); }
+                    Algorithm::Reverse(arr,Memory::Stealth::Swap<Value>);
+                }
+                values.add(val);
             }
         };
 

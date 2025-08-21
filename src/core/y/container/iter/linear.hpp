@@ -113,6 +113,22 @@ namespace Yttrium
                 return saved;
             }
 
+            friend inline Linear operator+(const Linear &i, const size_t n)
+            {
+                Linear j = i; assert(j.pointee==i.pointee);
+                j.pointee = j.incr(n,Way);
+                return j;
+            }
+
+            friend inline Linear operator-(const Linear &i, const size_t n)
+            {
+                Linear j = i; assert(j.pointee==i.pointee);
+                j.pointee = j.decr(n,Way);
+                return j;
+            }
+
+
+
             //! access \return reference to content
             inline Type      & operator*()       noexcept { assert(0!=pointee); return *pointee; }
 

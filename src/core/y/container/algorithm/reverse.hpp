@@ -25,7 +25,12 @@ namespace Yttrium
             while(nswp-- > 0 )
                 exchange(*(curr++),*(last--));
         }
-        
+
+        template <typename SEQUENCE, typename EXCHANGE> inline
+        void Reverse(SEQUENCE &seq, EXCHANGE &exchange)
+        {
+            Reverse(seq.begin(), seq.size(), exchange);
+        }
 
 
 
