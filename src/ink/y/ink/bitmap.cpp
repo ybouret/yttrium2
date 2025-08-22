@@ -69,7 +69,7 @@ namespace Yttrium
             {
                 for(size_t j=0;j<bmp.h;++j, ptr += bmp.stride)
                 {
-                    new (entry+j) BitRow(ptr,bmp.w,bmp.lower.x,bmp.upper.x);
+                    new (entry+j) BitRow(ptr-bmp.lower.x,bmp.w,bmp.lower.x,bmp.upper.x);
                 }
             }
 
@@ -138,6 +138,22 @@ namespace Yttrium
                 Destroy(code); throw;
             }
         }
+
+
+        BitRow & Bitmap:: operator()(const unit_t j) noexcept
+        {
+            assert(j>=lower.y);
+            assert(j<=upper.y);
+            return row_[j];
+        }
+
+        const BitRow & Bitmap:: operator()(const unit_t j) const noexcept
+        {
+            assert(j>=lower.y);
+            assert(j<=upper.y);
+            return row_[j];
+        }
+
     }
 
 }

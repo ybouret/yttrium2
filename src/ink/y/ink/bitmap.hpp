@@ -39,6 +39,9 @@ namespace Yttrium
 
             virtual ~Bitmap() noexcept;
 
+            BitRow       & operator()(const unit_t j) noexcept;
+            const BitRow & operator()(const unit_t j) const noexcept;
+
             const size_t & w;
             const size_t & h;
             const size_t   bpp;      //!< bytes per pixels
