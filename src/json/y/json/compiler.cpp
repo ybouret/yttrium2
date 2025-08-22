@@ -25,9 +25,11 @@ namespace Yttrium
 
             inline explicit Code() :
             Jive::Parser("JSON"),
-            Jive::Analyzer(*this, Jive::Permissive )
+            Jive::Analyzer( static_cast<Grammar &>(*this) ),
+            values(),
+            pairs()
             {
-                verbose = true;
+                //verbose = true;
 
                 //--------------------------------------------------------------
                 //
