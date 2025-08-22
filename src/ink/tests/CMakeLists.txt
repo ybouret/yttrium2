@@ -1,5 +1,5 @@
 Y_CreateTest(test-ink)
-Y_LinkLibraries(test-ink)
+Y_LinkLibraries(test-ink y-ink)
 
 enable_testing()
 
