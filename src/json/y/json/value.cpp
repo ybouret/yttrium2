@@ -166,6 +166,7 @@ namespace Yttrium
 
 
         Array:: Array(const Array &other) :
+        Container(),
         Yttrium::Vector<Value>(other)
         {
         }
