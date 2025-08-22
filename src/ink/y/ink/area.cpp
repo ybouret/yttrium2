@@ -42,8 +42,29 @@ namespace Yttrium
 
         Area:: ~Area() noexcept
         {
-            
+
         }
+
+        bool Area:: containsAbscissa(const unit_t x) const noexcept
+        {
+            return x>=lower.x && x<=upper.x;
+        }
+
+        bool Area:: containsOrdinate(const unit_t y) const noexcept
+        {
+            return y>=lower.y && y<=upper.y;
+        }
+
+        bool Area:: contains(const Coord p) const noexcept
+        {
+            return containsAbscissa(p.x) && containsOrdinate(p.y);
+        }
+
+        bool Area:: contains(const Area &a) const noexcept
+        {
+            return contains(a.lower) && contains(a.upper);
+        }
+
 
     }
 

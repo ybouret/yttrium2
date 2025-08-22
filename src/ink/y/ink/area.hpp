@@ -7,22 +7,53 @@ namespace Yttrium
 {
     namespace Ink
     {
-        typedef V2D<unit_t> Coord;
-        typedef V2D<size_t> Range;
+        typedef V2D<unit_t> Coord; //!< alias
+        typedef V2D<size_t> Range; //!< alias
 
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Area
+        //
+        //
+        //______________________________________________________________________
         class Area
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit Area(const Coord, const Coord) noexcept; //!< setup
+            Area(const Area &)                      noexcept; //!< duplicate
+            Area & operator=(const Area &)          noexcept; //!< assign \return *this
+            virtual ~Area()                         noexcept; //!< cleanup
 
-            explicit Area(const Coord, const Coord) noexcept;
-            Area(const Area &)                      noexcept;
-            Area & operator=(const Area &)          noexcept;
-            virtual ~Area()                         noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //________________________________________________________________
+            bool containsAbscissa(const unit_t) const noexcept; //!< \return true if abscissa in area
+            bool containsOrdinate(const unit_t) const noexcept; //!< \return true if ordinate in area
+            bool contains(const Coord)          const noexcept; //!< \return true if point in area
+            bool contains(const Area &)         const noexcept; //!< \return true if sub-area in area
 
-            const Coord  lower;
-            const Coord  upper;
-            const Range  width;
-            const size_t items;
+            //__________________________________________________________________
+            //
+            //
+            // members
+            //
+            //__________________________________________________________________
+            const Coord  lower; //!< lower coordinate
+            const Coord  upper; //!< lower coordinate
+            const Range  width; //!< width
+            const size_t items; //!< items
 
         };
     }

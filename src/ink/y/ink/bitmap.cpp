@@ -48,7 +48,7 @@ namespace Yttrium
         }
 
 
-        BitRow:: BitRow(uint8_t * const ptr,
+        BitRow:: BitRow(void * const    ptr,
                         const size_t    W,
                         const unit_t    xlo,
                         const unit_t    xup) noexcept :
@@ -67,9 +67,10 @@ namespace Yttrium
             inline explicit Rows(const Bitmap & bmp,
                                  uint8_t *      ptr) : CountedObject(), BitmapRows(bmp.h)
             {
+                ptr -= bmp.lower.x * bmp.bpp;
                 for(size_t j=0;j<bmp.h;++j, ptr += bmp.stride)
                 {
-                    new (entry+j) BitRow(ptr-bmp.lower.x,bmp.w,bmp.lower.x,bmp.upper.x);
+                    new (entry+j) BitRow(ptr,bmp.w,bmp.lower.x,bmp.upper.x);
                 }
             }
 
@@ -115,6 +116,20 @@ namespace Yttrium
 
         }
 
+        void Bitmap:: setup()
+        {
+            try {
+                Coerce(rows) = new Rows(*this,code->get());
+                Coerce(row_) = rows->entry - lower.y;
+                code->withhold();
+                rows->withhold();
+            }
+            catch(...)
+            {
+                Destroy(code); throw;
+            }
+        }
+
         Bitmap:: Bitmap(const size_t W,
                         const size_t H,
                         const size_t B) :
@@ -128,16 +143,7 @@ namespace Yttrium
         rows( 0 ),
         row_( 0 )
         {
-            try {
-                Coerce(rows) = new Rows(*this,code->get());
-                Coerce(row_) = rows->entry - lower.y;
-                code->withhold();
-                rows->withhold();
-            }
-            catch(...)
-            {
-                Destroy(code); throw;
-            }
+            setup();
         }
 
 
@@ -170,6 +176,22 @@ namespace Yttrium
             code->withhold();
             rows->withhold();
         }
+
+
+        Bitmap:: Bitmap(const CopyOf_&, const Bitmap &bmp) :
+        Area(bmp),
+        w(width.x),
+        h(width.y),
+        bpp(bmp.bpp),
+        scanline( bmp.scanline ),
+        stride(   bmp.stride   ),
+        code( new MemCode(items*bpp) ),
+        rows( 0 ),
+        row_( 0 )
+        {
+            setup();
+        }
+
     }
 
 }
