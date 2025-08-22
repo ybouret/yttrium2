@@ -67,7 +67,7 @@ namespace Yttrium
             inline explicit Rows(const Bitmap & bmp,
                                  uint8_t *      ptr) : CountedObject(), BitmapRows(bmp.h)
             {
-                ptr -= bmp.lower.x * bmp.bpp;
+                ptr -= bmp.lower.x * bmp.bpp; // should be 0 shift for bmp
                 for(size_t j=0;j<bmp.h;++j, ptr += bmp.stride)
                 {
                     new (entry+j) BitRow(ptr,bmp.w,bmp.lower.x,bmp.upper.x);
