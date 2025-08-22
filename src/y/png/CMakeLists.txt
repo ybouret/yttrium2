@@ -141,7 +141,7 @@ if(PNG_BUILD_ZLIB)
 endif()
 
 
-set(ZLIB_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../zlib/sdk)
+#set(ZLIB_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../zlib/sdk)
 
 # Find the zlib library.
 find_package(ZLIB REQUIRED)
