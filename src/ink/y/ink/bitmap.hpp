@@ -5,38 +5,14 @@
 
 #include "y/ink/area.hpp"
 #include "y/type/copy-of.hpp"
+#include "y/ink/bitrow.hpp"
 
 namespace Yttrium
 {
     namespace Ink
     {
 
-        //______________________________________________________________________
-        //
-        //
-        //
-        //! anonymous bit-row
-        //
-        //
-        //______________________________________________________________________
-        class BitRow
-        {
-        public:
-
-            //! setup by Bitmap
-            BitRow(void * const, const size_t, const unit_t, const unit_t) noexcept;
-
-        private:
-            void * const p; //!< shifted address
-        public:
-            const size_t w;  //!< width
-            const unit_t x;  //!< start coordinante
-            const unit_t xt; //!< top coordinate
-
-        private:
-            ~BitRow() noexcept;                //!< discarding
-            Y_Disable_Copy_And_Assign(BitRow); //!< discarding
-        };
+       
 
         //______________________________________________________________________
         //
@@ -83,8 +59,8 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            BitRow       & operator()(const unit_t j) noexcept;
-            const BitRow & operator()(const unit_t j) const noexcept;
+            BitRow       & getRow(const size_t j) noexcept;
+            const BitRow & getRow(const size_t j) const noexcept;
 
 
             //__________________________________________________________________
@@ -98,11 +74,14 @@ namespace Yttrium
             const size_t   bpp;      //!< bytes per pixels
             const size_t   scanline; //!< bytes per line
             const size_t   stride;   //!< bytes to skip one line
+            const ZeroFlux zflux;    //!< ZeroFlux(h)
+
         private:
             Code * const   code; //!< inner code for data
             Rows * const   rows; //!< inner rows memory
         protected:
-            BitRow * const row_; //!< row[lower.y:upper.y]
+            BitRow * const row_; //!< row[0:w-1]
+            void *         data() noexcept;
 
         private:
             Y_Disable_Assign(Bitmap); //!< discarding

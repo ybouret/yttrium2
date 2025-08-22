@@ -15,18 +15,15 @@ namespace
         T & operator[](const unit_t i) noexcept
         {
             assert(p);
-            assert(i>=x);
-            assert(i<=xt);
-            return p[i];
+            return p[ z[i] ];
         }
 
 
     private:
-        T * const    p;
+        T * const            p;
     public:
-        const size_t w;
-        const unit_t x;
-        const unit_t xt;
+        const size_t         w;
+        const Ink::ZeroFlux &z;
 
     private:
         SomeRow() noexcept;
@@ -44,9 +41,9 @@ Y_UTEST(bitmap)
 
     for(unit_t j=0;j<bmp.upper.y;++j)
     {
-        Ink::BitRow &       r   = bmp(j);
+        Ink::BitRow &       r   = bmp.getRow(j);
         SomeRow<uint32_t> & row = (SomeRow<uint32_t>&)(r);
-        for(unit_t i=row.x;i<=row.xt;++i)
+        for(unit_t i=bmp.lower.y;i<=bmp.upper.y;++i)
         {
             row[i] = ran.to<uint32_t>();
         }

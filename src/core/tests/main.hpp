@@ -88,6 +88,19 @@ namespace Yttrium
         }
     };
 
+    template <>
+    struct Gen<String>
+    {
+        static inline String New(Random::Bits &ran)
+        {
+            String res;
+            for(size_t i=1+ran.leq<size_t>(6);i>0;--i) res += ran.in<char>('a','z');
+            return res;
+        }
+    };
+
+
+
     template <typename T>
     struct FillWith
     {

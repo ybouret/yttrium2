@@ -48,34 +48,28 @@ namespace Yttrium
         }
 
 
-        BitRow:: BitRow(void * const    ptr,
-                        const size_t    W,
-                        const unit_t    xlo,
-                        const unit_t    xup) noexcept :
-        p(ptr),
-        w(W),
-        x(xlo),
-        xt(xup)
-        {
-
-        }
+      
 
         class Bitmap:: Rows : public CountedObject, public BitmapRows
         {
         public:
 
             inline explicit Rows(const Bitmap & bmp,
-                                 uint8_t *      ptr) : CountedObject(), BitmapRows(bmp.h)
+                                 uint8_t *      ptr) :
+            CountedObject(),
+            BitmapRows(bmp.h),
+            z(bmp.w)
             {
-                ptr -= bmp.lower.x * bmp.bpp; // should be 0 shift for bmp
                 for(size_t j=0;j<bmp.h;++j, ptr += bmp.stride)
                 {
-                    new (entry+j) BitRow(ptr,bmp.w,bmp.lower.x,bmp.upper.x);
+                    new (entry+j) BitRow(ptr,bmp.w,z);
                 }
             }
 
 
             inline virtual ~Rows() noexcept {}
+
+            const ZeroFlux z;
 
         private:
             Y_Disable_Copy_And_Assign(Rows);
@@ -139,6 +133,7 @@ namespace Yttrium
         bpp( CheckBPP(B) ),
         scanline( w * bpp ),
         stride( scanline  ),
+        zflux(h),
         code( new MemCode(items*bpp) ),
         rows( 0 ),
         row_( 0 )
@@ -147,17 +142,15 @@ namespace Yttrium
         }
 
 
-        BitRow & Bitmap:: operator()(const unit_t j) noexcept
+        BitRow & Bitmap:: getRow(const size_t j) noexcept
         {
-            assert(j>=lower.y);
-            assert(j<=upper.y);
+            assert(j<w);
             return row_[j];
         }
 
-        const BitRow & Bitmap:: operator()(const unit_t j) const noexcept
+        const BitRow & Bitmap:: getRow(const size_t j) const noexcept
         {
-            assert(j>=lower.y);
-            assert(j<=upper.y);
+            assert(j<w);
             return row_[j];
         }
 
@@ -169,6 +162,7 @@ namespace Yttrium
         bpp(bmp.bpp),
         scanline( bmp.scanline ),
         stride(   bmp.stride   ),
+        zflux(    bmp.zflux    ),
         code( bmp.code ),
         rows( bmp.rows ),
         row_( bmp.row_ )
@@ -185,6 +179,7 @@ namespace Yttrium
         bpp(bmp.bpp),
         scanline( bmp.scanline ),
         stride(   bmp.stride   ),
+        zflux(    bmp.zflux    ),
         code( new MemCode(items*bpp) ),
         rows( 0 ),
         row_( 0 )
@@ -192,6 +187,12 @@ namespace Yttrium
             setup();
         }
 
+
+        void * Bitmap:: data() noexcept
+        {
+            assert( code );
+            return code->get();
+        }
     }
 
 }

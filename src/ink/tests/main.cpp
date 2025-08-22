@@ -3,6 +3,8 @@
 
 Y_UTEST_DECL(16)
 {
-    Y_UTEST(bitmap);  		 
+    Y_UTEST(zflux);
+    Y_UTEST(bitmap);
+    Y_UTEST(pixmap);
 }
 Y_UTEST_EXEC()
