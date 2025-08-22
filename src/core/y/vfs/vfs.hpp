@@ -8,6 +8,7 @@
 #include "y/string.hpp"
 #include "y/core/linked/list/cxx.hpp"
 #include "y/object.hpp"
+#include "y/ability/identifiable.hpp"
 
 namespace Yttrium
 {
@@ -217,7 +218,7 @@ namespace Yttrium
         //! Directory Changer
         //
         //______________________________________________________________________
-        class ChangeDirectory : public Readable<const String>
+        class ChangeDirectory : public Identifiable, public Readable<const String>
         {
         public:
             //------------------------------------------------------------------
@@ -251,9 +252,9 @@ namespace Yttrium
             // Interface
             //
             //------------------------------------------------------------------
-            virtual const char *   callSign()               const noexcept; //!< [Callable]
-            virtual size_t         size()                   const noexcept; //!< [Collection]
-            
+            virtual const char *   callSign() const noexcept;
+            virtual size_t         size()     const noexcept;
+
         private:
             Y_Disable_Assign(ChangeDirectory); //!< discarding
             class Code;
@@ -268,12 +269,12 @@ namespace Yttrium
         //
         //______________________________________________________________________
         virtual bool      tryRemoveFile(const String &path)                         = 0; //!< \param path file path \return true iif removed file from VFS
-        virtual Scanner * openDirectory(const String &dirName)                      = 0; //!< create scanner for dirName
+        virtual Scanner * openDirectory(const String &dirName)                      = 0; //!< create scanner \param dirName directory \return new scanner
         virtual EntryType findEntryType(const String &path, bool &lnk) const        = 0; //!< get entry attributes
         virtual void      makeDirectory(const String &dirName, const bool mayExist) = 0; //!< create a directory
         virtual bool      tryEraseEmpty(const String &dirName)                      = 0; //!< try to erase an empty directory
-        virtual String    getCWD()                                                  = 0; //!< get current working directory
-        virtual void      setCWD(const String &dirName)                             = 0; //!< set current working directory
+        virtual String    getCWD()                                                  = 0; //!< \return current working directory
+        virtual void      setCWD(const String &)                                    = 0; //!< set current working directory
 
         //______________________________________________________________________
         //

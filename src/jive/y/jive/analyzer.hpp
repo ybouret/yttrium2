@@ -44,7 +44,7 @@ namespace Yttrium
             //__________________________________________________________________
             typedef Functor<void,TL1(Token)>  TerminalProc; //!< process terminal
             typedef Functor<void,TL1(size_t)> InternalProc; //!< process internal
-            typedef Jive::Token               Token;
+            typedef Jive::Token               Token;        //!< alias
             
             //__________________________________________________________________
             //

@@ -229,6 +229,12 @@ namespace Yttrium
         Coerce(size)=0;
     }
 
+    void HTable:: swapFor(HTable &table) noexcept
+    {
+        CoerceSwap(size,table.size);
+        Swap(code,table.code);
+    }
+
 }
 
 #include "y/core/linked/convert/pool-to-ordered-list.hpp"

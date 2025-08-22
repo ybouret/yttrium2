@@ -171,6 +171,17 @@ namespace Yttrium
             catch(...) { purge(); throw; }
         }
 
+        //! assign by copy/swap \param hset another set \return *this
+        inline HashSet & operator=(const HashSet &hset)
+        {
+            if(this !=& hset)
+            {
+                HashSet tmp(hset);
+                swapFor(tmp);
+            }
+
+            return *this;
+        }
 
         //______________________________________________________________________
         //
@@ -241,6 +252,8 @@ namespace Yttrium
             pool.gc(amount);
         }
 
+
+        //! exchange contents \param hset another set
         inline void swapFor(HashSet &hset) noexcept
         {
             table.swapFor(hset.table);
@@ -258,7 +271,6 @@ namespace Yttrium
         HTable             table; //!< inner hash table
         mutable KEY_HASHER hash;  //!< key hasher
 
-        Y_Disable_Assign(HashSet); //!< discarding
 
         //! \param lhs knot address \param rhs knot address \return same keys
         static inline bool SameKnot(const void * const lhs, const void * const rhs)

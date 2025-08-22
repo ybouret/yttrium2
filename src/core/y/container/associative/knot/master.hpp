@@ -79,6 +79,12 @@ namespace Yttrium
                 list.sortWith(compareData);
             }
 
+            //! reverse inner list order
+            inline void reverse() noexcept
+            {
+                list.reverse();
+            }
+
             //__________________________________________________________________
             //
             //

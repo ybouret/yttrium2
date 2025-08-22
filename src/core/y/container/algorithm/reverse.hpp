@@ -26,6 +26,11 @@ namespace Yttrium
                 exchange(*(curr++),*(last--));
         }
 
+        //! Reverse a sequence
+        /**
+         \param seq      sequence with begin() and size
+         \param exchange exchange protocol
+         */
         template <typename SEQUENCE, typename EXCHANGE> inline
         void Reverse(SEQUENCE &seq, EXCHANGE &exchange)
         {

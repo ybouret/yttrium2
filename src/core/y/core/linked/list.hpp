@@ -540,6 +540,15 @@ namespace Yttrium
                 return (NODE *) doFetch(nodeIndex);
             }
 
+
+            //! reverse order
+            inline void reverse() noexcept
+            {
+                ListOf tmp;
+                while(size>0) tmp.pushTail( popTail() );
+                swapListFor(tmp);
+            }
+
             //__________________________________________________________________
             //
             //

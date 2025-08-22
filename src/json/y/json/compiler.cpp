@@ -202,7 +202,6 @@ namespace Yttrium
             void onHeavyObject(size_t n)
             {
                 assert(n>=pairs.size());
-                std::cerr << "pairs=" << pairs << std::endl;
                 Value val(AsObject);
                 {
                     JSON::Object &obj = val.as<JSON::Object>();
@@ -211,7 +210,7 @@ namespace Yttrium
                         if(!obj.insert( pairs.tail() )) throw Specific::Exception(lang->c_str(),"multiple keys in Object");
                         pairs.popTail();
                     }
-                    std::cerr << "object=" << obj << std::endl;
+                    obj.reverse();
                 }
                 values.add(val);
             }

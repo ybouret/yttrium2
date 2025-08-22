@@ -24,11 +24,10 @@ namespace Yttrium
         {
             typedef void (*Proc)(VFS::Entry &, void * const); //!< alias
 
-            //! prototype, show entry
-            static  void   Show(VFS::Entry &, void * const);
 
-            static  void   Display(VFS::Entry &);
-            static  void   Remove(VFS::Entry &);
+            static  void   Show(VFS::Entry &, void * const); //!< low-level prototype
+            static  void   Display(VFS::Entry &);            //!< hight level prototype
+            static  void   Remove(VFS::Entry &);             //!< try to remove entry
 
             //! base call: collect and apply
             /**
@@ -68,6 +67,13 @@ namespace Yttrium
                 Apply( vfs.openDirectory(dirName), matching, request, part, Wrapper<PROC>, (void*) &proc);
             }
 
+            //! apply procedure to all entries with matching extension
+            /**
+             \param vfs VFS
+             \param dirName directory
+             \param extRegExp regular expression to match extension
+             \param proc procedure to apply to all matching extensions
+             */
             template <typename DIRNAME, typename REGEXP, typename PROC>
             void OnExtension(VFS &           vfs,
                              const DIRNAME & dirName,

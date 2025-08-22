@@ -113,6 +113,7 @@ namespace Yttrium
                 return saved;
             }
 
+            //! algebra \param i initial \param n positive shift \return i+n
             friend inline Linear operator+(const Linear &i, const size_t n)
             {
                 Linear j = i; assert(j.pointee==i.pointee);
@@ -120,6 +121,7 @@ namespace Yttrium
                 return j;
             }
 
+            //! algebra \param i initial \param n negative shift \return i-n
             friend inline Linear operator-(const Linear &i, const size_t n)
             {
                 Linear j = i; assert(j.pointee==i.pointee);

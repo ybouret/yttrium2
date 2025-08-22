@@ -125,6 +125,17 @@ built(0)
         }
 
 
+        //! assign by copy/swap \param other another vector \return *this
+        inline Vector & operator=(const Vector &other)
+        {
+            if(this != &other)
+            {
+                Vector tmp(other);
+                swapFor(tmp);
+            }
+            return *this;
+        }
+
         //! forward display to Readable<T>
         /**
          \param os output stream
@@ -265,6 +276,7 @@ built(0)
         virtual void free()    noexcept { free_();    }
         virtual void release() noexcept { release_(); } //!< [Releasable] release all memory
 
+        //! exchange contents \param other another vector
         inline void swapFor(Vector &other) noexcept
         {
             Swap(built,other.built);
@@ -273,7 +285,6 @@ built(0)
 
 
     private:
-        Y_Disable_Assign(Vector); //!< discarding
         size_t built;             //!< currently built
 
         typedef Memory::SchoolOf<MutableType> SchoolType; //!< alias

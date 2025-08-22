@@ -166,6 +166,16 @@ namespace Yttrium
             catch(...) { purge(); throw; }
         }
 
+        //! assign by copy/swap \param hmap another map \return *this
+        inline HashMap & operator=(const HashMap &hmap)
+        {
+            if(this != &hmap ) {
+                HashMap tmp(hmap);
+                swapFor(tmp);
+            }
+            return *this;
+        }
+
         //______________________________________________________________________
         //
         //
@@ -230,6 +240,7 @@ namespace Yttrium
         }
 
 
+        //! exchange contents \param hmap another ma[
         inline void swapFor(HashMap &hmap) noexcept
         {
             table.swapFor(hmap.table);
@@ -247,7 +258,6 @@ namespace Yttrium
         HTable             table; //!< inner hash table
         mutable KEY_HASHER hash;  //!< key hasher
 
-        Y_Disable_Assign(HashMap); //!< discarding
 
         //! \param lhs knot address \param rhs knot address \return same keys
         static inline bool SameKnot(const void * const lhs, const void * const rhs)

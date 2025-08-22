@@ -90,6 +90,7 @@ namespace Yttrium
         template <typename T> static inline
         T * ZAcquire() { return static_cast<T*>( operator new( sizeof(T) ) ); }
 
+        //! release acquire block \param impl block address
         template <typename T> static inline
         void ZRelease(T * const impl) { assert(0!=impl); operator delete(impl,sizeof(T)); }
 
