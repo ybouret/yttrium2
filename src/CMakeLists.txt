@@ -22,6 +22,7 @@ add_subdirectory(core)
 add_subdirectory(mkl)
 add_subdirectory(jive)
 add_subdirectory(json)
+add_subdirectory(ink)
 cmake_print_variables(Y_UnitTests)
 
 add_subdirectory(y)
