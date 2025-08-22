@@ -31,7 +31,7 @@ namespace Yttrium
                 unit_t &lo = lower[i];
                 unit_t &up = upper[i];
                 if(up<lo) Swap(up,lo);
-                Coerce(items) *= (width[i] = 1+up-lo);
+                Coerce(items) *= (width[i] = (size_t) (1+up-lo) );
             }
 
             Coerce(shift[0]) = width[0];

@@ -174,7 +174,7 @@ namespace Yttrium
     class LocalScanner : public VFS::Scanner
     {
     public:
-        explicit LocalScanner(const VFS &fsys, const String &dirName) :
+        explicit LocalScanner(VFS &fsys, const String &dirName) :
         VFS::Scanner(fsys,dirName),
         fData(),
         hFind(INVALID_HANDLE_VALUE),

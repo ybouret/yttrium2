@@ -39,7 +39,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             virtual bool query(char &);
-            virtual void store(char);
+            virtual void store(const char);
             
             //__________________________________________________________________
             //

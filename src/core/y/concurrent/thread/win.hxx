@@ -32,7 +32,7 @@ namespace Yttrium
 					Windows::Error::Critical(::GetLastError(), "WaitForSingleObject");
 			}
 
-
+			inline HANDLE & get() noexcept { return thr;  }
 
 		private:
 			Y_Disable_Copy_And_Assign(Code);

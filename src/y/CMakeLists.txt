@@ -13,7 +13,7 @@ add_subdirectory(bzip2)
 add_subdirectory(lua)
 add_subdirectory(jbig)
 add_subdirectory(jpeg)
-add_subdirectory(png)
+#add_subdirectory(png)
 
 #cmake_print_variables(third_party_list)
 

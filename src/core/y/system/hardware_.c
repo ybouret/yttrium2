@@ -15,7 +15,7 @@
 #include <unistd.h>
 #endif
 
-size_t Yttrium_Hardware_NumProcs()
+size_t Yttrium_Hardware_NumProcs(void)
 {
 
 #if defined(Y_Darwin)
