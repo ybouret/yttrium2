@@ -73,7 +73,7 @@ namespace Yttrium
 
                 OutputStream & viz(OutputStream &) const;                   //!< emit GraphViz \return stream
                 static Node *  AST(Node * const, const size_t=0) noexcept;  //!< \return converted to AST
-                void           validate() const; //!< validate structure
+                void           validate() const;                            //!< validate structure
 
                 //______________________________________________________________
                 //

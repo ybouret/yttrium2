@@ -13,20 +13,40 @@ namespace Yttrium
     namespace JSON
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Compiler
+        //
+        //
+        //______________________________________________________________________
         class Compiler
         {
         public:
-            explicit Compiler();
-            virtual ~Compiler() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit Compiler();          //!< setup
+            virtual ~Compiler() noexcept; //!< cleanup
 
-            void operator()( Value &value, Jive::Source & );
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            void operator()(Value &, Jive::Source &); //!< put in value content of source
 
         private:
             class Code;
-            Y_Disable_Copy_And_Assign(Compiler);
-            Code * const code;
+            Y_Disable_Copy_And_Assign(Compiler); //!< discarding
+            Code * const code;                   //!< inner code
         public:
-            bool &verbose;
+            bool &verbose;                       //!< verbosity
         };
 
     }

@@ -155,6 +155,7 @@ built(0)
         // Interface
         //
         //______________________________________________________________________
+        //! [Container] \return current size
         virtual size_t size() const noexcept
         {
             Y_Must_Lock();
@@ -196,6 +197,7 @@ built(0)
             }
         }
 
+        //! push args at tail \param args argument
         virtual void pushTail(ParamType args)
         {
             Y_Must_Lock();
@@ -217,6 +219,7 @@ built(0)
             ++built;
         }
 
+        //! push args at head \param args arguments
         virtual void pushHead(ParamType args)
         {
             Y_Must_Lock();
@@ -254,6 +257,7 @@ built(0)
             ++built;
         }
 
+        //! remove tail
         virtual void popTail() noexcept
         {
             Y_Must_Lock();
@@ -261,6 +265,7 @@ built(0)
         }
 
 
+        //! remove head
         virtual void popHead() noexcept
         {
             Y_Must_Lock();
@@ -273,7 +278,7 @@ built(0)
         }
 
 
-        virtual void free()    noexcept { free_();    }
+        virtual void free()    noexcept { free_();    } //!< [Recyclable] free content, keep memory
         virtual void release() noexcept { release_(); } //!< [Releasable] release all memory
 
         //! exchange contents \param other another vector

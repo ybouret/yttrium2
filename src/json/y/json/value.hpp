@@ -25,13 +25,13 @@ namespace Yttrium
         //______________________________________________________________________
         enum Type
         {
-            IsString,
-            IsNumber,
-            IsNull,
-            IsTrue,
-            IsFalse,
-            IsArray,
-            IsObject
+            IsString, //!< String
+            IsNumber, //!< Number
+            IsNull,   //!< Null
+            IsTrue,   //!< True
+            IsFalse,  //!< False
+            IsArray,  //!< Array
+            IsObject  //!< Object
         };
 
         typedef double Number;     //!< alias
@@ -57,7 +57,7 @@ namespace Yttrium
             //__________________________________________________________________
             virtual ~Value() noexcept;        //!< cleanup
             Value(const Value &);             //!< copy
-            Value & operator=(const Value &); //!< assign
+            Value & operator=(const Value &); //!< assign \return *this
             
             Value() noexcept;           //!< IsNull
             Value(const String &);      //!< IsString
@@ -74,16 +74,13 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            void  xch(Value &) noexcept; //!< swap contents
-            void  nullify() noexcept;      //!< clear content
+            void  xch(Value &) noexcept;                         //!< swap contents
+            void  nullify()    noexcept;                         //!< clear content
+            std::ostream & display(std::ostream &) const;        //!< display \return stream
+            Y_OSTREAM_PROTO(Value);                              //!< default display
+            template <typename T> const T & as() const noexcept; //!< \return access data
 
-            std::ostream &        display(std::ostream &os) const; //!< display
-
-            Y_OSTREAM_PROTO(Value); //!< default display
-
-            template <typename T> const T & as() const noexcept; //!< access data
-
-            //! access data, const
+            //! access data, mutable \return data
             template <typename T> inline
             T & as() noexcept
             {
@@ -121,10 +118,10 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            explicit Array()     noexcept;         //!< setup
-            virtual ~Array()     noexcept;         //!< cleanup
-            explicit Array(const Array &);         //!< copy
-            Array & operator=(const Array &other); //!< assign
+            explicit Array()     noexcept;    //!< setup
+            virtual ~Array()     noexcept;    //!< cleanup
+            explicit Array(const Array &);    //!< copy
+            Array & operator=(const Array &); //!< assign \return *this
 
             //__________________________________________________________________
             //
@@ -132,9 +129,8 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            void add(Value &value); //!< steal value, pushed
-            std::ostream & display(std::ostream &) const; //!< display
-
+            void add(Value &);                            //!< steal value, pushed
+            std::ostream & display(std::ostream &) const; //!< display \return stream
         };
 
 
@@ -162,11 +158,10 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //
-            // C++
+            // Methods
             //
             //__________________________________________________________________
-
-            const String & key() const noexcept; //!< get key
+            const String & key() const noexcept; //!< \return key
 
             //__________________________________________________________________
             //
@@ -178,7 +173,7 @@ namespace Yttrium
             Value        v; //!< value
             
         private:
-            Y_Disable_Copy_And_Assign(Pair);
+            Y_Disable_Copy_And_Assign(Pair); //!< discarding
         };
 
         typedef Keyed<String, ArcPtr<Pair> > SharedPair; //!< alias
@@ -205,7 +200,7 @@ namespace Yttrium
             explicit Object();                  //!< create
             virtual ~Object() noexcept;         //!< cleanup
             explicit Object(const Object &);    //!< copy
-            Object & operator=(const Object &); //!< cleanup
+            Object & operator=(const Object &); //!< \return *this
 
             //__________________________________________________________________
             //
@@ -213,10 +208,9 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            std::ostream & display(std::ostream &) const; //!< display
-
-            Value &       operator[](const String &key);       //!< get/create (null) Value
-            const Value & operator[](const String &key) const; //!< get existing Value
+            std::ostream & display(std::ostream &)      const; //!< display \return stream
+            Value &       operator[](const String &key);       //!< get/create (null) Value \param key key \return value
+            const Value & operator[](const String &key) const; //!< get existing Value \param key key \return existing value
 
         };
 
