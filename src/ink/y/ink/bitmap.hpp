@@ -11,11 +11,28 @@ namespace Yttrium
     {
 
 
+        class BitRow
+        {
+        public:
+            BitRow(uint8_t * const, const size_t, const unit_t, const unit_t) noexcept;
+
+        private:
+            uint8_t * const p;
+        public:
+            const size_t w;
+            const unit_t x;
+            const unit_t xt;
+
+        private:
+            Y_Disable_Copy_And_Assign(BitRow);
+        };
+
         class Bitmap : public Area
         {
         public:
             static const char * const CallSign;
-            
+            class Code;
+
             explicit Bitmap(const size_t W,
                             const size_t H,
                             const size_t B);
@@ -29,10 +46,12 @@ namespace Yttrium
             const size_t   stride;
 
         private:
-            class Code;
-            Y_Disable_Assign(Bitmap);
-            Code * const code;
-
+            class Rows;
+            Y_Disable_Copy_And_Assign(Bitmap);
+            Code * const   code;
+            Rows * const   rows;
+        protected:
+            BitRow * const row_;
         };
 
     }

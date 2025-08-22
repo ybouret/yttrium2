@@ -15,32 +15,78 @@ namespace Yttrium
         namespace
         {
             typedef Memory::SchoolOf<uint8_t> BitmapData;
+            typedef Memory::SchoolOf<BitRow>  BitmapRows;
+
         }
 
-        class Bitmap:: Code : public CountedObject, public BitmapData
+        class Bitmap:: Code : public CountedObject
 
         {
         public:
-            explicit Code(const size_t items) :
-            CountedObject(),
-            BitmapData(items)
-            {
+            inline explicit Code() noexcept : CountedObject() {}
+            inline virtual ~Code() noexcept {}
 
-            }
-
-            virtual ~Code() noexcept
-            {
-
-            }
+            virtual uint8_t * get() const noexcept = 0;
 
         private:
             Y_Disable_Copy_And_Assign(Code);
         };
 
+        namespace
+        {
+            class MemCode : public Bitmap::Code, public BitmapData
+            {
+            public:
+                inline explicit MemCode(const size_t items) : Bitmap::Code(), BitmapData(items) { }
+                inline virtual ~MemCode() noexcept {}
+
+                inline virtual uint8_t * get() const noexcept { return entry; }
+
+            private:
+                Y_Disable_Copy_And_Assign(MemCode);
+            };
+        }
+
+
+        BitRow:: BitRow(uint8_t * const ptr,
+                        const size_t    W,
+                        const unit_t    xlo,
+                        const unit_t    xup) noexcept :
+        p(ptr),
+        w(W),
+        x(xlo),
+        xt(xup)
+        {
+
+        }
+
+        class Bitmap:: Rows : public Object, public BitmapRows
+        {
+        public:
+
+            inline explicit Rows(const Bitmap & bmp,
+                                 uint8_t *      ptr) : Object(), BitmapRows(bmp.h)
+            {
+                for(size_t j=0;j<bmp.h;++j, ptr += bmp.stride)
+                {
+                    new (entry+j) BitRow(ptr,bmp.w,bmp.lower.x,bmp.upper.x);
+                }
+            }
+
+
+            inline virtual ~Rows() noexcept {}
+
+        private:
+            Y_Disable_Copy_And_Assign(Rows);
+
+        };
+
         Bitmap:: ~Bitmap() noexcept
         {
             assert(code);
-            Destroy(code);
+            assert(rows);
+            Destroy(rows);
+            if(code->liberate()) Destroy(code);
         }
 
         namespace
@@ -78,9 +124,19 @@ namespace Yttrium
         bpp( CheckBPP(B) ),
         scanline( w * bpp ),
         stride( scanline  ),
-        code( new Code(items) )
+        code( new MemCode(items) ),
+        rows( 0 ),
+        row_( 0 )
         {
-
+            try {
+                Coerce(rows) = new Rows(*this,code->get());
+                Coerce(row_) = rows->entry - lower.y;
+                code->withhold();
+            }
+            catch(...)
+            {
+                Destroy(code); throw;
+            }
         }
     }
 
