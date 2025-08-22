@@ -29,8 +29,13 @@ namespace Yttrium
             {
                 verbose = true;
 
-
+                //--------------------------------------------------------------
+                //
+                //
                 // setup parser
+                //
+                //
+                //--------------------------------------------------------------
                 Alt &       JSON    = alt(lang);
                 Alt &       Value   = alt("Value");
                 const Rule &STRING  = plugin(Jive::Lexical::JString::Class, "String");
@@ -57,14 +62,26 @@ namespace Yttrium
 
                 Value << STRING << NUMBER << "null" << "true" << "false";
 
+                //--------------------------------------------------------------
+                //
+                //
                 // setup lexer
+                //
+                //
+                //--------------------------------------------------------------
                 drop("[:blank:]");
                 endl("[:endl:]",false);
 
                 render();
                 validate();
 
+                //--------------------------------------------------------------
+                //
+                //
                 // setup analyzer
+                //
+                //
+                //--------------------------------------------------------------
                 Y_JSON_Push(Number);
                 Y_JSON_Push(null);
                 Y_JSON_Push(true);
@@ -75,6 +92,7 @@ namespace Yttrium
                 Y_JSON_Func(EmptyObject);
                 Y_JSON_Func(Pair);
                 Y_JSON_Func(HeavyArray);
+                Y_JSON_Func(HeavyObject);
 
 
             }
@@ -177,6 +195,23 @@ namespace Yttrium
                     Array & arr = val.as<Array>();
                     while(n-- > 0) { arr.add( values.tail() ); values.popTail(); }
                     Algorithm::Reverse(arr,Memory::Stealth::Swap<Value>);
+                }
+                values.add(val);
+            }
+
+            void onHeavyObject(size_t n)
+            {
+                assert(n>=pairs.size());
+                std::cerr << "pairs=" << pairs << std::endl;
+                Value val(AsObject);
+                {
+                    JSON::Object &obj = val.as<JSON::Object>();
+                    while(n-- > 0)
+                    {
+                        if(!obj.insert( pairs.tail() )) throw Specific::Exception(lang->c_str(),"multiple keys in Object");
+                        pairs.popTail();
+                    }
+                    std::cerr << "object=" << obj << std::endl;
                 }
                 values.add(val);
             }
