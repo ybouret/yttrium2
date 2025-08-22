@@ -45,8 +45,7 @@ namespace Yttrium
             };
 
             inline explicit Pixmap(const size_t W, const size_t H) :
-            Bitmap(W,H,sizeof(T)),
-            ops( data(), items)
+            Bitmap(W,H,sizeof(T)) //,             ops( data(), items)
             {
             }
 
@@ -69,7 +68,7 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(Pixmap);
-            Memory::Operating<MutableType> ops;
+            //Memory::Operating<MutableType> ops;
 
         };
 
