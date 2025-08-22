@@ -38,7 +38,7 @@ namespace
 Y_UTEST(bitmap)
 {
     Random::ParkMiller ran;
-    Ink::Bitmap bmp(100,34,sizeof(uint32_t));
+    Ink::Bitmap        bmp(100,34,sizeof(uint32_t));
 
     Y_SIZEOF(Ink::BitRow);
 
@@ -50,6 +50,7 @@ Y_UTEST(bitmap)
         {
             row[i] = ran.to<uint32_t>();
         }
+
     }
 
 }

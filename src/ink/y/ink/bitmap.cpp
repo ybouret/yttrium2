@@ -124,7 +124,7 @@ namespace Yttrium
         bpp( CheckBPP(B) ),
         scanline( w * bpp ),
         stride( scanline  ),
-        code( new MemCode(items) ),
+        code( new MemCode(items*bpp) ),
         rows( 0 ),
         row_( 0 )
         {
