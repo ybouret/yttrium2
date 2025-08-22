@@ -37,7 +37,7 @@ namespace Yttrium
             class MemCode : public Bitmap::Code, public BitmapData
             {
             public:
-                inline explicit MemCode(const size_t items) : Bitmap::Code(), BitmapData(items) { }
+                inline explicit MemCode(const size_t total) : Bitmap::Code(), BitmapData(total) { }
                 inline virtual ~MemCode() noexcept {}
 
                 inline virtual uint8_t * get() const noexcept { return entry; }
@@ -60,12 +60,12 @@ namespace Yttrium
 
         }
 
-        class Bitmap:: Rows : public Object, public BitmapRows
+        class Bitmap:: Rows : public CountedObject, public BitmapRows
         {
         public:
 
             inline explicit Rows(const Bitmap & bmp,
-                                 uint8_t *      ptr) : Object(), BitmapRows(bmp.h)
+                                 uint8_t *      ptr) : CountedObject(), BitmapRows(bmp.h)
             {
                 for(size_t j=0;j<bmp.h;++j, ptr += bmp.stride)
                 {
@@ -85,7 +85,7 @@ namespace Yttrium
         {
             assert(code);
             assert(rows);
-            Destroy(rows);
+            if(rows->liberate()) Destroy(rows);
             if(code->liberate()) Destroy(code);
         }
 
@@ -132,6 +132,7 @@ namespace Yttrium
                 Coerce(rows) = new Rows(*this,code->get());
                 Coerce(row_) = rows->entry - lower.y;
                 code->withhold();
+                rows->withhold();
             }
             catch(...)
             {
@@ -154,6 +155,21 @@ namespace Yttrium
             return row_[j];
         }
 
+
+        Bitmap:: Bitmap(const Bitmap &bmp) noexcept :
+        Area(bmp),
+        w(width.x),
+        h(width.y),
+        bpp(bmp.bpp),
+        scanline( bmp.scanline ),
+        stride(   bmp.stride   ),
+        code( bmp.code ),
+        rows( bmp.rows ),
+        row_( bmp.row_ )
+        {
+            code->withhold();
+            rows->withhold();
+        }
     }
 
 }

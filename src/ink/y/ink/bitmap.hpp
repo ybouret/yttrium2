@@ -37,6 +37,8 @@ namespace Yttrium
                             const size_t H,
                             const size_t B);
 
+            explicit Bitmap(const Bitmap &) noexcept; //!< shared copy
+
             virtual ~Bitmap() noexcept;
 
             BitRow       & operator()(const unit_t j) noexcept;
@@ -50,7 +52,7 @@ namespace Yttrium
 
         private:
             class Rows;
-            Y_Disable_Copy_And_Assign(Bitmap);
+            Y_Disable_Assign(Bitmap);
             Code * const   code;
             Rows * const   rows;
         protected:
