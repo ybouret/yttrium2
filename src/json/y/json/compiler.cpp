@@ -99,11 +99,12 @@ namespace Yttrium
 
             }
 
-            void compile(Jive::Source &source)
+            Value & compile(Jive::Source &source)
             {
                 AutoPtr<XNode> tree = parse(source); assert( tree.isValid() );
                 if(verbose) Vizible::Render("jtree.dot", *tree);
                 walk( & *tree );
+                return values.head();
             }
 
 
@@ -122,7 +123,9 @@ namespace Yttrium
 
             inline virtual void quit()
             {
-                std::cerr << values << std::endl;
+                //std::cerr << "result:" << values << std::endl;
+                if(values.size()!=1)
+                    throw Specific::Exception(lang->c_str(),"corrupted syntax tree");
             }
 
             inline void onNumber(const Token &token)
@@ -185,13 +188,14 @@ namespace Yttrium
                 pair->v.xch(v);
 
                 pairs << pair;
-                std::cerr << "pairs=" << pairs << std::endl;
+                //std::cerr << "pairs=" << pairs << std::endl;
             }
 
 
             void onHeavyArray(size_t n)
             {
-                assert(n>=values.size());
+                //std::cerr << "values=" << values << " / n=" << n << std::endl;
+                assert(values.size()>=n);
                 Value   val(AsArray);
                 {
                     Array & arr = val.as<Array>();
@@ -203,7 +207,7 @@ namespace Yttrium
 
             void onHeavyObject(size_t n)
             {
-                assert(n>=pairs.size());
+                assert(pairs.size()>=n);
                 Value val(AsObject);
                 {
                     JSON::Object &obj = val.as<JSON::Object>();
@@ -230,9 +234,10 @@ namespace Yttrium
             Destroy(code);
         }
 
-        void Compiler:: operator()( Jive::Source &source )
+        void Compiler:: operator()( Value &value, Jive::Source &source )
         {
-            code->compile(source);
+            value.nullify();
+            value.xch( code->compile(source) );
         }
 
     }

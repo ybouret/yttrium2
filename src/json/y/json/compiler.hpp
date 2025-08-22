@@ -19,7 +19,7 @@ namespace Yttrium
             explicit Compiler();
             virtual ~Compiler() noexcept;
 
-            void operator()( Jive::Source & );
+            void operator()( Value &value, Jive::Source & );
 
         private:
             class Code;

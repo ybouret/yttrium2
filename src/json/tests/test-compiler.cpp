@@ -8,10 +8,11 @@ using namespace Yttrium;
 Y_UTEST(compiler)
 {
     JSON::Compiler json;
+    JSON::Value    value;
     if( argc > 1 )
     {
         Jive::Source source( Jive::Module::OpenFile(argv[1]) );
-        json( source );
+        json( value, source );
     }
 }
 Y_UDONE()
