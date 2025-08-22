@@ -55,6 +55,8 @@ namespace Yttrium
             {
             }
 
+
+
             Row & operator[](const unit_t j) noexcept
             {
                 return (Row &)row_[ zflux[j] ];
