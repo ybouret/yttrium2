@@ -14,10 +14,10 @@ Y_UTEST(pixmap)
 
     {
         Pixmap<String> p(5,8);
-        for(unit_t j=0;j<p.upper.y;++j)
+        for(unit_t j=0;j<=p.upper.y;++j)
         {
             Y_ASSERT(j==p.zflux[j]);
-            for(unit_t i=0;i<p.upper.x;++i)
+            for(unit_t i=0;i<=p.upper.x;++i)
             {
                 assert(i==p[j].z[i]);
                 const String s = Gen<String>::New(ran);
@@ -40,8 +40,11 @@ Y_UTEST(pixmap)
             }
         }
 
+        std::cerr << std::endl << p << std::endl;
+
         Pixmap<float> f(CopyOf,p);
-        
+        std::cerr << std::endl << f << std::endl;
+
     }
 
 

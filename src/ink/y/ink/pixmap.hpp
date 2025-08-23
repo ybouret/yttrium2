@@ -25,8 +25,8 @@ namespace Yttrium
                 inline Type &      operator[](const unit_t i)       noexcept { return p[ z[i] ]; }
                 inline ConstType & operator[](const unit_t i) const noexcept { return p[ z[i] ]; }
 
-                inline Type &      operator()(const size_t i)       noexcept { assert(i<w); return p[w]; }
-                inline ConstType & operator()(const size_t i) const noexcept { assert(i<w); return p[w]; }
+                inline Type &      operator()(const size_t i)       noexcept { assert(i<w); return p[i]; }
+                inline ConstType & operator()(const size_t i) const noexcept { assert(i<w); return p[i]; }
 
             private:
                 MutableType * const p;
@@ -71,7 +71,6 @@ namespace Yttrium
                 {
                     Core::Display( os, &pxm(j)(0), pxm.w ) << std::endl;
                 }
-
                 return  Core::Display( os, &pxm(jtop)(0), pxm.w );
             }
 
