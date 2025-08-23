@@ -32,6 +32,8 @@ namespace Yttrium
             //
             //__________________________________________________________________
             static const char * const CallSign; //!< "Bitmap"
+            typedef void (*CTor)(void * const, const void * const);
+            typedef void (*DTor)(void * const);
             class Code;
             class Rows;
 
@@ -44,10 +46,15 @@ namespace Yttrium
             //__________________________________________________________________
             explicit Bitmap(const size_t W,
                             const size_t H,
-                            const size_t B);
+                            const size_t B,
+                            CTor         ctor,
+                            DTor         dtor);
 
             explicit Bitmap(const Bitmap &) noexcept;         //!< shared copy
-            explicit Bitmap(const CopyOf_ &, const Bitmap &); //!< hard copy
+            explicit Bitmap(const CopyOf_ &,
+                            const Bitmap  & bmp,
+                            const size_t    B,
+                            CTor            cpy); //!< hard copy
 
 
             virtual ~Bitmap() noexcept;

@@ -3,6 +3,7 @@
 #include "y/utest/run.hpp"
 #include "y/container/contiguous.hpp"
 #include "y/random/park-miller.hpp"
+#include <cstring>
 
 using namespace Yttrium;
 
@@ -30,14 +31,21 @@ namespace
         ~SomeRow() noexcept;
         Y_Disable_Copy_And_Assign(SomeRow);
     };
+
+    static inline void ctor(void * const addr, const void * const)  { new (addr) uint32_t(0); }
+    static inline void dtor(void * const addr) noexcept { memset(addr,0,sizeof(uint32_t));  }
+    
+
+
 }
 
 Y_UTEST(bitmap)
 {
     Random::ParkMiller ran;
-    Ink::Bitmap        bmp(100,34,sizeof(uint32_t));
+    Ink::Bitmap        bmp(100,34,sizeof(uint32_t),ctor,dtor);
 
-    Y_SIZEOF(Ink::BitRow);
+
+#if 1
 
     for(unit_t j=0;j<bmp.upper.y;++j)
     {
@@ -49,6 +57,7 @@ Y_UTEST(bitmap)
         }
 
     }
+#endif
 
 }
 Y_UDONE()

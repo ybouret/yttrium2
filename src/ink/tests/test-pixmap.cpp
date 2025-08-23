@@ -12,14 +12,36 @@ Y_UTEST(pixmap)
     Random::MT19937 ran;
 
 
-    Pixmap<String> p(10,8);
-
-    for(unit_t j=0;j<p.upper.y;++j)
     {
-        for(unit_t i=0;i<p.upper.x;++i)
+        Pixmap<String> p(5,8);
+        for(unit_t j=0;j<p.upper.y;++j)
         {
-            p[j][i] = Gen<String>::New(ran);
+            Y_ASSERT(j==p.zflux[j]);
+            for(unit_t i=0;i<p.upper.x;++i)
+            {
+                assert(i==p[j].z[i]);
+                const String s = Gen<String>::New(ran);
+                std::cerr << " " << s;
+                p[j][i] = s;
+                Y_ASSERT( &p[j][i] == &p(j)(i) );
+            }
+            std::cerr << std::endl;
         }
+        std::cerr << p << std::endl;
+    }
+
+    {
+        Pixmap<int> p(8,5);
+        for(size_t j=0;j<p.h;++j)
+        {
+            for(size_t i=0;i<p.w;++i)
+            {
+                p(j)(i) = Gen<int16_t>::New(ran);
+            }
+        }
+
+        Pixmap<float> f(CopyOf,p);
+        
     }
 
 

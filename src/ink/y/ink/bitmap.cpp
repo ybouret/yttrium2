@@ -22,12 +22,24 @@ namespace Yttrium
         class Bitmap:: Code : public CountedObject
 
         {
-        public:
-            inline explicit Code() noexcept : CountedObject() {}
-            inline virtual ~Code() noexcept {}
+        protected:
+            //! initialize, on and off can be NULL
+            inline explicit Code(const size_t   bpp,
+                                 Bitmap::CTor   on,
+                                 Bitmap::DTor   off) noexcept :
+            CountedObject(), bsize(bpp), ctor(on), dtor(off)
+            {}
 
+        public:
+            //! cleanup
+            inline virtual  ~Code() noexcept {}
+
+            //! access data
             virtual uint8_t * get() const noexcept = 0;
 
+            const size_t bsize; //!< block size
+            Bitmap::CTor ctor;  //!< constructor if needed
+            Bitmap::DTor dtor;  //!< destructor  if needed
         private:
             Y_Disable_Copy_And_Assign(Code);
         };
@@ -37,13 +49,81 @@ namespace Yttrium
             class MemCode : public Bitmap::Code, public BitmapData
             {
             public:
-                inline explicit MemCode(const size_t total) : Bitmap::Code(), BitmapData(total) { }
-                inline virtual ~MemCode() noexcept {}
+                inline explicit MemCode(const size_t items,
+                                        const size_t bpp,
+                                        Bitmap::CTor on,
+                                        Bitmap::DTor off) :
+                Bitmap::Code(bpp,on,off),
+                BitmapData(items*bpp),
+                built(0)
+                {
+                    assert(ctor); assert(dtor);
+                    init(items);
+                }
+
+                inline explicit MemCode(const Code    &code,
+                                        const size_t   items,
+                                        const size_t   bpp,
+                                        Bitmap::CTor   cpy) :
+                Bitmap::Code(bpp,cpy,code.dtor),
+                BitmapData(items*bsize),
+                built(0)
+                {
+                    assert(ctor); assert(dtor);
+                    init(items,code.get(),code.bsize);
+                }
+
+                inline virtual ~MemCode() noexcept { quit(); }
 
                 inline virtual uint8_t * get() const noexcept { return entry; }
 
             private:
                 Y_Disable_Copy_And_Assign(MemCode);
+                size_t       built;
+
+                inline void init(const size_t items)
+                {
+
+                    try {
+                        uint8_t *ptr = entry;
+                        while(built<items)
+                        {
+                            ctor(ptr,0);
+                            ptr+=bsize;
+                            ++built;
+                        }
+                    }
+                    catch(...) { quit(); throw; }
+                }
+
+                inline void init(const size_t    items,
+                                 const uint8_t * src,
+                                 const size_t    sbs)
+                {
+                    try {
+
+                        uint8_t *       tgt = entry;
+                        const size_t    tbs = bsize;
+                        while(built<items)
+                        {
+                            ctor(tgt,src);
+                            tgt+=tbs;
+                            src+=sbs;
+                            ++built;
+                        }
+                    }
+                    catch(...) { quit(); throw; }
+                }
+
+
+                inline void  quit() noexcept
+                {
+                    uint8_t *ptr = entry + (built*bsize);
+                    while(built-- > 0)
+                    {
+                        dtor( ptr -= bsize );
+                    }
+                }
             };
         }
 
@@ -114,7 +194,7 @@ namespace Yttrium
         {
             try {
                 Coerce(rows) = new Rows(*this,code->get());
-                Coerce(row_) = rows->entry - lower.y;
+                Coerce(row_) = rows->entry;
                 code->withhold();
                 rows->withhold();
             }
@@ -126,7 +206,9 @@ namespace Yttrium
 
         Bitmap:: Bitmap(const size_t W,
                         const size_t H,
-                        const size_t B) :
+                        const size_t B,
+                        CTor         ctor,
+                        DTor         dtor) :
         Area( Coord(0,0), GetCoord(W,H) ),
         w(width.x),
         h(width.y),
@@ -134,7 +216,7 @@ namespace Yttrium
         scanline( w * bpp ),
         stride( scanline  ),
         zflux(h),
-        code( new MemCode(items*bpp) ),
+        code( new MemCode(items,bpp,ctor,dtor) ),
         rows( 0 ),
         row_( 0 )
         {
@@ -163,24 +245,27 @@ namespace Yttrium
         scanline( bmp.scanline ),
         stride(   bmp.stride   ),
         zflux(    bmp.zflux    ),
-        code( bmp.code ),
-        rows( bmp.rows ),
-        row_( bmp.row_ )
+        code(     bmp.code     ),
+        rows(     bmp.rows     ),
+        row_(     bmp.row_     )
         {
             code->withhold();
             rows->withhold();
         }
 
 
-        Bitmap:: Bitmap(const CopyOf_&, const Bitmap &bmp) :
+        Bitmap:: Bitmap(const CopyOf_&,
+                        const Bitmap &bmp,
+                        const size_t  B,
+                        CTor          cpy) :
         Area(bmp),
         w(width.x),
         h(width.y),
-        bpp(bmp.bpp),
-        scanline( bmp.scanline ),
-        stride(   bmp.stride   ),
-        zflux(    bmp.zflux    ),
-        code( new MemCode(items*bpp) ),
+        bpp(B),
+        scanline( w*bpp     ),
+        stride(   scanline  ),
+        zflux(    bmp.zflux ),
+        code( new MemCode(*bmp.code,items,bpp,cpy) ),
         rows( 0 ),
         row_( 0 )
         {
