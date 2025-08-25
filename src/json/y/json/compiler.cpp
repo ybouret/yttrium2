@@ -45,8 +45,8 @@ namespace Yttrium
 
                 {
                     Alt & ARRAY = alt("Array");
-                    ARRAY << ( agg("HeavyArray") << '[' << Value << extra(',', Value) << ']');
-                    ARRAY << ( agg("EmptyArray") << '[' << ']');
+                    ARRAY << heavyList("HeavyArray", '[', Value, ',', ']');
+                    ARRAY << emptyList("EmptyArray", '[', ']');
                     JSON  << ARRAY;
                     Value << ARRAY;
                 }
@@ -57,7 +57,7 @@ namespace Yttrium
                         const Rule & PAIR = ( agg("Pair") << STRING << ':' << Value );
                         OBJECT << ( agg("HeavyObject") << '{' << PAIR << extra(',',PAIR) << '}' );
                     }
-                    OBJECT << ( agg("EmptyObject") << '{' << '}');
+                    OBJECT << emptyList("EmptyObject", '{', '}');
                     JSON  << OBJECT;
                     Value << OBJECT;
                 }

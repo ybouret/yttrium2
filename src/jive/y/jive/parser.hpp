@@ -23,6 +23,7 @@ namespace Yttrium
         class Parser : public Lexer, public Syntax::Grammar
         {
         public:
+
             //__________________________________________________________________
             //
             //
@@ -45,6 +46,17 @@ namespace Yttrium
             //
             //
             // Methods
+            //
+            //__________________________________________________________________
+
+            //! \return AST from source and reset Lexer
+            XNode * parse(Source &);
+
+
+            //__________________________________________________________________
+            //
+            //
+            // Low-Level Methods
             //
             //__________________________________________________________________
 
@@ -107,6 +119,17 @@ namespace Yttrium
             }
 
 
+
+
+
+
+            //__________________________________________________________________
+            //
+            //
+            // High-Level Methods
+            //
+            //__________________________________________________________________
+
             //! helper \return zom( cat(sep,rule) )
             const Rule & extra(const char,const Rule &);
 
@@ -116,10 +139,24 @@ namespace Yttrium
             //! helper \return cat('(',rule,')')
             const Rule & parens(const Rule &);
 
-            //! \return AST from source and reset Lexer
-            XNode * parse(Source &);
+            template <typename ID> inline
+            const Rule & emptyList(const ID &id, const char enter, const char leave)
+            {
+                return populate(agg(id),enter,leave);
+            }
 
-            
+            template <typename ID> inline
+            const Rule & heavyList(const ID & id,
+                                    const char enter,
+                                    const Rule &rule,
+                                    const char separator,
+                                    const char leave)
+            {
+                return populate(agg(id),enter,rule,separator,leave);
+            }
+
+
+
 
         private:
             Y_Disable_Copy_And_Assign(Parser); //!< discarding
@@ -129,6 +166,9 @@ namespace Yttrium
 
             //! \return terminal matching plugin
             const Rule & link(const Tag &);
+
+            const Rule & populate( Agg &, const char, const char);
+            const Rule & populate( Agg &, const char, const Rule &, const char, const char);
 
         };
     }

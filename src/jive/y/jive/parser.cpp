@@ -62,6 +62,17 @@ namespace Yttrium
         }
 
 
+        const Syntax::Rule & Parser:: populate( Agg &a, const char enter, const char leave)
+        {
+            return a << enter << leave;
+        }
+
+        const Syntax::Rule & Parser:: populate( Agg &a, const char enter, const Rule &rule, const char separator, const char leave)
+        {
+            return a << enter << rule << extra(separator,rule) << leave;
+        }
+
+
     }
 
 }
