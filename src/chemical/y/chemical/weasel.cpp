@@ -1,6 +1,7 @@
 
 #include "y/chemical/weasel.hpp"
 #include "y/chemical/weasel/parser.hpp"
+#include "y/chemical/weasel/formula/to-text.hpp"
 
 
 namespace Yttrium
@@ -19,7 +20,9 @@ namespace Yttrium
             class WeaselCode : public Weasel::Parser
             {
             public:
-                inline WeaselCode()
+                inline WeaselCode() :
+                Weasel::Parser(),
+                formulaToText(*this)
                 {
 
                 }
@@ -29,6 +32,7 @@ namespace Yttrium
 
                 }
 
+                Weasel::FormulaToText formulaToText;
 
             private:
                 Y_Disable_Copy_And_Assign(WeaselCode);
@@ -66,10 +70,19 @@ namespace Yttrium
 
         XNode * Weasel:: parse( Jive::Module *m )
         {
-            Jive::Source source(m);
-            return code->parse(source);
+            Jive::Source   source(m);
+            AutoPtr<XNode> node = code->parse(source);
+
+            return node.yield();
         }
 
+        String  Weasel:: formulaToString(const Formula &f, int * const z)
+        {
+            int          res = 0;
+            const String str = code->formulaToText.compile(f,res);
+            if(z) *z = res;
+            return str;
+        }
 
     }
 }

@@ -26,14 +26,16 @@ namespace Yttrium
         public:
             static const char * const CallSign;
             static const Longevity    LifeTime = LifeTimeOf::ChemicalWeasel;
-            static const char * const      Coef;           //!< "Coef"
-            static const char * const      RegExp;         //!< "RegExp";
-            static const char * const      StringID;       //!< "String";
+            static const char * const Coef;           //!< "Coef"
+            static const char * const RegExp;         //!< "RegExp";
+            static const char * const StringID;       //!< "String";
             class Parser;
+            class FormulaToText;
 
             virtual void display(std::ostream &,size_t) const;
 
-            XNode * parse( Jive::Module *);
+            XNode * parse(Jive::Module *);
+            String  formulaToString(const Formula &, int * const);
 
 
         private:

@@ -17,12 +17,14 @@ namespace Yttrium
         {
         public:
 
-            inline explicit Code(const Tag     &l,
-                                 const Analysis a) :
+            inline explicit Code(const Tag     &  l,
+                                 const Analysis   a,
+                                 const Analyzer  &A) :
             tdb(),
             idb(),
             lang(l),
             kind(a),
+            analyzer(A),
             verbose(false)
             {
             }
@@ -38,7 +40,8 @@ namespace Yttrium
                 return os;
             }
 
-            void walk(const XNode * const node, const size_t depth)
+            void walk(const XNode * const node,
+                      const size_t        depth)
             {
                 assert(0!=node);
 
@@ -59,6 +62,7 @@ namespace Yttrium
                 if(hook)
                 {
                     (*hook)(lexeme);
+                    analyzer.show(depth);
                 }
                 else
                 {
@@ -79,6 +83,7 @@ namespace Yttrium
                 if(hook)
                 {
                     (*hook)(node->size);
+                    analyzer.show(depth);
                 }
                 else
                 {
@@ -89,9 +94,10 @@ namespace Yttrium
             SuffixMap<String,TerminalProc> tdb;
             SuffixMap<String,InternalProc> idb;
 
-            const Tag      lang;
-            const Analysis kind;
-            bool           verbose;
+            const Tag       lang;
+            const Analysis  kind;
+            const Analyzer &analyzer;
+            bool            verbose;
         private:
             Y_Disable_Copy_And_Assign(Code);
         };
@@ -100,7 +106,7 @@ namespace Yttrium
         Analyzer:: Analyzer(const Syntax::Grammar &G,
                             const Analysis         a) :
         grammar(G),
-        code( new Code(grammar.lang,a) ),
+        code( new Code(grammar.lang,a,*this) ),
         verbose(code->verbose)
         {
         }
@@ -109,6 +115,7 @@ namespace Yttrium
         {
             Destroy(code);
         }
+
 
         void Analyzer:: walk(const XNode * const root)
         {
@@ -146,7 +153,10 @@ namespace Yttrium
         }
 
 
+        void Analyzer:: show(const size_t) const
+        {
 
+        }
 
         Walker:: Walker(const Syntax::Grammar &G) :
         Analyzer(G,Permissive)

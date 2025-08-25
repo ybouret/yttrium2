@@ -111,8 +111,9 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Analyzer); //!< discarding
             Code * const code; //!< inner code
 
-            virtual void init() = 0; //!< initialize before walking
-            virtual void quit() = 0; //!< finalize   after  walking
+            virtual void init()  = 0;  //!< initialize before walking
+            virtual void quit()  = 0;  //!< finalize   after  walking
+            virtual void show(const size_t) const; //!< called after push/func, do nothing is default
 
             void on(const Tag &, const TerminalProc &); //!< register callback
             void on(const Tag &, const InternalProc &); //!< register callback

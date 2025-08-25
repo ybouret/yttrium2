@@ -28,7 +28,7 @@ namespace Yttrium
             const Rule &OPT_SEP   = opt(SEPARATOR);
 
             STATEMENT << SEPARATOR;                // single separator
-            STATEMENT << cat(oom(WHITE),OPT_SEP);  // blank line
+            STATEMENT << cat(oom(WHITE),OPT_SEP);  // remaining blank line
 
             //------------------------------------------------------------------
             //

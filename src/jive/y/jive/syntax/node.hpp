@@ -127,8 +127,8 @@ namespace Yttrium
 
         }
 
-        typedef Syntax::Node  XNode; //!< alias
-        typedef ArcPtr<XNode> XCode; //!< alias
+        typedef Syntax::Node     XNode; //!< alias
+        typedef ArcPtr<XNode>    XCode; //!< alias
     }
 }
 

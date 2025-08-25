@@ -112,6 +112,23 @@ namespace Yttrium
             return true;
         }
 
+        apn Token:: toNatural() const
+        {
+            const apn ten(10);
+            const uint8_t zero = '0';
+            const uint8_t nine = '9';
+            apn res = 0;
+            for(const Char *ch=head;ch;ch=ch->next)
+            {
+                const uint8_t d = **ch;
+                if(d<zero||d>nine) throw Exception("invalid digit in Token::toNatural");
+                res *= 10;
+                res += (d-zero);
+            }
+            return res;
+        }
+
+
 
     }
 }

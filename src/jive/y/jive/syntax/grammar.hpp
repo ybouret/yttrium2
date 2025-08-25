@@ -87,7 +87,15 @@ namespace Yttrium
                 const Rule * queryRule(const char * const)      const; //!< \return rule by name
                 const Rule * queryRule(const char)              const; //!< \return rule by name
 
-                
+                template <typename ID>
+                const Rule & operator[](const ID &id) const
+                {
+                    const Tag          t = id;
+                    const Rule * const p = queryRule(t);
+                    if(!p) ruleNotFound(t);
+                    return *p;
+                }
+
 
 
                 //! declare a terminal
@@ -206,8 +214,8 @@ namespace Yttrium
 
                 static String PreFormat(const Rule &);                       //!< \return pre formatted name
                 String        buildName(const Manifest &, const char) const; //!< \return manifest name
-                void          sendTo(Exception &, const Lexeme &) const;     //!< append description to exception
-
+                void          sendTo(Exception &, const Lexeme &)     const; //!< append description to exception
+                void          ruleNotFound(const Tag &)               const; //!< throw error
 
                 //! \param manifest manifest \param sep separator \return named LOGICAL with manifest
                 template <typename LOGICAL> inline

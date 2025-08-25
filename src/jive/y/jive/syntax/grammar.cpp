@@ -159,7 +159,11 @@ namespace Yttrium
                 Render(dotFile,*this);
             }
 
-            
+            void Grammar:: ruleNotFound(const Tag &t) const
+            {
+                throw Specific::Exception(lang->c_str(),"No Syntax::Rule '%s'", t->c_str());
+            }
+
         }
 
     }

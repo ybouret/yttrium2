@@ -5,10 +5,11 @@
 #define Y_Jive_Token_Included 1
 
 #include "y/jive/char.hpp"
-
+#include "y/apex/natural.hpp"
 
 namespace Yttrium
 {
+
     namespace Jive
     {
         
@@ -62,6 +63,8 @@ namespace Yttrium
              \return raw string
              */
             String toString(const size_t nskip=0, const size_t ntrim=0) const;
+
+            apn    toNatural() const;
 
             //! \return true if same content
             friend bool operator==(const Token &, const Token &) noexcept;
