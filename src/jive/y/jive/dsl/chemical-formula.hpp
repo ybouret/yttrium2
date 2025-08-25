@@ -24,6 +24,7 @@ namespace Yttrium
             static const char * const Name;      //!< "ChemicalFormula::Name"
             static const char * const Body;      //!< "ChemicalFormula::Body"
             static const char * const Mult;      //!< "ChemicalFormula::Mult"
+            static const char * const Coef;      //!< "COEF", external definition
             static const char * const CoefExpr;  //!< "[:digit:]+"
             static const char * const OptCoef;   //!< "ChemicalFormula::OptCoef"
             static const char * const Item;      //!< "ChemicalFormula::Item"
@@ -55,6 +56,22 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(ChemicalFormula); //!< discarding
+
+        public:
+            class ToText  
+            {
+            public:
+                explicit ToText(const Syntax::Grammar &);
+                virtual ~ToText() noexcept;
+
+                String operator()(const XNode * const root);
+
+            private:
+                class Code;
+                Y_Disable_Copy_And_Assign(ToText);
+                Code * const code;
+                
+            };
         };
     }
 

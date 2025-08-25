@@ -43,12 +43,16 @@ namespace
 Y_UTEST(formula)
 {
     Formulas p;
+    ChemicalFormula::ToText toText(p);
 
+    
     if(argc>1)
     {
         Source source( Module::OpenFile(argv[1]));
         AutoPtr<XNode> tree = p.parse(source); Y_ASSERT(tree.isValid());
         Vizible::Render("formula.dot",*tree);
+
+        toText( & *tree );
     }
 
 

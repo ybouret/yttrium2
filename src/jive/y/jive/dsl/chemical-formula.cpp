@@ -60,3 +60,65 @@ namespace Yttrium
 
     }
 }
+
+#include "y/jive/analyzer.hpp"
+
+namespace Yttrium
+{
+    namespace Jive
+    {
+
+        class ChemicalFormula:: ToText:: Code : public Analyzer
+        {
+        public:
+            inline explicit Code(const Syntax::Grammar &G) : Analyzer(G,Permissive)
+            {
+                verbose = true;
+            }
+
+            inline virtual ~Code() noexcept
+            {
+            }
+
+
+        private:
+            Y_Disable_Copy_And_Assign(Code);
+            virtual void init()
+            {
+            }
+
+            virtual void quit()
+            {
+            }
+
+        };
+
+#define Y_Push(ID) Y_Jive_Push(Code,ID)
+#define Y_Func(ID) Y_Jive_Func(Code,ID)
+        
+
+        ChemicalFormula:: ToText:: ToText(const Syntax::Grammar &G) :
+        code( new Code(G) )
+        {
+        }
+
+
+
+        ChemicalFormula:: ToText:: ~ToText() noexcept
+        {
+            Destroy(code);
+        }
+
+        String  ChemicalFormula:: ToText:: operator()(const XNode * const root)
+        {
+            assert(0!=root);
+            assert(0!=code);
+            code->walk(root);
+            return String();
+        }
+
+
+    }
+
+}
+
