@@ -23,6 +23,10 @@ namespace Yttrium
         class DSL : public Identifiable
         {
         protected:
+            typedef Syntax::Aggregate Agg;
+            typedef Syntax::Alternate Alt;
+            typedef Syntax::Rule      Rule;
+
             //__________________________________________________________________
             //
             //
@@ -30,7 +34,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            //! setuo \param id language name
+            //! setup \param id language name
             template <typename ID> inline
             explicit DSL(const ID &id) : lang(id)
             {

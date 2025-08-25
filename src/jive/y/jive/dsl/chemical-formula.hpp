@@ -3,7 +3,7 @@
 #ifndef Y_Jive_Chemical_Formula_Included
 #define Y_Jive_Chemical_Formula_Included 1
 
-#include "y/jive/parser.hpp"
+#include "y/jive/dsl.hpp"
 
 namespace Yttrium
 {
@@ -21,6 +21,14 @@ namespace Yttrium
         class ChemicalFormula : public DSL
         {
         public:
+            static const char * const Name;     //!< "ChemicalFormula::Name"
+            static const char * const Body;     //!< "ChemicalFormula::Body"
+            static const char * const Mult;     //!< "ChemicalFormula::Mult"
+            static const char * const Coef;     //!< "ChemicalFormula::Coef"
+            static const char * const Item;     //!< "ChemicalFormula::Item"
+            static const char * const Sign;     //!< "ChemicalFormula::Sign"
+            static const char * const Z;        //!< "ChemicalFormula::Z"
+
             //__________________________________________________________________
             //
             //
@@ -30,7 +38,7 @@ namespace Yttrium
 
             //! setup \param id identifier for context
             template <typename ID> inline
-            explicit ChemicalForumal(const ID & id ) : DSL(id) {}
+            explicit ChemicalFormula(const ID   &id) : DSL(id) {}
             virtual ~ChemicalFormula() noexcept; //!< cleanup
 
             //__________________________________________________________________
@@ -39,10 +47,11 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
+            const Rule & install( Parser & );
 
 
         private:
-            Y_Disable_Copy_And_Assign(DSL); //!< discarding
+            Y_Disable_Copy_And_Assign(ChemicalFormula); //!< discarding
         };
     }
 

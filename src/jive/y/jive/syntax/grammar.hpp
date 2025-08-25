@@ -8,6 +8,7 @@
 #include "y/jive/syntax/rule/terminal.hpp"
 #include "y/jive/syntax/rule/logical/aggegate.hpp"
 #include "y/jive/syntax/rule/logical/alternate.hpp"
+#include "y/jive/syntax/rule/wildcard/optional.hpp"
 
 
 
@@ -147,6 +148,17 @@ namespace Yttrium
                 Alternate & alt(const ID &id)
                 {
                     return add( new Alternate(id) );
+                }
+
+                //! create a new named optional
+                /**
+                 \param id name
+                 \param r  optional rule
+                 */
+                template <typename ID>
+                const Rule & opt(const ID &id, const Rule &r)
+                {
+                    return add( new Optional(id,r) );
                 }
 
 

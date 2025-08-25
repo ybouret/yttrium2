@@ -104,6 +104,23 @@ namespace Yttrium
                 return link(emit(rxp),Syntax::Divider);
             }
 
+            template <typename RID, typename RXP>
+            const Rule & termNL(const RID &rid, const RXP &rxp ) {
+                return link(endl(rid,rxp,true),Syntax::Regular);
+            }
+
+            template <typename RID, typename RXP>
+            const Rule & markNL(const RID &rid, const RXP &rxp ) {
+                return link(endl(rid,rxp,true),Syntax::Divider);
+            }
+
+            template <typename RXP>
+            const Rule & markNL(const RXP &rxp) {
+                return markNL(rxp,rxp);
+            }
+
+
+
             const Rule & operator[](const char); //!< \return marker on the fly
 
             //! create a terminal from a plugin
