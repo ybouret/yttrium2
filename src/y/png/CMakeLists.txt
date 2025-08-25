@@ -147,6 +147,7 @@ endif()
 #find_package(ZLIB REQUIRED)
 #set(PNG_LINK_LIBRARIES ZLIB::ZLIB)
 set(ZLIB_INCLUDE_DIRS "${ThirdPartyDir}/zlib/sdk")
+include_directories(${ZLIB_INCLUDE_DIRS})
 
 # Find the math library (unless we already know it's not available or
 # not needed).
