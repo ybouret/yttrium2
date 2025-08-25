@@ -53,10 +53,7 @@ namespace Yttrium
 
                 {
                     Alt & OBJECT = alt("Object");
-                    {
-                        const Rule & PAIR = ( agg("Pair") << STRING << ':' << Value );
-                        OBJECT << ( agg("HeavyObject") << '{' << PAIR << extra(',',PAIR) << '}' );
-                    }
+                    OBJECT << heavyList("HeavyObject", '{',  agg("Pair") << STRING << ':' << Value, ',', '}');
                     OBJECT << emptyList("EmptyObject", '{', '}');
                     JSON  << OBJECT;
                     Value << OBJECT;
