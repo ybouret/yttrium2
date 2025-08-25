@@ -12,8 +12,6 @@ namespace Yttrium
     namespace Ink
     {
 
-       
-
         //______________________________________________________________________
         //
         //
@@ -28,12 +26,12 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //
-            // Definition
+            // Definitions
             //
             //__________________________________________________________________
-            static const char * const CallSign; //!< "Bitmap"
-            typedef void (*CTor)(void * const, const void * const);
-            typedef void (*DTor)(void * const);
+            static const char * const CallSign;                     //!< "Bitmap"
+            typedef void (*CTor)(void * const, const void * const); //!< constructor prototype
+            typedef void (*DTor)(void * const);                     //!< destructor prototupe
             class Code;
             class Rows;
 
@@ -44,19 +42,36 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
+
+            //! full setup
+            /**
+             \param W width
+             \param H height
+             \param D depth
+             \param ctor ctor(addr,NULL) to construct
+             \param dtor dtor(addr) to desctruct
+             */
             explicit Bitmap(const size_t W,
                             const size_t H,
-                            const size_t B,
+                            const size_t D,
                             CTor         ctor,
                             DTor         dtor);
 
-            explicit Bitmap(const Bitmap &) noexcept;         //!< shared copy
+            //! noexcept shared copy
+            explicit Bitmap(const Bitmap &) noexcept;
+
+            //! copy
+            /**
+             \param bmp original bitmap
+             \param D   this depth
+             \param cpy  cpy(bmp.item,item) with possible different types
+             */
             explicit Bitmap(const CopyOf_ &,
                             const Bitmap  & bmp,
-                            const size_t    B,
+                            const size_t    D,
                             CTor            cpy); //!< hard copy
 
-
+            //! cleanup
             virtual ~Bitmap() noexcept;
 
 
@@ -66,8 +81,8 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            BitRow       & getRow(const size_t j) noexcept;
-            const BitRow & getRow(const size_t j) const noexcept;
+            BitRow       & getRow(const size_t)       noexcept; //!< \return direct row access
+            const BitRow & getRow(const size_t) const noexcept; //!< \return direct row access
 
 
             //__________________________________________________________________
@@ -88,7 +103,7 @@ namespace Yttrium
             Rows * const   rows; //!< inner rows memory
         protected:
             BitRow * const row_; //!< row[0:w-1]
-            void *         data() noexcept;
+            void *         data() noexcept; //!< \return first data byte a.k.a &row[0][0]
 
         private:
             Y_Disable_Assign(Bitmap); //!< discarding

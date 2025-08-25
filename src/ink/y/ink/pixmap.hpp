@@ -13,57 +13,90 @@ namespace Yttrium
     namespace Ink
     {
 
-         template <typename T>
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Bitmap of pixels
+        //
+        //
+        //______________________________________________________________________
+        template <typename T>
         class Pixmap : public Bitmap
         {
         public:
-            Y_Args_Declare(T,Type);
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            Y_Args_Declare(T,Type); //!< alias
 
+
+            //__________________________________________________________________
+            //
+            //! aliased row
+            //__________________________________________________________________
             class Row
             {
             public:
-                inline Type &      operator[](const unit_t i)       noexcept { return p[ z[i] ]; }
-                inline ConstType & operator[](const unit_t i) const noexcept { return p[ z[i] ]; }
+                inline Type &      operator[](const unit_t i)       noexcept { return p[ z[i] ]; } //!< \param i position \return safe value
+                inline ConstType & operator[](const unit_t i) const noexcept { return p[ z[i] ]; } //!< \param i position \return safe value
 
-                inline Type &      operator()(const size_t i)       noexcept { assert(i<w); return p[i]; }
-                inline ConstType & operator()(const size_t i) const noexcept { assert(i<w); return p[i]; }
+                inline Type &      operator()(const size_t i)       noexcept { assert(i<w); return p[i]; } //!< \param i index \return value
+                inline ConstType & operator()(const size_t i) const noexcept { assert(i<w); return p[i]; } //!< \param i index \return value
 
             private:
-                MutableType * const p;
+                MutableType * const p; //!< first item address
             public:
-                const size_t    w;
-                const ZeroFlux &z;
+                const size_t    w;     //!< width
+                const ZeroFlux &z;     //!< shared ZeroFlux(w)
 
             private:
-                Row();
-                ~Row() noexcept;
-                Y_Disable_Copy_And_Assign(Row);
+                Row();                          //!< discard
+                ~Row() noexcept;                //!< discard
+                Y_Disable_Copy_And_Assign(Row); //!< discard
             };
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup \param W width \param H height
             inline explicit Pixmap(const size_t W, const size_t H) :
             Bitmap(W,H,sizeof(T),Ctor,Dtor)
             {
             }
 
 
-            //! shared copy
+            //! shared copy \param pxm source pixmap
             inline explicit Pixmap(const Pixmap &pxm) noexcept :
             Bitmap(pxm)
             {
             }
 
+            //! hard copy with possible transmogrification
+            /**
+             \param pxm source pixmap
+             \param cpy pixel-wise copy constructor
+             */
             template <typename U> inline
             explicit Pixmap(const CopyOf_ &, const Pixmap<U> &pxm, CTor cpy = Ccpy<U>) :
             Bitmap(CopyOf,pxm,sizeof(T),cpy)
             {
             }
 
-            
 
+            //! cleanup
             inline virtual ~Pixmap() noexcept
             {
             }
 
+            //! display as rows of vectors
             inline friend std::ostream & operator<<(std::ostream &os, const Pixmap &pxm)
             {
                 const size_t jtop = pxm.h-1;
@@ -74,22 +107,26 @@ namespace Yttrium
                 return  Core::Display( os, &pxm(jtop)(0), pxm.w );
             }
 
+            //! \param j position \return safe row
             inline Row & operator[](const unit_t j) noexcept
             {
                 return (Row &)row_[ zflux[j] ];
             }
 
+            //! \param j position \return safe row
             inline const Row & operator[](const unit_t j) const noexcept
             {
                 return (const Row &)row_[ zflux[j] ];
             }
 
+            //! \param j index \return row[j]
             inline Row & operator()(const size_t j) noexcept
             {
                 assert(j<h);
                 return (Row &)row_[j];
             }
 
+            //! \param j index \return row[j]
             inline const Row & operator()(const size_t j) const noexcept
             {
                 assert(j<h);
@@ -97,18 +134,27 @@ namespace Yttrium
             }
 
         private:
-            Y_Disable_Assign(Pixmap);
+            Y_Disable_Assign(Pixmap); //!< discarding
+
+            //! default constructor \param addr where to build pixel
             static inline void Ctor(void * const addr, const void * const)
             {
                 assert(addr); new (addr) MutableType();
             }
 
+            //! default destructor \param addr pixel address
             static inline void Dtor(void * const addr) noexcept
             {
                 assert(addr); static_cast<MutableType *>(addr)->~MutableType();
             }
 
         public:
+
+            //! flexible constructor
+            /**
+             \param addr address of T
+             \param args address of U
+             */
             template <typename U> static inline
             void Ccpy(void * const addr, const void * const args)
             {

@@ -24,6 +24,21 @@ namespace Yttrium
         {
         }
 
+        unit_t ZeroFlux::operator[](const unit_t indx) const noexcept
+        {
+            if(indx<0)
+                return (*this)[-indx];
+            else
+            {
+                if(indx>=count)
+                {
+                    return (*this)[twice-indx];
+                }
+                else
+                    return indx;
+            }
+        }
+
     }
 
 }
