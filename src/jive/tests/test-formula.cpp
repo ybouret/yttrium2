@@ -12,11 +12,11 @@ namespace
         inline explicit Formulas() : Parser("Formulas")
         {
             Agg & self = agg(lang);
-            (void) term("COEFF","[:digit:]+");
+            (void) term("COEF",ChemicalFormula::CoefExpr);
 
-            const Rule & BLANK = mark( "[:blank:]");
-            const Rule & ENDL  = markNL("[:endl:]");
-            const Rule & WHITE = (alt("WHITE") << BLANK << ENDL);
+            const Rule & BLNK  = mark( "BLNK", "[:blank:]");
+            const Rule & ENDL  = markNL("ENDL","[:endl:]");
+            const Rule & WHITE = (alt("WHITE") << BLNK << ENDL);
             const Rule & SPACE = opt("SPACE",WHITE);
             ChemicalFormula f("Formula");
             const Rule & FORMULA = f.install(*this);

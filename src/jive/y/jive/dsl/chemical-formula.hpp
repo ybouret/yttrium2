@@ -21,13 +21,14 @@ namespace Yttrium
         class ChemicalFormula : public DSL
         {
         public:
-            static const char * const Name;     //!< "ChemicalFormula::Name"
-            static const char * const Body;     //!< "ChemicalFormula::Body"
-            static const char * const Mult;     //!< "ChemicalFormula::Mult"
-            static const char * const Coef;     //!< "ChemicalFormula::Coef"
-            static const char * const Item;     //!< "ChemicalFormula::Item"
-            static const char * const Sign;     //!< "ChemicalFormula::Sign"
-            static const char * const Z;        //!< "ChemicalFormula::Z"
+            static const char * const Name;      //!< "ChemicalFormula::Name"
+            static const char * const Body;      //!< "ChemicalFormula::Body"
+            static const char * const Mult;      //!< "ChemicalFormula::Mult"
+            static const char * const CoefExpr;  //!< "[:digit:]+"
+            static const char * const OptCoef;   //!< "ChemicalFormula::OptCoef"
+            static const char * const Item;      //!< "ChemicalFormula::Item"
+            static const char * const Sign;      //!< "ChemicalFormula::Sign"
+            static const char * const Z;         //!< "ChemicalFormula::Z"
 
             //__________________________________________________________________
             //
@@ -47,6 +48,8 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
+
+            //! parser must have a 'const Rule & COEF = term("COEF",CoefExpr)'
             const Rule & install( Parser & );
 
 
