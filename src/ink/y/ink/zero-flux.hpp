@@ -37,20 +37,8 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            unit_t operator[](const unit_t indx) const noexcept
-            {
-                if(indx<0)
-                    return (*this)[-indx];
-                else
-                {
-                    if(indx>=count)
-                    {
-                        return (*this)[twice-indx];
-                    }
-                    else
-                        return indx;
-                }
-            }
+            unit_t operator[](const unit_t) const noexcept; //!< safe acess \return safe unit
+
 
             //__________________________________________________________________
             //
@@ -62,7 +50,7 @@ namespace Yttrium
             const unit_t twice; //!< 2*count-1
 
         private:
-            Y_Disable_Assign(ZeroFlux);
+            Y_Disable_Assign(ZeroFlux); //!< discarding
         };
     }
 }
