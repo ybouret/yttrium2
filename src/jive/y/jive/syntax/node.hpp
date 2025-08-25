@@ -68,6 +68,13 @@ namespace Yttrium
                 //______________________________________________________________
                 const String & name() const noexcept; //!< \return *rule.name, helper
 
+                template <typename CLASS> inline
+                bool defines() const noexcept
+                {
+                    return name() == CLASS::CallSign;
+                }
+
+
                 //______________________________________________________________
                 //
                 //
@@ -116,7 +123,8 @@ namespace Yttrium
 
         }
 
-        typedef Syntax::Node XNode; //!< alias
+        typedef Syntax::Node  XNode; //!< alias
+        typedef ArcPtr<XNode> XCode; //!< alias
     }
 }
 
