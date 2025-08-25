@@ -46,9 +46,7 @@ using namespace Jive;
 
 Y_UTEST(xnode)
 {
-    Y_SIZEOF(Syntax::Node);
-    Y_SIZEOF(Syntax::TerminalNode);
-    Y_SIZEOF(Syntax::InternalNode);
+    
 
     const Syntax::Synthetic synth;
     const Syntax::Terminal  word("word",Syntax::Regular,true);
@@ -57,9 +55,16 @@ Y_UTEST(xnode)
     Token         tkn;
     Lexeme       *lex = new Lexeme(word.name,ctx,tkn);
 
-    AutoPtr<Syntax::TerminalNode> tNode = Syntax::Node::Make(word,lex);
-    AutoPtr<Syntax::InternalNode> iNode = Syntax::Node::Make(synth);
+    AutoPtr<XNode> tNode = Syntax::Node::Make(word,lex);
+    AutoPtr<XNode> iNode = Syntax::Node::Make(synth);
 
+
+    AutoPtr<XNode> tCopy = tNode->clone();
+    AutoPtr<XNode> iCopy = iNode->clone();
+
+
+    Y_CHECK( *tCopy == *tNode );
+    Y_CHECK( *iCopy == *iNode );
 
 }
 Y_UDONE()

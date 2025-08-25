@@ -46,6 +46,9 @@ namespace Yttrium
                 //! setup
                 explicit Node(const Category, const Rule &) noexcept;
 
+                //! duplicate
+                explicit Node(const Node &) noexcept;
+
             public:
                 // cleanup
                 virtual ~Node() noexcept;
@@ -59,6 +62,7 @@ namespace Yttrium
                 virtual void                restore(Lexer &)    noexcept = 0; //!< restore content
                 virtual OutputStream &      viz(OutputStream &) const    = 0; //!< emit GraphViz code \return output stream
                 virtual const TerminalNode *lastTerm()    const noexcept = 0; //!< \return  retrieved last terminal or NULL
+                virtual Node               *clone()             const    = 0; //!< cloning
 
                 //______________________________________________________________
                 //
@@ -118,7 +122,7 @@ namespace Yttrium
                 Node *               prev; //!< for list
 
             private:
-                Y_Disable_Copy_And_Assign(Node); //!< discarding
+                Y_Disable_Assign(Node); //!< discarding
             };
 
         }

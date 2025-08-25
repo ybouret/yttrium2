@@ -17,7 +17,6 @@ y/jive/syntax/rule/logical
 y/jive/syntax/rule/wildcard
 y/jive/syntax/grammar
 y/jive/babel
-y/jive/dsl
 )
 
 add_subdirectory(tests)

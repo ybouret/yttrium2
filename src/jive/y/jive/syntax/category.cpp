@@ -12,6 +12,11 @@ namespace Yttrium
 
             }
 
+            Category_:: Category_(const Category_ &other) noexcept : type(other.type)
+            {
+            }
+            
+
             Category_:: ~Category_() noexcept
             {
             }

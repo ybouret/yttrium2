@@ -17,6 +17,5 @@ Y_UTEST_DECL(16)
     Y_UTEST(parser);
     Y_UTEST(eval);
     Y_UTEST(vfs);
-    Y_UTEST(formula);
 }
 Y_UTEST_EXEC()

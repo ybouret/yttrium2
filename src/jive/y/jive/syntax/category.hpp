@@ -40,8 +40,8 @@ namespace Yttrium
                 //
                 //______________________________________________________________
             protected:
-                explicit Category_(const Category) noexcept; //!< setup
-
+                explicit Category_(const Category)    noexcept; //!< setup
+                explicit Category_(const Category_ &) noexcept; //!< duplicate
             public:
                 virtual ~Category_() noexcept; //!< cleanup
 
@@ -64,7 +64,7 @@ namespace Yttrium
                 const Category type; //!< category
 
             private:
-                Y_Disable_Copy_And_Assign(Category_); //!< discarding
+                Y_Disable_Assign(Category_); //!< discarding
             };
         }
     }

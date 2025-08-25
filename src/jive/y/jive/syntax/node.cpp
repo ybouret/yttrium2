@@ -22,6 +22,16 @@ namespace Yttrium
             {
             }
 
+
+            Node:: Node(const Node &node) noexcept :
+            Category_(node),
+            rule(node.rule),
+            sire(0),
+            next(0),
+            prev(0)
+            {
+            }
+
             void Node:: Restore(Node * const node, Lexer &lexer) noexcept
             {
                 node->restore(lexer);

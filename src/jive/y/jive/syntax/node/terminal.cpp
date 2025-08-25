@@ -82,6 +82,11 @@ namespace Yttrium
                 return res + lexeme->serialize(fp);
             }
 
+
+            Node * TerminalNode:: clone() const
+            {
+                return Make(dynamic_cast<const Terminal&>(rule), new Lexeme(*lexeme));
+            }
         }
 
     }

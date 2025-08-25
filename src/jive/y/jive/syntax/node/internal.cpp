@@ -78,6 +78,15 @@ namespace Yttrium
                 return res;
             }
 
+            Node * InternalNode:: clone() const
+            {
+                AutoPtr<InternalNode>  node = Make( dynamic_cast<const Internal&>(rule) );
+
+                for(const Node *child=head;child;child=child->next)
+                    *node << child->clone();
+                
+                return node.yield();
+            }
 
         }
     }
