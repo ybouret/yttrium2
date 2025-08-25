@@ -170,6 +170,8 @@ else()
     set(VERNACULAR libz.a)
 endif()
 
+if(OFF)
+
 add_custom_command(TARGET y-z POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory ${SDK}
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/zlib.h  ${SDK}
@@ -178,6 +180,7 @@ add_custom_command(TARGET y-z POST_BUILD
     COMMENT "[[Building Local zlib SDK]]"
 )
 
+endif()
 
 if(OFF)
 
