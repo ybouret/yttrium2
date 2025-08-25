@@ -144,9 +144,9 @@ endif()
 #set(ZLIB_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../zlib/sdk)
 
 # Find the zlib library.
-find_package(ZLIB REQUIRED)
-set(PNG_LINK_LIBRARIES ZLIB::ZLIB)
-
+#find_package(ZLIB REQUIRED)
+#set(PNG_LINK_LIBRARIES ZLIB::ZLIB)
+set(ZLIB_INCLUDE_DIRECTORIES ${ThirdPartyDir}/zlib/sdk)
 
 # Find the math library (unless we already know it's not available or
 # not needed).

@@ -8,6 +8,7 @@ macro(Y_ThirdParty theTarget)
     set(third_party_list ${local_third_party} PARENT_SCOPE)
 endmacro()
 
+set(ThirdPartyDir ${CMAKE_CURRENT_BINARY_DIR})
 add_subdirectory(zlib)
 add_subdirectory(bzip2)
 add_subdirectory(lua)
