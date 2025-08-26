@@ -56,6 +56,7 @@ namespace Yttrium
             XNode * parse(Jive::Module *); //!< \return parsed full module to Weasel node
             String  formulaToText(const Formula &, int * const); //!< \return formula to text, with optional charge
             String  formulaToHTML(const Formula &);              //!< \return formula to html
+            XNode * formula1(Jive::Module *);
 
         private:
             Y_Disable_Copy_And_Assign(Weasel); //!< discarding

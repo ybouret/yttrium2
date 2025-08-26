@@ -72,31 +72,34 @@ namespace Yttrium
         }
 
 
-        static inline
-        void   cleanActors(XNode * const node) noexcept
+        namespace
         {
-            assert(node);
-            assert(node->isInternal());
-            XTree * const tree = dynamic_cast<XTree *>(node);
-            Jive::Syntax::NodeList temp;
-            while(tree->size)
+            static inline
+            void   cleanActors(XNode * const node) noexcept
             {
-                XNode * const sub = tree->popHead();
-                if( '+' == sub->name() ) { delete sub; continue; }
-                temp.pushTail(sub);
+                assert(node);
+                assert(node->isInternal());
+                XTree * const tree = dynamic_cast<XTree *>(node);
+                Jive::Syntax::NodeList temp;
+                while(tree->size)
+                {
+                    XNode * const sub = tree->popHead();
+                    if( '+' == sub->name() ) { delete sub; continue; }
+                    temp.pushTail(sub);
+                }
+                tree->steal(temp);
             }
-            tree->steal(temp);
-        }
-
-        static inline
-        void cleanEquilibrium(XNode * const node) noexcept
-        {
-            assert(node);
-            assert(node->defines<Equilibrium>());
-            XTree * const tree = dynamic_cast<XTree *>(node);
-            XNode * sub  = tree->head; assert(sub); assert("EID"==sub->name());
-            sub          = sub->next;  assert(sub); assert(Equilibrium::Prod==sub->name()); cleanActors(sub);
-            sub          = sub->next;  assert(sub); assert(Equilibrium::Reac==sub->name()); cleanActors(sub);
+            
+            static inline
+            void cleanEquilibrium(XNode * const node) noexcept
+            {
+                assert(node);
+                assert(node->defines<Equilibrium>());
+                XTree * const tree = dynamic_cast<XTree *>(node);
+                XNode * sub  = tree->head; assert(sub); assert("EID"==sub->name());
+                sub          = sub->next;  assert(sub); assert(Equilibrium::Prod==sub->name()); cleanActors(sub);
+                sub          = sub->next;  assert(sub); assert(Equilibrium::Reac==sub->name()); cleanActors(sub);
+            }
         }
 
         XNode * Weasel:: parse( Jive::Module *m )
@@ -108,10 +111,8 @@ namespace Yttrium
 
             for(XNode *sub = dynamic_cast<const XTree&>(*node).head;sub;sub=sub->next)
             {
-                if(sub->defines<Equilibrium>())
-                {
-                    std::cerr << "Cleaning " << sub->name() << std::endl;
-                    cleanEquilibrium(sub);
+                if(sub->defines<Equilibrium>()) {
+                    cleanEquilibrium(sub); continue;
                 }
             }
 
@@ -127,6 +128,20 @@ namespace Yttrium
         {
             return code->translator.decode(f,0,true);
         }
+
+        XNode * Weasel:: formula1(Jive::Module *m)
+        {
+            static const char fn[] = "Weasel::formula1";
+            Jive::Source   source(m);
+            AutoPtr<XNode> node = code->parse(source);
+            assert(node.isValid());
+            assert(node->defines<Weasel>());
+            XTree &tree = dynamic_cast<XTree&>(*node);
+            if(tree.size!=1)                    throw Specific::Exception(fn,"need exactly one formula in '%s'", m->tag->c_str());
+            if(!tree.head->defines<Formula>())  throw Specific::Exception(fn,"bad '%s'", tree.head->name().c_str());
+            return tree.popHead();
+        }
+
 
     }
 }

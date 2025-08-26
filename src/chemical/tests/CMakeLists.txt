@@ -7,3 +7,4 @@ Y_Message("Preparing ${Y_Test}")
 set(VAR "${CMAKE_CURRENT_SOURCE_DIR}/../../../var")
 
 Y_UTEST(weasel)
+Y_UTEST(species)
