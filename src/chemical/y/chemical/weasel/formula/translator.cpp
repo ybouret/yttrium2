@@ -21,7 +21,7 @@ namespace Yttrium
             verbose = true;
 
             Y_Push(Name);
-            Y_Push(COEF);
+            Y_Push(Coef);
 
             push('+', *this, & FormulaTranslator::onPlus);
             push('-', *this, & FormulaTranslator::onMinus);
@@ -88,7 +88,7 @@ namespace Yttrium
 
 
 
-        void Weasel:: FormulaTranslator:: onCOEF(const Token &token)
+        void Weasel:: FormulaTranslator:: onCoef(const Token &token)
         {
             const apn cf = token.toNatural();
             if(cf.bits()<=0) throw Specific::Exception(grammar.lang->c_str(),"null coefficient");

@@ -24,19 +24,38 @@ namespace Yttrium
         class Weasel : public Singleton<Weasel,ClassLockPolicy>
         {
         public:
-            static const char * const CallSign;
-            static const Longevity    LifeTime = LifeTimeOf::ChemicalWeasel;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const char * const CallSign;                               //!< "Weasel"
+            static const Longevity    LifeTime = LifeTimeOf::ChemicalWeasel; //!< life time
+
             static const char * const Coef;           //!< "Coef"
             static const char * const RegExp;         //!< "RegExp";
             static const char * const StringID;       //!< "String";
             class Parser;
             class FormulaTranslator;
 
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             virtual void display(std::ostream &,size_t) const;
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
             XNode * parse(Jive::Module *);
             String  formulaToText(const Formula &, int * const);
-            
+
 
         private:
             Y_Disable_Copy_And_Assign(Weasel); //!< discarding

@@ -104,16 +104,19 @@ namespace Yttrium
                 return link(emit(rxp),Syntax::Divider);
             }
 
+            //! \param rid rule id \param rxp end of line \return terminal end of line
             template <typename RID, typename RXP>
             const Rule & termNL(const RID &rid, const RXP &rxp ) {
                 return link(endl(rid,rxp,true),Syntax::Regular);
             }
 
+            //! \param rid rule id \param rxp end of line \return divider end of line
             template <typename RID, typename RXP>
             const Rule & markNL(const RID &rid, const RXP &rxp ) {
                 return link(endl(rid,rxp,true),Syntax::Divider);
             }
 
+            //! \param rxp end of line expression and name \return divider end of line
             template <typename RXP>
             const Rule & markNL(const RXP &rxp) {
                 return markNL(rxp,rxp);
@@ -156,12 +159,28 @@ namespace Yttrium
             //! helper \return cat('(',rule,')')
             const Rule & parens(const Rule &);
 
+            //! create an empty list syntax
+            /**
+             \param id list name
+             \param enter enter list
+             \param leave leave list
+             \return id : enter leave
+             */
             template <typename ID> inline
             const Rule & emptyList(const ID &id, const char enter, const char leave)
             {
                 return populate(agg(id),enter,leave);
             }
 
+            //! create an heavy list syntax
+            /**
+             \param id        list name
+             \param enter     enter list
+             \param rule      element rule
+             \param separator element separator
+             \param leave     leave list
+             \return id : enter rule (separator rule)* leave
+             */
             template <typename ID> inline
             const Rule & heavyList(const ID & id,
                                     const char enter,
@@ -184,7 +203,10 @@ namespace Yttrium
             //! \return terminal matching plugin
             const Rule & link(const Tag &);
 
+            //! \return populated empty list
             const Rule & populate( Agg &, const char, const char);
+
+            //! \return populated heavy list
             const Rule & populate( Agg &, const char, const Rule &, const char, const char);
 
         };

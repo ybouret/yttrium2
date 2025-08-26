@@ -162,6 +162,7 @@ namespace Yttrium
                 /**
                  \param id name
                  \param r  optional rule
+                 \return optional named rule
                  */
                 template <typename ID>
                 const Rule & opt(const ID &id, const Rule &r)

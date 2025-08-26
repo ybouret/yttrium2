@@ -15,30 +15,72 @@ namespace Yttrium
     namespace Chemical
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Translate formulat to textual representation
+        //
+        //
+        //______________________________________________________________________
         class Weasel:: FormulaTranslator : public Jive::Analyzer
         {
         public:
-            static const char SubInit[];
-            static const char SubQuit[];
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const char SubInit[]; //!< "<sub>"
+            static const char SubQuit[]; //!< "</sub>"
 
-            explicit FormulaTranslator(const Jive::Syntax::Grammar &);
-            virtual ~FormulaTranslator() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit FormulaTranslator(const Jive::Syntax::Grammar &); //!< setup
+            virtual ~FormulaTranslator() noexcept;                     //!< cleanup
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! \return decoded to text or html
             String decode(const Formula &, int * const, const bool);
 
-            Vector<String> stack;
-            int            charge;
-            bool           html;
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            Vector<String> stack;  //!< string stack
+            int            charge; //!< charge state
+            bool           html;   //!< html flag
 
 
         private:
             Y_Disable_Copy_And_Assign(FormulaTranslator); //!< discarding
+
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             virtual void init();
             virtual void quit();
             virtual void show(const size_t) const;
 
+#if !defined(DOXYGEN_SHOULD_SKIP_THIS)
             void onName(const Token &);
-            void onCOEF(const Token &);
+            void onCoef(const Token &);
             void onPlus(const Token&);
             void onMinus(const Token&);
 
@@ -46,6 +88,7 @@ namespace Yttrium
             void onBody(const size_t);
             void onFormula(const size_t);
             void onZ(const size_t);
+#endif
         };
 
     }

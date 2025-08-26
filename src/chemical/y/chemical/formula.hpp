@@ -12,9 +12,9 @@ namespace Yttrium
 {
     namespace Chemical
     {
-        typedef Jive::XNode                XNode;
-        typedef Jive::XCode                XCode;
-        typedef Jive::Syntax::InternalNode XTree;
+        typedef Jive::XNode                XNode; //!< alias
+        typedef Jive::XCode                XCode; //!< alias
+        typedef Jive::Syntax::InternalNode XTree; //!< alias
 
         //______________________________________________________________________
         //
@@ -39,16 +39,36 @@ namespace Yttrium
             static const char * const Mult;     //!< "Mult"
             static const char * const Z;        //!< "Z"
 
-            Formula(XNode * const)  noexcept;
-            Formula(const XCode &)  noexcept;
-            Formula(const Formula&) noexcept;
-            virtual ~Formula() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            Formula(XNode * const)  noexcept; //!< setup
+            Formula(const XCode &)  noexcept; //!< setup
+            Formula(const Formula&) noexcept; //!< duplicate
+            virtual ~Formula()      noexcept; //!< cleanup
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! \param z optional charge address \return converted to text
             String text(int * const z) const;
 
-            const XCode code;
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const XCode code; //!< shared binary representation
         private:
-            Y_Disable_Assign(Formula);
+            Y_Disable_Assign(Formula); //!< discarding
         };
 
     }

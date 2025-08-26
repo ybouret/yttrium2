@@ -13,14 +13,28 @@ namespace Yttrium
     namespace Chemical
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! top level Weasel parser
+        //
+        //
+        //______________________________________________________________________
         class Weasel:: Parser : public Jive::Parser
         {
         public:
-            explicit Parser();
-            virtual ~Parser() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit Parser();           //!< setup
+            virtual ~Parser() noexcept;  //!< cleanup
 
         private:
-            Y_Disable_Copy_And_Assign(Parser);
+            Y_Disable_Copy_And_Assign(Parser); //!< discarding
         };
 
     }

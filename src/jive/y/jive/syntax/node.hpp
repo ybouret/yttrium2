@@ -62,7 +62,7 @@ namespace Yttrium
                 virtual void                restore(Lexer &)    noexcept = 0; //!< restore content
                 virtual OutputStream &      viz(OutputStream &) const    = 0; //!< emit GraphViz code \return output stream
                 virtual const TerminalNode *lastTerm()    const noexcept = 0; //!< \return  retrieved last terminal or NULL
-                virtual Node               *clone()             const    = 0; //!< cloning
+                virtual Node               *clone()             const    = 0; //!< \return full clone
 
                 //______________________________________________________________
                 //
@@ -72,6 +72,7 @@ namespace Yttrium
                 //______________________________________________________________
                 const String & name() const noexcept; //!< \return *rule.name, helper
 
+                //! \return true if name == CLASS::CallSign
                 template <typename CLASS> inline
                 bool defines() const noexcept
                 {

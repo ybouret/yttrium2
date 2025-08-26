@@ -64,7 +64,8 @@ namespace Yttrium
              */
             String toString(const size_t nskip=0, const size_t ntrim=0) const;
 
-            apn    toNatural() const;
+            //! \return converted to natural
+            apn toNatural() const;
 
             //! \return true if same content
             friend bool operator==(const Token &, const Token &) noexcept;
