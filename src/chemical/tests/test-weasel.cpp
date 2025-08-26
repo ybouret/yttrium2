@@ -48,7 +48,7 @@ Y_UTEST(weasel)
 
                 if(node->defines<Equilibrium>())
                 {
-                    weasel.compile(node,lib,1,lvm);
+                    AutoPtr<Equilibrium> eq = weasel.compile(node,lib,1,lvm);
                 }
             }
 

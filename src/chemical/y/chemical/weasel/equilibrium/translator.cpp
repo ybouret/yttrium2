@@ -2,6 +2,7 @@
 #include "y/chemical/weasel/equilibrium/translator.hpp"
 #include "y/jive/syntax/node/internal.hpp"
 #include "y/jive/syntax/node/terminal.hpp"
+#include "y/container/algorithm/crop.hpp"
 
 namespace Yttrium
 {
@@ -44,12 +45,20 @@ namespace Yttrium
             Actor::List prod;
             decode(eid,prod,node,lib);
 
+            // decoding constant
             node = node->next; assert(node); assert(node->name() == "KSTR" );
 
-            AutoPtr<Equilibrium> eq = new ConstEquilibrium(eid,1.0,top);
+            String kstr = dynamic_cast<const XTerm*>(node)->lexeme->toString(1,1);
+            Algo::Crop(kstr,isblank);
+            const xreal_t K = lvm->eval<real_t>(kstr);
+
+            std::cerr << "K=" << K << std::endl;
+            AutoPtr<Equilibrium> eq = new ConstEquilibrium(eid,K,top);
             for(const Actor *a=reac.head;a;a=a->next) eq->r(a->nu,a->sp);
             for(const Actor *a=prod.head;a;a=a->next) eq->p(a->nu,a->sp);
             std::cerr << eq << std::endl;
+
+            return eq.yield();
         }
 
         void Weasel:: EquilibriumTranslator:: decode(const String &eid, Actor::List &list, const XNode * const root, Library &lib)
