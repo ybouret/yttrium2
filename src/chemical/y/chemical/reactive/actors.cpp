@@ -25,18 +25,27 @@ namespace Yttrium
         role(a.role)
         {
         }
-        
+
+        bool Actors:: has(const Species &sp) const noexcept
+        {
+            for(const Actor *a=list.head;a;a=a->next)
+            {
+                if( & a->sp == &sp ) return true;
+                assert(a->sp.name != sp.name );
+            }
+
+            return false;
+        }
+
+
         void Actors:: add(const unsigned nu, const Species &sp)
         {
             static const char * sep[2] = { " + ", "+" };
 
             // sanity
-            if(nu<=0) throw Specific::Exception(CallSign,"0 for '%s'", sp.name.c_str());
-            for(const Actor *a=list.head;a;a=a->next)
-            {
-                if( a->sp.name == sp.name )
-                    throw Specific::Exception(CallSign,"multiple '%s'", sp.name.c_str());
-            }
+            assert(nu>0);
+            assert(!has(sp));
+
 
             // new actor
             const Actor &last = *list.pushTail( new Actor(nu,sp,role) );

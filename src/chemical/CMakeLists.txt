@@ -6,6 +6,7 @@ y/chemical/weasel
 y/chemical/type
 y/chemical/reactive
 y/chemical/weasel/formula
+y/chemical/weasel/equilibrium
 )
 
 add_subdirectory(tests)

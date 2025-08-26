@@ -27,6 +27,7 @@ namespace Yttrium
             void add(const unsigned, const Species &);
             void add(const Species &);
 
+            bool has(const Species &sp) const noexcept;
 
 
         private:

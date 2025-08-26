@@ -67,7 +67,7 @@ namespace Yttrium
             //
             //------------------------------------------------------------------
             const Rule &SPACE     = zom(WHITE);
-
+            const Rule &KSTR      = plugin(Jive::Lexical::RString::Class,"KSTR");
             {
                 Agg & EQUILIBRIUM = agg(Equilibrium::CallSign);
 
@@ -75,16 +75,19 @@ namespace Yttrium
                 EQUILIBRIUM << term("EID","@[:word:]+") << SPACE << ':';
 
                 // content
-                const Rule & ACTOR      = ( agg("Actor") << OPT_COEF << SPACE << FORMULA );
+                const Rule & ACTOR      = ( agg(Actor::CallSign) << OPT_COEF << SPACE << FORMULA );
                 const Rule & XACTOR     = ( grp("XActor") << SPACE << '+' << SPACE << ACTOR);
-                const Rule & ACTORS     = ( grp("Actors") << ACTOR << zom(XACTOR) );
+                const Rule & ACTORS     = ( grp(Actors::CallSign) << ACTOR << zom(XACTOR) );
                 const Rule & OPT_ACTORS = opt(ACTORS);
                 const Rule & PROD       = ( agg(Equilibrium::Prod) << OPT_ACTORS);
                 const Rule & REAC       = ( agg(Equilibrium::Reac) << OPT_ACTORS);
 
-                EQUILIBRIUM << SPACE << PROD << SPACE << mark(Equilibrium::Arrows) << SPACE << REAC << SPACE << ':';
-
-                // constant
+                EQUILIBRIUM
+                << SPACE << PROD
+                << SPACE << mark(Components::Arrows)
+                << SPACE << REAC
+                << SPACE << ':'
+                << SPACE << KSTR;
 
 
                 STATEMENT << EQUILIBRIUM;

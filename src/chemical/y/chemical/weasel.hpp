@@ -6,7 +6,7 @@
 
 #include "y/singleton.hpp"
 #include "y/concurrent/life-time.hpp"
-#include "y/chemical/formula.hpp"
+#include "y/chemical/equilibrium.hpp"
 
 namespace Yttrium
 {
@@ -54,9 +54,18 @@ namespace Yttrium
             //
             //__________________________________________________________________
             XNode * parse(Jive::Module *); //!< \return parsed full module to Weasel node
+
+            //__________________________________________________________________
+            //
+            //
+            // Handling Formula
+            //
+            //__________________________________________________________________
             String  formulaToText(const Formula &, int * const); //!< \return formula to text, with optional charge
             String  formulaToHTML(const Formula &);              //!< \return formula to html
-            XNode * formula1(Jive::Module *); //!< \return one formula node from compatible module
+            XNode * formula1(Jive::Module *);                    //!< \return one formula node from compatible module
+            
+
 
         private:
             Y_Disable_Copy_And_Assign(Weasel); //!< discarding
