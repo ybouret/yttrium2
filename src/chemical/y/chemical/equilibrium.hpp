@@ -16,16 +16,29 @@ namespace Yttrium
         //
         //
         //
-        //! Base class for equilibria
+        //! Base class for equilibria = components + constant
         //
         //
         //______________________________________________________________________
         class Equilibrium : public Components
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
             static const char * const CallSign; //!< "Equilibrium"
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
         protected:
+            //! setup \param id name \param top top-level index
             template <typename ID> inline
             explicit Equilibrium(const ID & id, const size_t top) :
             Components(id,top)
@@ -33,13 +46,19 @@ namespace Yttrium
             }
 
         public:
-            virtual ~Equilibrium() noexcept;
+            virtual ~Equilibrium() noexcept; //!< cleanup
 
-            xreal_t K(const xreal_t);
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            xreal_t K(const xreal_t); //!< \return tested constant
 
         private:
-            Y_Disable_Copy_And_Assign(Equilibrium); //!< discarding
-            virtual xreal_t getK(const xreal_t) = 0;
+            Y_Disable_Copy_And_Assign(Equilibrium);  //!< discarding
+            virtual xreal_t getK(const xreal_t) = 0; //!< \return constant at given time
         };
 
 
@@ -51,23 +70,29 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-
         class ConstEquilibrium : public Equilibrium
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup \param id name \param KK constant value \param top top-level index
             template <typename ID> inline
             explicit ConstEquilibrium(const ID & id, const xreal_t KK, const size_t top) :
             Equilibrium(id,top), K_(KK)
             {
             }
 
-            virtual ~ConstEquilibrium() noexcept;
+            virtual ~ConstEquilibrium() noexcept; //!< cleanup
 
         private:
-            Y_Disable_Copy_And_Assign(ConstEquilibrium);
+            Y_Disable_Copy_And_Assign(ConstEquilibrium); //!< discarding
             virtual xreal_t getK(const xreal_t);
-
-            const xreal_t K_;
+            const xreal_t K_; //!< the constant
         };
 
 

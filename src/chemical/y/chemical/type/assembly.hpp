@@ -22,18 +22,34 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-
         class Assembly
         {
         public:
-            explicit Assembly() noexcept;
-            virtual ~Assembly() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit Assembly() noexcept; //!< setup
+            virtual ~Assembly() noexcept; //!< cleanup
 
-            void enroll(const Entity &) noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            void           enroll(const Entity &) noexcept; //!< update
+            std::ostream & display(std::ostream &, const String &, const Justify::Type) const; //!< \return ostream
 
-            std::ostream & display(std::ostream &, const String &, const Justify::Type) const;
 
-
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
             const size_t width; //!< max name length
         private:
             Y_Disable_Copy_And_Assign(Assembly); //!< disarding

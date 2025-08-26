@@ -13,36 +13,64 @@ namespace Yttrium
 {
     namespace Chemical
     {
-        
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Actor = nu + sp
+        //
+        //
+        //______________________________________________________________________
         class Actor : public Entity
         {
         public:
-            static const char * const   CallSign;
-            typedef CxxListOf<Actor>    List;
-            typedef Core::ListOf<Actor> CoreList;
-            
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const char * const   CallSign; //!< "Actor"
+            typedef CxxListOf<Actor>    List;     //!< alias
+            typedef Core::ListOf<Actor> CoreList; //!< alias
+
+            //! role for formating
             enum Role
             {
                 InEquilibrium,      //!< define equilibium
-                InConservation
+                InConservation      //!< define conservationlaw
             };
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup
             explicit Actor(const unsigned,
                            const Species &,
                            const Role = InEquilibrium);
-            virtual ~Actor() noexcept;
-            Actor(const Actor &);
+            virtual ~Actor() noexcept; //!< cleanup
+            Actor(const Actor &);      //!< duplicate
 
-            const Species &sp;
-            const unsigned nu;
-            const xreal_t  xn;
-            const unsigned nu1;
-
-            Actor * next;
-            Actor * prev;
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const Species &sp;   //!< species
+            const unsigned nu;   //!< stoichio
+            const xreal_t  xn;   //!< stoichio as xreal
+            const unsigned nu1;  //!< nu-1
+            Actor *        next; //!< for list
+            Actor *        prev; //!< for list
 
         private:
-            Y_Disable_Assign(Actor);
+            Y_Disable_Assign(Actor); //!< discarding
         };
     }
 

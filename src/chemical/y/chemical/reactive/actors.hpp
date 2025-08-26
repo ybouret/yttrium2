@@ -14,27 +14,51 @@ namespace Yttrium
     namespace Chemical
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! List of Actors
+        //
+        //
+        //______________________________________________________________________
         class Actors : public Entity, public Ingress< const Actor::CoreList >
         {
         public:
-            static const char * const CallSign;
-            
-            explicit Actors(const Actor::Role = Actor::InEquilibrium);
-            virtual ~Actors() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const char * const CallSign; //!< "Actors"
 
-            Actors(const Actors &);
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit Actors(const Actor::Role = Actor::InEquilibrium); //!< setup
+            virtual ~Actors() noexcept; //!< cleanup
+            Actors(const Actors &);     //!< duplicate
 
-            void add(const unsigned, const Species &);
-            void add(const Species &);
-
-            bool has(const Species &sp) const noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            void add(const unsigned, const Species &); //!< add new actor
+            void add(const Species &);                 //!< add new actor
+            bool has(const Species &) const noexcept;  //!< \return true iff species is here
 
 
         private:
-            Y_Disable_Assign(Actors);
-            Y_Ingress_Decl();
-            Actor::List       list;
-            const Actor::Role role;
+            Y_Disable_Assign(Actors); //!< discard
+            Y_Ingress_Decl();         //!< helper
+            Actor::List       list;   //!< current list
+            const Actor::Role role;   //!< current role
 
         };
 

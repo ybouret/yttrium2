@@ -33,7 +33,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            typedef Keyed< String, ArcPtr<Species> > Pointer;
+            typedef Keyed< String, ArcPtr<Species> > Pointer; //!< alias
 
             //__________________________________________________________________
             //

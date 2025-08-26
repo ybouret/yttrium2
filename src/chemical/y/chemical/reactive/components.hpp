@@ -22,10 +22,23 @@ namespace Yttrium
         class Components : public Indexed
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
             static const char * const Arrows;   //!< "<=>"
             static const char * const Prod;     //!< "Prod"
             static const char * const Reac;     //!< "Reac"
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            //! setup \param id name \param top top-level index
             template <typename ID> inline
             explicit Components(const ID & id, const size_t top) :
             Indexed(id,top),
@@ -33,18 +46,30 @@ namespace Yttrium
             prod()
             {
             }
-            virtual ~Components() noexcept;
-            Y_OSTREAM_PROTO(Components);
+            virtual ~Components() noexcept; //!< cleanup
+            Y_OSTREAM_PROTO(Components);    //!< display
 
-            void p(const unsigned, const Species &);
-            void r(const unsigned, const Species &);
-            void p(const Species &);
-            void r(const Species &);
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            void p(const unsigned, const Species &); //!< add product
+            void r(const unsigned, const Species &); //!< add reactant
+            void p(const Species &); //!< add product
+            void r(const Species &); //!< add reactant
 
-            const Actors reac;
-            const Actors prod;
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const Actors reac; //!< reactants
+            const Actors prod; //!< products
         private:
-            Y_Disable_Copy_And_Assign(Components);
+            Y_Disable_Copy_And_Assign(Components); //!< discarding
         };
     }
 
