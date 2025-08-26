@@ -1,6 +1,7 @@
 #include "y/chemical/weasel.hpp"
 #include "y/utest/run.hpp"
 #include "y/jive/syntax/node/internal.hpp"
+#include "y/stream/libc/output.hpp"
 
 using namespace Yttrium;
 using namespace Chemical;
@@ -20,17 +21,31 @@ Y_UTEST(weasel)
         Y_ASSERT( tree->name() == Weasel::CallSign );
         const XTree &top = dynamic_cast<const XTree&>(*tree);
 
-        for(const XNode *node = top.head; node;node=node->next)
         {
-            std::cerr << "found " << node->name() << std::endl;
-            if(node->defines<Formula>())
+            OutputFile fp("species.dot");
+            Vizible::Enter(fp);
+
+            unsigned  indx = 1;
+            for(const XNode *node = top.head; node;node=node->next, ++indx)
             {
-                const Formula formula = node->clone();
-                int           charge  = 0;
-                const String  spname  = weasel.formulaToText(formula,&charge);
-                std::cerr << "species=" << spname << ", charge=" << charge << std::endl;
+                std::cerr << "found " << node->name() << std::endl;
+                if(node->defines<Formula>())
+                {
+                    const Formula formula = node->clone();
+                    int           charge  = 0;
+                    const String  spname  = weasel.formulaToText(formula,&charge);
+                    std::cerr << "species=" << spname << ", charge=" << charge << std::endl;
+                    const String  sphtml = weasel.formulaToHTML(formula);
+                    std::cerr << "html: " << sphtml << std::endl;
+
+                    fp("%u[label=<",indx) << sphtml << ">];\n";
+                }
             }
+
+            Vizible::Leave(fp);
         }
+
+        Vizible::DotToPng("species.dot");
 
 
 

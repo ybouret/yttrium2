@@ -1,5 +1,5 @@
 #include "y/chemical/formula.hpp"
-
+#include "y/stream/output.hpp"
 
 namespace Yttrium
 {
@@ -34,6 +34,9 @@ namespace Yttrium
         {
 
         }
+
+
+
 
     }
 

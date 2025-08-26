@@ -64,7 +64,7 @@ namespace Yttrium
         void Weasel:: display(std::ostream &os, size_t indent) const
         {
             init(os,indent);
-            
+
             quit(os,indent);
         }
 
@@ -78,8 +78,12 @@ namespace Yttrium
 
         String  Weasel:: formulaToText(const Formula &f, int * const z)
         {
-            const String str = code->translator.decode(f,z,false);
-            return str;
+            return code->translator.decode(f,z,false);
+        }
+
+        String  Weasel:: formulaToHTML(const Formula &f)
+        {
+            return code->translator.decode(f,0,true);
         }
 
     }

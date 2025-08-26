@@ -34,7 +34,8 @@ namespace Yttrium
             //__________________________________________________________________
             static const char SubInit[]; //!< "<sub>"
             static const char SubQuit[]; //!< "</sub>"
-
+            static const char SupInit[]; //!< "<sup>"
+            static const char SupQuit[]; //!< "</sup>"
             //__________________________________________________________________
             //
             //

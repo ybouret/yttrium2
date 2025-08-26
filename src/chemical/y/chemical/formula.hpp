@@ -56,10 +56,11 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
+            
+            String text(int * const z) const; //!< \param z optional charge address \return converted to text
+            String html()              const; //!< \return converted to html
 
-            //! \param z optional charge address \return converted to text
-            String text(int * const z) const;
-
+            
             //__________________________________________________________________
             //
             //

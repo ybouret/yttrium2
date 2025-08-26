@@ -18,7 +18,7 @@ namespace Yttrium
         charge(0),
         html(false)
         {
-            verbose = true;
+            //verbose = true;
 
             Y_Push(Name);
             Y_Push(Coef);
@@ -38,6 +38,9 @@ namespace Yttrium
         const char Weasel:: FormulaTranslator:: SubInit[] = "<sub>";
         const char Weasel:: FormulaTranslator:: SubQuit[] = "</sub>";
 
+
+        const char Weasel:: FormulaTranslator:: SupInit[] = "<sup>";
+        const char Weasel:: FormulaTranslator:: SupQuit[] = "</sup>";
 
         Weasel:: FormulaTranslator:: ~FormulaTranslator() noexcept
         {
@@ -100,8 +103,13 @@ namespace Yttrium
             assert( stack.size() >= 2);
             const String cof = stack.pullTail();
             const String grp = stack.pullTail();
-            const String res = grp+cof;
-            stack << res;
+            if(html)
+            {
+                stack << grp + SubInit + cof + SubQuit;
+            }
+            else
+                stack << grp+cof;
+
         }
 
         void Weasel:: FormulaTranslator:: onBody(size_t n)
@@ -111,6 +119,25 @@ namespace Yttrium
             while(n-- > 0) res >> stack.pullTail();
             if(stack.size()>0) res = '(' + res + ')';
             stack << res;
+        }
+
+        static inline
+        String chargeToString(const int charge)
+        {
+            assert(0!=charge);
+
+            String res;
+            if(charge<0)
+            {
+                if(charge < -1) res += Decimal(-charge).c_str();
+                res += '-';
+            }
+            else
+            {
+                if(charge>1) res += Decimal(charge).c_str();
+                res += '+';
+            }
+            return res;
         }
 
         void Weasel:: FormulaTranslator:: onZ(const size_t n)
@@ -131,6 +158,24 @@ namespace Yttrium
                     throw Specific::Exception(grammar.lang->c_str(),"invalid Z/%s", Decimal(n).c_str());
             }
 
+            if(0==charge) throw Specific::Exception(grammar.lang->c_str(),"corrupted charge computation");
+
+
+            String      &tgt = stack.tail();
+            const String xp  = chargeToString(charge);
+            if(html)
+            {
+                tgt += SupInit;
+                tgt += xp;
+                tgt += SupQuit;
+            }
+            else
+            {
+                tgt += '^';
+                tgt += xp;
+            }
+
+
         }
 
         void Weasel:: FormulaTranslator:: onFormula(size_t)
@@ -143,6 +188,12 @@ namespace Yttrium
         {
             static Weasel &weasel = Weasel::Instance();
             return weasel.formulaToText(*this,z);
+        }
+
+        String Formula:: html() const
+        {
+            static Weasel &weasel = Weasel::Instance();
+            return weasel.formulaToHTML(*this);
         }
 
 
