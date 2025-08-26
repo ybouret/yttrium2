@@ -5,16 +5,14 @@
 #define Y_Chemical_Formula_Included 1
 
 
-#include "y/jive/syntax/node.hpp"
+#include "y/chemical/weasel/types.hpp"
 
 
 namespace Yttrium
 {
     namespace Chemical
     {
-        typedef Jive::XNode                XNode; //!< alias
-        typedef Jive::XCode                XCode; //!< alias
-        typedef Jive::Syntax::InternalNode XTree; //!< alias
+      
 
         //______________________________________________________________________
         //

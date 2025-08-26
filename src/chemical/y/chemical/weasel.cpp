@@ -2,6 +2,9 @@
 #include "y/chemical/weasel.hpp"
 #include "y/chemical/weasel/parser.hpp"
 #include "y/chemical/weasel/formula/translator.hpp"
+#include "y/jive/syntax/node/internal.hpp"
+#include "y/chemical/equilibrium.hpp"
+
 
 
 namespace Yttrium
@@ -68,10 +71,49 @@ namespace Yttrium
             quit(os,indent);
         }
 
+
+        static inline
+        void   cleanActors(XNode * const node) noexcept
+        {
+            assert(node);
+            assert(node->isInternal());
+            XTree * const tree = dynamic_cast<XTree *>(node);
+            Jive::Syntax::NodeList temp;
+            while(tree->size)
+            {
+                XNode * const sub = tree->popHead();
+                if( '+' == sub->name() ) { delete sub; continue; }
+                temp.pushTail(sub);
+            }
+            tree->steal(temp);
+        }
+
+        static inline
+        void cleanEquilibrium(XNode * const node) noexcept
+        {
+            assert(node);
+            assert(node->defines<Equilibrium>());
+            XTree * const tree = dynamic_cast<XTree *>(node);
+            XNode * sub  = tree->head; assert(sub); assert("EID"==sub->name());
+            sub          = sub->next;  assert(sub); assert(Equilibrium::Prod==sub->name()); cleanActors(sub);
+            sub          = sub->next;  assert(sub); assert(Equilibrium::Reac==sub->name()); cleanActors(sub);
+        }
+
         XNode * Weasel:: parse( Jive::Module *m )
         {
             Jive::Source   source(m);
             AutoPtr<XNode> node = code->parse(source);
+            assert(node.isValid());
+            assert(node->defines<Weasel>());
+
+            for(XNode *sub = dynamic_cast<const XTree&>(*node).head;sub;sub=sub->next)
+            {
+                if(sub->defines<Equilibrium>())
+                {
+                    std::cerr << "Cleaning " << sub->name() << std::endl;
+                    cleanEquilibrium(sub);
+                }
+            }
 
             return node.yield();
         }

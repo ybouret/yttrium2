@@ -1,6 +1,7 @@
 
 #include "y/chemical/weasel/parser.hpp"
 #include "y/chemical/formula.hpp"
+#include "y/chemical/equilibrium.hpp"
 #include "y/jive/lexical/plugin/rstring.hpp"
 
 namespace Yttrium
@@ -66,16 +67,28 @@ namespace Yttrium
             //
             //------------------------------------------------------------------
             const Rule &SPACE     = zom(WHITE);
-            Agg & EQUILIBRIUM = agg("EQUILIBRIUM");
 
-            EQUILIBRIUM << term("ID","@[:word:]+") << SPACE << ':';
+            {
+                Agg & EQUILIBRIUM = agg(Equilibrium::CallSign);
 
-            const Rule  & CONCENTRATION = (agg("CONC") << '[' << SPACE << FORMULA << SPACE << ']');
-            // EQUILIBRIUM << SPACE << CONCENTRATION;
+                // prolog
+                EQUILIBRIUM << term("EID","@[:word:]+") << SPACE << ':';
+
+                // content
+                const Rule & ACTOR      = ( agg("Actor") << OPT_COEF << SPACE << FORMULA );
+                const Rule & XACTOR     = ( grp("XActor") << SPACE << '+' << SPACE << ACTOR);
+                const Rule & ACTORS     = ( grp("Actors") << ACTOR << zom(XACTOR) );
+                const Rule & OPT_ACTORS = opt(ACTORS);
+                const Rule & PROD       = ( agg(Equilibrium::Prod) << OPT_ACTORS);
+                const Rule & REAC       = ( agg(Equilibrium::Reac) << OPT_ACTORS);
+
+                EQUILIBRIUM << SPACE << PROD << SPACE << mark(Equilibrium::Arrows) << SPACE << REAC << SPACE << ':';
+
+                // constant
 
 
-            STATEMENT << EQUILIBRIUM;
-
+                STATEMENT << EQUILIBRIUM;
+            }
 
 
 
