@@ -87,6 +87,7 @@ namespace Yttrium
                 const Rule * queryRule(const char * const)      const; //!< \return rule by name
                 const Rule * queryRule(const char)              const; //!< \return rule by name
 
+                //! \param id existing rule name \return rule.name == id
                 template <typename ID>
                 const Rule & operator[](const ID &id) const
                 {

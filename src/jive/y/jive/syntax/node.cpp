@@ -25,6 +25,7 @@ namespace Yttrium
 
             Node:: Node(const Node &node) noexcept :
             Category_(node),
+            Serializable(),
             rule(node.rule),
             sire(0),
             next(0),

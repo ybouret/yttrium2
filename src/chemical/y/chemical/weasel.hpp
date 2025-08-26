@@ -53,7 +53,7 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            XNode * parse(Jive::Module *);
+            XNode * parse(Jive::Module *); //!< \return parsed full module to Weasel node
             String  formulaToText(const Formula &, int * const);
 
 
