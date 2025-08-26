@@ -27,7 +27,7 @@ Y_UTEST(weasel)
             {
                 const Formula formula = node->clone();
                 int           charge  = 0;
-                const String  spname  = weasel.formulaToString(formula,&charge);
+                const String  spname  = weasel.formulaToText(formula,&charge);
                 std::cerr << "species=" << spname << ", charge=" << charge << std::endl;
             }
         }

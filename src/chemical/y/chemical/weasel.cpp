@@ -1,7 +1,7 @@
 
 #include "y/chemical/weasel.hpp"
 #include "y/chemical/weasel/parser.hpp"
-#include "y/chemical/weasel/formula/to-text.hpp"
+#include "y/chemical/weasel/formula/translator.hpp"
 
 
 namespace Yttrium
@@ -76,11 +76,9 @@ namespace Yttrium
             return node.yield();
         }
 
-        String  Weasel:: formulaToString(const Formula &f, int * const z)
+        String  Weasel:: formulaToText(const Formula &f, int * const z)
         {
-            int          res = 0;
-            const String str = code->translator.decode(f,res);
-            if(z) *z = res;
+            const String str = code->translator.decode(f,z,false);
             return str;
         }
 

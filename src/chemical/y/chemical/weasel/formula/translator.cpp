@@ -1,5 +1,5 @@
 
-#include "y/chemical/weasel/formula/to-text.hpp"
+#include "y/chemical/weasel/formula/translator.hpp"
 #include "y/format/decimal.hpp"
 #include "y/ascii/convert.hpp"
 
@@ -15,7 +15,8 @@ namespace Yttrium
         Weasel:: FormulaTranslator:: FormulaTranslator(const Jive::Syntax::Grammar &G) :
         Jive::Analyzer(G),
         stack(),
-        charge(0)
+        charge(0),
+        html(false)
         {
             verbose = true;
 
@@ -34,15 +35,22 @@ namespace Yttrium
 
         }
 
+        const char Weasel:: FormulaTranslator:: SubInit[] = "<sub>";
+        const char Weasel:: FormulaTranslator:: SubQuit[] = "</sub>";
+
+
         Weasel:: FormulaTranslator:: ~FormulaTranslator() noexcept
         {
 
         }
 
-        String  Weasel:: FormulaTranslator:: decode(const Formula &f, int &z)
+        String  Weasel:: FormulaTranslator:: decode(const Formula &f,
+                                                    int * const    z,
+                                                    const bool     toHtml)
         {
+            html = toHtml;
             walk( & *f.code );
-            z = charge;
+            if(z) *z = charge;
             return stack.pullTail();
         }
 
@@ -82,7 +90,6 @@ namespace Yttrium
 
         void Weasel:: FormulaTranslator:: onCOEF(const Token &token)
         {
-            // TODO: validate coeff ?
             const apn cf = token.toNatural();
             if(cf.bits()<=0) throw Specific::Exception(grammar.lang->c_str(),"null coefficient");
             stack << token.toString();
@@ -135,7 +142,7 @@ namespace Yttrium
         String Formula:: text(int *const z) const
         {
             static Weasel &weasel = Weasel::Instance();
-            return weasel.formulaToString(*this,z);
+            return weasel.formulaToText(*this,z);
         }
 
 

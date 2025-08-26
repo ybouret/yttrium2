@@ -35,8 +35,8 @@ namespace Yttrium
             virtual void display(std::ostream &,size_t) const;
 
             XNode * parse(Jive::Module *);
-            String  formulaToString(const Formula &, int * const);
-
+            String  formulaToText(const Formula &, int * const);
+            
 
         private:
             Y_Disable_Copy_And_Assign(Weasel); //!< discarding

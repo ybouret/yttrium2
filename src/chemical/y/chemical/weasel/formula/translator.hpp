@@ -18,13 +18,18 @@ namespace Yttrium
         class Weasel:: FormulaTranslator : public Jive::Analyzer
         {
         public:
+            static const char SubInit[];
+            static const char SubQuit[];
+
             explicit FormulaTranslator(const Jive::Syntax::Grammar &);
             virtual ~FormulaTranslator() noexcept;
 
-            String decode(const Formula &, int &);
+            String decode(const Formula &, int * const, const bool);
 
             Vector<String> stack;
             int            charge;
+            bool           html;
+
 
         private:
             Y_Disable_Copy_And_Assign(FormulaTranslator); //!< discarding
