@@ -1,9 +1,9 @@
 
 #include "y/chemical/weasel.hpp"
 #include "y/chemical/weasel/parser.hpp"
+#include "y/chemical/weasel/formula/translator.hpp"
 #include "y/chemical/weasel/equilibrium/translator.hpp"
 #include "y/jive/syntax/node/internal.hpp"
-#include "y/chemical/equilibrium.hpp"
 
 
 
@@ -12,7 +12,6 @@ namespace Yttrium
     namespace Chemical
     {
         const char * const Weasel::CallSign = "Weasel";
-
         const char * const Weasel::Coef     = "Coef";
         const char * const Weasel::RegExp   = "RegExp";
         const char * const Weasel::StringID = "String";
@@ -25,8 +24,8 @@ namespace Yttrium
             public:
                 inline WeaselCode() :
                 Weasel::Parser(),
-                wft(*this),
-                eft(*this)
+                ftrans(*this),
+                etrans()
                 {
 
                 }
@@ -36,8 +35,8 @@ namespace Yttrium
 
                 }
 
-                Weasel::FormulaTranslator     wft;
-                Weasel::EquilibriumTranslator eft;
+                Weasel::FormulaTranslator     ftrans;
+                Weasel::EquilibriumTranslator etrans;
 
             private:
                 Y_Disable_Copy_And_Assign(WeaselCode);
@@ -123,12 +122,12 @@ namespace Yttrium
 
         String  Weasel:: formulaToText(const Formula &f, int * const z)
         {
-            return code->wft.decode(f,z,false);
+            return code->ftrans.decode(f,z,false);
         }
 
         String  Weasel:: formulaToHTML(const Formula &f)
         {
-            return code->wft.decode(f,0,true);
+            return code->ftrans.decode(f,0,true);
         }
 
         XNode * Weasel:: formula1(Jive::Module *m)
@@ -149,7 +148,7 @@ namespace Yttrium
                                        const size_t       top,
                                        Lua::VM &          lvm)
         {
-            return code->eft.decode(root,lib,top,lvm);
+            return code->etrans.decode(root,lib,top,lvm);
         }
 
     }

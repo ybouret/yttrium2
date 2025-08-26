@@ -34,7 +34,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             static const char * const         CallSign;      //!< "Library"
-            typedef SpeciesDB::ConstIterator ConstIterator;  //!< alias
+            typedef SpeciesDB::ConstIterator  ConstIterator;  //!< alias
 
             //__________________________________________________________________
             //

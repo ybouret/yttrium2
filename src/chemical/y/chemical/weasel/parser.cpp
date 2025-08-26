@@ -1,7 +1,7 @@
 
 #include "y/chemical/weasel/parser.hpp"
 #include "y/chemical/formula.hpp"
-#include "y/chemical/equilibrium.hpp"
+//#include "y/chemical/reactive/equilibrium.hpp"
 #include "y/jive/lexical/plugin/rstring.hpp"
 
 namespace Yttrium

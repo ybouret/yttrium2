@@ -14,10 +14,8 @@ namespace Yttrium
         {
         }
 
-        Weasel:: EquilibriumTranslator:: EquilibriumTranslator(const Jive::Syntax::Grammar &G) :
-        Jive::Analyzer(G,Jive::Permissive)
+        Weasel:: EquilibriumTranslator:: EquilibriumTranslator()  
         {
-            verbose = true;
         }
 
         
@@ -37,13 +35,13 @@ namespace Yttrium
 
             // decoding reactants
             node = node->next; assert(node); assert(node->name() == Components::Reac);
-            Actor::List reac;
-            decode(eid,reac,node,lib);
+            Actor::List reac; decode(eid,reac,node,lib);
+
 
             // decoding products
             node = node->next; assert(node); assert(node->name() == Components::Prod);
-            Actor::List prod;
-            decode(eid,prod,node,lib);
+            Actor::List prod; decode(eid,prod,node,lib);
+
 
             // decoding constant
             node = node->next; assert(node); assert(node->name() == "KSTR" );
@@ -54,6 +52,8 @@ namespace Yttrium
 
             std::cerr << "K=" << K << std::endl;
             AutoPtr<Equilibrium> eq = new ConstEquilibrium(eid,K,top);
+
+            // assemble equilibrium
             for(const Actor *a=reac.head;a;a=a->next) eq->r(a->nu,a->sp);
             for(const Actor *a=prod.head;a;a=a->next) eq->p(a->nu,a->sp);
             std::cerr << eq << std::endl;

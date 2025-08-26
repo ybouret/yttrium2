@@ -30,6 +30,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             static const char * const CallSign; //!< "Equilibrium"
+            typedef Keyed< String,ArcPtr<Equilibrium> > Pointer; //!< alias
 
             //__________________________________________________________________
             //

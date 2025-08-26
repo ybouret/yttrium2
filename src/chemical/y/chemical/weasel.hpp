@@ -6,7 +6,7 @@
 
 #include "y/singleton.hpp"
 #include "y/concurrent/life-time.hpp"
-#include "y/chemical/equilibrium.hpp"
+#include "y/chemical/reactive/equilibria.hpp"
 #include "y/chemical/library.hpp"
 #include "y/lua++/state.hpp"
 
@@ -68,11 +68,24 @@ namespace Yttrium
             String  formulaToHTML(const Formula &);              //!< \return formula to html
             XNode * formula1(Jive::Module *);                    //!< \return one formula node from compatible module
 
+            //__________________________________________________________________
+            //
+            //
+            // Handling Equilibrium
+            //
+            //__________________________________________________________________
             Equilibrium *compile(const XNode * const root,
                                  Library     &       lib,
                                  const size_t        top,
                                  Lua::VM            &lvm);
 
+            //__________________________________________________________________
+            //
+            //
+            // Populating
+            //
+            //__________________________________________________________________
+            void operator()(Jive::Module *, Library &, Equilibria &);
 
         private:
             Y_Disable_Copy_And_Assign(Weasel); //!< discarding
