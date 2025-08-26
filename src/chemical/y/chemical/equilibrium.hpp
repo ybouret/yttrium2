@@ -4,7 +4,7 @@
 #define Y_Chemical_Equilibrium_Included 1
 
 
-#include "y/chemical/type/indexed.hpp"
+#include "y/chemical/reactive/actors.hpp"
 
 
 namespace Yttrium

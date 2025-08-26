@@ -17,10 +17,16 @@ namespace Yttrium
         class Actors : public Entity, public Ingress< const Actor::CoreList >
         {
         public:
+            static const char * const CallSign;
+            
             explicit Actors(const Actor::Role = Actor::InEquilibrium);
             virtual ~Actors() noexcept;
 
             Actors(const Actors &);
+
+            void add(const unsigned, const Species &);
+            void add(const Species &);
+
 
 
         private:

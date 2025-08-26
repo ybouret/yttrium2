@@ -43,7 +43,7 @@ namespace Yttrium
             switch(r)
             {
                 case InEquilibrium:  id += sp.name;        break;
-                case InConservation: id += '[' + id + ']'; break;
+                case InConservation: id += '[' + sp.name + ']'; break;
             }
         }
     }
