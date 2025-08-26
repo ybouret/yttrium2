@@ -13,21 +13,50 @@ namespace Yttrium
     namespace Chemical
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //! description level
+        //
+        //______________________________________________________________________
         enum Level
         {
-            TopLevel,
-            SubLevel,
-            AuxLevel
+            TopLevel, //!< in global space
+            SubLevel, //!< in cluster
+            AuxLevel  //!< somewhere else
         };
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Indexed Entity
+        //
+        //
+        //______________________________________________________________________
         class Indexed : public Entity
         {
         public:
-            static const unsigned MaxLevel = AuxLevel+1;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const unsigned MaxLevel = AuxLevel+1; //!< alias
 
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup with empty name \param top TopLevel index, top>0
             explicit Indexed(const size_t top);
 
+            //! setup \param id name \param top TopLevel index, top>0
             template <typename ID> inline
             explicit Indexed(const ID &id, const size_t top) :
             Entity(id),
@@ -35,14 +64,21 @@ namespace Yttrium
             {
                 setup(top);
             }
-            
-            virtual ~Indexed() noexcept;
 
-            const size_t indx[MaxLevel];
+            virtual ~Indexed() noexcept; //!< cleanup
+
+
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const size_t indx[MaxLevel]; //!< array of indices
 
         private:
-            Y_Disable_Copy_And_Assign(Indexed);
-            void setup(const size_t) noexcept;
+            Y_Disable_Copy_And_Assign(Indexed); //!< discarding
+            void setup(const size_t) noexcept;  //!< initializing
         };
 
     }

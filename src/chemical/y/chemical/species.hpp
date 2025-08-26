@@ -15,18 +15,37 @@ namespace Yttrium
     namespace Chemical
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Species decription
+        //
+        //
+        //______________________________________________________________________
         class Species : public Formula, public Indexed
         {
         public:
-            explicit Species(const Formula &, const size_t top);
-            virtual ~Species() noexcept;
-            explicit Species(const String &,     const size_t top);
-            explicit Species(const char * const, const size_t top);
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit Species(const Formula &,    const size_t); //!< setup
+            explicit Species(const String &,     const size_t); //!< setup
+            explicit Species(const char * const, const size_t); //!< setup
+            virtual ~Species() noexcept; //!< cleanup
 
-
-            const int z;
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const int z; //!< algebraic charge
         private:
-            Y_Disable_Copy_And_Assign(Species);
+            Y_Disable_Copy_And_Assign(Species);  //!< discarding
         };
 
     }

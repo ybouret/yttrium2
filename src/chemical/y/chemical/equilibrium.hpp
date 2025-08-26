@@ -4,14 +4,23 @@
 #define Y_Chemical_Equilibrium_Included 1
 
 
-#include "y/core/setup.hpp"
+#include "y/chemical/type/indexed.hpp"
 
 
 namespace Yttrium
 {
     namespace Chemical
     {
-        class Equilibrium
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Base class for equilibria
+        //
+        //
+        //______________________________________________________________________
+        class Equilibrium : public Indexed
         {
         public:
             static const char * const CallSign; //!< "Equilibrium"
@@ -21,7 +30,7 @@ namespace Yttrium
 
 
         private:
-            Y_Disable_Copy_And_Assign(Equilibrium);
+            Y_Disable_Copy_And_Assign(Equilibrium); //!< discarding
         };
     }
 
