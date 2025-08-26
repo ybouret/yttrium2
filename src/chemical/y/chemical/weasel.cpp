@@ -146,9 +146,10 @@ namespace Yttrium
 
         Equilibrium * Weasel:: compile(const XNode *const root,
                                        Library &          lib,
-                                       const size_t       top)
+                                       const size_t       top,
+                                       Lua::VM &          lvm)
         {
-            return code->eft.decode(root,lib,top);
+            return code->eft.decode(root,lib,top,lvm);
         }
 
     }

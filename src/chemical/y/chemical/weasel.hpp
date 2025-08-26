@@ -8,6 +8,7 @@
 #include "y/concurrent/life-time.hpp"
 #include "y/chemical/equilibrium.hpp"
 #include "y/chemical/library.hpp"
+#include "y/lua++/state.hpp"
 
 namespace Yttrium
 {
@@ -67,7 +68,10 @@ namespace Yttrium
             String  formulaToHTML(const Formula &);              //!< \return formula to html
             XNode * formula1(Jive::Module *);                    //!< \return one formula node from compatible module
 
-            Equilibrium *compile(const XNode * const, Library &, const size_t);
+            Equilibrium *compile(const XNode * const root,
+                                 Library     &       lib,
+                                 const size_t        top,
+                                 Lua::VM            &lvm);
 
 
         private:

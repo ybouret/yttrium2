@@ -13,7 +13,8 @@ Y_UTEST(weasel)
     std::cerr << weasel.callSign() << std::endl;
 
     Library lib;
-    
+    Lua::VM lvm = new Lua::State();
+
     if(argc>1)
     {
         AutoPtr<XNode> tree = weasel.parse( Jive::Module::OpenFile(argv[1]) );
@@ -47,7 +48,7 @@ Y_UTEST(weasel)
 
                 if(node->defines<Equilibrium>())
                 {
-                    weasel.compile(node,lib,1);
+                    weasel.compile(node,lib,1,lvm);
                 }
             }
 

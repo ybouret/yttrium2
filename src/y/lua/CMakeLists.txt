@@ -24,6 +24,26 @@ endforeach()
 add_library( y-lua STATIC ${LUA_C} )
 Y_ThirdParty(y-lua)
 
+if(false)
+set(HDR src/lua.h src/luaconf.h src/lualib.h src/lauxlib.h)
+
+set(SRC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(TGT ${CMAKE_CURRENT_BINARY_DIR}/y)
+ 
+
+add_custom_command( TARGET y-lua POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${TGT}
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SRC}/lua.h     ${TGT}/lua.h
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SRC}/luaconf.h ${TGT}/luaconf.h
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SRC}/lualib.h  ${TGT}/lualib.h
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SRC}/lauxlib.h ${TGT}/lauxlib.h
+    COMMENT "[Create Local Lua SDK]"
+    VERBATIM
+)
+endif()
+
+#message( FATAL_ERROR "stop" )
+
 add_executable(lua src/lua.c)
 target_link_libraries(lua y-lua)
 if(Y_Linux OR Y_FreeBSD OR Y_SunOS)
