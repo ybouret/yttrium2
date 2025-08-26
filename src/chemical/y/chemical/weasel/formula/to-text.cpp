@@ -9,10 +9,10 @@ namespace Yttrium
     namespace Chemical
     {
 
-#define Y_Push(ID) Y_Jive_Push(FormulaToText,ID)
-#define Y_Func(ID) Y_Jive_Func(FormulaToText,ID)
+#define Y_Push(ID) Y_Jive_Push(FormulaTranslator,ID)
+#define Y_Func(ID) Y_Jive_Func(FormulaTranslator,ID)
 
-        Weasel:: FormulaToText:: FormulaToText(const Jive::Syntax::Grammar &G) :
+        Weasel:: FormulaTranslator:: FormulaTranslator(const Jive::Syntax::Grammar &G) :
         Jive::Analyzer(G),
         stack(),
         charge(0)
@@ -22,8 +22,8 @@ namespace Yttrium
             Y_Push(Name);
             Y_Push(COEF);
 
-            push('+', *this, & FormulaToText::onPlus);
-            push('-', *this, & FormulaToText::onMinus);
+            push('+', *this, & FormulaTranslator::onPlus);
+            push('-', *this, & FormulaTranslator::onMinus);
 
 
             Y_Func(Mult);
@@ -34,53 +34,53 @@ namespace Yttrium
 
         }
 
-        Weasel:: FormulaToText:: ~FormulaToText() noexcept
+        Weasel:: FormulaTranslator:: ~FormulaTranslator() noexcept
         {
 
         }
 
-        String  Weasel:: FormulaToText:: compile(const Formula &f, int &z)
+        String  Weasel:: FormulaTranslator:: decode(const Formula &f, int &z)
         {
             walk( & *f.code );
             z = charge;
             return stack.pullTail();
         }
 
-        void Weasel:: FormulaToText:: init()
+        void Weasel:: FormulaTranslator:: init()
         {
             stack.free();
             charge = 0;
         }
 
 
-        void Weasel:: FormulaToText:: quit()
+        void Weasel:: FormulaTranslator:: quit()
         {
             if(1!=stack.size()) throw Specific::Exception(grammar.lang->c_str(),"corrupted AST");
         }
 
-        void Weasel:: FormulaToText:: show(const size_t depth) const
+        void Weasel:: FormulaTranslator:: show(const size_t depth) const
         {
             if(verbose) Core::Indent(std::cerr << "stack=",depth << 1) << stack << " / charge=" << charge << std::endl;
         }
 
-        void Weasel:: FormulaToText:: onName(const Token &token)
+        void Weasel:: FormulaTranslator:: onName(const Token &token)
         {
             stack << token.toString();
         }
 
-        void Weasel:: FormulaToText:: onPlus(const Token &)
+        void Weasel:: FormulaTranslator:: onPlus(const Token &)
         {
             charge = 1;
         }
 
-        void Weasel:: FormulaToText:: onMinus(const Token &)
+        void Weasel:: FormulaTranslator:: onMinus(const Token &)
         {
             charge = -1;
         }
 
 
 
-        void Weasel:: FormulaToText:: onCOEF(const Token &token)
+        void Weasel:: FormulaTranslator:: onCOEF(const Token &token)
         {
             // TODO: validate coeff ?
             const apn cf = token.toNatural();
@@ -88,7 +88,7 @@ namespace Yttrium
             stack << token.toString();
         }
 
-        void Weasel:: FormulaToText:: onMult(const size_t)
+        void Weasel:: FormulaTranslator:: onMult(const size_t)
         {
             assert( stack.size() >= 2);
             const String cof = stack.pullTail();
@@ -97,7 +97,7 @@ namespace Yttrium
             stack << res;
         }
 
-        void Weasel:: FormulaToText:: onBody(size_t n)
+        void Weasel:: FormulaTranslator:: onBody(size_t n)
         {
             assert(stack.size()>=n);
             String res;
@@ -106,7 +106,7 @@ namespace Yttrium
             stack << res;
         }
 
-        void Weasel:: FormulaToText:: onZ(const size_t n)
+        void Weasel:: FormulaTranslator:: onZ(const size_t n)
         {
             switch(n)
             {
@@ -126,7 +126,7 @@ namespace Yttrium
 
         }
 
-        void Weasel:: FormulaToText:: onFormula(size_t)
+        void Weasel:: FormulaTranslator:: onFormula(size_t)
         {
             
         }

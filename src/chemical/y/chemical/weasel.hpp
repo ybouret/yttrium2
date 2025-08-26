@@ -30,7 +30,7 @@ namespace Yttrium
             static const char * const RegExp;         //!< "RegExp";
             static const char * const StringID;       //!< "String";
             class Parser;
-            class FormulaToText;
+            class FormulaTranslator;
 
             virtual void display(std::ostream &,size_t) const;
 

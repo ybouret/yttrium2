@@ -22,7 +22,7 @@ namespace Yttrium
             public:
                 inline WeaselCode() :
                 Weasel::Parser(),
-                formulaToText(*this)
+                translator(*this)
                 {
 
                 }
@@ -32,7 +32,7 @@ namespace Yttrium
 
                 }
 
-                Weasel::FormulaToText formulaToText;
+                Weasel::FormulaTranslator translator;
 
             private:
                 Y_Disable_Copy_And_Assign(WeaselCode);
@@ -79,7 +79,7 @@ namespace Yttrium
         String  Weasel:: formulaToString(const Formula &f, int * const z)
         {
             int          res = 0;
-            const String str = code->formulaToText.compile(f,res);
+            const String str = code->translator.decode(f,res);
             if(z) *z = res;
             return str;
         }

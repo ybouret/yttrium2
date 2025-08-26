@@ -41,7 +41,6 @@ namespace Yttrium
             const Rule &PLUS      = term('+');
             const Rule &MINUS     = term('-');
             const Rule &SIGN      = pick(PLUS,MINUS);
-            //const Rule &SPACE     = zom(WHITE);
             //const Rule &STRING    = plugin(Jive::Lexical::RString::Class,StringID);
 
 
@@ -60,7 +59,25 @@ namespace Yttrium
                 FORMULA << BODY << opt(agg(Formula::Z) << '^' << OPT_COEF << SIGN);
             }
             STATEMENT << FORMULA;
-            
+
+            //------------------------------------------------------------------
+            //
+            // Create Equilibrium
+            //
+            //------------------------------------------------------------------
+            const Rule &SPACE     = zom(WHITE);
+            Agg & EQUILIBRIUM = agg("EQUILIBRIUM");
+
+            EQUILIBRIUM << term("ID","@[:word:]+") << SPACE << ':';
+
+            const Rule  & CONCENTRATION = (agg("CONC") << '[' << SPACE << FORMULA << SPACE << ']');
+            // EQUILIBRIUM << SPACE << CONCENTRATION;
+
+
+            STATEMENT << EQUILIBRIUM;
+
+
+
 
 
             render();

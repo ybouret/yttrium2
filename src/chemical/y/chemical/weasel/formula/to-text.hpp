@@ -15,19 +15,19 @@ namespace Yttrium
     namespace Chemical
     {
 
-        class Weasel:: FormulaToText : public Jive::Analyzer
+        class Weasel:: FormulaTranslator : public Jive::Analyzer
         {
         public:
-            explicit FormulaToText(const Jive::Syntax::Grammar &);
-            virtual ~FormulaToText() noexcept;
+            explicit FormulaTranslator(const Jive::Syntax::Grammar &);
+            virtual ~FormulaTranslator() noexcept;
 
-            String compile(const Formula &, int &);
+            String decode(const Formula &, int &);
 
             Vector<String> stack;
             int            charge;
 
         private:
-            Y_Disable_Copy_And_Assign(FormulaToText); //!< discarding
+            Y_Disable_Copy_And_Assign(FormulaTranslator); //!< discarding
             virtual void init();
             virtual void quit();
             virtual void show(const size_t) const;
