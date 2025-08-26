@@ -13,6 +13,14 @@ namespace Yttrium
 {
     namespace Chemical
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Monitor name length of entities
+        //
+        //
+        //______________________________________________________________________
 
         class Assembly
         {
@@ -20,9 +28,12 @@ namespace Yttrium
             explicit Assembly() noexcept;
             virtual ~Assembly() noexcept;
 
-            
+            void reset() noexcept;
+            void enroll(const Entity &) noexcept;
+
+            const size_t width; //!< max name length
         private:
-            Y_Disable_Copy_And_Assign(Assembly);
+            Y_Disable_Copy_And_Assign(Assembly); //!< disarding
         };
 
 
