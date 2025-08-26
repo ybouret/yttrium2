@@ -13,11 +13,15 @@ namespace Yttrium
         {
         }
 
-        void Assembly:: reset() noexcept { Coerce(width) = 0; }
-
+        
         void Assembly:: enroll(const Entity &en) noexcept
         {
             InSituMax(Coerce(width),en.name.size());
+        }
+
+        std::ostream & Assembly:: display(std::ostream &os, const String &s, const Justify::Type j) const
+        {
+            return os << Justify(s,width,j);
         }
     }
 

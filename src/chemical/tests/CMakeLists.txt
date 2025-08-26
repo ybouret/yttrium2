@@ -8,3 +8,4 @@ set(VAR "${CMAKE_CURRENT_SOURCE_DIR}/../../../var")
 
 Y_UTEST(weasel)
 Y_UTEST(species)
+Y_UTEST(library)

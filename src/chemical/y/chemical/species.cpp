@@ -12,8 +12,8 @@ namespace Yttrium
         }
 
         Species:: Species(const Formula &f, const size_t top) :
-        Formula(f),
         Indexed(top),
+        Formula(f),
         z(0)
         {
             Coerce(name) = text( & Coerce(z) );
@@ -39,16 +39,16 @@ namespace Yttrium
         }
 
         Species:: Species(const String &id, const size_t top) :
-        Formula(StringToFormula(id)),
         Indexed(top),
+        Formula(StringToFormula(id)),
         z(0)
         {
             Coerce(name) = text( & Coerce(z) );
         }
 
         Species:: Species(const char * const id, const size_t top) :
-        Formula(StringToFormula(id)),
         Indexed(top),
+        Formula(StringToFormula(id)),
         z(0)
         {
             Coerce(name) = text( & Coerce(z) );

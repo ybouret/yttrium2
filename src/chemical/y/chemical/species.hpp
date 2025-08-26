@@ -8,6 +8,7 @@
 
 #include "y/chemical/type/indexed.hpp"
 #include "y/chemical/formula.hpp"
+#include "y/pointer/keyed.hpp"
 
 
 namespace Yttrium
@@ -23,9 +24,17 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Species : public Formula, public Indexed
+        class Species : public Indexed, public Formula
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef Keyed< String, ArcPtr<Species> > Pointer;
+
             //__________________________________________________________________
             //
             //

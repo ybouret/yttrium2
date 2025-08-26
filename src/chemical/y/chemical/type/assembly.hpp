@@ -7,6 +7,7 @@
 
 
 #include "y/chemical/type/entity.hpp"
+#include "y/format/justify.hpp"
 
 
 namespace Yttrium
@@ -28,8 +29,10 @@ namespace Yttrium
             explicit Assembly() noexcept;
             virtual ~Assembly() noexcept;
 
-            void reset() noexcept;
             void enroll(const Entity &) noexcept;
+
+            std::ostream & display(std::ostream &, const String &, const Justify::Type) const;
+
 
             const size_t width; //!< max name length
         private:
