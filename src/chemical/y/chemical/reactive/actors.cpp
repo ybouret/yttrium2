@@ -40,7 +40,6 @@ namespace Yttrium
 
         void Actors:: add(const unsigned nu, const Species &sp)
         {
-            static const char * sep[2] = { " + ", "+" };
 
             // sanity
             assert(nu>0);
@@ -57,7 +56,7 @@ namespace Yttrium
                 if(1==list.size)
                     newName = last.name;
                 else
-                    newName += (sep[role] + last.name);
+                    newName += ('+' + last.name);
                 Coerce(name).swapFor(newName);
             }
             catch(...)

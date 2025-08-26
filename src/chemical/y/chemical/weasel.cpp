@@ -1,7 +1,7 @@
 
 #include "y/chemical/weasel.hpp"
 #include "y/chemical/weasel/parser.hpp"
-#include "y/chemical/weasel/formula/translator.hpp"
+#include "y/chemical/weasel/equilibrium/translator.hpp"
 #include "y/jive/syntax/node/internal.hpp"
 #include "y/chemical/equilibrium.hpp"
 
@@ -25,7 +25,8 @@ namespace Yttrium
             public:
                 inline WeaselCode() :
                 Weasel::Parser(),
-                translator(*this)
+                wft(*this),
+                eft(*this)
                 {
 
                 }
@@ -35,7 +36,8 @@ namespace Yttrium
 
                 }
 
-                Weasel::FormulaTranslator translator;
+                Weasel::FormulaTranslator     wft;
+                Weasel::EquilibriumTranslator eft;
 
             private:
                 Y_Disable_Copy_And_Assign(WeaselCode);
@@ -97,8 +99,8 @@ namespace Yttrium
                 assert(node->defines<Equilibrium>());
                 XTree * const tree = dynamic_cast<XTree *>(node);
                 XNode * sub  = tree->head; assert(sub); assert("EID"==sub->name());
-                sub          = sub->next;  assert(sub); assert(Equilibrium::Prod==sub->name()); cleanActors(sub);
                 sub          = sub->next;  assert(sub); assert(Equilibrium::Reac==sub->name()); cleanActors(sub);
+                sub          = sub->next;  assert(sub); assert(Equilibrium::Prod==sub->name()); cleanActors(sub);
             }
         }
 
@@ -121,12 +123,12 @@ namespace Yttrium
 
         String  Weasel:: formulaToText(const Formula &f, int * const z)
         {
-            return code->translator.decode(f,z,false);
+            return code->wft.decode(f,z,false);
         }
 
         String  Weasel:: formulaToHTML(const Formula &f)
         {
-            return code->translator.decode(f,0,true);
+            return code->wft.decode(f,0,true);
         }
 
         XNode * Weasel:: formula1(Jive::Module *m)
@@ -142,6 +144,12 @@ namespace Yttrium
             return tree.popHead();
         }
 
+        Equilibrium * Weasel:: compile(const XNode *const root,
+                                       Library &          lib,
+                                       const size_t       top)
+        {
+            return code->eft.decode(root,lib,top);
+        }
 
     }
 }

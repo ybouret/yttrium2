@@ -79,13 +79,13 @@ namespace Yttrium
                 const Rule & XACTOR     = ( grp("XActor") << SPACE << '+' << SPACE << ACTOR);
                 const Rule & ACTORS     = ( grp(Actors::CallSign) << ACTOR << zom(XACTOR) );
                 const Rule & OPT_ACTORS = opt(ACTORS);
-                const Rule & PROD       = ( agg(Equilibrium::Prod) << OPT_ACTORS);
                 const Rule & REAC       = ( agg(Equilibrium::Reac) << OPT_ACTORS);
+                const Rule & PROD       = ( agg(Equilibrium::Prod) << OPT_ACTORS);
 
                 EQUILIBRIUM
-                << SPACE << PROD
-                << SPACE << mark(Components::Arrows)
                 << SPACE << REAC
+                << SPACE << mark(Components::Arrows)
+                << SPACE << PROD
                 << SPACE << ':'
                 << SPACE << KSTR;
 

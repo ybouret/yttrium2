@@ -7,6 +7,7 @@
 #include "y/singleton.hpp"
 #include "y/concurrent/life-time.hpp"
 #include "y/chemical/equilibrium.hpp"
+#include "y/chemical/library.hpp"
 
 namespace Yttrium
 {
@@ -38,6 +39,7 @@ namespace Yttrium
             static const char * const StringID;       //!< "String";
             class Parser;
             class FormulaTranslator;
+            class EquilibriumTranslator;
 
             //__________________________________________________________________
             //
@@ -64,7 +66,8 @@ namespace Yttrium
             String  formulaToText(const Formula &, int * const); //!< \return formula to text, with optional charge
             String  formulaToHTML(const Formula &);              //!< \return formula to html
             XNode * formula1(Jive::Module *);                    //!< \return one formula node from compatible module
-            
+
+            Equilibrium *compile(const XNode * const, Library &, const size_t);
 
 
         private:

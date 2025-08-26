@@ -15,6 +15,8 @@ namespace Yttrium
         typedef Jive::XNode                XNode; //!< alias
         typedef Jive::XCode                XCode; //!< alias
         typedef Jive::Syntax::InternalNode XTree; //!< alias
+        typedef Jive::Syntax::TerminalNode XTerm; //!< alias
+
     }
 
 }

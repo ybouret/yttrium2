@@ -2,8 +2,8 @@
 //! \file
 
 
-#ifndef Y_Chemical_Weasel_FormulaToText_Included
-#define Y_Chemical_Weasel_FormulaToText_Included 1
+#ifndef Y_Chemical_Weasel_FormulaTanslator_Included
+#define Y_Chemical_Weasel_FormulaTanslator_Included 1
 
 #include "y/chemical/weasel.hpp"
 #include "y/jive/analyzer.hpp"

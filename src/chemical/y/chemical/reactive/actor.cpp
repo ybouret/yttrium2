@@ -39,7 +39,7 @@ namespace Yttrium
         {
             if(nu<=0) throw Specific::Exception(CallSign,"null coefficient");
             String & id  = Coerce(name);
-            if(nu>1) id += Formatted::Get("%u*",nu);
+            if(nu>1) id += Formatted::Get("%u",nu);
             switch(r)
             {
                 case InEquilibrium:  id += sp.name;        break;

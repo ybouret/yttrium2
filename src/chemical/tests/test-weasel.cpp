@@ -12,6 +12,8 @@ Y_UTEST(weasel)
 
     std::cerr << weasel.callSign() << std::endl;
 
+    Library lib;
+    
     if(argc>1)
     {
         AutoPtr<XNode> tree = weasel.parse( Jive::Module::OpenFile(argv[1]) );
@@ -39,6 +41,13 @@ Y_UTEST(weasel)
                     std::cerr << "html: " << sphtml << std::endl;
 
                     fp("%u[label=<",indx) << sphtml << ">];\n";
+
+                    continue;
+                }
+
+                if(node->defines<Equilibrium>())
+                {
+                    weasel.compile(node,lib,1);
                 }
             }
 
