@@ -51,6 +51,7 @@ Y_UTEST(functor)
 Y_UTEST(format:hexadecimal)
 Y_UTEST(format:decimal)
 Y_UTEST(format:human_readable)
+Y_UTEST(format:justify)
 
 # core
 Y_UTEST(core:variadic)
