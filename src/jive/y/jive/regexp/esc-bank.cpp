@@ -28,6 +28,8 @@ namespace Yttrium
                 case CARET:
                 case '-':
                 case BACKSLASH:
+                case LPAREN:
+                case RPAREN:
                     return new Byte( (uint8_t)c );
 
                     // control

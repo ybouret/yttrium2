@@ -72,7 +72,8 @@ namespace Yttrium
                 Agg & EQUILIBRIUM = agg(Equilibrium::CallSign);
 
                 // prolog
-                EQUILIBRIUM << term("EID","@[:word:]+") << SPACE << ':';
+                String      rx    = Equilibrium::Prefix; rx +="[[:word:]_\\(\\)]+";
+                EQUILIBRIUM << term("EID",rx) << SPACE << ':';
 
                 // content
                 const Rule & ACTOR      = ( agg(Actor::CallSign) << OPT_COEF << SPACE << FORMULA );
@@ -92,6 +93,13 @@ namespace Yttrium
 
                 STATEMENT << EQUILIBRIUM;
             }
+
+            //------------------------------------------------------------------
+            //
+            // Create Regular Expression
+            //
+            //------------------------------------------------------------------
+            STATEMENT<< term(RegExp,"%[-+[:word:].*?\\\\\\(\\)&|]+");
 
 
 

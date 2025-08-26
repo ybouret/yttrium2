@@ -31,7 +31,8 @@ namespace Yttrium
             static const char * const Arrows;   //!< "<=>"
             static const char * const Prod;     //!< "Prod"
             static const char * const Reac;     //!< "Reac"
-
+            static const char         Prefix = '@';
+            
             //__________________________________________________________________
             //
             //
