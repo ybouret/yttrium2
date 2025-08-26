@@ -56,7 +56,7 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            XNode * parse(Jive::Module *); //!< \return parsed full module to Weasel node
+            XNode * parse(Jive::Module * const); //!< \return parsed full module to Weasel node
 
             //__________________________________________________________________
             //
@@ -85,7 +85,7 @@ namespace Yttrium
             // Populating
             //
             //__________________________________________________________________
-            void operator()(Jive::Module *, Library &, Equilibria &);
+            void operator()(Jive::Module * const, Library &, Equilibria &);
 
         private:
             Y_Disable_Copy_And_Assign(Weasel); //!< discarding

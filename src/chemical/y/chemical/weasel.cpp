@@ -103,9 +103,9 @@ namespace Yttrium
             }
         }
 
-        XNode * Weasel:: parse( Jive::Module *m )
+        XNode * Weasel:: parse( Jive::Module * const input )
         {
-            Jive::Source   source(m);
+            Jive::Source   source(input);
             AutoPtr<XNode> node = code->parse(source);
             assert(node.isValid());
             assert(node->defines<Weasel>());
@@ -150,6 +150,35 @@ namespace Yttrium
         {
             return code->etrans.decode(root,lib,top,lvm);
         }
+
+        void Weasel::operator()(Jive::Module * const input,
+                                Library    &         lib,
+                                Equilibria &         eqs)
+        {
+            const AutoPtr<XNode> root = parse(input);
+            assert(root.isValid());
+            assert(root->defines<Weasel>());
+
+            for(const XNode *node = dynamic_cast<const XTree&>(*root).head; node; node=node->next)
+            {
+                if(node->defines<Formula>())
+                {
+                    const Formula formula( node->clone() );
+                    (void) lib[formula];
+                    continue;
+                }
+
+                if(node->defines<Equilibrium>())
+                {
+                    const size_t top = eqs.nextTop();
+                    (void) eqs( compile(node,lib,top,eqs.lvm) );
+                    continue;
+                }
+
+                throw Specific::Exception(CallSign,"unhandled <%s>", node->name().c_str());
+            }
+        }
+
 
     }
 }
