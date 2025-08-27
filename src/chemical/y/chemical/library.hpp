@@ -34,11 +34,11 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            static const char * const         CallSign;      //!< "Library"
+            static const char * const         CallSign;       //!< "Library"
             typedef SpeciesDB::ConstIterator  ConstIterator;  //!< alias
-            static const int                  LOG10MIN = -20;
-            static const int                  LOG10MAX =   1;
-            static xreal_t Concentration(Random::Bits &) noexcept;
+            static const int                  LOG10MIN = -20; //!< alias
+            static const int                  LOG10MAX =   1; //!< alias
+            static xreal_t Concentration(Random::Bits &) noexcept; //!< \return 10^(ran(LOG10MIN:LOG10MAX))
 
 
             //__________________________________________________________________
@@ -65,8 +65,19 @@ namespace Yttrium
 
             const Species & operator[](const Formula &); //!< \return species from formula
 
+            //! fill array with random concentration
+            /**
+             \param probaZero probility to set a zero concentration
+             */
             void conc(Random::Bits &, XWritable &, const real_t probaZero = 0) const;
 
+            //! pretty print
+            /**
+             \param os output
+             \param pfx prefix
+             \param arr array for species
+             \param sfx suffix
+             */
             template <typename ARR> inline
             void print(std::ostream & os,
                        const char *   pfx,
@@ -86,6 +97,14 @@ namespace Yttrium
                 os << '}' << std::endl;
             }
 
+            //! pretty print with transform
+            /**
+             \param os   output
+             \param pfx  prefix
+             \param arr  array for species
+             \param sfx  suffix
+             \param proc process each entry
+             */
             template <typename ARR, typename PROC> inline
             void print(std::ostream & os,
                        const char *   pfx,

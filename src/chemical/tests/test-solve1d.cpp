@@ -47,13 +47,18 @@ Y_UTEST(solve1d)
     {
         Equilibrium &eq = **it;
         const xreal_t K = eq.K(0.0);
-        lib.conc(ran,C);
-        lib.print(std::cerr, "[", C, "]",xreal_t::ToString);
-        std::cerr << "ma=" << eq.massAction(xmul, K, C, TopLevel).str() << std::endl;
-        const XArray C0 = C;
-        solve(eq,K,C,TopLevel,C0);
 
-        lib.print(std::cerr, "[", C, "]",xreal_t::ToString);
+        for(size_t iter=0;iter<10;++iter)
+        {
+            lib.conc(ran,C);
+            lib.print(std::cerr, "[", C, "]",xreal_t::ToString);
+            std::cerr << "ma0 = " << eq.massAction(xmul, K, C, TopLevel).str() << std::endl;
+            const XArray  C0 = C;
+            const xreal_t xi = solve(eq,K,C,TopLevel,C0);
+            lib.print(std::cerr, "[", C, "]",xreal_t::ToString);
+            std::cerr << "ma  = " << eq.massAction(xmul, K, C, TopLevel).str() << std::endl;
+            std::cerr << "xi  = " << xi.str() << std::endl;
+        }
 
     }
 

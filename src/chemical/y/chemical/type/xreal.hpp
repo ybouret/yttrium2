@@ -17,14 +17,14 @@ namespace Yttrium
 {
     namespace Chemical
     {
-        typedef double                real_t;    //!< alias
-        typedef XReal<double>         xreal_t;   //!< alias
-        typedef Readable<xreal_t>     XReadable; //!< alias
-        typedef Writable<xreal_t>     XWritable; //!< alias
-        typedef CxxArray<xreal_t>     XArray;
-        typedef MKL::Triplet<xreal_t> XTriplet;
-        typedef Cameo::Multiplication<xreal_t> XMul;
-        typedef Cameo::Addition<xreal_t>       XAdd;
+        typedef double                         real_t;    //!< alias
+        typedef XReal<double>                  xreal_t;   //!< alias
+        typedef Readable<xreal_t>              XReadable; //!< alias
+        typedef Writable<xreal_t>              XWritable; //!< alias
+        typedef CxxArray<xreal_t>              XArray;    //!< alias
+        typedef MKL::Triplet<xreal_t>          XTriplet;  //!< alias
+        typedef Cameo::Multiplication<xreal_t> XMul;      //!< alias
+        typedef Cameo::Addition<xreal_t>       XAdd;      //!< alias
 
     }
 

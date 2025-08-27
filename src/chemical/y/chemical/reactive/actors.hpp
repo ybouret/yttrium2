@@ -56,10 +56,16 @@ namespace Yttrium
             void add(const Species &);                 //!< add new actor
             bool has(const Species &) const noexcept;  //!< \return true iff species is here
 
+            //! \param X xmul, update \param C concentrations \param L level
             void massAction(XMul &X, const XReadable &C, const Level L) const;
+
+            //! \param X xmul, updated at xi \param C concentrations \param L level \param xi extent
             void massAction(XMul &X, const XReadable &C, const Level L, const xreal_t xi) const;
+
+            //! move safely \param C concentrations \param L level \param xi extent
             void moveSafely(XWritable &C, const Level L, const xreal_t xi) const;
 
+            //! compute limit \param C concentration \param L level \return min(C/nu)
             xreal_t fastLimit(const XReadable &C, const Level L) const noexcept;
 
 

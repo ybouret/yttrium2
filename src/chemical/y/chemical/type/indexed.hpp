@@ -67,12 +67,14 @@ namespace Yttrium
 
             virtual ~Indexed() noexcept; //!< cleanup
 
+            //! \param seq sequence-like \param level level \return seq[ indx[level] ]
             template <typename SEQ> inline
             typename SEQ::Type & operator()(SEQ &seq, const Level level) const noexcept
             {
                 return seq[ indx[level] ];
             }
 
+            //! \param seq sequence-like \param level level \return seq[ indx[level] ]
             template <typename SEQ> inline
             typename SEQ::ConstType & operator()(const SEQ &seq, const Level level) const noexcept
             {

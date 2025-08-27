@@ -15,23 +15,48 @@ namespace Yttrium
     {
         typedef SuffixSet<String,Equilibrium::Pointer> EqDB; //!< alias
 
-
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Database of Equilibria
+        //
+        //
+        //______________________________________________________________________
         class Equilibria : public Ingress< const EqDB>, public Assemblies
         {
         public:
-            static const char * const   CallSign;
-            typedef EqDB::ConstIterator ConstIterator;
-            typedef EqDB::Iterator      Iterator;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const char * const   CallSign;      //!< "Equilibria"
+            typedef EqDB::ConstIterator ConstIterator; //!< alias
+            typedef EqDB::Iterator      Iterator;      //!< alias
 
-            explicit Equilibria();
-            virtual ~Equilibria() noexcept;
-            Y_OSTREAM_PROTO(Equilibria);
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit Equilibria();          //!< setup
+            virtual ~Equilibria() noexcept; //!< cleanup
+            Y_OSTREAM_PROTO(Equilibria);    //!< display
 
-            Iterator begin() noexcept;
-            Iterator end()   noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            Iterator begin()         noexcept; //!< \return db.begin
+            Iterator end()           noexcept; //!< \return db.end
+            size_t   nextTop() const noexcept; //!< \return next index for equilibrium
 
-            size_t nextTop() const noexcept;
-
+            //! record \param eq a new equilibrium \return *eq
             template <typename EQ> inline
             EQ & operator()(EQ * const eq)
             {
@@ -44,10 +69,10 @@ namespace Yttrium
 
 
         private:
-            Y_Disable_Copy_And_Assign(Equilibria);
-            Y_Ingress_Decl();
-            void    record(Equilibrium * const);
-            EqDB    db;
+            Y_Disable_Copy_And_Assign(Equilibria); //!< discarding
+            Y_Ingress_Decl();                      //!< helper
+            void    record(Equilibrium * const);   //!< check and record
+            EqDB    db; //!< database
         };
 
 

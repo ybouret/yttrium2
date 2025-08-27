@@ -21,18 +21,30 @@ namespace Yttrium
     class Freezable
     {
     public:
-        explicit Freezable() noexcept;
-        virtual ~Freezable() noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+        explicit Freezable() noexcept; //!< setup
+        virtual ~Freezable() noexcept; //!< cleanup
 
-        void freeze() noexcept;
-        bool frozen() const noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+        void freeze()       noexcept; //!< set frozen
+        bool frozen() const noexcept; //!< \return true iff frozen
 
-        void checkpoint(const char * const,         const char * const) const;
-        void checkpoint(const Core::String<char> &, const char * const) const;
+        void checkpoint(const char * const,         const char * const) const; //!< throw exception if frozen
+        void checkpoint(const Core::String<char> &, const char * const) const; //!< throw exception if frozen
 
     private:
-        Y_Disable_Copy_And_Assign(Freezable);
-        bool flag;
+        Y_Disable_Copy_And_Assign(Freezable); //!< disarding
+        bool flag; //!< frozen flag
     };
 
 }

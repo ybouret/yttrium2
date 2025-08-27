@@ -12,14 +12,50 @@ namespace Yttrium
 {
     namespace Chemical
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Solve one equilibrium
+        //
+        //
+        //______________________________________________________________________
         class Solve1D
         {
         public:
-            static const char * const CallSign;
-            
-            explicit Solve1D();
-            virtual ~Solve1D() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const char * const CallSign; //!< "Solve1D"
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit Solve1D();          //!< setup
+            virtual ~Solve1D() noexcept; //!< cleanup
+
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! solve and compute average extent
+            /**
+             \param E  components
+             \param K  constant for components
+             \param C  concentrations, initially C0
+             \param L  level
+             \param C0 original concentrations
+             \return average extent
+             */
             xreal_t operator()(const Components &E,
                                const xreal_t     K,
                                XWritable        &C,
@@ -28,8 +64,8 @@ namespace Yttrium
 
         private:
             class Code;
-            Y_Disable_Copy_And_Assign(Solve1D);
-            Code * const code;
+            Y_Disable_Copy_And_Assign(Solve1D); //!< disarding
+            Code * const code; //!< inner code
         };
     }
 

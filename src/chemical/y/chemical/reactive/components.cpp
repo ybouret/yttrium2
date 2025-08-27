@@ -27,6 +27,7 @@ namespace Yttrium
             if(reac.has(sp)) throw Specific::Exception(name.c_str(),"already reactant '%s'", sp.name.c_str());
             Coerce(prod).add(nu,sp);
             updateFlow();
+            Coerce(drNu) += (unit_t)nu;
         }
 
         void Components:: r(const unsigned nu, const Species &sp)
@@ -36,6 +37,7 @@ namespace Yttrium
             if(reac.has(sp)) throw Specific::Exception(name.c_str(),"multiple reactant '%s'", sp.name.c_str());
             Coerce(reac).add(nu,sp);
             updateFlow();
+            Coerce(drNu) -= (unit_t)nu;
         }
 
 
@@ -68,6 +70,8 @@ namespace Yttrium
                     Coerce(flow) = BothWays;
                 }
             }
+
+
         }
         
         bool Components:: neutral() const
@@ -112,6 +116,27 @@ namespace Yttrium
         }
 
         
+
+        xreal_t Components:: extent(XAdd &xadd, const XReadable &C, const Level L, const XReadable &C0) const
+        {
+            xadd.ldz();
+
+            for(const Actor *p=prod->head;p;p=p->next)
+            {
+                const size_t  i = p->sp.indx[L];
+                const xreal_t x = (C[i]-C0[i])/p->xn;
+                xadd << x;
+            }
+
+            for(const Actor *r=reac->head;r;r=r->next)
+            {
+                const size_t  i = r->sp.indx[L];
+                const xreal_t x = (C0[i]-C[i])/r->xn;
+                xadd << x;
+            }
+
+            return xadd.sum() /  xdim;
+        }
 
     }
 

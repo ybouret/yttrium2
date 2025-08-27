@@ -74,6 +74,15 @@ namespace Yttrium
             // Handling Equilibrium
             //
             //__________________________________________________________________
+
+            //! creating a new equilibrium
+            /**
+             \param root equilibrium node
+             \param lib  library
+             \param top  index for new equilibrium
+             \param lvm  lua state
+             \return new equilibrium
+             */
             Equilibrium *compile(const XNode * const root,
                                  Library     &       lib,
                                  const size_t        top,
@@ -85,6 +94,8 @@ namespace Yttrium
             // Populating
             //
             //__________________________________________________________________
+
+            //! process module into regexp, species, equilibria...
             void operator()(Jive::Module * const, Library &, Equilibria &);
 
             
@@ -96,7 +107,7 @@ namespace Yttrium
             explicit Weasel();
             virtual ~Weasel() noexcept;
 
-            void onRegExp(const String &, Library &, Equilibria &);
+            void onRegExp(const String &, Library &, Equilibria &); //!< process regular expression
         };
     }
 }

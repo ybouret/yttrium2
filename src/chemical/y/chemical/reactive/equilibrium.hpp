@@ -29,7 +29,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            static const char * const CallSign; //!< "Equilibrium"
+            static const char * const                   CallSign; //!< "Equilibrium"
             typedef Keyed< String,ArcPtr<Equilibrium> > Pointer; //!< alias
 
             //__________________________________________________________________

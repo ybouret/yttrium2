@@ -19,7 +19,7 @@ namespace Yttrium
         //
         //
         //
-        //! Translate formulat to textual representation
+        //! Translate formula to textual representation
         //
         //
         //______________________________________________________________________
@@ -36,6 +36,7 @@ namespace Yttrium
             static const char SubQuit[]; //!< "</sub>"
             static const char SupInit[]; //!< "<sup>"
             static const char SupQuit[]; //!< "</sup>"
+            
             //__________________________________________________________________
             //
             //

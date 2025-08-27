@@ -65,7 +65,8 @@ namespace Yttrium
             //! syntax helper \param value data \return *this
             inline Multiplier & operator*=(ParamType value) { mul(value); return *this; }
 
-            inline Multiplier & ipower(ParamType value, size_t n)
+            //! integer power \param value data \param n exponent \return *this
+            inline Multiplier & ipower(ParamType value, const size_t n)
             {
                 mul(value,n);
                 return *this;

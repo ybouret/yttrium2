@@ -14,25 +14,44 @@ namespace Yttrium
 {
     namespace Chemical
     {
-
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Monitor different parts of components
+        //
+        //
+        //______________________________________________________________________
         class Assemblies
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
             explicit Assemblies() noexcept;
             virtual ~Assemblies() noexcept;
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            void enroll(const Components &) noexcept; //!< update all parts
 
-            void enroll(const Components &) noexcept;
+            //! pretty display \return stream
+            std::ostream & display(std::ostream &, const Components &) const;
 
-            std::ostream & display(std::ostream &os, const Components &) const;
 
-
-            const Assembly nameFmt;
-            const Assembly reacFmt;
-            const Assembly prodFmt;
+            const Assembly nameFmt; //!< specific assembly
+            const Assembly reacFmt; //!< specific assembly
+            const Assembly prodFmt; //!< specific assembly
 
         private:
-            Y_Disable_Copy_And_Assign(Assemblies);
+            Y_Disable_Copy_And_Assign(Assemblies); //!< discarding
         };
 
     }

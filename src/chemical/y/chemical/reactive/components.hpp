@@ -11,13 +11,18 @@ namespace Yttrium
 {
     namespace Chemical
     {
-
+        //______________________________________________________________________
+        //
+        //
+        //! Components classification
+        //
+        //______________________________________________________________________
         enum MatterFlow
         {
-            Dangling,
-            BothWays,
-            ProdOnly,
-            ReacOnly,
+            Dangling, //!< no prod, no rec
+            BothWays, //!< prod and reac
+            ProdOnly, //!< only prod
+            ReacOnly, //!< only reac
         };
 
         //______________________________________________________________________
@@ -37,11 +42,11 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            static const char * const Arrows;   //!< "<=>"
-            static const char * const Prod;     //!< "Prod"
-            static const char * const Reac;     //!< "Reac"
-            static const char         Prefix = '@';
-            
+            static const char * const Arrows;       //!< "<=>"
+            static const char * const Prod;         //!< "Prod"
+            static const char * const Reac;         //!< "Reac"
+            static const char         Prefix = '@'; //!< alias
+
             //__________________________________________________________________
             //
             //
@@ -55,7 +60,8 @@ namespace Yttrium
             reac(),
             prod(),
             flow(Dangling),
-            xdim(0)
+            xdim(0),
+            drNu(0)
             {
             }
             virtual ~Components() noexcept; //!< cleanup
@@ -72,7 +78,7 @@ namespace Yttrium
             void p(const Species &); //!< add product
             void r(const Species &); //!< add reactant
 
-            bool neutral() const;
+            bool neutral() const; //!< \return true iff electro-neutrality
 
             //__________________________________________________________________
             //
@@ -80,11 +86,20 @@ namespace Yttrium
             // Methods to compute
             //
             //__________________________________________________________________
+
+            //! \param X xmul \param K constant \param C concentration \param L level \return mass action at C
             xreal_t massAction(XMul &X, const xreal_t K, const XReadable &C, const Level L) const;
+
+            //! \param X xmul \param K constant \param C concentration \param L level \param xi extent \return mass action at C+nu*xi*
             xreal_t massAction(XMul &X, const xreal_t K, const XReadable &C, const Level L, const real_t xi) const;
+
+            //! move safely \param C concentrations \param L level \param xi extent
             void    moveSafely(XWritable &C, const Level L, const xreal_t xi) const;
 
-            
+            //! \param xadd helper \param C concentrations \param L level \param C0 origin \return average extent
+            xreal_t extent(XAdd &xadd, const XReadable &C, const Level L, const XReadable &C0) const;
+
+
             //__________________________________________________________________
             //
             //
@@ -95,9 +110,11 @@ namespace Yttrium
             const Actors      prod; //!< products
             const MatterFlow  flow; //!< current flow
             const xreal_t     xdim; //!< components in xreal_t
+            const unit_t      drNu; //!< Delta_r Nu
+
         private:
             Y_Disable_Copy_And_Assign(Components); //!< discarding
-            void updateFlow() noexcept;
+            void updateFlow() noexcept; //!< update after adding
         };
     }
 
