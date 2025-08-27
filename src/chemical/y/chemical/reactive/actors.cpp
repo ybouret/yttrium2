@@ -46,7 +46,7 @@ namespace Yttrium
             assert(nu>0);
             assert(!has(sp));
 
-            checkpoint(name);
+            checkpoint(name,"add");
 
             // new actor
             const Actor &last = *list.pushTail( new Actor(nu,sp,role) );

@@ -27,8 +27,8 @@ namespace Yttrium
         void freeze() noexcept;
         bool frozen() const noexcept;
 
-        void checkpoint(const char * const)         const;
-        void checkpoint(const Core::String<char> &) const;
+        void checkpoint(const char * const,         const char * const) const;
+        void checkpoint(const Core::String<char> &, const char * const) const;
 
     private:
         Y_Disable_Copy_And_Assign(Freezable);

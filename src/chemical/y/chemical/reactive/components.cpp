@@ -22,6 +22,7 @@ namespace Yttrium
 
         void Components:: p(const unsigned nu, const Species &sp)
         {
+            checkpoint(name,"p");
             if(prod.has(sp)) throw Specific::Exception(name.c_str(),"multiple product '%s'", sp.name.c_str());
             if(reac.has(sp)) throw Specific::Exception(name.c_str(),"already reactant '%s'", sp.name.c_str());
             Coerce(prod).add(nu,sp);
@@ -29,6 +30,7 @@ namespace Yttrium
 
         void Components:: r(const unsigned nu, const Species &sp)
         {
+            checkpoint(name,"r");
             if(prod.has(sp)) throw Specific::Exception(name.c_str(),"already product '%s'", sp.name.c_str());
             if(reac.has(sp)) throw Specific::Exception(name.c_str(),"multiple reactant '%s'", sp.name.c_str());
             Coerce(reac).add(nu,sp);

@@ -20,14 +20,15 @@ namespace Yttrium
         return flag;
     }
 
-    void Freezable:: checkpoint(const char * const name) const
+    void Freezable:: checkpoint(const char * const name, const char * const func) const
     {
-        if( frozen() ) throw Specific::Exception(name,"forbidden access (frozen)");
+        assert(func);
+        if( frozen() ) throw Specific::Exception(name,"frozen in '%s'",func);
     }
 
-    void Freezable:: checkpoint(const Core::String<char> &s) const
+    void Freezable:: checkpoint(const Core::String<char> &s, const char * const func) const
     {
-        checkpoint( s.c_str() );
+        checkpoint( s.c_str(), func );
     }
 
 
