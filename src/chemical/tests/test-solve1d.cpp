@@ -4,12 +4,15 @@
 #include "y/chemical/weasel/equilibrium/db.hpp"
 
 #include "y/utest/run.hpp"
+#include "y/random/mt19937.hpp"
 
 using namespace Yttrium;
 using namespace Chemical;
 
 Y_UTEST(solve1d)
 {
+    Random::MT19937 ran;
+
     if(false)
     {
         for(size_t i=0;i<EDB::Count;++i)
@@ -17,7 +20,7 @@ Y_UTEST(solve1d)
             std::cerr << EDB::Table[i] << std::endl;
         }
     }
-    
+
     Weasel &   weasel = Weasel::Instance();
     Library    lib;
     Equilibria eqs;
@@ -30,6 +33,13 @@ Y_UTEST(solve1d)
 
     std::cerr << "lib=" << lib << std::endl;
     std::cerr << "eqs=" << eqs << std::endl;
+
+    XArray C(lib->size(),0);
+    lib.conc(ran,C);
+    std::cerr << "C=" << C << std::endl;
+    lib.print(std::cerr, "[", C, "]");
+    lib.print(std::cerr, "[", C, "]",xreal_t::ToString);
+
 
 }
 Y_UDONE()

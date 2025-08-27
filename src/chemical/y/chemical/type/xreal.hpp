@@ -7,7 +7,7 @@
 
 
 #include "y/mkl/xreal.hpp"
-#include "y/container/writable.hpp"
+#include "y/container/cxx/array.hpp"
 
 
 namespace Yttrium
@@ -19,6 +19,7 @@ namespace Yttrium
         typedef Readable<xreal_t> XReadable; //!< alias
         typedef Writable<xreal_t> XWritable; //!< alias
 
+        typedef CxxArray<xreal_t> XArray;
 
     }
 

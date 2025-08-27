@@ -67,6 +67,49 @@ namespace Yttrium
 
             void conc(Random::Bits &, XWritable &, const real_t probaZero = 0) const;
 
+            template <typename ARR> inline
+            void print(std::ostream & os,
+                       const char *   pfx,
+                       const ARR &    arr,
+                       const char *   sfx) const
+            {
+                static const char nope[] = "";
+                if(!pfx) pfx = nope;
+                if(!sfx) sfx = nope;
+
+                os << '{' << std::endl;
+                for(ConstIterator it=db.begin();it!=db.end();++it)
+                {
+                    const Species &sp = **it;
+                    display(os << "  " << pfx,sp.name,Justify::Center) << sfx << " = " << sp(arr,TopLevel) << std::endl;
+                }
+                os << '}' << std::endl;
+            }
+
+            template <typename ARR, typename PROC> inline
+            void print(std::ostream & os,
+                       const char *   pfx,
+                       const ARR &    arr,
+                       const char *   sfx,
+                       PROC          &proc) const
+            {
+                static const char nope[] = "";
+                if(!pfx) pfx = nope;
+                if(!sfx) sfx = nope;
+
+                os << '{' << std::endl;
+                for(ConstIterator it=db.begin();it!=db.end();++it)
+                {
+                    const Species &sp = **it;
+                    display(os << "  " << pfx,sp.name,Justify::Center) << sfx << " = " << proc(sp(arr,TopLevel)) << std::endl;
+                }
+                os << '}' << std::endl;
+            }
+
+
+
+
+
         private:
             Y_Disable_Copy_And_Assign(Library); //!< discarding
             Y_Ingress_Decl();                   //!< helper
