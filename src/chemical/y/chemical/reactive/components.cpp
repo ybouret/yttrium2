@@ -145,6 +145,7 @@ namespace Yttrium
         }
 
 
+#if 0
         bool Components:: linkedTo(const Components &other) const noexcept
         {
             for(const Actor *a=prod->head;a;a=a->next)
@@ -155,6 +156,7 @@ namespace Yttrium
 
             return false;
         }
+#endif
     }
 
 }

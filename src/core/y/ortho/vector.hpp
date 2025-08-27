@@ -85,8 +85,17 @@ namespace Yttrium
                 }
                 catch(...) { ldz(); throw; }
                 update();
-
                 return *this;
+            }
+
+            template <typename ARRAY> inline
+            void sendTo(ARRAY &arr, const char * const var) const
+            {
+                assert(arr.size()==dimensions);
+                for(size_t i=dimensions;i>0;--i)
+                {
+                    arr[i] = (*this)[i].cast<typename ARRAY::Type>(var);
+                }
             }
 
 

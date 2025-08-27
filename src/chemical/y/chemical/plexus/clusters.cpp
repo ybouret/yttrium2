@@ -17,6 +17,7 @@ namespace Yttrium
         list()
         {
             Y_XML_Section(xml,CallSign);
+
             for(Equilibria::Iterator it=eqs.begin();it!=eqs.end();++it)
             {
                 Equilibrium &eq = **it;
@@ -34,8 +35,24 @@ namespace Yttrium
 
                 // check fusion of previous clusters
             CHECK_FUSION:
-                ;
+                CxxListOf<Cluster> store;
+                while(list.size>0)
+                {
+                    AutoPtr<Cluster> guest = list.popTail();
+                    for(Cluster *host=store.head;host;host=host->next)
+                    {
+                        if(host->accepts(*guest))
+                        {
+                            host->fusion( guest.yield()) ;
+                            break;
+                        }
+                    }
+                    if(guest.isValid()) store.pushTail( guest.yield() );
+                }
+                store.swapListFor(list);
             }
+
+            for(Cluster *cl = list.head;cl;cl=cl->next) cl->compile(xml);
         }
     }
 

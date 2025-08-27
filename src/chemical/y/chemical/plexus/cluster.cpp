@@ -51,7 +51,9 @@ namespace Yttrium
                 }
             }
 
+
             update();
+            enroll(eq);
 
         }
 
@@ -64,10 +66,9 @@ namespace Yttrium
         bool Cluster:: accepts(const Equilibrium &eq) const noexcept
         {
             assert( !elist.found(eq) );
-
-            for(const ENode *node=elist->head;node;node=node->next)
+            for(const SNode *sn=slist->head;sn;sn=sn->next)
             {
-                if( eq.linkedTo( **node ) ) return true;
+                if( eq.has( **sn ) ) return true;
             }
 
             return false;
@@ -75,20 +76,27 @@ namespace Yttrium
 
         bool Cluster:: accepts(const Cluster &cl) const noexcept
         {
-            for(const ENode *node=elist->head;node;node=node->next)
+            for(const SNode *sn = cl.slist->head;sn;sn=sn->next)
             {
-                if(cl.accepts(**node))
-                    return true;
+                if( slist.found(**sn) ) return true;
             }
             return false;
         }
 
         void Cluster:: fusion(Cluster * const cl) noexcept
         {
+
             assert(cl);
 
             // merge equilibria
-            (*elist).mergeTail( *(cl->elist) );
+            {
+                Core::ListOf<ENode> &source = *(cl->elist);
+                Core::ListOf<ENode> &target = *elist;
+                while(source.size)
+                {
+                    enroll( **target.pushTail( source.popHead() ) );
+                }
+            }
 
             // merge species
             while(cl->slist->size>0)
@@ -104,6 +112,32 @@ namespace Yttrium
             update();
         }
 
+
+        std::ostream & operator<<(std::ostream &os, const Cluster &cl)
+        {
+            os << '{' << std::endl;
+            for( const ENode *en = (**cl).head; en; en=en->next)
+            {
+                cl.display(os << "  ",**en) << std::endl;
+            }
+            os << '}' << '@';
+            os << cl.slist;
+            return os;
+        }
+
+
+        void Cluster:: compile(XMLog &xml)
+        {
+            const size_t N = elist->size;
+            const size_t M = slist->size;
+            Y_XML_Section_Attr(xml,CallSign,Y_XML_Attr(N) << Y_XML_Attr(M));
+
+            buildTopology(xml);
+            buildConservations(xml);
+
+            
+
+        }
 
     }
 

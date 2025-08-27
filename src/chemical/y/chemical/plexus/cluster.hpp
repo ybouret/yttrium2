@@ -54,18 +54,22 @@ namespace Yttrium
 
         class Cluster :
         public Object,
-        Ingress<const EList>,
+        public Ingress<const EList>,
         public Assemblies
         {
         public:
             static const char * const CallSign;
             explicit Cluster(Equilibrium &first);
             virtual ~Cluster() noexcept;
+            Y_OSTREAM_PROTO(Cluster);
+            
 
             bool accepts(const Equilibrium &) const noexcept;
             bool accepts(const Cluster &) const noexcept;
             void attach(Equilibrium &);
             void fusion(Cluster * const) noexcept;
+            void compile(XMLog &xml);
+
 
         private:
             Y_Disable_Copy_And_Assign(Cluster);
@@ -74,10 +78,17 @@ namespace Yttrium
             void        update() noexcept;
             EList       elist;
         public:
-            const SList slist;
+            const SList   slist;
+            const iMatrix iTopo; //!< Nu
+            const uMatrix uCLaw; //!< matrix of conservations
 
             Cluster * next;
             Cluster * prev;
+
+        private:
+            void buildTopology(XMLog &);
+            void buildConservations(XMLog &);
+            void buildCombinatorics(XMLog &);
         };
 
     }
