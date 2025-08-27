@@ -8,6 +8,31 @@ namespace Yttrium
     namespace Chemical
     {
 
+
+        xreal_t Library:: Concentration(Random::Bits &ran) noexcept
+        {
+            static const real_t xpmin = LOG10MIN;
+            static const real_t xpmax = LOG10MAX;
+            const real_t        u     = ran.to<real_t>();
+            const real_t        xp    = xpmin * u + xpmax * (1.0-u);
+            return pow(10.0,xp);
+        }
+
+        void Library:: conc(Random::Bits &ran, XWritable &C, const real_t probaZero) const
+        {
+            for(ConstIterator it=db.begin();it!=db.end();++it)
+            {
+                const Species &sp = **it;
+                if( ran.to<real_t>() < probaZero )
+                    sp(C,TopLevel) = 0;
+                else
+                    sp(C,TopLevel) = Concentration(ran);
+            }
+
+        }
+
+
+
         Library:: ~Library() noexcept
         {
         }

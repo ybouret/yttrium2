@@ -1,6 +1,8 @@
 
 
 #include "y/chemical/weasel.hpp"
+#include "y/chemical/weasel/equilibrium/db.hpp"
+
 #include "y/utest/run.hpp"
 
 using namespace Yttrium;
@@ -8,6 +10,14 @@ using namespace Chemical;
 
 Y_UTEST(solve1d)
 {
+    if(false)
+    {
+        for(size_t i=0;i<EDB::Count;++i)
+        {
+            std::cerr << EDB::Table[i] << std::endl;
+        }
+    }
+    
     Weasel &   weasel = Weasel::Instance();
     Library    lib;
     Equilibria eqs;

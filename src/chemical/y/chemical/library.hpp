@@ -8,6 +8,7 @@
 #include "y/chemical/species.hpp"
 #include "y/chemical/type/assembly.hpp"
 #include "y/random/bits.hpp"
+#include "y/chemical/type/xreal.hpp"
 
 namespace Yttrium
 {
@@ -35,6 +36,10 @@ namespace Yttrium
             //__________________________________________________________________
             static const char * const         CallSign;      //!< "Library"
             typedef SpeciesDB::ConstIterator  ConstIterator;  //!< alias
+            static const int                  LOG10MIN = -20;
+            static const int                  LOG10MAX =   1;
+            static xreal_t Concentration(Random::Bits &) noexcept;
+
 
             //__________________________________________________________________
             //
@@ -60,6 +65,7 @@ namespace Yttrium
 
             const Species & operator[](const Formula &); //!< \return species from formula
 
+            void conc(Random::Bits &, XWritable &, const real_t probaZero = 0) const;
 
         private:
             Y_Disable_Copy_And_Assign(Library); //!< discarding

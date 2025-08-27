@@ -164,7 +164,6 @@ namespace Yttrium
 
             for(const XNode *node = dynamic_cast<const XTree&>(*root).head; node; node=node->next)
             {
-                std::cerr << "<" << node->name() << ">" << std::endl;
                 if(node->defines<Formula>())
                 {
                     const Formula formula( node->clone() );
@@ -203,7 +202,6 @@ namespace Yttrium
 
         void Weasel:: onRegExp(const String &rx, Library &lib, Equilibria &eqs)
         {
-            std::cerr << "Processing '" << rx << "'" << std::endl;
 
             Vector<String> found;
             {
@@ -215,15 +213,14 @@ namespace Yttrium
                     const char * const ini  = text+1;
                     const String       eid(ini,sep-ini); Algo::Crop(Coerce(eid),isspace);
 
-
-                    //std::cerr << "eid=" << eid << std::endl;
                     if(match.found(Jive::Matching::Exactly,eid,eid))
                     {
                         found << String(text);
                     }
+
                 }
             }
-            std::cerr << "found=" << found << std::endl;
+
             const size_t num = found.size();
             if( num <= 0 ) throw Specific::Exception(CallSign,"no equilibrium matching '%s'", rx.c_str());
 

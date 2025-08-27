@@ -25,13 +25,11 @@ namespace Yttrium
                                                              const size_t        top,
                                                              Lua::VM           & lvm)
         {
-            std::cerr << "Decoding Equilibrium" << std::endl;
             assert(root);
             assert(root->defines<Equilibrium>());
             const XTree * const tree = dynamic_cast<const XTree *>(root); assert(tree);
             const XNode *       node = tree->head; assert(node); assert(node->name() == "EID");
             const String        eid  = dynamic_cast<const XTerm*>(node)->lexeme->toString(1,0);
-            std::cerr << "Using '" << eid << "'" << std::endl;
 
             // decoding reactants
             node = node->next; assert(node); assert(node->name() == Components::Reac);
@@ -50,13 +48,13 @@ namespace Yttrium
             Algo::Crop(kstr,isblank);
             const xreal_t K = lvm->eval<real_t>(kstr);
 
-            std::cerr << "K=" << K << std::endl;
+            //std::cerr << "K=" << K << std::endl;
             AutoPtr<Equilibrium> eq = new ConstEquilibrium(eid,K,top);
 
             // assemble equilibrium
             for(const Actor *a=reac.head;a;a=a->next) eq->r(a->nu,a->sp);
             for(const Actor *a=prod.head;a;a=a->next) eq->p(a->nu,a->sp);
-            std::cerr << eq << std::endl;
+            //std::cerr << eq << std::endl;
 
             return eq.yield();
         }
@@ -76,8 +74,7 @@ namespace Yttrium
                 // extract species
                 const Formula  formula( ac->tail->clone() );
                 const Species &sp = lib[formula];
-                std::cerr << "found " << sp << std::endl;
-
+                
                 // optional coefficient
                 if(2==ac->size)
                 {

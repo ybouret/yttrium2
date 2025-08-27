@@ -67,6 +67,18 @@ namespace Yttrium
 
             virtual ~Indexed() noexcept; //!< cleanup
 
+            template <typename SEQ> inline
+            typename SEQ::Type & operator()(SEQ &seq, const Level level) const noexcept
+            {
+                return seq[ indx[level] ];
+            }
+
+            template <typename SEQ> inline
+            typename SEQ::ConstType & operator()(const SEQ &seq, const Level level) const noexcept
+            {
+                return seq[ indx[level] ];
+            }
+
 
             //__________________________________________________________________
             //
