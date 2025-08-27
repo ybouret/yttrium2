@@ -2,7 +2,6 @@
 #include "y/mkl/algebra/ortho-space.hpp"
 #include "y/mkl/algebra/rank.hpp"
 #include "y/utest/run.hpp"
-//#include "../../../core/tests/main.hpp"
 #include "y/container/cxx/array.hpp"
 #include "y/mkl/tao/3.hpp"
 #include "y/random/mt19937.hpp"
