@@ -78,7 +78,9 @@ namespace Yttrium
             void p(const Species &); //!< add product
             void r(const Species &); //!< add reactant
 
-            bool neutral() const; //!< \return true iff electro-neutrality
+            bool neutral() const;                     //!< \return true iff electro-neutrality
+            bool has(const Species &) const noexcept; //!< \return true if species is found
+            bool linkedTo(const Components &) const noexcept; //!< \return true if sharind a species
 
             //__________________________________________________________________
             //

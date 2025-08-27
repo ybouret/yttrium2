@@ -138,6 +138,23 @@ namespace Yttrium
             return xadd.sum() /  xdim;
         }
 
+
+        bool Components:: has(const Species &sp) const noexcept
+        {
+            return reac.has(sp) || prod.has(sp);
+        }
+
+
+        bool Components:: linkedTo(const Components &other) const noexcept
+        {
+            for(const Actor *a=prod->head;a;a=a->next)
+                if( other.has(a->sp) ) return true;
+
+            for(const Actor *a=reac->head;a;a=a->next)
+                if( other.has(a->sp) ) return true;
+
+            return false;
+        }
     }
 
 }

@@ -128,6 +128,8 @@ namespace Yttrium
                 pool.banish( list.pop(node) );
             }
 
+            
+
             //! \return live objects
             inline virtual size_t size() const noexcept { return list.size; }
             
@@ -165,6 +167,22 @@ namespace Yttrium
                 }
                 return false;
             }
+
+
+            //! exchange contents \param other another list
+            inline void xch( ListProto &other ) noexcept
+            {
+                list.swapListFor(other.list);
+            }
+
+            //! sort \param proc comparing node content
+            template <typename COMPARE_DATA> inline
+            void sort(COMPARE_DATA &proc) noexcept
+            {
+                list.sortWith(proc);
+            }
+
+        
 
             //__________________________________________________________________
             //
