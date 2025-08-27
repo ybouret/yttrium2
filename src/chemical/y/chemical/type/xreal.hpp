@@ -8,6 +8,8 @@
 
 #include "y/mkl/xreal.hpp"
 #include "y/container/cxx/array.hpp"
+#include "y/cameo/addition.hpp"
+#include "y/cameo/multiplication.hpp"
 
 
 namespace Yttrium
@@ -20,6 +22,9 @@ namespace Yttrium
         typedef Writable<xreal_t> XWritable; //!< alias
 
         typedef CxxArray<xreal_t> XArray;
+
+        typedef Cameo::Multiplication<xreal_t> XMul;
+        typedef Cameo::Addition<xreal_t>       XAdd;
 
     }
 

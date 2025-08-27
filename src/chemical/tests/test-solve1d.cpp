@@ -9,6 +9,24 @@
 using namespace Yttrium;
 using namespace Chemical;
 
+
+namespace Yttrium
+{
+    class Accessible
+    {
+    public:
+        explicit Accessible() noexcept : flag(true) {}
+        virtual ~Accessible() noexcept {}
+
+        void seal() noexcept { flag = false; }
+
+        operator bool() { return flag; }
+
+    private:
+        bool flag;
+    };
+};
+
 Y_UTEST(solve1d)
 {
     Random::MT19937 ran;
@@ -40,6 +58,13 @@ Y_UTEST(solve1d)
     lib.print(std::cerr, "[", C, "]");
     lib.print(std::cerr, "[", C, "]",xreal_t::ToString);
 
+
+    Accessible access;
+    
+    std::cerr << access << std::endl;
+
+    access.seal();
+    std::cerr << access << std::endl;
 
 }
 Y_UDONE()

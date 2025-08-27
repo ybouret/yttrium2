@@ -21,6 +21,7 @@ namespace Yttrium
         Actors:: Actors(const Actors &a) :
         Entity(a.name),
         Ingress<const Actor::CoreList>(),
+        Freezable(),
         list(a.list),
         role(a.role)
         {
@@ -45,6 +46,7 @@ namespace Yttrium
             assert(nu>0);
             assert(!has(sp));
 
+            checkpoint(name);
 
             // new actor
             const Actor &last = *list.pushTail( new Actor(nu,sp,role) );
@@ -74,7 +76,17 @@ namespace Yttrium
 
 
         Y_Ingress_Impl(Actors,list)
-        
+
+        void Actors:: massAction(XMul &X, const XReadable &C, const Level L) const
+        {
+            for(const Actor *a=list.head;a;a=a->next) a->massAction(X,C,L);
+        }
+
+        void Actors:: massAction(XMul &X, const XReadable &C, const Level L, const xreal_t xi) const
+        {
+            for(const Actor *a=list.head;a;a=a->next) a->massAction(X,C,L,xi);
+        }
+
     }
 
 }

@@ -1,6 +1,7 @@
 
 #include "y/chemical/reactive/actor.hpp"
 #include "y/string/format.hpp"
+#include "y/core/utils.hpp"
 
 namespace Yttrium
 {
@@ -21,7 +22,8 @@ namespace Yttrium
         xn(a.xn),
         nu1(a.nu1),
         next(0),
-        prev(0)
+        prev(0),
+        zero()
         {
         }
         
@@ -35,7 +37,8 @@ namespace Yttrium
         xn(nu),
         nu1(nu-1),
         next(0),
-        prev(0)
+        prev(0),
+        zero()
         {
             if(nu<=0) throw Specific::Exception(CallSign,"null coefficient");
             String & id  = Coerce(name);
@@ -46,6 +49,22 @@ namespace Yttrium
                 case InConservation: id += '[' + sp.name + ']'; break;
             }
         }
+
+
+        void Actor:: massAction(XMul &X, const XReadable &C, const Level L) const
+        {
+            const xreal_t c = sp(C,L); assert(c>=zero);
+            X.ipower(c,nu);
+        }
+
+        void Actor:: massAction(XMul &X, const XReadable &C, const Level L, const xreal_t xi) const
+        {
+            xreal_t c = sp(C,L) + xn * xi;
+            InSituMax(c,zero);
+            X.ipower(c,nu);
+        }
+
+
     }
 
 }

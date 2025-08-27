@@ -59,6 +59,15 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //
+            // Methods
+            //
+            //__________________________________________________________________
+            void massAction(XMul &X, const XReadable &C, const Level L) const;
+            void massAction(XMul &X, const XReadable &C, const Level L, const xreal_t xi) const;
+
+            //__________________________________________________________________
+            //
+            //
             // Members
             //
             //__________________________________________________________________
@@ -68,7 +77,8 @@ namespace Yttrium
             const unsigned nu1;  //!< nu-1
             Actor *        next; //!< for list
             Actor *        prev; //!< for list
-
+            const xreal_t  zero; //!< named constant
+            
         private:
             Y_Disable_Assign(Actor); //!< discarding
         };

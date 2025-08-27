@@ -19,7 +19,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Components : public Indexed
+        class Components : public Indexed, public Freezable
         {
         public:
             //__________________________________________________________________
@@ -60,6 +60,8 @@ namespace Yttrium
             void r(const unsigned, const Species &); //!< add reactant
             void p(const Species &); //!< add product
             void r(const Species &); //!< add reactant
+
+            
 
             //__________________________________________________________________
             //

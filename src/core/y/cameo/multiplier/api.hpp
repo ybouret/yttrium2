@@ -50,7 +50,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             virtual void ld1() noexcept = 0; //!< clear
-            virtual T    product()      = 0; //!< must reset after computation \return sum
+            virtual T    product()      = 0; //!< must reset after computation \return product
 
             //__________________________________________________________________
             //
@@ -64,6 +64,13 @@ namespace Yttrium
 
             //! syntax helper \param value data \return *this
             inline Multiplier & operator*=(ParamType value) { mul(value); return *this; }
+
+            inline Multiplier & ipower(ParamType value, size_t n)
+            {
+                mul(value,n);
+                return *this;
+            }
+
 
 
             //! load a range without reset

@@ -7,7 +7,7 @@
 
 
 #include "y/chemical/reactive/actor.hpp"
-
+#include "y/ability/freezable.hpp"
 
 namespace Yttrium
 {
@@ -22,7 +22,10 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Actors : public Entity, public Ingress< const Actor::CoreList >
+        class Actors :
+        public Entity,
+        public Ingress< const Actor::CoreList >,
+        public Freezable
         {
         public:
             //__________________________________________________________________
@@ -52,6 +55,9 @@ namespace Yttrium
             void add(const unsigned, const Species &); //!< add new actor
             void add(const Species &);                 //!< add new actor
             bool has(const Species &) const noexcept;  //!< \return true iff species is here
+
+            void massAction(XMul &X, const XReadable &C, const Level L) const;
+            void massAction(XMul &X, const XReadable &C, const Level L, const xreal_t xi) const;
 
 
         private:
