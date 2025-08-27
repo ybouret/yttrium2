@@ -2,6 +2,7 @@
 
 #include "y/chemical/weasel.hpp"
 #include "y/chemical/weasel/equilibrium/db.hpp"
+#include "y/chemical/plexus/solve1d.hpp"
 
 #include "y/utest/run.hpp"
 #include "y/random/mt19937.hpp"
@@ -37,12 +38,10 @@ Y_UTEST(solve1d)
     std::cerr << "eqs=" << eqs << std::endl;
 
     XArray C(lib->size(),0);
-    //lib.conc(ran,C);
-    //std::cerr << "C=" << C << std::endl;
-    //lib.print(std::cerr, "[", C, "]");
-    //lib.print(std::cerr, "[", C, "]",xreal_t::ToString);
+    
 
-    XMul xmul;
+    XMul    xmul;
+    Solve1D solve;
 
     for( Equilibria::Iterator it = eqs.begin(); it != eqs.end(); ++it)
     {
@@ -51,6 +50,11 @@ Y_UTEST(solve1d)
         lib.conc(ran,C);
         lib.print(std::cerr, "[", C, "]",xreal_t::ToString);
         std::cerr << "ma=" << eq.massAction(xmul, K, C, TopLevel).str() << std::endl;
+        const XArray C0 = C;
+        solve(eq,K,C,TopLevel,C0);
+
+        lib.print(std::cerr, "[", C, "]",xreal_t::ToString);
+
     }
 
 

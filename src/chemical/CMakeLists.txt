@@ -1,4 +1,4 @@
-include_directories(. .. ../core ../jive ../lua++ ../y/lua/src)
+include_directories(. .. ../core ../jive ../lua++ ../y/lua/src ../mkl)
 
 Y_CreateLibrary(y-chemical
 y/chemical
@@ -7,6 +7,7 @@ y/chemical/type
 y/chemical/reactive
 y/chemical/weasel/formula
 y/chemical/weasel/equilibrium
+y/chemical/plexus
 )
 
 add_subdirectory(tests)

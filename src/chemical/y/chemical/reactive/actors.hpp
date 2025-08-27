@@ -58,6 +58,7 @@ namespace Yttrium
 
             void massAction(XMul &X, const XReadable &C, const Level L) const;
             void massAction(XMul &X, const XReadable &C, const Level L, const xreal_t xi) const;
+            void moveSafely(XWritable &C, const Level L, const xreal_t xi) const;
 
             xreal_t fastLimit(const XReadable &C, const Level L) const noexcept;
 

@@ -54,7 +54,8 @@ namespace Yttrium
             Indexed(id,top),
             reac(),
             prod(),
-            flow(Dangling)
+            flow(Dangling),
+            xdim(0)
             {
             }
             virtual ~Components() noexcept; //!< cleanup
@@ -81,8 +82,9 @@ namespace Yttrium
             //__________________________________________________________________
             xreal_t massAction(XMul &X, const xreal_t K, const XReadable &C, const Level L) const;
             xreal_t massAction(XMul &X, const xreal_t K, const XReadable &C, const Level L, const real_t xi) const;
+            void    moveSafely(XWritable &C, const Level L, const xreal_t xi) const;
 
-
+            
             //__________________________________________________________________
             //
             //
@@ -92,7 +94,7 @@ namespace Yttrium
             const Actors      reac; //!< reactants
             const Actors      prod; //!< products
             const MatterFlow  flow; //!< current flow
-
+            const xreal_t     xdim; //!< components in xreal_t
         private:
             Y_Disable_Copy_And_Assign(Components); //!< discarding
             void updateFlow() noexcept;

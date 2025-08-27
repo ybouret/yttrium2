@@ -44,6 +44,7 @@ namespace Yttrium
 
         void Components:: updateFlow() noexcept
         {
+            Coerce(xdim) = xreal_t( prod->size + reac->size );
             if(reac->size<=0)
             {
                 if(prod->size<=0)
@@ -102,6 +103,15 @@ namespace Yttrium
 
             return lhs - rhs;
         }
+
+        void Components:: moveSafely(XWritable &C, const Level L, const xreal_t xi) const
+        {
+            assert(frozen());
+            prod.moveSafely(C, L,  xi);
+            reac.moveSafely(C, L, -xi);
+        }
+
+        
 
     }
 

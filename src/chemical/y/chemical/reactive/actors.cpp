@@ -96,8 +96,14 @@ namespace Yttrium
             for(a=a->next;a;a=a->next) {
                 InSituMin(xi, a->sp(C,L) / a->xn); assert(xi>=a->zero);
             }
-
+            
             return xi;
+        }
+
+
+        void Actors:: moveSafely(XWritable &C, const Level L, const xreal_t xi) const
+        {
+            for(const Actor *a=list.head;a;a=a->next) a->moveSafely(C,L,xi);
         }
 
 

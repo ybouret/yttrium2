@@ -64,6 +64,15 @@ namespace Yttrium
             X.ipower(c,nu);
         }
 
+        void Actor:: moveSafely(XWritable &   C,
+                                const Level   L,
+                                const xreal_t xi) const
+        {
+            xreal_t &c = sp(C,L);
+            InSituMax(c += xi * xn,zero);
+        }
+
+
 
     }
 

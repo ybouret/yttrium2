@@ -1,5 +1,5 @@
 Y_CreateTest(test-chemical)
-Y_LinkLibraries(test-chemical y-chemical y-jive y-lua++ y-lua)
+Y_LinkLibraries(test-chemical y-chemical y-jive y-mkl y-lua++ y-lua)
 
 enable_testing()
 
