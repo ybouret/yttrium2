@@ -8,6 +8,7 @@
 #include "y/chemical/weasel/equilibrium/db.hpp"
 #include "y/jive/pattern/matching.hpp"
 #include "y/container/algorithm/crop.hpp"
+#include <cstring>
 
 namespace Yttrium
 {
