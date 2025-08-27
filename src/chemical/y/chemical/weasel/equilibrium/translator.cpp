@@ -56,6 +56,11 @@ namespace Yttrium
             for(const Actor *a=prod.head;a;a=a->next) eq->p(a->nu,a->sp);
             //std::cerr << eq << std::endl;
 
+            eq->freeze();
+            
+            if(Dangling == eq->flow) throw Specific::Exception(eid.c_str(),"no component!");
+            if(!eq->neutral())       throw Specific::Exception(eid.c_str(),"no neutral!");
+
             return eq.yield();
         }
 

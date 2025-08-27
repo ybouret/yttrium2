@@ -18,6 +18,11 @@ namespace Yttrium
 
         }
 
+        Equilibria::Iterator Equilibria:: begin() noexcept { return db.begin(); }
+        Equilibria::Iterator Equilibria:: end()   noexcept { return db.end();   }
+
+
+
         size_t Equilibria:: nextTop() const noexcept
         {
             return db.size()+1;
@@ -46,6 +51,9 @@ namespace Yttrium
             }
             return os << '}';
         }
+
+      
+
     }
 
 }

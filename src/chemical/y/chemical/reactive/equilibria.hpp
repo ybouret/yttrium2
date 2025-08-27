@@ -21,10 +21,14 @@ namespace Yttrium
         public:
             static const char * const   CallSign;
             typedef EqDB::ConstIterator ConstIterator;
-            
+            typedef EqDB::Iterator      Iterator;
+
             explicit Equilibria();
             virtual ~Equilibria() noexcept;
             Y_OSTREAM_PROTO(Equilibria);
+
+            Iterator begin() noexcept;
+            Iterator end()   noexcept;
 
             size_t nextTop() const noexcept;
 

@@ -10,22 +10,6 @@ using namespace Yttrium;
 using namespace Chemical;
 
 
-namespace Yttrium
-{
-    class Accessible
-    {
-    public:
-        explicit Accessible() noexcept : flag(true) {}
-        virtual ~Accessible() noexcept {}
-
-        void seal() noexcept { flag = false; }
-
-        operator bool() { return flag; }
-
-    private:
-        bool flag;
-    };
-};
 
 Y_UTEST(solve1d)
 {
@@ -53,18 +37,24 @@ Y_UTEST(solve1d)
     std::cerr << "eqs=" << eqs << std::endl;
 
     XArray C(lib->size(),0);
-    lib.conc(ran,C);
-    std::cerr << "C=" << C << std::endl;
-    lib.print(std::cerr, "[", C, "]");
-    lib.print(std::cerr, "[", C, "]",xreal_t::ToString);
+    //lib.conc(ran,C);
+    //std::cerr << "C=" << C << std::endl;
+    //lib.print(std::cerr, "[", C, "]");
+    //lib.print(std::cerr, "[", C, "]",xreal_t::ToString);
+
+    XMul xmul;
+
+    for( Equilibria::Iterator it = eqs.begin(); it != eqs.end(); ++it)
+    {
+        Equilibrium &eq = **it;
+        const xreal_t K = eq.K(0.0);
+        lib.conc(ran,C);
+        lib.print(std::cerr, "[", C, "]",xreal_t::ToString);
+        std::cerr << "ma=" << eq.massAction(xmul, K, C, TopLevel).str() << std::endl;
+    }
 
 
-    Accessible access;
-    
-    std::cerr << access << std::endl;
 
-    access.seal();
-    std::cerr << access << std::endl;
 
 }
 Y_UDONE()

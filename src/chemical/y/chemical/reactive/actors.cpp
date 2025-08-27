@@ -1,6 +1,6 @@
 
 #include "y/chemical/reactive/actors.hpp"
-
+#include "y/core/utils.hpp"
 
 namespace Yttrium
 {
@@ -86,6 +86,20 @@ namespace Yttrium
         {
             for(const Actor *a=list.head;a;a=a->next) a->massAction(X,C,L,xi);
         }
+
+        xreal_t Actors:: fastLimit(const XReadable &C, const Level L) const noexcept
+        {
+            assert(list.size>0);
+            const Actor * a  = list.head;
+            xreal_t       xi = a->sp(C,L) / a->xn; assert(xi>=a->zero);
+
+            for(a=a->next;a;a=a->next) {
+                InSituMin(xi, a->sp(C,L) / a->xn); assert(xi>=a->zero);
+            }
+
+            return xi;
+        }
+
 
     }
 

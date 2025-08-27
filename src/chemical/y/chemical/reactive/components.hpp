@@ -11,6 +11,15 @@ namespace Yttrium
 {
     namespace Chemical
     {
+
+        enum MatterFlow
+        {
+            Dangling,
+            BothWays,
+            ProdOnly,
+            ReacOnly,
+        };
+
         //______________________________________________________________________
         //
         //
@@ -44,7 +53,8 @@ namespace Yttrium
             explicit Components(const ID & id, const size_t top) :
             Indexed(id,top),
             reac(),
-            prod()
+            prod(),
+            flow(Dangling)
             {
             }
             virtual ~Components() noexcept; //!< cleanup
@@ -53,7 +63,7 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //
-            // Methods
+            // Methods to setup
             //
             //__________________________________________________________________
             void p(const unsigned, const Species &); //!< add product
@@ -61,7 +71,17 @@ namespace Yttrium
             void p(const Species &); //!< add product
             void r(const Species &); //!< add reactant
 
-            
+            bool neutral() const;
+
+            //__________________________________________________________________
+            //
+            //
+            // Methods to compute
+            //
+            //__________________________________________________________________
+            xreal_t massAction(XMul &X, const xreal_t K, const XReadable &C, const Level L) const;
+            xreal_t massAction(XMul &X, const xreal_t K, const XReadable &C, const Level L, const real_t xi) const;
+
 
             //__________________________________________________________________
             //
@@ -69,10 +89,13 @@ namespace Yttrium
             // Members
             //
             //__________________________________________________________________
-            const Actors reac; //!< reactants
-            const Actors prod; //!< products
+            const Actors      reac; //!< reactants
+            const Actors      prod; //!< products
+            const MatterFlow  flow; //!< current flow
+
         private:
             Y_Disable_Copy_And_Assign(Components); //!< discarding
+            void updateFlow() noexcept;
         };
     }
 
