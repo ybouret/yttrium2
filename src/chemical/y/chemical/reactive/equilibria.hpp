@@ -7,7 +7,6 @@
 
 #include "y/chemical/reactive/equilibrium.hpp"
 #include "y/chemical/type/assemblies.hpp"
-#include "y/lua++/state.hpp"
 
 
 namespace Yttrium
@@ -22,9 +21,10 @@ namespace Yttrium
         public:
             static const char * const   CallSign;
             typedef EqDB::ConstIterator ConstIterator;
-
+            
             explicit Equilibria();
             virtual ~Equilibria() noexcept;
+            Y_OSTREAM_PROTO(Equilibria);
 
             size_t nextTop() const noexcept;
 
@@ -38,15 +38,12 @@ namespace Yttrium
 
 
 
+
         private:
             Y_Disable_Copy_And_Assign(Equilibria);
             Y_Ingress_Decl();
             void    record(Equilibrium * const);
-
             EqDB    db;
-
-        public:
-            Lua::VM lvm;
         };
 
 

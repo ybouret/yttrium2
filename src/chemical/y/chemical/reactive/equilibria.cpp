@@ -13,8 +13,7 @@ namespace Yttrium
         }
 
         Equilibria:: Equilibria() :
-        db(),
-        lvm( new Lua::State() )
+        db() 
         {
 
         }
@@ -37,6 +36,16 @@ namespace Yttrium
 
 
         Y_Ingress_Impl(Equilibria,db)
+
+        std::ostream & operator<<(std::ostream &os, const Equilibria &eqs)
+        {
+            os << '{' << std::endl;
+            for(Equilibria::ConstIterator it=eqs->begin();it != eqs->end(); ++it)
+            {
+                eqs.display(os << "    ",**it) << std::endl;
+            }
+            return os << '}';
+        }
     }
 
 }

@@ -24,7 +24,7 @@ namespace Yttrium
 
             void enroll(const Components &) noexcept;
 
-            //std::ostream & display(std::ostream &os, const Components &) const;
+            std::ostream & display(std::ostream &os, const Components &) const;
 
 
             const Assembly nameFmt;

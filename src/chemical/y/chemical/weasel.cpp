@@ -4,8 +4,10 @@
 #include "y/chemical/weasel/formula/translator.hpp"
 #include "y/chemical/weasel/equilibrium/translator.hpp"
 #include "y/jive/syntax/node/internal.hpp"
-
-
+#include "y/jive/syntax/node/terminal.hpp"
+#include "y/chemical/weasel/equilibrium/db.hpp"
+#include "y/jive/pattern/matching.hpp"
+#include "y/container/algorithm/crop.hpp"
 
 namespace Yttrium
 {
@@ -55,7 +57,8 @@ namespace Yttrium
             Y_Memory_BZero(WeaselImpl);
         }
 
-        Weasel:: Weasel()
+        Weasel:: Weasel() :
+        Lua::VM( new Lua::State() )
         {
             assert(0==code);
             try {
@@ -90,7 +93,7 @@ namespace Yttrium
                 }
                 tree->steal(temp);
             }
-            
+
             static inline
             void cleanEquilibrium(XNode * const node) noexcept
             {
@@ -161,6 +164,7 @@ namespace Yttrium
 
             for(const XNode *node = dynamic_cast<const XTree&>(*root).head; node; node=node->next)
             {
+                std::cerr << "<" << node->name() << ">" << std::endl;
                 if(node->defines<Formula>())
                 {
                     const Formula formula( node->clone() );
@@ -171,13 +175,69 @@ namespace Yttrium
                 if(node->defines<Equilibrium>())
                 {
                     const size_t top = eqs.nextTop();
-                    (void) eqs( compile(node,lib,top,eqs.lvm) );
+                    (void) eqs( compile(node,lib,top,*this) );
+                    continue;
+                }
+
+                if(node->name() == RegExp)
+                {
+                    const String rx = dynamic_cast<const XTerm *>(node)->lexeme->toString(1,0);
+                    onRegExp(rx,lib,eqs);
                     continue;
                 }
 
                 throw Specific::Exception(CallSign,"unhandled <%s>", node->name().c_str());
             }
         }
+
+
+        namespace
+        {
+
+            static inline void corruptedEDB()
+            {
+                throw Specific::Exception(Weasel::CallSign,"corrupted database");
+            }
+
+        }
+
+        void Weasel:: onRegExp(const String &rx, Library &lib, Equilibria &eqs)
+        {
+            std::cerr << "Processing '" << rx << "'" << std::endl;
+
+            Vector<String> found;
+            {
+                Jive::Matching match(rx);
+                for(size_t i=0;i<EDB::Count;++i)
+                {
+                    const char * const text = EDB::Table[i];    if( Equilibrium::Prefix != *text ) corruptedEDB();
+                    const char * const sep  = strchr(text,':'); if(!sep)                           corruptedEDB();
+                    const char * const ini  = text+1;
+                    const String       eid(ini,sep-ini); Algo::Crop(Coerce(eid),isspace);
+
+
+                    //std::cerr << "eid=" << eid << std::endl;
+                    if(match.found(Jive::Matching::Exactly,eid,eid))
+                    {
+                        found << String(text);
+                    }
+                }
+            }
+            std::cerr << "found=" << found << std::endl;
+            const size_t num = found.size();
+            if( num <= 0 ) throw Specific::Exception(CallSign,"no equilibrium matching '%s'", rx.c_str());
+
+            {
+                Weasel & self = *this;
+                for(size_t i=1;i<=num;++i)
+                {
+                    const String &data = found[i];
+                    self( Jive::Module::OpenData(data,data), lib, eqs);
+                }
+            }
+
+        }
+
 
 
     }

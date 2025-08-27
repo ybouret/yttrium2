@@ -23,7 +23,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Weasel : public Singleton<Weasel,ClassLockPolicy>
+        class Weasel : public Singleton<Weasel,ClassLockPolicy>, public Lua::VM
         {
         public:
             //__________________________________________________________________
@@ -87,12 +87,16 @@ namespace Yttrium
             //__________________________________________________________________
             void operator()(Jive::Module * const, Library &, Equilibria &);
 
+            
+
         private:
             Y_Disable_Copy_And_Assign(Weasel); //!< discarding
             friend class Singleton<Weasel,ClassLockPolicy>;
 
             explicit Weasel();
             virtual ~Weasel() noexcept;
+
+            void onRegExp(const String &, Library &, Equilibria &);
         };
     }
 }

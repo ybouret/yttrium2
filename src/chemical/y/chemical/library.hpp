@@ -7,7 +7,7 @@
 
 #include "y/chemical/species.hpp"
 #include "y/chemical/type/assembly.hpp"
-
+#include "y/random/bits.hpp"
 
 namespace Yttrium
 {

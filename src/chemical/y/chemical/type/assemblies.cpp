@@ -23,6 +23,18 @@ namespace Yttrium
             Coerce(prodFmt).enroll(eq.prod);
         }
 
+        std::ostream & Assemblies:: display(std::ostream &os, const Components &eq) const
+        {
+            nameFmt.display(os,eq.name,      Justify::Center);
+            os << " : ";
+            reacFmt.display(os,eq.reac.name, Justify::Right);
+            os << ' ' << Components::Arrows << ' ';
+            prodFmt.display(os,eq.prod.name, Justify::Left);
+            os << " : ";
+            return os;
+        }
+
+
     }
 
 }
