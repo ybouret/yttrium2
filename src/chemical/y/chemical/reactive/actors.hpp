@@ -52,9 +52,10 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            void add(const unsigned, const Species &); //!< add new actor
-            void add(const Species &);                 //!< add new actor
-            bool has(const Species &) const noexcept;  //!< \return true iff species is here
+            void add(const unsigned, const Species &);   //!< add new actor
+            void add(const Species &);                   //!< add new actor
+            bool got(const Species &)    const noexcept; //!< \return true iff species is here
+            bool gotOneOf(const SList &) const noexcept; //!< \return ture iff at least one species if there
 
             //! \param X xmul, update \param C concentrations \param L level
             void massAction(XMul &X, const XReadable &C, const Level L) const;

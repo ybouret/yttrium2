@@ -27,7 +27,7 @@ namespace Yttrium
         {
         }
 
-        bool Actors:: has(const Species &sp) const noexcept
+        bool Actors:: got(const Species &sp) const noexcept
         {
             for(const Actor *a=list.head;a;a=a->next)
             {
@@ -38,13 +38,23 @@ namespace Yttrium
             return false;
         }
 
+        bool Actors:: gotOneOf(const SList &slist) const noexcept
+        {
+            for(const SNode *sn=slist->head;sn;sn=sn->next)
+            {
+                if(got(**sn)) return true;
+            }
+            return false;
+        }
+
+
 
         void Actors:: add(const unsigned nu, const Species &sp)
         {
             static const char * const sep[2] = { " + ", "+" };
             // sanity
             assert(nu>0);
-            assert(!has(sp));
+            assert(!got(sp));
 
             checkpoint(name,"add");
 

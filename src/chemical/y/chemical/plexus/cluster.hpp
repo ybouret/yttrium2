@@ -116,6 +116,11 @@ namespace Yttrium
             const CLaws     claws;     //!< list of conservations
             const SList     conserved; //!< conserved species
             const SList     unbounded; //!< unbounded species
+            const EList     standard;  //!< with at least an unbounded species on each side
+            const EList     prodOnly;  //!< with only products
+            const EList     reacOnly;  //!< with only reactants
+            const EList     nebulous;  //!< with unbounded only
+
             CxxArray<EList> order;     //!< different combination order
 
 

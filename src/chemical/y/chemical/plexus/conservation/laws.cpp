@@ -41,7 +41,7 @@ namespace Yttrium
             {
                 for(const Law *law=list.head;law;law=law->next)
                 {
-                    if(law->has(sp)) return true;
+                    if(law->got(sp)) return true;
                 }
                 return false;
             }

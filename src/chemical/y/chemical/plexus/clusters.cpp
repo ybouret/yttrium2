@@ -72,6 +72,9 @@ namespace Yttrium
             // first initialization
             assert(ntot == K.size() );
             computeK(t0);
+
+            // freeze equilibria
+            eqs.freeze();
         }
 
         void Clusters:: computeK(const xreal_t t)

@@ -177,10 +177,10 @@ namespace Yttrium
                 Y_XMLog(xml, (Components&)mix );
             }
 
-            // update elist
+            // update elist sublevel
             ListOps::Make(elist,SubLevel);
 
-            
+          
 
         }
     }

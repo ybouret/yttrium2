@@ -27,6 +27,10 @@ namespace Yttrium
         claws(),
         conserved(),
         unbounded(),
+        standard(),
+        prodOnly(),
+        reacOnly(),
+        nebulous(),
         order(0),
         next(0),
         prev(0)
@@ -151,6 +155,29 @@ namespace Yttrium
             buildConservations(xml);
             buildCombinatorics(xml,eqs,tlK);
             
+            // dispatching
+            for(const ENode *en=elist->head;en;en=en->next)
+            {
+                const Equilibrium &eq = **en;
+                if(eq.flow == ProdOnly) {
+                    Coerce(prodOnly) << eq;
+                    continue;
+                }
+
+                if(eq.flow == ReacOnly) {
+                    Coerce(reacOnly) << eq;
+                    continue;
+                }
+
+                if( eq.reac.gotOneOf(conserved) && eq.prod.gotOneOf(conserved) )
+                {
+                    Coerce(standard) << eq;
+                    continue;
+                }
+
+                Coerce(nebulous) << eq;
+
+            }
 
             {
                 Y_XML_Section(xml, "Summary");
@@ -168,6 +195,15 @@ namespace Yttrium
                     if(conserved->size) Y_XMLog(xml, "conserved = " << conserved);
                     if(unbounded->size) Y_XMLog(xml, "unbounded = " << unbounded);
                 }
+                
+                {
+                    Y_XML_Section(xml,"Classification");
+                    if(standard->size) Y_XMLog(xml, "standard = " << standard);
+                    if(prodOnly->size) Y_XMLog(xml, "prodOnly = " << prodOnly);
+                    if(reacOnly->size) Y_XMLog(xml, "reacOnly = " << reacOnly);
+                    if(nebulous->size) Y_XMLog(xml, "nebulous = " << nebulous);
+                }
+
 
             }
 

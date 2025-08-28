@@ -26,7 +26,8 @@ namespace Yttrium
             const size_t Nc = laws->size;
             if (Nc<=0)
             {
-                for(const SNode *sn=slist->head;sn;sn=sn->next) Coerce(conserved) << **sn;
+                for(const SNode *sn=slist->head;sn;sn=sn->next)
+                    Coerce(unbounded) << **sn;
                 return;
             }
             const size_t M  = slist->size;
