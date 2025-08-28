@@ -32,6 +32,7 @@ namespace Yttrium
         {
             assert(eq);
             const Equilibrium::Pointer p(eq);
+            checkpoint(CallSign,"record");
             if(p->indx[TopLevel] != nextTop())
                 throw Specific::Exception(CallSign,"invalid top index for '%s'", eq->name.c_str());
             if(!db.insert(p))

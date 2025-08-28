@@ -14,10 +14,12 @@ namespace Yttrium
         const char * const Clusters:: CallSign = "Clusters";
         
         Clusters:: Clusters(XMLog &xml, Equilibria &eqs) :
-        list()
+        list(),
+        topK(0,0)
         {
             Y_XML_Section(xml,CallSign);
-
+            assert(!eqs.frozen());
+            
             for(Equilibria::Iterator it=eqs.begin();it!=eqs.end();++it)
             {
                 Equilibrium &eq = **it;
@@ -52,7 +54,8 @@ namespace Yttrium
                 store.swapListFor(list);
             }
 
-            for(Cluster *cl = list.head;cl;cl=cl->next) cl->compile(xml);
+            for(Cluster *cl = list.head;cl;cl=cl->next)
+                cl->compile(xml,eqs,topK);
         }
     }
 

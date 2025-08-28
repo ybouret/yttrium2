@@ -23,7 +23,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Equilibria : public Ingress< const EqDB>, public Assemblies
+        class Equilibria : public Ingress< const EqDB>, public Assemblies, public Freezable
         {
         public:
             //__________________________________________________________________

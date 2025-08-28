@@ -46,6 +46,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Clusters); //!< discarding
             Y_Ingress_Decl();        //!< helper
             CxxListOf<Cluster> list; //!< content
+            XArray             topK; //!< top level K array
         };
     }
 

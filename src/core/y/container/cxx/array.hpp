@@ -77,9 +77,6 @@ namespace Yttrium
         }
 
 
-
-
-
         //! cleanup
         inline virtual ~CxxArray() noexcept { assert(0!=code); Destroy(code); }
 
@@ -92,6 +89,17 @@ namespace Yttrium
 
         //! [Container] \return fixed size
         virtual size_t size() const noexcept { assert(0!=code); return code->numBlocks; }
+
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+        CxxArray & xch( CxxArray &arr ) noexcept
+        {
+            Swap(code,arr.code); return *this;
+        }
 
     private:
         Y_Disable_Assign(CxxArray); //!< discarding

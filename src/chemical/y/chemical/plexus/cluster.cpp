@@ -25,6 +25,7 @@ namespace Yttrium
         iTopo(),
         uCLaw(),
         claws(),
+        order(0),
         next(0),
         prev(0)
         {
@@ -134,7 +135,7 @@ namespace Yttrium
         }
 
 
-        void Cluster:: compile(XMLog &xml)
+        void Cluster:: compile(XMLog &xml, Equilibria &eqs, const XReadable &tlK)
         {
             const size_t N = elist->size;
             const size_t M = slist->size;
@@ -142,8 +143,17 @@ namespace Yttrium
 
             buildTopology(xml);
             buildConservations(xml);
+            buildCombinatorics(xml,eqs,tlK);
 
-            
+            {
+                Y_XML_Section(xml, "Summary");
+                for(size_t i=1;i<=order.size();++i)
+                {
+                    const size_t n = order[i]->size; if(n<=0) continue;
+                    Y_XMLog(xml, "#order " << std::setw(2) << i << " = " << std::setw(4) << n);
+                }
+                Y_XMLog(xml, "#total    = " <<  std::setw(4) << elist->size );
+            }
 
         }
 

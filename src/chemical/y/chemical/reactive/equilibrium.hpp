@@ -62,6 +62,9 @@ namespace Yttrium
             virtual xreal_t getK(const xreal_t) = 0; //!< \return constant at given time
         };
 
+        typedef Protean::BareLightList<Equilibrium>   EList; //!< alias
+        typedef typename EList::NodeType              ENode; //!< alias
+
 
         //______________________________________________________________________
         //

@@ -14,8 +14,7 @@ namespace Yttrium
     namespace Chemical
     {
 
-        typedef Protean::BareLightList<Equilibrium>   EList; //!< alias
-        typedef typename EList::NodeType              ENode; //!< alias
+     
 
         //! helper to handle lists
         struct ListOps
@@ -94,28 +93,31 @@ namespace Yttrium
             bool accepts(const Cluster &)     const noexcept; //!< \return true if at least one shared species
             void attach(Equilibrium &);                       //!< add equilibrium and its species
             void fusion(Cluster * const) noexcept;            //!< add cluster's content
-            void compile(XMLog &);                            //!< compile once setup
+            void compile(XMLog &, Equilibria &, const XReadable &); //!< compile once setup
 
 
         private:
             Y_Disable_Copy_And_Assign(Cluster);  //!< discarding
             Y_Ingress_Decl();                    //!< helper
-            void        attach(const Species &); //!< check/insert
-            void        update() noexcept;       //!< update sublevel status
+            void attach(const Species &);        //!< check/insert
+            void update() noexcept;              //!< update sublevel status
 
-            EList         elist; //!< my equilibria
+            EList           elist; //!< my equilibria
         public:
-            const SList   slist; //!< my species
-            const iMatrix iTopo; //!< integer topology matrix
-            const uMatrix uCLaw; //!< unsigned conservation matrix
-            const CLaws   claws; //!< list of conservations
+            const SList     slist; //!< my species
+            const iMatrix   iTopo; //!< integer topology matrix
+            const uMatrix   uCLaw; //!< unsigned conservation matrix
+            const CLaws     claws; //!< list of conservations
+            CxxArray<EList> order;
+
+
             Cluster *     next;  //!< for list
             Cluster *     prev;  //!< for list
 
         private:
             void buildTopology(XMLog &);      //!< build topology
             void buildConservations(XMLog &); //!< build conservations
-            void buildCombinatorics(XMLog &); //!< build combinatorics
+            void buildCombinatorics(XMLog &,Equilibria&,const XReadable &); //!< build combinatorics
         };
 
     }
