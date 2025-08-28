@@ -9,6 +9,7 @@
 #include "y/chemical/type/indexed.hpp"
 #include "y/chemical/formula.hpp"
 #include "y/pointer/keyed.hpp"
+#include "y/protean/bare/light/list.hpp"
 
 
 namespace Yttrium
@@ -56,6 +57,9 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(Species);  //!< discarding
         };
+
+        typedef Protean::BareLightList<const Species> SList;
+        typedef typename SList::NodeType              SNode;
 
     }
 

@@ -7,8 +7,7 @@
 
 
 #include "y/chemical/reactive/equilibria.hpp"
-#include "y/protean/bare/light/list.hpp"
-#include "y/stream/xmlog.hpp"
+#include "y/chemical/plexus/conservation/laws.hpp"
 
 namespace Yttrium
 {
@@ -16,9 +15,7 @@ namespace Yttrium
     {
 
         typedef Protean::BareLightList<Equilibrium>   EList;
-        typedef Protean::BareLightList<const Species> SList;
-        typedef typename EList::NodeType ENode;
-        typedef typename SList::NodeType SNode;
+        typedef typename EList::NodeType              ENode;
 
         struct ListOps
         {
@@ -59,6 +56,8 @@ namespace Yttrium
         {
         public:
             static const char * const CallSign;
+            typedef AutoPtr<Conservation::Laws> CLaws;
+
             explicit Cluster(Equilibrium &first);
             virtual ~Cluster() noexcept;
             Y_OSTREAM_PROTO(Cluster);
@@ -81,6 +80,7 @@ namespace Yttrium
             const SList   slist;
             const iMatrix iTopo; //!< integer topology matrix
             const uMatrix uCLaw; //!< unsigned conservation matrix
+            const CLaws   claws; //!< list of conservations
 
             Cluster * next;
             Cluster * prev;

@@ -34,6 +34,7 @@ namespace Yttrium
                 }
             }
             Y_XMLog(xml, "uCLaw=" << uCLaw);
+            Coerce(claws) = new Conservation::Laws(xml,uCLaw,slist);
         }
     }
 

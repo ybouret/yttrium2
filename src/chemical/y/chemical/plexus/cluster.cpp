@@ -19,6 +19,7 @@ namespace Yttrium
         slist(),
         iTopo(),
         uCLaw(),
+        claws(),
         next(0),
         prev(0)
         {
