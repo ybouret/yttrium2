@@ -55,26 +55,33 @@ namespace Yttrium
                 store.swapListFor(list);
             }
 
+            // compile all clusters
             size_t ntot = 0;
-
             for(Cluster *cl = list.head;cl;cl=cl->next)
             {
                 cl->compile(xml,eqs,K);
                 ntot += (***cl).size;
             }
 
+            // prepare top level K
             {
                 CxxArray<xreal_t> tmp(ntot,0);
                 topK.xch(tmp);
             }
 
+            // first initialization
             assert(ntot == K.size() );
-            
+            computeK(t0);
+        }
+
+        void Clusters:: computeK(const xreal_t t)
+        {
             for(Cluster *cl = list.head;cl;cl=cl->next)
             {
-                cl->compute(topK,t0);
+                cl->compute(topK,t);
             }
         }
+
     }
 
 }

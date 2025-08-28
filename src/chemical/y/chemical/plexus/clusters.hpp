@@ -41,6 +41,7 @@ namespace Yttrium
             explicit Clusters(XMLog &, Equilibria &, const xreal_t t0 = 0.0); //!< full setup
             virtual ~Clusters() noexcept;             //!< cleanup
 
+            void computeK(const xreal_t );
 
         private:
             Y_Disable_Copy_And_Assign(Clusters); //!< discarding
