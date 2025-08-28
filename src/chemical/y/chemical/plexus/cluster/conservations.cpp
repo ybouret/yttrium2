@@ -23,7 +23,12 @@ namespace Yttrium
                 Coven::Analysis::Run(xml,Q,KeepLaw,laws,Coven::Analysis::AcceptRoot,true);
             }
 
-            const size_t Nc = laws->size; if (Nc<=0) return;
+            const size_t Nc = laws->size;
+            if (Nc<=0)
+            {
+                for(const SNode *sn=slist->head;sn;sn=sn->next) Coerce(conserved) << **sn;
+                return;
+            }
             const size_t M  = slist->size;
             {
                 uMatrix & Q = Coerce(uCLaw).make(Nc,M);
@@ -35,6 +40,13 @@ namespace Yttrium
             }
             Y_XMLog(xml, "uCLaw=" << uCLaw);
             Coerce(claws) = new Conservation::Laws(xml,uCLaw,slist);
+
+            for(const SNode *sn=slist->head;sn;sn=sn->next)
+            {
+                const Species &sp = **sn;
+                if( claws->got(sp) ) Coerce(conserved) << sp; else Coerce(unbounded) << sp;
+            }
+
         }
     }
 

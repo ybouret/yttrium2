@@ -110,11 +110,13 @@ namespace Yttrium
 
             EList           elist; //!< my equilibria
         public:
-            const SList     slist; //!< my species
-            const iMatrix   iTopo; //!< integer topology matrix
-            const uMatrix   uCLaw; //!< unsigned conservation matrix
-            const CLaws     claws; //!< list of conservations
-            CxxArray<EList> order;
+            const SList     slist;     //!< my species
+            const iMatrix   iTopo;     //!< integer topology matrix
+            const uMatrix   uCLaw;     //!< unsigned conservation matrix
+            const CLaws     claws;     //!< list of conservations
+            const SList     conserved; //!< conserved species
+            const SList     unbounded; //!< unbounded species
+            CxxArray<EList> order;     //!< different combination order
 
 
             Cluster *     next;  //!< for list

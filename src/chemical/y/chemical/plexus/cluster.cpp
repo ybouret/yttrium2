@@ -25,6 +25,8 @@ namespace Yttrium
         iTopo(),
         uCLaw(),
         claws(),
+        conserved(),
+        unbounded(),
         order(0),
         next(0),
         prev(0)
@@ -152,12 +154,21 @@ namespace Yttrium
 
             {
                 Y_XML_Section(xml, "Summary");
-                for(size_t i=1;i<=order.size();++i)
                 {
-                    const size_t n = order[i]->size; if(n<=0) continue;
-                    Y_XMLog(xml, "#order " << std::setw(2) << i << " = " << std::setw(4) << n);
+                    Y_XML_Section(xml,Equilibria::CallSign);
+                    for(size_t i=1;i<=order.size();++i)
+                    {
+                        const size_t n = order[i]->size; if(n<=0) continue;
+                        Y_XMLog(xml, "#order " << std::setw(2) << i << " = " << std::setw(4) << n);
+                    }
+                    Y_XMLog(xml, "#total    = " <<  std::setw(4) << elist->size );
                 }
-                Y_XMLog(xml, "#total    = " <<  std::setw(4) << elist->size );
+                {
+                    Y_XML_Section(xml,"Species");
+                    if(conserved->size) Y_XMLog(xml, "conserved = " << conserved);
+                    if(unbounded->size) Y_XMLog(xml, "unbounded = " << unbounded);
+                }
+
             }
 
         }

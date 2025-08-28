@@ -38,6 +38,7 @@ namespace Yttrium
                 explicit Laws(XMLog &, const uMatrix &, const SList &); //!< setup
                 virtual ~Laws() noexcept; //!< cleanup
 
+                bool got(const Species &sp) const noexcept;
 
             private:
                 Y_Disable_Copy_And_Assign(Laws); //!< discarding
