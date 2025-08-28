@@ -49,6 +49,9 @@ namespace Yttrium
 
         };
 
+
+        class Clusters;
+
         //______________________________________________________________________
         //
         //
@@ -89,18 +92,21 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            bool accepts(const Equilibrium &) const noexcept; //!< \return true if one of my species in equilibrium
-            bool accepts(const Cluster &)     const noexcept; //!< \return true if at least one shared species
-            void attach(Equilibrium &);                       //!< add equilibrium and its species
-            void fusion(Cluster * const) noexcept;            //!< add cluster's content
-            void compile(XMLog &, Equilibria &, const XReadable &); //!< compile once setup
+            void compute(XWritable &K, const xreal_t t);
 
 
         private:
             Y_Disable_Copy_And_Assign(Cluster);  //!< discarding
             Y_Ingress_Decl();                    //!< helper
-            void attach(const Species &);        //!< check/insert
-            void update() noexcept;              //!< update sublevel status
+            friend class Clusters;
+            bool accepts(const Equilibrium &) const noexcept; //!< \return true if one of my species in equilibrium
+            bool accepts(const Cluster &)     const noexcept; //!< \return true if at least one shared species
+            void attach(Equilibrium &);                       //!< add equilibrium and its species
+            void fusion(Cluster * const) noexcept;            //!< add cluster's content
+            void attach(const Species &);                      //!< check/insert
+            void update() noexcept;                            //!< update sublevel status
+
+            void compile(XMLog &, Equilibria &, const XReadable &); //!< compile once setup
 
             EList           elist; //!< my equilibria
         public:

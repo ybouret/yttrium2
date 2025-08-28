@@ -19,9 +19,9 @@ namespace Yttrium
         class MixedEquilibrium : public Equilibrium
         {
         public:
-
-            explicit MixedEquilibrium(const String &eid,
-                                      const size_t  top,
+            
+            explicit MixedEquilibrium(const String &    eid,
+                                      const size_t      top,
                                       const XReadable & tlk,
                                       WList &           wl,
                                       EList &           el);
@@ -32,10 +32,12 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(MixedEquilibrium);
             virtual xreal_t getK(const xreal_t);
-            const XReadable &topK;
-            const WList      wlist;
-            const EList      elist;
-            XMul             xmul;
+            const XReadable &topK;  //!< top-level constatns
+            const WList      wlist; //!< list of weights
+            const EList      elist; //!< list of equilibria
+            XMul             numer; //!< numerator
+            XMul             denom; //!< denominator
+
         };
 
     }

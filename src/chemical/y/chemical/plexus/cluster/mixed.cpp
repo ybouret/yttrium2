@@ -19,7 +19,8 @@ namespace Yttrium
         topK(tlk),
         wlist(),
         elist(),
-        xmul()
+        numer(),
+        denom()
         {
             Coerce(wlist).xch(wl);
             Coerce(elist).xch(el);
@@ -28,7 +29,24 @@ namespace Yttrium
 
         xreal_t MixedEquilibrium:: getK(const xreal_t)
         {
-            
+            numer.ld1();
+            denom.ld1();
+
+            const WNode * wn = wlist->head;
+            for(const ENode * en=elist->head;en;en=en->next,wn=wn->next)
+            {
+                assert(en);
+                assert(wn);
+                const int     w = **wn;
+                const xreal_t k = (**en)(topK,TopLevel);
+                if(w>0)
+                    numer.ipower(k, (unsigned) w);
+                else
+                    denom.ipower(k, (unsigned) -w);
+            }
+
+
+            return numer.product()/denom.product();
         }
     }
 

@@ -13,9 +13,10 @@ namespace Yttrium
 
         const char * const Clusters:: CallSign = "Clusters";
         
-        Clusters:: Clusters(XMLog &xml, Equilibria &eqs) :
+        Clusters:: Clusters(XMLog &xml, Equilibria &eqs, const xreal_t t0) :
         list(),
-        topK(0,0)
+        topK(0,0),
+        K(topK)
         {
             Y_XML_Section(xml,CallSign);
             assert(!eqs.frozen());
@@ -54,8 +55,25 @@ namespace Yttrium
                 store.swapListFor(list);
             }
 
+            size_t ntot = 0;
+
             for(Cluster *cl = list.head;cl;cl=cl->next)
-                cl->compile(xml,eqs,topK);
+            {
+                cl->compile(xml,eqs,K);
+                ntot += (***cl).size;
+            }
+
+            {
+                CxxArray<xreal_t> tmp(ntot,0);
+                topK.xch(tmp);
+            }
+
+            assert(ntot == K.size() );
+            
+            for(Cluster *cl = list.head;cl;cl=cl->next)
+            {
+                cl->compute(topK,t0);
+            }
         }
     }
 

@@ -38,7 +38,7 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            explicit Clusters(XMLog &, Equilibria &); //!< full setup
+            explicit Clusters(XMLog &, Equilibria &, const xreal_t t0 = 0.0); //!< full setup
             virtual ~Clusters() noexcept;             //!< cleanup
 
 
@@ -47,6 +47,10 @@ namespace Yttrium
             Y_Ingress_Decl();        //!< helper
             CxxListOf<Cluster> list; //!< content
             XArray             topK; //!< top level K array
+
+        public:
+            const XReadable  &K;
+
         };
     }
 

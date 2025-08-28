@@ -127,7 +127,11 @@ namespace Yttrium
             os << '{' << std::endl;
             for( const ENode *en = (**cl).head; en; en=en->next)
             {
-                cl.display(os << "  ",**en) << std::endl;
+                const Equilibrium &eq = **en;
+                cl.display(os << "  ",eq);
+                const xreal_t eK = Coerce(eq).K(0);
+                os << " '10^(" << eK.log10() << ")'";
+                os << std::endl;
             }
             os << '}' << '@';
             os << cl.slist;
@@ -144,6 +148,7 @@ namespace Yttrium
             buildTopology(xml);
             buildConservations(xml);
             buildCombinatorics(xml,eqs,tlK);
+            
 
             {
                 Y_XML_Section(xml, "Summary");
@@ -156,6 +161,16 @@ namespace Yttrium
             }
 
         }
+
+        void Cluster:: compute(XWritable &K, const xreal_t t)
+        {
+            for(ENode *en=elist->head;en;en=en->next)
+            {
+                Equilibrium &eq = **en;
+                eq(K,TopLevel) = eq.K(t);
+            }
+        }
+
 
     }
 
