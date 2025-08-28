@@ -26,9 +26,9 @@ namespace Yttrium
         typedef MKL::Triplet<xreal_t>          XTriplet;  //!< alias
         typedef Cameo::Multiplication<xreal_t> XMul;      //!< alias
         typedef Cameo::Addition<xreal_t>       XAdd;      //!< alias
-        typedef Matrix<int>                    iMatrix;
-        typedef Matrix<unsigned>               uMatrix;
-        typedef Matrix<xreal_t>                XMatrix;
+        typedef Matrix<int>                    iMatrix;   //!< alias
+        typedef Matrix<unsigned>               uMatrix;   //!< alias
+        typedef Matrix<xreal_t>                XMatrix;   //!< alias
 
     }
 

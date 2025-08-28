@@ -13,21 +13,39 @@ namespace Yttrium
     namespace Chemical
     {
 
-        class Clusters : public Ingress< Core::ListOf<Cluster> >
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Create list of clusters and update equilibria
+        //
+        //
+        //______________________________________________________________________
+        class Clusters : public CountedObject, public Ingress< Core::ListOf<Cluster> >
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const char * const CallSign; //!< "Clusters"
 
-            static const char * const CallSign;
-
-            explicit Clusters(XMLog &xml, Equilibria &eqs);
-            virtual ~Clusters() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit Clusters(XMLog &, Equilibria &); //!< full setup
+            virtual ~Clusters() noexcept;             //!< cleanup
 
 
         private:
-            Y_Disable_Copy_And_Assign(Clusters);
-            Y_Ingress_Decl();
-
-            CxxListOf<Cluster> list;
+            Y_Disable_Copy_And_Assign(Clusters); //!< discarding
+            Y_Ingress_Decl();        //!< helper
+            CxxListOf<Cluster> list; //!< content
         };
     }
 

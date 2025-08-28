@@ -58,8 +58,8 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Species);  //!< discarding
         };
 
-        typedef Protean::BareLightList<const Species> SList;
-        typedef typename SList::NodeType              SNode;
+        typedef Protean::BareLightList<const Species> SList; //!< alias
+        typedef typename SList::NodeType              SNode; //!< alias
 
     }
 

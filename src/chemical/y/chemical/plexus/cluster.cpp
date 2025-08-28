@@ -6,6 +6,11 @@ namespace Yttrium
     namespace Chemical
     {
 
+        SignType ListOps:: Compare(const Indexed & lhs, const Indexed & rhs) noexcept
+        {
+            return Sign::Of( lhs.indx[TopLevel], rhs.indx[TopLevel] );
+        }
+
         const char * const Cluster:: CallSign = "Cluster";
 
         Cluster:: ~Cluster() noexcept

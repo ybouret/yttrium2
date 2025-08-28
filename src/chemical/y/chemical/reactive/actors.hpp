@@ -73,7 +73,9 @@ namespace Yttrium
         private:
             Y_Disable_Assign(Actors); //!< discard
             Y_Ingress_Decl();         //!< helper
+        protected:
             Actor::List       list;   //!< current list
+        public:
             const Actor::Role role;   //!< current role
 
         };

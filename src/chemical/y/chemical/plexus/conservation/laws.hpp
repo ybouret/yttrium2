@@ -18,17 +18,31 @@ namespace Yttrium
         namespace Conservation
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Conservation Laws
+            //
+            //
+            //__________________________________________________________________
             class Laws : public Object, public Ingress< const Core::ListOf<Law> >, public Assembly
             {
             public:
-                explicit Laws(XMLog &, const uMatrix &, const SList &);
-                virtual ~Laws() noexcept;
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+                explicit Laws(XMLog &, const uMatrix &, const SList &); //!< setup
+                virtual ~Laws() noexcept; //!< cleanup
 
 
             private:
-                Y_Disable_Copy_And_Assign(Laws);
-                Y_Ingress_Decl();
-                CxxListOf<Law> list;
+                Y_Disable_Copy_And_Assign(Laws); //!< discarding
+                Y_Ingress_Decl();                //!< helper
+                CxxListOf<Law> list; //!< laws
             };
 
         }

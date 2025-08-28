@@ -81,6 +81,11 @@ namespace Yttrium
             bool neutral() const;                     //!< \return true iff electro-neutrality
             bool has(const Species &) const noexcept; //!< \return true if species is found
 
+            //! fill topology array
+            /**
+             \param arr   target array
+             \param level index level
+             */
             template <typename ARR> inline
             void topology(ARR &arr, const Level level) const
             {

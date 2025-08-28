@@ -14,17 +14,19 @@ namespace Yttrium
     namespace Chemical
     {
 
-        typedef Protean::BareLightList<Equilibrium>   EList;
-        typedef typename EList::NodeType              ENode;
+        typedef Protean::BareLightList<Equilibrium>   EList; //!< alias
+        typedef typename EList::NodeType              ENode; //!< alias
 
+        //! helper to handle lists
         struct ListOps
         {
+            //! sort by top level index \param list compatible list
             template <typename LIST> inline static
-            void Sort(LIST &list) noexcept
-            {
+            void Sort(LIST &list) noexcept {
                 list.sort( Compare );
             }
 
+            //! index given level \param list compatible list \param L target level
             template <typename LIST> inline static
             void Indx(LIST &list, const Level L) noexcept
             {
@@ -35,6 +37,7 @@ namespace Yttrium
                 }
             }
 
+            //! sort and index \param list compatible list \param L target level
             template <typename LIST> inline static
             void Make(LIST &list, const Level L) noexcept
             {
@@ -42,53 +45,77 @@ namespace Yttrium
                 Indx(list,L);
             }
 
-            static
-            SignType Compare(const Indexed & lhs, const Indexed & rhs) noexcept
-            {
-                return Sign::Of( lhs.indx[TopLevel], rhs.indx[TopLevel] );
-            }
+            //! \return top level indices comparison
+            static SignType Compare(const Indexed &, const Indexed &) noexcept;
+
         };
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Cluster of linked species and equilibria
+        //
+        //
+        //______________________________________________________________________
         class Cluster :
         public Object,
         public Ingress<const EList>,
         public Assemblies
         {
         public:
-            static const char * const CallSign;
-            typedef AutoPtr<Conservation::Laws> CLaws;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const char * const           CallSign; //!< "Cluster"
+            typedef AutoPtr<Conservation::Laws> CLaws;    //!< alias
 
-            explicit Cluster(Equilibrium &first);
-            virtual ~Cluster() noexcept;
-            Y_OSTREAM_PROTO(Cluster);
-            
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit Cluster(Equilibrium &first); //!< setup \param first first equilibrium
+            virtual ~Cluster() noexcept;          //!< cleanup
+            Y_OSTREAM_PROTO(Cluster);             //!< display
 
-            bool accepts(const Equilibrium &) const noexcept;
-            bool accepts(const Cluster &) const noexcept;
-            void attach(Equilibrium &);
-            void fusion(Cluster * const) noexcept;
-            void compile(XMLog &xml);
+
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            bool accepts(const Equilibrium &) const noexcept; //!< \return true if one of my species in equilibrium
+            bool accepts(const Cluster &)     const noexcept; //!< \return true if at least one shared species
+            void attach(Equilibrium &);                       //!< add equilibrium and its species
+            void fusion(Cluster * const) noexcept;            //!< add cluster's content
+            void compile(XMLog &);                            //!< compile once setup
 
 
         private:
-            Y_Disable_Copy_And_Assign(Cluster);
-            Y_Ingress_Decl();
-            void        attach(const Species &);
-            void        update() noexcept;
-            EList       elist;
+            Y_Disable_Copy_And_Assign(Cluster);  //!< discarding
+            Y_Ingress_Decl();                    //!< helper
+            void        attach(const Species &); //!< check/insert
+            void        update() noexcept;       //!< update sublevel status
+
+            EList         elist; //!< my equilibria
         public:
-            const SList   slist;
+            const SList   slist; //!< my species
             const iMatrix iTopo; //!< integer topology matrix
             const uMatrix uCLaw; //!< unsigned conservation matrix
             const CLaws   claws; //!< list of conservations
-
-            Cluster * next;
-            Cluster * prev;
+            Cluster *     next;  //!< for list
+            Cluster *     prev;  //!< for list
 
         private:
-            void buildTopology(XMLog &);
-            void buildConservations(XMLog &);
-            void buildCombinatorics(XMLog &);
+            void buildTopology(XMLog &);      //!< build topology
+            void buildConservations(XMLog &); //!< build conservations
+            void buildCombinatorics(XMLog &); //!< build combinatorics
         };
 
     }

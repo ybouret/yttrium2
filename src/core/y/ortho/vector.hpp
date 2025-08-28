@@ -88,14 +88,19 @@ namespace Yttrium
                 return *this;
             }
 
+            //! conversion
+            /**
+             \param arr target array
+             \param varName optional name for exception
+             */
             template <typename ARRAY> inline
-            void sendTo(ARRAY &arr, const char * const var) const
+            void sendTo(ARRAY &arr, const char * const varName = 0) const
             {
                 assert(arr.size()==dimensions);
                 const Vector &v = *this;
                 for(size_t i=dimensions;i>0;--i)
                 {
-                    arr[i] = v[i].cast<typename ARRAY::Type>(var);
+                    arr[i] = v[i].cast<typename ARRAY::Type>(varName);
                 }
             }
 

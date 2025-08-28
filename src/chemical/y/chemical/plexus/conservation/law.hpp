@@ -14,17 +14,48 @@ namespace Yttrium
     {
         namespace Conservation
         {
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Conservation Law
+            //
+            //
+            //__________________________________________________________________
             class Law : public Actors
             {
             public:
-                explicit Law();
-                virtual ~Law() noexcept;
-                Y_OSTREAM_PROTO(Law);
-                
-                Law * next;
-                Law * prev;
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+                explicit Law();           //!< setup
+                virtual ~Law() noexcept;  //!< cleanup
+                Y_OSTREAM_PROTO(Law);     //!< display
+
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+
+                //! \return
+                xreal_t excess(XAdd &, const XReadable &, const Level) noexcept;
+
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                const xreal_t zero; //!< for computations
+                Law *         next; //!< for list
+                Law *         prev; //!< for list
             private:
-                Y_Disable_Copy_And_Assign(Law);
+                Y_Disable_Copy_And_Assign(Law); //!< discarding
             };
         }
     }
