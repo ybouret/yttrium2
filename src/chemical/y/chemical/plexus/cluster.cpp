@@ -17,6 +17,8 @@ namespace Yttrium
         Object(),
         elist(),
         slist(),
+        iTopo(),
+        uCLaw(),
         next(0),
         prev(0)
         {

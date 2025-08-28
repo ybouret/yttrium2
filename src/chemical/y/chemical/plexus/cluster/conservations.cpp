@@ -33,7 +33,7 @@ namespace Yttrium
                     vec->sendTo(Q[i],fn);
                 }
             }
-
+            Y_XMLog(xml, "uCLaw=" << uCLaw);
         }
     }
 

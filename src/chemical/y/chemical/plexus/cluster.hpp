@@ -79,8 +79,8 @@ namespace Yttrium
             EList       elist;
         public:
             const SList   slist;
-            const iMatrix iTopo; //!< Nu
-            const uMatrix uCLaw; //!< matrix of conservations
+            const iMatrix iTopo; //!< integer topology matrix
+            const uMatrix uCLaw; //!< unsigned conservation matrix
 
             Cluster * next;
             Cluster * prev;

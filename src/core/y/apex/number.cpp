@@ -13,7 +13,7 @@ namespace Yttrium
         void Number:: castOverflow(const char * const varName) const
         {
             Libc::Exception excp(EDOM,"overflow for %s cast",callSign());
-            if(varName) excp.add("to %s",varName);
+            if(varName) excp.add(" to %s",varName);
             throw excp;
         }
 

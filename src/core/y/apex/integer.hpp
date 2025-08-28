@@ -169,8 +169,8 @@ namespace Yttrium
             {
                 switch(s)
                 {
-                    case Negative: return false;
-                    case __Zero__: value = 0; return false;
+                    case Negative:            return false;
+                    case __Zero__: value = 0; return true;
                     case Positive: break;
                 }
                 if( n.bits() > sizeof(T)*8 ) return false;
