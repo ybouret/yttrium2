@@ -14,7 +14,7 @@ namespace Yttrium
     namespace Chemical
     {
 
-     
+
 
         //! helper to handle lists
         struct ListOps
@@ -46,6 +46,21 @@ namespace Yttrium
 
             //! \return top level indices comparison
             static SignType Compare(const Indexed &, const Indexed &) noexcept;
+
+            static   void Copy(const SList     & slist,
+                               XWritable       & target,
+                               const Level       tgtLevel,
+                               const XReadable & source,
+                               const Level       srcLevel)
+            {
+                for(const SNode *sn=slist->head;sn;sn=sn->next)
+                {
+                    const Species &sp = **sn;
+                    sp(target,tgtLevel) = sp(source,srcLevel);
+                }
+            }
+
+
 
         };
 
@@ -93,6 +108,8 @@ namespace Yttrium
             //
             //__________________________________________________________________
             void compute(XWritable &K, const xreal_t t);
+
+            void copy(XWritable &C, const Level L, const XReadable &C0, const Level L0) const;
 
 
         private:

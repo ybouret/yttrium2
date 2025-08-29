@@ -219,6 +219,11 @@ namespace Yttrium
         }
 
 
+        void Cluster:: copy(XWritable &C, const Level L, const XReadable &C0, const Level L0) const
+        {
+            ListOps:: Copy(slist, C, L, C0, L0);
+        }
+
     }
 
 }
