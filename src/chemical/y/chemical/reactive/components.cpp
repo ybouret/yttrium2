@@ -144,19 +144,33 @@ namespace Yttrium
             return reac.got(sp) || prod.got(sp);
         }
 
-
-#if 0
-        bool Components:: linkedTo(const Components &other) const noexcept
+        Status Components:: status(const XReadable &C, const Level L) const noexcept
         {
-            for(const Actor *a=prod->head;a;a=a->next)
-                if( other.has(a->sp) ) return true;
-
-            for(const Actor *a=reac->head;a;a=a->next)
-                if( other.has(a->sp) ) return true;
-
-            return false;
+            if( reac.degenerate(C,L) )
+            {
+                if(prod.degenerate(C,L))
+                {
+                    return Blocked;
+                }
+                else
+                {
+                    return Critical;
+                }
+            }
+            else
+            {
+                if(prod.degenerate(C,L))
+                {
+                    return Critical;
+                }
+                else
+                {
+                    return Running;
+                }
+            }
         }
-#endif
+
+
     }
 
 }

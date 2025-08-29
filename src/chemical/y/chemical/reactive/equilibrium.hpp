@@ -12,6 +12,9 @@ namespace Yttrium
     namespace Chemical
     {
 
+
+     
+
         //______________________________________________________________________
         //
         //
@@ -62,6 +65,9 @@ namespace Yttrium
             //
             //__________________________________________________________________
             xreal_t K(const xreal_t); //!< \return tested constant
+
+            
+
 
         private:
             Y_Disable_Copy_And_Assign(Equilibrium);  //!< discarding

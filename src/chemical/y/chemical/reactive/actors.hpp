@@ -69,6 +69,8 @@ namespace Yttrium
             //! compute limit \param C concentration \param L level \return min(C/nu)
             xreal_t fastLimit(const XReadable &C, const Level L) const noexcept;
 
+            //! \return true iff at least one zero conc
+            bool degenerate(const XReadable &, const Level) const noexcept;
 
 
         private:

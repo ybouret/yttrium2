@@ -11,6 +11,14 @@ namespace Yttrium
 {
     namespace Chemical
     {
+
+        enum Status
+        {
+            Running,
+            Blocked,
+            Critical
+        };
+
         //______________________________________________________________________
         //
         //
@@ -112,6 +120,7 @@ namespace Yttrium
             //! \param xadd helper \param C concentrations \param L level \param C0 origin \return average extent
             xreal_t extent(XAdd &xadd, const XReadable &C, const Level L, const XReadable &C0) const;
 
+            Status status(const XReadable &C, const Level L) const noexcept;
 
             //__________________________________________________________________
             //

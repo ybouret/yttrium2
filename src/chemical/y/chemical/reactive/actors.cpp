@@ -117,6 +117,18 @@ namespace Yttrium
         }
 
 
+        bool Actors:: degenerate(const XReadable &C, const Level L) const noexcept
+        {
+
+            for(const Actor *a=list.head;a;a=a->next)
+            {
+                if( a->sp(C,L) <= a->zero ) return true;
+            }
+            
+            return false;
+        }
+
+
     }
 
 }
