@@ -27,6 +27,7 @@ namespace Yttrium
                                 const XReadable & Ktop);
 
             xreal_t affinity(const XReadable &, const Level);
+            xreal_t operator()(xreal_t u);
 
         private:
             const Cluster &cluster;
@@ -39,6 +40,8 @@ namespace Yttrium
             XAdd           xadd;
             XAdd           xsum;
             Solve1D        solve1d;
+            const xreal_t  zero;
+            const xreal_t  one;
         };
 
         

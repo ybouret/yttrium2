@@ -23,6 +23,24 @@ namespace Yttrium
             return resSq.sqrt();
         }
 
+        xreal_t Solver:: operator()(xreal_t u)
+        {
+            const XReadable &Cv = Csub;
+            const XReadable &Cu = Cend;
+            const xreal_t    v  = one - (u = Clamp(zero,u,one));
+
+            for(size_t i=Cv.size();i>0;--i)
+            {
+                const xreal_t cv = Cv[i];
+                const xreal_t cu = Cu[i];
+                xreal_t cmin = cu, cmax = cv;
+                if(cmin>cmax) Swap(cmin,cmax);
+                Ctry[i] = Clamp(cmin, cu * u + cv * v, cmax);
+            }
+            return affinity(Ctry,SubLevel);
+        }
+
+
     }
 
 }

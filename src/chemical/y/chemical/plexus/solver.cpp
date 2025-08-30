@@ -1,5 +1,8 @@
 
 #include "y/chemical/plexus/solver.hpp"
+#include "y/stream/libc/output.hpp"
+
+#include "y/mkl/opt/optimize.hpp"
 
 
 namespace Yttrium
@@ -22,7 +25,9 @@ namespace Yttrium
         psize(),
         xadd(),
         xsum(),
-        solve1d()
+        solve1d(),
+        zero(),
+        one(1)
         {
             
         }
@@ -107,14 +112,38 @@ namespace Yttrium
 
         BUILD:
             if(plist->size<=0) return;
-
             psize = xreal_t( plist->size );
-            for(PNode *pn=plist->head;pn;pn=pn->next)
+
+            // optimizing each direction
             {
-                Prospect & pro = **pn;
-                assert(Running == pro.st);
-                pro.af = affinity(pro.cc,SubLevel);
-                pro.display(std::cerr,cluster.nameFmt) << " $" << pro.af.str() << std::endl;
+                Solver &F = *this;
+                const xreal_t Fsub = affinity(Csub,SubLevel);
+                Y_XMLog(xml, "Fsub = " << Fsub.str());
+                for(PNode *pn=plist->head;pn;pn=pn->next)
+                {
+                    Prospect & pro = **pn;
+                    assert(Running == pro.st);
+                    xreal_t Fend   = affinity(pro.cc,SubLevel);
+                    Cend.ld(pro.cc);
+                    pro.display(std::cerr,cluster.nameFmt) << " $" << Fend.str() << " / " << F(zero).str() << " -> " << F(one).str() << std::endl;
+
+                    XTriplet xx = { zero, 0, one  };
+                    XTriplet ff = { Fsub, 0, Fend };
+
+                    {
+                        const String fn = pro.eq.name + ".dat";
+                        OutputFile   fp(fn);
+                        const unsigned np = 100;
+                        for(unsigned i=0;i<=np;++i)
+                        {
+                            const double u = i / (double(np));
+                            fp("%.15g %s\n", u, F(u).str().c_str());
+                        }
+                    }
+
+
+
+                }
             }
 
 
