@@ -10,6 +10,8 @@
 #include "y/string/env.hpp"
 #include "y/ascii/convert.hpp"
 
+#include "y/mkl/opt/bracket.hpp"
+
 using namespace Yttrium;
 using namespace Chemical;
 
@@ -17,6 +19,8 @@ using namespace Chemical;
 
 Y_UTEST(plexus)
 {
+    MKL::BracketVerbose = true;
+
     Random::MT19937 ran;
     real_t          probaZero = 0;
     {

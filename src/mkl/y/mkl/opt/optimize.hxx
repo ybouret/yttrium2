@@ -42,27 +42,25 @@ real_t Optimize<real_t>:: Run(Triplet<real_t> & x,
     // run
     //
     //__________________________________________________________________________
-    std::cerr.precision(15);
+    //std::cerr.precision(15);
     while(true)
     {
         ParabolicStep<real_t>::Tighten(x,f,F);
-        std::cerr << "x=" << x << ", f=" << f << " df=" << Max(f.a,f.c)-f.b << std::endl;
+        //std::cerr << "x=" << x << ", f=" << f << " df=" << Max(f.a,f.c)-f.b << std::endl;
         assert(x.isIncreasing());
         assert(f.isLocalMinimum());
 
         if( isFlat(f) )
         {
-            std::cerr << "flat" << std::endl;
+            //std::cerr << "flat" << std::endl;
             break;
         }
 
         if( isPunctual(x) )
         {
-            std::cerr << "ponctual" << std::endl;
+            //std::cerr << "ponctual" << std::endl;
             break;
         }
-
-
 
     }
 

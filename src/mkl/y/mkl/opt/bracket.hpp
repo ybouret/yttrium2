@@ -33,7 +33,7 @@ namespace Yttrium
              \param x initial interval [x.a:x.c]
              \param f initial values   [f.a:f.c]
              \param F function to evaluate
-             \return true if local min, false of global min
+             \return true if local min, false on global min
              */
             static bool Inside(Triplet<T> &x, Triplet<T> &f, FunctionType &F);
 
@@ -42,7 +42,7 @@ namespace Yttrium
              \param F compatible function
              \param x initial interval [x.a:x.c]
              \param f initial values   [f.a:f.c]
-             \return true if local min, false of global min
+             \return true if local min, false on global min
              */
             template <typename FUNCTION> static inline
             bool Inside(FUNCTION &F, Triplet<T> &x, Triplet<T> &f)

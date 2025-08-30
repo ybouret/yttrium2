@@ -33,12 +33,20 @@ PROBE:
         case Negative:
             // success
             assert(f.isLocalMinimum());
+            assert(x.isOrdered());
             Y_PRINT("found local min");
             if( AlmostEqual<real_t>::Are(x.a,x.b) )
             {
                 Y_PRINT("but global");
                 goto GLOBAL;
             }
+            if(x.a>x.c)
+            {
+                Swap(x.a,x.c);
+                Swap(f.a,f.c);
+            }
+            assert(x.isIncreasing());
+            assert(f.isLocalMinimum());
             return true;
 
             // not there yet: move c to b

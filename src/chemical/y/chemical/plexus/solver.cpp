@@ -2,13 +2,15 @@
 #include "y/chemical/plexus/solver.hpp"
 #include "y/stream/libc/output.hpp"
 
-#include "y/mkl/opt/optimize.hpp"
+#include "y/mkl/opt/minimize.hpp"
 
 
 namespace Yttrium
 {
     namespace Chemical
     {
+
+        using namespace MKL;
 
         Solver:: ~Solver() noexcept
         {
@@ -102,9 +104,10 @@ namespace Yttrium
                 plist.removeIf(isRunning); assert(plist->size>0);
 
                 // sort remaining crucial
-                plist.sort(Prospect::ByDecreasingAX);
+                plist.sort(Prospect::ByDecreasingXi);
                 const Prospect &crucial = **plist->head; assert(Crucial==crucial.st);
 
+                Y_XMLog(xml, "selected crucial: " << crucial.eq.name);
                 // update Csub
                 Csub.ld(crucial.cc);
                 goto PROBE;
@@ -112,38 +115,61 @@ namespace Yttrium
 
         BUILD:
             if(plist->size<=0) return;
-            psize = xreal_t( plist->size );
+            psize      = xreal_t( plist->size );
+            Solver & F = *this;
 
-            // optimizing each direction
             {
-                Solver &F = *this;
-                const xreal_t Fsub = affinity(Csub,SubLevel);
-                Y_XMLog(xml, "Fsub = " << Fsub.str());
+                const xreal_t  Fsub = affinity(Csub,SubLevel);
+                Y_XMLog(xml, "Affinity = " << Fsub.str());
+
+                // optimizing each direction
                 for(PNode *pn=plist->head;pn;pn=pn->next)
                 {
-                    Prospect & pro = **pn;
-                    assert(Running == pro.st);
-                    xreal_t Fend   = affinity(pro.cc,SubLevel);
+                    Prospect &    pro  = **pn; assert(Running == pro.st);
+                    const xreal_t Fend = pro.a0 = affinity(pro.cc,SubLevel);
                     Cend.ld(pro.cc);
-                    pro.display(std::cerr,cluster.nameFmt) << " $" << Fend.str() << " / " << F(zero).str() << " -> " << F(one).str() << std::endl;
-
-                    XTriplet xx = { zero, 0, one  };
-                    XTriplet ff = { Fsub, 0, Fend };
 
                     {
-                        const String fn = pro.eq.name + ".dat";
-                        OutputFile   fp(fn);
-                        const unsigned np = 100;
-                        for(unsigned i=0;i<=np;++i)
+                        XTriplet xx = { zero, 0, one  };
+                        XTriplet ff = { Fsub, 0, Fend };
+
                         {
-                            const double u = i / (double(np));
-                            fp("%.15g %s\n", u, F(u).str().c_str());
+                            const String fn = pro.eq.name + ".dat";
+                            OutputFile   fp(fn);
+                            const unsigned np = 200;
+                            for(unsigned i=0;i<=np;++i)
+                            {
+                                const double u = i / (double(np));
+                                fp("%.15g %s\n", u, F(u).str().c_str());
+                            }
                         }
+
+                        const xreal_t uopt = Minimize<xreal_t>::Run(Minimizing::Inside,F,xx,ff);
+                        std::cerr << "uopt=" << uopt << " @" << pro.eq.name << std::endl;
+                        std::cerr << "Ctry=" << Ctry << std::endl;
+                        std::cerr << "Csub=" << Csub << std::endl;
+                        std::cerr << "Cend=" << Cend << std::endl;
+
+                        pro.xi = pro.eq.extent(xadd, pro.cc.ld(Ctry), SubLevel, Csub);
+                        pro.af = ff.b;
                     }
 
-
-
                 }
+
+                // sorting and selecting best 1D
+                {
+                    Y_XML_Section(xml,"selectBest");
+                    plist.sort(Prospect::ByIncreasingAF);
+                    Y_XMLog(xml, "// #maximum  = " << cluster->size());
+                    Y_XMLog(xml, "// #selected = " << plist->size);
+                    for(PNode *pn=plist->head;pn;pn=pn->next)
+                    {
+                        Prospect &    pro  = **pn; assert(Running == pro.st);
+                        if(xml.verbose)
+                            pro.display(xml(),cluster.nameFmt) << " $" << std::setw(22) << pro.a0.str() << " -> " << std::setw(22) << pro.af.str() << " / " << F.affinity(pro.cc,SubLevel).str() << std::endl;
+                    }
+                }
+
             }
 
 

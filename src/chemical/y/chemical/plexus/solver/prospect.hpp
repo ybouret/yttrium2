@@ -27,15 +27,16 @@ namespace Yttrium
 
             std::ostream & display(std::ostream &, const Assembly &) const;
 
-            static SignType ByDecreasingAX(const Prospect &, const Prospect &) noexcept;
+            static SignType ByDecreasingXi(const Prospect &, const Prospect &) noexcept;
+            static SignType ByIncreasingAF(const Prospect &, const Prospect &) noexcept;
 
-            const Status       st;
-            const Equilibrium &eq;
-            const xreal_t      eK;
-            XWritable &        cc;
-            xreal_t            xi;
-            xreal_t            af;
-            
+            const Status       st; //!< status
+            const Equilibrium &eq; //!< equilibrium
+            const xreal_t      eK; //!< current e.K
+            XWritable &        cc; //!< optimized phases space
+            xreal_t            xi; //!< optimized extent
+            xreal_t            af; //!< optimized affinity
+            xreal_t            a0; //!< solve1d affinity
         private:
             Y_Disable_Assign(Prospect);
         };
