@@ -40,13 +40,21 @@ namespace Yttrium
             static const char fn[] = "Combinatorics";
             Y_XML_Section(xml,fn);
 
+            //------------------------------------------------------------------
+            //
+            //
+            // create orders and fill order[1]
+            //
+            //
+            //------------------------------------------------------------------
             const size_t         N = elist->size;
             {
                 CxxArray<EList> arr(N);
                 Coerce(order).xch(arr);
             }
-            for(const ENode *en=elist->head;en;en=en->next)
-                Coerce(order[1]) << **en;
+
+            Coerce(order[1]) << elist;
+
 
             //------------------------------------------------------------------
             //
@@ -59,9 +67,7 @@ namespace Yttrium
             const iMatrix &Nu = iTopo;
             {
                 const iMatrix NuT(TransposeOf,Nu);
-                {
-                    Coven::Analysis::Run(xml,NuT,KeepComb,comb,Coven::Analysis::RejectRoot,true);
-                }
+                Coven::Analysis::Run(xml,NuT,KeepComb,comb,Coven::Analysis::RejectRoot,true);
             }
 
             if(comb->size<=0) return;

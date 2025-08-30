@@ -167,7 +167,10 @@ namespace Yttrium
                     assert(!done);
                 }
 
-            std::cerr << "calls = " << code->calls << " in #cycle=" << code->cycle<< std::endl;
+            if( Crucial == E.status(C,L) )
+                throw Specific::Exception(E.name.c_str(),"invalid Solve1D");
+            
+            //std::cerr << "calls = " << code->calls << " in #cycle=" << code->cycle<< std::endl;
             return E.extent(code->xadd,C,L,C0);
         }
     }

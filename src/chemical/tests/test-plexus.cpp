@@ -3,9 +3,12 @@
 
 #include "y/chemical/weasel.hpp"
 #include "y/chemical/plexus/clusters.hpp"
+#include "y/chemical/plexus/solver.hpp"
 
 #include "y/utest/run.hpp"
 #include "y/random/mt19937.hpp"
+#include "y/string/env.hpp"
+#include "y/ascii/convert.hpp"
 
 using namespace Yttrium;
 using namespace Chemical;
@@ -15,7 +18,14 @@ using namespace Chemical;
 Y_UTEST(plexus)
 {
     Random::MT19937 ran;
-
+    real_t          probaZero = 0;
+    {
+        String pzs;
+        if( Environment::Get(pzs, "probaZero") )
+        {
+            probaZero = ASCII::Convert::To<real_t>(pzs,"probaZero");
+        }
+    }
 
     Weasel &   weasel = Weasel::Instance();
     Library    lib;
@@ -33,12 +43,27 @@ Y_UTEST(plexus)
     bool verbose = true;
     XMLog xml(std::cerr,verbose);
 
-    Clusters cls(xml,eqs);
+    Clusters cls(xml,eqs,0.0);
 
     for(const Cluster *cl=cls->head;cl;cl=cl->next)
     {
         std::cerr << *cl << std::endl;
     }
+
+    const size_t M = lib->size();
+    XArray       C0(M,0);
+    lib.conc(ran,C0,probaZero);
+
+    lib.print(std::cerr, "[", C0, "]", xreal_t::ToString);
+
+    for(const Cluster *cl=cls->head;cl;cl=cl->next)
+    {
+        Solver solver(*cl);
+        solver.buildProspects(xml,C0,cls.K);
+
+    }
+
+
 
 }
 Y_UDONE()

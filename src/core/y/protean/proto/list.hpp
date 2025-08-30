@@ -148,6 +148,14 @@ namespace Yttrium
                 return *this;
             }
 
+            //! append copy \param other another list \return *this
+            inline ListProto & operator<<(const ListProto &other)
+            {
+                ListType temp; duplicateInto(temp,other);
+                list.mergeTail(temp);
+                return *this;
+            }
+
             inline Iterator             begin()  noexcept       { return list.head; } //!< \return matching iterator
             inline Iterator             end()    noexcept       { return 0;         } //!< \return matching iterator
             inline ConstIterator        begin()  const noexcept { return list.head; } //!< \return matching iterator
@@ -182,7 +190,21 @@ namespace Yttrium
                 list.sortWith(proc);
             }
 
-        
+            template <typename IS_BAD> inline
+            void removeIf(IS_BAD &isBad)
+            {
+                ListType kept;
+                while(list.size)
+                {
+                    if( isBad( **list.head) )
+                        popHead();
+                    else
+                        kept.pushTail( list.popHead() );
+                }
+                list.swapListFor(kept);
+            }
+
+
 
             //__________________________________________________________________
             //

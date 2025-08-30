@@ -7,29 +7,13 @@
 
 
 #include "y/chemical/plexus/cluster.hpp"
-#include "y/protean/solo/heavy/list.hpp"
 #include "y/chemical/plexus/solve1d.hpp"
-
+#include "y/chemical/plexus/solver/prospect.hpp"
 
 namespace Yttrium
 {
     namespace Chemical
     {
-
-        class Prospect
-        {
-        public:
-
-            Prospect();
-            Prospect(const Prospect &);
-            ~Prospect() noexcept;
-
-        private:
-            Y_Disable_Assign(Prospect);
-        };
-
-        typedef List<Prospect>  PList;
-        typedef PList::NodeType PNode;
 
 
         class Solver
@@ -38,16 +22,26 @@ namespace Yttrium
             explicit Solver(const Cluster &);
             virtual ~Solver() noexcept;
 
-            void buildProspects(XWritable &C, const Level L, const XReadable &K);
+            void buildProspects(XMLog &           xml,
+                                XWritable &       Ctop,
+                                const XReadable & Ktop);
+
+            xreal_t affinity(const XReadable &, const Level);
 
         private:
             const Cluster &cluster;
             XArray         Csub;
+            XArray         Cend;
+            XArray         Ctry;
             XMatrix        Ceq;
-            PList          propects;
+            PList          plist;
+            xreal_t        psize;
+            XAdd           xadd;
+            XAdd           xsum;
             Solve1D        solve1d;
-
         };
+
+        
     }
 
 }

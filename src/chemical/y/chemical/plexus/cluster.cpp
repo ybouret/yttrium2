@@ -154,7 +154,7 @@ namespace Yttrium
             buildTopology(xml);
             buildConservations(xml);
             buildCombinatorics(xml,eqs,tlK);
-            
+
             // dispatching
             for(const ENode *en=elist->head;en;en=en->next)
             {
@@ -195,7 +195,7 @@ namespace Yttrium
                     if(conserved->size) Y_XMLog(xml, "conserved = " << conserved);
                     if(unbounded->size) Y_XMLog(xml, "unbounded = " << unbounded);
                 }
-                
+
                 {
                     Y_XML_Section(xml,"Classification");
                     if(standard->size) Y_XMLog(xml, "standard = " << standard);

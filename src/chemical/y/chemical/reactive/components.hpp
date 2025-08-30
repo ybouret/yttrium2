@@ -16,7 +16,7 @@ namespace Yttrium
         {
             Running,
             Blocked,
-            Critical
+            Crucial
         };
 
         //______________________________________________________________________
@@ -54,6 +54,7 @@ namespace Yttrium
             static const char * const Prod;         //!< "Prod"
             static const char * const Reac;         //!< "Reac"
             static const char         Prefix = '@'; //!< alias
+            static const char *       HumanReadableStatus(const Status st) noexcept;
 
             //__________________________________________________________________
             //
@@ -101,6 +102,8 @@ namespace Yttrium
                 for(const Actor *a=reac->head;a;a=a->next) a->sp(arr,level) = - (int) a->nu;
             }
 
+            std::ostream & displayCompact(std::ostream &, const XReadable &, const Level) const;
+
             //__________________________________________________________________
             //
             //
@@ -121,6 +124,9 @@ namespace Yttrium
             xreal_t extent(XAdd &xadd, const XReadable &C, const Level L, const XReadable &C0) const;
 
             Status status(const XReadable &C, const Level L) const noexcept;
+
+            //! log(K) - log(Q), Q=prod/reac
+            xreal_t affinity(XAdd &xadd, const xreal_t K, const XReadable &C, const Level L ) const;
 
             //__________________________________________________________________
             //

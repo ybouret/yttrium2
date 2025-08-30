@@ -10,6 +10,7 @@ y/chemical/weasel/equilibrium
 y/chemical/plexus
 y/chemical/plexus/cluster
 y/chemical/plexus/conservation
+y/chemical/plexus/solver
 )
 
 add_subdirectory(tests)

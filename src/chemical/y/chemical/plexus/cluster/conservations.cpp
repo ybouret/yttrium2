@@ -26,10 +26,10 @@ namespace Yttrium
             const size_t Nc = laws->size;
             if (Nc<=0)
             {
-                for(const SNode *sn=slist->head;sn;sn=sn->next)
-                    Coerce(unbounded) << **sn;
+                Coerce(unbounded) << slist;
                 return;
             }
+
             const size_t M  = slist->size;
             {
                 uMatrix & Q = Coerce(uCLaw).make(Nc,M);
@@ -45,7 +45,10 @@ namespace Yttrium
             for(const SNode *sn=slist->head;sn;sn=sn->next)
             {
                 const Species &sp = **sn;
-                if( claws->got(sp) ) Coerce(conserved) << sp; else Coerce(unbounded) << sp;
+                if( claws->got(sp) )
+                    Coerce(conserved) << sp;
+                else
+                    Coerce(unbounded) << sp;
             }
 
         }

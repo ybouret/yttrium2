@@ -11,9 +11,37 @@ namespace Yttrium
         const char * const Components:: Prod     = "Prod";
         const char * const Components:: Reac     = "Reac";
 
+        const char * Components:: HumanReadableStatus(const Status st) noexcept
+        {
+            switch( st )
+            {
+                    Y_Return_Named_Case(Running);
+                    Y_Return_Named_Case(Blocked);
+                    Y_Return_Named_Case(Crucial);
+            }
+            return Core::Unknown;
+        }
+
+
         Components:: ~Components() noexcept
         {
         }
+
+        static inline void displayActor(std::ostream &os, const Actor * const a, const XReadable &C, const Level L)
+        {
+
+            os << " [" << a->sp.name << "]=" << a->sp(C,L).str();
+        }
+
+        std::ostream & Components:: displayCompact(std::ostream &os, const XReadable &C, const Level L) const
+        {
+            os << '{';
+            for(const Actor *a=reac->head;a;a=a->next) displayActor(os,a,C,L);
+            for(const Actor *a=prod->head;a;a=a->next) displayActor(os,a,C,L);
+            os << ' ' << '}';
+            return os;
+        }
+
 
         std::ostream & operator<<(std::ostream &os, const Components &self)
         {
@@ -154,20 +182,41 @@ namespace Yttrium
                 }
                 else
                 {
-                    return Critical;
+                    return Crucial;
                 }
             }
             else
             {
                 if(prod.degenerate(C,L))
                 {
-                    return Critical;
+                    return Crucial;
                 }
                 else
                 {
                     return Running;
                 }
             }
+        }
+
+
+        xreal_t Components:: affinity(XAdd &xadd, const xreal_t K, const XReadable &C, const Level L ) const
+        {
+            xadd = K.log();
+            for(const Actor *a=prod->head;a;a=a->next)
+            {
+                const xreal_t cc  = a->sp(C,L);
+                const xreal_t lc  = cc.log();
+                for(unsigned n=a->nu;n>0;--n) xadd << lc;
+            }
+
+            for(const Actor *a=reac->head;a;a=a->next)
+            {
+                const xreal_t cc  = a->sp(C,L);
+                const xreal_t lc  = -cc.log();
+                for(unsigned n=a->nu;n>0;--n) xadd << lc;
+            }
+
+            return xadd.sum();
         }
 
 
