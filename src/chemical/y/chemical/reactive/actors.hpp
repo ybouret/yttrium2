@@ -63,6 +63,7 @@ namespace Yttrium
             //! \param X xmul, updated at xi \param C concentrations \param L level \param xi extent
             void massAction(XMul &X, const XReadable &C, const Level L, const xreal_t xi) const;
 
+
             //! move safely \param C concentrations \param L level \param xi extent
             void moveSafely(XWritable &C, const Level L, const xreal_t xi) const;
 
@@ -72,6 +73,12 @@ namespace Yttrium
             //! \return true iff at least one zero conc
             bool degenerate(const XReadable &, const Level) const noexcept;
             
+            void diffAction(XWritable       &dma,
+                            XMul            &X,
+                            const xreal_t    K,
+                            const XReadable &C,
+                            const Level      L,
+                            XWritable       &ma) const;
 
 
         private:

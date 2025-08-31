@@ -31,7 +31,7 @@ namespace Yttrium
         zero(),
         one(1)
         {
-            
+
         }
 
 
@@ -89,7 +89,7 @@ namespace Yttrium
                     const Prospect pro(st,eq,eK,cc,xi);
                     if(xml.verbose) pro.display(xml(),cluster.nameFmt) << std::endl;
                     plist << pro;
-                    
+
                 }
                 if(!emergency) goto BUILD; // all probed, all ok
 
@@ -126,6 +126,10 @@ namespace Yttrium
                 for(PNode *pn=plist->head;pn;pn=pn->next)
                 {
                     Prospect &    pro  = **pn; assert(Running == pro.st);
+                    optimize(xml,pro,Fsub);
+
+#if 0
+                    Prospect &    pro  = **pn; assert(Running == pro.st);
                     const xreal_t Fend = pro.a0 = affinity(pro.cc,SubLevel);
                     Cend.ld(pro.cc);
 
@@ -144,6 +148,9 @@ namespace Yttrium
                             }
                         }
 
+
+
+
                         const xreal_t uopt = Minimize<xreal_t>::Run(Minimizing::Inside,F,xx,ff);
                         std::cerr << "uopt=" << uopt << " @" << pro.eq.name << std::endl;
                         std::cerr << "Ctry=" << Ctry << std::endl;
@@ -153,7 +160,8 @@ namespace Yttrium
                         pro.xi = pro.eq.extent(xadd, pro.cc.ld(Ctry), SubLevel, Csub);
                         pro.af = ff.b;
                     }
-
+#endif
+                    
                 }
 
                 // sorting and selecting best 1D
@@ -175,6 +183,8 @@ namespace Yttrium
 
 
         }
+
+
 
     }
 

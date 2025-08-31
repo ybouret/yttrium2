@@ -129,6 +129,34 @@ namespace Yttrium
         }
 
 
+        void Actors:: diffAction(XWritable       &dma,
+                                 XMul            &X,
+                                 const xreal_t    K,
+                                 const XReadable &C,
+                                 const Level      L,
+                                 XWritable       &ma) const
+        {
+            // storing individual mass actions
+            for(const Actor *a=list.head;a;a=a->next)
+            {
+                X.ld1();
+                a->massAction(X,C,L);
+                a->sp(ma,L) = X.product();
+            }
+
+            // computing derivative times K
+            for(const Actor *a=list.head;a;a=a->next)
+            {
+                X = K;
+                a->diffAction(X,C,L);
+                for(const Actor *b=a->prev;b;b=b->prev) X << b->sp(ma,L);
+                for(const Actor *b=a->next;b;b=b->next) X << b->sp(ma,L);
+                a->sp(dma,L) = X.product();
+            }
+
+        }
+
+
     }
 
 }

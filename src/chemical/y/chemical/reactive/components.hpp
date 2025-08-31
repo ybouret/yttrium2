@@ -70,9 +70,11 @@ namespace Yttrium
             prod(),
             flow(Dangling),
             xdim(0),
-            drNu(0)
+            drNu(0),
+            minusOne(-1)
             {
             }
+            
             virtual ~Components() noexcept; //!< cleanup
             Y_OSTREAM_PROTO(Components);    //!< display
 
@@ -128,6 +130,13 @@ namespace Yttrium
             //! log(K) - log(Q), Q=prod/reac
             xreal_t affinity(XAdd &xadd, const xreal_t K, const XReadable &C, const Level L ) const;
 
+            void diffAction(XWritable       &dma,
+                            XMul            &X,
+                            const xreal_t    K,
+                            const XReadable &C,
+                            const Level      L,
+                            XWritable       &ma) const;
+
             //__________________________________________________________________
             //
             //
@@ -139,7 +148,7 @@ namespace Yttrium
             const MatterFlow  flow; //!< current flow
             const xreal_t     xdim; //!< components in xreal_t
             const unit_t      drNu; //!< Delta_r Nu
-
+            const xreal_t     minusOne; //!< =1
         private:
             Y_Disable_Copy_And_Assign(Components); //!< discarding
             void updateFlow() noexcept; //!< update after adding

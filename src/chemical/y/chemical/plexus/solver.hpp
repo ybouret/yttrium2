@@ -42,6 +42,9 @@ namespace Yttrium
             Solve1D        solve1d;
             const xreal_t  zero;
             const xreal_t  one;
+
+            void optimize(XMLog &xml, Prospect &pro, const xreal_t Fsub);
+
         };
 
         

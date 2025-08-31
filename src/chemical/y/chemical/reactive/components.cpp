@@ -220,6 +220,17 @@ namespace Yttrium
         }
 
 
+        void Components:: diffAction(XWritable       &dma,
+                                     XMul            &X,
+                                     const xreal_t    K,
+                                     const XReadable &C,
+                                     const Level      L,
+                                     XWritable       &ma) const
+        {
+            prod.diffAction(dma,X,minusOne,C,L,ma);
+            reac.diffAction(dma,X,K,       C,L,ma);
+        }
+
     }
 
 }
