@@ -103,8 +103,8 @@ namespace Yttrium
 
 
 
-
-            render();
+            validate();
+            //render();
         }
 
     }
