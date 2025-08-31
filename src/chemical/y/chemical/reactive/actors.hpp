@@ -71,6 +71,7 @@ namespace Yttrium
 
             //! \return true iff at least one zero conc
             bool degenerate(const XReadable &, const Level) const noexcept;
+            
 
 
         private:

@@ -72,6 +72,20 @@ namespace Yttrium
             InSituMax(c += xi * xn,zero);
         }
 
+        void Actor:: diffAction(XMul &X, const XReadable &C, const Level L) const
+        {
+            switch(nu1)
+            {
+                case 0: return;
+                case 1: X << xn; return;
+                default:
+                    break;
+            }
+            const xreal_t c = sp(C,L); assert(c>=zero);
+            X.ipower(c,nu1);
+            X << xn;
+        }
+
 
 
     }

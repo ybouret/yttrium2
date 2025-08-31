@@ -9,6 +9,11 @@ bool Bracket<real_t>:: Inside(Triplet<real_t> &x,
                               Triplet<real_t> &f,
                               FunctionType    &F)
 {
+    //--------------------------------------------------------------------------
+    //
+    // initialize with lowest at a
+    //
+    //--------------------------------------------------------------------------
     if(f.a>f.c)
     {
         Swap(x.a,x.c);
@@ -22,16 +27,29 @@ bool Bracket<real_t>:: Inside(Triplet<real_t> &x,
 
     real_t width = x.width();
 PROBE:
+    //--------------------------------------------------------------------------
+    //
     // make new guess
-    f.b = F( x.b = x.middle() ); assert( x.isOrdered() );
+    //
+    //--------------------------------------------------------------------------
+    f.b = F( x.b = x.middle() );
+    assert( x.isOrdered() );
+    assert(f.a<=f.c);
+
     Y_PRINT("try x=" << x << "; f=" << f << "; dx = " << Fabs<real_t>::Of(x.a-x.b) << "; w=" << Fabs<real_t>::Of(x.a-x.c) << "; df=" << f.b-f.a);
 
+    //--------------------------------------------------------------------------
+    //
     // test against the minimal value
+    //
+    //--------------------------------------------------------------------------
     switch( Sign::Of(f.b,f.a) )
     {
         case __Zero__:
         case Negative:
+            //------------------------------------------------------------------
             // success
+            //------------------------------------------------------------------
             assert(f.isLocalMinimum());
             assert(x.isOrdered());
             Y_PRINT("found local min");
@@ -49,34 +67,37 @@ PROBE:
             assert(f.isLocalMinimum());
             return true;
 
-            // not there yet: move c to b
-        case Positive:
+
+        case Positive: {
+            //------------------------------------------------------------------
+            // not there yet: move c to b for next step
+            //------------------------------------------------------------------
             assert(f.b>f.a);
             assert( x.isOrdered() );
             assert( !f.isLocalMinimum() );
 
             if( AlmostEqual<real_t>::Are(x.a,x.b) )
             {
-                Y_PRINT("x convergence");
+                Y_PRINT("convergence");
                 goto GLOBAL;
             }
 
-            // move c to b for next step
+
             f.c = f.b;
             x.c = x.b;
 
-        {
-            const real_t newWidth = x.width();
-            if(newWidth>=width)
             {
-                Y_PRINT("width stagnation");
-                goto GLOBAL;;
+                const real_t newWidth = x.width();
+                if(newWidth>=width)
+                {
+                    Y_PRINT("width stagnation");
+                    goto GLOBAL;
+                }
+                width = newWidth;
             }
-            width = newWidth;
-        }
 
 
-            goto PROBE;
+        }  goto PROBE;
     }
 
 GLOBAL:
