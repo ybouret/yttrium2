@@ -6,7 +6,7 @@ namespace Yttrium
     namespace Chemical
     {
 
-        xreal_t Solver:: affinity(const XReadable &C, const Level L)
+        xreal_t Solver:: affinityRMS(const XReadable &C, const Level L)
         {
             if(plist->size<=0) return 0;
 
@@ -14,8 +14,10 @@ namespace Yttrium
             
             for(const PNode *pn=plist->head;pn;pn=pn->next)
             {
-                const Prospect &pro = **pn;
-                const xreal_t   aff = pro.eq.affinity(xadd,pro.eK,C,L);
+                const Prospect    &pro = **pn;
+                const Equilibrium &eq  = pro.eq;
+                const xreal_t      aff = eq.affinity(xadd,pro.eK,C,L);
+                eq(affinity,SubLevel) = aff;
                 xsum << aff * aff;
             }
 
@@ -37,7 +39,7 @@ namespace Yttrium
                 if(cmin>cmax) Swap(cmin,cmax);
                 Ctry[i] = Clamp(cmin, cu * u + cv * v, cmax);
             }
-            return affinity(Ctry,SubLevel);
+            return affinityRMS(Ctry,SubLevel);
         }
 
 

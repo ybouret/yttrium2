@@ -25,6 +25,7 @@ namespace Yttrium
         Ceq(cluster->size(),cluster.slist->size),
         plist(),
         psize(),
+        affinity(cluster->size()),
         xadd(),
         xsum(),
         solve1d(),
@@ -116,65 +117,29 @@ namespace Yttrium
         BUILD:
             if(plist->size<=0) return;
             psize      = xreal_t( plist->size );
-            Solver & F = *this;
+            Solver & W = *this;
 
             {
-                const xreal_t  Fsub = affinity(Csub,SubLevel);
-                Y_XMLog(xml, "Affinity = " << Fsub.str());
+                const xreal_t  Wsub = affinityRMS(Csub,SubLevel);
+                Y_XMLog(xml, "AffinityRMS = " << Wsub.str());
 
                 // optimizing each direction
                 for(PNode *pn=plist->head;pn;pn=pn->next)
                 {
                     Prospect &    pro  = **pn; assert(Running == pro.st);
-                    optimize(xml,pro,Fsub);
-
-#if 0
-                    Prospect &    pro  = **pn; assert(Running == pro.st);
-                    const xreal_t Fend = pro.a0 = affinity(pro.cc,SubLevel);
-                    Cend.ld(pro.cc);
-
-                    {
-                        XTriplet xx = { zero, 0, one  };
-                        XTriplet ff = { Fsub, 0, Fend };
-
-                        {
-                            const String fn = pro.eq.name + ".dat";
-                            OutputFile   fp(fn);
-                            const unsigned np = 200;
-                            for(unsigned i=0;i<=np;++i)
-                            {
-                                const double u = i / (double(np));
-                                fp("%.15g %s\n", u, F(u).str().c_str());
-                            }
-                        }
-
-
-
-
-                        const xreal_t uopt = Minimize<xreal_t>::Run(Minimizing::Inside,F,xx,ff);
-                        std::cerr << "uopt=" << uopt << " @" << pro.eq.name << std::endl;
-                        std::cerr << "Ctry=" << Ctry << std::endl;
-                        std::cerr << "Csub=" << Csub << std::endl;
-                        std::cerr << "Cend=" << Cend << std::endl;
-
-                        pro.xi = pro.eq.extent(xadd, pro.cc.ld(Ctry), SubLevel, Csub);
-                        pro.af = ff.b;
-                    }
-#endif
-                    
+                    optimize(xml,pro,Wsub);
                 }
 
                 // sorting and selecting best 1D
                 {
                     Y_XML_Section(xml,"selectBest");
-                    plist.sort(Prospect::ByIncreasingAF);
+                    plist.sort(Prospect::ByIncreasingWo);
                     Y_XMLog(xml, "// #maximum  = " << cluster->size());
                     Y_XMLog(xml, "// #selected = " << plist->size);
                     for(PNode *pn=plist->head;pn;pn=pn->next)
                     {
                         Prospect &    pro  = **pn; assert(Running == pro.st);
-                        if(xml.verbose)
-                            pro.display(xml(),cluster.nameFmt) << " $" << std::setw(22) << pro.a0.str() << " -> " << std::setw(22) << pro.af.str() << " / " << F.affinity(pro.cc,SubLevel).str() << std::endl;
+                        //if(xml.verbose)                             pro.display(xml(),cluster.nameFmt) << " $" << std::setw(22) << pro.Wo.str() << " -> " << std::setw(22) << pro.af.str() << " / " << W.affinityRMS(pro.cc,SubLevel).str() << std::endl;
                     }
                 }
 

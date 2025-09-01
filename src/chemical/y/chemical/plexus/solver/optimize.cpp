@@ -13,10 +13,15 @@ namespace Yttrium
 
         using namespace MKL;
 
-        void Solver:: optimize(XMLog &xml, Prospect &pro, const xreal_t Fsub)
+        void Solver:: optimize(XMLog &xml, Prospect &pro, const xreal_t Wsub)
         {
-            static const size_t MaxIter = ceil( -log( Numeric<real_t>::EPSILON) / log(2.0) );
-            const xreal_t Fend = pro.a0 = affinity(pro.cc,SubLevel);
+            // static const size_t MaxIter = ceil( -log( Numeric<real_t>::EPSILON) / log(2.0) );
+
+            
+            const xreal_t      Wend = pro.W1 = affinityRMS(pro.cc,SubLevel);
+            const Equilibrium &eq   = pro.eq;
+
+#if 0
             Cend.ld(pro.cc);
             Solver & F = *this;
             XTriplet x = { zero, 0, one  };
@@ -61,6 +66,7 @@ namespace Yttrium
 
         OPTIMIZE:
             exit(0);
+#endif
         }
     }
 

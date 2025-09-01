@@ -16,8 +16,8 @@ namespace Yttrium
         eK(_eK),
         cc(_cc),
         xi(_xi),
-        af(0),
-        a0(0)
+        Wo(0),
+        W1(0)
         {
         }
 
@@ -27,8 +27,8 @@ namespace Yttrium
         eK(_.eK),
         cc(_.cc),
         xi(_.xi),
-        af(_.af),
-        a0(_.a0)
+        Wo(_.Wo),
+        W1(_.W1)
         {
         }
 
@@ -53,10 +53,10 @@ namespace Yttrium
             return Sign::Of(r,l);
         }
 
-        SignType Prospect:: ByIncreasingAF(const Prospect &lhs, const Prospect &rhs) noexcept
+        SignType Prospect:: ByIncreasingWo(const Prospect &lhs, const Prospect &rhs) noexcept
         {
-            const xreal_t l = lhs.af;
-            const xreal_t r = rhs.af;
+            const xreal_t l = lhs.Wo;
+            const xreal_t r = rhs.Wo;
             return Sign::Of(l,r);
         }
 

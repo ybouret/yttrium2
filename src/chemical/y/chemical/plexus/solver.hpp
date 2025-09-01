@@ -26,7 +26,8 @@ namespace Yttrium
                                 XWritable &       Ctop,
                                 const XReadable & Ktop);
 
-            xreal_t affinity(const XReadable &, const Level);
+            //! store individual components in affinity \return rms
+            xreal_t affinityRMS(const XReadable &, const Level);
             xreal_t operator()(xreal_t u);
 
         private:
@@ -37,13 +38,14 @@ namespace Yttrium
             XMatrix        Ceq;
             PList          plist;
             xreal_t        psize;
+            XArray         affinity;
             XAdd           xadd;
             XAdd           xsum;
             Solve1D        solve1d;
             const xreal_t  zero;
             const xreal_t  one;
 
-            void optimize(XMLog &xml, Prospect &pro, const xreal_t Fsub);
+            void optimize(XMLog &xml, Prospect &pro, const xreal_t Wsub);
 
         };
 
