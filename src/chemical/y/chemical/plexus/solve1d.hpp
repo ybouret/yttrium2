@@ -66,6 +66,8 @@ namespace Yttrium
             class Code;
             Y_Disable_Copy_And_Assign(Solve1D); //!< disarding
             Code * const code; //!< inner code
+        public:
+            XMul & xmul;
         };
     }
 

@@ -35,8 +35,10 @@ namespace Yttrium
             const xreal_t      eK;   //!< current e.K
             XWritable &        cc;   //!< optimized phases space
             xreal_t            xi;   //!< optimized extent
-            xreal_t            Wo;   //!< optimized rms
-            xreal_t            W1;   //!< rms at solve1d
+            xreal_t            W0;   //!< original  W
+            xreal_t            Wo;   //!< optimized W
+            xreal_t            W1;   //!< @solve1d  W
+            xreal_t            a0;   //!< original affinity to deduce slope
             
         private:
             Y_Disable_Assign(Prospect);

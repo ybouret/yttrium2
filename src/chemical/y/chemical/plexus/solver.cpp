@@ -115,35 +115,60 @@ namespace Yttrium
             }
 
         BUILD:
-            if(plist->size<=0) return;
+            if(plist->size<=0) return; // done
             psize      = xreal_t( plist->size );
-            Solver & W = *this;
 
+            //Solver & W = *this;
+
+            //------------------------------------------------------------------
+            //
+            // initialize each direction
+            //
+            //------------------------------------------------------------------
+            const xreal_t  Wsub = affinityRMS(Csub,SubLevel);
+            Y_XMLog(xml, "AffinityRMS = " << Wsub.str());
+
+            for(PNode *pn=plist->head;pn;pn=pn->next)
             {
-                const xreal_t  Wsub = affinityRMS(Csub,SubLevel);
-                Y_XMLog(xml, "AffinityRMS = " << Wsub.str());
+                Prospect          & pro  = **pn;
+                const Equilibrium & eq = pro.eq;
+                std::cerr << eq.name
+                << " ma  = " << eq.massAction(solve1d.xmul,pro.eK,pro.cc,SubLevel).str()
+                << " aff = " << eq.affinity(xadd,pro.eK,pro.cc,SubLevel).str()
+                << std::endl;
 
-                // optimizing each direction
+                pro.W0 = Wsub;                   // starting point
+                pro.a0 = eq(affinity,SubLevel);  // extract starting own affinity
+            }
+
+
+            //------------------------------------------------------------------
+            //
+            // optimizing each direction
+            //
+            //------------------------------------------------------------------
+            for(PNode *pn=plist->head;pn;pn=pn->next)
+            {
+                Prospect &    pro  = **pn; assert(Running == pro.st);
+                optimize(xml,pro);
+            }
+
+            exit(0);
+
+            // sorting and selecting best 1D
+            {
+                Y_XML_Section(xml,"selectBest");
+                plist.sort(Prospect::ByIncreasingWo);
+                Y_XMLog(xml, "// #maximum  = " << cluster->size());
+                Y_XMLog(xml, "// #selected = " << plist->size);
                 for(PNode *pn=plist->head;pn;pn=pn->next)
                 {
                     Prospect &    pro  = **pn; assert(Running == pro.st);
-                    optimize(xml,pro,Wsub);
+                    //if(xml.verbose)                             pro.display(xml(),cluster.nameFmt) << " $" << std::setw(22) << pro.Wo.str() << " -> " << std::setw(22) << pro.af.str() << " / " << W.affinityRMS(pro.cc,SubLevel).str() << std::endl;
                 }
-
-                // sorting and selecting best 1D
-                {
-                    Y_XML_Section(xml,"selectBest");
-                    plist.sort(Prospect::ByIncreasingWo);
-                    Y_XMLog(xml, "// #maximum  = " << cluster->size());
-                    Y_XMLog(xml, "// #selected = " << plist->size);
-                    for(PNode *pn=plist->head;pn;pn=pn->next)
-                    {
-                        Prospect &    pro  = **pn; assert(Running == pro.st);
-                        //if(xml.verbose)                             pro.display(xml(),cluster.nameFmt) << " $" << std::setw(22) << pro.Wo.str() << " -> " << std::setw(22) << pro.af.str() << " / " << W.affinityRMS(pro.cc,SubLevel).str() << std::endl;
-                    }
-                }
-
             }
+
+
 
 
 

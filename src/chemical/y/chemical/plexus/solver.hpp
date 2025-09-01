@@ -45,7 +45,7 @@ namespace Yttrium
             const xreal_t  zero;
             const xreal_t  one;
 
-            void optimize(XMLog &xml, Prospect &pro, const xreal_t Wsub);
+            void optimize(XMLog &xml, Prospect &pro);
 
         };
 

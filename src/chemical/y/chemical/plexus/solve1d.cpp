@@ -138,7 +138,7 @@ namespace Yttrium
             Destroy(code);
         }
 
-        Solve1D:: Solve1D() : code( new Code() )
+        Solve1D:: Solve1D() : code( new Code() ), xmul(code->xmul)
         {
 
         }

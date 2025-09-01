@@ -205,14 +205,14 @@ namespace Yttrium
             for(const Actor *a=prod->head;a;a=a->next)
             {
                 const xreal_t cc  = a->sp(C,L);
-                const xreal_t lc  = cc.log();
+                const xreal_t lc  = -cc.log();
                 for(unsigned n=a->nu;n>0;--n) xadd << lc;
             }
 
             for(const Actor *a=reac->head;a;a=a->next)
             {
                 const xreal_t cc  = a->sp(C,L);
-                const xreal_t lc  = -cc.log();
+                const xreal_t lc  = cc.log();
                 for(unsigned n=a->nu;n>0;--n) xadd << lc;
             }
 
