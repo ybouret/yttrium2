@@ -169,8 +169,6 @@ namespace Yttrium
                     pro.display(xml(),cluster.nameFmt) << " $" << std::setw(22) << pro.Wo.str() << " / " << Wsub.str() << std::endl;
                 }
 
-
-
             }
 
 

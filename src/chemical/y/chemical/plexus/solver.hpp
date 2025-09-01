@@ -22,9 +22,12 @@ namespace Yttrium
             explicit Solver(const Cluster &);
             virtual ~Solver() noexcept;
 
+            void kinetic(XMLog & xml);
+            
             void explore(XMLog &           xml,
                          XWritable &       Ctop,
                          const XReadable & Ktop);
+
 
             //! store individual components in affinity \return rms
             xreal_t affinityRMS(const XReadable &, const Level);
