@@ -29,6 +29,7 @@ namespace Yttrium
         typedef Matrix<int>                    iMatrix;   //!< alias
         typedef Matrix<unsigned>               uMatrix;   //!< alias
         typedef Matrix<xreal_t>                XMatrix;   //!< alias
+        typedef CxxArray<XAdd>                 XaddArray; //!< alias
 
     }
 

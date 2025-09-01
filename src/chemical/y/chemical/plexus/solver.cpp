@@ -31,6 +31,7 @@ namespace Yttrium
         xadd(),
         xsum(),
         solve1d(),
+        xkin(cluster.slist->size),
         zero(),
         one(1)
         {

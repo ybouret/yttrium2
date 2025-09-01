@@ -47,6 +47,7 @@ namespace Yttrium
             XAdd           xadd;
             XAdd           xsum;
             Solve1D        solve1d;
+            XaddArray      xkin;
             const xreal_t  zero;
             const xreal_t  one;
 
