@@ -51,10 +51,9 @@ namespace Yttrium
                 {
                     Cend[j] = Csub[j] + scale * dC[j];
                 }
-
-
+                
             }
-            
+
             {
                 savePro(kineticName, 500);
             }
@@ -68,7 +67,7 @@ namespace Yttrium
                 xml() << "\t" << gnuplot << std::endl;
             }
 
-            
+
 
 
 
