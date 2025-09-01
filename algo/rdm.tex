@@ -1,0 +1,42 @@
+\documentclass[aps,12pt]{revtex4}
+\usepackage[a4paper]{geometry}
+\usepackage{graphicx}
+\usepackage{amssymb,amsfonts,amsmath,amsthm}
+\usepackage{bm}
+\usepackage{pslatex}
+\usepackage{chemarr}
+\usepackage{mathptmx}
+\usepackage{bookman}
+
+
+\begin{document}
+
+\section{Solver}
+
+One the active equilibria are selected, each one has a computable 
+affinity:
+\begin{equation}
+\label{eq:affinity}
+	\mathcal A_i = \ln K_i - \ln Q_i = \ln K_i -  \sum_{i} \nu_{ij} \ln [A_j] %Q=prod/reac
+\end{equation}
+and
+\begin{equation}
+	d \mathcal A_i = - \sum_i \dfrac{\nu_{ij}}{[A_j]} \, d[A_j]
+\end{equation}
+
+The objective function to reduce if the RMS of affinities:
+\begin{equation}
+	W = \sqrt{ \dfrac{\sum_i \mathcal A_i^2}{N} } 
+\end{equation}
+
+\begin{equation}
+	dW = \dfrac{1}{N} \dfrac{\sum_i \mathcal A_i \, d \mathcal A_i}{W}
+\end{equation}
+
+Along the direction $\xi_i$:
+\begin{equation}
+	\partial_{\xi_i} \mathcal A_i = - \sum_i \dfrac{\nu_{ij}^2}{[A_j]} < 0
+\end{equation}
+so that $\partial_{\xi_i} W$ has the sign of $-\mathcal A_i$.
+
+\end{document}
