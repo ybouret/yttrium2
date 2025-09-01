@@ -21,22 +21,29 @@ affinity:
 \end{equation}
 and
 \begin{equation}
-	d \mathcal A_i = - \sum_i \dfrac{\nu_{ij}}{[A_j]} \, d[A_j]
+	d \mathcal A_i = - \sum_i \dfrac{\nu_{ij}}{[A_j]} \, d[A_j] \implies
+	 \vec \nabla \mathcal A_i = 
+	\begin{bmatrix}
+	\vdots\\
+	\frac{\nu_{ij}}{[A_j]}\\
+	\vdots\\
+	\end{bmatrix}
 \end{equation}
 
-The objective function to reduce if the RMS of affinities:
+The objective function to reduce is the RMS of affinities:
 \begin{equation}
 	W = \sqrt{ \dfrac{\sum_i \mathcal A_i^2}{N} } 
 \end{equation}
 
 \begin{equation}
 	dW = \dfrac{1}{N} \dfrac{\sum_i \mathcal A_i \, d \mathcal A_i}{W}
+	\implies
+	\vec \nabla W = \dfrac{1}{N\cdot W} \left( \sum_i \mathcal A_i \vec \nabla \mathcal A_i \right)
 \end{equation}
 
-Along the direction $\xi_i$:
 \begin{equation}
-	\partial_{\xi_i} \mathcal A_i = - \sum_i \dfrac{\nu_{ij}^2}{[A_j]} < 0
+\partial_{\xi_i} W = \dfrac{1}{N\cdot W} \langle \left( \sum_k \mathcal A_k \vec \nabla \mathcal A_k \right) \vert \vec \nu_i \rangle
 \end{equation}
-so that $\partial_{\xi_i} W$ has the sign of $-\mathcal A_i$.
+
 
 \end{document}

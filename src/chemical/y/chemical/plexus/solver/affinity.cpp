@@ -17,7 +17,6 @@ namespace Yttrium
                 const Prospect    &pro = **pn;
                 const Equilibrium &eq  = pro.eq;
                 const xreal_t      aff = eq.affinity(xadd,pro.eK,C,L);
-                eq(affinity,SubLevel) = aff;
                 xsum << aff * aff;
             }
 

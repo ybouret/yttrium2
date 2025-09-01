@@ -22,9 +22,9 @@ namespace Yttrium
             explicit Solver(const Cluster &);
             virtual ~Solver() noexcept;
 
-            void buildProspects(XMLog &           xml,
-                                XWritable &       Ctop,
-                                const XReadable & Ktop);
+            void explore(XMLog &           xml,
+                         XWritable &       Ctop,
+                         const XReadable & Ktop);
 
             //! store individual components in affinity \return rms
             xreal_t affinityRMS(const XReadable &, const Level);
@@ -32,13 +32,15 @@ namespace Yttrium
 
         private:
             const Cluster &cluster;
+            xreal_t        Wsub;
             XArray         Csub;
             XArray         Cend;
             XArray         Ctry;
+            xreal_t        Wnew;
+            XArray         Cnew;
             XMatrix        Ceq;
             PList          plist;
             xreal_t        psize;
-            XArray         affinity;
             XAdd           xadd;
             XAdd           xsum;
             Solve1D        solve1d;

@@ -63,7 +63,7 @@ Y_UTEST(plexus)
     for(const Cluster *cl=cls->head;cl;cl=cl->next)
     {
         Solver solver(*cl);
-        solver.buildProspects(xml,C0,cls.K);
+        solver.explore(xml,C0,cls.K);
 
     }
 

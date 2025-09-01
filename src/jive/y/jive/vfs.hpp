@@ -74,7 +74,7 @@ namespace Yttrium
              \param extRegExp regular expression to match extension
              \param proc procedure to apply to all matching extensions
              */
-            template <typename DIRNAME, typename REGEXP, typename PROC>
+            template <typename DIRNAME, typename REGEXP, typename PROC> static inline
             void OnExtension(VFS &           vfs,
                              const DIRNAME & dirName,
                              const REGEXP  & extRegExp,

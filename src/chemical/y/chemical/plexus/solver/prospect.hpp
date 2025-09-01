@@ -38,7 +38,6 @@ namespace Yttrium
             xreal_t            W0;   //!< original  W
             xreal_t            Wo;   //!< optimized W
             xreal_t            W1;   //!< @solve1d  W
-            xreal_t            a0;   //!< original affinity to deduce slope
             
         private:
             Y_Disable_Assign(Prospect);

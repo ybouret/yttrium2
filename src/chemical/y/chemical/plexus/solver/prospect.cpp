@@ -18,8 +18,7 @@ namespace Yttrium
         xi(_xi),
         W0(0),
         Wo(0),
-        W1(0),
-        a0(0)
+        W1(0)
         {
         }
 
@@ -31,8 +30,7 @@ namespace Yttrium
         xi(_.xi),
         W0(_.W0),
         Wo(_.Wo),
-        W1(_.W1),
-        a0(_.a0)
+        W1(_.W1)
         {
         }
 
