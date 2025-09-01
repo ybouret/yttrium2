@@ -25,6 +25,7 @@ namespace Yttrium
         Ctry(cluster.slist->size),
         Wnew(),
         Cnew(cluster.slist->size),
+        dC(cluster.slist->size),
         Ceq(cluster->size(),cluster.slist->size),
         plist(),
         psize(),
@@ -33,14 +34,26 @@ namespace Yttrium
         solve1d(),
         xkin(cluster.slist->size),
         zero(),
-        one(1)
+        one(1),
+        kineticName("kinetic"),
+        gnuplot()
         {
 
         }
 
 
-       
-       
+        void Solver:: savePro(const String &baseName, const unsigned  np)
+        {
+            const String fn = baseName + ".dat";
+            OutputFile fp(fn);
+
+            for(unsigned i=0;i<=np;++i)
+            {
+                const double u = (i / (double(np)));
+                fp("%.15g %s\n", u, (*this)(u).str().c_str());
+            }
+        }
+
 
 
     }

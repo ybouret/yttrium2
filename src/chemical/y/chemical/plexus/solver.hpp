@@ -33,6 +33,10 @@ namespace Yttrium
             xreal_t affinityRMS(const XReadable &, const Level);
             xreal_t operator()(xreal_t u);
 
+            xreal_t minimize(XMLog &xml, const xreal_t W0, const xreal_t W1);
+
+            void    savePro(const String &baseName, const unsigned);
+
         private:
             const Cluster &cluster;
             xreal_t        Wsub;
@@ -41,6 +45,7 @@ namespace Yttrium
             XArray         Ctry;
             xreal_t        Wnew;
             XArray         Cnew;
+            XArray         dC; 
             XMatrix        Ceq;
             PList          plist;
             xreal_t        psize;
@@ -50,7 +55,9 @@ namespace Yttrium
             XaddArray      xkin;
             const xreal_t  zero;
             const xreal_t  one;
-
+            const String   kineticName;
+            String         gnuplot;
+            
             void optimize(XMLog &xml, Prospect &pro);
 
         };
