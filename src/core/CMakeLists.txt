@@ -118,6 +118,7 @@ Y_CreateLibrary(y
     y/coven
     y/field
     y/field/layout
+    y/rtld
 )
 
 add_subdirectory(tests)

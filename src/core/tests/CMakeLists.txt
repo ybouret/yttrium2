@@ -32,6 +32,7 @@ dft
 vfs
 counting
 field
+rtld
 )
 
 
@@ -280,5 +281,8 @@ Y_UTEST(field:1d)
 Y_UTEST(field:2d)
 Y_UTEST(field:3d)
 Y_UTEST(field:4d)
+
+#rtld
+Y_UTEST(rtld)
 
 
