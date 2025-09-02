@@ -29,6 +29,7 @@ cmake_print_variables(Y_UnitTests)
 
 add_subdirectory(y)
 add_subdirectory(cli)
+add_subdirectory(dll)
 
 if( NOT "" STREQUAL "${Y_UnitTests}")
     add_custom_target(regression 
