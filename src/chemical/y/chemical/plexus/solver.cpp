@@ -14,7 +14,6 @@ namespace Yttrium
 
         Solver:: ~Solver() noexcept
         {
-
         }
 
         Solver:: Solver(const Cluster &cl) :
@@ -33,6 +32,7 @@ namespace Yttrium
         xsum(),
         solve1d(),
         xkin(cluster.slist->size),
+        house( new Ortho::House(cluster.slist->size) ),
         zero(),
         one(1),
         kineticName("kinetic"),
@@ -48,8 +48,7 @@ namespace Yttrium
             const String fn = baseName + ".dat";
             OutputFile fp(fn);
 
-            for(unsigned i=0;i<=np;++i)
-            {
+            for(unsigned i=0;i<=np;++i) {
                 const double u = (i / (double(np)));
                 fp("%.15g %s\n", u, (*this)(u).str().c_str());
             }

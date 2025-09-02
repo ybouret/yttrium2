@@ -10,10 +10,13 @@
 #include "y/chemical/plexus/solve1d.hpp"
 #include "y/chemical/plexus/solver/prospect.hpp"
 
+#include "y/ortho/house.hpp"
+
 namespace Yttrium
 {
     namespace Chemical
     {
+
 
         //______________________________________________________________________
         //
@@ -77,6 +80,7 @@ namespace Yttrium
             XAdd            xsum;         //!< helper for affinityRMS
             Solve1D         solve1d;      //!< solving each equilibria
             Accumulator     xkin;         //!< accumulator
+            AutoPtr<Ortho::House> house;        //!< extract basis
             const xreal_t   zero;         //!< alias
             const xreal_t   one;          //!< alias
             const String    kineticName;  //!< "kinetic"

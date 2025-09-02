@@ -75,7 +75,7 @@ namespace Yttrium
             //------------------------------------------------------------------
             //
             //
-            // Build and keep efficient combination
+            // Build and keep efficient combinations
             //
             //
             //------------------------------------------------------------------
@@ -183,11 +183,27 @@ namespace Yttrium
                 Y_XMLog(xml, (Components&)mix );
             }
 
+            //------------------------------------------------------------------
+            //
+            //
+            // Finalize
+            //
+            //
+            //------------------------------------------------------------------
+
             // update elist sublevel
             ListOps::Make(elist,SubLevel);
 
-          
-
+            // full topology
+            {
+                iMatrix &Nu = Coerce(iFull).make(elist->size,slist->size);
+                for(const ENode *en=elist->head;en;en=en->next)
+                {
+                    const Equilibrium &eq = **en;
+                    const size_t       ei = eq.indx[SubLevel];
+                    eq.topology(Nu[ei],SubLevel);
+                }
+            }
         }
     }
 

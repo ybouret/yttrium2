@@ -149,7 +149,7 @@ namespace Yttrium
             EList           elist; //!< my equilibria
         public:
             const SList     slist;     //!< my species
-            const iMatrix   iTopo;     //!< integer topology matrix
+            const iMatrix   iTopo;     //!< initial integer topology matrix
             const uMatrix   uCLaw;     //!< unsigned conservation matrix
             const CLaws     claws;     //!< list of conservations
             const SList     conserved; //!< conserved species
@@ -158,7 +158,7 @@ namespace Yttrium
             const EList     prodOnly;  //!< with only products
             const EList     reacOnly;  //!< with only reactants
             const EList     nebulous;  //!< with unbounded only
-
+            const iMatrix   iFull;     //!< full topology
             CxxArray<EList> order;     //!< different combination order
 
 

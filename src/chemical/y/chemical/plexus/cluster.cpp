@@ -31,6 +31,7 @@ namespace Yttrium
         prodOnly(),
         reacOnly(),
         nebulous(),
+        iFull(),
         order(0),
         next(0),
         prev(0)
