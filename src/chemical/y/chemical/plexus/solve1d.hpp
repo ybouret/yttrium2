@@ -67,7 +67,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Solve1D); //!< disarding
             Code * const code; //!< inner code
         public:
-            XMul & xmul;
+            XMul &       xmul; //!< inner xmul, to be reused
         };
     }
 

@@ -36,6 +36,7 @@ namespace Yttrium
         zero(),
         one(1),
         kineticName("kinetic"),
+        jmatrixName("jmatrix"),
         gnuplot()
         {
 

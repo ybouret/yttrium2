@@ -12,19 +12,34 @@ namespace Yttrium
     namespace MKL
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //! minimizing commmon parts
+        //
+        //______________________________________________________________________
         struct Minimizing
         {
-            static const char  * const CallSign;
+            static const char  * const CallSign; //!< "Minimize"
+
+            //! bracketing method
             enum How
             {
-                Inside,
-                Direct,
-                Expand
+                Inside, //!< bracket inside original range
+                Direct, //!< no bracketing, already at local minimum
+                Expand  //!< expand from original direction
             };
             
         };
 
+        //______________________________________________________________________
+        //
+        //
+        //
         //! Minimize API
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         struct Minimize
         {
@@ -34,9 +49,10 @@ namespace Yttrium
             /**
              - the result is f.b at x.b
              - f.b = F(x.b) is called before return
-             \param x initial ordered positions
-             \param f initial local minimum
-             \param F function to minimize
+             \param how bracketing methof
+             \param x   initial ordered positions
+             \param f   initial local minimum
+             \param F   function to minimize
              \return minimum location
              */
             static T Run(const Minimizing::How how,
@@ -46,9 +62,10 @@ namespace Yttrium
 
             //! wrapper
             /**
-             \param F compatible function
-             \param x initial ordered positions
-             \param f initial local minimum
+             \param how bracketing methof
+             \param F   compatible function
+             \param x   initial ordered positions
+             \param f   initial local minimum
              \return minimum location
              */
             template <typename FUNCTION> static inline

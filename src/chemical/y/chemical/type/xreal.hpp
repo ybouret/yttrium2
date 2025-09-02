@@ -18,18 +18,18 @@ namespace Yttrium
 {
     namespace Chemical
     {
-        typedef double                         real_t;    //!< alias
-        typedef XReal<double>                  xreal_t;   //!< alias
-        typedef Readable<xreal_t>              XReadable; //!< alias
-        typedef Writable<xreal_t>              XWritable; //!< alias
-        typedef CxxArray<xreal_t>              XArray;    //!< alias
-        typedef MKL::Triplet<xreal_t>          XTriplet;  //!< alias
-        typedef Cameo::Multiplication<xreal_t> XMul;      //!< alias
-        typedef Cameo::Addition<xreal_t>       XAdd;      //!< alias
-        typedef Matrix<int>                    iMatrix;   //!< alias
-        typedef Matrix<unsigned>               uMatrix;   //!< alias
-        typedef Matrix<xreal_t>                XMatrix;   //!< alias
-        typedef CxxArray<XAdd>                 XaddArray; //!< alias
+        typedef double                         real_t;      //!< alias
+        typedef XReal<double>                  xreal_t;     //!< alias
+        typedef Readable<xreal_t>              XReadable;   //!< alias
+        typedef Writable<xreal_t>              XWritable;   //!< alias
+        typedef CxxArray<xreal_t>              XArray;      //!< alias
+        typedef MKL::Triplet<xreal_t>          XTriplet;    //!< alias
+        typedef Cameo::Multiplication<xreal_t> XMul;        //!< alias
+        typedef Cameo::Addition<xreal_t>       XAdd;        //!< alias
+        typedef Matrix<int>                    iMatrix;     //!< alias
+        typedef Matrix<unsigned>               uMatrix;     //!< alias
+        typedef Matrix<xreal_t>                XMatrix;     //!< alias
+        typedef CxxArray<XAdd>                 Accumulator; //!< alias
 
     }
 

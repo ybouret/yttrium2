@@ -72,7 +72,16 @@ namespace Yttrium
 
             //! \return true iff at least one zero conc
             bool degenerate(const XReadable &, const Level) const noexcept;
-            
+
+            //! one sided derivatives
+            /**
+             \param dma mass action derivatives
+             \param X helper
+             \param K constant/-1
+             \param C concentrations
+             \param L level
+             \param ma auxiliary array for individua mass action
+             */
             void diffAction(XWritable       &dma,
                             XMul            &X,
                             const xreal_t    K,

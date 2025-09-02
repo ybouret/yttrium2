@@ -83,7 +83,7 @@ namespace Yttrium
                 a[i] = value;
         }
 
-        //! load matching part \param rhs big enough source
+        //! load matching part \param rhs big enough source \return *this
         inline Writable & ld(const Readable<T> &rhs)
         {
             Writable<T> &a = *this;

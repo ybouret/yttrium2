@@ -38,10 +38,16 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            explicit Clusters(XMLog &, Equilibria &, const xreal_t t0 = 0.0); //!< full setup
-            virtual ~Clusters() noexcept;             //!< cleanup
+            explicit Clusters(XMLog &, Equilibria &, const xreal_t = 0.0); //!< full setup
+            virtual ~Clusters() noexcept;                                  //!< cleanup
 
-            void computeK(const xreal_t );
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            void computeK(const xreal_t ); //!< compute inner K
 
         private:
             Y_Disable_Copy_And_Assign(Clusters); //!< discarding
@@ -50,7 +56,7 @@ namespace Yttrium
             XArray             topK; //!< top level K array
 
         public:
-            const XReadable  &K;
+            const XReadable    &K;   //!< top level K reference
 
         };
     }

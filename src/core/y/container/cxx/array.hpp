@@ -96,6 +96,8 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
+
+        //! exchange contents \param arr another array \return *this
         CxxArray & xch( CxxArray &arr ) noexcept
         {
             Swap(code,arr.code); return *this;

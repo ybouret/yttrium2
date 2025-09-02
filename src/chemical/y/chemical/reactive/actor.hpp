@@ -63,12 +63,13 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            //! \param X xmul, update \param C concentrations \param L level
+            //! \param X xmul, updated \param C concentrations \param L level
             void massAction(XMul &X, const XReadable &C, const Level L) const;
 
             //! \param X xmul, updated at xi \param C concentrations \param L level \param xi extent 
             void massAction(XMul &X, const XReadable &C, const Level L, const xreal_t xi) const;
 
+            //! \param X xmul, updated for derivatives \param C concentrations \param L level
             void diffAction(XMul &X, const XReadable &C, const Level L) const;
 
             //! move safely \param C concentrations \param L level \param xi extent

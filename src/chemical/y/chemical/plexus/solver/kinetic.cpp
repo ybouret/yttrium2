@@ -1,10 +1,4 @@
-
 #include "y/chemical/plexus/solver.hpp"
-#include "y/stream/libc/output.hpp"
-#include "y/mkl/numeric.hpp"
-#include "y/mkl/api/almost-equal.hpp"
-#include "y/mkl/opt/optimize.hpp"
-
 #include "y/container/algorithm/for-each.hpp"
 
 namespace Yttrium

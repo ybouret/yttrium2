@@ -47,6 +47,14 @@ namespace Yttrium
             //! \return top level indices comparison
             static SignType Compare(const Indexed &, const Indexed &) noexcept;
 
+            //! import/export data
+            /**
+             \param slist    species list
+             \param target   target array
+             \param tgtLevel target level
+             \param source   source array
+             \param srcLevel source level
+             */
             static   void Copy(const SList     & slist,
                                XWritable       & target,
                                const Level       tgtLevel,
@@ -107,8 +115,21 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
+
+            //! compute top-level K at given t
+            /**
+             \param K top level constants
+             \param t time of evaluation
+             */
             void compute(XWritable &K, const xreal_t t);
 
+            //! import/export species data
+            /**
+             \param C target
+             \param L target level
+             \param C0 source
+             \param L0 source level
+             */
             void copy(XWritable &C, const Level L, const XReadable &C0, const Level L0) const;
 
 

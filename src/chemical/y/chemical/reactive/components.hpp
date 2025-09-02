@@ -12,11 +12,17 @@ namespace Yttrium
     namespace Chemical
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //! Components status
+        //
+        //______________________________________________________________________
         enum Status
         {
-            Running,
-            Blocked,
-            Crucial
+            Running, //!< no singularity
+            Blocked, //!< two singularities
+            Crucial  //!< one singularity
         };
 
         //______________________________________________________________________
@@ -54,7 +60,7 @@ namespace Yttrium
             static const char * const Prod;         //!< "Prod"
             static const char * const Reac;         //!< "Reac"
             static const char         Prefix = '@'; //!< alias
-            static const char *       HumanReadableStatus(const Status st) noexcept;
+            static const char *       HumanReadableStatus(const Status) noexcept; //!< \return textual info
 
             //__________________________________________________________________
             //
@@ -104,6 +110,7 @@ namespace Yttrium
                 for(const Actor *a=reac->head;a;a=a->next) a->sp(arr,level) = - (int) a->nu;
             }
 
+            //! display compact content \return ostream
             std::ostream & displayCompact(std::ostream &, const XReadable &, const Level) const;
 
             //__________________________________________________________________
@@ -125,11 +132,33 @@ namespace Yttrium
             //! \param xadd helper \param C concentrations \param L level \param C0 origin \return average extent
             xreal_t extent(XAdd &xadd, const XReadable &C, const Level L, const XReadable &C0) const;
 
+            //! status depending on phase space
+            /**
+             \param C    concentrations
+             \param L    level
+             \return matching status
+             */
             Status status(const XReadable &C, const Level L) const noexcept;
 
-            //! log(K) - log(Q), Q=prod/reac
-            xreal_t affinity(XAdd &xadd, const xreal_t K, const XReadable &C, const Level L ) const;
+            //! affinity if running
+            /**
+             \param xadd helper
+             \param K    constant
+             \param C    concentrations
+             \param L    level
+             \return log(K) - log(Q), Q=prod/reac
+             */
+            xreal_t affinity(XAdd &xadd, const xreal_t K, const XReadable &C, const Level L) const;
 
+            //! full gradient
+            /**
+             \param dma mass action derivatives
+             \param X helper
+             \param K pre-computed constant
+             \param C concentrations
+             \param L level
+             \param ma auxiliary array for individua mass action
+             */
             void diffAction(XWritable       &dma,
                             XMul            &X,
                             const xreal_t    K,

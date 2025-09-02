@@ -52,6 +52,7 @@ namespace Yttrium
         public:
             virtual ~Equilibrium() noexcept; //!< cleanup
 
+            //! display name only
             inline friend std::ostream & operator<<(std::ostream &os, const Equilibrium &eq)
             {
                 return os << eq.name;

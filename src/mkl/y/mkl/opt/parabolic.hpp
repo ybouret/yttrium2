@@ -13,7 +13,14 @@ namespace Yttrium
 
         extern bool ParabolicStepVerbose; //!< verbosity to debug
 
-        //! Optimize API
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Taking Parabolic Step
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         struct ParabolicStep
         {

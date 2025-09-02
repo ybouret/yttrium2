@@ -190,6 +190,7 @@ namespace Yttrium
                 list.sortWith(proc);
             }
 
+            //! remove undesired components \param isBad detect bad component
             template <typename IS_BAD> inline
             void removeIf(IS_BAD &isBad)
             {
