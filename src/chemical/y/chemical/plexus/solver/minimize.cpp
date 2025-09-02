@@ -45,7 +45,7 @@ namespace Yttrium
                 assert(f.b>f.a);
                 x.c = x.b;
                 f.c = f.b;
-                if( AlmostEqual<xreal_t>::Are(f.a,f.b) )
+                if( AlmostEqual<xreal_t>::Are(f.a,f.b) && AlmostEqual<xreal_t>::Are(f.b,f.c) )
                 {
                     for(;iter<MaxIter;++iter) xml.os << '-';
                     break;

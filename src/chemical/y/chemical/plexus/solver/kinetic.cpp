@@ -29,7 +29,7 @@ namespace Yttrium
             }
 
             {
-                xreal_t scale(10);
+                xreal_t scale(100);
                 bool    wasCut = false;
                 // loading dC
                 for(const SNode *sn=cluster.slist->head;sn;sn=sn->next)
@@ -43,30 +43,36 @@ namespace Yttrium
                         wasCut = true;
                     }
                 }
-                std::cerr << "wasCut=" << wasCut << std::endl;
                 if(wasCut) scale *= 0.98;
-                std::cerr << "scale="  << scale.str() << std::endl;
+
+                Y_XMLog(xml, "[" << (wasCut ? "need rescaling" : "no rescaling") << "] scale=" << scale.str());
 
                 for(size_t j=dC.size();j>0;--j)
-                {
                     Cend[j] = Csub[j] + scale * dC[j];
-                }
-                
+
             }
 
-            {
-                savePro(kineticName, 500);
-            }
+
+            savePro(kineticName, 500);
+
 
             if(xml.verbose) xml() << kineticName;
-            minimize(xml,Wsub,affinityRMS(Cend,SubLevel));
-
+            const xreal_t Wkin = minimize(xml,Wsub,affinityRMS(Cend,SubLevel));
+            Y_XMLog(xml, "Wkin=" << Wkin.str() << " / " << Wnew.str() );
             if(xml.verbose)
             {
                 gnuplot += ", '" + kineticName << ".dat' w lp";
                 xml() << "\t" << gnuplot << std::endl;
             }
 
+            if(Wkin<=Wnew)
+            {
+                Y_XMLog(xml,"--> upgrading");
+            }
+            else
+            {
+                Y_XMLog(xml, "--> discarding");
+            }
 
 
 
