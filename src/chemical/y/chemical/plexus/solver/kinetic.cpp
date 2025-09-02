@@ -62,6 +62,8 @@ namespace Yttrium
             if(Wkin<=Wnew)
             {
                 Y_XMLog(xml,"--> upgrading");
+                Wnew = Wkin;
+                Cnew.ld(Ctry);
             }
             else
             {
