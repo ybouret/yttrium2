@@ -219,6 +219,7 @@ function(Y_LinkLibraries THE_EXE)
 	endif()
 	if(Y_Linux)
 		list( APPEND THE_LIBS "rt" )
+		list( APPEND THE_LIBS "dl" )
 	endif()
 	#cmake_print_variables(THE_LIBS)
 
