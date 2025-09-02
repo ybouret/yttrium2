@@ -20,6 +20,21 @@ namespace Yttrium
         void * query(const String &     symbol) const noexcept;
         void * query(const char * const symbol) const noexcept;
 
+        template <typename PROC> inline
+        PROC load(const String &symbol) const noexcept
+        {
+            union {
+                void *addr;
+                PROC  proc;
+            } alias = { query(symbol) };
+            return alias.proc;
+        }
+
+        template <typename PROC> inline
+        PROC load(const char * const symbol) const noexcept
+        {
+            const String _(symbol); return load<PROC>(_);
+        }
 
     private:
         class Code;
