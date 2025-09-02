@@ -57,13 +57,13 @@ namespace Yttrium
 
             if(Wkin<=Wnew)
             {
-                Y_XMLog(xml,"--> upgrading");
+                Y_XMLog(xml,"--> upgrading with " << kineticName);
                 Wnew = Wkin;
                 Cnew.ld(Ctry);
             }
             else
             {
-                Y_XMLog(xml, "--> discarding");
+                Y_XMLog(xml, "--> discarding " << kineticName);
             }
             if(xml.verbose)
             {
