@@ -90,6 +90,7 @@ namespace Yttrium
             const xreal_t         safety;       //!< safety coefficient
             const String          kineticName;  //!< "kinetic"
             const String          jmatrixName;  //!< "jmatrix
+            const String          proExt;       //!< "pro"
             String                gnuplot;      //!< constructed gnuplot command
 
             //! optimize a given prospect

@@ -86,9 +86,6 @@ namespace Yttrium
                 }
             }
 
-            Y_XMLog(xml,"rhs=" << Xi);
-            Y_XMLog(xml,"J="   << J);
-            std::cerr << "Nu=" << Nu << std::endl;
             //__________________________________________________________________
             //
             //
@@ -104,8 +101,6 @@ namespace Yttrium
             }
 
             lu.solve(J,Xi);
-            Y_XMLog(xml,"Xi=" << Xi);
-
 
             //__________________________________________________________________
             //
@@ -132,18 +127,14 @@ namespace Yttrium
 
             }
             if(wasCut) scale *= safety;
-            std::cerr << "dC=" << dC << std::endl;
             Y_XMLog(xml, "[" << (wasCut ? "was rescaled" : "no rescaling") << "] scale=" << scale.str());
 
             for(size_t j=dC.size();j>0;--j)
                 Cend[j] = Csub[j] + scale * dC[j];
 
             savePro(jmatrixName,500);
-            if(xml.verbose)
-            {
-                gnuplot += ", '" +jmatrixName << ".dat' w lp";
-                xml() << "\t" << gnuplot << std::endl;
-            }
+
+
 
             const xreal_t Wjmx = minimize(xml,Wsub,affinityRMS(Cend,SubLevel));
             Y_XMLog(xml, "Wjmx=" << Wjmx.str() << " / " << Wnew.str() );
@@ -159,7 +150,11 @@ namespace Yttrium
                 Y_XMLog(xml, "--> discarding");
             }
 
-
+            if(xml.verbose)
+            {
+                gnuplot += ", '" + jmatrixName + '.' + proExt + "' w lp";
+                xml() << "\t" << gnuplot << std::endl;
+            }
 
         }
 

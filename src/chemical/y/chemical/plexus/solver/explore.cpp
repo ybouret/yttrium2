@@ -31,7 +31,7 @@ namespace Yttrium
             //------------------------------------------------------------------
             cluster.copy(Csub,SubLevel,Ctop,TopLevel);
 
-            Jive::_VFS::OnExtension(LocalFS::Instance(), ".", "dat", Jive::_VFS::Remove);
+            Jive::_VFS::OnExtension(LocalFS::Instance(), ".", proExt, Jive::_VFS::Remove);
             if(xml.verbose) gnuplot = "";
 
             //------------------------------------------------------------------
@@ -175,7 +175,7 @@ namespace Yttrium
                 if(xml.verbose)
                 {
                     pro.display(xml(),cluster.nameFmt) << " $" << std::setw(22) << pro.Wo.str() << " / " << Wsub.str() << std::endl;
-                    gnuplot = "plot '" + pro.eq.name + ".dat' w lp";
+                    gnuplot = "plot '" + pro.eq.name + '.' + proExt + "' w lp";
                     xml() << "\t" << gnuplot << std::endl;
                 }
 

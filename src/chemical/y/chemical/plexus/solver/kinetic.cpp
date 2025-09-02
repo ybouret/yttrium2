@@ -53,11 +53,7 @@ namespace Yttrium
             if(xml.verbose) xml() << kineticName;
             const xreal_t Wkin = minimize(xml,Wsub,affinityRMS(Cend,SubLevel));
             Y_XMLog(xml, "Wkin=" << Wkin.str() << " / " << Wnew.str() );
-            if(xml.verbose)
-            {
-                gnuplot += ", '" + kineticName << ".dat' w lp";
-                xml() << "\t" << gnuplot << std::endl;
-            }
+
 
             if(Wkin<=Wnew)
             {
@@ -69,7 +65,11 @@ namespace Yttrium
             {
                 Y_XMLog(xml, "--> discarding");
             }
-
+            if(xml.verbose)
+            {
+                gnuplot += ", '" + kineticName + '.' + proExt + "' w lp";
+                xml() << "\t" << gnuplot << std::endl;
+            }
 
 
 

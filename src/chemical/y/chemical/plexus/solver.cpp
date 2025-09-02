@@ -41,6 +41,7 @@ namespace Yttrium
         safety(0.98),
         kineticName("kinetic"),
         jmatrixName("jmatrix"),
+        proExt("pro"),
         gnuplot()
         {
 
@@ -49,7 +50,7 @@ namespace Yttrium
 
         void Solver:: savePro(const String &baseName, const unsigned  np)
         {
-            const String fn = baseName + ".dat";
+            const String fn = baseName + '.' + proExt;
             OutputFile fp(fn);
 
             for(unsigned i=0;i<=np;++i) {

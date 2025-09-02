@@ -70,117 +70,119 @@ namespace Yttrium
                 Coven::Analysis::Run(xml,NuT,KeepComb,comb,Coven::Analysis::RejectRoot,true);
             }
 
-            if(comb->size<=0) return;
-
-            //------------------------------------------------------------------
-            //
-            //
-            // Build and keep efficient combinations
-            //
-            //
-            //------------------------------------------------------------------
-            const size_t         M = slist->size;
-            CxxArray<apz>        stoi(M);
-            DataBook<>::PoolType dpool;
-
-            for(const Coven::QVector *v=comb->head;v;v=v->next)
+            if(comb->size>0)
             {
-                //--------------------------------------------------------------
-                //
-                // initialize stoi to zero, prepare input indices
-                //
-                //--------------------------------------------------------------
-                const Coven::QVector &coef = *v;
-                DataBook<>            inp(dpool);
-                Algo::ForEach(stoi, & apz::ldz );
 
                 //--------------------------------------------------------------
                 //
-                // Compute stoi and fill input indices
+                //
+                // Build and keep efficient combinations
+                //
                 //
                 //--------------------------------------------------------------
-                for(size_t i=1;i<=N;++i)
+                const size_t         M = slist->size;
+                CxxArray<apz>        stoi(M);
+                DataBook<>::PoolType dpool;
+
+                for(const Coven::QVector *v=comb->head;v;v=v->next)
                 {
-                    const apz &           cf = coef[i]; if(__Zero__==cf.s) continue;
-                    const Readable<int> & nu = Nu[i];
-                    for(size_t j=M;j>0;--j)
-                    {
-                        const int n = nu[j];
-                        if(!n) continue;
-                        inp |= j;
-                        stoi[j] += n * cf;
-                    }
-                }
+                    //----------------------------------------------------------
+                    //
+                    // initialize stoi to zero, prepare input indices
+                    //
+                    //----------------------------------------------------------
+                    const Coven::QVector &coef = *v;
+                    DataBook<>            inp(dpool);
+                    Algo::ForEach(stoi, & apz::ldz );
 
-                //--------------------------------------------------------------
-                //
-                // compute output indices
-                //
-                //--------------------------------------------------------------
-                DataBook<> out(dpool);
-                for(size_t j=M;j>0;--j) if( stoi[j].s != __Zero__ ) out += j;
-                if( !inp.includes(out) ) throw Exception("new indices in output!!");
-
-                const bool       effective = out->size() < inp->size();
-                const DataBook<> missing   = inp-out;
-                Y_XMLog(xml, (effective ? "[+]" : "[-]") << " stoi=" << stoi << "  #" << inp << "->" << out << " : missing=" << missing << " @" << coef);
-                if(!effective) continue;
-
-                //--------------------------------------------------------------
-                //
-                // create equilibrium
-                //
-                //--------------------------------------------------------------
-
-                String eid;
-                WList  wl;
-                EList  el;
-                {
-                    bool   first = true;
+                    //----------------------------------------------------------
+                    //
+                    // Compute stoi and fill input indices
+                    //
+                    //----------------------------------------------------------
                     for(size_t i=1;i<=N;++i)
                     {
-                        const apz & cf = coef[i]; if(__Zero__==cf.s) continue;
-                        if(first)
+                        const apz &           cf = coef[i]; if(__Zero__==cf.s) continue;
+                        const Readable<int> & nu = Nu[i];
+                        for(size_t j=M;j>0;--j)
                         {
-                            eid  += FirstCoef(cf);
-                            first = false;
+                            const int n = nu[j];
+                            if(!n) continue;
+                            inp |= j;
+                            stoi[j] += n * cf;
                         }
-                        else
-                            eid += ExtraCoef(cf);
-                        Equilibrium &eq = **elist->fetch(i);
-                        eid += eq.name;
-                        wl << cf.cast<int>("equilibrium weight");
-                        el << eq;
                     }
-                }
-                assert(wl->size == coef.ncof);
-                assert(wl->size==el->size);
 
-                MixedEquilibrium &mix = eqs( new MixedEquilibrium(eid,eqs.nextTop(),tlK,wl,el));
-                //--------------------------------------------------------------
-                //
-                // Fill equilibrium
-                //
-                //--------------------------------------------------------------
-                for(size_t j=1;j<=M;++j)
-                {
-                    const int       cf = stoi[j].cast<int>("stoichio"); if(!cf) continue;
-                    const Species & sp = **slist->fetch(j);
-                    if(cf>0) mix.p( (unsigned) cf, sp); else mix.r( (unsigned) -cf, sp);
-                }
-                if(Dangling == mix.flow) throw Specific::Exception(eid.c_str(),"no species!!");
-                if(!mix.neutral())       throw Specific::Exception(eid.c_str(),"no neutral!!");
-                mix.freeze();
+                    //----------------------------------------------------------
+                    //
+                    // compute output indices
+                    //
+                    //----------------------------------------------------------
+                    DataBook<> out(dpool);
+                    for(size_t j=M;j>0;--j) if( stoi[j].s != __Zero__ ) out += j;
+                    if( !inp.includes(out) ) throw Exception("new indices in output!!");
 
-                //--------------------------------------------------------------
-                //
-                // finalize
-                //
-                //--------------------------------------------------------------
-                elist << mix;
-                enroll(mix);
-                Coerce(order[coef.ncof]) << mix;
-                Y_XMLog(xml, (Components&)mix );
+                    const bool       effective = out->size() < inp->size();
+                    const DataBook<> missing   = inp-out;
+                    Y_XMLog(xml, (effective ? "[+]" : "[-]") << " stoi=" << stoi << "  #" << inp << "->" << out << " : missing=" << missing << " @" << coef);
+                    if(!effective) continue;
+
+                    //----------------------------------------------------------
+                    //
+                    // create equilibrium
+                    //
+                    //----------------------------------------------------------
+                    String eid;
+                    WList  wl;
+                    EList  el;
+                    {
+                        bool   first = true;
+                        for(size_t i=1;i<=N;++i)
+                        {
+                            const apz & cf = coef[i]; if(__Zero__==cf.s) continue;
+                            if(first)
+                            {
+                                eid  += FirstCoef(cf);
+                                first = false;
+                            }
+                            else
+                                eid += ExtraCoef(cf);
+                            Equilibrium &eq = **elist->fetch(i);
+                            eid += eq.name;
+                            wl << cf.cast<int>("equilibrium weight");
+                            el << eq;
+                        }
+                    }
+                    assert(wl->size == coef.ncof);
+                    assert(wl->size==el->size);
+
+                    MixedEquilibrium &mix = eqs( new MixedEquilibrium(eid,eqs.nextTop(),tlK,wl,el));
+                    //----------------------------------------------------------
+                    //
+                    // Fill equilibrium
+                    //
+                    //----------------------------------------------------------
+                    for(size_t j=1;j<=M;++j)
+                    {
+                        const int       cf = stoi[j].cast<int>("stoichio"); if(!cf) continue;
+                        const Species & sp = **slist->fetch(j);
+                        if(cf>0) mix.p( (unsigned) cf, sp); else mix.r( (unsigned) -cf, sp);
+                    }
+                    if(Dangling == mix.flow) throw Specific::Exception(eid.c_str(),"no species!!");
+                    if(!mix.neutral())       throw Specific::Exception(eid.c_str(),"no neutral!!");
+                    mix.freeze();
+
+                    //----------------------------------------------------------
+                    //
+                    // finalize
+                    //
+                    //----------------------------------------------------------
+                    elist << mix;
+                    enroll(mix);
+                    Coerce(order[coef.ncof]) << mix;
+                    Y_XMLog(xml, (Components&)mix );
+                }
+
             }
 
             //------------------------------------------------------------------
