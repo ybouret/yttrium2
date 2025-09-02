@@ -5,7 +5,7 @@
 #define Y_Chemical_Prospect_Included 1
 
 #include "y/chemical/reactive/equilibrium.hpp"
-#include "y/protean/solo/heavy/list.hpp"
+#include "y/protean/coop/heavy/list.hpp"
 #include "y/chemical/type/assembly.hpp"
 
 
@@ -85,8 +85,9 @@ namespace Yttrium
             Y_Disable_Assign(Prospect); //!< discarding
         };
 
-        typedef List<Prospect>  PList; //!< alias
-        typedef PList::NodeType PNode; //!< alias
+        typedef Protean::CoopHeavyList<Prospect> PList; //!< alias
+        typedef PList::PoolType                  PPool; //!< alias
+        typedef PList::NodeType                  PNode; //!< alias
     }
 
 }

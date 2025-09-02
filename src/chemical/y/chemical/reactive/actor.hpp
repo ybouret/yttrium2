@@ -84,6 +84,7 @@ namespace Yttrium
             const Species &sp;   //!< species
             const unsigned nu;   //!< stoichio
             const xreal_t  xn;   //!< stoichio as xreal
+            const xreal_t  xn2;  //!< xn*xn*
             const unsigned nu1;  //!< nu-1
             Actor *        next; //!< for list
             Actor *        prev; //!< for list

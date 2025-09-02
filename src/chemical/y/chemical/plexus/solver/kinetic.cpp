@@ -37,7 +37,7 @@ namespace Yttrium
                         wasCut = true;
                     }
                 }
-                if(wasCut) scale *= 0.98;
+                if(wasCut) scale *= safety;
 
                 Y_XMLog(xml, "[" << (wasCut ? "need rescaling" : "no rescaling") << "] scale=" << scale.str());
 

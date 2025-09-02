@@ -166,6 +166,10 @@ namespace Yttrium
                             const Level      L,
                             XWritable       &ma) const;
 
+            void jacobian(XWritable       &J,
+                          const XReadable &C,
+                          const Level      L) const;
+
             //__________________________________________________________________
             //
             //

@@ -9,14 +9,15 @@
 #include "y/chemical/plexus/cluster.hpp"
 #include "y/chemical/plexus/solve1d.hpp"
 #include "y/chemical/plexus/solver/prospect.hpp"
-
 #include "y/ortho/house.hpp"
+#include "y/mkl/algebra/lu.hpp"
 
 namespace Yttrium
 {
     namespace Chemical
     {
 
+        //typedef Protean::SoloLightList<const Species> SpList;
 
         //______________________________________________________________________
         //
@@ -65,27 +66,31 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(Solver); //!< discarding
 
-            const Cluster & cluster;
-            xreal_t         Wsub;         //!< SubLevel W
-            XArray          Csub;         //!< SubLevel C
-            XArray          Cend;         //!< endpoint on concetration
-            XArray          Ctry;         //!< probe
-            xreal_t         Wnew;         //!< new W <= Wsub
-            XArray          Cnew;         //!< new C
-            XArray          dC;           //!< delta C helper
-            XMatrix         Ceq;          //!< storage for prospect/solve1d
-            PList           plist;        //!< active equilibria
-            xreal_t         psize;        //!< |plist| in xreal
-            XAdd            xadd;         //!< helper for affinities
-            XAdd            xsum;         //!< helper for affinityRMS
-            Solve1D         solve1d;      //!< solving each equilibria
-            Accumulator     xkin;         //!< accumulator
+            const Cluster &       cluster;
+            xreal_t               Wsub;         //!< SubLevel W
+            XArray                Csub;         //!< SubLevel C
+            XArray                Cend;         //!< endpoint on concetration
+            XArray                Ctry;         //!< probe
+            xreal_t               Wnew;         //!< new W <= Wsub
+            XArray                Cnew;         //!< new C
+            XArray                dC;           //!< delta C helper
+            XMatrix               Ceq;          //!< storage for prospect/solve1d
+            PPool                 ppool;        //!< shared pool for prospects
+            PList                 plist;        //!< active equilibria
+            xreal_t               psize;        //!< |plist| in xreal
+            PList                 basis;        //!< selected basis
+            XAdd                  xadd;         //!< helper for affinities
+            XAdd                  xsum;         //!< helper for affinityRMS
+            Solve1D               solve1d;      //!< solving each equilibria
+            Accumulator           xkin;         //!< accumulator
             AutoPtr<Ortho::House> house;        //!< extract basis
-            const xreal_t   zero;         //!< alias
-            const xreal_t   one;          //!< alias
-            const String    kineticName;  //!< "kinetic"
-            const String    jmatrixName;  //!< "jmatrix
-            String          gnuplot;      //!< constructed gnuplot command
+            MKL::LU<xreal_t>      lu;           //!< for algebra
+            const xreal_t         zero;         //!< alias
+            const xreal_t         one;          //!< alias
+            const xreal_t         safety;       //!< safety coefficient
+            const String          kineticName;  //!< "kinetic"
+            const String          jmatrixName;  //!< "jmatrix
+            String                gnuplot;      //!< constructed gnuplot command
 
             //! optimize a given prospect
             void optimize(XMLog &, Prospect &);

@@ -35,6 +35,7 @@ namespace Yttrium
         sp(s),
         nu(n),
         xn(nu),
+        xn2(nu*nu),
         nu1(nu-1),
         next(0),
         prev(0),

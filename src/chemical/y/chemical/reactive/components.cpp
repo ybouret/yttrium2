@@ -101,7 +101,7 @@ namespace Yttrium
 
 
         }
-        
+
         bool Components:: neutral() const
         {
             apz z = 0;
@@ -113,7 +113,7 @@ namespace Yttrium
         xreal_t Components:: massAction(XMul &X, const xreal_t K, const XReadable &C, const Level L) const
         {
             assert(frozen());
-            
+
             X.ld1(); prod.massAction(X,C,L);
             const xreal_t rhs = X.product();
 
@@ -143,7 +143,7 @@ namespace Yttrium
             reac.moveSafely(C, L, -xi);
         }
 
-        
+
 
         xreal_t Components:: extent(XAdd &xadd, const XReadable &C, const Level L, const XReadable &C0) const
         {
@@ -219,6 +219,26 @@ namespace Yttrium
             return xadd.sum();
         }
 
+        void Components:: jacobian(XWritable       &J,
+                                   const XReadable &C,
+                                   const Level      L) const
+        {
+            for(const Actor *a=reac->head;a;a=a->next)
+            {
+                const Species &sp = a->sp;
+                const size_t   sj = sp.indx[L];
+                J[sj] = a->xn / C[sj];
+            }
+
+            for(const Actor *a=prod->head;a;a=a->next)
+            {
+                const Species &sp = a->sp;
+                const size_t   sj = sp.indx[L];
+                J[sj] = -a->xn / C[sj];
+            }
+
+        }
+
 
         void Components:: diffAction(XWritable       &dma,
                                      XMul            &X,
@@ -230,6 +250,8 @@ namespace Yttrium
             prod.diffAction(dma,X,minusOne,C,L,ma);
             reac.diffAction(dma,X,K,       C,L,ma);
         }
+
+
 
     }
 
