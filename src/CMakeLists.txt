@@ -25,6 +25,7 @@ add_subdirectory(lua++)
 add_subdirectory(chemical)
 add_subdirectory(json)
 add_subdirectory(ink)
+add_subdirectory(mpi++)
 cmake_print_variables(Y_UnitTests)
 
 add_subdirectory(y)
