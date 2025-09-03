@@ -15,7 +15,9 @@ namespace Yttrium
     public:
         static const char * const CallSign;
         static const Longevity    LifeTime = LifeTimeOf:: MPI;
-        
+
+        static MPI & Init(int *argc, char ***argv, const int required);
+
     private:
         Y_Disable_Assign(MPI);
         explicit MPI();
