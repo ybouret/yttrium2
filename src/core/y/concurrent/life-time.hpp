@@ -38,7 +38,8 @@ namespace Yttrium
             Y_LifeTime(LocalFS)             /*!< for  LocalFS                */,
             Y_LifeTime(JiveChars)           /*!< for Jive::Char              */,
             Y_LifeTime(JiveBabel)           /*!< for Jive::Babel             */,
-            Y_LifeTime(ChemicalWeasel)      /*!< for Chemical::Weasel        */
+            Y_LifeTime(ChemicalWeasel)      /*!< for Chemical::Weasel        */,
+            Y_LifeTime(MPI)                 /*!< for MPI                     */
         };
     };
 }

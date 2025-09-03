@@ -10,6 +10,7 @@ cmake_print_variables(MPICC)
 if( "MPICC-NOTFOUND" STREQUAL "${MPICC}" )
     
 else()
+    set(MPI_FOUND ON)
     message( STATUS "found mpicc" )
     execute_process(COMMAND ${MPICC} --show
         RESULT_VARIABLE MPI_RES

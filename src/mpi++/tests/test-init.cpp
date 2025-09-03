@@ -8,7 +8,7 @@ Y_UTEST(init)
 {
     MPI_Init(&argc, &argv);
     
-    MPI_Finish();
+    MPI_Finalize();
 }
 Y_UDONE()
 
