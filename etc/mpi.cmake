@@ -15,5 +15,7 @@ else()
         OUTPUT_VARIABLE MPI_OUT
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
-    cmake_print_variables(MPI_RES MPI_OUT)
+    cmake_print_variables(MPI_OUT)
+    string(REGEX REPLACE " +"  ";" MPI_OUT "${MPI_OUT}")
+    cmake_print_variables(MPI_OUT)
 endif()
