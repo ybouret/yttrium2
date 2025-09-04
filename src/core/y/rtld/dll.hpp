@@ -8,18 +8,42 @@
 namespace Yttrium
 {
 
-
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Dynamically Linked Libary
+    //
+    //
+    //_________________________________________________________________________
     class DLL
     {
     public:
-        DLL(const String &);
-        DLL(const char * const);
-        DLL(const DLL &) noexcept;
-        virtual ~DLL() noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+        DLL(const String &);       //!< load
+        DLL(const char * const);   //!< load
+        DLL(const DLL &) noexcept; //!< shared copy
+        virtual ~DLL() noexcept;   //!< cleanup
 
-        void * query(const String &     symbol) const noexcept;
-        void * query(const char * const symbol) const noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+        void * query(const String &     symbol) const noexcept; //!< \param symbol symbol name \return symbol address
+        void * query(const char * const symbol) const noexcept; //!< \param symbol symbol name \return symbol address
 
+        //! load symbol with conversion
+        /**
+         \param symbol symbol name
+         \return symbol address converted to PROC
+         */
         template <typename PROC> inline
         PROC load(const String &symbol) const noexcept
         {
@@ -30,6 +54,12 @@ namespace Yttrium
             return alias.proc;
         }
 
+
+        //! load symbol with conversion, wrapper
+        /**
+         \param symbol symbol name
+         \return symbol address converted to PROC
+         */
         template <typename PROC> inline
         PROC load(const char * const symbol) const noexcept
         {
@@ -38,8 +68,8 @@ namespace Yttrium
 
     private:
         class Code;
-        Y_Disable_Assign(DLL);
-        Code * const code;
+        Y_Disable_Assign(DLL); //!< discarding
+        Code * const code;     //!< inner handle
     };
 
 }

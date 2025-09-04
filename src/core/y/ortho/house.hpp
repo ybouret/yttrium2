@@ -11,27 +11,61 @@ namespace Yttrium
     namespace Ortho
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Common Info to build House
+        //
+        //
+        //______________________________________________________________________
         class HouseInfo
         {
         public:
-            explicit HouseInfo(const size_t dims);
-            virtual ~HouseInfo() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit HouseInfo(const size_t dims); //!< setup \param dims dimensions
+            virtual ~HouseInfo() noexcept;         //!< cleanup
 
-            const Metrics metrics;
-            Vector::Pool  vecPool;
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const Metrics metrics; //!< metrics
+            Vector::Pool  vecPool; //!< shared pool with metrics
 
         private:
-            Y_Disable_Copy_And_Assign(HouseInfo);
+            Y_Disable_Copy_And_Assign(HouseInfo); //!< discarding
         };
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! standalone family for basis construction/extraction
+        //
+        //
+        //______________________________________________________________________
         class House : public HouseInfo,  public Family
         {
         public:
-            explicit House(const size_t dims);
-            virtual ~House() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit House(const size_t dims); //!< setup \param dims dimensions
+            virtual ~House() noexcept;         //!< cleanup
 
         private:
-            Y_Disable_Copy_And_Assign(House);
+            Y_Disable_Copy_And_Assign(House); //!< discarding
         };
     }
 
