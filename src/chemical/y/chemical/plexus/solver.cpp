@@ -26,6 +26,7 @@ namespace Yttrium
         Cnew(cluster.slist->size),
         dC(cluster.slist->size),
         Ceq(cluster->size(),cluster.slist->size),
+        affinity(Ceq.rows),
         ppool(),
         plist(ppool),
         psize(),

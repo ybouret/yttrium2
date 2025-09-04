@@ -52,8 +52,11 @@ namespace Yttrium
                          const XReadable & Ktop);
 
 
-            //! store individual components in affinity \return rms
+            //!  \return rms of affinitie
             xreal_t affinityRMS(const XReadable &, const Level);
+
+            //! store individual components in affinity \return rms
+            xreal_t fullAffinityRMS(const XReadable &, const Level);
 
             //! \param u in [0:1] \return affinity at Ctry = (1-u) * Csub + u * Cend
             xreal_t operator()(xreal_t u);
@@ -75,6 +78,7 @@ namespace Yttrium
             XArray                Cnew;         //!< new C
             XArray                dC;           //!< delta C helper
             XMatrix               Ceq;          //!< storage for prospect/solve1d
+            XArray                affinity;     //!< storage for affinites
             PPool                 ppool;        //!< shared pool for prospects
             PList                 plist;        //!< active equilibria
             xreal_t               psize;        //!< |plist| in xreal

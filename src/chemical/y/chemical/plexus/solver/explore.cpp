@@ -119,11 +119,11 @@ namespace Yttrium
             //------------------------------------------------------------------
             //
             //
-            // initialize each direction
+            // initialize each direction from Wsub@Csub
             //
             //
             //------------------------------------------------------------------
-            Wsub = affinityRMS(Csub,SubLevel); Y_XMLog(xml, "Initial RMS = " << Wsub.str());
+            Wsub = fullAffinityRMS(Csub,SubLevel); Y_XMLog(xml, "Initial RMS = " << Wsub.str());
 
             Cnew.ld(Csub); // best starting point
             Wnew = Wsub;   // best starting point

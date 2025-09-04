@@ -26,6 +26,31 @@ namespace Yttrium
             return resSq.sqrt();
         }
 
+        xreal_t Solver:: fullAffinityRMS(const XReadable &C, const Level L)
+        {
+            if(plist->size<=0) return 0;
+
+            xsum.ldz();
+            affinity.ld(zero);
+            
+            for(const PNode *pn=plist->head;pn;pn=pn->next)
+            {
+                const Prospect    &pro = **pn;
+                const Equilibrium &eq  = pro.eq;
+                const xreal_t      aff = eq.affinity(xadd,pro.eK,C,L);
+                eq(affinity,SubLevel) = aff;
+                xsum << aff * aff;
+                //std::cerr << aff << ";";
+            }
+            //std::cerr << std::endl;
+
+            const xreal_t resSq = xsum.sum() /= psize;
+            return resSq.sqrt();
+        }
+
+
+
+
         xreal_t Solver:: operator()(xreal_t u)
         {
             const XReadable &Cv = Csub;
