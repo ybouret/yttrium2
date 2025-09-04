@@ -36,6 +36,7 @@ namespace Yttrium
         static int *    __mpi_argc = 0;
         static char *** __mpi_argv = 0;
         static int      __mpi_cntl = 0;
+        static char     __mpi_processor_name[MPI_MAX_PROCESSOR_NAME] = { 0 };
     }
 
     MPI & MPI:: Init(int *argc, char ***argv, const int required)
@@ -53,7 +54,7 @@ namespace Yttrium
 
     void MPI:: display(std::ostream &os, size_t indent) const
     {
-        initProlog(os,indent) << Y_XML_Attr(size) << Y_XML_Attr(rank);
+        initProlog(os,indent) << Y_XML_Attr(size) << Y_XML_Attr(rank) << Y_XML_Attr(processorName);
         initEpilog(os,true);
     }
 
@@ -62,7 +63,8 @@ namespace Yttrium
     rank(0),
     threadLevel(-1),
     primary(true),
-    replica(false)
+    replica(false),
+    processorName(__mpi_processor_name)
     {
         if(!__mpi_auth) throw Specific:: Exception(CallSign,"must call Init(...)");
 
@@ -82,6 +84,10 @@ namespace Yttrium
 
         if(0!=rank) CoerceSwap(primary,replica);
 
+        {
+            int res = 0;
+            MPI_Get_processor_name(__mpi_processor_name,&res);
+        }
     }
 
 }

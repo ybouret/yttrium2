@@ -44,7 +44,8 @@ namespace Yttrium
         const int    threadLevel;
         const bool   primary;
         const bool   replica;
-
+        const char * const processorName;
+        
     private:
         Y_Disable_Assign(MPI);
         friend Singleton<MPI,ClassLockPolicy>;
