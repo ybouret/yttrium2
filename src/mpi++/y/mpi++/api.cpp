@@ -86,7 +86,7 @@ namespace Yttrium
 
         {
             int res = 0;
-            MPI_Get_processor_name(__mpi_processor_name,&res);
+            Y_MPI_Call( MPI_Get_processor_name(__mpi_processor_name,&res) );
         }
     }
 

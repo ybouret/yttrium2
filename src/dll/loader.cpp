@@ -1,5 +1,6 @@
 #include "y/system/program.hpp"
 #include "y/rtld/dll.hpp"
+#include "y/core/display.hpp"
 
 using namespace Yttrium;
 
@@ -18,6 +19,19 @@ Y_PROGRAM()
                 std::cerr << i << " => " << sine( (double)i ) << std::endl;
             }
         }
+        else
+        {
+            std::cerr << "Sine not found..." << std::endl;
+        }
+
+        uint32_t * const data = dll.load<uint32_t *>("Data");
+        if( data )
+        {
+            Core::Display(std::cerr << "Data=", data, 4) << std::endl;
+        }
+        else
+            std::cerr << "No Data..." << std::endl;
+
     }
 }
 Y_EXECUTE()
