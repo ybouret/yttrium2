@@ -65,11 +65,14 @@ namespace Yttrium
             {
                 Y_XMLog(xml, "--> discarding " << kineticName);
             }
+
             if(xml.verbose)
             {
                 gnuplot += ", '" + kineticName + '.' + proExt + "' w lp";
                 xml() << "\t" << gnuplot << std::endl;
             }
+
+            
 
 
 
