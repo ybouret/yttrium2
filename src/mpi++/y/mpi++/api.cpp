@@ -1,5 +1,8 @@
 
 #include "y/mpi++/api.hpp"
+#include "y/system/exception.hpp"
+#include "y/type/temporary.hpp"
+#include "y/xml/attribute.hpp"
 
 namespace Yttrium
 {
@@ -12,6 +15,7 @@ namespace Yttrium
     }
 
 
+
     namespace
     {
         static int *    __mpi_argc = 0;
@@ -21,12 +25,24 @@ namespace Yttrium
 
     MPI & MPI:: Init(int *argc, char ***argv, const int required)
     {
+        if( Exists() ) throw Specific::Exception(CallSign,"already initialized");
+
+        Temporary<int>      (__mpi_cntl,required);
+        Temporary<int *>    (__mpi_argc,argc);
+        Temporary<char ***> (__mpi_argv,argv);
+
+        return Instance();
     }
 
-
-    MPI:: MPI()
+    void MPI:: display(std::ostream &os, size_t indent) const
     {
+        initProlog(os,indent);
+        initEpilog(os,true);
+    }
 
+    MPI:: MPI() : threadLevel(-1)
+    {
+        
     }
 
 }
