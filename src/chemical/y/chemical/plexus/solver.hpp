@@ -47,7 +47,7 @@ namespace Yttrium
             //__________________________________________________________________
             void jmatrix(XMLog & xml);
             void kinetic(XMLog & xml);
-            void explore(XMLog &           xml,
+            bool explore(XMLog &           xml,
                          XWritable &       Ctop,
                          const XReadable & Ktop);
 
@@ -88,6 +88,7 @@ namespace Yttrium
             const xreal_t         zero;         //!< alias
             const xreal_t         one;          //!< alias
             const xreal_t         safety;       //!< safety coefficient
+            const String          exploreName;  //!< "explore"
             const String          kineticName;  //!< "kinetic"
             const String          jmatrixName;  //!< "jmatrix
             const String          proExt;       //!< "pro"

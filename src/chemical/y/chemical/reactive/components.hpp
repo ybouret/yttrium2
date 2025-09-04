@@ -166,7 +166,7 @@ namespace Yttrium
                             const Level      L,
                             XWritable       &ma) const;
 
-            //! compute jacobain of affinity
+            //! compute jacobian of affinity
             /**
              \param J dA/dC
              \param C concentrations

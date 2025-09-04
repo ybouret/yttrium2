@@ -18,9 +18,9 @@ namespace Yttrium
         }
 
 
-        void Solver:: explore(XMLog &xml, XWritable &Ctop, const XReadable &Ktop)
+        bool Solver:: explore(XMLog &xml, XWritable &Ctop, const XReadable &Ktop)
         {
-            Y_XML_Section(xml, "explore");
+            Y_XML_Section(xml,exploreName);
 
             //------------------------------------------------------------------
             //
@@ -31,13 +31,16 @@ namespace Yttrium
             //------------------------------------------------------------------
             cluster.copy(Csub,SubLevel,Ctop,TopLevel);
 
-            Jive::_VFS::OnExtension(LocalFS::Instance(), ".", proExt, Jive::_VFS::Remove);
-            if(xml.verbose) gnuplot = "";
+            if(xml.verbose)
+            {
+                Jive::_VFS::OnExtension(LocalFS::Instance(), ".", proExt, Jive::_VFS::Remove);
+                gnuplot = "";
+            }
 
             //------------------------------------------------------------------
             //
             //
-            // probe all status and process emergency
+            // probe all status and process emergency[ies]
             //
             //
             //------------------------------------------------------------------
@@ -45,9 +48,10 @@ namespace Yttrium
         PROBE:
             {
                 ++cycle;
-                Y_XML_Section_Attr(xml, "probing", Y_XML_Attr(cycle));
                 plist.free();
                 bool emergency = false;
+
+                Y_XML_Section_Attr(xml, "probing", Y_XML_Attr(cycle));
                 for(const ENode *en = (**cluster).head; en; en=en->next )
                 {
                     const Equilibrium &eq = **en;
@@ -55,7 +59,9 @@ namespace Yttrium
                     XWritable         &cc = Ceq[plist->size+1].ld(Csub);
                     switch( st )
                     {
-                        case Blocked:  continue;
+                        case Blocked:
+                            continue;
+
                         case Crucial:
                             emergency = true;
                             break;
@@ -96,8 +102,18 @@ namespace Yttrium
             }
 
         BUILD:
-            if(plist->size<=0) return; // done
+            //------------------------------------------------------------------
+            //
+            //
+            // Collected all active and valid prospects
+            //
+            //
+            //------------------------------------------------------------------
             psize = xreal_t( plist->size );
+            if(plist->size<=0) {
+                Y_XMLog(xml,"[[ all blocked ]]");
+                return true;
+            }
 
 
             //------------------------------------------------------------------
@@ -107,11 +123,10 @@ namespace Yttrium
             //
             //
             //------------------------------------------------------------------
-            Wsub = affinityRMS(Csub,SubLevel);
-            Y_XMLog(xml, "Initial RMS = " << Wsub.str());
+            Wsub = affinityRMS(Csub,SubLevel); Y_XMLog(xml, "Initial RMS = " << Wsub.str());
 
-            Cnew.ld(Csub); // starting point
-            Wnew = Wsub;   // starting point
+            Cnew.ld(Csub); // best starting point
+            Wnew = Wsub;   // best starting point
 
             for(PNode *pn=plist->head;pn;pn=pn->next)
             {
@@ -131,7 +146,7 @@ namespace Yttrium
                 Y_XML_Section(xml, "optimizing");
                 for(PNode *pn=plist->head;pn;pn=pn->next)
                 {
-                    Prospect &    pro  = **pn; assert(Running == pro.st);
+                    Prospect & pro  = **pn; assert(Running == pro.st);
                     optimize(xml,pro);
                 }
             }
@@ -179,11 +194,15 @@ namespace Yttrium
                     xml() << "\t" << gnuplot << std::endl;
                 }
 
+                if(Wnew<=zero || 1 == plist->size)
+                {
+                    Y_XMLog(xml, "[[ Success @" << pro.eq.name << " ]] ");
+                    cluster.copy(Ctop,TopLevel,pro.cc,SubLevel);
+                    return true;
+                }
             }
 
-
-            
-
+            return false;
         }
 
     }

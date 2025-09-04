@@ -39,6 +39,7 @@ namespace Yttrium
         zero(),
         one(1),
         safety(0.98),
+        exploreName("explore"),
         kineticName("kinetic"),
         jmatrixName("jmatrix"),
         proExt("pro"),
