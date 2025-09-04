@@ -17,7 +17,8 @@ namespace Yttrium
         static const char * const CallSign;
         static const Longevity    LifeTime = LifeTimeOf:: MPI;
 
-        
+        static const char *   HumanReadableThreadLevel(const int) noexcept;
+
 
         class Exception : public Yttrium:: Exception
         {
@@ -33,20 +34,29 @@ namespace Yttrium
         };
 
 
-        static MPI & Init(int *argc, char ***argv, const int required);
-
+        static MPI & Init(int *argc, char ***argv, const int required = MPI_THREAD_SINGLE);
         virtual void display(std::ostream &, size_t) const;
 
 
     public:
-        const int threadLevel;
-        
+        const size_t size;
+        const size_t rank;
+        const int    threadLevel;
+        const bool   primary;
+        const bool   replica;
+
     private:
         Y_Disable_Assign(MPI);
         friend Singleton<MPI,ClassLockPolicy>;
         explicit MPI();
         virtual ~MPI() noexcept;
     };
+
+#define Y_MPI_Call( CODE ) do { \
+/**/ const int err = CODE;      \
+/**/ if( MPI_SUCCESS != err ) throw MPI::Exception(err,"in '%s'",#CODE); \
+} while(false)
+
 }
 
 #endif

@@ -14,10 +14,25 @@ namespace Yttrium
         MPI_Finalize();
     }
 
+    const char *   MPI:: HumanReadableThreadLevel(const int t) noexcept
+    {
+        switch(t)
+        {
+                Y_Return_Named_Case(MPI_THREAD_SINGLE);
+                Y_Return_Named_Case(MPI_THREAD_FUNNELED);
+                Y_Return_Named_Case(MPI_THREAD_SERIALIZED);
+                Y_Return_Named_Case(MPI_THREAD_MULTIPLE);
+            default:
+                break;
+        }
+        return Core::Unknown;
+
+    }
 
 
     namespace
     {
+        static bool     __mpi_auth = false;
         static int *    __mpi_argc = 0;
         static char *** __mpi_argv = 0;
         static int      __mpi_cntl = 0;
@@ -27,22 +42,46 @@ namespace Yttrium
     {
         if( Exists() ) throw Specific::Exception(CallSign,"already initialized");
 
-        Temporary<int>      (__mpi_cntl,required);
-        Temporary<int *>    (__mpi_argc,argc);
-        Temporary<char ***> (__mpi_argv,argv);
+        const Temporary<int>      _1(__mpi_cntl,required);
+        const Temporary<int *>    _2(__mpi_argc,argc);
+        const Temporary<char ***> _3(__mpi_argv,argv);
+        const Temporary<bool>     _4(__mpi_auth,true);
+
 
         return Instance();
     }
 
     void MPI:: display(std::ostream &os, size_t indent) const
     {
-        initProlog(os,indent);
+        initProlog(os,indent) << Y_XML_Attr(size) << Y_XML_Attr(rank);
         initEpilog(os,true);
     }
 
-    MPI:: MPI() : threadLevel(-1)
+    MPI:: MPI() :
+    size(0),
+    rank(0),
+    threadLevel(-1),
+    primary(true),
+    replica(false)
     {
-        
+        if(!__mpi_auth) throw Specific:: Exception(CallSign,"must call Init(...)");
+
+        Y_MPI_Call( MPI_Init_thread(__mpi_argc, __mpi_argv, __mpi_cntl, & Coerce(threadLevel)) );
+
+        {
+            int sz = 0;
+            Y_MPI_Call( MPI_Comm_size(MPI_COMM_WORLD, &sz) );
+            Coerce(size) = (size_t) sz;
+        }
+
+        {
+            int rk = 0;
+            Y_MPI_Call( MPI_Comm_size(MPI_COMM_WORLD, &rk) );
+            Coerce(rank) = (size_t) rk;
+        }
+
+        if(0!=rank) CoerceSwap(primary,replica);
+
     }
 
 }
