@@ -63,9 +63,11 @@ Y_UTEST(plexus)
     for(const Cluster *cl=cls->head;cl;cl=cl->next)
     {
         Solver solver(*cl);
-        solver.explore(xml,C0,cls.K);
-        solver.kinetic(xml);
-        solver.jmatrix(xml);
+        solver.run(xml,C0,cls.K);
+
+        //solver.explore(xml,C0,cls.K);
+        //solver.kinetic(xml);
+        //solver.jmatrix(xml);
     }
 
 

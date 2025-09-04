@@ -16,6 +16,7 @@ namespace Yttrium
     {
         //! use snprintf \return formatted string
         static String Get(const char * const,...) Y_Printf_Check(1,2);
+
     };
 
 }

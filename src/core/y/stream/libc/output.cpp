@@ -6,6 +6,7 @@
 #include "y/ability/lockable.hpp"
 #include "y/string.hpp"
 #include <cstring>
+#include "y/core/variadic.hpp"
 
 #if defined(_MSC_VER)
 #pragma warning ( disable : 4996 )
@@ -99,7 +100,37 @@ namespace Yttrium
     }
 
 
+    void OutputFile:: Echo(const String & filename, const char * const fmt,...)
+    {
+        static const char func[] = "OutputFile:Echo";
+        AppendFile fp(filename);
 
+        size_t length = 0;
+        int    result = 0;
+        {
+            va_list ap;
+            va_start(ap,fmt);
+            result = Core::Variadic::Format(0,0,fmt, &ap);
+            va_end(ap);
+            if(result<0)
+                throw Specific::Exception(func,"invalid format string");
+            length = size_t( result );
+        }
+
+        String str(WithAtLeast,length,true); assert(str.size()==length);
+
+        {
+            va_list ap;
+            va_start(ap,fmt);
+            const int result2 = Core::Variadic::Format( str(),length+1,fmt, &ap);
+            if(result2!=result)
+                throw Specific::Exception(func,"corrupted variadic call");
+            va_end(ap);
+        }
+
+        fp << str;
+
+    }
 
 }
 

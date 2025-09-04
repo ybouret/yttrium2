@@ -18,7 +18,7 @@ namespace Yttrium
         }
 
 
-        bool Solver:: explore(XMLog &xml, XWritable &Ctop, const XReadable &Ktop)
+        void Solver:: explore(XMLog &xml, XWritable &Ctop, const XReadable &Ktop)
         {
             Y_XML_Section(xml,exploreName);
 
@@ -112,7 +112,9 @@ namespace Yttrium
             psize = xreal_t( plist->size );
             if(plist->size<=0) {
                 Y_XMLog(xml,"[[ all blocked ]]");
-                return true;
+                Wnew  = zero;
+                Cnew.ld(Csub);
+                return;
             }
 
 
@@ -176,7 +178,7 @@ namespace Yttrium
                 const Prospect &pro = **plist->head;
                 if(pro.Wo<Wnew)
                 {
-                    Wnew = pro.Wo;
+                    Wnew = plist->size > 1 ? pro.Wo : zero;
                     Cnew.ld(pro.cc);
                     Y_XMLog(xml, "-- accepted prospect:");
                 }
@@ -192,15 +194,9 @@ namespace Yttrium
                     xml() << "\t" << gnuplot << std::endl;
                 }
 
-                if(Wnew<=zero || 1 == plist->size)
-                {
-                    Y_XMLog(xml, "[[ Success @" << pro.eq.name << " ]] ");
-                    cluster.copy(Ctop,TopLevel,pro.cc,SubLevel);
-                    return true;
-                }
+                
             }
 
-            return false;
         }
 
     }

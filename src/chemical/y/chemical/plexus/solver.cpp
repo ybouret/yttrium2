@@ -1,8 +1,8 @@
 
 #include "y/chemical/plexus/solver.hpp"
 #include "y/stream/libc/output.hpp"
+#include "y/format/decimal.hpp"
 
-#include "y/mkl/opt/minimize.hpp"
 
 
 namespace Yttrium
@@ -60,6 +60,27 @@ namespace Yttrium
                 fp("%.15g %s\n", u, (*this)(u).str().c_str());
             }
         }
+
+
+        void Solver:: run(XMLog & xml, XWritable & Ctop, const XReadable & Ktop)
+        {
+            Y_XML_Section(xml, "Solver::run" );
+            const String xpName = exploreName + ".dat";
+
+            if(xml.verbose) OutputFile::Overwrite(xpName);
+
+
+            size_t cycle = 1;
+            explore(xml,Ctop,Ktop); { AppendFile fp(xpName); fp("0 %s\n", Wsub.str().c_str()); }
+            if(Wnew<=zero) goto CONVERGED;
+            
+
+
+        CONVERGED:
+            { AppendFile fp(xpName); fp("%s %s\n", Decimal(cycle).c_str(), Wnew.str().c_str()); }
+
+        }
+
 
 
 

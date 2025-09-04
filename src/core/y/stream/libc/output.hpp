@@ -64,6 +64,8 @@ namespace Yttrium
         template <typename FILENAME> static inline
         void Overwrite(const FILENAME & fileName)  { OutputFile(fileName,false); }
 
+        static void Echo(const Core::String<char> & filename, const char * const fmt,...) Y_Printf_Check(2,3);
+
     private:
         Y_Disable_Copy_And_Assign(OutputFile); //!< discarding
         Libc::OutputFile * const file;         //!< low-level file

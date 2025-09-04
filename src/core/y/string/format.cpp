@@ -6,7 +6,7 @@
 
 namespace Yttrium
 {
-
+    
 
     String Formatted::Get(const char * const fmt,...)
     {

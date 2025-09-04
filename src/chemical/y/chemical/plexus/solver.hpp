@@ -45,12 +45,12 @@ namespace Yttrium
             // methods
             //
             //__________________________________________________________________
+
+            void run(XMLog & xml, XWritable & Ctop, const XReadable & Ktop);
+
+            void explore(XMLog & xml, XWritable & Ctop, const XReadable & Ktop);
             void jmatrix(XMLog & xml);
             void kinetic(XMLog & xml);
-            bool explore(XMLog &           xml,
-                         XWritable &       Ctop,
-                         const XReadable & Ktop);
-
 
             //!  \return rms of affinitie
             xreal_t affinityRMS(const XReadable &, const Level);
@@ -103,7 +103,7 @@ namespace Yttrium
 
         };
 
-        
+
     }
 
 }

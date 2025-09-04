@@ -155,6 +155,7 @@ namespace Yttrium
                 gnuplot += ", '" + jmatrixName + '.' + proExt + "' w lp";
                 xml() << "\t" << gnuplot << std::endl;
             }
+            
 
         }
 
