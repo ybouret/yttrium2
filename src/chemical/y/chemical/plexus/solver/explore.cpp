@@ -129,10 +129,8 @@ namespace Yttrium
             Wnew = Wsub;   // best starting point
 
             for(PNode *pn=plist->head;pn;pn=pn->next)
-            {
-                Prospect & pro  = **pn;
-                pro.W0 = Wsub; // starting point
-            }
+                (**pn).W0 = Wsub; // starting point
+            
 
 
             //------------------------------------------------------------------
