@@ -30,6 +30,13 @@ namespace Yttrium
         class Solver
         {
         public:
+            enum Result
+            {
+                Perfect,
+                Success,
+                Stalled
+            };
+
             //__________________________________________________________________
             //
             //
@@ -61,7 +68,7 @@ namespace Yttrium
             xreal_t explore(XMLog &xml);
             xreal_t kinetic(XMLog &xml);
             void    forward(XMLog &xml, XWritable & Ctop, const XReadable & Ktop);
-            bool    upgrade(XMLog &xml, XWritable & Ctop, const String &uuid, Proc meth);
+            Result  upgrade(XMLog &xml, XWritable & Ctop, const String &uuid, Proc meth);
 
             //!  \return rms of affinitie
             xreal_t affinityRMS(const XReadable &, const Level);
@@ -108,8 +115,8 @@ namespace Yttrium
             String                gnuplot;      //!< constructed gnuplot command
             const String          exploreName;  //!< "explore"
             const String          kineticName;  //!< "kinetric"
-            
-
+            const String          jmatrixName;  //!< "jmatrix"
+            const String          monitorFile;  //!< "monitor.dat"
         };
 
 

@@ -8,14 +8,12 @@ namespace Yttrium
     namespace Chemical
     {
 
-        bool Solver:: upgrade(XMLog &        xml,
-                              XWritable &    Ctop,
-                              const String & uuid,
-                              Proc           meth)
+        Solver::Result Solver:: upgrade(XMLog &        xml,
+                                        XWritable &    Ctop,
+                                        const String & uuid,
+                                        Proc           meth)
         {
             assert(0!=meth);
-            //Y_XML_Section(xml,uuid);
-
             const xreal_t Wtmp   = ((*this).*meth)(xml);
             const bool    accept = Wtmp < Wnew;
 
@@ -31,11 +29,13 @@ namespace Yttrium
                 {
                     Y_XMLog(xml, "numeric zero @" << uuid);
                     cluster.copy(Ctop,TopLevel,Cnew,SubLevel);
-                    return true;
+                    return Perfect;
                 }
+
+                return Success;
             }
 
-            return false;
+            return Stalled;
         }
 
 
@@ -45,6 +45,7 @@ namespace Yttrium
 
             unsigned cycle = 0;
 
+            if(xml.verbose) OutputFile::Overwrite(monitorFile);
 
             while(true)
             {
@@ -55,38 +56,53 @@ namespace Yttrium
                 if(!proceed(xml,Ctop,Ktop))
                     return;
 
+                if(1==cycle) OutputFile::Echo(monitorFile,"0 %s 0 #init\n", Wsub.str().c_str());
+
                 Y_XMLog(xml, "W = " << Wsub.str());
 
                 // initialize from starting position
                 Wnew = Wsub;
                 Cnew.ld(Csub);
 
+                int            bestMethod = -1;
+                int            methodIndx = -1;
+                const String * methodName = 0;
 
-
-
-                if( upgrade(xml, Ctop, exploreName, & Solver::explore ) )
+                switch( ++methodIndx, upgrade(xml, Ctop, exploreName, & Solver::explore ) )
                 {
-                    return;
+                    case Perfect: return;
+                    case Success: bestMethod = methodIndx; methodName = & exploreName; break;
+                    case Stalled: break;
                 }
 
-                if( upgrade(xml, Ctop, kineticName, & Solver::kinetic ) )
+                switch( ++methodIndx, upgrade(xml, Ctop, kineticName, & Solver::kinetic ) )
                 {
-                    return;
+                    case Perfect: return;
+                    case Success: bestMethod = methodIndx;  methodName = & kineticName; break;
+                    case Stalled: break;
                 }
+
 
                 cluster.upload(Ctop,Cnew);
 
+                std::cerr << "bestMethod=" << bestMethod << std::endl;
+
                 if(Wnew>=Wsub)
                 {
+                    assert(bestMethod<0);
                     Y_XMLog(xml, "numeric minimum");
                     return;
                 }
 
-                //if(xml.verbose) OutputFile::Echo(fwd,"%u %s\n",cycle, Wnew.str().c_str());
+                assert(bestMethod>=0);
+                assert(0!=methodName);
+
+                std::cerr << "used " << *methodName << std::endl;
+                if(xml.verbose) OutputFile::Echo(monitorFile,"%u %s %d #%s\n",cycle, Wnew.str().c_str(), bestMethod, methodName->c_str());
 
 
 
-                if(cycle>=2) break;
+                if(cycle>=8) break;
             }
 
         }

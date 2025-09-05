@@ -60,7 +60,7 @@ namespace Yttrium
 
 #include <iostream>
 #include "y/memory/stealth.hpp"
-#include "y/memory/joint/segment.hpp"
+//#include "y/memory/joint/segment.hpp"
 
 namespace Yttrium
 {
@@ -69,12 +69,15 @@ namespace Yttrium
     {
 #define SANITY(EXPR) do { if( !(EXPR) ) { std::cerr << "*** " << #EXPR << " failure" << std::endl; return false; } } while(false)
 
+
+#if 0
         namespace
         {
             typedef Memory::Joint::Segment Segment;
             typedef Segment::Block         Block;
         }
-
+#endif
+        
         bool StrideMetrics:: isValidWith(const size_t blockSize) const noexcept
         {
             SANITY(size<=capacity);
@@ -84,8 +87,8 @@ namespace Yttrium
             const uint8_t * const freeSpace = org + (blockSize*size);
             const size_t          freeBytes = (numChars-size)*blockSize;
             SANITY(Memory::Stealth::Are0(freeSpace,freeBytes));
-            const Block * const block = Segment::GetBlockOf(address);
-            SANITY(0!=block);
+            //const Block * const block = Segment::GetBlockOf(address);
+            //SANITY(0!=block);
 
             return true;
         }

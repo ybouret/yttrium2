@@ -43,7 +43,9 @@ namespace Yttrium
         proExt("pro"),
         gnuplot(),
         exploreName("explore"),
-        kineticName("kinetic")
+        kineticName("kinetic"),
+        jmatrixName("jmatrix"),
+        monitorFile("monitor.dat")
         {
 
         }
