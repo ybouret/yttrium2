@@ -57,8 +57,8 @@ namespace Yttrium
             Y_XMLog(xml, "Wkin=" << Wkin.str() << " / " << Wsub.str() );
             if(xml.verbose)
             {
-                //gnuplot += ", '" + kineticName + '.' + proExt + "' w lp";
-                //xml() << "\t" << gnuplot << std::endl;
+                gnuplot += ", '" + kineticName + '.' + proExt + "' w lp";
+                xml() << "\t" << gnuplot << std::endl;
             }
 
             return Wkin;

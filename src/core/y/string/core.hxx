@@ -110,7 +110,7 @@ code( 0 )
     memcpy(code->base+lhsSize, rhs, rhsSize*sizeof(CH));
     code->size = sum;
     assert(code->isValid());
-    std::cerr << "(+) '" << code->base << "'" << std::endl;
+    //std::cerr << "(+) '" << code->base << "'" << std::endl;
 }
 
 template <>
