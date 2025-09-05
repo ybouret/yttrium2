@@ -1,5 +1,4 @@
 
-#if 0
 
 #include "y/chemical/plexus/solver.hpp"
 #include "y/container/algorithm/for-each.hpp"
@@ -9,11 +8,12 @@ namespace Yttrium
     namespace Chemical
     {
 
-        void Solver:: kinetic(XMLog & xml)
+        xreal_t Solver:: kinetic(XMLog & xml)
         {
             Y_XML_Section(xml, kineticName);
 
-            // computing xkin
+
+            // computing xkin by accumulation
             Algo::ForEach(xkin, & XAdd::ldz );
 
             for(const PNode *pn=plist->head;pn;pn=pn->next)
@@ -51,36 +51,21 @@ namespace Yttrium
 
 
             savePro(kineticName, 500);
-
-
             if(xml.verbose) xml() << kineticName;
-            const xreal_t Wkin = minimize(xml,Wsub,affinityRMS(Cend,SubLevel));
-            Y_XMLog(xml, "Wkin=" << Wkin.str() << " / " << Wnew.str() );
+            const xreal_t Wkin = minimize(xml); // Ctry is minimum
 
-
-            if(Wkin<=Wnew)
-            {
-                Y_XMLog(xml,"--> upgrading with " << kineticName);
-                Wnew = Wkin;
-                Cnew.ld(Ctry);
-            }
-            else
-            {
-                Y_XMLog(xml, "--> discarding " << kineticName);
-            }
-
+            Y_XMLog(xml, "Wkin=" << Wkin.str() << " / " << Wsub.str() );
             if(xml.verbose)
             {
                 gnuplot += ", '" + kineticName + '.' + proExt + "' w lp";
                 xml() << "\t" << gnuplot << std::endl;
             }
 
-            
+            return Wkin;
         }
 
     }
 
 }
 
-#endif
 

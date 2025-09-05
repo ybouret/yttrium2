@@ -18,7 +18,6 @@ namespace Yttrium
             Solver & F = *this;
             XTriplet x = { zero, 0, one };
             XTriplet f = { Wsub, 0, affinityRMS(Cend,SubLevel)  };
-            bool     isLocal = true;
 
             //------------------------------------------------------------------
             //
@@ -79,13 +78,11 @@ namespace Yttrium
             // Global Minimum at x.a
             //
             //----------------------------------------------------------
-            isLocal = false;
             f.b = f.c = f.a = F(x.b = x.c = x.a);
 
         END:
             if(xml.verbose) {
-                xml.os << "] @" << std::setw(22) << f.b.str() << ' ';
-                xml.os << (isLocal ? "local" : "global");
+                xml.os << "] @" << std::setw(22) << f.b.str();
                 xml.os << std::endl;
             }
 

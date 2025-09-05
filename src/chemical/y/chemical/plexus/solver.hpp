@@ -57,6 +57,7 @@ namespace Yttrium
              */
             bool    proceed(XMLog &xml, XWritable & Ctop, const XReadable & Ktop);
             xreal_t explore(XMLog &xml);
+            xreal_t kinetic(XMLog &xml);
 
             //!  \return rms of affinitie
             xreal_t affinityRMS(const XReadable &, const Level);
@@ -68,7 +69,7 @@ namespace Yttrium
             xreal_t operator()(xreal_t u);
 
 
-            //! minimize from Wsub/Csub to Cend
+            //! minimize from Wsub/Csub to Cend with recomputed affinity
             xreal_t minimize(XMLog &xml);
 
             void    savePro(const String &baseName, const unsigned);
@@ -102,9 +103,8 @@ namespace Yttrium
             const String          proExt;       //!< "pro"
             String                gnuplot;      //!< constructed gnuplot command
             const String          exploreName;  //!< "explore"
-
-            //! optimize a given prospect
-            //void optimize(XMLog &, Prospect &);
+            const String          kineticName;  //!< "kinetric"
+            
 
         };
 
