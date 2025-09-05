@@ -102,7 +102,7 @@ namespace Yttrium
         RETURN:
             if(xml.verbose)
             {
-                Y_XML_Section(xml, "affinity");
+                Y_XML_Section_Attr(xml, "affinity", Y_XML_Attr(cycle) );
                 for(const PNode *pn=plist->head;pn;pn=pn->next)
                 {
                     const Prospect & pro = **pn;

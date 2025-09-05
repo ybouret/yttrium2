@@ -198,12 +198,15 @@ namespace Yttrium
 
             // full topology
             {
-                iMatrix &Nu = Coerce(iFull).make(elist->size,slist->size);
+                iMatrix &iNu = Coerce(iFull).make(elist->size,slist->size);
+                XMatrix &xNu = Coerce(xFull).make(elist->size,slist->size);
+
                 for(const ENode *en=elist->head;en;en=en->next)
                 {
                     const Equilibrium &eq = **en;
                     const size_t       ei = eq.indx[SubLevel];
-                    eq.topology(Nu[ei],SubLevel);
+                    eq.topology(iNu[ei],SubLevel);
+                    eq.topology(xNu[ei],SubLevel);
                 }
             }
         }

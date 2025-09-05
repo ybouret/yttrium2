@@ -161,7 +161,8 @@ namespace Yttrium
             const EList     prodOnly;  //!< with only products
             const EList     reacOnly;  //!< with only reactants
             const EList     nebulous;  //!< with unbounded only
-            const iMatrix   iFull;     //!< full topology
+            const iMatrix   iFull;     //!< full topology, ints
+            const XMatrix   xFull;     //!< full topology, xreals
             CxxArray<EList> order;     //!< different combination order
 
 

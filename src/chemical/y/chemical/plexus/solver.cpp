@@ -12,6 +12,19 @@ namespace Yttrium
 
         using namespace MKL;
 
+        NRContext:: ~NRContext() noexcept
+        {
+        }
+
+        NRContext:: NRContext(const size_t n, const size_t m) :
+        dA(n,m),
+        Nu(n,m),
+        J(n,n),
+        Xi(n)
+        {
+        }
+
+
         Solver:: ~Solver() noexcept
         {
         }
@@ -36,6 +49,7 @@ namespace Yttrium
         solve1d(),
         xkin(cluster.slist->size),
         house( new Ortho::House(cluster.slist->size) ),
+        nrctx(cluster.iTopo.rows),
         lu(cluster.iTopo.rows),
         zero(),
         one(1),
@@ -48,6 +62,8 @@ namespace Yttrium
         monitorFile("monitor.dat")
         {
 
+            for(size_t n=1;n<=cluster.iTopo.rows;++n)
+                nrctx.push(n,cluster.slist->size);
         }
 
 

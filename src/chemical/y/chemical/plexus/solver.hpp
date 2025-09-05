@@ -11,19 +11,36 @@
 #include "y/chemical/plexus/solver/prospect.hpp"
 #include "y/ortho/house.hpp"
 #include "y/mkl/algebra/lu.hpp"
+#include "y/container/cxx/series.hpp"
 
 namespace Yttrium
 {
     namespace Chemical
     {
 
-        //typedef Protean::SoloLightList<const Species> SpList;
+
+
+        class NRContext
+        {
+        public:
+            NRContext(const size_t n, const size_t m);
+            ~NRContext() noexcept;
+
+            XMatrix dA; //!< n x M
+            XMatrix Nu; //!< n x M
+            XMatrix J;  //!< n x n dA * Nu'
+            XArray  Xi; //!< n
+
+        private:
+            Y_Disable_Copy_And_Assign(NRContext);
+        };
+
 
         //______________________________________________________________________
         //
         //
         //
-        //! non-linear mutli-stage solver for one cluste
+        //! non-linear mutli-stage solver for one cluster
         //
         //
         //______________________________________________________________________
@@ -68,7 +85,7 @@ namespace Yttrium
             xreal_t explore(XMLog &xml);
             xreal_t kinetic(XMLog &xml);
             xreal_t jmatrix(XMLog &xml);
-            
+
             void    forward(XMLog &xml, XWritable & Ctop, const XReadable & Ktop);
             Result  upgrade(XMLog &xml, XWritable & Ctop, const String &uuid, Proc meth);
 
@@ -109,6 +126,7 @@ namespace Yttrium
             Solve1D               solve1d;      //!< solving each equilibria
             Accumulator           xkin;         //!< accumulator
             AutoPtr<Ortho::House> house;        //!< extract basis
+            CxxSeries<NRContext>  nrctx;        //!< for jmatrix
             MKL::LU<xreal_t>      lu;           //!< for algebra
             const xreal_t         zero;         //!< alias
             const xreal_t         one;          //!< alias

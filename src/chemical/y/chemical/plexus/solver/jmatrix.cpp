@@ -59,12 +59,13 @@ namespace Yttrium
             //__________________________________________________________________
             const size_t n = basis->size;
             const size_t m = cluster.slist->size;
-            XMatrix dA(n,m);
-            iMatrix Nu(n,m);
-            XArray  Xi(n,zero);
-            XMatrix J(n,n);
+            NRContext   &_ = nrctx[n];
+            XMatrix & dA = _.dA;
+            XMatrix & Nu = _.Nu;
+            XArray  & Xi = _.Xi;
+            XMatrix &  J = _.J;
 
-            J.ld(zero);
+            dA.ld(zero);
             {
                 size_t i = 1;
                 for(const PNode *pn=basis->head;pn;pn=pn->next,++i)
@@ -74,26 +75,24 @@ namespace Yttrium
                     const size_t       ei = eq.indx[SubLevel];
 
                     eq.jacobian(dA[i],Csub,SubLevel);
-                    Nu[i].ld( cluster.iFull[ei] );
+                    Nu[i].ld( cluster.xFull[ei] );
                     Xi[i] = -eq.affinity(xadd,pro.eK,Csub,SubLevel);
                 }
             }
 
             for(size_t i=n;i>0;--i)
             {
+                XMatrix::Row       & Ji = J[i];
+                const XMatrix::Row &dAi = dA[i];
                 for(size_t j=n;j>0;--j)
                 {
                     xadd.ldz();
-                    xadd.addProd(dA[i](),Nu[j](),m);
-                    J[i][j] = xadd.sum();
+                    xadd.addProd(dAi(),Nu[j](),m);
+                    Ji[j] = xadd.sum();
                 }
             }
 
-            std::cerr << "C=" << Csub << std::endl;
-            std::cerr << "dA=" << dA << std::endl;
-            std::cerr << "Nu=" << Nu << std::endl;
-            std::cerr << "J=" << J << std::endl;
-
+            
 
             //__________________________________________________________________
             //
@@ -106,6 +105,10 @@ namespace Yttrium
             if(!lu.build(J))
             {
                 Y_XMLog(xml,"Singular Jacobian");
+                std::cerr << "C=" << Csub << std::endl;
+                std::cerr << "dA=" << dA << std::endl;
+                std::cerr << "Nu=" << Nu << std::endl;
+                std::cerr << "J=" << J << std::endl;
                 exit(0);
                 return Wsub;
             }
