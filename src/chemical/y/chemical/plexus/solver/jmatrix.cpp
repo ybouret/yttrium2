@@ -105,11 +105,11 @@ namespace Yttrium
             if(!lu.build(J))
             {
                 Y_XMLog(xml,"Singular Jacobian");
-                std::cerr << "C=" << Csub << std::endl;
-                std::cerr << "dA=" << dA << std::endl;
-                std::cerr << "Nu=" << Nu << std::endl;
-                std::cerr << "J=" << J << std::endl;
-                exit(0);
+                //std::cerr << "C=" << Csub << std::endl;
+                //std::cerr << "dA=" << dA << std::endl;
+                //std::cerr << "Nu=" << Nu << std::endl;
+                //std::cerr << "J=" << J << std::endl;
+                //exit(0);
                 return Wsub;
             }
 
