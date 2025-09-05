@@ -46,7 +46,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            void run(XMLog &xml, XWritable & Ctop, const XReadable & Ktop);
+            typedef xreal_t (Solver::*Proc)(XMLog &);
 
             //! build valid prospects and initialize Wsub/Csub
             /**
@@ -56,8 +56,12 @@ namespace Yttrium
              \return true iff more than one prospect
              */
             bool    proceed(XMLog &xml, XWritable & Ctop, const XReadable & Ktop);
+
+
             xreal_t explore(XMLog &xml);
             xreal_t kinetic(XMLog &xml);
+            void    forward(XMLog &xml, XWritable & Ctop, const XReadable & Ktop);
+            bool    upgrade(XMLog &xml, const String &uuid, Proc meth);
 
             //!  \return rms of affinitie
             xreal_t affinityRMS(const XReadable &, const Level);

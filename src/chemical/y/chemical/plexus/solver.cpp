@@ -42,7 +42,8 @@ namespace Yttrium
         safety(0.98),
         proExt("pro"),
         gnuplot(),
-        exploreName("explore")
+        exploreName("explore"),
+        kineticName("kinetic")
         {
 
         }
@@ -60,36 +61,7 @@ namespace Yttrium
         }
 
 
-        void Solver:: run(XMLog &xml, XWritable &Ctop, const XReadable &Ktop)
-        {
-            Y_XML_Section(xml,"Solver");
-
-            // prepare Ctop  and all prospects
-            if(!proceed(xml,Ctop,Ktop))
-                return;
-
-            Y_XMLog(xml, "W = " << Wsub.str());
-
-            // initialize
-            Wnew = Wsub;
-            Cnew.ld(Csub);
-
-            {
-                const xreal_t Wtmp = explore(xml);
-                if(Wtmp<=zero)
-                {
-
-                }
-                if(Wtmp<Wnew)
-                {
-                    
-                }
-            }
-
-
-
-        }
-
+      
 
     }
 
