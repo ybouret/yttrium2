@@ -45,7 +45,10 @@ namespace Yttrium
 
             const char * asChar(const IntToType<false> &) const noexcept; //!< not char \return address
             const char * asChar(const IntToType<true>  &) const noexcept; //!< is  char \return empty string
+
+
             
+
             //__________________________________________________________________
             //
             //
@@ -54,6 +57,8 @@ namespace Yttrium
             //__________________________________________________________________
             size_t       size;     //!< current chars
             const size_t capacity; //!< size <= capacity
+
+
 
         protected:
             void * const address;  //!< allocated memory

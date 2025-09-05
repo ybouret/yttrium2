@@ -48,7 +48,7 @@ namespace Yttrium
                 savePro(pro.eq.name,500);
                 pro.display(xml() << "[*] ",cluster.nameFmt) << " $" << std::setw(22) << pro.Wo.str() << " / " << Wsub.str() << std::endl;
                 gnuplot = "plot '" + pro.eq.name + '.' + proExt + "' w lp";
-                xml() << "\t" << gnuplot << std::endl;
+                // xml() << "\t" << gnuplot << std::endl;
             }
 
             // provide Ctry to driver

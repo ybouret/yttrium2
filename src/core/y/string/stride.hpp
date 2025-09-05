@@ -48,7 +48,8 @@ namespace Yttrium
             item(base-1)
             {
                 assert(other.isValid());
-                (void) memcpy(base,other.base,(size=other.size)*sizeof(T));
+                assert(capacity>=other.size);
+                memcpy(base,other.base,(size=other.size)*sizeof(T));
                 assert(isValid());
             }
 
@@ -80,8 +81,8 @@ namespace Yttrium
                                const size_t    length) noexcept
             {
                 assert( Good(source,length) );
-                assert(capacity>=length);
-                assert(isValid());
+                assert( capacity>=length    );
+                assert( isValid()           );
 
                 if(size<=length)
                 {
@@ -94,7 +95,7 @@ namespace Yttrium
                     // other is shorter
                     assert(length<size);
                     memmove(base,source,length*sizeof(T));
-                    memset(base+length,0,(length-size)*sizeof(T));
+                    memset(base+length,0,(size-length)*sizeof(T));
                     size = length;
                     assert(isValid());
                 }
@@ -128,8 +129,8 @@ namespace Yttrium
                 assert(isValid());
                 assert(capacity>=length+size);
 
-                memmove(base+length,base,size*sizeof(T));
-                memmove(base,source,length);
+                memmove(base+length,base, size   * sizeof(T));
+                memmove(base,source,      length * sizeof(T));
                 size += length;
                 assert(isValid());
             }

@@ -82,7 +82,7 @@ namespace Yttrium
             template <typename NAME>
             explicit Section(XMLog &xmlog, const NAME &name, const Property ppty) :
             xml(xmlog),
-            str(xml.verbose ? new String(name) : 0),
+            str( xml.verbose ? new String(name) : 0),
             pty(ppty)
             {
                 init();

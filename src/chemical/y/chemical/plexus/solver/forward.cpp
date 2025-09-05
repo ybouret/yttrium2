@@ -1,6 +1,7 @@
 
 #include "y/chemical/plexus/solver.hpp"
 #include "y/container/algorithm/for-each.hpp"
+#include "y/stream/libc/output.hpp"
 
 namespace Yttrium
 {
@@ -13,7 +14,7 @@ namespace Yttrium
                               Proc           meth)
         {
             assert(0!=meth);
-            Y_XML_Section(xml,uuid);
+            //Y_XML_Section(xml,uuid);
 
             const xreal_t Wtmp   = ((*this).*meth)(xml);
             const bool    accept = Wtmp < Wnew;
@@ -42,30 +43,51 @@ namespace Yttrium
         {
             Y_XML_Section(xml,"Solver");
 
-            //unsigned cycle = 1;
+            unsigned cycle = 0;
 
 
-            // prepare Ctop  and all prospects
-            if(!proceed(xml,Ctop,Ktop))
-                return;
-
-            Y_XMLog(xml, "W = " << Wsub.str());
-
-            // initialize from starting position
-            Wnew = Wsub;
-            Cnew.ld(Csub);
-
-            if( upgrade(xml, Ctop, exploreName, & Solver::explore ) )
+            while(true)
             {
-                return;
-            }
+                ++cycle;
+                Y_XMLog(xml, "[[ cycle = " << cycle << " ]]");
+                
+                // prepare Ctop  and all prospects
+                if(!proceed(xml,Ctop,Ktop))
+                    return;
 
-            if( upgrade(xml, Ctop, kineticName, & Solver::kinetic ) )
-            {
-                return;
-            }
+                Y_XMLog(xml, "W = " << Wsub.str());
 
-            
+                // initialize from starting position
+                Wnew = Wsub;
+                Cnew.ld(Csub);
+
+
+
+
+                if( upgrade(xml, Ctop, exploreName, & Solver::explore ) )
+                {
+                    return;
+                }
+
+                if( upgrade(xml, Ctop, kineticName, & Solver::kinetic ) )
+                {
+                    return;
+                }
+
+                cluster.upload(Ctop,Cnew);
+
+                if(Wnew>=Wsub)
+                {
+                    Y_XMLog(xml, "numeric minimum");
+                    return;
+                }
+
+                //if(xml.verbose) OutputFile::Echo(fwd,"%u %s\n",cycle, Wnew.str().c_str());
+
+
+
+                if(cycle>=2) break;
+            }
 
         }
 

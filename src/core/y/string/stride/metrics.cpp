@@ -20,7 +20,7 @@ namespace Yttrium
         {
             assert(blockSize>0);
             static Memory::Pooled &mgr = Memory::Pooled::Instance();
-            Coerce(address) = mgr.acquire( Coerce(obtained) ); assert( obtained >= numChars * blockSize );
+            Coerce(address)  = mgr.acquire( Coerce(obtained) ); assert( obtained >= numChars * blockSize );
             Coerce(numChars) = obtained / blockSize;
             Coerce(capacity) = numChars - 1;
             assert( isValidWith(blockSize) );
@@ -52,12 +52,15 @@ namespace Yttrium
             return static_cast<const char *>(address);
         }
 
+
+
     }
 
 }
 
 #include <iostream>
 #include "y/memory/stealth.hpp"
+#include "y/memory/joint/segment.hpp"
 
 namespace Yttrium
 {
@@ -66,18 +69,29 @@ namespace Yttrium
     {
 #define SANITY(EXPR) do { if( !(EXPR) ) { std::cerr << "*** " << #EXPR << " failure" << std::endl; return false; } } while(false)
 
+        namespace
+        {
+            typedef Memory::Joint::Segment Segment;
+            typedef Segment::Block         Block;
+        }
+
         bool StrideMetrics:: isValidWith(const size_t blockSize) const noexcept
         {
             SANITY(size<=capacity);
             SANITY(numChars-1==capacity);
             SANITY(0!=address);
-            const uint8_t * const org = (const uint8_t *)address;
+            const uint8_t * const org       = (const uint8_t *)address;
             const uint8_t * const freeSpace = org + (blockSize*size);
-            const size_t          freeBytes  = (numChars-size)*blockSize;
+            const size_t          freeBytes = (numChars-size)*blockSize;
             SANITY(Memory::Stealth::Are0(freeSpace,freeBytes));
+            const Block * const block = Segment::GetBlockOf(address);
+            SANITY(0!=block);
+
             return true;
         }
 
+
+        
 
     }
 

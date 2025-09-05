@@ -110,6 +110,7 @@ code( 0 )
     memcpy(code->base+lhsSize, rhs, rhsSize*sizeof(CH));
     code->size = sum;
     assert(code->isValid());
+    std::cerr << "(+) '" << code->base << "'" << std::endl;
 }
 
 template <>
@@ -314,7 +315,7 @@ bool operator==<CH>(const CH lhs, const String<CH> &rhs) noexcept
 
 
 
-// differenct
+// different
 
 template <>
 bool operator!=<CH>(const String<CH> &lhs, const String<CH> &rhs) noexcept

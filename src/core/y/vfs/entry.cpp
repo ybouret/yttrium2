@@ -39,9 +39,12 @@ namespace Yttrium
     }
 
     static inline
-    size_t shifting(const char *field, const String &path)
+    size_t shifting(const char * const field, const String &path)
     {
-        return static_cast<size_t>(field-path.c_str());
+        assert(0!=field);
+        const size_t offset = static_cast<size_t>(field-path.c_str());
+        assert(offset<path.size());
+        return offset;
     }
 
     VFS::Entry:: Entry(const Entry &entry) :
