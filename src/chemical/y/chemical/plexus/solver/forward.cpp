@@ -51,7 +51,7 @@ namespace Yttrium
             {
                 ++cycle;
                 Y_XMLog(xml, "[[ cycle = " << cycle << " ]]");
-                
+
                 // prepare Ctop  and all prospects
                 if(!proceed(xml,Ctop,Ktop))
                     return;
@@ -68,22 +68,20 @@ namespace Yttrium
                 int            methodIndx = -1;
                 const String * methodName = 0;
 
-                switch( ++methodIndx, upgrade(xml, Ctop, exploreName, & Solver::explore ) )
-                {
-                    case Perfect: return;
-                    case Success: bestMethod = methodIndx; methodName = & exploreName; break;
-                    case Stalled: break;
-                }
+#define Y_Chemical_Solver(METH) do { \
+/**/    switch( ++methodIndx, upgrade(xml, Ctop, METH##Name, & Solver::METH ) ) \
+/**/    {\
+/**/      case Perfect: return;\
+/**/      case Success: bestMethod = methodIndx; methodName = & METH##Name; break;\
+/**/      case Stalled: break;\
+/**/    }\
+} while(false)
 
-                switch( ++methodIndx, upgrade(xml, Ctop, kineticName, & Solver::kinetic ) )
-                {
-                    case Perfect: return;
-                    case Success: bestMethod = methodIndx;  methodName = & kineticName; break;
-                    case Stalled: break;
-                }
+                Y_Chemical_Solver(explore);
+                Y_Chemical_Solver(kinetic);
+                Y_Chemical_Solver(jmatrix);
 
 
-                cluster.upload(Ctop,Cnew);
 
                 std::cerr << "bestMethod=" << bestMethod << std::endl;
 
@@ -96,6 +94,7 @@ namespace Yttrium
 
                 assert(bestMethod>=0);
                 assert(0!=methodName);
+                cluster.upload(Ctop,Cnew);
 
                 std::cerr << "used " << *methodName << std::endl;
                 if(xml.verbose) OutputFile::Echo(monitorFile,"%u %s %d #%s\n",cycle, Wnew.str().c_str(), bestMethod, methodName->c_str());

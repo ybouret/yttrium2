@@ -1,4 +1,3 @@
-#if 0
 
 #include "y/chemical/plexus/solver.hpp"
 #include "y/container/algorithm/for-each.hpp"
@@ -9,7 +8,7 @@ namespace Yttrium
     namespace Chemical
     {
 
-        void Solver:: jmatrix(XMLog &xml)
+        xreal_t Solver:: jmatrix(XMLog &xml)
         {
             Y_XML_Section(xml,jmatrixName);
 
@@ -99,7 +98,7 @@ namespace Yttrium
             if(!lu.build(J))
             {
                 Y_XMLog(xml,"Singular Jacobian");
-                return;
+                return Wsub;
             }
 
             lu.solve(J,Xi);
@@ -112,7 +111,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            xreal_t scale  = 2.0;
+            xreal_t scale  = 1.1;
             bool    wasCut = false;
             for(const SNode *sn=cluster.slist->head;sn;sn=sn->next)
             {
@@ -136,8 +135,9 @@ namespace Yttrium
 
             savePro(jmatrixName,500);
 
+            exit(1);
 
-
+#if 0
             const xreal_t Wjmx = minimize(xml,Wsub,affinityRMS(Cend,SubLevel));
             Y_XMLog(xml, "Wjmx=" << Wjmx.str() << " / " << Wnew.str() );
 
@@ -157,8 +157,9 @@ namespace Yttrium
                 gnuplot += ", '" + jmatrixName + '.' + proExt + "' w lp";
                 xml() << "\t" << gnuplot << std::endl;
             }
-            
+#endif
 
+            return zero;
         }
 
 
@@ -166,5 +167,4 @@ namespace Yttrium
 
 }
 
-#endif
 

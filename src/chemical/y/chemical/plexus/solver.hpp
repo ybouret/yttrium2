@@ -67,6 +67,8 @@ namespace Yttrium
 
             xreal_t explore(XMLog &xml);
             xreal_t kinetic(XMLog &xml);
+            xreal_t jmatrix(XMLog &xml);
+            
             void    forward(XMLog &xml, XWritable & Ctop, const XReadable & Ktop);
             Result  upgrade(XMLog &xml, XWritable & Ctop, const String &uuid, Proc meth);
 
