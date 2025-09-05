@@ -11,13 +11,13 @@ namespace Yttrium
     {
         using namespace MKL;
 
-        xreal_t Solver:: minimize(XMLog &xml, const xreal_t W0, const xreal_t W1)
+        xreal_t Solver:: minimize(XMLog &xml)
         {
             static const size_t MaxIter = ceil( -log( Numeric<real_t>::EPSILON) / log(2.0) );
 
             Solver & F = *this;
             XTriplet x = { zero, 0, one };
-            XTriplet f = { W0,   0, W1  };
+            XTriplet f = { Wsub, 0, affinityRMS(Cend,SubLevel)  };
             bool     isLocal = true;
 
             //------------------------------------------------------------------

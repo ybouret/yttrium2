@@ -77,10 +77,8 @@ namespace Yttrium
             const xreal_t      eK;   //!< current e.K
             XWritable &        cc;   //!< optimized phases space
             xreal_t            xi;   //!< optimized extent
-            xreal_t            W0;   //!< original  W
             xreal_t            Wo;   //!< optimized W
-            xreal_t            W1;   //!< solve1d   W
-
+            
         private:
             Y_Disable_Assign(Prospect); //!< discarding
         };

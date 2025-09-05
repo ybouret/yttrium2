@@ -46,11 +46,17 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            void run(XMLog & xml, XWritable & Ctop, const XReadable & Ktop);
+            void run(XMLog &xml, XWritable & Ctop, const XReadable & Ktop);
 
-            void explore(XMLog & xml, XWritable & Ctop, const XReadable & Ktop);
-            void jmatrix(XMLog & xml);
-            void kinetic(XMLog & xml);
+            //! build valid prospects and initialize Wsub/Csub
+            /**
+             \param xml output
+             \param Ctop initial top-level concentrations, may be modified
+             \param Ktop initial top-level constants
+             \return true iff more than one prospect
+             */
+            bool    proceed(XMLog &xml, XWritable & Ctop, const XReadable & Ktop);
+            xreal_t explore(XMLog &xml);
 
             //!  \return rms of affinitie
             xreal_t affinityRMS(const XReadable &, const Level);
@@ -62,7 +68,8 @@ namespace Yttrium
             xreal_t operator()(xreal_t u);
 
 
-            xreal_t minimize(XMLog &xml, const xreal_t W0, const xreal_t W1);
+            //! minimize from Wsub/Csub to Cend
+            xreal_t minimize(XMLog &xml);
 
             void    savePro(const String &baseName, const unsigned);
 
@@ -74,8 +81,8 @@ namespace Yttrium
             XArray                Csub;         //!< SubLevel C
             XArray                Cend;         //!< endpoint on concetration
             XArray                Ctry;         //!< probe
-            xreal_t               Wnew;         //!< new W <= Wsub
-            XArray                Cnew;         //!< new C
+            xreal_t               Wnew;         //!< SubLevel new W
+            XArray                Cnew;         //!< SubLevel new C
             XArray                dC;           //!< delta C helper
             XMatrix               Ceq;          //!< storage for prospect/solve1d
             XArray                affinity;     //!< storage for affinites
@@ -92,14 +99,12 @@ namespace Yttrium
             const xreal_t         zero;         //!< alias
             const xreal_t         one;          //!< alias
             const xreal_t         safety;       //!< safety coefficient
-            const String          exploreName;  //!< "explore"
-            const String          kineticName;  //!< "kinetic"
-            const String          jmatrixName;  //!< "jmatrix
             const String          proExt;       //!< "pro"
             String                gnuplot;      //!< constructed gnuplot command
+            const String          exploreName;  //!< "explore"
 
             //! optimize a given prospect
-            void optimize(XMLog &, Prospect &);
+            //void optimize(XMLog &, Prospect &);
 
         };
 

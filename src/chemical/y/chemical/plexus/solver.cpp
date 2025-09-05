@@ -40,11 +40,9 @@ namespace Yttrium
         zero(),
         one(1),
         safety(0.98),
-        exploreName("explore"),
-        kineticName("kinetic"),
-        jmatrixName("jmatrix"),
         proExt("pro"),
-        gnuplot()
+        gnuplot(),
+        exploreName("explore")
         {
 
         }
@@ -62,26 +60,29 @@ namespace Yttrium
         }
 
 
-        void Solver:: run(XMLog & xml, XWritable & Ctop, const XReadable & Ktop)
+        void Solver:: run(XMLog &xml, XWritable &Ctop, const XReadable &Ktop)
         {
-            Y_XML_Section(xml, "Solver::run" );
-            const String xpName = exploreName + ".dat";
+            Y_XML_Section(xml,"Solver");
 
-            if(xml.verbose) OutputFile::Overwrite(xpName);
+            // prepare Ctop  and all prospects
+            if(!proceed(xml,Ctop,Ktop))
+                return;
+
+            // initialize
+            Wnew = Wsub;
+            Cnew.ld(Csub);
+
+            {
+                const xreal_t Wtmp = explore(xml);
+                if(Wtmp<Wnew)
+                {
+                    
+                }
+            }
 
 
-            size_t cycle = 1;
-            explore(xml,Ctop,Ktop); { AppendFile fp(xpName); fp("0 %s\n", Wsub.str().c_str()); }
-            if(Wnew<=zero) goto CONVERGED;
-            
-
-
-        CONVERGED:
-            { AppendFile fp(xpName); fp("%s %s\n", Decimal(cycle).c_str(), Wnew.str().c_str()); }
 
         }
-
-
 
 
     }

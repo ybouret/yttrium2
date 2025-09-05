@@ -5,7 +5,8 @@ namespace Yttrium
 {
     namespace Chemical
     {
-        
+
+#if 0
         void Solver:: optimize(XMLog &xml, Prospect &pro)
         {
 
@@ -17,6 +18,7 @@ namespace Yttrium
             
             savePro(pro.eq.name,500);
         }
+#endif
     }
 
 }

@@ -64,10 +64,6 @@ Y_UTEST(plexus)
     {
         Solver solver(*cl);
         solver.run(xml,C0,cls.K);
-
-        //solver.explore(xml,C0,cls.K);
-        //solver.kinetic(xml);
-        //solver.jmatrix(xml);
     }
 
 

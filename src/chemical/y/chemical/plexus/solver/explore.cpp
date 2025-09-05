@@ -4,20 +4,58 @@
 #include "y/mkl/numeric.hpp"
 #include "y/mkl/api/almost-equal.hpp"
 #include "y/mkl/opt/optimize.hpp"
-#include "y/jive/vfs.hpp"
-#include "y/vfs/local/fs.hpp"
 
 namespace Yttrium
 {
     namespace Chemical
     {
-        static inline bool isRunning(const Prospect &pro) noexcept
+       
+
+        xreal_t Solver:: explore(XMLog &xml)
         {
-            assert(Crucial==pro.st||Running==pro.st);
-            return Running == pro.st;
+            Y_XML_Section(xml,exploreName);
+
+            assert(plist->size>0);
+
+            for(PNode *pn=plist->head;pn;pn=pn->next)
+            {
+                Prospect & pro  = **pn; assert(Running == pro.st);
+                Cend.ld(pro.cc);
+                pro.Wo = minimize(xml);
+            }
+
+            {
+                const size_t maximum  = cluster->size();
+                const size_t selected = plist->size;
+                Y_XML_Section_Attr(xml,"selecting", Y_XML_Attr(selected) << Y_XML_Attr(maximum) );
+                plist.sort(Prospect::ByIncreasingWo);
+
+                if(xml.verbose)
+                {
+                    for(PNode *pn=plist->head;pn;pn=pn->next)
+                    {
+                        Prospect &    pro  = **pn; assert(Running == pro.st);
+                        pro.display(xml(),cluster.nameFmt)
+                        <<   " $" << std::setw(22) << pro.Wo.str()
+                        << std::endl;
+                    }
+                }
+            }
+
+            const Prospect &pro = **plist->head;
+            if(xml.verbose)
+            {
+                pro.display(xml(),cluster.nameFmt) << " $" << std::setw(22) << pro.Wo.str() << " / " << Wsub.str() << std::endl;
+                gnuplot = "plot '" + pro.eq.name + '.' + proExt + "' w lp";
+                xml() << "\t" << gnuplot << std::endl;
+            }
+
+            Ctry.ld(pro.cc);
+            return (plist->size > 1) ? pro.Wo : zero;
         }
 
 
+#if 0
         void Solver:: explore(XMLog &xml, XWritable &Ctop, const XReadable &Ktop)
         {
             Y_XML_Section(xml,exploreName);
@@ -163,6 +201,7 @@ namespace Yttrium
                 const size_t selected = plist->size;
                 Y_XML_Section_Attr(xml,"selecting", Y_XML_Attr(selected) << Y_XML_Attr(maximum) );
                 plist.sort(Prospect::ByIncreasingWo);
+
                 if(xml.verbose)
                 {
                     for(PNode *pn=plist->head;pn;pn=pn->next)
@@ -198,7 +237,8 @@ namespace Yttrium
             }
 
         }
-
+#endif
+        
     }
 
 }
