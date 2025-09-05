@@ -132,6 +132,9 @@ namespace Yttrium
              */
             void copy(XWritable &C, const Level L, const XReadable &C0, const Level L0) const;
 
+            void dowload(XWritable &Csub, const XReadable &Ctop) const;
+            void upload(XWritable &Ctop, const XReadable &Csub) const;
+
 
         private:
             Y_Disable_Copy_And_Assign(Cluster);  //!< discarding

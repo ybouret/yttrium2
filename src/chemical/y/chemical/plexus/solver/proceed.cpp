@@ -34,7 +34,7 @@ namespace Yttrium
             //
             //------------------------------------------------------------------
             Wsub = zero;
-            cluster.copy(Csub,SubLevel,Ctop,TopLevel);
+            cluster.dowload(Csub,Ctop);
 
             if(xml.verbose) {
                 Jive::_VFS::OnExtension(LocalFS::Instance(), ".", proExt, Jive::_VFS::Remove);
@@ -118,7 +118,7 @@ namespace Yttrium
             //------------------------------------------------------------------
 
             // upload if necessary
-            if(upload) cluster.copy(Ctop,TopLevel,Csub,SubLevel);
+            if(upload) cluster.upload(Ctop,Csub);
 
 
             // finalize

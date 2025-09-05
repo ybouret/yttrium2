@@ -7,7 +7,10 @@ namespace Yttrium
     namespace Chemical
     {
 
-        bool Solver:: upgrade(XMLog &xml, const String &uuid, Proc meth)
+        bool Solver:: upgrade(XMLog &        xml,
+                              XWritable &    Ctop,
+                              const String & uuid,
+                              Proc           meth)
         {
             assert(0!=meth);
             Y_XML_Section(xml,uuid);
@@ -21,9 +24,12 @@ namespace Yttrium
             {
                 Wnew = Wtmp;
                 Cnew.ld(Ctry);
-                std::cerr << "Check " << affinityRMS(Cnew,SubLevel).str() << std::endl;
+                Y_XMLog(xml, "check_" << uuid << " : " << affinityRMS(Cnew,SubLevel).str() << " / " << Wnew.str());
+
                 if(Wnew<=zero)
                 {
+                    Y_XMLog(xml, "numeric zero @" << uuid);
+                    cluster.copy(Ctop,TopLevel,Cnew,SubLevel);
                     return true;
                 }
             }
@@ -36,19 +42,30 @@ namespace Yttrium
         {
             Y_XML_Section(xml,"Solver");
 
+            //unsigned cycle = 1;
+
+
             // prepare Ctop  and all prospects
             if(!proceed(xml,Ctop,Ktop))
                 return;
 
             Y_XMLog(xml, "W = " << Wsub.str());
 
-            // initialize
+            // initialize from starting position
             Wnew = Wsub;
             Cnew.ld(Csub);
 
-            upgrade(xml,exploreName, & Solver::explore );
-            upgrade(xml,kineticName, & Solver::kinetic );
+            if( upgrade(xml, Ctop, exploreName, & Solver::explore ) )
+            {
+                return;
+            }
 
+            if( upgrade(xml, Ctop, kineticName, & Solver::kinetic ) )
+            {
+                return;
+            }
+
+            
 
         }
 

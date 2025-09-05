@@ -61,7 +61,7 @@ namespace Yttrium
             xreal_t explore(XMLog &xml);
             xreal_t kinetic(XMLog &xml);
             void    forward(XMLog &xml, XWritable & Ctop, const XReadable & Ktop);
-            bool    upgrade(XMLog &xml, const String &uuid, Proc meth);
+            bool    upgrade(XMLog &xml, XWritable & Ctop, const String &uuid, Proc meth);
 
             //!  \return rms of affinitie
             xreal_t affinityRMS(const XReadable &, const Level);

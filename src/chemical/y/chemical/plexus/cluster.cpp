@@ -225,6 +225,17 @@ namespace Yttrium
             ListOps:: Copy(slist, C, L, C0, L0);
         }
 
+        void Cluster:: dowload(XWritable &Csub, const XReadable &Ctop) const
+        {
+            copy(Csub,SubLevel,Ctop,TopLevel);
+        }
+
+        void Cluster:: upload(XWritable &Ctop, const XReadable &Csub) const
+        {
+            copy(Ctop,TopLevel,Csub,SubLevel);
+        }
+
+
     }
 
 }

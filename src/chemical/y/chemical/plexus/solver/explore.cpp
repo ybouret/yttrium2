@@ -23,6 +23,8 @@ namespace Yttrium
                 Cend.ld(pro.cc);
                 if(xml.verbose) cluster.nameFmt.display(xml(), pro.eq.name, Justify::Right);
                 pro.Wo = minimize(xml);
+                pro.cc.ld(Ctry);
+                pro.xi = pro.eq.extent(xadd,pro.cc,SubLevel,Csub);
             }
             
             plist.sort(Prospect::ByIncreasingWo);
