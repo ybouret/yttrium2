@@ -83,7 +83,7 @@ namespace Yttrium
 
 
 
-                std::cerr << "bestMethod=" << bestMethod << std::endl;
+                //std::cerr << "bestMethod=" << bestMethod << std::endl;
 
                 if(Wnew>=Wsub)
                 {
@@ -95,17 +95,21 @@ namespace Yttrium
                 assert(bestMethod>=0);
                 assert(0!=methodName);
                 cluster.upload(Ctop,Cnew);
-
-                std::cerr << "used " << *methodName << std::endl;
                 if(xml.verbose) OutputFile::Echo(monitorFile,"%u %s %d #%s\n",cycle, Wnew.str().c_str(), bestMethod, methodName->c_str());
 
-
-
-                //if(cycle>=8) break;
             }
 
         RETURN:
+            if(xml.verbose)
+            {
+                Y_XML_Section(xml, "affinity");
+                for(const PNode *pn=plist->head;pn;pn=pn->next)
+                {
+                    const Prospect & pro = **pn;
+                    cluster.nameFmt.display(xml(), pro.eq.name, Justify::Right) << " @" << pro.eq.affinity(xadd,pro.eK,Ctop,TopLevel).str() << std::endl;
+                }
 
+            }
             return;
 
 
