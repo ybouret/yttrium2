@@ -21,6 +21,8 @@ jaricom.c jcapimin.c jcapistd.c jcarith.c jccoefct.c jccolor.c
         
 
 add_library(y-jpeg STATIC jmemnobs.c ${LIBSOURCES})
+Y_ThirdParty(y-jpeg)
+
 
 set(CSOURCES cjpeg.c rdppm.c rdgif.c rdtarga.c rdrle.c rdbmp.c rdswitch.c cdjpeg.c)
 add_executable(y_cjpeg ${CSOURCES})

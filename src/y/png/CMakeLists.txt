@@ -712,6 +712,7 @@ endif()
 
 if(PNG_STATIC)
   add_library(png_static STATIC ${libpng_sources})
+  Y_ThirdParty(png_static)
   add_dependencies(png_static png_genfiles)
   list(APPEND PNG_LIBRARY_TARGETS png_static)
   set_target_properties(png_static
