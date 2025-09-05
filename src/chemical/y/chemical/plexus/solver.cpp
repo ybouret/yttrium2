@@ -68,12 +68,18 @@ namespace Yttrium
             if(!proceed(xml,Ctop,Ktop))
                 return;
 
+            Y_XMLog(xml, "W = " << Wsub.str());
+
             // initialize
             Wnew = Wsub;
             Cnew.ld(Csub);
 
             {
                 const xreal_t Wtmp = explore(xml);
+                if(Wtmp<=zero)
+                {
+
+                }
                 if(Wtmp<Wnew)
                 {
                     
