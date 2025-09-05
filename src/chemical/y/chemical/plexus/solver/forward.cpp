@@ -81,7 +81,7 @@ namespace Yttrium
                 Y_Chemical_Solver(kinetic);
                 Y_Chemical_Solver(jmatrix);
 
-
+                
 
                 std::cerr << "bestMethod=" << bestMethod << std::endl;
 

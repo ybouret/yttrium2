@@ -144,28 +144,8 @@ namespace Yttrium
                 gnuplot += ", '" + jmatrixName + '.' + proExt + "' w lp";
                 xml() << "\t" << gnuplot << std::endl;
             }
-            
-            exit(1);
 
-#if 0
-            const xreal_t Wjmx = minimize(xml,Wsub,affinityRMS(Cend,SubLevel));
-            Y_XMLog(xml, "Wjmx=" << Wjmx.str() << " / " << Wnew.str() );
-
-            if(Wjmx<=Wnew)
-            {
-                Y_XMLog(xml,"--> upgrading");
-                Wnew = Wjmx;
-                Cnew.ld(Ctry);
-            }
-            else
-            {
-                Y_XMLog(xml, "--> discarding");
-            }
-
-
-#endif
-
-            return zero;
+            return Wjmx;
         }
 
 
