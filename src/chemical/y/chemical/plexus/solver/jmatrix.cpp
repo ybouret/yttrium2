@@ -23,6 +23,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             house->free();
+            basis.free();
             {
                 const size_t    nmax = cluster.iTopo.rows;
                 Y_XML_Section_Attr(xml, "basis", Y_XML_Attr(nmax) );
@@ -63,6 +64,7 @@ namespace Yttrium
             XArray  Xi(n,zero);
             XMatrix J(n,n);
 
+            J.ld(zero);
             {
                 size_t i = 1;
                 for(const PNode *pn=basis->head;pn;pn=pn->next,++i)
@@ -87,6 +89,12 @@ namespace Yttrium
                 }
             }
 
+            std::cerr << "C=" << Csub << std::endl;
+            std::cerr << "dA=" << dA << std::endl;
+            std::cerr << "Nu=" << Nu << std::endl;
+            std::cerr << "J=" << J << std::endl;
+
+
             //__________________________________________________________________
             //
             //
@@ -98,6 +106,7 @@ namespace Yttrium
             if(!lu.build(J))
             {
                 Y_XMLog(xml,"Singular Jacobian");
+                exit(0);
                 return Wsub;
             }
 

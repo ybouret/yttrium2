@@ -71,7 +71,7 @@ namespace Yttrium
 #define Y_Chemical_Solver(METH) do { \
 /**/    switch( ++methodIndx, upgrade(xml, Ctop, METH##Name, & Solver::METH ) ) \
 /**/    {\
-/**/      case Perfect: return;\
+/**/      case Perfect: goto RETURN;\
 /**/      case Success: bestMethod = methodIndx; methodName = & METH##Name; break;\
 /**/      case Stalled: break;\
 /**/    }\
@@ -81,7 +81,7 @@ namespace Yttrium
                 Y_Chemical_Solver(kinetic);
                 Y_Chemical_Solver(jmatrix);
 
-                
+
 
                 std::cerr << "bestMethod=" << bestMethod << std::endl;
 
@@ -89,7 +89,7 @@ namespace Yttrium
                 {
                     assert(bestMethod<0);
                     Y_XMLog(xml, "numeric minimum");
-                    return;
+                    goto RETURN;
                 }
 
                 assert(bestMethod>=0);
@@ -101,8 +101,13 @@ namespace Yttrium
 
 
 
-                if(cycle>=8) break;
+                //if(cycle>=8) break;
             }
+
+        RETURN:
+
+            return;
+
 
         }
 
