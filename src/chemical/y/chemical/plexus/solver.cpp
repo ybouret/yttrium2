@@ -12,11 +12,11 @@ namespace Yttrium
 
         using namespace MKL;
 
-        NRContext:: ~NRContext() noexcept
+        Solver:: NRContext:: ~NRContext() noexcept
         {
         }
 
-        NRContext:: NRContext(const size_t n, const size_t m) :
+        Solver:: NRContext:: NRContext(const size_t n, const size_t m) :
         dA(n,m),
         Nu(n,m),
         J(n,n),

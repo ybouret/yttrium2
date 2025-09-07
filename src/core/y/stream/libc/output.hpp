@@ -64,6 +64,7 @@ namespace Yttrium
         template <typename FILENAME> static inline
         void Overwrite(const FILENAME & fileName)  { OutputFile(fileName,false); }
 
+        //! append \param filename destination \param fmt C-style format
         static void Echo(const Core::String<char> & filename, const char * const fmt,...) Y_Printf_Check(2,3);
 
     private:

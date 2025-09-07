@@ -19,22 +19,7 @@ namespace Yttrium
     {
 
 
-
-        class NRContext
-        {
-        public:
-            NRContext(const size_t n, const size_t m);
-            ~NRContext() noexcept;
-
-            XMatrix dA; //!< n x M
-            XMatrix Nu; //!< n x M
-            XMatrix J;  //!< n x n dA * Nu'
-            XArray  Xi; //!< n
-
-        private:
-            Y_Disable_Copy_And_Assign(NRContext);
-        };
-
+        
 
         //______________________________________________________________________
         //
@@ -47,11 +32,47 @@ namespace Yttrium
         class Solver
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef xreal_t (Solver::*Proc)(XMLog &); //!< alias
+
+            //__________________________________________________________________
+            //
+            //
+            //! upgrade result
+            //
+            //__________________________________________________________________
             enum Result
             {
-                Perfect,
-                Success,
-                Stalled
+                Perfect, //!< numeric zero
+                Success, //!< global decrease
+                Stalled  //!< no success
+            };
+
+            //__________________________________________________________________
+            //
+            //
+            //! Newton-Raphson Context
+            //
+            //__________________________________________________________________
+            class NRContext
+            {
+            public:
+                //! setup \param n equilibria \param m species
+                NRContext(const size_t n, const size_t m);
+                ~NRContext() noexcept; //!< cleanup
+
+                XMatrix dA; //!< n x M, dA/dC
+                XMatrix Nu; //!< n x M, topology
+                XMatrix J;  //!< n x n, dA * Nu'
+                XArray  Xi; //!< n      initially A
+
+            private:
+                Y_Disable_Copy_And_Assign(NRContext); //!< discarding
             };
 
             //__________________________________________________________________
@@ -60,8 +81,8 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            explicit Solver(const Cluster &);
-            virtual ~Solver() noexcept;
+            explicit Solver(const Cluster &); //!< setup with persistent context
+            virtual ~Solver() noexcept;       //!< cleanup
 
             //__________________________________________________________________
             //
@@ -69,25 +90,8 @@ namespace Yttrium
             // methods
             //
             //__________________________________________________________________
-
-            typedef xreal_t (Solver::*Proc)(XMLog &);
-
-            //! build valid prospects and initialize Wsub/Csub
-            /**
-             \param xml output
-             \param Ctop initial top-level concentrations, may be modified
-             \param Ktop initial top-level constants
-             \return true iff more than one prospect
-             */
-            bool    proceed(XMLog &xml, XWritable & Ctop, const XReadable & Ktop);
-
-
-            xreal_t explore(XMLog &xml);
-            xreal_t kinetic(XMLog &xml);
-            xreal_t jmatrix(XMLog &xml);
-
+            
             void    forward(XMLog &xml, XWritable & Ctop, const XReadable & Ktop);
-            Result  upgrade(XMLog &xml, XWritable & Ctop, const String &uuid, Proc meth);
 
             //!  \return rms of affinitie
             xreal_t affinityRMS(const XReadable &, const Level);
@@ -106,6 +110,20 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(Solver); //!< discarding
+
+            //! build valid prospects and initialize Wsub/Csub
+            /**
+             \param xml output
+             \param Ctop initial top-level concentrations, may be modified
+             \param Ktop initial top-level constants
+             \return true iff more than one prospect
+             */
+            bool    proceed(XMLog &xml, XWritable & Ctop, const XReadable & Ktop);
+            xreal_t explore(XMLog &xml);
+            xreal_t kinetic(XMLog &xml);
+            xreal_t jmatrix(XMLog &xml);
+            Result  upgrade(XMLog &xml, XWritable & Ctop, const String &uuid, Proc meth);
+
 
             const Cluster &       cluster;
             xreal_t               Wsub;         //!< SubLevel W

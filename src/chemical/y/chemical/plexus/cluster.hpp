@@ -132,7 +132,10 @@ namespace Yttrium
              */
             void copy(XWritable &C, const Level L, const XReadable &C0, const Level L0) const;
 
+            //! \param Csub sub-level array \param Ctop top-level array
             void dowload(XWritable &Csub, const XReadable &Ctop) const;
+
+            //! \param Csub sub-level array \param Ctop top-level array
             void upload(XWritable &Ctop, const XReadable &Csub) const;
 
 
