@@ -168,9 +168,9 @@ namespace Yttrium
             const XMatrix   xFull;     //!< full topology, xreals
             CxxArray<EList> order;     //!< different combination order
 
-
-            Cluster *     next;  //!< for list
-            Cluster *     prev;  //!< for list
+            const unsigned indx;  //!< indx
+            Cluster *      next;  //!< for list
+            Cluster *      prev;  //!< for list
 
         private:
             void buildTopology(XMLog &);      //!< build topology

@@ -56,10 +56,12 @@ namespace Yttrium
             }
 
             // compile all clusters
-            size_t ntot = 0;
-            for(Cluster *cl = list.head;cl;cl=cl->next)
+            size_t   ntot = 0;
+            unsigned icl  = 0;
+            for(Cluster *cl = list.head;cl;cl=cl->next,++icl)
             {
                 cl->compile(xml,eqs,K);
+                Coerce(cl->indx) = icl;
                 ntot += (***cl).size;
             }
 

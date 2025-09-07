@@ -34,6 +34,7 @@ namespace Yttrium
         iFull(),
         xFull(),
         order(0),
+        indx(0),
         next(0),
         prev(0)
         {
