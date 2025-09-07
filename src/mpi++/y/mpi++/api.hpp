@@ -6,6 +6,8 @@
 #include "y/singleton.hpp"
 #include "y/concurrent/life-time.hpp"
 #include "y/exception.hpp"
+
+#define OMP_SKIP_MPICXX 1
 #include <mpi.h>
 
 namespace Yttrium
@@ -47,7 +49,7 @@ namespace Yttrium
         const char * const processorName;
         
     private:
-        Y_Disable_Assign(MPI);
+        Y_Disable_Copy_And_Assign(MPI);
         friend Singleton<MPI,ClassLockPolicy>;
         explicit MPI();
         virtual ~MPI() noexcept;
