@@ -104,6 +104,10 @@ namespace Yttrium
 
 
             //! minimize from Wsub/Csub to Cend with recomputed affinity
+            /**
+             \param xml output
+             \return minimized value, result in Ctry
+             */
             xreal_t minimize(XMLog &xml);
 
             void    savePro(const String &baseName, const unsigned);

@@ -7,21 +7,41 @@
 #include "y/concurrent/life-time.hpp"
 #include "y/exception.hpp"
 
+//! disable mpicc
 #define OMP_SKIP_MPICXX 1
 #include <mpi.h>
 
 namespace Yttrium
 {
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! MPI Instance
+    //
+    //
+    //__________________________________________________________________________
     class MPI : public Singleton<MPI,ClassLockPolicy>
     {
     public:
-        static const char * const CallSign;
-        static const Longevity    LifeTime = LifeTimeOf:: MPI;
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        static const char * const CallSign;                     //!< "MPI"
+        static const Longevity    LifeTime = LifeTimeOf:: MPI;  //!< Life Time
+        static const char *   HumanReadableThreadLevel(const int) noexcept; //!< \return thread level
 
-        static const char *   HumanReadableThreadLevel(const int) noexcept;
 
-
+        //______________________________________________________________________
+        //
+        //
+        //! Exception
+        //
+        //______________________________________________________________________
         class Exception : public Yttrium:: Exception
         {
         public:
@@ -31,8 +51,8 @@ namespace Yttrium
             virtual const char * what() const noexcept;
 
         private:
-            Y_Disable_Assign(Exception);
-            char info[Length];
+            Y_Disable_Assign(Exception); //!< discarding
+            char info[Length];           //!< info storage
         };
 
 
@@ -41,11 +61,11 @@ namespace Yttrium
 
 
     public:
-        const size_t size;
-        const size_t rank;
-        const int    threadLevel;
-        const bool   primary;
-        const bool   replica;
+        const size_t       size;
+        const size_t       rank;
+        const int          threadLevel;
+        const bool         primary;
+        const bool         replica;
         const char * const processorName;
         
     private:
