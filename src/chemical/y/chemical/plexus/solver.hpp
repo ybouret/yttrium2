@@ -87,21 +87,65 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //
-            // methods
+            // Methods
             //
             //__________________________________________________________________
-            
-            void    forward(XMLog &xml, XWritable & Ctop, const XReadable & Ktop);
 
-            //!  \return rms of affinitie
-            xreal_t affinityRMS(const XReadable &, const Level);
+            //! apply algorithm until convergence
+            /**
+             \param xml output
+             \param Ctop initial top-level, solved
+             \param Ktop initial top-level constants
+             */
+            void forward(XMLog &xml, XWritable & Ctop, const XReadable & Ktop);
 
-            //! store individual components in affinity \return rms
-            xreal_t fullAffinityRMS(const XReadable &, const Level);
+
 
             //! \param u in [0:1] \return affinity at Ctry = (1-u) * Csub + u * Cend
             xreal_t operator()(xreal_t u);
 
+
+
+
+
+
+        private:
+            Y_Disable_Copy_And_Assign(Solver); //!< discarding
+
+            //! build valid prospects and initialize Wsub/Csub
+            /**
+             \param  xml  output
+             \param  Ctop initial top-level concentrations, may be modified
+             \param  Ktop initial top-level constants
+             \return true iff more than one prospect
+             */
+            bool    proceed(XMLog &xml, XWritable & Ctop, const XReadable & Ktop);
+            xreal_t explore(XMLog &); //!< \return best 1D
+            xreal_t kinetic(XMLog &); //!< \return best mass action estimation
+            xreal_t jmatrix(XMLog &); //!< \return Newton-Raphson estimate
+
+            //! apply one algorithm
+            /**
+             \param xml output
+             \param Ctop initial top-level concentrations, may be modified
+             \param uuid method name
+             \param meth method address
+             \return result of method
+             */
+            Result  upgrade(XMLog &xml, XWritable & Ctop, const String &uuid, Proc meth);
+
+            //! save profile fron Csub to Cend
+            /**
+             \param baseName profile base name
+             \param numPoints number of points to compute
+             */
+            void    savePro(const String &baseName, const unsigned numPoints);
+
+            //!  \return rms of affinities
+            xreal_t affinityRMS(const XReadable &, const Level);
+
+            //! store individual components in affinity \return rms
+            xreal_t fullAffinityRMS(const XReadable &, const Level);
 
             //! minimize from Wsub/Csub to Cend with recomputed affinity
             /**
@@ -110,26 +154,14 @@ namespace Yttrium
              */
             xreal_t minimize(XMLog &xml);
 
-            void    savePro(const String &baseName, const unsigned);
 
-        private:
-            Y_Disable_Copy_And_Assign(Solver); //!< discarding
-
-            //! build valid prospects and initialize Wsub/Csub
-            /**
-             \param xml output
-             \param Ctop initial top-level concentrations, may be modified
-             \param Ktop initial top-level constants
-             \return true iff more than one prospect
-             */
-            bool    proceed(XMLog &xml, XWritable & Ctop, const XReadable & Ktop);
-            xreal_t explore(XMLog &xml);
-            xreal_t kinetic(XMLog &xml);
-            xreal_t jmatrix(XMLog &xml);
-            Result  upgrade(XMLog &xml, XWritable & Ctop, const String &uuid, Proc meth);
-
-
-            const Cluster &       cluster;
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const Cluster &       cluster;      //!< persitent parent Cluster
             xreal_t               Wsub;         //!< SubLevel W
             XArray                Csub;         //!< SubLevel C
             XArray                Cend;         //!< endpoint on concetration

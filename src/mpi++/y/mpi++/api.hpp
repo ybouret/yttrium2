@@ -45,36 +45,60 @@ namespace Yttrium
         class Exception : public Yttrium:: Exception
         {
         public:
+            //! setup \param err error code \param fmt C-style format
             Exception(const int err, const char * fmt,...) noexcept Y_Printf_Check(3,4);
-            Exception(const Exception &) noexcept;
-            virtual ~Exception()         noexcept;
-            virtual const char * what() const noexcept;
+            Exception(const Exception &) noexcept;      //!< duplicate
+            virtual ~Exception()         noexcept;      //!< cleanup
+            virtual const char * what() const noexcept; //!< \return info
 
         private:
             Y_Disable_Assign(Exception); //!< discarding
             char info[Length];           //!< info storage
         };
 
-
-        static MPI & Init(int *argc, char ***argv, const int required = MPI_THREAD_SINGLE);
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
         virtual void display(std::ostream &, size_t) const;
+
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+
+        //! MPI_Init, wrapper
+        /**
+         \param argc     for MPI_Init_Thread
+         \param argv     for MPI_Init_Thread
+         \param required for MPI_Init_Thread
+         \return MPI instance, initialized
+         */
+        static MPI & Init(int *argc, char ***argv, const int required = MPI_THREAD_SINGLE);
+
+
 
 
     public:
-        const size_t       size;
-        const size_t       rank;
-        const int          threadLevel;
-        const bool         primary;
-        const bool         replica;
-        const char * const processorName;
-        
+        const size_t       size;          //!< COMM_WORLD size
+        const size_t       rank;          //!< COMM_WORLD rank
+        const int          threadLevel;   //!< current thread level
+        const bool         primary;       //!< primary flag
+        const bool         replica;       //!< replica flag
+        const char * const processorName; //!< MPI_GetProcessorName
+
     private:
-        Y_Disable_Copy_And_Assign(MPI);
-        friend Singleton<MPI,ClassLockPolicy>;
-        explicit MPI();
-        virtual ~MPI() noexcept;
+        friend class Singleton<MPI,ClassLockPolicy>;
+        Y_Disable_Copy_And_Assign(MPI); //!< discarding
+        explicit MPI();                 //!< initialize by Init
+        virtual ~MPI() noexcept;        //!< cleanup, MPI_Finalize()
     };
 
+    //! helper to handle errors
 #define Y_MPI_Call( CODE ) do { \
 /**/ const int err = CODE;      \
 /**/ if( MPI_SUCCESS != err ) throw MPI::Exception(err,"in '%s'",#CODE); \
