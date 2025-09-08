@@ -8,9 +8,11 @@
 #if defined(__cplusplus)
 #define Y_DLL_EXTERN() extern "C" {
 #define Y_DLL_FINISH() }
+#define Y_DLL_CPROTO extern "C"
 #else
 #define Y_DLL_EXTERN() //!< init exporting zone
 #define Y_DLL_FINISH() //!< quit exporting zone
+#define Y_DLL_CPROTO
 #endif
 
 
@@ -47,7 +49,7 @@ __attribute__((destructor))  void OnQuit() { ON_QUIT(); }
 #if defined(Y_WIN)
 
 #define Y_DLL_SETUP(ON_INIT,ON_QUIT)                                      \
-extern "C" BOOL WINAPI DllMain(HINSTANCE hinstDLL,DWORD fdwReason,LPVOID) \
+Y_DLL_CPROTO BOOL WINAPI DllMain(HINSTANCE hinstDLL,DWORD fdwReason,LPVOID) \
 {                                                                         \
 /**/ (void)hinstDLL;                                                      \
 /**/ switch( fdwReason )                                                  \
