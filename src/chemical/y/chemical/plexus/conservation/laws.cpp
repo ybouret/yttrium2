@@ -23,6 +23,7 @@ namespace Yttrium
             Ingress<const Core::ListOf<Law> >(),
             Assembly(),
             list(),
+            clan(),
             cs( GraphViz::ColorScheme::Query(CSID) )
             {
                 assert(U.cols==slist->size);
@@ -39,6 +40,12 @@ namespace Yttrium
                     }
                     Y_XMLog(xml,law);
                 }
+                for(const SNode *sn=slist->head;sn;sn=sn->next)
+                {
+                    const Species &sp = **sn;
+                    if(got(sp)) Coerce(clan) << sp;
+                }
+                Y_XMLog(xml,"species="  << clan);
             }
 
             bool Laws:: got(const Species &sp) const noexcept

@@ -38,7 +38,12 @@ namespace Yttrium
             {
             }
 
-            
+            static inline
+            SignType CompareBroken(const Broken &lhs, const Broken &rhs) noexcept
+            {
+                return Sign::Of(lhs.xs,rhs.xs);
+            }
+
             void Judge:: abide(XMLog &xml, XWritable &Ctop)
             {
                 Y_XML_Section(xml, "abide");
@@ -49,8 +54,19 @@ namespace Yttrium
                     if(xs<=zero) continue;
                     const Broken b(*law,xs);
                     jail << b;
-                    Y_XMLog(xml, std::setw(22) << xs.str() << " @" << *law);
+
                 }
+
+                if(jail.size()<=0) return;
+                jail.sort(CompareBroken);
+                for(const BNode *bn=jail->head;bn;bn=bn->next)
+                {
+                    const Broken &broken = **bn;
+                    Y_XMLog(xml, std::setw(22) << broken.xs.str() << " @" << broken.law);
+                }
+
+                
+
             }
 
         }

@@ -9,6 +9,7 @@
 
 #include "y/chemical/plexus/conservation/laws.hpp"
 #include "y/protean/solo/heavy/list.hpp"
+#include "y/ortho/house.hpp"
 
 namespace Yttrium
 {

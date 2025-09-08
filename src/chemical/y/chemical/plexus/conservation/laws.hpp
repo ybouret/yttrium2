@@ -38,7 +38,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 explicit Laws(XMLog &, const uMatrix &, const SList &); //!< setup
-                virtual ~Laws() noexcept; //!< cleanup
+                virtual ~Laws() noexcept;                               //!< cleanup
 
                 //______________________________________________________________
                 //
@@ -58,6 +58,7 @@ namespace Yttrium
                 Y_Ingress_Decl();                   //!< helper
                 CxxListOf<Law>                list; //!< laws
             public:
+                const SList                   clan;
                 const GraphViz::ColorScheme & cs;   //!< color scheme
             };
 
