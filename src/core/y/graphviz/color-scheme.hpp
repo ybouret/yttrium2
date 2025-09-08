@@ -10,13 +10,21 @@ namespace Yttrium
 {
     namespace GraphViz
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Built-In ColorScheme
+        //
+        //
+        //______________________________________________________________________
         struct ColorScheme
         {
-            const char * name;
-            const size_t size;
+            const char * name; //!< uuid
+            const size_t size; //!< number of sub-colors
 
-            static const ColorScheme Table[];
-            static const unsigned    Count;
+            static const ColorScheme Table[]; //!< global table
+            static const unsigned    Count;   //!< table size
         };
     }
 
