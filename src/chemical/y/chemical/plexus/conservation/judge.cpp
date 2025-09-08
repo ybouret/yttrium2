@@ -38,6 +38,7 @@ namespace Yttrium
             {
             }
 
+            
             void Judge:: abide(XMLog &xml, XWritable &Ctop)
             {
                 Y_XML_Section(xml, "abide");
