@@ -96,6 +96,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             static const char * const           CallSign; //!< "Cluster"
+            static const char * const           CSID;     //!< "set19"
             typedef AutoPtr<Conservation::Laws> CLaws;    //!< alias
 
             //__________________________________________________________________
@@ -138,6 +139,14 @@ namespace Yttrium
             //! \param Csub sub-level array \param Ctop top-level array
             void upload(XWritable &Ctop, const XReadable &Csub) const;
 
+            //__________________________________________________________________
+            //
+            //
+            // GraphViz methods
+            //
+            //__________________________________________________________________
+            OutputStream & viz(OutputStream &fp, const size_t numOrder) const;
+            void           vizSpecies(OutputStream &) const;
 
         private:
             Y_Disable_Copy_And_Assign(Cluster);  //!< discarding
@@ -171,6 +180,8 @@ namespace Yttrium
             const unsigned indx;  //!< indx
             Cluster *      next;  //!< for list
             Cluster *      prev;  //!< for list
+            
+            const GraphViz::ColorScheme & cs;
 
         private:
             void buildTopology(XMLog &);      //!< build topology

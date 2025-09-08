@@ -25,7 +25,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Species : public Indexed, public Formula
+        class Species : public Indexed, public Formula, public Vizible
         {
         public:
             //__________________________________________________________________
@@ -46,6 +46,17 @@ namespace Yttrium
             explicit Species(const String &,     const size_t); //!< setup
             explicit Species(const char * const, const size_t); //!< setup
             virtual ~Species() noexcept; //!< cleanup
+
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            OutputStream & viz(OutputStream &     fp,
+                               const String &     color,
+                               const char * const style) const;
+
 
             //__________________________________________________________________
             //

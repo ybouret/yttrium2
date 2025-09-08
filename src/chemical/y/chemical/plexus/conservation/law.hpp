@@ -7,6 +7,7 @@
 
 
 #include "y/chemical/reactive/actors.hpp"
+#include "y/protean/solo/light/list.hpp"
 
 namespace Yttrium
 {
@@ -57,6 +58,11 @@ namespace Yttrium
             private:
                 Y_Disable_Copy_And_Assign(Law); //!< discarding
             };
+
+
+            typedef Protean::SoloLightList<const Law> LList;
+            typedef LList::NodeType                   LNode;
+
         }
     }
 

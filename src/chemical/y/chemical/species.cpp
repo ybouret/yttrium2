@@ -1,7 +1,7 @@
 
 #include "y/chemical/species.hpp"
 #include "y/chemical/weasel.hpp"
-
+#include "y/stream/output.hpp"
 
 namespace Yttrium
 {
@@ -54,7 +54,15 @@ namespace Yttrium
             Coerce(name) = text( & Coerce(z) );
         }
 
-        
+        OutputStream & Species:: viz(OutputStream &     fp,
+                                     const String &     color,
+                                     const char * const style) const
+        {
+            assert(style);
+            nodeName(fp) << "[";
+            fp << "label = < " << html() << " >,shape=ellipse,color=" << color << ",fontcolor=" << color << ",style=" << style;
+            return Endl(fp << "]");
+        }
 
     }
 

@@ -9,8 +9,7 @@
 #include "y/random/mt19937.hpp"
 #include "y/string/env.hpp"
 #include "y/ascii/convert.hpp"
-
-#include "y/mkl/opt/bracket.hpp"
+#include "y/stream/libc/output.hpp"
 
 using namespace Yttrium;
 using namespace Chemical;
@@ -19,7 +18,7 @@ using namespace Chemical;
 
 Y_UTEST(plexus)
 {
-    MKL::BracketVerbose = true;
+    //MKL::BracketVerbose = true;
 
     Random::MT19937 ran;
     real_t          probaZero = 0;
@@ -67,6 +66,19 @@ Y_UTEST(plexus)
 
     lib.print(std::cerr, "[", C0, "]", xreal_t::ToString);
 
+
+    {
+        OutputFile fp("cs.dot");
+        Vizible::Enter(fp);
+        for(const Cluster *cl=cls->head;cl;cl=cl->next)
+        {
+            cl->viz(fp,1);
+        }
+
+        Vizible::Leave(fp);
+    }
+
+    Vizible::DotToPng("cs.dot");
 
 
 }

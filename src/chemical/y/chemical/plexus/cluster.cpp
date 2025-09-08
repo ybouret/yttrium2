@@ -12,6 +12,7 @@ namespace Yttrium
         }
 
         const char * const Cluster:: CallSign = "Cluster";
+        const char * const Cluster:: CSID     = "set19";
 
         Cluster:: ~Cluster() noexcept
         {
@@ -36,7 +37,8 @@ namespace Yttrium
         order(0),
         indx(0),
         next(0),
-        prev(0)
+        prev(0),
+        cs( GraphViz::ColorScheme::Query(CSID) )
         {
             attach(first);
         }
@@ -237,6 +239,7 @@ namespace Yttrium
             copy(Ctop,TopLevel,Csub,SubLevel);
         }
 
+   
 
     }
 

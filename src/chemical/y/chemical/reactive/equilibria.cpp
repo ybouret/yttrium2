@@ -7,15 +7,13 @@ namespace Yttrium
     namespace Chemical
     {
         const char * const Equilibria:: CallSign = "Equilibria";
-        const char * const Equilibria:: CSID     = "set19";
 
         Equilibria:: ~Equilibria() noexcept
         {
         }
 
         Equilibria:: Equilibria() :
-        db(),
-        cs( GraphViz::ColorScheme::Query(CSID) )
+        db()
         {
 
         }
