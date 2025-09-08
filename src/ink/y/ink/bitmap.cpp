@@ -16,7 +16,6 @@ namespace Yttrium
         {
             typedef Memory::SchoolOf<uint8_t> BitmapData;
             typedef Memory::SchoolOf<BitRow>  BitmapRows;
-
         }
 
         class Bitmap:: Code : public CountedObject

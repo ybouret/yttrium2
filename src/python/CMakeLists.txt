@@ -1,3 +1,4 @@
+include_directories(. ../core)
 add_library(typyc MODULE typyc.cpp)
 
 
