@@ -1,4 +1,5 @@
 #include "y/graphviz/vizible.hpp"
+#include "y/graphviz/color-scheme.hpp"
 #include "y/utest/run.hpp"
 #include "y/stream/libc/output.hpp"
 #include "y/string.hpp"
@@ -81,7 +82,22 @@ Y_UTEST(graphviz)
 
     Vizible::DotToPng("table.dot");
 
-    
+
+    {
+        OutputFile fp("colors.dot");
+        Vizible::Enter(fp);
+        for(unsigned i=0;i<GraphViz::ColorScheme::Count;++i)
+        {
+            const GraphViz::ColorScheme &cs = GraphViz::ColorScheme::Table[i];
+            std::cerr << cs.name << std::endl;
+
+            Vizible::Endl(fp << cs.name);
+        }
+        Vizible::Leave(fp);
+    }
+    Vizible::DotToPng("colors.dot");
+
+
 }
 Y_UDONE()
 

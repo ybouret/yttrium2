@@ -17,14 +17,16 @@ Y_CS(NAME,7), \
 Y_CS(NAME,8)
 
 #define Y_CS39(NAME) \
-Y_CS(NAME,9)
+Y_CS38(NAME), Y_CS(NAME,9)
 
 
         const ColorScheme ColorScheme:: Table[] =
         {
             Y_CS38(accent),
             Y_CS39(blues),
-            Y_CS39(brbg)
+            Y_CS39(brbg),
+            Y_CS39(bugn),
+
         };
 
         const unsigned ColorScheme:: Count = sizeof(Table)/sizeof(Table[0]);
