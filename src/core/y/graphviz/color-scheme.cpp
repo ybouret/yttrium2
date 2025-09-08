@@ -1,6 +1,8 @@
 
 #include "y/graphviz/color-scheme.hpp"
 #include "y/format/decimal.hpp"
+#include "y/exception.hpp"
+#include <cstring>
 
 namespace Yttrium
 {
@@ -85,7 +87,21 @@ Y_CS(NAME,12)
             return color;
         }
 
+        const ColorScheme & ColorScheme:: Query(const char * const uuid)
+        {
+            assert(0!=uuid);
+            for(unsigned i=0;i<Count;++i)
+            {
+                const ColorScheme &cs = Table[i];
+                if( 0 == strcmp(cs.name,uuid) ) return cs;
+            }
+            throw Specific::Exception("GraphViz::ColorScheme","no '%s'",uuid);
+        }
 
+        const ColorScheme & ColorScheme:: Query(const String &uuid)
+        {
+            return Query( uuid.c_str() );
+        }
     }
 
 }
