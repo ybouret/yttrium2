@@ -18,7 +18,10 @@ namespace Yttrium
             return pow(10.0,xp);
         }
 
-        void Library:: conc(Random::Bits &ran, XWritable &C, const real_t probaZero) const
+        void Library:: conc(Random::Bits &ran,
+                            XWritable    &C,
+                            const real_t probaZero,
+                            const real_t probaNeg) const
         {
             for(ConstIterator it=db.begin();it!=db.end();++it)
             {
@@ -26,7 +29,11 @@ namespace Yttrium
                 if( ran.to<real_t>() < probaZero )
                     sp(C,TopLevel) = 0;
                 else
+                {
                     sp(C,TopLevel) = Concentration(ran);
+                    if( ran.to<real_t>() < probaNeg )
+                        sp(C,TopLevel) = -sp(C,TopLevel);
+                }
             }
 
         }

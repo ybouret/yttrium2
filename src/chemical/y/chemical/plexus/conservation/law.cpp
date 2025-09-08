@@ -29,7 +29,7 @@ namespace Yttrium
             }
 
 
-            xreal_t Law:: excess(XAdd &xadd, const XReadable &C, const Level L) noexcept
+            xreal_t Law:: excess(XAdd &xadd, const XReadable &C, const Level L) const
             {
                 xadd.ldz();
                 for(const Actor *a = list.head; a; a=a->next)

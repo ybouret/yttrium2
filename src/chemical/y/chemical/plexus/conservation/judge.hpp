@@ -8,6 +8,7 @@
 
 
 #include "y/chemical/plexus/conservation/laws.hpp"
+#include "y/protean/solo/heavy/list.hpp"
 
 namespace Yttrium
 {
@@ -16,14 +17,38 @@ namespace Yttrium
         namespace Conservation
         {
 
+
+            class Broken
+            {
+            public:
+
+                Broken(const Law & _law, const xreal_t _xs) noexcept;
+                Broken(const Broken &) noexcept;
+                ~Broken() noexcept;
+
+                const Law &law;
+                xreal_t    xs;
+            };
+
+            typedef List<Broken>    BList;
+            typedef BList::NodeType BNode;
+
+
             class Judge : public Object
             {
             public:
                 explicit Judge(const Laws &);
                 virtual ~Judge() noexcept;
 
+                void abide(XMLog &xml, XWritable &Ctop);
+
+
             private:
                 Y_Disable_Copy_And_Assign(Judge);
+                const Laws &  laws;
+                const xreal_t zero;
+                BList         jail;
+                XAdd          xadd;
             };
         }
 

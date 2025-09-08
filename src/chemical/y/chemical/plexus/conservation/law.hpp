@@ -7,7 +7,6 @@
 
 
 #include "y/chemical/reactive/actors.hpp"
-#include "y/protean/solo/light/list.hpp"
 
 namespace Yttrium
 {
@@ -43,8 +42,8 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-                //! \return
-                xreal_t excess(XAdd &, const XReadable &, const Level) noexcept;
+                //! \return positive excess if any
+                xreal_t excess(XAdd &, const XReadable &, const Level) const;
 
                 OutputStream & viz(OutputStream &, const String &color) const;
 
@@ -62,8 +61,6 @@ namespace Yttrium
             };
 
 
-            typedef Protean::SoloLightList<const Law> LList;
-            typedef LList::NodeType                   LNode;
 
         }
     }

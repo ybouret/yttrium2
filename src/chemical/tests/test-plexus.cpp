@@ -4,6 +4,7 @@
 #include "y/chemical/weasel.hpp"
 #include "y/chemical/plexus/clusters.hpp"
 #include "y/chemical/plexus/steady-state.hpp"
+#include "y/chemical/plexus/conservation/judge.hpp"
 
 #include "y/utest/run.hpp"
 #include "y/random/mt19937.hpp"
@@ -22,11 +23,20 @@ Y_UTEST(plexus)
 
     Random::MT19937 ran;
     real_t          probaZero = 0;
+    real_t          probaNeg  = 0;
     {
         String pzs;
         if( Environment::Get(pzs, "probaZero") )
         {
             probaZero = ASCII::Convert::To<real_t>(pzs,"probaZero");
+        }
+    }
+
+    {
+        String pns;
+        if( Environment::Get(pns, "probaNeg") )
+        {
+            probaNeg = ASCII::Convert::To<real_t>(pns,"probaNeg");
         }
     }
 
@@ -55,12 +65,25 @@ Y_UTEST(plexus)
 
     const size_t M = lib->size();
     XArray       C0(M,0);
-    lib.conc(ran,C0,probaZero);
+    lib.conc(ran,C0,probaZero,probaNeg);
 
     lib.print(std::cerr, "[", C0, "]", xreal_t::ToString);
 
-    SteadyState s3(cls);
 
+    for(const Cluster *cl=cls->head;cl;cl=cl->next)
+    {
+       if(cl->claws.isValid())
+       {
+           Conservation::Judge judge( *cl->claws );
+
+           judge.abide(xml,C0);
+       }
+    }
+
+
+    return 0;
+
+    SteadyState s3(cls);
     s3.solve(xml,C0);
 
 

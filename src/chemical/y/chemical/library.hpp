@@ -71,7 +71,10 @@ namespace Yttrium
             /**
              \param probaZero probility to set a zero concentration
              */
-            void conc(Random::Bits &, XWritable &, const real_t probaZero = 0) const;
+            void conc(Random::Bits &,
+                      XWritable    &,
+                      const real_t probaZero = 0,
+                      const real_t probaNeg  = 0) const;
 
             //! pretty print
             /**
