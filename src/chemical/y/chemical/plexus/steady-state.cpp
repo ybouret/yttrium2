@@ -8,10 +8,11 @@ namespace Yttrium
     {
 
         SteadyState:: SteadyState(const Clusters &cls) :
-        sl()
+        solvers(),
+        clusters(cls)
         {
             for(const Cluster *cl=cls->head;cl;cl=cl->next)
-                sl.pushTail( new Solver(*cl) );
+                solvers.pushTail( new Solver(*cl) );
         }
 
         SteadyState:: ~SteadyState() noexcept
@@ -19,7 +20,17 @@ namespace Yttrium
             
         }
 
-        Y_Ingress_Impl(SteadyState,sl)
-        
+        void SteadyState:: solve(XMLog &xml, XWritable & Ctop)
+        {
+            Y_XML_Section(xml,"SteadyState");
+            for(Solver *solver=solvers.head;solver;solver=solver->next)
+            {
+                solver->forward(xml,Ctop,clusters.K);
+            }
+        }
+
+
+        Y_Ingress_Impl(SteadyState,solvers)
+
     }
 }

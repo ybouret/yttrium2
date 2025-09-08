@@ -3,7 +3,7 @@
 
 #include "y/chemical/weasel.hpp"
 #include "y/chemical/plexus/clusters.hpp"
-#include "y/chemical/plexus/solver.hpp"
+#include "y/chemical/plexus/steady-state.hpp"
 
 #include "y/utest/run.hpp"
 #include "y/random/mt19937.hpp"
@@ -59,6 +59,10 @@ Y_UTEST(plexus)
     lib.conc(ran,C0,probaZero);
 
     lib.print(std::cerr, "[", C0, "]", xreal_t::ToString);
+
+    SteadyState s3(cls);
+
+    s3.solve(xml,C0);
 
     for(const Cluster *cl=cls->head;cl;cl=cl->next)
     {

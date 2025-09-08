@@ -18,12 +18,14 @@ namespace Yttrium
             explicit SteadyState(const Clusters &);
             virtual ~SteadyState() noexcept;
 
-            void solve(XMLog &xml, XWritable & Ctop, const XReadable & Ktop);
+            //! solve with inner clusters K
+            void solve(XMLog &xml, XWritable & Ctop);
 
         private:
             Y_Disable_Copy_And_Assign(SteadyState);
             Y_Ingress_Decl();
-            CxxListOf<Solver> sl;
+            CxxListOf<Solver>  solvers;
+            const Clusters   & clusters;
         };
     }
 }
