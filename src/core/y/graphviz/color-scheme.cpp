@@ -1,5 +1,6 @@
 
 #include "y/graphviz/color-scheme.hpp"
+#include "y/format/decimal.hpp"
 
 namespace Yttrium
 {
@@ -30,6 +31,19 @@ Y_CS38(NAME), Y_CS(NAME,9)
         };
 
         const unsigned ColorScheme:: Count = sizeof(Table)/sizeof(Table[0]);
+
+
+        String  ColorScheme:: operator[](const size_t i) const
+        {
+            String color = "\"/";
+            color += name;
+            color += '/';
+            { const size_t j = 1 + (i%size); color += Decimal(j).c_str(); }
+            color += "\"";
+            return color;
+        }
+
+
     }
 
 }

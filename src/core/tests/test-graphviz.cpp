@@ -4,6 +4,7 @@
 #include "y/stream/libc/output.hpp"
 #include "y/string.hpp"
 #include <cctype>
+#include "y/format/decimal.hpp"
 
 using namespace Yttrium;
 
@@ -89,9 +90,19 @@ Y_UTEST(graphviz)
         for(unsigned i=0;i<GraphViz::ColorScheme::Count;++i)
         {
             const GraphViz::ColorScheme &cs = GraphViz::ColorScheme::Table[i];
-            std::cerr << cs.name << std::endl;
-
+            //std::cerr << cs.name << std::endl;
             Vizible::Endl(fp << cs.name);
+            for(size_t i=0;i<cs.size;++i)
+            {
+                const Decimal      d = Decimal(i);
+                const char * const id = d.c_str();
+                const String       sub = String(cs.name) + id;
+
+                fp << sub << "[label=\"" << id << "\"";
+                fp << ",shape=box,style=filled,fillcolor=" << cs[i];
+                Vizible::Endl(fp << "]");
+                Vizible::Endl(fp << cs.name << " -> " << sub);
+            }
         }
         Vizible::Leave(fp);
     }
