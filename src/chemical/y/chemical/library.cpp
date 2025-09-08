@@ -40,14 +40,16 @@ namespace Yttrium
         Library:: Library() :
         Ingress<const SpeciesDB>(),
         Assembly(),
-        db()
+        db(),
+        cs( GraphViz::ColorScheme::Query(CSID) )
         {
         }
 
         Y_Ingress_Impl(Library,db)
 
         const char * const Library:: CallSign = "Library";
-
+        const char * const Library:: CSID     = "dark28";
+        
         const Species & Library:: operator[](const String &id)
         {
 

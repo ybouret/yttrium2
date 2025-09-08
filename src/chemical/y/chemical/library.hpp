@@ -9,6 +9,7 @@
 #include "y/chemical/type/assembly.hpp"
 #include "y/random/bits.hpp"
 #include "y/chemical/type/xreal.hpp"
+#include "y/graphviz/color-scheme.hpp"
 
 namespace Yttrium
 {
@@ -35,6 +36,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             static const char * const         CallSign;       //!< "Library"
+            static const char * const         CSID;           //!< "dark28"
             typedef SpeciesDB::ConstIterator  ConstIterator;  //!< alias
             static const int                  LOG10MIN = -20; //!< alias
             static const int                  LOG10MAX =   1; //!< alias
@@ -133,6 +135,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Library); //!< discarding
             Y_Ingress_Decl();                   //!< helper
             SpeciesDB db; //!< database
+            const GraphViz::ColorScheme &cs;
         };
 
     }
