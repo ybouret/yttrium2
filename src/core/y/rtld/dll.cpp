@@ -37,7 +37,7 @@ namespace Yttrium
 #endif
 
 #if defined(Y_WIN)
-            ::FreeLibary(handle);
+            ::FreeLibrary(handle);
 #endif
 
             Coerce(handle) = 0;
