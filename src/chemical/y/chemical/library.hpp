@@ -134,8 +134,9 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(Library); //!< discarding
             Y_Ingress_Decl();                   //!< helper
-            SpeciesDB db; //!< database
-            const GraphViz::ColorScheme &cs;
+            SpeciesDB                    db; //!< database
+        public:
+            const GraphViz::ColorScheme &cs; //!< colorscheme
         };
 
     }
