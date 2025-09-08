@@ -48,16 +48,17 @@ __attribute__((destructor))  void OnQuit() { ON_QUIT(); }
 
 #if defined(Y_WIN)
 
-#define Y_DLL_SETUP(ON_INIT,ON_QUIT)                                      \
-Y_DLL_CPROTO BOOL WINAPI DllMain(HINSTANCE hinstDLL,DWORD fdwReason,LPVOID) \
-{                                                                         \
-/**/ (void)hinstDLL;                                                      \
-/**/ switch( fdwReason )                                                  \
-/**/   {                                                                  \
-/**/     case DLL_PROCESS_ATTACH: ON_INIT(); break;                       \
-/**/     case DLL_PROCESS_DETACH: ON_QUIT(); break;                       \
-/**/   }                                                                  \
-/**/ return TRUE;                                                         \
+#define Y_DLL_SETUP(ON_INIT,ON_QUIT)                                                    \
+Y_DLL_CPROTO BOOL WINAPI DllMain(HINSTANCE hinstDLL,DWORD fdwReason,LPVOID lpvReserved) \
+{                                                                                       \
+/**/    (void)hinstDLL;                                                                 \
+/**/    (void)lpvReserved;                                                              \
+/**/    switch( fdwReason )                                                             \
+/**/      {                                                                             \
+/**/        case DLL_PROCESS_ATTACH: ON_INIT(); break;                                  \
+/**/        case DLL_PROCESS_DETACH: ON_QUIT(); break;                                  \
+/**/      }                                                                             \
+/**/    return TRUE;                                                                    \
 }
 
 /*
