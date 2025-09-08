@@ -5,6 +5,7 @@
 #include "y/container/ordered/data-book.hpp"
 #include "y/container/algorithm/for-each.hpp"
 #include "y/chemical/plexus/cluster/mixed.hpp"
+#include "y/type/momentary.hpp"
 
 namespace Yttrium
 {
@@ -67,6 +68,8 @@ namespace Yttrium
             const iMatrix &Nu = iTopo;
             {
                 const iMatrix NuT(TransposeOf,Nu);
+                const Momentary::Off quiet(xml.verbose);
+                Y_XMLog(xml, "scanning combinatorics...");
                 Coven::Analysis::Run(xml,NuT,KeepComb,comb,Coven::Analysis::RejectRoot,true);
             }
 

@@ -2,6 +2,7 @@
 #include "y/chemical/plexus/cluster.hpp"
 #include "y/mkl/algebra/ortho-space.hpp"
 #include "y/coven/analysis.hpp"
+#include "y/type/momentary.hpp"
 
 namespace Yttrium
 {
@@ -20,12 +21,15 @@ namespace Yttrium
             {
                 Matrix<apz> Q = MKL::OrthoSpace::Of(iTopo);
                 Y_XMLog(xml,"Q=" << Q);
+                Y_XMLog(xml,"scanning conservations...");
+                const Momentary::Off quiet(xml.verbose);
                 Coven::Analysis::Run(xml,Q,KeepLaw,laws,Coven::Analysis::AcceptRoot,true);
             }
 
             const size_t Nc = laws->size;
             if (Nc<=0)
             {
+                Y_XMLog(xml, "no conservation, all species are unbounded.");
                 Coerce(unbounded) << slist;
                 return;
             }
