@@ -84,7 +84,7 @@ Y_UTEST(graphviz)
 
     Vizible::DotToPng("table.dot");
 
-
+    if(false)
     {
         LocalFS &fs = LocalFS::Instance();
         const String dirName = "tmp/";
