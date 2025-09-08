@@ -18,10 +18,8 @@ namespace Yttrium
                 const Equilibrium &eq  = pro.eq;
                 const xreal_t      aff = eq.affinity(xadd,pro.eK,C,L);
                 xsum << aff * aff;
-                //std::cerr << aff << ";";
             }
-            //std::cerr << std::endl;
-
+            
             const xreal_t resSq = xsum.sum() /= psize;
             return resSq.sqrt();
         }

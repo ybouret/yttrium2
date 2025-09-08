@@ -59,9 +59,11 @@ namespace Yttrium
         exploreName("explore"),
         kineticName("kinetic"),
         jmatrixName("jmatrix"),
-        monitorFile("monitor.dat")
+        monitorFile("monitor.dat"),
+        next(0), prev(0)
         {
 
+            // getting resources
             for(size_t n=1;n<=cluster.iTopo.rows;++n)
                 nrctx.push(n,cluster.slist->size);
         }

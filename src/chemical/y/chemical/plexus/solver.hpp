@@ -29,7 +29,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Solver
+        class Solver : public Object
         {
         public:
             //__________________________________________________________________
@@ -191,6 +191,9 @@ namespace Yttrium
             const String          kineticName;  //!< "kinetric"
             const String          jmatrixName;  //!< "jmatrix"
             const String          monitorFile;  //!< "monitor.dat"
+        public:
+            Solver * next; //!< for list
+            Solver * prev; //!< for list
         };
 
 
