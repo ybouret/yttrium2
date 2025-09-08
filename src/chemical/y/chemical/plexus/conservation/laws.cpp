@@ -8,8 +8,11 @@ namespace Yttrium
     {
         namespace Conservation
         {
+
+
             Y_Ingress_Impl(Laws,list)
-            
+            const char * const Laws:: CSID = "paired10";
+
             Laws:: ~Laws() noexcept
             {
             }
@@ -19,7 +22,8 @@ namespace Yttrium
                         const SList   &slist) :
             Ingress<const Core::ListOf<Law> >(),
             Assembly(),
-            list()
+            list(),
+            cs( GraphViz::ColorScheme::Query(CSID) )
             {
                 assert(U.cols==slist->size);
                 const size_t Nc = U.rows;

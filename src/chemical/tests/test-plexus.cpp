@@ -64,11 +64,8 @@ Y_UTEST(plexus)
 
     s3.solve(xml,C0);
 
-    for(const Cluster *cl=cls->head;cl;cl=cl->next)
-    {
-        Solver solver(*cl);
-        solver.forward(xml,C0,cls.K);
-    }
+
+    lib.print(std::cerr, "[", C0, "]", xreal_t::ToString);
 
 
 

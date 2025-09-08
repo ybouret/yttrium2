@@ -7,7 +7,7 @@
 
 #include "y/chemical/reactive/equilibrium.hpp"
 #include "y/chemical/type/assemblies.hpp"
-
+#include "y/graphviz/color-scheme.hpp"
 
 namespace Yttrium
 {
@@ -33,6 +33,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             static const char * const   CallSign;      //!< "Equilibria"
+            static const char * const   CSID;          //!< "set19"
             typedef EqDB::ConstIterator ConstIterator; //!< alias
             typedef EqDB::Iterator      Iterator;      //!< alias
 
@@ -73,6 +74,8 @@ namespace Yttrium
             Y_Ingress_Decl();                      //!< helper
             void    record(Equilibrium * const);   //!< check and record
             EqDB    db; //!< database
+        public:
+            const GraphViz::ColorScheme & cs; //!< colorscheme
         };
 
 

@@ -53,6 +53,8 @@ namespace Yttrium
 
             // provide Ctry to driver
             Ctry.ld(pro.cc);
+
+            // tweek result
             return (plist->size > 1) ? pro.Wo : zero;
         }
 

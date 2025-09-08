@@ -9,6 +9,7 @@
 
 #include "y/chemical/plexus/conservation/law.hpp"
 #include "y/chemical/type/assembly.hpp"
+#include "y/graphviz/color-scheme.hpp"
 #include "y/stream/xmlog.hpp"
 
 namespace Yttrium
@@ -29,6 +30,7 @@ namespace Yttrium
             class Laws : public Object, public Ingress< const Core::ListOf<Law> >, public Assembly
             {
             public:
+                static const char * const CSID; //!< "paired10"
                 //______________________________________________________________
                 //
                 //
@@ -49,9 +51,11 @@ namespace Yttrium
                 bool got(const Species &) const noexcept;
 
             private:
-                Y_Disable_Copy_And_Assign(Laws); //!< discarding
-                Y_Ingress_Decl();                //!< helper
-                CxxListOf<Law> list; //!< laws
+                Y_Disable_Copy_And_Assign(Laws);    //!< discarding
+                Y_Ingress_Decl();                   //!< helper
+                CxxListOf<Law>                list; //!< laws
+            public:
+                const GraphViz::ColorScheme & cs;   //!< color scheme
             };
 
         }
