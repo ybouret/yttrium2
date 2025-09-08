@@ -3,15 +3,14 @@
 #include <stdio.h>
 #include <math.h>
 
-static inline
-void Enter()
+static
+void Enter(void)
 {
     printf("Enter !\n");
 }
 
-
-static inline
-void Leave()
+static 
+void Leave(void)
 {
     printf("Leave !\n");
 }

@@ -21,7 +21,7 @@ namespace Yttrium
         struct ColorScheme
         {
             const char * name; //!< uuid
-            const size_t size; //!< number of sub-colors
+            size_t       size; //!< number of sub-colors
 
             String  operator[](const size_t) const; //!< \return formatted color
 

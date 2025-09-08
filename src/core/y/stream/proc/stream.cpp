@@ -1,6 +1,7 @@
 #include "y/stream/proc/stream.hpp"
 #include "y/ability/lockable.hpp"
 #include "y/exception.hpp"
+#include "y/system/platform.hpp"
 
 #include <cstdio>
 
