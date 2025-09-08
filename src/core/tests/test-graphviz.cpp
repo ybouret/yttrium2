@@ -98,7 +98,7 @@ Y_UTEST(graphviz)
             {
                 OutputFile fp(fileName);
                 Vizible::Enter(fp);
-                //std::cerr << cs.name << std::endl;
+                std::cerr << cs.name << std::endl;
                 Vizible::Endl(fp << cs.name);
                 for(size_t i=0;i<cs.size;++i)
                 {
