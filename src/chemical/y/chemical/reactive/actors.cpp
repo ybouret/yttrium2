@@ -157,6 +157,21 @@ namespace Yttrium
         }
 
 
+        String Actors:: html() const
+        {
+            String res;
+            const Actor *a = list.head;
+            if(a)
+            {
+                res = a->html();
+                for(a=a->next;a;a=a->next)
+                {
+                    res += '+';
+                    res += a->html();
+                }
+            }
+            return res;
+        }
     }
 
 }

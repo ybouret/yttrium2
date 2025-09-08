@@ -1,6 +1,7 @@
 
 
 #include "y/chemical/plexus/conservation/law.hpp"
+#include "y/stream/output.hpp"
 
 namespace Yttrium
 {
@@ -40,6 +41,20 @@ namespace Yttrium
                 if(xs<zero) return -xs;
                 return zero;
             }
+
+            OutputStream & Law:: viz(OutputStream &fp, const String &color) const
+            {
+                nodeName(fp) << "[";
+                fp << "label= < " << html() << " >,color=" << color << ", fontcolor=" << color;
+                fp << ",shape=box,style=diagonals";
+                Endl(fp<<"]");
+                for(const Actor *a=list.head;a;a=a->next)
+                {
+                    Endl(to( &(a->sp),fp) << "[color=" << color << ",arrowhead=odot]");
+                }
+                return fp;
+            }
+
 
         }
     }

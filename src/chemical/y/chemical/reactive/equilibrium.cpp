@@ -1,5 +1,5 @@
 #include "y/chemical/reactive/equilibrium.hpp"
-
+#include "y/stream/output.hpp"
 
 namespace Yttrium
 {
@@ -19,6 +19,7 @@ namespace Yttrium
             return k;
         }
 
+       
 
 
     }

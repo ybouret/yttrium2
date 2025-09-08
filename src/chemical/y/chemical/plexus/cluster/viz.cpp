@@ -2,7 +2,6 @@
 #include "y/chemical/plexus/cluster.hpp"
 #include "y/stream/output.hpp"
 
-
 namespace Yttrium
 {
     namespace Chemical
@@ -19,6 +18,7 @@ namespace Yttrium
             }
         }
 
+      
 
         OutputStream & Cluster:: viz(OutputStream &fp, const size_t numOrder) const
         {
@@ -28,7 +28,18 @@ namespace Yttrium
             fp("subgraph cluster_%u {\n",indx);
             
             vizSpecies(fp);
-            
+            if(1==numOrder && claws.isValid() )
+            {
+                claws->viz(fp);
+            }
+
+            const EList &el = order[numOrder];
+            for(const ENode *en=el->head;en;en=en->next)
+            {
+                const Equilibrium &eq    = **en;
+                const String &     color = cs[eq.indx[SubLevel]];
+                eq.viz(fp,color);
+            }
 
 
             return fp  << "}\n";

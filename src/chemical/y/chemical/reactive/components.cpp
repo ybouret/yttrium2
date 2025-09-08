@@ -1,6 +1,7 @@
 
 #include "y/chemical/reactive/components.hpp"
-
+#include "y/stream/output.hpp"
+#include "y/string/format.hpp"
 
 namespace Yttrium
 {
@@ -251,6 +252,48 @@ namespace Yttrium
             reac.diffAction(dma,X,K,       C,L,ma);
         }
 
+        static inline void makeArrow(OutputStream &fp,
+                                     const Vizible &src,
+                                     const Vizible &tgt,
+                                     const String &color,
+                                     const unsigned nu)
+        {
+            src.to(&tgt,fp) << "[";
+            if(nu>1)
+            {
+                const String label = Formatted::Get("%u",nu);
+                Vizible::Label(fp,label) << ",fontcolor=" << color << ",";
+            }
+            fp << "color=" << color;
+            Vizible::Endl(fp << "]");
+        }
+
+        OutputStream & Components:: viz(OutputStream &fp, const String &color) const
+        {
+            nodeName(fp) << "[";
+            Label(fp,name) << ",color=" << color << ",fontcolor=" << color << ",shape=";
+
+            switch(flow)
+            {
+                case Dangling: fp << "ellipse";      break;
+                case BothWays: fp << "box";          break;
+                case ProdOnly: fp << "trapezium";    break;
+                case ReacOnly: fp << "invtrapezium"; break;
+            }
+
+            Endl(fp<<"]");
+
+            for(const Actor *a=prod->head;a;a=a->next)
+            {
+                makeArrow(fp,*this,a->sp,color,a->nu);
+            }
+            for(const Actor *a=reac->head;a;a=a->next)
+            {
+                makeArrow(fp,a->sp,*this,color,a->nu);
+            }
+
+            return fp;
+        }
 
 
     }

@@ -20,19 +20,19 @@ Y_CS(NAME,7), \
 Y_CS(NAME,8)
 
 #define Y_CS9(NAME) \
-Y_CS8(NAME), \
+Y_CS8(NAME),        \
 Y_CS(NAME,9)
 
 #define Y_CS10(NAME) \
-Y_CS9(NAME), \
+Y_CS9(NAME),         \
 Y_CS(NAME,10)
 
 #define Y_CS11(NAME) \
-Y_CS10(NAME), \
+Y_CS10(NAME),        \
 Y_CS(NAME,11)
 
 #define Y_CS12(NAME) \
-Y_CS11(NAME), \
+Y_CS11(NAME),        \
 Y_CS(NAME,12)
 
         const ColorScheme ColorScheme:: Table[] =

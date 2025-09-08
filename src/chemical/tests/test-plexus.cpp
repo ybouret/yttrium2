@@ -78,7 +78,7 @@ Y_UTEST(plexus)
         Vizible::Leave(fp);
     }
 
-    Vizible::DotToPng("cs.dot");
+    Vizible::DotToPng("cs.dot",true);
 
 
 }

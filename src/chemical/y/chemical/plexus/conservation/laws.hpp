@@ -47,6 +47,9 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
+                //! species available by other means
+                OutputStream & viz(OutputStream &) const;
+
                 //! \return true iff species if found in laws
                 bool got(const Species &) const noexcept;
 

@@ -75,6 +75,8 @@ namespace Yttrium
             //! move safely \param C concentrations \param L level \param xi extent
             void moveSafely(XWritable &C, const Level L, const xreal_t xi) const;
 
+            String html() const; //! \return as html concentration
+
             //__________________________________________________________________
             //
             //

@@ -50,6 +50,16 @@ namespace Yttrium
                 return false;
             }
 
+            OutputStream & Laws:: viz(OutputStream &fp) const
+            {
+                size_t i=1;
+                for(const Law *law=list.head;law;law=law->next,++i)
+                {
+                    law->viz(fp,cs[i]);
+                }
+                return fp;
+            }
+
 
         }
 

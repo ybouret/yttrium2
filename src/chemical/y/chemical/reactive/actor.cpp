@@ -52,6 +52,15 @@ namespace Yttrium
             }
         }
 
+        String Actor:: html() const
+        {
+            String id;
+            if(nu>1) id += Formatted::Get("%u",nu);
+            id += '[' + sp.html() + ']';
+            return id;
+        }
+
+
 
         void Actor:: massAction(XMul &X, const XReadable &C, const Level L) const
         {

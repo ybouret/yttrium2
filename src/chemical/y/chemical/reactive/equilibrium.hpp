@@ -67,7 +67,6 @@ namespace Yttrium
             //__________________________________________________________________
             xreal_t K(const xreal_t); //!< \return tested constant
 
-            
 
 
         private:

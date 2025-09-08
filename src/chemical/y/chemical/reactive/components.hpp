@@ -47,7 +47,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Components : public Indexed, public Freezable
+        class Components : public Indexed, public Freezable, public Vizible
         {
         public:
             //__________________________________________________________________
@@ -175,6 +175,9 @@ namespace Yttrium
             void jacobian(XWritable       &J,
                           const XReadable &C,
                           const Level      L) const;
+
+
+            OutputStream & viz(OutputStream &fp, const String &color) const;
 
             //__________________________________________________________________
             //
