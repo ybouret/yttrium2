@@ -2,7 +2,7 @@
 #include "y/memory/allocator/dyadic.hpp"
 #include "y/container/cxx/array.hpp"
 #include "y/object.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/cameo/addition.hpp"
 #include "y/mkl/api/fabs.hpp"
 

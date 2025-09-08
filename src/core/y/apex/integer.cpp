@@ -1,7 +1,7 @@
 
 #include "y/apex/integer.hpp"
 #include "y/calculus/iabs.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/random/bits.hpp"
 
 namespace Yttrium

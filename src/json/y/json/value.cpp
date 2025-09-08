@@ -1,7 +1,7 @@
 #include "y/json/value.hpp"
 #include "y/object.hpp"
 #include <cstring>
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 namespace Yttrium
 {

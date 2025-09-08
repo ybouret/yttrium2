@@ -1,6 +1,6 @@
 
 #include "y/ink/bitmap.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/object/counted.hpp"
 #include "y/object/school-of.hpp"
 #include "y/type/destroy.hpp"

@@ -1,7 +1,7 @@
 
 #include "y/apex/n/modular.hpp"
 #include "y/apex/integer.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 namespace Yttrium
 {

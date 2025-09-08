@@ -1,6 +1,6 @@
 
 #include "y/container/matrix/metrics.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/format/decimal.hpp"
 
 namespace Yttrium

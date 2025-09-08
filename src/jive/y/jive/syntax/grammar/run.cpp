@@ -1,6 +1,6 @@
 
 #include "y/jive/syntax/grammar.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/jive/syntax/node/terminal.hpp"
 
 namespace Yttrium

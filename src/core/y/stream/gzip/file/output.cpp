@@ -4,7 +4,7 @@
 #endif
 
 #include "y/stream/gzip/file/output.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/ability/lockable.hpp"
 #include "../../../../../y/zlib/zlib.h"
 #include <cerrno>

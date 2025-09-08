@@ -313,7 +313,7 @@ e += S(a,5) + F(b,c,d) + K + x; b = S(b,30);        \
 #if 1
 #include "y/hashing/testing.hpp"
 #include "y/hashing/md.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 
 namespace Yttrium

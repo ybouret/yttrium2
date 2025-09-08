@@ -1,6 +1,6 @@
 
 #include "y/mkl/interpolation/linear.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/cameo/addition.hpp"
 
 namespace Yttrium

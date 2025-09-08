@@ -1,7 +1,7 @@
 
 #include "y/mkl/opt/minimize.hpp"
 #include "y/mkl/xreal.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/mkl/opt/optimize.hpp"
 #include "y/mkl/opt/bracket.hpp"
 

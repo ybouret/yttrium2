@@ -2,7 +2,7 @@
 #include "y/memory/small/ledger/pages.hpp"
 #include "y/memory/allocator/dyadic.hpp"
 #include "y/check/static.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/core/utils.hpp"
 #include "y/xml/attribute.hpp"
 

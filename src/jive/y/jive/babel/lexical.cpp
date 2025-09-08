@@ -8,7 +8,7 @@
 #include "y/jive/lexical/plugin/rstring.hpp"
 #include "y/jive/lexical/plugin/bstring.hpp"
 
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 namespace Yttrium
 {

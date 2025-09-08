@@ -1,7 +1,7 @@
 
 #include "y/jive/pattern/posix.hpp"
 #include "y/jive/pattern/all.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/pointer/auto.hpp"
 
 #include <cstring>

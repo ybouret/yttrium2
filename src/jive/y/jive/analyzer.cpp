@@ -4,7 +4,7 @@
 #include "y/jive/syntax/node/internal.hpp"
 #include "y/jive/syntax/node/terminal.hpp"
 #include "y/container/associative/suffix/map.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 namespace Yttrium
 {

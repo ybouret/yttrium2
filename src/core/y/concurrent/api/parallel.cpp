@@ -1,6 +1,7 @@
 
 #include "y/concurrent/api/parallel.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
+#include <cassert>
 
 namespace Yttrium
 {

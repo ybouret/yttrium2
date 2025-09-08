@@ -4,7 +4,7 @@
 #include "y/check/usual.hpp"
 #include "y/type/destroy.hpp"
 #include "y/check/static.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/string.hpp"
 #include "y/string/length.hpp"
 

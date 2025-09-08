@@ -2,7 +2,7 @@
 #include "y/vfs/vfs.hpp"
 #include "y/string/tokenizer.hpp"
 #include "y/container/sequence/vector.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 namespace Yttrium
 {

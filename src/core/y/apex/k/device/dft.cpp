@@ -4,7 +4,7 @@
 #include "y/dft/dft.hpp"
 #include "y/core/utils.hpp"
 #include "y/pointer/auto.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/system/wall-time.hpp"
 
 namespace Yttrium

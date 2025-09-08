@@ -1,7 +1,7 @@
 
 
 #include "y/jive/pattern/logic.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/stream/output.hpp"
 #include "y/jive/pattern/basic/all.hpp"
 

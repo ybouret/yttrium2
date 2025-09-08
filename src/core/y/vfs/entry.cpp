@@ -1,5 +1,5 @@
 #include "y/vfs/vfs.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include <cstring>
 
 namespace Yttrium

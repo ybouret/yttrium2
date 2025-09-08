@@ -1,5 +1,5 @@
 #include "y/counting/permutation.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/object/school-of.hpp"
 #include "y/memory/allocator/pooled.hpp"
 #include "y/counting/c/perm.h"

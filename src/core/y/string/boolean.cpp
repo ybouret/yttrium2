@@ -2,7 +2,7 @@
 #include "y/string/boolean.hpp"
 #include "y/string.hpp"
 #include "y/core/text.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/check/usual.hpp"
 #include <cstring>
 

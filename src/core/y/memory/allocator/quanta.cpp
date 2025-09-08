@@ -6,7 +6,7 @@
 
 #include "y/static/workspace/multiple.hpp"
 #include "y/xml/attribute.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/format/decimal.hpp"
 
 #include <iostream>

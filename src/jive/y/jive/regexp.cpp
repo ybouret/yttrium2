@@ -2,7 +2,7 @@
 #include "y/jive/regexp.hpp"
 #include "y/jive/regexp/compiler.hpp"
 #include "y/pointer/auto.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/jive/pattern/basic/byte.hpp"
 
 namespace Yttrium

@@ -1,7 +1,7 @@
 
 #include "y/stream/input.hpp"
 #include "y/stream/io/codec64.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/format/decimal.hpp"
 
 namespace Yttrium

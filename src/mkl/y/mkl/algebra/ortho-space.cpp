@@ -4,7 +4,7 @@
 #include "y/mkl/algebra/ortho-space.hpp"
 #include "y/mkl/algebra/lu.hpp"
 #include "y/mkl/tao/3.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 namespace Yttrium
 {

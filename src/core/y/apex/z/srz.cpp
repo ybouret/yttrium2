@@ -1,7 +1,7 @@
 #include "y/apex/integer.hpp"
 #include "y/stream/output.hpp"
 #include "y/stream/input.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 namespace Yttrium
 {

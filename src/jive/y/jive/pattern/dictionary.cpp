@@ -1,7 +1,7 @@
 #include "y/jive/pattern/dictionary.hpp"
 #include "y/container/associative/suffix/map.hpp"
 #include "y/type/destroy.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 namespace Yttrium
 {

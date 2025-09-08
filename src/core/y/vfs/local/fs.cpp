@@ -66,7 +66,6 @@ namespace Yttrium
     }
 }
 
-#include "y/system/exception.hpp"
 
 #if defined(Y_BSD)
 #include <dirent.h>

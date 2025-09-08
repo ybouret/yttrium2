@@ -3,7 +3,7 @@
 #include "y/object/school-of.hpp"
 #include "y/memory/operating.hpp"
 #include "y/calculus/base2.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/type/destroy.hpp"
 #include "y/core/utils.hpp"
 

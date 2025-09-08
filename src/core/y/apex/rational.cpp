@@ -1,6 +1,6 @@
 
 #include "y/apex/rational.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/random/bits.hpp"
 
 namespace Yttrium

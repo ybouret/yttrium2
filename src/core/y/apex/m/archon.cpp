@@ -3,7 +3,7 @@
 #include "y/xml/attribute.hpp"
 #include "y/core/linked/pool.hpp"
 #include "y/memory/allocator/quanta.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 namespace Yttrium
 {

@@ -1,6 +1,6 @@
 
 #include "y/container/ordered/data-book.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/format/hexadecimal.hpp"
 
 namespace Yttrium

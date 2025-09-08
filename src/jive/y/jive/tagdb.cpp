@@ -1,6 +1,6 @@
-
 #include "y/jive/tagdb.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
+
 namespace Yttrium
 {
     namespace Jive

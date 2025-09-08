@@ -2,7 +2,7 @@
 
 #include "y/jive/syntax/rule/wildcard/at-least.hpp"
 #include "y/jive/syntax/node/internal.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/stream/output.hpp"
 
 namespace Yttrium

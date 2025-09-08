@@ -9,7 +9,7 @@
 #include "y/type/traits.hpp"
 #include "y/stream/output.hpp"
 #include "y/stream/input.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/format/decimal.hpp"
 #include "y/core/text.hpp"
 #include "y/container/algorithm/reverse.hpp"

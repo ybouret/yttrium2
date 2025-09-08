@@ -1,6 +1,6 @@
 
 #include "y/ortho/metrics.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 namespace Yttrium
 {
@@ -29,7 +29,7 @@ namespace Yttrium
         dimensions(dims),
         hyperplane(dims-1)
         {
-            if(dimensions<1) throw Specific::Exception("Ortho::Metrics","nul dimension");
+            if(dimensions<1) throw Specific::Exception("Ortho::Metrics","null dimension");
         }
 
         Metrics:: Metrics(const Metrics &_) noexcept :

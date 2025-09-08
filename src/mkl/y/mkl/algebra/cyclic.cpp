@@ -4,7 +4,7 @@
 #include "y/object.hpp"
 #include "y/type/destroy.hpp"
 #include "y/container/cxx/array.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 namespace Yttrium
 {

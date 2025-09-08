@@ -7,7 +7,7 @@
 #include "y/calculus/alignment.hpp"
 #include "y/pointer/auto.hpp"
 #include "y/ascii/printable.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 #include <cstring>
 

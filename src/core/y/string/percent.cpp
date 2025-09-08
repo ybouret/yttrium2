@@ -1,5 +1,5 @@
 #include "y/string/percent.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/string/format.hpp"
 #include <cmath>
 

@@ -1,6 +1,6 @@
 
 #include "y/ability/freezable.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/string.hpp"
 
 namespace Yttrium

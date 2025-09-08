@@ -1,7 +1,7 @@
 
 #include "y/string/format.hpp"
 #include "y/core/variadic.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include <cstdarg>
 
 namespace Yttrium

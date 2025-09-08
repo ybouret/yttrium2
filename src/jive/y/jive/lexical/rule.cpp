@@ -1,7 +1,7 @@
 
 #include "y/jive/lexical/rule.hpp"
 #include "y/stream/libc/output.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 namespace Yttrium
 {
@@ -138,7 +138,7 @@ namespace Yttrium
 
 #include "y/jive/tagdb.hpp"
 #include "y/stream/input.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 namespace Yttrium
 {

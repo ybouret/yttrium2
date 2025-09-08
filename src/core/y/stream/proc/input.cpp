@@ -1,7 +1,7 @@
 
 
 #include "y/stream/proc/input.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include <cstdio>
 
 namespace Yttrium

@@ -1,6 +1,6 @@
 
 #include "y/memory/allocator.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/memory/stealth.hpp"
 
 namespace Yttrium

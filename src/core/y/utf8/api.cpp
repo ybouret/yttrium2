@@ -1,6 +1,6 @@
 
 #include "y/utf8/api.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/format/hexadecimal.hpp"
 #include "y/format/binary.hpp"
 #include <cstring>

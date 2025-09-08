@@ -2,7 +2,7 @@
 #include "y/hashing/testing.hpp"
 #include "y/hashing/function.hpp"
 #include "y/hashing/md.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 namespace Yttrium
 {

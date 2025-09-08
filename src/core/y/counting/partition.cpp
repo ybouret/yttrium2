@@ -5,7 +5,6 @@
 #include "y/counting/c/part.h"
 #include "y/container/sequence/list.hpp"
 #include "y/container/sequence/vector.hpp"
-#include "y/system/exception.hpp"
 
 #include <cerrno>
 

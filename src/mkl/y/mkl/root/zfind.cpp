@@ -1,6 +1,6 @@
 #include "y/mkl/root/zfind.hpp"
 #include "y/mkl/api/half.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/mkl/xreal.hpp"
 
 namespace Yttrium

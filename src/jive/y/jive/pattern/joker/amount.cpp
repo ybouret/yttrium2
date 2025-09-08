@@ -5,7 +5,7 @@
 #include "y/stream/output.hpp"
 #include "y/string/format.hpp"
 #include "y/format/decimal.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 namespace Yttrium
 {

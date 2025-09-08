@@ -1,6 +1,6 @@
 
 #include "y/ascii/convert.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/check/usual.hpp"
 
 namespace Yttrium

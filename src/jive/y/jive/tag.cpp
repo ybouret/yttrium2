@@ -2,7 +2,7 @@
 #include "y/jive/tag.hpp"
 #include "y/stream/input.hpp"
 #include "y/pointer/auto.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/format/decimal.hpp"
 
 namespace Yttrium

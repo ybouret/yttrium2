@@ -2,7 +2,7 @@
 #include "y/stream/memory/input.hpp"
 #include "y/memory/buffer/ro.hpp"
 #include "y/check/usual.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 namespace Yttrium
 {

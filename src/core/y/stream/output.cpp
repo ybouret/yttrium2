@@ -122,7 +122,7 @@ namespace Yttrium
 #include "y/string/length.hpp"
 #include "y/core/variadic.hpp"
 #include "y/memory/buffer/out-of.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 #include "y/memory/allocator/pooled.hpp"
 #include <cstdarg>
 

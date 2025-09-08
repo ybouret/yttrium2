@@ -1,5 +1,5 @@
 #include "y/system/hardware.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 extern "C"
 {

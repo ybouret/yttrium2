@@ -1,5 +1,5 @@
 #include "y/jive/syntax/grammar.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 #include "y/jive/syntax/rule/wildcard/optional.hpp"
 #include "y/jive/syntax/rule/wildcard/at-least.hpp"

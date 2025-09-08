@@ -1,7 +1,7 @@
 
 #include "y/jive/parser.hpp"
 #include "y/ascii/printable.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 namespace Yttrium
 {

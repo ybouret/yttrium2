@@ -1,5 +1,5 @@
 #include "y/utest/run.hpp"
-#include "y/system/exception.hpp"
+#include "y/exception.hpp"
 
 using namespace Yttrium;
 
