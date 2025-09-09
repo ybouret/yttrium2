@@ -46,7 +46,10 @@ namespace Yttrium
             blist(bpool),
             basis(bpool),
             house(laws.clan->size),
-            xadd()
+            xadd(),
+            lu(laws.rank),
+            Prj(laws.clan->size,laws.clan->size),
+            den(laws.clan->size)
             {
             }
 
@@ -158,8 +161,7 @@ namespace Yttrium
                     Cameo::Addition<apz> iadd;
                     MKL::Tao::Gram(iadd,Alpha2,Alpha);
                     std::cerr << "Alpha2=" << Alpha2 << std::endl;
-                    MKL::LU<apq> lu(n);
-                    apz det2 = lu.determinant(Alpha2);
+                    const apz det2 = lu.determinant(Alpha2);
                     std::cerr << "det2=" << det2 << std::endl;
                     if(__Zero__==det2.s) throw Specific::Exception("Laws","corrupted coefficients");
                     Matrix<apz> adj2(n,n);
@@ -167,21 +169,20 @@ namespace Yttrium
                     std::cerr << "adj2=" << adj2 << std::endl;
                     Matrix<apz> A3(n,m);
                     MKL::Tao::MMul(iadd,A3,adj2,Alpha);
-                    Matrix<apz> P(m,m);
-                    MKL::Tao::MMul(iadd,P,AlphaT,A3);
-                    std::cerr << "A4=" << P << std::endl;
+                    MKL::Tao::MMul(iadd,Prj,AlphaT,A3);
+                    std::cerr << "A4=" << Prj << std::endl;
                     for(size_t i=m;i>0;--i)
                     {
-                        for(size_t j=m;j>i;--j)   Sign::MakeOpposite( Coerce(P[i][j].s) );
-                        for(size_t j=i-1;j>0;--j) Sign::MakeOpposite( Coerce(P[i][j].s) );
-                        P[i][i] = det2 - P[i][i];
+                        for(size_t j=m;j>i;--j)   Sign::MakeOpposite( Coerce(Prj[i][j].s) );
+                        for(size_t j=i-1;j>0;--j) Sign::MakeOpposite( Coerce(Prj[i][j].s) );
+                        Prj[i][i] = det2 - Prj[i][i];
                     }
-                    std::cerr << "P=" << P << "/" << det2 << std::endl;
+                    std::cerr << "P=" << Prj << "/" << det2 << std::endl;
 
-                    CxxArray<apz> den(m,det2);
                     for(size_t j=m;j>0;--j)
                     {
-                        Apex::Simplify::Array(P[j],den[j]);
+                        den[j] = det2;
+                        Apex::Simplify::Array(Prj[j],den[j]);
                     }
 
                     XArray Caux(m);
@@ -191,7 +192,7 @@ namespace Yttrium
                     {
                         const Species       & s = **sn;
                         const size_t          j = s.indx[AuxLevel];
-                        const Readable<apz> & v = P[j];
+                        const Readable<apz> & v = Prj[j];
                         const apz           & d = den[j];
                         std::cerr << "w_" << s << " : " << v<< " / " << d << std::endl;
                         if(isUnit(v, d, j)) {

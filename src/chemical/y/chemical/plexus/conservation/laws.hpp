@@ -55,7 +55,7 @@ namespace Yttrium
 
 
                 //! \param Caux aux-level array \param Ctop top-level array
-                void dowload(XWritable &aux, const XReadable &Ctop) const;
+                void dowload(XWritable &Caux, const XReadable &Ctop) const;
 
                 //! \param Caux aux-level array \param Ctop top-level array
                 void upload(XWritable &Ctop, const XReadable &Caux) const;
