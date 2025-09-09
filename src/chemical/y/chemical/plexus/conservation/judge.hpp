@@ -8,7 +8,7 @@
 
 
 #include "y/chemical/plexus/conservation/laws.hpp"
-#include "y/protean/solo/heavy/list.hpp"
+#include "y/protean/coop/heavy/list.hpp"
 #include "y/ortho/house.hpp"
 
 namespace Yttrium
@@ -26,14 +26,15 @@ namespace Yttrium
                 Broken(const Law & _law, const xreal_t _xs) noexcept;
                 Broken(const Broken &) noexcept;
                 ~Broken() noexcept;
-
+                Y_OSTREAM_PROTO(Broken);
+                
                 const Law &law;
                 xreal_t    xs;
             };
 
-            typedef List<Broken>    BList;
-            typedef BList::NodeType BNode;
-
+            typedef Protean::CoopHeavyList<Broken> BList;
+            typedef BList::NodeType                BNode;
+            typedef BList::PoolType                BPool;
 
             class Judge : public Object
             {
@@ -48,7 +49,10 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(Judge);
                 const Laws &  laws;
                 const xreal_t zero;
-                BList         jail;
+                BPool         bpool;
+                BList         blist;
+                BList         basis;
+                Ortho::House  house;
                 XAdd          xadd;
             };
         }

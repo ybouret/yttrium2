@@ -75,7 +75,6 @@ Y_UTEST(plexus)
        if(cl->claws.isValid())
        {
            Conservation::Judge judge( *cl->claws );
-
            judge.abide(xml,C0);
        }
     }
