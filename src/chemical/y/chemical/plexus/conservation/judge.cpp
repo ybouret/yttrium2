@@ -1,6 +1,7 @@
 
 #include "y/chemical/plexus/conservation/judge.hpp"
 #include "y/mkl/tao/3.hpp"
+#include "y/apex/simplify.hpp"
 
 namespace Yttrium
 {
@@ -142,7 +143,7 @@ namespace Yttrium
                     MKL::Tao::Gram(iadd,Alpha2,Alpha);
                     std::cerr << "Alpha2=" << Alpha2 << std::endl;
                     MKL::LU<apq> lu(n);
-                    const apz det2 = lu.determinant(Alpha2);
+                    apz det2 = lu.determinant(Alpha2);
                     std::cerr << "det2=" << det2 << std::endl;
                     if(__Zero__==det2.s) throw Specific::Exception("Laws","corrupted coefficients");
                     Matrix<apz> adj2(n,n);
@@ -159,7 +160,9 @@ namespace Yttrium
                         for(size_t j=i-1;j>0;--j) Sign::MakeOpposite( Coerce(P[i][j].s) );
                         P[i][i] = det2 - P[i][i];
                     }
-                    std::cerr << "P=" << P << std::endl;
+                    std::cerr << "P=" << P << "/" << det2 << std::endl;
+                    Apex::Simplify::Apply(P,det2);
+                    std::cerr << "P=" << P << "/" << det2 << std::endl;
 
                 }
 
