@@ -10,6 +10,7 @@
 #include "y/chemical/plexus/conservation/laws.hpp"
 #include "y/protean/coop/heavy/list.hpp"
 #include "y/ortho/house.hpp"
+#include "y/mkl/algebra/lu.hpp"
 
 namespace Yttrium
 {

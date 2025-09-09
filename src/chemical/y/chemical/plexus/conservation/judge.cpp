@@ -127,19 +127,39 @@ namespace Yttrium
                     const size_t m = laws.clan->size;
 
                     Matrix<apz> Alpha(n,m);
-                    //XArray      A(m);
+                    Matrix<apz> AlphaT(m,n);
                     size_t i = 1;
                     for(const BNode *bn=basis->head;bn;bn=bn->next,++i)
                     {
                         const Broken &broken = **bn;
                         Alpha[i].ld( broken.law.alpha );
                     }
+                    AlphaT.assign(TransposeOf,Alpha);
                     std::cerr << "Alpha=" << Alpha << std::endl;
 
-                    Matrix<apz> Alpha2(n,n);
+                    Matrix<apz>          Alpha2(n,n);
                     Cameo::Addition<apz> iadd;
                     MKL::Tao::Gram(iadd,Alpha2,Alpha);
                     std::cerr << "Alpha2=" << Alpha2 << std::endl;
+                    MKL::LU<apq> lu(n);
+                    const apz det2 = lu.determinant(Alpha2);
+                    std::cerr << "det2=" << det2 << std::endl;
+                    if(__Zero__==det2.s) throw Specific::Exception("Laws","corrupted coefficients");
+                    Matrix<apz> adj2(n,n);
+                    lu.adjoint(adj2,Alpha2);
+                    std::cerr << "adj2=" << adj2 << std::endl;
+                    Matrix<apz> A3(n,m);
+                    MKL::Tao::MMul(iadd,A3,adj2,Alpha);
+                    Matrix<apz> P(m,m);
+                    MKL::Tao::MMul(iadd,P,AlphaT,A3);
+                    std::cerr << "A4=" << P << std::endl;
+                    for(size_t i=m;i>0;--i)
+                    {
+                        for(size_t j=m;j>i;--j)   Sign::MakeOpposite( Coerce(P[i][j].s) );
+                        for(size_t j=i-1;j>0;--j) Sign::MakeOpposite( Coerce(P[i][j].s) );
+                        P[i][i] = det2 - P[i][i];
+                    }
+                    std::cerr << "P=" << P << std::endl;
 
                 }
 

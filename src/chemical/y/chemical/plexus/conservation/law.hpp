@@ -15,7 +15,7 @@ namespace Yttrium
         namespace Conservation
         {
 
-            typedef CxxArray<apn> Weights;
+            typedef CxxArray<unsigned> Weights;
 
             //__________________________________________________________________
             //
