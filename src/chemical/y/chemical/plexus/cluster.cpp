@@ -1,5 +1,5 @@
 #include "y/chemical/plexus/cluster.hpp"
-
+#include "y/chemical/type/list-ops.hpp"
 
 namespace Yttrium
 {

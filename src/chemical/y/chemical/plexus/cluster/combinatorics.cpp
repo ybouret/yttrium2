@@ -6,6 +6,7 @@
 #include "y/container/algorithm/for-each.hpp"
 #include "y/chemical/plexus/cluster/mixed.hpp"
 #include "y/type/momentary.hpp"
+#include "y/chemical/type/list-ops.hpp"
 
 namespace Yttrium
 {

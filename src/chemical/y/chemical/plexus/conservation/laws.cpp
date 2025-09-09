@@ -1,6 +1,7 @@
 
 
 #include "y/chemical/plexus/conservation/laws.hpp"
+#include "y/chemical/type/list-ops.hpp"
 
 namespace Yttrium
 {
@@ -27,6 +28,7 @@ namespace Yttrium
             cs( GraphViz::ColorScheme::Query(CSID) )
             {
                 assert(U.cols==slist->size);
+                // building laws from matrix
                 const size_t Nc = U.rows;
                 const size_t M  = U.cols;
                 Y_XML_Section_Attr(xml, "Conservation::Laws", Y_XML_Attr(Nc) << Y_XML_Attr(M));
@@ -40,12 +42,17 @@ namespace Yttrium
                     }
                     Y_XMLog(xml,law);
                 }
+
+                // collecting involved species
                 for(const SNode *sn=slist->head;sn;sn=sn->next)
                 {
                     const Species &sp = **sn;
                     if(got(sp)) Coerce(clan) << sp;
                 }
+
                 Y_XMLog(xml,"species="  << clan);
+                ListOps::Make(Coerce(clan), AuxLevel);
+                
             }
 
             bool Laws:: got(const Species &sp) const noexcept
