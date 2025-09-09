@@ -40,6 +40,9 @@ namespace Yttrium
                 ~Broken() noexcept;                          //!< cleanup
                 Y_OSTREAM_PROTO(Broken);                     //!< display
 
+
+                bool still(XAdd &, const XReadable &Ctop);
+
                 //______________________________________________________________
                 //
                 //

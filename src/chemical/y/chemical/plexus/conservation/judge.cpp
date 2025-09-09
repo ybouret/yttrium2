@@ -27,6 +27,13 @@ namespace Yttrium
             {
             }
 
+            bool Broken:: still(XAdd &xadd, const XReadable &Ctop)
+            {
+                xs = law.excess(xadd,Ctop,TopLevel);
+                return xs.mantissa > 0;
+            }
+
+
             std::ostream & operator<<(std::ostream &os, const Broken &broken)
             {
                 os << std::setw(22) << broken.xs.str() << " @" << broken.law;
@@ -121,7 +128,7 @@ namespace Yttrium
                         }
                         else
                         {
-                            blist->pushTail(blist->popHead());
+                            blist->moveHeadToTail();
                         }
                     }
 
@@ -214,9 +221,25 @@ namespace Yttrium
 
                     for(const BNode *bn=basis->head;bn;bn=bn->next)
                     {
-                        const Law &law = (**bn).law;
+                        const Law &   law = (**bn).law;
                         const xreal_t xs = law.excess(xadd,Ctop,TopLevel);
                         std::cerr << "basis: " << xs.str() << " @" << law << std::endl;
+                    }
+
+                    basis.free();
+
+                    // check new status
+                    for(size_t i=blist->size;i>0;--i)
+                    {
+                        Broken &broken = **blist->head;
+                        if(broken.still(xadd,Ctop))
+                        {
+                            blist->moveHeadToTail();
+                        }
+                        else
+                        {
+                            blist.popHead();
+                        }
                     }
 
 

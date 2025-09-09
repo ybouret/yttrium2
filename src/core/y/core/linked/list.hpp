@@ -549,6 +549,20 @@ namespace Yttrium
                 swapListFor(tmp);
             }
 
+            //! pushTail( popHead() ) \return *this
+            inline ListOf & moveHeadToTail() noexcept
+            {
+                if(size>=2) (void) pushTail( popHead() );
+                return *this;
+            }
+
+            //! pushHead( popTail() ) \return *this
+            inline ListOf & moveTailToHead() noexcept
+            {
+                if(size>=2) (void) pushHead( popTail() );
+                return *this;
+            }
+
             //__________________________________________________________________
             //
             //
