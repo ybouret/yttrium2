@@ -12,6 +12,7 @@
 #include "y/mkl/transpose-of.hpp"
 #include "y/ability/releasable.hpp"
 #include "y/memory/stealth.hpp"
+#include "y/container/light-array.hpp"
 
 
 namespace Yttrium
@@ -380,6 +381,15 @@ namespace Yttrium
             }
             return *this;
         }
+
+        //! \return linear array
+        inline LightArray<Type> asArray() noexcept {
+            Matrix &self = *this;
+            return LightArray<Type>(self(),items);
+        }
+        
+
+
 
 
     private:
