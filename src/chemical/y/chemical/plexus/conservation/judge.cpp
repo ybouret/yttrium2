@@ -55,6 +55,8 @@ namespace Yttrium
             house(laws.clan->size),
             xadd(),
             Caux(laws.clan->size),
+            spool(),
+            sbook(spool),
             lu(laws.rank),
             Prj(laws.clan->size,laws.clan->size),
             den(laws.clan->size)
@@ -87,9 +89,17 @@ namespace Yttrium
             {
                 Y_XML_Section(xml, "abide");
                 blist.free();
+                sbook.free();
 
+                //--------------------------------------------------------------
+                //
+                //
+                // detect initial excess
+                //
+                //
+                //--------------------------------------------------------------
                 {
-                    Y_XML_Section(xml, "excess");
+                    Y_XML_Section(xml, "initialExcess");
                     for(const Law *law=laws->head;law;law=law->next)
                     {
                         const xreal_t xs = law->excess(xadd,Ctop,TopLevel);
@@ -99,11 +109,11 @@ namespace Yttrium
 
                     }
 
-                    if(blist.size()<=0)
-                    {
-                        Y_XMLog(xml, "[[ no excess ]]");
+                    if(blist.size()<=0) {
+                        Y_XMLog(xml, "[[ no excess detected ]]");
                         return;
                     }
+
                     blist.sort(CompareBroken);
                     for(const BNode *bn=blist->head;bn;bn=bn->next)
                     {
@@ -111,11 +121,21 @@ namespace Yttrium
                     }
                 }
 
+                //--------------------------------------------------------------
+                //
+                //
+                // extract the smallest excess base
+                //
+                //
+                //--------------------------------------------------------------
+                size_t iter=0;
+            REDUCE:
                 {
+                    ++iter;
                     const size_t inxs = blist->size;
                     const size_t rank = laws.rank;
+                    Y_XML_Section_Attr(xml, "extractBasis", Y_XML_Attr(inxs) << Y_XML_Attr(rank) << Y_XML_Attr(iter));
 
-                    Y_XML_Section_Attr(xml, "extractBasis", Y_XML_Attr(inxs) << Y_XML_Attr(rank));
                     house.free();
                     basis.free();
                     for(size_t i=inxs;i>0;--i)
@@ -155,31 +175,39 @@ namespace Yttrium
                     const size_t n = basis->size;
                     const size_t m = laws.clan->size;
 
+                    //----------------------------------------------------------
+                    //
+                    // fill conservation topologies
+                    //
+                    //----------------------------------------------------------
                     Matrix<apz> Alpha(n,m);
                     Matrix<apz> AlphaT(m,n);
-                    size_t i = 1;
-                    for(const BNode *bn=basis->head;bn;bn=bn->next,++i)
+                    Matrix<apz> A3(n,m);
+                    Matrix<apz> adj2(n,n);
+
                     {
-                        const Broken &broken = **bn;
-                        Alpha[i].ld( broken.law.alpha );
+                        size_t i = 1;
+                        for(const BNode *bn=basis->head;bn;bn=bn->next,++i)
+                        {
+                            const Broken &broken = **bn;
+                            Alpha[i].ld( broken.law.alpha );
+                        }
                     }
                     AlphaT.assign(TransposeOf,Alpha);
                     std::cerr << "Alpha=" << Alpha << std::endl;
 
+                    //----------------------------------------------------------
+                    //
+                    // Compute projection matrix
+                    //
+                    //----------------------------------------------------------
                     Matrix<apz>          Alpha2(n,n);
                     MKL::Tao::Gram(iadd,Alpha2,Alpha);
-                    std::cerr << "Alpha2=" << Alpha2 << std::endl;
                     const apz det2 = lu.determinant(Alpha2);
-                    std::cerr << "det2=" << det2 << std::endl;
                     if(__Zero__==det2.s) throw Specific::Exception("Laws","corrupted coefficients");
-
-                    Matrix<apz> adj2(n,n);
                     lu.adjoint(adj2,Alpha2);
-                    std::cerr << "adj2=" << adj2 << std::endl;
-                    Matrix<apz> A3(n,m);
                     MKL::Tao::MMul(iadd,A3,adj2,Alpha);
                     MKL::Tao::MMul(iadd,Prj,AlphaT,A3);
-                    std::cerr << "A4=" << Prj << std::endl;
                     for(size_t i=m;i>0;--i)
                     {
                         for(size_t j=m;j>i;--j)   Sign::MakeOpposite( Coerce(Prj[i][j].s) );
@@ -188,12 +216,22 @@ namespace Yttrium
                     }
                     std::cerr << "P=" << Prj << "/" << det2 << std::endl;
 
+                    //----------------------------------------------------------
+                    //
+                    // Compute simplification per row
+                    //
+                    //----------------------------------------------------------
                     for(size_t j=m;j>0;--j)
                     {
                         den[j] = det2;
                         Apex::Simplify::Array(Prj[j],den[j]);
                     }
 
+                    //----------------------------------------------------------
+                    //
+                    // upgrade species
+                    //
+                    //----------------------------------------------------------
                     laws.dowload(Caux,Ctop);
                     std::cerr << "A=" << Caux << std::endl;
                     for(const SNode *sn=laws.clan->head;sn;sn=sn->next)
@@ -202,11 +240,10 @@ namespace Yttrium
                         const size_t          j = s.indx[AuxLevel];
                         const Readable<apz> & v = Prj[j];
                         const apz           & d = den[j];
-                        std::cerr << "w_" << s << " : " << v<< " / " << d << std::endl;
-                        if(isUnit(v, d, j)) {
-                            std::cerr << "\tunit" << std::endl;
+                        if(isUnit(v,d,j)) {
                             continue;
                         }
+
                         xadd.ldz();
                         for(size_t i=m;i>0;--i)
                         {
@@ -227,9 +264,11 @@ namespace Yttrium
                         std::cerr << "basis: " << xs.str() << " @" << law << std::endl;
                     }
 
-                    basis.free();
-
-                    // check new status
+                    //----------------------------------------------------------
+                    //
+                    // keep only still broken laws
+                    //
+                    //----------------------------------------------------------
                     for(size_t i=blist->size;i>0;--i)
                     {
                         Broken &broken = **blist->head;
@@ -243,15 +282,17 @@ namespace Yttrium
                         }
                     }
 
-                    Y_XMLog(xml, "still broken:");
-                    blist.sort(CompareBroken);
-                    for(const BNode *bn=blist->head;bn;bn=bn->next)
+                    if(blist->size)
                     {
-                        const Broken &broken = **bn;
-                        Y_XMLog(xml, "[-] " << broken);
+                        Y_XMLog(xml, "still broken:");
+                        blist.sort(CompareBroken);
+                        for(const BNode *bn=blist->head;bn;bn=bn->next)
+                        {
+                            const Broken &broken = **bn;
+                            Y_XMLog(xml, "[-] " << broken);
+                        }
+                        goto REDUCE;
                     }
-
-
 
                 }
 

@@ -11,6 +11,7 @@
 #include "y/protean/coop/heavy/list.hpp"
 #include "y/ortho/house.hpp"
 #include "y/mkl/algebra/lu.hpp"
+#include "y/container/ordered/data-book.hpp"
 
 namespace Yttrium
 {
@@ -60,6 +61,9 @@ namespace Yttrium
             typedef BList::NodeType                BNode; //!< alias
             typedef BList::PoolType                BPool; //!< alias
 
+            typedef DataBook<>                     SBook;
+            typedef SBook::PoolType                SPool;
+
             //__________________________________________________________________
             //
             //
@@ -100,6 +104,8 @@ namespace Yttrium
                 XAdd                 xadd;  //!< inner add
                 Cameo::Addition<apz> iadd;
                 XArray               Caux;  //!< auxiliary concentration
+                SPool                spool;
+                SBook                sbook;
                 MKL::LU<apq>         lu;    //!< inner algebra
                 Matrix<apz>          Prj;   //!< Projection row vectors
                 CxxArray<apz>        den;   //!< denominator for each projection vector
