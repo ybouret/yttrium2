@@ -9,6 +9,13 @@ namespace Yttrium
 
     const char * const MPI:: CallSign = "MPI";
 
+    int MPI:: GetCount(const size_t count, const char * const func)
+    {
+        assert(func);
+        if(count>MaxCount) throw Specific::Exception(func,"count overflow");
+        return (int) count;
+    }
+
     MPI:: ~MPI() noexcept
     {
         MPI_Finalize();

@@ -256,8 +256,9 @@ namespace Yttrium
 
     private:
         HTable             table; //!< inner hash table
+    public:
         mutable KEY_HASHER hash;  //!< key hasher
-
+    private:
 
         //! \param lhs knot address \param rhs knot address \return same keys
         static inline bool SameKnot(const void * const lhs, const void * const rhs)
