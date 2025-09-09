@@ -215,6 +215,7 @@ Y_UTEST(apex:rsa)
 Y_UTEST(apex:ortho:vector)
 Y_UTEST(apex:ortho:keep)
 Y_UTEST(apex:ortho:family)
+Y_UTEST(apex:simplify)
 
 #coven
 Y_UTEST(coven:indx)

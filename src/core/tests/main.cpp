@@ -170,6 +170,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(apex_ortho_vector);
     Y_UTEST(apex_ortho_keep);
     Y_UTEST(apex_ortho_family);
+    Y_UTEST(apex_simplify);
 
     Y_UTEST(coven_indx);
     Y_UTEST(coven_tribes);

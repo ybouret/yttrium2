@@ -38,6 +38,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         Y_Args_Declare(T,Type); //!< aliases
+        typedef LightArray<Type> ArrayType; //!< alias
 
 
         //______________________________________________________________________
@@ -383,7 +384,7 @@ namespace Yttrium
         }
 
         //! \return linear array
-        inline LightArray<Type> asArray() noexcept {
+        inline ArrayType asArray() noexcept {
             Matrix &self = *this;
             return LightArray<Type>(self(),items);
         }
