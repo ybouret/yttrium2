@@ -95,6 +95,8 @@ namespace Yttrium
                 BList         basis; //!< basis of broken laws
                 Ortho::House  house; //!< extract basis
                 XAdd          xadd;  //!< inner add
+                Cameo::Addition<apz> iadd;
+                XArray        Caux;  //!< auxiliary concentration
                 MKL::LU<apq>  lu;    //!< inner algebra
                 Matrix<apz>   Prj;   //!< Projection row vectors
                 CxxArray<apz> den;   //!< denominator for each projection vector

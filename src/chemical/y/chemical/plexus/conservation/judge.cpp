@@ -47,6 +47,7 @@ namespace Yttrium
             basis(bpool),
             house(laws.clan->size),
             xadd(),
+            Caux(laws.clan->size),
             lu(laws.rank),
             Prj(laws.clan->size,laws.clan->size),
             den(laws.clan->size)
@@ -158,12 +159,12 @@ namespace Yttrium
                     std::cerr << "Alpha=" << Alpha << std::endl;
 
                     Matrix<apz>          Alpha2(n,n);
-                    Cameo::Addition<apz> iadd;
                     MKL::Tao::Gram(iadd,Alpha2,Alpha);
                     std::cerr << "Alpha2=" << Alpha2 << std::endl;
                     const apz det2 = lu.determinant(Alpha2);
                     std::cerr << "det2=" << det2 << std::endl;
                     if(__Zero__==det2.s) throw Specific::Exception("Laws","corrupted coefficients");
+
                     Matrix<apz> adj2(n,n);
                     lu.adjoint(adj2,Alpha2);
                     std::cerr << "adj2=" << adj2 << std::endl;
@@ -185,7 +186,6 @@ namespace Yttrium
                         Apex::Simplify::Array(Prj[j],den[j]);
                     }
 
-                    XArray Caux(m);
                     laws.dowload(Caux,Ctop);
                     std::cerr << "A=" << Caux << std::endl;
                     for(const SNode *sn=laws.clan->head;sn;sn=sn->next)
@@ -199,39 +199,19 @@ namespace Yttrium
                             std::cerr << "\tunit" << std::endl;
                             continue;
                         }
-                    }
-
-
-#if 0
-                    Apex::Simplify::Apply(P,det2);
-                    std::cerr << "P=" << P << "/" << det2 << std::endl;
-
-                    XArray Caux(m);
-                    laws.dowload(Caux,Ctop);
-                    std::cerr << "A=" << Caux << std::endl;
-
-                    iMatrix       mproj(m,m);
-                    for(size_t i=m;i>0;--i)
-                    {
-                        for(size_t j=m;j>0;--j)
-                            mproj[i][j] = P[i][j].cast<int>("projection coefficient");
-                    }
-                    const xreal_t denom = det2.cast<int>("denom");
-                    std::cerr << "mproj=" << mproj << " / " << denom.str() << std::endl;
-
-                    for(const SNode *sn=laws.clan->head;sn;sn=sn->next)
-                    {
-                        const Species       & s = **sn;
-                        const size_t          j = s.indx[AuxLevel];
-                        const Readable<int> & w = mproj[j];
-                        if(isUnit(w,j))
+                        xadd.ldz();
+                        for(size_t i=m;i>0;--i)
                         {
-                            std::cerr << "unit for " << s << std::endl;
-                            continue;
+                            const apz zcf = v[i]; if(__Zero__==zcf.s) continue;
+                            const int icf = zcf.cast<int>("projection coefficient");
+                            xadd.addProd(icf,Caux[i]);
                         }
-
+                        const xreal_t D = d.cast<int>("projection denominator");
+                        const xreal_t c = xadd.sum() / D;
+                        std::cerr << "[" << s << "] =" << c.str() << std::endl;
                     }
-#endif
+
+
 
                 }
 
