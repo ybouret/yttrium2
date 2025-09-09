@@ -95,6 +95,17 @@ namespace Yttrium
             }
 
 
+            void Laws:: dowload(XWritable &Caux, const XReadable &Ctop) const
+            {
+                ListOps::Copy(clan,Caux,AuxLevel,Ctop,TopLevel);
+            }
+
+            void Laws:: upload(XWritable &Ctop, const XReadable &Caux) const
+            {
+                ListOps::Copy(clan,Ctop,TopLevel,Caux,AuxLevel);
+            }
+
+
         }
 
     }

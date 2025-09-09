@@ -56,6 +56,22 @@ namespace Yttrium
                 return Sign::Of(lhs.xs,rhs.xs);
             }
 
+            static inline bool isUnit(const Readable<apz> &v,
+                                      const apz           &d,
+                                      const size_t         j) noexcept
+            {
+                assert(j>0);
+                assert(v.size()>=j);
+
+                if(1!=d) return false;
+
+                for(size_t i=v.size();i>j;--i) if(__Zero__ != v[i].s) return false;
+                if(1!=v[j]) return false;
+                for(size_t i=j-1;i>0;--i) if(__Zero__ != v[i].s) return false;
+
+                return true;
+            }
+
             void Judge:: abide(XMLog &xml, XWritable &Ctop)
             {
                 Y_XML_Section(xml, "abide");
@@ -161,8 +177,60 @@ namespace Yttrium
                         P[i][i] = det2 - P[i][i];
                     }
                     std::cerr << "P=" << P << "/" << det2 << std::endl;
+
+                    CxxArray<apz> den(m,det2);
+                    for(size_t j=m;j>0;--j)
+                    {
+                        Apex::Simplify::Array(P[j],den[j]);
+                    }
+
+                    XArray Caux(m);
+                    laws.dowload(Caux,Ctop);
+                    std::cerr << "A=" << Caux << std::endl;
+                    for(const SNode *sn=laws.clan->head;sn;sn=sn->next)
+                    {
+                        const Species       & s = **sn;
+                        const size_t          j = s.indx[AuxLevel];
+                        const Readable<apz> & v = P[j];
+                        const apz           & d = den[j];
+                        std::cerr << "w_" << s << " : " << v<< " / " << d << std::endl;
+                        if(isUnit(v, d, j)) {
+                            std::cerr << "\tunit" << std::endl;
+                            continue;
+                        }
+                    }
+
+
+#if 0
                     Apex::Simplify::Apply(P,det2);
                     std::cerr << "P=" << P << "/" << det2 << std::endl;
+
+                    XArray Caux(m);
+                    laws.dowload(Caux,Ctop);
+                    std::cerr << "A=" << Caux << std::endl;
+
+                    iMatrix       mproj(m,m);
+                    for(size_t i=m;i>0;--i)
+                    {
+                        for(size_t j=m;j>0;--j)
+                            mproj[i][j] = P[i][j].cast<int>("projection coefficient");
+                    }
+                    const xreal_t denom = det2.cast<int>("denom");
+                    std::cerr << "mproj=" << mproj << " / " << denom.str() << std::endl;
+
+                    for(const SNode *sn=laws.clan->head;sn;sn=sn->next)
+                    {
+                        const Species       & s = **sn;
+                        const size_t          j = s.indx[AuxLevel];
+                        const Readable<int> & w = mproj[j];
+                        if(isUnit(w,j))
+                        {
+                            std::cerr << "unit for " << s << std::endl;
+                            continue;
+                        }
+
+                    }
+#endif
 
                 }
 
