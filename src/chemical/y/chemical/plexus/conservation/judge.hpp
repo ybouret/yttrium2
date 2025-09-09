@@ -88,18 +88,18 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const Laws &  laws; //!< origin laws
-                const xreal_t zero; //!< default value
-                BPool         bpool; //!< pool
-                BList         blist; //!< list of broken laws
-                BList         basis; //!< basis of broken laws
-                Ortho::House  house; //!< extract basis
-                XAdd          xadd;  //!< inner add
+                const Laws &         laws; //!< origin laws
+                const xreal_t        zero; //!< default value
+                BPool                bpool; //!< pool
+                BList                blist; //!< list of broken laws
+                BList                basis; //!< basis of broken laws
+                Ortho::House         house; //!< extract basis
+                XAdd                 xadd;  //!< inner add
                 Cameo::Addition<apz> iadd;
-                XArray        Caux;  //!< auxiliary concentration
-                MKL::LU<apq>  lu;    //!< inner algebra
-                Matrix<apz>   Prj;   //!< Projection row vectors
-                CxxArray<apz> den;   //!< denominator for each projection vector
+                XArray               Caux;  //!< auxiliary concentration
+                MKL::LU<apq>         lu;    //!< inner algebra
+                Matrix<apz>          Prj;   //!< Projection row vectors
+                CxxArray<apz>        den;   //!< denominator for each projection vector
             };
         }
 

@@ -209,6 +209,14 @@ namespace Yttrium
                         const xreal_t D = d.cast<int>("projection denominator");
                         const xreal_t c = xadd.sum() / D;
                         std::cerr << "[" << s << "] =" << c.str() << std::endl;
+                        s(Ctop,TopLevel) = c;
+                    }
+
+                    for(const BNode *bn=basis->head;bn;bn=bn->next)
+                    {
+                        const Law &law = (**bn).law;
+                        const xreal_t xs = law.excess(xadd,Ctop,TopLevel);
+                        std::cerr << "basis: " << xs.str() << " @" << law << std::endl;
                     }
 
 
