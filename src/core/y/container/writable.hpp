@@ -84,7 +84,8 @@ namespace Yttrium
         }
 
         //! load matching part \param rhs big enough source \return *this
-        inline Writable & ld(const Readable<T> &rhs)
+        template <typename U>
+        inline Writable & ld(const Readable<U> &rhs)
         {
             Writable<T> &a = *this;
             const size_t n = a.size();assert(rhs.size()>=n);

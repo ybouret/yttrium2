@@ -1,5 +1,6 @@
 
 #include "y/chemical/plexus/conservation/judge.hpp"
+#include "y/mkl/tao/3.hpp"
 
 namespace Yttrium
 {
@@ -59,52 +60,88 @@ namespace Yttrium
                 Y_XML_Section(xml, "abide");
                 blist.free();
 
-                for(const Law *law=laws->head;law;law=law->next)
                 {
-                    const xreal_t xs = law->excess(xadd,Ctop,TopLevel);
-                    if(xs<=zero) continue;
-                    const Broken b(*law,xs);
-                    blist << b;
-
-                }
-
-                if(blist.size()<=0) return;
-                blist.sort(CompareBroken);
-                for(const BNode *bn=blist->head;bn;bn=bn->next)
-                {
-                    Y_XMLog(xml,"[#] " << **bn);
-                }
-
-                const size_t nmax = laws.rank;
-                house.free();
-                basis.free();
-                for(size_t i=blist->size;i>0;--i)
-                {
-                    const Broken & broken = **blist->head;
-                    if(Ortho::Vector *v = house.accepts(broken.law.alpha) )
+                    Y_XML_Section(xml, "excess");
+                    for(const Law *law=laws->head;law;law=law->next)
                     {
-                        house.progeny(v);
-                        basis->pushTail( blist->popHead() );
-                        if(house->size>=nmax) break;
+                        const xreal_t xs = law->excess(xadd,Ctop,TopLevel);
+                        if(xs<=zero) continue;
+                        const Broken b(*law,xs);
+                        blist << b;
+
                     }
-                    else
+
+                    if(blist.size()<=0)
                     {
-                        blist->pushTail(blist->popHead());
+                        Y_XMLog(xml, "[[ no excess ]]");
+                        return;
+                    }
+                    blist.sort(CompareBroken);
+                    for(const BNode *bn=blist->head;bn;bn=bn->next)
+                    {
+                        Y_XMLog(xml,"[#] " << **bn);
                     }
                 }
 
-                for(const BNode *bn=basis->head;bn;bn=bn->next)
                 {
-                    const Broken &broken = **bn;
-                    Y_XMLog(xml, "[+] " << broken);
+                    const size_t excessive = blist->size;
+                    Y_XML_Section_Attr(xml, "extractBasis", Y_XML_Attr(excessive) );
+                    const size_t nmax = laws.rank;
+                    house.free();
+                    basis.free();
+                    for(size_t i=excessive;i>0;--i)
+                    {
+                        const Broken & broken = **blist->head;
+                        if(Ortho::Vector *v = house.accepts(broken.law.alpha) )
+                        {
+                            house.progeny(v);
+                            basis->pushTail( blist->popHead() );
+                            if(house->size>=nmax) break;
+                        }
+                        else
+                        {
+                            blist->pushTail(blist->popHead());
+                        }
+                    }
+
+                    Y_XMLog(xml, "basis:");
+                    for(const BNode *bn=basis->head;bn;bn=bn->next)
+                    {
+                        const Broken &broken = **bn;
+                        Y_XMLog(xml, "[+] " << broken);
+                    }
+
+                    if(blist->size)
+                    {
+                        Y_XMLog(xml, "remaining");
+                        for(const BNode *bn=blist->head;bn;bn=bn->next)
+                        {
+                            const Broken &broken = **bn;
+                            Y_XMLog(xml, "[-] " << broken);
+                        }
+                    }
                 }
 
-                for(const BNode *bn=blist->head;bn;bn=bn->next)
                 {
-                    const Broken &broken = **bn;
-                    Y_XMLog(xml, "[-] " << broken);
-                }
+                    const size_t n = basis->size;
+                    const size_t m = laws.clan->size;
 
+                    Matrix<apz> Alpha(n,m);
+                    //XArray      A(m);
+                    size_t i = 1;
+                    for(const BNode *bn=basis->head;bn;bn=bn->next,++i)
+                    {
+                        const Broken &broken = **bn;
+                        Alpha[i].ld( broken.law.alpha );
+                    }
+                    std::cerr << "Alpha=" << Alpha << std::endl;
+
+                    Matrix<apz> Alpha2(n,n);
+                    Cameo::Addition<apz> iadd;
+                    MKL::Tao::Gram(iadd,Alpha2,Alpha);
+                    std::cerr << "Alpha2=" << Alpha2 << std::endl;
+
+                }
 
 
             }
