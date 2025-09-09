@@ -89,7 +89,7 @@ namespace Yttrium
                             const Level      L,
                             XWritable       &ma) const;
 
-            String html() const; //!< as hmtl conservation;
+            String html() const; //!< \return hmtl conservation
 
         private:
             Y_Disable_Assign(Actors); //!< discard

@@ -10,9 +10,22 @@ namespace Yttrium
 {
     namespace Apex
     {
-
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Arithmetic simplifications
+        //
+        //
+        //______________________________________________________________________
         struct Simplify
         {
+            //! GCD of a range
+            /**
+             \param curr iterator
+             \param size number of values
+             \return gcd, zero means all zero
+             */
             template <typename ITER> static inline
             Natural GCD(ITER curr, size_t size)
             {
@@ -23,28 +36,28 @@ namespace Yttrium
                 {
                     const Natural &n = Get(*(curr++));
                     --size;
-                    if(n.bits())
-                    {
+                    if(n.bits()) {
                         g = n;
                         break;
                     }
                 }
 
                 // update
-                while(size-- > 0)
-                {
+                while(size-- > 0) {
                     const Natural &n = Get(*(curr++));
                     if(n.bits())
-                    {
                         g = Natural::GCD(g,n);
-                    }
                 }
 
                 return g;
             }
 
 
-
+            //! GCD of a sequence
+            /**
+             \param seq sequence-like container
+             \return gcd of all elements
+             */
             template <typename SEQ> static inline
             Natural GCD(const SEQ &seq)
             {
@@ -52,7 +65,11 @@ namespace Yttrium
             }
 
 
-
+            //! simplify sequence-like
+            /**
+             \param seq sequence, simplified
+             \return gcd used to simplify
+             */
             template <typename SEQ> static inline
             Natural Array(SEQ &seq)
             {
@@ -62,6 +79,11 @@ namespace Yttrium
                 return g;
             }
 
+            //! simplify sequence-like/denominator
+            /**
+             \param seq sequence, simplified
+             \param denom denominator, simplified
+             */
             template <typename SEQ, typename DENOM> static inline
             void Array(SEQ &seq, DENOM &denom)
             {
@@ -75,6 +97,11 @@ namespace Yttrium
                 }
             }
 
+            //! simplify matrix
+            /**
+             \param M matrix, simplified
+             \return gcd used to simplify
+             */
             template <typename MATRIX> static inline
             Natural Apply(MATRIX &M)
             {
@@ -82,6 +109,11 @@ namespace Yttrium
                 return Array(arr);
             }
 
+            //! simplify matrix/denominator
+            /**
+             \param M matrix, simplified
+             \param denom denominator, simplified
+             */
             template <typename MATRIX, typename DENOM> static inline
             void Apply(MATRIX &M, DENOM &denom)
             {
@@ -93,9 +125,13 @@ namespace Yttrium
 
 
         private:
+            //! \param n natural \return mutable n
             static inline Natural & Get(const Natural &n) noexcept { return Coerce(n); }
+
+            //! \param z integer \return mutable natural part
             static inline Natural & Get(const Integer &z) noexcept { return Coerce(z.n); }
 
+            //! divide a range \param curr iterator \param size items \param g divider
             template <typename ITER> static inline
             void Divide(ITER curr, size_t size, const Natural &g)
             {
@@ -106,6 +142,7 @@ namespace Yttrium
                 }
             }
 
+            //! divide a sequence \param seq sequence-like \param g divider
             template <typename SEQ> static inline
             void Divide(SEQ &seq, const Natural &g)
             {

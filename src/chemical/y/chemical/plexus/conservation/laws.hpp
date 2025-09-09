@@ -47,7 +47,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-                //! species available by other means
+                //! species available by other means \return output streeam
                 OutputStream & viz(OutputStream &) const;
 
                 //! \return true iff species if found in laws
@@ -58,8 +58,8 @@ namespace Yttrium
                 Y_Ingress_Decl();                   //!< helper
                 CxxListOf<Law>                list; //!< laws
             public:
-                const SList                   clan;
-                const size_t                  rank;
+                const SList                   clan; //!< used species
+                const size_t                  rank; //!< maximum rank
                 const GraphViz::ColorScheme & cs;   //!< color scheme
             };
 

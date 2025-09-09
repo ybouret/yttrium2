@@ -15,7 +15,7 @@ namespace Yttrium
         namespace Conservation
         {
 
-            typedef CxxArray<unsigned> Weights;
+            typedef CxxArray<unsigned> Weights; //!< alias
 
             //__________________________________________________________________
             //
@@ -48,7 +48,8 @@ namespace Yttrium
                 //! \return positive excess if any
                 xreal_t excess(XAdd &, const XReadable &, const Level) const;
 
-                OutputStream & viz(OutputStream &, const String &color) const;
+                //! GraphViz with color \return output stream
+                OutputStream & viz(OutputStream &, const String &) const;
 
                 //______________________________________________________________
                 //
@@ -56,7 +57,7 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const Weights alpha;
+                const Weights alpha; //!< compiled weights
                 const xreal_t zero;  //!< for computations
                 Law *         next;  //!< for list
                 Law *         prev;  //!< for list

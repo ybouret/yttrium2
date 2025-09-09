@@ -69,7 +69,8 @@ namespace Yttrium
 
             //! fill array with random concentration
             /**
-             \param probaZero probility to set a zero concentration
+             \param probaZero probability to set a zero concentration
+             \param probaNeg  probability to set a negative concentration
              */
             void conc(Random::Bits &,
                       XWritable    &,

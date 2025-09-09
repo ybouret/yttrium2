@@ -12,7 +12,7 @@
 #else
 #define Y_DLL_EXTERN() //!< init exporting zone
 #define Y_DLL_FINISH() //!< quit exporting zone
-#define Y_DLL_CPROTO
+#define Y_DLL_CPROTO   //!< for C function in C++ module
 #endif
 
 
