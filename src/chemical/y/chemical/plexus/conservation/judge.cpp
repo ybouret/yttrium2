@@ -107,24 +107,25 @@ namespace Yttrium
                     blist.sort(CompareBroken);
                     for(const BNode *bn=blist->head;bn;bn=bn->next)
                     {
-                        Y_XMLog(xml,"[#] " << **bn);
+                        Y_XMLog(xml,"[*] " << **bn);
                     }
                 }
 
                 {
-                    const size_t excessive = blist->size;
-                    Y_XML_Section_Attr(xml, "extractBasis", Y_XML_Attr(excessive) );
-                    const size_t nmax = laws.rank;
+                    const size_t inxs = blist->size;
+                    const size_t rank = laws.rank;
+
+                    Y_XML_Section_Attr(xml, "extractBasis", Y_XML_Attr(inxs) << Y_XML_Attr(rank));
                     house.free();
                     basis.free();
-                    for(size_t i=excessive;i>0;--i)
+                    for(size_t i=inxs;i>0;--i)
                     {
                         const Broken & broken = **blist->head;
                         if(Ortho::Vector *v = house.accepts(broken.law.alpha) )
                         {
                             house.progeny(v);
                             basis->pushTail( blist->popHead() );
-                            if(house->size>=nmax) break;
+                            if(house->size>=rank) break;
                         }
                         else
                         {
@@ -240,6 +241,14 @@ namespace Yttrium
                         {
                             blist.popHead();
                         }
+                    }
+
+                    Y_XMLog(xml, "still broken:");
+                    blist.sort(CompareBroken);
+                    for(const BNode *bn=blist->head;bn;bn=bn->next)
+                    {
+                        const Broken &broken = **bn;
+                        Y_XMLog(xml, "[-] " << broken);
                     }
 
 
