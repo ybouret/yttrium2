@@ -109,6 +109,10 @@ namespace Yttrium
                 MKL::LU<apq>         lu;    //!< inner algebra
                 Matrix<apz>          Prj;   //!< Projection row vectors
                 CxxArray<apz>        den;   //!< denominator for each projection vector
+
+            public:
+                Judge * next;
+                Judge * prev;
             };
         }
 

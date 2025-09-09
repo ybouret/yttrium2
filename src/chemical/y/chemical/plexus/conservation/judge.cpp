@@ -59,7 +59,9 @@ namespace Yttrium
             sbook(spool),
             lu(laws.rank),
             Prj(laws.clan->size,laws.clan->size),
-            den(laws.clan->size)
+            den(laws.clan->size),
+            next(0),
+            prev(0)
             {
             }
 
