@@ -158,6 +158,10 @@ namespace Yttrium
                     {
                         const Broken &broken = **bn;
                         Y_XMLog(xml, "[+] " << broken);
+                        for(const Actor *a=broken.law->head;a;a=a->next)
+                        {
+                            sbook |= & a->sp;
+                        }
                     }
 
                     if(blist->size)
