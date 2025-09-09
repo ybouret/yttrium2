@@ -2,6 +2,7 @@
 
 #include "y/chemical/plexus/conservation/laws.hpp"
 #include "y/chemical/type/list-ops.hpp"
+#include "y/mkl/algebra/rank.hpp"
 
 namespace Yttrium
 {
@@ -25,13 +26,14 @@ namespace Yttrium
             Assembly(),
             list(),
             clan(),
+            rank( MKL::Rank::Of(U) ),
             cs( GraphViz::ColorScheme::Query(CSID) )
             {
                 assert(U.cols==slist->size);
                 // building laws from matrix
                 const size_t Nc = U.rows;
                 const size_t M  = U.cols;
-                Y_XML_Section_Attr(xml, "Conservation::Laws", Y_XML_Attr(Nc) << Y_XML_Attr(M));
+                Y_XML_Section_Attr(xml, "Conservation::Laws", Y_XML_Attr(Nc) << Y_XML_Attr(M) << Y_XML_Attr(rank) );
                 for(size_t i=1;i<=Nc;++i)
                 {
                     Law & law = * list.pushTail( new Law() );
@@ -52,7 +54,25 @@ namespace Yttrium
 
                 Y_XMLog(xml,"species="  << clan);
                 ListOps::Make(Coerce(clan), AuxLevel);
-                
+
+                // building matching vectors
+                const size_t m = clan->size;
+                {
+                    Y_XML_Section_Attr(xml, "buildAlpha", Y_XML_Attr(m) );
+                    for(Law *law=list.head;law;law=law->next)
+                    {
+                        {
+                            Weights alpha(m);
+                            for(const Actor *a=(*law)->head;a;a=a->next)
+                            {
+                                a->sp(alpha,AuxLevel) = a->nu;
+                            }
+                            Coerce(law->alpha).xch(alpha);
+                        }
+                        Y_XMLog(xml, law->alpha << " @" << *law);
+                    }
+                }
+
             }
 
             bool Laws:: got(const Species &sp) const noexcept

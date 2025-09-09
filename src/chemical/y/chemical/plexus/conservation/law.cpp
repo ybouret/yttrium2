@@ -15,6 +15,7 @@ namespace Yttrium
             
             Law:: Law() :
             Actors(Actor::InConservation),
+            alpha(0),
             zero(0),
             next(0),
             prev(0)

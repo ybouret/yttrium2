@@ -14,6 +14,9 @@ namespace Yttrium
     {
         namespace Conservation
         {
+
+            typedef CxxArray<apn> Weights;
+
             //__________________________________________________________________
             //
             //
@@ -53,9 +56,11 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const xreal_t zero; //!< for computations
-                Law *         next; //!< for list
-                Law *         prev; //!< for list
+                const Weights alpha;
+                const xreal_t zero;  //!< for computations
+                Law *         next;  //!< for list
+                Law *         prev;  //!< for list
+                
             private:
                 Y_Disable_Copy_And_Assign(Law); //!< discarding
             };

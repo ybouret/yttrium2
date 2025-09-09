@@ -59,6 +59,7 @@ namespace Yttrium
                 CxxListOf<Law>                list; //!< laws
             public:
                 const SList                   clan;
+                const size_t                  rank;
                 const GraphViz::ColorScheme & cs;   //!< color scheme
             };
 
