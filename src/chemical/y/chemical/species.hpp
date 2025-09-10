@@ -10,6 +10,7 @@
 #include "y/chemical/formula.hpp"
 #include "y/pointer/keyed.hpp"
 #include "y/protean/bare/light/list.hpp"
+#include "y/protean/solo/light/list.hpp"
 
 
 namespace Yttrium
@@ -79,6 +80,7 @@ namespace Yttrium
 
         typedef Protean::BareLightList<const Species> SList; //!< alias
         typedef typename SList::NodeType              SNode; //!< alias
+        typedef Protean::SoloLightList<const Species> SRepo; //!< alias
 
     }
 

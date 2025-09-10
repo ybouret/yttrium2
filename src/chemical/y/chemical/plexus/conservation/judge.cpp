@@ -54,12 +54,12 @@ namespace Yttrium
             basis(bpool),
             house(laws.clan->size),
             xadd(),
+            iadd(),
             Caux(laws.clan->size),
-            spool(),
-            sbook(spool),
             lu(laws.rank),
             Prj(laws.clan->size,laws.clan->size),
             den(laws.clan->size),
+            slist(),
             next(0),
             prev(0)
             {
@@ -91,7 +91,7 @@ namespace Yttrium
             {
                 Y_XML_Section(xml, "abide");
                 blist.free();
-                sbook.free();
+                slist.free();
 
                 //--------------------------------------------------------------
                 //
@@ -162,7 +162,8 @@ namespace Yttrium
                         Y_XMLog(xml, "[+] " << broken);
                         for(const Actor *a=broken.law->head;a;a=a->next)
                         {
-                            sbook |= & a->sp;
+                            const Species &sp = a->sp;
+                            if(!slist.found(sp)) slist << sp;
                         }
                     }
 
@@ -200,20 +201,37 @@ namespace Yttrium
                         }
                     }
                     AlphaT.assign(TransposeOf,Alpha);
-                    std::cerr << "Alpha=" << Alpha << std::endl;
+
+                    //----------------------------------------------------------
+                    //
+                    // Compute Gram
+                    //
+                    //----------------------------------------------------------
+                    Matrix<apz>          Alpha2(n,n);
+                    MKL::Tao::Gram(iadd,Alpha2,Alpha);
+
+                    //----------------------------------------------------------
+                    //
+                    // Compute determinant
+                    //
+                    //----------------------------------------------------------
+                    const apz det2 = lu.determinant(Alpha2);
+                    if(__Zero__==det2.s) throw Specific::Exception("Laws","corrupted coefficients");
+
+                    //----------------------------------------------------------
+                    //
+                    // Compute adjoint
+                    //
+                    //----------------------------------------------------------
+                    lu.adjoint(adj2,Alpha2);
+                    MKL::Tao::MMul(iadd,A3,adj2,Alpha);
+                    MKL::Tao::MMul(iadd,Prj,AlphaT,A3);
 
                     //----------------------------------------------------------
                     //
                     // Compute projection matrix
                     //
                     //----------------------------------------------------------
-                    Matrix<apz>          Alpha2(n,n);
-                    MKL::Tao::Gram(iadd,Alpha2,Alpha);
-                    const apz det2 = lu.determinant(Alpha2);
-                    if(__Zero__==det2.s) throw Specific::Exception("Laws","corrupted coefficients");
-                    lu.adjoint(adj2,Alpha2);
-                    MKL::Tao::MMul(iadd,A3,adj2,Alpha);
-                    MKL::Tao::MMul(iadd,Prj,AlphaT,A3);
                     for(size_t i=m;i>0;--i)
                     {
                         for(size_t j=m;j>i;--j)   Sign::MakeOpposite( Coerce(Prj[i][j].s) );
@@ -239,7 +257,6 @@ namespace Yttrium
                     //
                     //----------------------------------------------------------
                     laws.dowload(Caux,Ctop);
-                    std::cerr << "A=" << Caux << std::endl;
                     for(const SNode *sn=laws.clan->head;sn;sn=sn->next)
                     {
                         const Species       & s = **sn;

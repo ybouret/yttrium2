@@ -4,7 +4,7 @@
 #include "y/chemical/weasel.hpp"
 #include "y/chemical/plexus/clusters.hpp"
 #include "y/chemical/plexus/steady-state.hpp"
-#include "y/chemical/plexus/conservation/judge.hpp"
+#include "y/chemical/plexus/conservation/court.hpp"
 
 #include "y/utest/run.hpp"
 #include "y/random/mt19937.hpp"
@@ -70,15 +70,11 @@ Y_UTEST(plexus)
     lib.print(std::cerr, "[", C0, "]", xreal_t::ToString);
 
 
-    for(const Cluster *cl=cls->head;cl;cl=cl->next)
-    {
-       if(cl->claws.isValid())
-       {
-           Conservation::Judge judge( *cl->claws );
-           judge.abide(xml,C0);
-       }
-    }
+    Conservation::Court court(cls);
 
+    court.trial(xml,C0);
+
+    
 
     return 0;
 

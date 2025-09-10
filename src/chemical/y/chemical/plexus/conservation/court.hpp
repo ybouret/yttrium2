@@ -36,6 +36,9 @@ namespace Yttrium
                 explicit Court(const Clusters &); //!< setup
                 virtual ~Court() noexcept;        //!< cleanup
 
+                void trial(XMLog &xml, XWritable &Ctop);
+
+
             private:
                 Y_Disable_Copy_And_Assign(Court); //!< discarding
                 Y_Ingress_Decl();                 //!< helper

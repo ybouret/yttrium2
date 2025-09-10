@@ -25,6 +25,21 @@ namespace Yttrium
                     }
                 }
             }
+
+
+            void Court:: trial(XMLog &xml, XWritable &Ctop)
+            {
+                const size_t count = judges.size;
+                if(count)
+                {
+                    Y_XML_Section_Attr(xml, "Court", Y_XML_Attr(count));
+                    for(Judge *judge=judges.head;judge;judge=judge->next)
+                    {
+                        judge->abide(xml,Ctop);
+                        Y_XMLog(xml, "zlist=" << judge->slist);
+                    }
+                }
+            }
         }
 
     }
