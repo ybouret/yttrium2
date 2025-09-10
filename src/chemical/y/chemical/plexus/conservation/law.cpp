@@ -2,6 +2,8 @@
 
 #include "y/chemical/plexus/conservation/law.hpp"
 #include "y/stream/output.hpp"
+#include "y/chemical/type/list-ops.hpp"
+
 
 namespace Yttrium
 {
@@ -16,6 +18,7 @@ namespace Yttrium
             Law:: Law() :
             Actors(Actor::InConservation),
             alpha(0),
+            lead(),
             zero(0),
             next(0),
             prev(0)
@@ -56,6 +59,40 @@ namespace Yttrium
                 return fp;
             }
 
+
+            static inline
+            size_t CommonSpecies(const Law &law, const Readable<int> &nu) noexcept
+            {
+                size_t res = 0;
+                for(const Actor *a=law->head;a;a=a->next)
+                {
+                    if( a->sp(nu,SubLevel) ) ++res;
+                }
+                return res;
+            }
+
+            void Law:: queryInvolved(XMLog         &xml,
+                                     const EList   &elist,
+                                     const iMatrix &itopo)
+            {
+                const Law &law = *this;
+                Y_XML_Section_Attr(xml, "Conservation::Involved", Y_XML_Attr(law));
+                for(const ENode *en=elist->head;en;en=en->next)
+                {
+                    const Equilibrium   &eq = **en;
+                    const Readable<int> &nu = itopo[ eq.indx[SubLevel] ];
+                    const size_t ncom = CommonSpecies(law,nu);
+                    if(CommonSpecies(law,nu)>=2)
+                    {
+                        Y_XMLog(xml,"[+] " << eq.name << " #" << ncom);
+                        Coerce(lead) << eq;
+                    }
+                }
+
+                ListOps::Make(Coerce(lead),AuxLevel);
+
+
+            }
 
         }
     }

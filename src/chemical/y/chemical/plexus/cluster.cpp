@@ -88,7 +88,7 @@ namespace Yttrium
             assert( !elist.found(eq) );
             for(const SNode *sn=slist->head;sn;sn=sn->next)
             {
-                if( eq.has( **sn ) ) return true;
+                if( eq.got( **sn ) ) return true;
             }
 
             return false;
@@ -160,7 +160,11 @@ namespace Yttrium
             buildConservations(xml);
             buildCombinatorics(xml,eqs,tlK);
 
+            //------------------------------------------------------------------
+            //
             // dispatching
+            //
+            //------------------------------------------------------------------
             for(const ENode *en=elist->head;en;en=en->next)
             {
                 const Equilibrium &eq = **en;
@@ -182,6 +186,20 @@ namespace Yttrium
 
                 Coerce(nebulous) << eq;
 
+            }
+
+            //------------------------------------------------------------------
+            //
+            //
+            //
+            //
+            //------------------------------------------------------------------
+            if(claws.isValid())
+            {
+                for(Conservation::Law *law = (**claws).head;law;law=law->next)
+                {
+                    law->queryInvolved(xml,order[1],iTopo);
+                }
             }
 
             {

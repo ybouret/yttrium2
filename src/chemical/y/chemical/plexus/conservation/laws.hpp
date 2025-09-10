@@ -37,8 +37,10 @@ namespace Yttrium
                 // C++
                 //
                 //______________________________________________________________
-                explicit Laws(XMLog &, const uMatrix &, const SList &); //!< setup
-                virtual ~Laws() noexcept;                               //!< cleanup
+                explicit Laws(XMLog         &,
+                              const uMatrix &,
+                              const SList   &); //!< setup
+                virtual ~Laws() noexcept;       //!< cleanup
 
                 //______________________________________________________________
                 //

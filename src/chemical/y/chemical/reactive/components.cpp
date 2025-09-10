@@ -168,7 +168,7 @@ namespace Yttrium
         }
 
 
-        bool Components:: has(const Species &sp) const noexcept
+        bool Components:: got(const Species &sp) const noexcept
         {
             return reac.got(sp) || prod.got(sp);
         }

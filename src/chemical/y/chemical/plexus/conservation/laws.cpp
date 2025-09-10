@@ -19,6 +19,8 @@ namespace Yttrium
             {
             }
 
+            
+
             Laws:: Laws(XMLog &        xml,
                         const uMatrix &U,
                         const SList   &slist) :
@@ -30,7 +32,14 @@ namespace Yttrium
             cs( GraphViz::ColorScheme::Query(CSID) )
             {
                 assert(U.cols==slist->size);
+
+                //--------------------------------------------------------------
+                //
+                //
                 // building laws from matrix
+                //
+                //
+                //--------------------------------------------------------------
                 const size_t Nc = U.rows;
                 const size_t M  = U.cols;
                 Y_XML_Section_Attr(xml, "Conservation::Laws", Y_XML_Attr(Nc) << Y_XML_Attr(M) << Y_XML_Attr(rank) );
@@ -43,9 +52,16 @@ namespace Yttrium
                         law.add(cf,**(slist->fetch(j)));
                     }
                     Y_XMLog(xml,law);
+                    assert(law->size>=2);
                 }
 
+                //--------------------------------------------------------------
+                //
+                //
                 // collecting involved species
+                //
+                //
+                //--------------------------------------------------------------
                 for(const SNode *sn=slist->head;sn;sn=sn->next)
                 {
                     const Species &sp = **sn;
@@ -55,7 +71,13 @@ namespace Yttrium
                 Y_XMLog(xml,"species="  << clan);
                 ListOps::Make(Coerce(clan), AuxLevel);
 
+                //--------------------------------------------------------------
+                //
+                //
                 // building matching vectors
+                //
+                //
+                //--------------------------------------------------------------
                 const size_t m = clan->size;
                 {
                     Y_XML_Section_Attr(xml, "buildAlpha", Y_XML_Attr(m) );
@@ -72,6 +94,8 @@ namespace Yttrium
                         Y_XMLog(xml, law->alpha << " @" << *law);
                     }
                 }
+
+                
 
             }
 
