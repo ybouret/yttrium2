@@ -7,7 +7,7 @@
 #define Y_Chemical_Conservation_Judge_Included 1
 
 
-#include "y/chemical/plexus/conservation/laws.hpp"
+#include "y/chemical/plexus/cluster.hpp"
 #include "y/protean/coop/heavy/list.hpp"
 #include "y/ortho/house.hpp"
 #include "y/mkl/algebra/lu.hpp"
@@ -84,7 +84,7 @@ namespace Yttrium
                 // C++
                 //
                 //______________________________________________________________
-                explicit Judge(const Laws &); //!< setup
+                explicit Judge(const Cluster &, const Laws &); //!< setup
                 virtual ~Judge() noexcept;    //!< clenup
 
                 void abide(XMLog &xml, XWritable &Ctop);
@@ -98,8 +98,9 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const Laws &         laws; //!< origin laws
-                const xreal_t        zero; //!< default value
+                const Cluster &      root;  //!< origin cluster
+                const Laws &         laws;  //!< origin laws
+                const xreal_t        zero;  //!< default value
                 BPool                bpool; //!< pool
                 BList                blist; //!< list of broken laws
                 BList                basis; //!< basis of broken laws

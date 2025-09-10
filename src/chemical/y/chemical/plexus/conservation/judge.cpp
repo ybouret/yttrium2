@@ -46,7 +46,8 @@ namespace Yttrium
 
             }
 
-            Judge:: Judge(const Laws &_laws) :
+            Judge:: Judge(const Cluster &_root, const Laws &_laws) :
+            root(_root),
             laws(_laws),
             zero(),
             bpool(),

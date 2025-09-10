@@ -21,7 +21,7 @@ namespace Yttrium
                 {
                     if(cl->claws.isValid())
                     {
-                        judges.pushTail( new Judge(*cl->claws) );
+                        judges.pushTail( new Judge(*cl,*cl->claws) );
                     }
                 }
             }
