@@ -12,20 +12,38 @@ namespace Yttrium
 {
     namespace Chemical
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Compute steady state for clusters
+        //
+        //
+        //______________________________________________________________________
         class SteadyState : public Object, public Ingress< Core::ListOf<Solver> >
         {
         public:
-            explicit SteadyState(const Clusters &);
-            virtual ~SteadyState() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit SteadyState(const Clusters &); //!< setup
+            virtual ~SteadyState() noexcept;        //!< cleanu[
 
-            //! solve with inner clusters K
+            //! solve with inner clusters K, which must be up to date
+            /**
+             \param xml output
+             \param Ctop top-level concentrations, updated
+             */
             void solve(XMLog &xml, XWritable & Ctop);
 
         private:
-            Y_Disable_Copy_And_Assign(SteadyState);
-            Y_Ingress_Decl();
-            CxxListOf<Solver>  solvers;
-            const Clusters   & clusters;
+            Y_Disable_Copy_And_Assign(SteadyState); //!< discarding
+            Y_Ingress_Decl();                       //!< helper
+            CxxListOf<Solver>  solvers;             //!< one solver per cluster
+            const Clusters   & clusters;            //!< persistent clusters
         };
     }
 }

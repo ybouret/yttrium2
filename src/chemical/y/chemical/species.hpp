@@ -53,6 +53,14 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
+
+            //! emit GraphViz code
+            /**
+             \param fp output stream
+             \param color precomputed color
+             \param style precomputed style
+             \return output stream
+             */
             OutputStream & viz(OutputStream &     fp,
                                const String &     color,
                                const char * const style) const;

@@ -177,6 +177,12 @@ namespace Yttrium
                           const Level      L) const;
 
 
+            //! emit GraphViz code
+            /**
+             \param fp    output stream
+             \param color precomputed color
+             \return stream
+             */
             OutputStream & viz(OutputStream &fp, const String &color) const;
 
             //__________________________________________________________________

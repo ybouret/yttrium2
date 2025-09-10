@@ -15,10 +15,6 @@ namespace Yttrium
     {
 
 
-
-        
-
-
         class Clusters;
 
         //______________________________________________________________________
@@ -91,8 +87,14 @@ namespace Yttrium
             // GraphViz methods
             //
             //__________________________________________________________________
+            //! emit GraphViz code
+            /**
+             \param fp       output stream
+             \param numOrder given order to emit
+             \return output stream
+             */
             OutputStream & viz(OutputStream &fp, const size_t numOrder) const;
-            void           vizSpecies(OutputStream &) const;
+            void           vizSpecies(OutputStream &) const; //!< emit GraphViz species
 
         private:
             Y_Disable_Copy_And_Assign(Cluster);  //!< discarding
@@ -127,7 +129,7 @@ namespace Yttrium
             Cluster *      next;  //!< for list
             Cluster *      prev;  //!< for list
             
-            const GraphViz::ColorScheme & cs;
+            const GraphViz::ColorScheme & cs; //!< color scheme
 
         private:
             void buildTopology(XMLog &);      //!< build topology

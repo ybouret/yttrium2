@@ -35,8 +35,8 @@ namespace Yttrium
         static const char * const CallSign;                                     //!< "MPI"
         static const Longevity    LifeTime = LifeTimeOf:: MPI;                  //!< Life Time
         static const char *       HumanReadableThreadLevel(const int) noexcept; //!< \return thread level
-        static const int          DefaultTag = 1;
-        static const size_t       MaxCount   = IntegerFor<int>::Maximum;
+        static const int          DefaultTag = 1;                               //!< default tag
+        static const size_t       MaxCount   = IntegerFor<int>::Maximum;        //!< for int/size_t conversion
 
         class Rate
         {
