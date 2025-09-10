@@ -43,8 +43,24 @@ Y_UTEST(ordered_data_book)
                 Y_ASSERT(db.remove(keys[i]));
                 std::cerr << db << std::endl;
             }
-
         }
+
+
+    }
+
+    {
+        db.free();
+        Vector<uint16_t> keys;
+        for(size_t iter=0;iter<10;++iter)
+        {
+            const uint16_t u = ran.to<uint16_t>();
+            keys << u;
+            db.insert(u);
+        }
+        std::cerr << "keys= " << keys << std::endl;
+        std::cerr << "book= " << db   << std::endl;
+        db.printAs<uint16_t>(std::cerr << "dbAs= ") << std::endl;
+        std::cerr << std::endl;
     }
 
     {
@@ -58,7 +74,8 @@ Y_UTEST(ordered_data_book)
         std::cerr << "addr=" << db << std::endl;
 
         Iter::Test::AllForward(db);
-        
+        db.printAs<int *>(std::cerr << "dbAs= ") << std::endl;
+
     }
 
 

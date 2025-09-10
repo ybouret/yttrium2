@@ -61,6 +61,17 @@ namespace Yttrium
                 return alias.word;
             }
 
+            //! \param word data \return transmogrified data
+            template <typename T> static inline
+            const T Cast(const uint64_t word) noexcept
+            {
+                union {
+                    uint64_t word;
+                    T        user;
+                } alias = { word };
+                return alias.user;
+            }
+
             //! locate function
             /**
              \param node output node
@@ -238,6 +249,22 @@ namespace Yttrium
             return db -= rhs;
         }
 
+        //! print with cast \param os output stream \return stream
+        template <typename T> inline
+        std::ostream & printAs(std::ostream &os) const
+        {
+            static const IntToType< TypeTraits<T>::IsPointer > choice = {};
+            const DataNode *node = list->head;
+            os << '{';
+            if(node)
+            {
+                print<T>(os,node,choice);
+                for(node=node->next;node;node=node->next)
+                    print<T>(os << ',',node,choice);
+            }
+            return os << '}';
+        }
+
         //______________________________________________________________________
         //
         //
@@ -253,6 +280,21 @@ namespace Yttrium
         inline virtual typename BaseType::ConstInterface & locus() const noexcept { return list; }
         Y_Disable_Assign(DataBook); //!< discarding
         ListType list;              //!< operating list
+
+        //! T is data \param os stream \param node data node
+        template <typename T> inline
+        void print(std::ostream &os, const DataNode * const node, const IntToType<false> &) const
+        {
+            os << Cast<T>(**node);
+        }
+
+        //! T is pointer \param os stream \param node data node
+        template <typename T> inline
+        void print(std::ostream &os, const DataNode * const node, const IntToType<true> &) const
+        {
+            os << *Cast<T>(**node);
+        }
+
 
     };
 

@@ -42,7 +42,13 @@ namespace Yttrium
                 Y_OSTREAM_PROTO(Broken);                     //!< display
 
 
-                bool still(XAdd &, const XReadable &Ctop);
+                //! recompute excess
+                /**
+                 \param xadd inner additions
+                 \param Ctop top-level concentrations
+                 \return true is remaining excess
+                */
+                bool still(XAdd &xadd, const XReadable &Ctop);
 
                 //______________________________________________________________
                 //
@@ -61,14 +67,14 @@ namespace Yttrium
             typedef BList::NodeType                BNode; //!< alias
             typedef BList::PoolType                BPool; //!< alias
 
-            typedef DataBook<>                     SBook;
-            typedef SBook::PoolType                SPool;
+            typedef DataBook<>                     SBook; //!< alias
+            typedef SBook::PoolType                SPool; //!< alias
 
             //__________________________________________________________________
             //
             //
             //
-            //! Judge
+            //! Judge to apply laws
             //
             //
             //__________________________________________________________________
@@ -102,17 +108,17 @@ namespace Yttrium
                 BList                basis; //!< basis of broken laws
                 Ortho::House         house; //!< extract basis
                 XAdd                 xadd;  //!< inner add
-                Cameo::Addition<apz> iadd;
+                Cameo::Addition<apz> iadd;  //!< inner add
                 XArray               Caux;  //!< auxiliary concentration
-                SPool                spool;
-                SBook                sbook;
+                SPool                spool; //!< shared pool
+                SBook                sbook; //!< species
                 MKL::LU<apq>         lu;    //!< inner algebra
                 Matrix<apz>          Prj;   //!< Projection row vectors
                 CxxArray<apz>        den;   //!< denominator for each projection vector
 
             public:
-                Judge * next;
-                Judge * prev;
+                Judge * next; //!< for list
+                Judge * prev; //!< for list
             };
         }
 
