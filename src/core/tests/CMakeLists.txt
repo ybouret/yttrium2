@@ -130,6 +130,7 @@ Y_UTEST(hashing:digest)
 Y_UTEST(hashing:perfect)
 Y_UTEST(hashing:functions)
 Y_UTEST(hashing:hmac)
+Y_UTEST(hashing:kmix)
 
 #xml
 Y_UTEST(xml:attribute)
