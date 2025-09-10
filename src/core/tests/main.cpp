@@ -37,6 +37,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(system_rand);
     Y_UTEST(system_wall_time);
     Y_UTEST(system_hardware);
+    Y_UTEST(system_rtti);
 
     Y_UTEST(calculus_integer_log2);
     Y_UTEST(calculus_alignment);
