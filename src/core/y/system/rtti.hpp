@@ -63,7 +63,6 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            explicit RTTI(const std::type_info &, const size_t); //!< setup
             virtual ~RTTI() noexcept;                            //!< cleanup
             Y_OSTREAM_PROTO(RTTI);                               //!< display
 
@@ -109,7 +108,9 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(RTTI); //!< discarding
-            static RTTI & Get(const std::type_info &, const size_t); //!< \return Get/Create RTTI
+            friend class DataBase;
+            explicit      RTTI(const std::type_info &, const size_t); //!< setup
+            static RTTI &  Get(const std::type_info &, const size_t); //!< \return Get/Create RTTI
 
         };
     }
