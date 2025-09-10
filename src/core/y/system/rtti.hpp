@@ -15,48 +15,79 @@ namespace Yttrium
     namespace System
     {
 
-
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Run Time Type Information
+        //
+        //
+        //______________________________________________________________________
         class RTTI : public CountedObject
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
             class DataBase;
-            
+
+            //__________________________________________________________________
+            //
+            //
+            //! Alias
+            //
+            //__________________________________________________________________
             class Alias : public String
             {
             public:
-                typedef CxxListOf<Alias> List;
-
-                explicit Alias(const String &);
-                explicit Alias(const char * const);
-                virtual ~Alias() noexcept;
-                
-                Alias *next;
-                Alias *prev;
+                typedef CxxListOf<Alias> List;      //!< alias
+                explicit Alias(const String &);     //!< setup
+                explicit Alias(const char * const); //!< setup
+                virtual ~Alias() noexcept;          //!< cleanup
+                Alias *  next;                      //!< for list
+                Alias *  prev;                      //!< for list
             private:
-                Y_Disable_Copy_And_Assign(Alias);
+                Y_Disable_Copy_And_Assign(Alias);   //!< discarding
             };
 
             
-            typedef ArcPtr<RTTI>          PtrType;
-            typedef Keyed<String,PtrType> Pointer;
-            
-            explicit RTTI(const std::type_info &);
-            virtual ~RTTI() noexcept;
+            typedef ArcPtr<RTTI>          PtrType; //!< alias
+            typedef Keyed<String,PtrType> Pointer; //!< alias
 
-            
-            const String & key()  const noexcept;
-            const String & name() const noexcept;
-            RTTI &         aka(const String &);
-            RTTI &         aka(const char * const);
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit RTTI(const std::type_info &, const size_t); //!< setup
+            virtual ~RTTI() noexcept;                            //!< cleanup
+            Y_OSTREAM_PROTO(RTTI);                               //!< display
 
-            static RTTI & Get(const std::type_info &);
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            const String & key()  const noexcept;                 //!< \return uuid
+            const String & name() const noexcept;                 //!< \return uuid or first alias
+            RTTI &         aka(const String &);                   //!< manual alias setup \return *this
+            RTTI &         aka(const char * const);               //!< manual alias setup \return *this
+            bool           called(const String &) const noexcept; //!< \return true if matches uuid of alias
 
+
+            //! \return global RTTI
             template <typename T> inline
             static RTTI & Get() {
-                static RTTI & _ = Get( typeid(T) );
+                static RTTI & _ = Get( typeid(T), sizeof(T) );
                 return _;
             }
 
+            //! \return global name
             template <typename T> inline
             static const String & Name()
             {
@@ -64,17 +95,22 @@ namespace Yttrium
                 return _.name();
             }
 
+            static void Display(std::ostream &); //!< display content
 
-
-
-
-            const String         uuid;
-            const Alias::List    aliases;
-
-
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const String         uuid;    //!< system uuid
+            const size_t         bytes;   //!< bytes per item
+            const Alias::List    aliases; //!< list of aliases
 
         private:
-            Y_Disable_Copy_And_Assign(RTTI);
+            Y_Disable_Copy_And_Assign(RTTI); //!< discarding
+            static RTTI & Get(const std::type_info &, const size_t); //!< \return Get/Create RTTI
+
         };
     }
 
