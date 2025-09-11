@@ -26,6 +26,7 @@ namespace Yttrium
         iTopo(),
         uCLaw(),
         claws(),
+        canon(),
         conserved(),
         unbounded(),
         standard(),

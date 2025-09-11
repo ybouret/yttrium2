@@ -116,6 +116,7 @@ namespace Yttrium
             const iMatrix   iTopo;     //!< initial integer topology matrix
             const uMatrix   uCLaw;     //!< unsigned conservation matrix
             const CLaws     claws;     //!< list of conservations
+            const CActs     canon;     //!< list of acts
             const SList     conserved; //!< conserved species
             const SList     unbounded; //!< unbounded species
             const EList     standard;  //!< with at least an unbounded species on each side

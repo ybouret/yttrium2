@@ -28,6 +28,10 @@ namespace Yttrium
                 void connect(const Law &);
                 void combine(Act &);
 
+                void query(const EList   & primary,
+                           const iMatrix & topology);
+
+
             private:
                 Y_Disable_Copy_And_Assign(Act);
                 Y_Ingress_Decl();

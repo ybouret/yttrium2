@@ -19,14 +19,19 @@ namespace Yttrium
             class Acts : public Object, public Ingress< const Act::List >
             {
             public:
-                explicit Acts(XMLog &xml, const Laws &laws);
+                explicit Acts(XMLog         & xml,
+                              const Laws    & laws,
+                              const EList   & primary,
+                              const iMatrix & topology);
                 virtual ~Acts() noexcept;
 
             private:
                 Y_Disable_Copy_And_Assign(Acts);
                 Y_Ingress_Decl();
-                Act::List clist;
-                Act *accepted(const Law &) noexcept;
+                Act::List alist;
+
+                bool accepted(const Law &) noexcept;
+                void tryMerge()            noexcept;
             };
 
         }

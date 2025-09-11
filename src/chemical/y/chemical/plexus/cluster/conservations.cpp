@@ -45,6 +45,7 @@ namespace Yttrium
             }
             Y_XMLog(xml, "uCLaw=" << uCLaw);
             Coerce(claws) = new Conservation::Laws(xml,uCLaw,slist);
+            Coerce(canon) = new Conservation::Acts(xml,*claws,elist,iTopo);
 
             for(const SNode *sn=slist->head;sn;sn=sn->next)
             {
@@ -54,7 +55,7 @@ namespace Yttrium
                 else
                     Coerce(unbounded) << sp;
             }
-
+            exit(0);
         }
     }
 

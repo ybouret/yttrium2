@@ -27,7 +27,7 @@ namespace Yttrium
             Ingress<const Core::ListOf<Law> >(),
             Assembly(),
             list(),
-            clan(),
+            //clan(),
             rank( MKL::Rank::Of(U) ),
             cs( GraphViz::ColorScheme::Query(CSID) )
             {
@@ -55,6 +55,7 @@ namespace Yttrium
                     assert(law->size>=2);
                 }
 
+#if 0
                 //--------------------------------------------------------------
                 //
                 //
@@ -94,8 +95,8 @@ namespace Yttrium
                         Y_XMLog(xml, law->alpha << " @" << *law);
                     }
                 }
+#endif
 
-                
 
             }
 
@@ -107,7 +108,7 @@ namespace Yttrium
                 }
                 return false;
             }
-
+            
             OutputStream & Laws:: viz(OutputStream &fp) const
             {
                 size_t i=1;
@@ -119,6 +120,7 @@ namespace Yttrium
             }
 
 
+#if 0
             void Laws:: dowload(XWritable &Caux, const XReadable &Ctop) const
             {
                 ListOps::Copy(clan,Caux,AuxLevel,Ctop,TopLevel);
@@ -128,7 +130,7 @@ namespace Yttrium
             {
                 ListOps::Copy(clan,Ctop,TopLevel,Caux,AuxLevel);
             }
-
+#endif
 
         }
 
