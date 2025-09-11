@@ -6,7 +6,7 @@
 #define Y_Chemical_Conservation_Law_Included 1
 
 
-#include "y/chemical/reactive/equilibrium.hpp"
+#include "y/chemical/reactive/actors.hpp"
 #include "y/stream/xmlog.hpp"
 
 namespace Yttrium
@@ -52,9 +52,6 @@ namespace Yttrium
                 //! GraphViz with color \return output stream
                 OutputStream & viz(OutputStream &, const String &) const;
 
-                void queryInvolved(XMLog         &xml,
-                                   const EList   &elist,
-                                   const iMatrix &itopo);
 
                 //______________________________________________________________
                 //
@@ -63,7 +60,6 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 const Weights alpha; //!< compiled weights
-                const EList   lead;  //!< leading primary eqs
                 const xreal_t zero;  //!< for computations
                 Law *         next;  //!< for list
                 Law *         prev;  //!< for list
@@ -72,6 +68,8 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(Law); //!< discarding
             };
 
+            typedef Protean::BareLightList<const Law> LList;
+            typedef LList::NodeType                   LNode;
 
 
         }

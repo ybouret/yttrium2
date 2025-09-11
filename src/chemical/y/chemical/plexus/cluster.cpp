@@ -194,13 +194,7 @@ namespace Yttrium
             //
             //
             //------------------------------------------------------------------
-            if(claws.isValid())
-            {
-                for(Conservation::Law *law = (**claws).head;law;law=law->next)
-                {
-                    law->queryInvolved(xml,order[1],iTopo);
-                }
-            }
+            
 
             {
                 Y_XML_Section(xml, "Summary");
