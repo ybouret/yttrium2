@@ -1,5 +1,5 @@
 
-#include "y/chemical/plexus/conservation/canon.hpp"
+#include "y/chemical/plexus/conservation/act.hpp"
 #include "y/chemical/type/list-ops.hpp"
 
 namespace Yttrium
@@ -9,13 +9,13 @@ namespace Yttrium
         namespace Conservation
         {
 
-            Y_Ingress_Impl(Canon,list)
+            Y_Ingress_Impl(Act,list)
 
-            Canon:: ~Canon() noexcept
+            Act:: ~Act() noexcept
             {
             }
 
-            Canon:: Canon(const Law &first) :
+            Act:: Act(const Law &first) :
             Object(),
             Ingress<const LList>(),
             list(),
@@ -28,7 +28,7 @@ namespace Yttrium
             }
 
 
-            void Canon:: connect(const Law &law)
+            void Act:: connect(const Law &law)
             {
                 assert( !list.found(law) );
                 list << law;
@@ -39,7 +39,7 @@ namespace Yttrium
                 ListOps::Make(Coerce(slist), AuxLevel);
             }
 
-            void Canon:: combine(Canon &canon)
+            void Act:: combine(Act &canon)
             {
                 // fetch laws
                 list->mergeTail( *(canon.list) );
@@ -59,7 +59,7 @@ namespace Yttrium
 
             }
 
-            bool Canon:: accepts(const Law &law) const noexcept
+            bool Act:: accepts(const Law &law) const noexcept
             {
                 for(const SNode *sn=slist->head;sn;sn=sn->next)
                 {

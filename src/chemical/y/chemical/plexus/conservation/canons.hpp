@@ -2,11 +2,11 @@
 //! \file
 
 
-#ifndef Y_Chemical_Conservation_Canons_Included
-#define Y_Chemical_Conservation_Canons_Included 1
+#ifndef Y_Chemical_Conservation_Acts_Included
+#define Y_Chemical_Conservation_Acts_Included 1
 
 
-#include "y/chemical/plexus/conservation/canon.hpp"
+#include "y/chemical/plexus/conservation/act.hpp"
 #include "y/chemical/plexus/conservation/laws.hpp"
 
 namespace Yttrium
@@ -16,17 +16,17 @@ namespace Yttrium
         namespace Conservation
         {
 
-            class Canons : public Object, public Ingress< const Canon::List >
+            class Acts : public Object, public Ingress< const Act::List >
             {
             public:
-                explicit Canons(XMLog &xml, const Laws &laws);
-                virtual ~Canons() noexcept;
+                explicit Acts(XMLog &xml, const Laws &laws);
+                virtual ~Acts() noexcept;
 
             private:
-                Y_Disable_Copy_And_Assign(Canons);
+                Y_Disable_Copy_And_Assign(Acts);
                 Y_Ingress_Decl();
-                Canon::List clist;
-                Canon *accepted(const Law &) noexcept;
+                Act::List clist;
+                Act *accepted(const Law &) noexcept;
             };
 
         }

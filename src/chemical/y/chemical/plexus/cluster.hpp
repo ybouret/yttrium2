@@ -37,10 +37,10 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            static const char * const             CallSign; //!< "Cluster"
-            static const char * const             CSID;     //!< "set19"
-            typedef AutoPtr<Conservation::Laws>   CLaws;    //!< alias
-            typedef AutoPtr<Conservation::Canons> CActs;    //!< alias
+            static const char * const           CallSign; //!< "Cluster"
+            static const char * const           CSID;     //!< "set19"
+            typedef AutoPtr<Conservation::Laws> CLaws;    //!< alias
+            typedef AutoPtr<Conservation::Acts> CActs;    //!< alias
 
             //__________________________________________________________________
             //

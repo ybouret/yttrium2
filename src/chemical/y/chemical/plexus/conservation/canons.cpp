@@ -8,14 +8,14 @@ namespace Yttrium
         namespace Conservation
         {
 
-            Y_Ingress_Impl(Canons,clist)
+            Y_Ingress_Impl(Acts,clist)
 
-            Canons:: ~Canons() noexcept
+            Acts:: ~Acts() noexcept
             {
             }
 
-            Canons:: Canons(XMLog &xml, const Laws &laws) :
-            Object(), Ingress<const Canon::List>(),
+            Acts:: Acts(XMLog &xml, const Laws &laws) :
+            Object(), Ingress<const Act::List>(),
             clist()
             {
                 const size_t count = laws->size;
@@ -23,23 +23,23 @@ namespace Yttrium
 
                 for(const Law *law = laws->head; law; law=law->next)
                 {
-                    if(Canon *host = accepted(*law))
+                    if(Act *host = accepted(*law))
                     {
                         (void) host;
                         continue;
                     }
-                    clist.pushTail( new Canon(*law) );
+                    clist.pushTail( new Act(*law) );
                 }
             }
 
-            Canon * Canons:: accepted(const Law &law) noexcept
+            Act * Acts:: accepted(const Law &law) noexcept
             {
-                for(Canon *canon=clist.head;canon;canon=canon->next)
+                for(Act *act=clist.head;act;act=act->next)
                 {
-                    if( canon->accepts(law) )
+                    if( act->accepts(law) )
                     {
-                        canon->connect(law);
-                        return canon;
+                        act->connect(law);
+                        return act;
                     }
                 }
                 return 0;
