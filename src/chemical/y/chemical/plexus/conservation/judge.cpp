@@ -61,6 +61,7 @@ namespace Yttrium
             Prj(laws.clan->size,laws.clan->size),
             den(laws.clan->size),
             slist(),
+            elist(),
             next(0),
             prev(0)
             {
@@ -90,9 +91,11 @@ namespace Yttrium
 
             void Judge:: abide(XMLog &xml, XWritable &Ctop)
             {
-                Y_XML_Section(xml, "abide");
+                Y_XML_Section(xml, "Judge::Abide");
                 blist.free();
+
                 slist.free();
+                elist.free();
 
                 //--------------------------------------------------------------
                 //
@@ -102,7 +105,7 @@ namespace Yttrium
                 //
                 //--------------------------------------------------------------
                 {
-                    Y_XML_Section(xml, "initialExcess");
+                    Y_XML_Section(xml, "Judge::InitialExcess");
                     for(const Law *law=laws->head;law;law=law->next)
                     {
                         const xreal_t xs = law->excess(xadd,Ctop,TopLevel);
@@ -137,7 +140,7 @@ namespace Yttrium
                     ++iter;
                     const size_t inxs = blist->size;
                     const size_t rank = laws.rank;
-                    Y_XML_Section_Attr(xml, "extractBasis", Y_XML_Attr(inxs) << Y_XML_Attr(rank) << Y_XML_Attr(iter));
+                    Y_XML_Section_Attr(xml, "Judge::ExtractBasis", Y_XML_Attr(inxs) << Y_XML_Attr(rank) << Y_XML_Attr(iter));
 
                     house.free();
                     basis.free();
@@ -160,12 +163,13 @@ namespace Yttrium
                     for(const BNode *bn=basis->head;bn;bn=bn->next)
                     {
                         const Broken &broken = **bn;
+                        const Law    &law    = broken.law;
                         Y_XMLog(xml, "[+] " << broken);
-                        for(const Actor *a=broken.law->head;a;a=a->next)
+                        for(const Actor *a=law->head;a;a=a->next)
                         {
-                            const Species &sp = a->sp;
-                            if(!slist.found(sp)) slist << sp;
+                            slist |= a->sp;
                         }
+                        elist |= law.lead;
                     }
 
                     if(blist->size)
@@ -239,8 +243,7 @@ namespace Yttrium
                         for(size_t j=i-1;j>0;--j) Sign::MakeOpposite( Coerce(Prj[i][j].s) );
                         Prj[i][i] = det2 - Prj[i][i];
                     }
-                    std::cerr << "P=" << Prj << "/" << det2 << std::endl;
-
+                    
                     //----------------------------------------------------------
                     //
                     // Compute simplification per row
@@ -257,35 +260,41 @@ namespace Yttrium
                     // upgrade species
                     //
                     //----------------------------------------------------------
-                    laws.dowload(Caux,Ctop);
-                    for(const SNode *sn=laws.clan->head;sn;sn=sn->next)
                     {
-                        const Species       & s = **sn;
-                        const size_t          j = s.indx[AuxLevel];
-                        const Readable<apz> & v = Prj[j];
-                        const apz           & d = den[j];
-                        if(isUnit(v,d,j)) {
-                            continue;
-                        }
-
-                        xadd.ldz();
-                        for(size_t i=m;i>0;--i)
+                        Y_XML_Section(xml,"Judge::Deliberate");
+                        laws.dowload(Caux,Ctop);
+                        for(const SNode *sn=laws.clan->head;sn;sn=sn->next)
                         {
-                            const apz zcf = v[i]; if(__Zero__==zcf.s) continue;
-                            const int icf = zcf.cast<int>("projection coefficient");
-                            xadd.addProd(icf,Caux[i]);
-                        }
-                        const xreal_t D = d.cast<int>("projection denominator");
-                        const xreal_t c = xadd.sum() / D;
-                        std::cerr << "[" << s << "] =" << c.str() << std::endl;
-                        s(Ctop,TopLevel) = c;
-                    }
+                            const Species       & s = **sn;
+                            const size_t          j = s.indx[AuxLevel];
+                            const Readable<apz> & v = Prj[j];
+                            const apz           & d = den[j];
+                            if(isUnit(v,d,j)) {
+                                continue;
+                            }
 
-                    for(const BNode *bn=basis->head;bn;bn=bn->next)
+                            xadd.ldz();
+                            for(size_t i=m;i>0;--i)
+                            {
+                                const apz zcf = v[i]; if(__Zero__==zcf.s) continue;
+                                const int icf = zcf.cast<int>("projection coefficient");
+                                xadd.addProd(icf,Caux[i]);
+                            }
+                            const xreal_t D = d.cast<int>("projection denominator");
+                            const xreal_t c = xadd.sum() / D;
+                            Y_XMLog(xml, "-> ["<< s << "] =" << c.str() );
+                            s(Ctop,TopLevel) = c;
+                        }
+
+                    }
+                    if(xml.verbose)
                     {
-                        const Law &   law = (**bn).law;
-                        const xreal_t xs = law.excess(xadd,Ctop,TopLevel);
-                        std::cerr << "basis: " << xs.str() << " @" << law << std::endl;
+                        for(const BNode *bn=basis->head;bn;bn=bn->next)
+                        {
+                            const Law &   law = (**bn).law;
+                            const xreal_t xs = law.excess(xadd,Ctop,TopLevel);
+                            xml() << "[+] " << std::setw(22) << xs.str() << " @" << law << std::endl;
+                        }
                     }
 
                     //----------------------------------------------------------
@@ -317,7 +326,8 @@ namespace Yttrium
                         }
                         goto REDUCE;
                     }
-
+                    assert(0==blist->size);
+                    Y_XMLog(xml, "[[ no more broken law ]]");
                 }
 
 

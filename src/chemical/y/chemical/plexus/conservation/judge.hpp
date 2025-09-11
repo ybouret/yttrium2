@@ -114,6 +114,7 @@ namespace Yttrium
 
             public:
                 SRepo   slist;
+                ERepo   elist;
                 Judge * next; //!< for list
                 Judge * prev; //!< for list
             };

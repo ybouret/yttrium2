@@ -36,7 +36,9 @@ namespace Yttrium
                     for(Judge *judge=judges.head;judge;judge=judge->next)
                     {
                         judge->abide(xml,Ctop);
-                        Y_XMLog(xml, "zlist=" << judge->slist);
+                        Y_XMLog(xml, "slist=" << judge->slist);
+                        Y_XMLog(xml, "elist=" << judge->elist);
+
                     }
                 }
             }

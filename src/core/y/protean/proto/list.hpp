@@ -176,6 +176,27 @@ namespace Yttrium
                 return false;
             }
 
+            inline ListProto & operator |= (ParamType args)
+            {
+                if(!found(args)) pushTail(args);
+                return *this;
+            }
+
+            template <
+            typename _POOL,
+            typename _CONTAINER,
+            typename _POLICY>
+            inline ListProto & operator |= (const ListProto<NODE,_POOL,_CONTAINER,_POLICY> &other)
+            {
+                ListProto &self = *this;
+                for(const NODE *node=other->head;node;node=node->next)
+                {
+                    self |= **node;
+                }
+                return self;
+            }
+
+
 
             //! exchange contents \param other another list
             inline void xch( ListProto &other ) noexcept
