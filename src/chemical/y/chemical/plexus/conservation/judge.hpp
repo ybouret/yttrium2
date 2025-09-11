@@ -75,7 +75,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Judge : public Object
+            class Judge : public Object, public Assembly
             {
             public:
                 //______________________________________________________________

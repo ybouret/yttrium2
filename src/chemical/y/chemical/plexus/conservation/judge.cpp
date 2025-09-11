@@ -47,6 +47,8 @@ namespace Yttrium
             }
 
             Judge:: Judge(const Cluster &_root, const Laws &_laws) :
+            Object(),
+            Assembly(),
             root(_root),
             laws(_laws),
             zero(),
@@ -65,6 +67,13 @@ namespace Yttrium
             next(0),
             prev(0)
             {
+                for(const Law *law = laws->head;law;law=law->next)
+                {
+                    for(const Actor *a= (**law).head;a;a=a->next)
+                    {
+                        enroll(a->sp);
+                    }
+                }
             }
 
             static inline
@@ -282,13 +291,18 @@ namespace Yttrium
                             }
                             const xreal_t D = d.cast<int>("projection denominator");
                             const xreal_t c = xadd.sum() / D;
-                            Y_XMLog(xml, "-> ["<< s << "] =" << c.str() );
+                            if(xml.verbose)
+                            {
+                                display(xml() << " --> [", s.name, Justify::Center) << "] = " << std::setw(22) << c.str() << std::endl;
+                            }
+                            //Y_XMLog(xml, "-> ["<< s << "] = " << c.str() );
                             s(Ctop,TopLevel) = c;
                         }
 
                     }
                     if(xml.verbose)
                     {
+                        Y_XMLog(xml, "checking basis excess:");
                         for(const BNode *bn=basis->head;bn;bn=bn->next)
                         {
                             const Law &   law = (**bn).law;
