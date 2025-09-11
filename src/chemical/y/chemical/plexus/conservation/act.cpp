@@ -68,6 +68,12 @@ namespace Yttrium
                 return false;
             }
 
+            bool Act:: accepts(const Act &act) const noexcept
+            {
+                assert(this != &act);
+
+                return false;
+            }
 
 
         }

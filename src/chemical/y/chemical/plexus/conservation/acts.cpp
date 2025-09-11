@@ -1,5 +1,5 @@
 
-#include "y/chemical/plexus/conservation/canons.hpp"
+#include "y/chemical/plexus/conservation/acts.hpp"
 
 namespace Yttrium
 {
@@ -19,7 +19,7 @@ namespace Yttrium
             clist()
             {
                 const size_t count = laws->size;
-                Y_XML_Section_Attr(xml, "Conservation:Canons", Y_XML_Attr(count) );
+                Y_XML_Section_Attr(xml, "Conservation:Acts", Y_XML_Attr(count) );
 
                 for(const Law *law = laws->head; law; law=law->next)
                 {

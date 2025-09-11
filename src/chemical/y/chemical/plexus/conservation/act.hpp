@@ -24,6 +24,7 @@ namespace Yttrium
                 virtual ~Act() noexcept;
 
                 bool accepts(const Law &) const noexcept;
+                bool accepts(const Act &) const noexcept;
                 void connect(const Law &);
                 void combine(Act &);
 

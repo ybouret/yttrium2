@@ -7,7 +7,7 @@
 
 
 #include "y/chemical/reactive/equilibria.hpp"
-#include "y/chemical/plexus/conservation/canons.hpp"
+#include "y/chemical/plexus/conservation/acts.hpp"
 
 namespace Yttrium
 {
