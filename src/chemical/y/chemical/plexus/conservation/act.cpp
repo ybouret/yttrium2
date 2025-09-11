@@ -71,7 +71,10 @@ namespace Yttrium
             bool Act:: accepts(const Act &act) const noexcept
             {
                 assert(this != &act);
-
+                for(const SNode *sn=act.slist->head;sn;sn=sn->next)
+                {
+                    if( slist.found(**sn) ) return true;
+                }
                 return false;
             }
 
