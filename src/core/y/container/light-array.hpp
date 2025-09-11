@@ -50,6 +50,7 @@ namespace Yttrium
 
         //! duplicate \param other another array
         inline LightArray(const LightArray &other) noexcept :
+        Container(),
         SelfType(),
         cxx(other.cxx),
         count(other.count)
