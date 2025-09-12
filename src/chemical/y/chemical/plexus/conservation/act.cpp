@@ -103,7 +103,6 @@ namespace Yttrium
             void Act:: query(const EList   & primary,
                              const iMatrix & topology)
             {
-                std::cerr << "primary=" << primary << std::endl;
                 for(const ENode *en=primary->head;en;en=en->next)
                 {
                     const Equilibrium   & eq = **en;

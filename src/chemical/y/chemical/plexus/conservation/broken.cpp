@@ -26,7 +26,7 @@ namespace Yttrium
 
             std::ostream & operator<<(std::ostream &os, const Broken &broken)
             {
-                os << std::setw(22) << broken.xs << " @" << broken.law;
+                os << std::setw(22) << broken.xs.str() << " @" << broken.law;
                 return os;
             }
 

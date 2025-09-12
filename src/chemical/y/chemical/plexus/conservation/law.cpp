@@ -16,6 +16,7 @@ namespace Yttrium
             
             Law:: Law() :
             Actors(Actor::InConservation),
+            ua2(0),
             zero(0),
             next(0),
             prev(0)
@@ -56,7 +57,18 @@ namespace Yttrium
                 return fp;
             }
 
-            
+            void Law:: finalize()
+            {
+                apn sum = 0;
+                for(const Actor *a = list.head;a;a=a->next)
+                {
+                    sum += apn(a->nu).sqr();
+                }
+                Coerce(ua2) = sum.cast<unsigned>("|Law|^2");
+                
+            }
+
+
 
 
 

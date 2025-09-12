@@ -29,11 +29,14 @@ namespace Yttrium
             private:
                 Y_Disable_Copy_And_Assign(Judge);
 
-                const Act &act;
-                BList      blist;
-                XAdd       xadd;
+                const Act &   act;
+                BList         blist;
+                XAdd          xadd;
                 const xreal_t zero;
 
+            public:
+                Judge * next;
+                Judge * prev;
             };
 
         }

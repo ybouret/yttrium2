@@ -13,6 +13,20 @@
 
 \section{Conservation}
 
+Let $\vec \alpha$ be the representation of an unbalanced constraint.
+
+\begin{equation}
+	\langle \vec \alpha \vert \vec A \rangle = - x_s < 0
+\end{equation}
+We want to find the minimal $d \vec A$ such that:
+\begin{equation}
+	\langle \vec \alpha \vert \vec A + d\vec A \rangle = 0 \implies \langle \vec \alpha \vert d \vec A \rangle = x_s \implies d \vec A = \dfrac{x_s}{\vec\alpha^2} \vec \alpha
+\end{equation}
+The increase in concentration is:
+\begin{equation}
+	d \vec A^2 = \dfrac{x_s^2}{\vec \alpha^2} = \left( \dfrac{x_s}{\vert\vec\alpha\vert}\right) ^2
+\end{equation}
+
 Let $\vec \alpha_i$ be an unbalanced constraint so that
 \begin{equation}
 	\langle \vec \alpha_i \vert \vec A \rangle = - x_i < 0

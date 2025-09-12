@@ -44,6 +44,7 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
+                void finalize();
 
                 //! \return positive excess if any
                 xreal_t excess(XAdd &, const XReadable &, const Level) const;
@@ -58,9 +59,10 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const xreal_t zero;  //!< for computations
-                Law *         next;  //!< for list
-                Law *         prev;  //!< for list
+                const unsigned ua2;   //!< |*this|^2, unsigned
+                const xreal_t  zero;  //!< for computations
+                Law *          next;  //!< for list
+                Law *          prev;  //!< for list
                 
             private:
                 Y_Disable_Copy_And_Assign(Law); //!< discarding

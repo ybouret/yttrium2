@@ -51,51 +51,11 @@ namespace Yttrium
                         if(cf<=0) continue;
                         law.add(cf,**(slist->fetch(j)));
                     }
-                    Y_XMLog(xml,law);
                     assert(law->size>=2);
+                    law.finalize();
+                    Y_XMLog(xml,"|" << law << "|^2 = " << law.ua2);
                 }
 
-#if 0
-                //--------------------------------------------------------------
-                //
-                //
-                // collecting involved species
-                //
-                //
-                //--------------------------------------------------------------
-                for(const SNode *sn=slist->head;sn;sn=sn->next)
-                {
-                    const Species &sp = **sn;
-                    if(got(sp)) Coerce(clan) << sp;
-                }
-
-                Y_XMLog(xml,"species="  << clan);
-                ListOps::Make(Coerce(clan), AuxLevel);
-
-                //--------------------------------------------------------------
-                //
-                //
-                // building matching vectors
-                //
-                //
-                //--------------------------------------------------------------
-                const size_t m = clan->size;
-                {
-                    Y_XML_Section_Attr(xml, "buildAlpha", Y_XML_Attr(m) );
-                    for(Law *law=list.head;law;law=law->next)
-                    {
-                        {
-                            Weights alpha(m);
-                            for(const Actor *a=(*law)->head;a;a=a->next)
-                            {
-                                a->sp(alpha,AuxLevel) = a->nu;
-                            }
-                            Coerce(law->alpha).xch(alpha);
-                        }
-                        Y_XMLog(xml, law->alpha << " @" << *law);
-                    }
-                }
-#endif
 
 
             }

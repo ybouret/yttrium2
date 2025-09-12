@@ -55,7 +55,6 @@ namespace Yttrium
                 else
                     Coerce(unbounded) << sp;
             }
-            exit(0);
         }
     }
 

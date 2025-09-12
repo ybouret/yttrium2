@@ -15,7 +15,9 @@ namespace Yttrium
             Judge:: Judge(const Act &_act) :
             act(_act),
             blist(),
-            xadd()
+            xadd(),
+            next(0),
+            prev(0)
             {
             }
 

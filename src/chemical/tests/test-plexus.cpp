@@ -4,6 +4,7 @@
 #include "y/chemical/weasel.hpp"
 #include "y/chemical/plexus/clusters.hpp"
 #include "y/chemical/plexus/steady-state.hpp"
+#include "y/chemical/plexus/conservation/court.hpp"
 
 #include "y/utest/run.hpp"
 #include "y/random/mt19937.hpp"
@@ -68,10 +69,9 @@ Y_UTEST(plexus)
 
     lib.print(std::cerr, "[", C0, "]", xreal_t::ToString);
 
-
-    //Conservation::Court court(cls);
-
-    //court.trial(xml,C0);
+    
+    Conservation::Court court(cls);
+    court.trial(xml,C0);
 
     
 
