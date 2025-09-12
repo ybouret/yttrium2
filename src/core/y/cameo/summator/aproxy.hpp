@@ -53,6 +53,11 @@ namespace Yttrium
             //! cleanup
             inline ~AProxySummator() noexcept {}
 
+            inline friend std::ostream & operator<<(std::ostream &os, const AProxySummator &self)
+            {
+                return os << self.acc;
+            }
+
             //__________________________________________________________________
             //
             //

@@ -64,7 +64,7 @@ Y_UTEST(plexus)
     }
 
     const size_t M = lib->size();
-    XArray       C0(M,0);
+    XArray       C0(M,0), dC(M,0);
     lib.conc(ran,C0,probaZero,probaNeg);
 
     lib.print(std::cerr, "[", C0, "]", xreal_t::ToString);
@@ -74,7 +74,13 @@ Y_UTEST(plexus)
     Conservation::Court court(cls);
     court.trial(xml,C0,I0);
 
-    lib.print(std::cerr, "[", C0, "]", xreal_t::ToString);
+    lib.print(std::cerr << "C=", "[", C0, "]", xreal_t::ToString);
+
+
+    lib.print(std::cerr << "I=", "[", I0, "]");
+
+    for(size_t i=M;i>0;--i) dC[i] = I0[i].sum();
+    lib.print(std::cerr << "dC=", "[", dC, "]", xreal_t::ToString);
 
 
     return 0;
@@ -85,8 +91,7 @@ Y_UTEST(plexus)
 
     lib.print(std::cerr, "[", C0, "]", xreal_t::ToString);
 
-    XAdd toto;
-    //    std::cerr << toto << std::endl;
+
 
     {
         OutputFile fp("cs.dot");

@@ -52,6 +52,12 @@ namespace Yttrium
             //! cleanup
             inline virtual ~DirectSummator() noexcept {}
 
+
+            inline friend std::ostream & operator<<(std::ostream &os, const DirectSummator &self)
+            {
+                return os << self.acc;
+            }
+
             //__________________________________________________________________
             //
             //
