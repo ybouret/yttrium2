@@ -33,7 +33,7 @@ namespace Yttrium
 
                 }
 
-                inline ~WeaselCode()
+                inline ~WeaselCode() noexcept
                 {
 
                 }
