@@ -2,6 +2,7 @@
 
 #include "y/chemical/plexus/conservation/law.hpp"
 #include "y/stream/output.hpp"
+#include "y/apex/simplify.hpp"
 
 
 namespace Yttrium
@@ -61,14 +62,47 @@ namespace Yttrium
 
             void Law:: finalize()
             {
-                apn sum = 0;
-                for(const Actor *a = list.head;a;a=a->next)
                 {
-                    sum += apn(a->nu).sqr();
+                    apn sum = 0;
+                    for(const Actor *a = list.head;a;a=a->next)
+                    {
+                        sum += apn(a->nu).sqr();
+                    }
+                    Coerce(ua2)  = sum.cast<unsigned>("|Law|^2");
+                    Coerce(xa2)  = ua2;
+                    Coerce(norm) = xa2.sqrt();
                 }
-                Coerce(ua2)  = sum.cast<unsigned>("|Law|^2");
-                Coerce(xa2)  = ua2;
-                Coerce(norm) = xa2.sqrt();
+
+                {
+                    const size_t n = list.size;
+                    CxxArray<apz> alpha(n);
+                    {
+                        size_t i=1;
+                        for(const Actor *a = list.head;a;a=a->next,++i)
+                        {
+                            alpha[i] = a->nu;
+                        }
+                    }
+                    std::cerr << "alpha=" << alpha << std::endl;
+                    const apz     a2 = ua2;
+                    Matrix<apz>   mproj(n,n);
+                    for(size_t i=n;i>0;--i)
+                    {
+                        const apz alpha_i = alpha[i];
+                        for(size_t j=n;j>i;--j)   mproj[i][j] = - alpha_i * alpha[j];
+                        mproj[i][i] = a2 - alpha_i.sqr();
+                        for(size_t j=i-1;j>0;--j) mproj[i][j] = - alpha_i * alpha[j];
+                    }
+                    std::cerr << "mproj=" << mproj << std::endl;
+                    for(size_t i=1;i<=n;++i)
+                    {
+                        alpha[i] = a2;
+                        Apex::Simplify::Array(mproj[i],alpha[i]);
+                        std::cerr << "w" << i << " = " << mproj[i] << " / " << alpha[i] << std::endl;
+                    }
+
+                }
+
             }
 
 
