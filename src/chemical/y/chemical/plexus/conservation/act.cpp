@@ -111,6 +111,20 @@ namespace Yttrium
                 }
             }
 
+            size_t Act:: getMaxActors() const noexcept
+            {
+                size_t res = 0;
+
+                for(const LNode *ln = list->head; ln; ln=ln->next)
+                {
+                    const Law & law = **ln;
+                    InSituMax(res,law->size);
+                }
+
+                return res;
+            }
+
+
         }
 
     }

@@ -20,10 +20,10 @@ namespace Yttrium
             }
 
 
-            void  Law:: Projection:: compute(const Law   & law,
-                                             XAdd        & xadd,
-                                             XWritable   & Ctop,
-                                             XWritable   & Ctmp) const
+            void  Law:: Projection:: compute(const Actors & law,
+                                             XAdd         & xadd,
+                                             XWritable    & Ctop,
+                                             XWritable    & Ctmp) const
             {
                 const size_t n = numer.rows;
                 for(size_t i=n;i>0;--i)
@@ -173,7 +173,15 @@ namespace Yttrium
 
             }
 
+
+            void Law:: project(XAdd        & xadd,
+                               XWritable   & Ctop,
+                               XWritable   & Ctmp) const
+            {
+                prj->compute(*this,xadd,Ctop,Ctmp);
+            }
         }
+
     }
 
 }

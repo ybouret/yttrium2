@@ -37,6 +37,17 @@ namespace Yttrium
             {
                 return Sign::Of(lhs.dc,rhs.dc);
             }
+
+
+            void Broken:: update(Accumulator &Itop) const
+            {
+                const xreal_t den = law.xa2;
+                for(const Actor *a=law->head;a;a=a->next)
+                {
+                    a->sp(Itop,TopLevel) << (xs * a->xn)/den;
+                }
+            }
+
         }
 
     }

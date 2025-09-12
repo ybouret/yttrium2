@@ -63,9 +63,10 @@ namespace Yttrium
                 //______________________________________________________________
                 const Act &   act;   //!< persistent Act
                 BList         blist; //!< broken list
+                SRepo         slist; //!< broken species
                 XAdd          xadd;  //!< inner additions
+                XArray        Ctmp;  //!< store temporary new concentrations
                 const xreal_t zero;  //!< helper
-
             public:
                 Judge *       next;  //!< for list
                 Judge *       prev;  //!< for list

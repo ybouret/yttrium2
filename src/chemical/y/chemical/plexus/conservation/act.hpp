@@ -8,6 +8,7 @@
 #include "y/chemical/plexus/conservation/law.hpp"
 #include "y/chemical/reactive/equilibrium.hpp"
 
+
 namespace Yttrium
 {
     namespace Chemical
@@ -61,6 +62,10 @@ namespace Yttrium
                  */
                 void query(const EList   & primary,
                            const iMatrix & topology);
+
+
+                size_t getMaxActors() const noexcept;
+
 
                 //______________________________________________________________
                 //

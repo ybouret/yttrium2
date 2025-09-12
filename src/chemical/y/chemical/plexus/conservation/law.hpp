@@ -39,10 +39,10 @@ namespace Yttrium
                     const XMatrix numer;
                     const XArray  denom;
 
-                    void compute(const Law   & law,
-                                 XAdd        & xadd,
-                                 XWritable   & Ctop,
-                                 XWritable   & Ctmp) const;
+                    void compute(const Actors & law,
+                                 XAdd         & xadd,
+                                 XWritable    & Ctop,
+                                 XWritable    & Ctmp) const;
 
                 private:
                     Y_Disable_Copy_And_Assign(Projection);
@@ -72,6 +72,9 @@ namespace Yttrium
                 //! GraphViz with color \return output stream
                 OutputStream & viz(OutputStream &, const String &) const;
 
+                void project(XAdd        & xadd,
+                             XWritable   & Ctop,
+                             XWritable   & Ctmp) const;
 
                 //______________________________________________________________
                 //

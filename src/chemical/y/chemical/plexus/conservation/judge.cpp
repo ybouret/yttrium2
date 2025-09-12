@@ -15,19 +15,31 @@ namespace Yttrium
             Judge:: Judge(const Act &_act) :
             act(_act),
             blist(),
+            slist(),
             xadd(),
+            Ctmp( act.getMaxActors() ),
+            zero(0),
             next(0),
             prev(0)
             {
             }
 
-            void Judge:: trial(XMLog &xml, XWritable &Ctop, Accumulator &Itop)
+            void Judge:: trial(XMLog &       xml,
+                               XWritable &   Ctop,
+                               Accumulator & Itop)
             {
                 Y_XML_Section(xml, "Judge::Trial");
-                Y_XMLog(xml, "[[ detect broken ]]");
+
+                blist.free();
+                slist.free();
+                //--------------------------------------------------------------
+                //
+                //
+                // detect all broken law(s)
+                //
+                //
+                //--------------------------------------------------------------
                 {
-                    //Y_XML_Section(xml, "Judge::DetectBroken");
-                    blist.free();
                     for(const LNode *ln = (**act).head;ln;ln=ln->next)
                     {
                         const Law &   law = **ln;
@@ -43,19 +55,48 @@ namespace Yttrium
                     }
                     if(blist->size<=0) {
                         Y_XMLog(xml, "[[ no broken law ]]");
+                        return;
+                    }
+                }
+
+                //--------------------------------------------------------------
+                //
+                //
+                // Apply Reduction to smallest correction
+                //
+                //
+                //--------------------------------------------------------------
+
+                blist.sort(Broken::Compare);
+                if(xml.verbose)
+                {
+                    bool show = true;
+                    for(const BNode *bn=blist->head;bn;bn=bn->next)
+                    {
+                        Y_XMLog(xml, "[+] " << **bn << (show ? " <-- " : ""));
+                        show = false;
                     }
                 }
 
                 {
-                    Y_XML_Section(xml, "Judge::Reduction");
-                    blist.sort(Broken::Compare);
-                    if(xml.verbose)
-                    {
-                        for(const BNode *bn=blist->head;bn;bn=bn->next)
-                        {
-                            Y_XMLog(xml, "[+] " << **bn);
-                        }
-                    }
+                    const Broken &broken = **blist->head;
+                    broken.law.project(xadd,Ctop,Ctmp);
+                    broken.update(Itop);
+                    std::cerr << "broken is now " << broken.law.excess(xadd,Ctop,TopLevel).str() << std::endl;
+                }
+
+
+                //--------------------------------------------------------------
+                //
+                //
+                // update
+                //
+                //
+                //--------------------------------------------------------------
+                blist.popHead();
+                for(size_t i=blist->size;i>0;--i)
+                {
+                    
                 }
 
             }
