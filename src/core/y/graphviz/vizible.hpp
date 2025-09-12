@@ -47,7 +47,7 @@ namespace Yttrium
         static OutputStream & Enter(OutputStream &); //!< prolog \return output stream
         static OutputStream & Leave(OutputStream &); //!< epilog \return output stream
 
-        //! save Vizible object to output stream
+        //! save Vizible object with a 'viz(OutputStream&)' method
         /**
          \param fp output stream
          \param obj object with 'OutputStream & viz(OutputStream&)' method
@@ -58,6 +58,21 @@ namespace Yttrium
         {
             return Leave( obj.viz( Enter(fp) ) );
         }
+
+        //! save Vizible object with a 'viz(OutputStream&,ARG &)' method
+        /**
+         \param fp  output stream
+         \param obj object with 'OutputStream & viz(OutputStream&)' method
+         \param arg argument
+         \return output stream
+         */
+        template <typename CLASS, typename ARG> static inline
+        OutputStream & Save(OutputStream &fp, const CLASS &obj, ARG &arg)
+        {
+            return Leave( obj.viz( Enter(fp), arg ) );
+        }
+
+
 
         //! convert 'file.dot' to 'file.png'
         /**
@@ -79,6 +94,22 @@ namespace Yttrium
             try { Save(*fp,obj); DelDotFile(fp); }
             catch(...) { DelDotFile(fp); throw; }
         }
+
+        //! save Vizible object to output file
+        /**
+         \param dotFile filename
+         \param obj     object with 'viz(OutputStream&)' method
+         \param arg argument
+         */
+        template <typename FILENAME, typename CLASS, typename ARG> static inline
+        void SaveAs(const FILENAME &dotFile, const CLASS &obj, ARG &arg)
+        {
+            OutputStream * const fp = NewDotFile(dotFile);
+            try { Save(*fp,obj,arg); DelDotFile(fp); }
+            catch(...) { DelDotFile(fp); throw; }
+        }
+
+
 
         //! save and render vizible object
         /**
