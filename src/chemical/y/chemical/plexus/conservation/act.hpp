@@ -35,9 +35,8 @@ namespace Yttrium
             private:
                 Y_Disable_Copy_And_Assign(Act);
                 Y_Ingress_Decl();
-
-
-                LList  list;
+                LList       list;
+                
             public:
                 const SList slist;
                 const EList elist;
