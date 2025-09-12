@@ -1,9 +1,7 @@
 
 #include "y/json/compiler.hpp"
 #include "y/jive/lexical/plugin/jstring.hpp"
-
-#include "y/container/algorithm/reverse.hpp"
-
+#include "y/container/algorithm/flip.hpp"
 #include "y/jive/parser.hpp"
 #include "y/jive/analyzer.hpp"
 #include "y/ascii/convert.hpp"
@@ -197,7 +195,7 @@ namespace Yttrium
                 {
                     Array & arr = val.as<Array>();
                     while(n-- > 0) { arr.add( values.tail() ); values.popTail(); }
-                    Algorithm::Reverse(arr,Memory::Stealth::Swap<Value>);
+                    Algorithm::Flip(arr,Memory::Stealth::Swap<Value>);
                 }
                 values.add(val);
             }

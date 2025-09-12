@@ -1,4 +1,4 @@
-#include "y/container/algorithm/reverse.hpp"
+#include "y/container/algorithm/flip.hpp"
 #include "y/core/display.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/utest/run.hpp"
@@ -16,9 +16,9 @@ Y_UTEST(container_algo)
         std::cerr << "reverse " << m << std::endl;
         for(unsigned i=0;i<n;++i) array[i]=i;
         Core::Display(std::cerr,array,n) << std::endl;
-        Algorithm::Reverse(array,m,Swap<unsigned>);
+        Algorithm::Flip(array,m,Swap<unsigned>);
         Core::Display(std::cerr,array,n) << std::endl;
-        Algorithm::Reverse(array,m,Memory::Stealth::Swap<unsigned>);
+        Algorithm::Flip(array,m,Memory::Stealth::Swap<unsigned>);
         Core::Display(std::cerr,array,n) << std::endl;
         std::cerr << std::endl;
         for(unsigned i=0;i<n;++i)

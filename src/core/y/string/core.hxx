@@ -522,7 +522,7 @@ template <>
 String<CH> & String<CH>:: reverse() noexcept
 {
     assert(0!=code);
-    Algorithm::Reverse(code->base,code->size,Swap<CH>);
+    Algorithm::Flip(code->base,code->size,Swap<CH>);
     return *this;
 }
 

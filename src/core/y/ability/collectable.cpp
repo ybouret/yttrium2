@@ -1,7 +1,7 @@
 
 #include "y/ability/collectable.hpp"
 #include "y/format/hexadecimal.hpp"
-#include "y/container/algorithm/reverse.hpp"
+#include "y/container/algorithm/flip.hpp"
 
 #include <iostream>
 
@@ -62,7 +62,7 @@ namespace Yttrium
                 carry >>= 8;
             }
             prod[sizeof(size_t)] = uint8_t(carry);
-            Algorithm::Reverse(prod,n,Swap<uint8_t>);
+            Algorithm::Flip(prod,n,Swap<uint8_t>);
         }
 
         // short division
