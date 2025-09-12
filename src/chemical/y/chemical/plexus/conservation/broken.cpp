@@ -23,7 +23,12 @@ namespace Yttrium
             Broken:: ~Broken() noexcept
             {
             }
-            
+
+            std::ostream & operator<<(std::ostream &os, const Broken &broken)
+            {
+                os << std::setw(22) << broken.xs << " @" << broken.law;
+                return os;
+            }
 
         }
 

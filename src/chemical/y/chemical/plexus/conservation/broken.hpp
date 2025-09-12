@@ -22,6 +22,7 @@ namespace Yttrium
                 Broken(const Law &, const xreal_t) noexcept;
                 ~Broken() noexcept;
                 Broken(const Broken &) noexcept;
+                Y_OSTREAM_PROTO(Broken);
 
                 const Law &law;
                 xreal_t    xs;
