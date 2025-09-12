@@ -16,7 +16,6 @@ namespace Yttrium
         namespace Conservation
         {
 
-            typedef CxxArray<unsigned> Weights; //!< alias
 
             //__________________________________________________________________
             //
@@ -59,7 +58,6 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const Weights alpha; //!< compiled weights
                 const xreal_t zero;  //!< for computations
                 Law *         next;  //!< for list
                 Law *         prev;  //!< for list

@@ -16,7 +16,6 @@ namespace Yttrium
             
             Law:: Law() :
             Actors(Actor::InConservation),
-            alpha(0),
             zero(0),
             next(0),
             prev(0)
@@ -57,20 +56,8 @@ namespace Yttrium
                 return fp;
             }
 
-
-#if 0
-            static inline
-            size_t CommonSpecies(const Law &law, const Readable<int> &nu) noexcept
-            {
-                size_t res = 0;
-                for(const Actor *a=law->head;a;a=a->next)
-                {
-                    if( a->sp(nu,SubLevel) ) ++res;
-                }
-                return res;
-            }
-#endif
             
+
 
 
         }
