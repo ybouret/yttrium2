@@ -44,7 +44,8 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 static SignType Compare(const Broken &, const Broken &) noexcept; //!< \return increasing dc
-                void update(Accumulator &Itop) const;
+                void            upgrade(Accumulator &) const;
+                bool            still(XAdd &xadd, const XReadable &Ctop) noexcept;
 
                 //______________________________________________________________
                 //

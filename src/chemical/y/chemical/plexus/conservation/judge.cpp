@@ -66,7 +66,7 @@ namespace Yttrium
                 //
                 //
                 //--------------------------------------------------------------
-
+            FIX:
                 blist.sort(Broken::Compare);
                 if(xml.verbose)
                 {
@@ -81,8 +81,12 @@ namespace Yttrium
                 {
                     const Broken &broken = **blist->head;
                     broken.law.project(xadd,Ctop,Ctmp);
-                    broken.update(Itop);
-                    std::cerr << "broken is now " << broken.law.excess(xadd,Ctop,TopLevel).str() << std::endl;
+                    broken.upgrade(Itop);
+                    if(xml.verbose)
+                    {
+                        (**blist->head).still(xadd,Ctop);
+                        xml() <<  "[*] " << broken << " <==" << std::endl;
+                    }
                 }
 
 
@@ -96,9 +100,25 @@ namespace Yttrium
                 blist.popHead();
                 for(size_t i=blist->size;i>0;--i)
                 {
-                    
+                    Broken &broken = **blist->head;
+                    if(broken.still(xadd,Ctop))
+                    {
+                        //Y_XMLog(xml, "[+] " << broken);
+                        blist->moveHeadToTail();
+                    }
+                    else
+                    {
+                        Y_XMLog(xml, "[-] " << broken);
+                        blist.popHead();
+                    }
                 }
 
+                if(blist->size<=0)
+                {
+                    Y_XMLog(xml, "[[ fixed ]]");
+                    return;
+                }
+                goto FIX;
             }
 
 

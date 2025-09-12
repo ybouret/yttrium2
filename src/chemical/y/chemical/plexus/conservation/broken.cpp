@@ -39,7 +39,7 @@ namespace Yttrium
             }
 
 
-            void Broken:: update(Accumulator &Itop) const
+            void Broken:: upgrade(Accumulator &Itop) const
             {
                 const xreal_t den = law.xa2;
                 for(const Actor *a=law->head;a;a=a->next)
@@ -47,6 +47,21 @@ namespace Yttrium
                     a->sp(Itop,TopLevel) << (xs * a->xn)/den;
                 }
             }
+
+            bool Broken:: still(XAdd &xadd, const XReadable &Ctop) noexcept
+            {
+                if(( (xs = law.excess(xadd,Ctop,TopLevel)).mantissa > 0 ))
+                {
+                    dc = xs / law.norm;
+                    return true;
+                }
+                else
+                {
+                    dc.ldz();
+                    return false;
+                }
+            }
+
 
         }
 
