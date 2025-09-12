@@ -16,22 +16,56 @@ namespace Yttrium
         namespace Conservation
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! List of independent Acts of dependents Laws
+            //
+            //
+            //__________________________________________________________________
             class Acts : public Object, public Ingress< const Act::List >
             {
             public:
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! create from laws
+                /**
+                 \param xml      output
+                 \param laws     pre-computed laws
+                 \param primary  list of primary equilibria
+                 \param topology primary topology matrix
+                 */
                 explicit Acts(XMLog         & xml,
                               const Laws    & laws,
                               const EList   & primary,
                               const iMatrix & topology);
-                virtual ~Acts() noexcept;
+                virtual ~Acts() noexcept; //!< cleanup
 
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
             private:
-                Y_Disable_Copy_And_Assign(Acts);
-                Y_Ingress_Decl();
-                Act::List alist;
+                Y_Disable_Copy_And_Assign(Acts); //!< discarding
+                Y_Ingress_Decl();                //!< helper
+                Act::List alist; //!< acts
 
-                bool accepted(const Law &) noexcept;
-                void tryMerge()            noexcept;
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+                bool accepted(const Law &) noexcept; //!< \return true iff accepted by an existing act
+                void tryMerge()            noexcept; //!< check recombination after acceptation
             };
 
         }

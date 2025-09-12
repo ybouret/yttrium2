@@ -17,26 +17,58 @@ namespace Yttrium
         namespace Conservation
         {
 
-
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Judge thru an act
+            //
+            //
+            //__________________________________________________________________
             class Judge : public Object
             {
             public:
-                explicit Judge(const Act &);
-                virtual ~Judge() noexcept;
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+                explicit Judge(const Act &); //!< setup
+                virtual ~Judge() noexcept;   //!< cleanup
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+
+                //! trial
+                /**
+                 \param xml  output
+                 \param Ctop TopLevel concentrations
+                 \param Itop TopLevel accumulator
+                 */
                 void trial(XMLog &xml, XWritable &Ctop, Accumulator &Itop);
 
             private:
-                Y_Disable_Copy_And_Assign(Judge);
+                Y_Disable_Copy_And_Assign(Judge); //!< discarding
 
-                const Act &   act;
-                BList         blist;
-                XAdd          xadd;
-                const xreal_t zero;
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                const Act &   act;   //!< persistent Act
+                BList         blist; //!< broken list
+                XAdd          xadd;  //!< inner additions
+                const xreal_t zero;  //!< helper
 
             public:
-                Judge * next;
-                Judge * prev;
+                Judge *       next;  //!< for list
+                Judge *       prev;  //!< for list
             };
 
         }

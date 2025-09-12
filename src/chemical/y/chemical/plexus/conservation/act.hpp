@@ -15,33 +15,69 @@ namespace Yttrium
         namespace Conservation
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Act of shared species Laws
+            //
+            //
+            //__________________________________________________________________
             class Act : public Object, public Ingress< const LList >
             {
             public:
-                typedef CxxListOf<Act> List;
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                typedef CxxListOf<Act> List; //!< alias
 
-                explicit Act(const Law &first);
-                virtual ~Act() noexcept;
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+                explicit Act(const Law &); //!< setup with first law
+                virtual ~Act() noexcept;   //!< cleanup
 
-                bool accepts(const Law &) const noexcept;
-                bool accepts(const Act &) const noexcept;
-                void connect(const Law &);
-                void combine(Act &);
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+                bool accepts(const Law &) const noexcept; //!< \return true iff common species
+                bool accepts(const Act &) const noexcept; //!< \return true iff common species
+                void connect(const Law &);                //!< connect law to this act
+                void combine(Act &);                      //!< combine foreign act to this acet
 
+                //! query involved equilibria
+                /**
+                 \param primary  list of primary equilibria
+                 \param topology primary topology matrix
+                 */
                 void query(const EList   & primary,
                            const iMatrix & topology);
 
-
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
             private:
-                Y_Disable_Copy_And_Assign(Act);
-                Y_Ingress_Decl();
-                LList       list;
-                
+                Y_Disable_Copy_And_Assign(Act); //!< discarding
+                Y_Ingress_Decl();               //!< helper
+                LList       list; //!< laws
+
             public:
-                const SList slist;
-                const EList elist;
-                Act *next;
-                Act *prev;
+                const SList slist; //!< species
+                const EList elist; //!< primary involved equilibria
+                Act *       next;  //!< for list
+                Act *       prev;  //!< for list
             };
         }
 

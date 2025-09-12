@@ -44,7 +44,7 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
-                void finalize();
+                void finalize(); //!< finalize metrics
 
                 //! \return positive excess if any
                 xreal_t excess(XAdd &, const XReadable &, const Level) const;
@@ -70,8 +70,8 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(Law); //!< discarding
             };
 
-            typedef Protean::BareLightList<const Law> LList;
-            typedef LList::NodeType                   LNode;
+            typedef Protean::BareLightList<const Law> LList; //!< alias
+            typedef LList::NodeType                   LNode; //!< alias
 
 
         }

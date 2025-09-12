@@ -176,12 +176,14 @@ namespace Yttrium
                 return false;
             }
 
+            //! \param args argument to add only if not present \return *this
             inline ListProto & operator |= (ParamType args)
             {
                 if(!found(args)) pushTail(args);
                 return *this;
             }
 
+            //! \param other list to add elements from only if not present \return *this
             template <
             typename _POOL,
             typename _CONTAINER,
