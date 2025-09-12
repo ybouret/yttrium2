@@ -31,14 +31,22 @@ namespace Yttrium
 
                     xadd.ldz();
                     {
+                        const XReadable &p = numer[i];
                         size_t j=1;
                         for(const Actor *a=law->head;a;a=a->next,++j)
                         {
-                            
+                            xadd << p[j] * a->sp(Ctop,TopLevel);
                         }
                     }
-
                     Ctmp[i] = xadd.sum() / denom[i];
+                }
+
+                {
+                    size_t i=1;
+                    for(const Actor *a=law->head;a;a=a->next,++i)
+                    {
+                        a->sp(Ctop,TopLevel) = Ctmp[i];
+                    }
                 }
             }
         }
@@ -59,6 +67,7 @@ namespace Yttrium
 
             Law:: Law() :
             Actors(Actor::InConservation),
+            prj(0),
             ua2(0),
             xa2(0),
             norm(0),

@@ -36,7 +36,7 @@ namespace Yttrium
                     explicit Projection(const size_t);
                     virtual ~Projection() noexcept;
 
-                    const iMatrix numer;
+                    const XMatrix numer;
                     const XArray  denom;
 
                     void compute(const Law   & law,
