@@ -24,8 +24,11 @@ namespace Yttrium
                 Broken(const Broken &) noexcept;
                 Y_OSTREAM_PROTO(Broken);
 
-                const Law &law;
-                xreal_t    xs;
+                static SignType Compare(const Broken &, const Broken &) noexcept;
+
+                const Law &law; //!< broken law
+                xreal_t    xs;  //!< law excess
+                xreal_t    dc;  //!< xs/law.norm = |delta C|
 
             private:
                 Y_Disable_Assign(Broken);

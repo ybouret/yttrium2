@@ -75,7 +75,7 @@ namespace Yttrium
         };
 
         typedef Protean::BareLightList<Equilibrium>   EList; //!< alias
-        typedef typename EList::NodeType              ENode; //!< alias
+        typedef EList::NodeType                       ENode; //!< alias
         typedef Protean::SoloLightList<Equilibrium>   ERepo; //!< alias
 
 

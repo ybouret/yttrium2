@@ -53,7 +53,7 @@ namespace Yttrium
                     }
                     assert(law->size>=2);
                     law.finalize();
-                    Y_XMLog(xml,"|" << law << "|^2 = " << law.ua2);
+                    Y_XMLog(xml,"|" << law << "|^2 = " << law.ua2 << " -> norm = " << law.norm.str() );
                 }
 
 

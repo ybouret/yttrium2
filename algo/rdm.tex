@@ -27,27 +27,32 @@ The increase in concentration is:
 	d \vec A^2 = \dfrac{x_s^2}{\vec \alpha^2} = \left( \dfrac{x_s}{\vert\vec\alpha\vert}\right) ^2
 \end{equation}
 
-Let $\vec \alpha_i$ be an unbalanced constraint so that
 \begin{equation}
-	\langle \vec \alpha_i \vert \vec A \rangle = - x_i < 0
-\end{equation}
-Let us assume that we have $n$ unbalanced constraints forming:
-\begin{equation}
-	\bm \alpha \vec A = - \vec x
-\end{equation}
-We want the minimal $d \vec A$ such that:
-\begin{equation}
-	\bm \alpha \vert \vec A + d \vec A \rangle = \vec 0 \implies \bm \alpha d\vec A = \vec x
+	\vec A ' = \vec A + d \vec A = 
 \end{equation}
 
-\begin{equation}
-	d \vec A = \bm \alpha ^ T \vec \lambda \implies d \vec A = \bm \alpha^T \left(\bm \alpha \bm \alpha ^T \right) ^{-1}\vec x 
-\end{equation}
 
-\begin{equation}
-	\vec{A} ' = \left[\bm I_n - \alpha^T \left(\bm \alpha \bm \alpha ^T \right)^{-1} \bm \alpha \right] \vec{A} 
-	= \dfrac{1}{\det \left(\bm \alpha \bm \alpha ^T\right) } \left[\det \left(\bm \alpha \bm \alpha ^T\right)\bm I_n - \alpha^T \left(\bm \alpha \bm \alpha ^T \right)^\ast \bm \alpha \right] \vec{A}
-\end{equation}
+%Let $\vec \alpha_i$ be an unbalanced constraint so that
+%\begin{equation}
+%	\langle \vec \alpha_i \vert \vec A \rangle = - x_i < 0
+%\end{equation}
+%Let us assume that we have $n$ unbalanced constraints forming:
+%\begin{equation}
+%	\bm \alpha \vec A = - \vec x
+%\end{equation}
+%We want the minimal $d \vec A$ such that:
+%\begin{equation}
+%	\bm \alpha \vert \vec A + d \vec A \rangle = \vec 0 \implies \bm \alpha d\vec A = \vec x
+%\end{equation}
+%
+%\begin{equation}
+%	d \vec A = \bm \alpha ^ T \vec \lambda \implies d \vec A = \bm \alpha^T \left(\bm \alpha \bm \alpha ^T \right) ^{-1}\vec x 
+%\end{equation}
+%
+%\begin{equation}
+%	\vec{A} ' = \left[\bm I_n - \alpha^T \left(\bm \alpha \bm \alpha ^T \right)^{-1} \bm \alpha \right] \vec{A} 
+%	= \dfrac{1}{\det \left(\bm \alpha \bm \alpha ^T\right) } \left[\det \left(\bm \alpha \bm \alpha ^T\right)\bm I_n - \alpha^T \left(\bm \alpha \bm \alpha ^T \right)^\ast \bm \alpha \right] \vec{A}
+%\end{equation}
  	
 \section{Solver}
 

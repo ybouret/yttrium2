@@ -33,12 +33,12 @@ namespace Yttrium
 
             }
 
-            void Court:: trial(XMLog &xml, XWritable &Ctop)
+            void Court:: trial(XMLog &xml, XWritable &Ctop, Accumulator &Itop)
             {
                 Y_XML_Section(xml, "Conservation::Court" );
                 for(Judge *J=jlist.head;J;J=J->next)
                 {
-                    J->trial(xml,Ctop);
+                    J->trial(xml,Ctop,Itop);
                 }
             }
 

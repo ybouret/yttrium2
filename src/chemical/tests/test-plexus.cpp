@@ -69,9 +69,10 @@ Y_UTEST(plexus)
 
     lib.print(std::cerr, "[", C0, "]", xreal_t::ToString);
 
-    
+
+    Accumulator I0(M);
     Conservation::Court court(cls);
-    court.trial(xml,C0);
+    court.trial(xml,C0,I0);
 
     
 

@@ -24,7 +24,7 @@ namespace Yttrium
                 explicit Judge(const Act &);
                 virtual ~Judge() noexcept;
 
-                void trial(XMLog &xml, XWritable &Ctop);
+                void trial(XMLog &xml, XWritable &Ctop, Accumulator &Itop);
 
             private:
                 Y_Disable_Copy_And_Assign(Judge);

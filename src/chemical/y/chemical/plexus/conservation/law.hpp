@@ -60,6 +60,8 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 const unsigned ua2;   //!< |*this|^2, unsigned
+                const xreal_t  xa2;   //!< |*this|^2, xreal_t
+                const xreal_t  norm;  //!< |*this|
                 const xreal_t  zero;  //!< for computations
                 Law *          next;  //!< for list
                 Law *          prev;  //!< for list

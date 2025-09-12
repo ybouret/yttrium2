@@ -17,6 +17,8 @@ namespace Yttrium
             Law:: Law() :
             Actors(Actor::InConservation),
             ua2(0),
+            xa2(0),
+            norm(0),
             zero(0),
             next(0),
             prev(0)
@@ -64,8 +66,9 @@ namespace Yttrium
                 {
                     sum += apn(a->nu).sqr();
                 }
-                Coerce(ua2) = sum.cast<unsigned>("|Law|^2");
-                
+                Coerce(ua2)  = sum.cast<unsigned>("|Law|^2");
+                Coerce(xa2)  = ua2;
+                Coerce(norm) = xa2.sqrt();
             }
 
 
