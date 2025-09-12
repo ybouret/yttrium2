@@ -79,7 +79,7 @@ namespace Yttrium
         };
 
         typedef Protean::BareLightList<const Species> SList; //!< alias
-        typedef typename SList::NodeType              SNode; //!< alias
+        typedef SList::NodeType                       SNode; //!< alias
         typedef Protean::SoloLightList<const Species> SRepo; //!< alias
 
     }
