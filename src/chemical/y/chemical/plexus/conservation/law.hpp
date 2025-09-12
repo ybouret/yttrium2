@@ -17,6 +17,7 @@ namespace Yttrium
         {
 
 
+
             //__________________________________________________________________
             //
             //
@@ -28,6 +29,25 @@ namespace Yttrium
             class Law : public Actors, public Vizible
             {
             public:
+
+                class Projection : public Object
+                {
+                public:
+                    explicit Projection(const size_t);
+                    virtual ~Projection() noexcept;
+
+                    const iMatrix numer;
+                    const XArray  denom;
+
+                    void compute(const Law   & law,
+                                 XAdd        & xadd,
+                                 XWritable   & Ctop,
+                                 XWritable   & Ctmp) const;
+
+                private:
+                    Y_Disable_Copy_And_Assign(Projection);
+                };
+
                 //______________________________________________________________
                 //
                 //
@@ -59,13 +79,14 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const unsigned ua2;   //!< |*this|^2, unsigned
-                const xreal_t  xa2;   //!< |*this|^2, xreal_t
-                const xreal_t  norm;  //!< |*this|
-                const xreal_t  zero;  //!< for computations
-                Law *          next;  //!< for list
-                Law *          prev;  //!< for list
-                
+                const AutoPtr<Projection> prj;
+                const unsigned            ua2;   //!< |*this|^2, unsigned
+                const xreal_t             xa2;   //!< |*this|^2, xreal_t
+                const xreal_t             norm;  //!< |*this| = sqrt(xa2)
+                const xreal_t             zero;  //!< for computations
+                Law *                     next;  //!< for list
+                Law *                     prev;  //!< for list
+
             private:
                 Y_Disable_Copy_And_Assign(Law); //!< discarding
             };

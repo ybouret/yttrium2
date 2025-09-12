@@ -11,10 +11,52 @@ namespace Yttrium
     {
         namespace Conservation
         {
+            Law:: Projection:: ~Projection() noexcept {}
+
+            Law:: Projection:: Projection(const size_t n) :
+            numer(n,n),
+            denom(n)
+            {
+            }
+
+
+            void  Law:: Projection:: compute(const Law   & law,
+                                             XAdd        & xadd,
+                                             XWritable   & Ctop,
+                                             XWritable   & Ctmp) const
+            {
+                const size_t n = numer.rows;
+                for(size_t i=n;i>0;--i)
+                {
+
+                    xadd.ldz();
+                    {
+                        size_t j=1;
+                        for(const Actor *a=law->head;a;a=a->next,++j)
+                        {
+                            
+                        }
+                    }
+
+                    Ctmp[i] = xadd.sum() / denom[i];
+                }
+            }
+        }
+
+    }
+}
+
+
+namespace Yttrium
+{
+    namespace Chemical
+    {
+        namespace Conservation
+        {
             Law:: ~Law() noexcept
             {
             }
-            
+
             Law:: Law() :
             Actors(Actor::InConservation),
             ua2(0),
@@ -24,7 +66,7 @@ namespace Yttrium
             next(0),
             prev(0)
             {
-                
+
             }
 
             std::ostream & operator<<(std::ostream &os, const Law &law)
@@ -62,6 +104,11 @@ namespace Yttrium
 
             void Law:: finalize()
             {
+                //--------------------------------------------------------------
+                //
+                // precompute
+                //
+                //--------------------------------------------------------------
                 {
                     apn sum = 0;
                     for(const Actor *a = list.head;a;a=a->next)
@@ -73,41 +120,49 @@ namespace Yttrium
                     Coerce(norm) = xa2.sqrt();
                 }
 
+                //--------------------------------------------------------------
+                //
+                // compute projections
+                //
+                //--------------------------------------------------------------
                 {
-                    const size_t n = list.size;
+                    const size_t  n = list.size;
                     CxxArray<apz> alpha(n);
                     {
                         size_t i=1;
                         for(const Actor *a = list.head;a;a=a->next,++i)
-                        {
                             alpha[i] = a->nu;
+                    }
+                    Matrix<apz>   mproj(n,n);
+                    {
+                        const apz     a2 = ua2;
+                        for(size_t i=n;i>0;--i)
+                        {
+                            const apz alpha_i = alpha[i];
+                            for(size_t j=n;j>i;--j)   mproj[i][j] = - alpha_i * alpha[j];
+                            mproj[i][i] = a2 - alpha_i.sqr();
+                            for(size_t j=i-1;j>0;--j) mproj[i][j] = - alpha_i * alpha[j];
+                        }
+                        for(size_t i=1;i<=n;++i)
+                        {
+                            alpha[i] = a2;
+                            Apex::Simplify::Array(mproj[i],alpha[i]);
                         }
                     }
-                    std::cerr << "alpha=" << alpha << std::endl;
-                    const apz     a2 = ua2;
-                    Matrix<apz>   mproj(n,n);
-                    for(size_t i=n;i>0;--i)
-                    {
-                        const apz alpha_i = alpha[i];
-                        for(size_t j=n;j>i;--j)   mproj[i][j] = - alpha_i * alpha[j];
-                        mproj[i][i] = a2 - alpha_i.sqr();
-                        for(size_t j=i-1;j>0;--j) mproj[i][j] = - alpha_i * alpha[j];
-                    }
-                    std::cerr << "mproj=" << mproj << std::endl;
+
+                    Coerce(prj) = new Projection(n);
                     for(size_t i=1;i<=n;++i)
                     {
-                        alpha[i] = a2;
-                        Apex::Simplify::Array(mproj[i],alpha[i]);
-                        std::cerr << "w" << i << " = " << mproj[i] << " / " << alpha[i] << std::endl;
+                        for(size_t j=1;j<=n;++j)
+                            Coerce(prj->numer[i][j]) = mproj[i][j].cast<int>("projection numerator");
+                        Coerce(prj->denom[i]) = alpha[i].cast<unsigned>("projection denominator");
                     }
+                    std::cerr << "numer=" << prj->numer << std::endl;
+                    std::cerr << "denom=" << prj->denom << std::endl;
 
                 }
 
             }
-
-
-
-
 
         }
     }
