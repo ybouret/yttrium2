@@ -50,7 +50,7 @@ namespace Yttrium
                  \param Ctop TopLevel concentrations
                  \param Itop TopLevel accumulator
                  */
-                void trial(XMLog &xml, XWritable &Ctop, Accumulator &Itop);
+                const Law * trial(XMLog &xml, XWritable &Ctop, Accumulator &Itop);
 
             private:
                 Y_Disable_Copy_And_Assign(Judge); //!< discarding

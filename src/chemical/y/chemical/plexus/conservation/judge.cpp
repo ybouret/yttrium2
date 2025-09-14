@@ -24,9 +24,9 @@ namespace Yttrium
             {
             }
 
-            void Judge:: trial(XMLog &       xml,
-                               XWritable &   Ctop,
-                               Accumulator & Itop)
+            const Law * Judge:: trial(XMLog &       xml,
+                                      XWritable &   Ctop,
+                                      Accumulator & Itop)
             {
                 Y_XML_Section(xml, "Judge::Trial");
 
@@ -50,12 +50,11 @@ namespace Yttrium
                                 const Broken broken(law,xs);
                                 blist << broken;
                             }
-                            //Y_XMLog(xml, "[+] " << blist.tail());
                         }
                     }
                     if(blist->size<=0) {
                         Y_XMLog(xml, "[[ no broken law ]]");
-                        return;
+                        return 0;
                     }
                 }
 
@@ -66,6 +65,7 @@ namespace Yttrium
                 //
                 //
                 //--------------------------------------------------------------
+                const Law * clear = 0;
             FIX:
                 blist.sort(Broken::Compare);
                 if(xml.verbose)
@@ -80,7 +80,8 @@ namespace Yttrium
 
                 {
                     const Broken &broken = **blist->head;
-                    broken.law.project(xadd,Ctop,Ctmp);
+                    clear = & broken.law;
+                    clear->project(xadd,Ctop,Ctmp);
                     broken.upgrade(Itop);
                     if(xml.verbose)
                     {
@@ -115,8 +116,8 @@ namespace Yttrium
 
                 if(blist->size<=0)
                 {
-                    Y_XMLog(xml, "[[ fixed ]]");
-                    return;
+                    Y_XMLog(xml, "[[ fixed ]] clear=" << *clear);
+                    return clear;
                 }
                 goto FIX;
             }
