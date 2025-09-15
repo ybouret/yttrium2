@@ -122,7 +122,7 @@ namespace Yttrium
 
 
             // finalize
-            psize = xreal_t( plist->size );
+            psize = (xreal_t) (real_t) ( plist->size );
             if(plist->size<=0) {
                 Y_XMLog(xml,"[[ all blocked ]]");
                 return false;

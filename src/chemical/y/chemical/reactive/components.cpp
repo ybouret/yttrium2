@@ -75,7 +75,7 @@ namespace Yttrium
 
         void Components:: updateFlow() noexcept
         {
-            Coerce(xdim) = xreal_t( prod->size + reac->size );
+            Coerce(xdim) = (xreal_t) (real_t) ( prod->size + reac->size );
             if(reac->size<=0)
             {
                 if(prod->size<=0)

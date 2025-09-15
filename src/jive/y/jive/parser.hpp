@@ -30,14 +30,19 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-
+#if defined(_MSC_VER)
+#pragma warning (push)
+#pragma warning ( disable : 4355 )
+#endif
             //! setup \param id name and lang
             template <typename ID> inline
             explicit Parser(const ID &id) :
             Lexer(id), Syntax::Grammar(name,this)
             {
             }
-
+#if defined(_MSC_VER)
+#pragma warning (pop)
+#endif
 
             //! cleanup
             virtual ~Parser() noexcept;
