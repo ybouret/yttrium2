@@ -33,6 +33,7 @@ namespace Yttrium
                 if( const Law *law = lastCase(xml,Ctop,Itop) )
                 {
                     Y_XMLog(xml, "need to clear " << *law);
+                    Y_XMLog(xml, "with " << act.elist);
                 }
             }
 
