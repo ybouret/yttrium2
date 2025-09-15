@@ -55,14 +55,7 @@ namespace Yttrium
                 void connect(const Law &);                //!< connect law to this act
                 void combine(Act &);                      //!< combine foreign act to this acet
 
-                //! query involved equilibria
-                /**
-                 \param primary  list of primary equilibria
-                 \param topology primary topology matrix
-                 */
-                void query(const EList   & primary,
-                           const iMatrix & topology);
-
+                
                 //! \return max actors in a law of this act
                 size_t getMaxActors() const noexcept;
 
@@ -80,7 +73,6 @@ namespace Yttrium
 
             public:
                 const SList slist; //!< species
-                const EList elist; //!< primary involved equilibria
                 Act *       next;  //!< for list
                 Act *       prev;  //!< for list
             };

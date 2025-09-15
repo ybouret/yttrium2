@@ -20,7 +20,6 @@ namespace Yttrium
             Ingress<const LList>(),
             list(),
             slist(),
-            elist(),
             next(0),
             prev(0)
             {
@@ -79,6 +78,9 @@ namespace Yttrium
             }
 
 
+
+
+#if 0
             static inline
             size_t CommonSpecies(const Law &law, const Readable<int> &nu) noexcept
             {
@@ -110,6 +112,7 @@ namespace Yttrium
                     if( Concerned(*this,nu) ) Coerce(elist) << eq;
                 }
             }
+#endif
 
             size_t Act:: getMaxActors() const noexcept
             {

@@ -6,7 +6,7 @@
 #define Y_Chemical_Conservation_Law_Included 1
 
 
-#include "y/chemical/reactive/actors.hpp"
+#include "y/chemical/reactive/equilibrium.hpp"
 #include "y/stream/xmlog.hpp"
 
 namespace Yttrium
@@ -90,7 +90,16 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
-                void finalize(); //!< finalize metrics
+
+                //! finalize metrics and query involved equilibria
+                /**
+                 \param xml      output
+                 \param primary  list of primary equilibria
+                 \param topology primary topology matrix
+                 */
+                void finalize(XMLog &         xml,
+                              const EList   & primary,
+                              const iMatrix & topology); //!< finalize metrics
 
                 //! \return positive excess if any
                 xreal_t excess(XAdd &, const XReadable &, const Level) const;
@@ -118,6 +127,7 @@ namespace Yttrium
                 const unsigned            ua2;   //!< |*this|^2, unsigned
                 const xreal_t             xa2;   //!< |*this|^2, xreal_t
                 const xreal_t             norm;  //!< |*this| = sqrt(xa2)
+                const EList               lead;  //!< leading primary
                 const xreal_t             zero;  //!< for computations
                 Law *                     next;  //!< for list
                 Law *                     prev;  //!< for list

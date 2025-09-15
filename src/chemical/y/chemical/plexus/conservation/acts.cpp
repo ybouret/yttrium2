@@ -15,9 +15,7 @@ namespace Yttrium
             }
 
             Acts:: Acts(XMLog         & xml,
-                        const Laws    & laws,
-                        const EList   & primary,
-                        const iMatrix & topology) :
+                        const Laws    & laws) :
             Object(), Ingress<const Act::List>(),
             alist()
             {
@@ -44,9 +42,9 @@ namespace Yttrium
                         Y_XMLog(xml,**ln);
                     }
 
-                    act->query(primary,topology);
-                    Y_XMLog(xml, "elist=" << act->elist);
-                    
+                    //act->query(primary,topology);
+                    //Y_XMLog(xml, "elist=" << act->elist);
+
                 }
 
             }

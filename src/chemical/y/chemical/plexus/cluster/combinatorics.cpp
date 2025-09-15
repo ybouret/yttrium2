@@ -128,7 +128,7 @@ namespace Yttrium
 
                     const bool       effective = out->size() < inp->size();
                     const DataBook<> missing   = inp-out;
-                    Y_XMLog(xml, (effective ? "[+]" : "[-]") << " stoi=" << stoi << "  #" << inp << "->" << out << " : missing=" << missing << " @" << coef);
+                    //Y_XMLog(xml, (effective ? "[+]" : "[-]") << " stoi=" << stoi << "  #" << inp << "->" << out << " : missing=" << missing << " @" << coef);
                     if(!effective) continue;
 
                     //----------------------------------------------------------

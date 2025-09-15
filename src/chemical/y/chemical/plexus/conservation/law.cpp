@@ -71,6 +71,7 @@ namespace Yttrium
             ua2(0),
             xa2(0),
             norm(0),
+            lead(),
             zero(0),
             next(0),
             prev(0)
@@ -111,7 +112,22 @@ namespace Yttrium
                 return fp;
             }
 
-            void Law:: finalize()
+           
+            static inline
+            size_t CommonSpecies(const Law &law, const Readable<int> &nu) noexcept
+            {
+                size_t res = 0;
+                for(const Actor *a=law->head;a;a=a->next)
+                {
+                    if( a->sp(nu,SubLevel) ) ++res;
+                }
+                return res;
+            }
+
+
+            void Law:: finalize(XMLog &          ,
+                                const EList &   primary,
+                                const iMatrix & topology)
             {
                 //--------------------------------------------------------------
                 //
@@ -166,10 +182,24 @@ namespace Yttrium
                             Coerce(prj->numer[i][j]) = mproj[i][j].cast<int>("projection numerator");
                         Coerce(prj->denom[i]) = alpha[i].cast<unsigned>("projection denominator");
                     }
-                    std::cerr << "numer=" << prj->numer << std::endl;
-                    std::cerr << "denom=" << prj->denom << std::endl;
+                    //Y_XMLog(xml, "numer=" << prj->numer);
+                    //Y_XMLog(xml, "denom=" << prj->denom);
 
                 }
+
+                //--------------------------------------------------------------
+                //
+                // compute lead
+                //
+                //--------------------------------------------------------------
+                for(const ENode *en = primary->head;en;en=en->next)
+                {
+                    const Equilibrium   & eq = **en;
+                    const Readable<int> & nu = topology[ eq.indx[SubLevel] ];
+                    if( CommonSpecies(*this,nu) >= 2) Coerce(lead) << eq;
+                }
+                //Y_XMLog(xml, "lead=" << lead);
+
 
             }
 

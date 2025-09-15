@@ -23,11 +23,12 @@ namespace Yttrium
 
             Laws:: Laws(XMLog &        xml,
                         const uMatrix &U,
-                        const SList   &slist) :
+                        const SList   &slist,
+                        const EList   &primary,
+                        const iMatrix &topology) :
             Ingress<const Core::ListOf<Law> >(),
             Assembly(),
             list(),
-            //clan(),
             rank( MKL::Rank::Of(U) ),
             cs( GraphViz::ColorScheme::Query(CSID) )
             {
@@ -52,8 +53,8 @@ namespace Yttrium
                         law.add(cf,**(slist->fetch(j)));
                     }
                     assert(law->size>=2);
-                    law.finalize();
-                    Y_XMLog(xml,"|" << law << "|^2 = " << law.ua2 << " -> norm = " << law.norm.str() );
+                    law.finalize(xml,primary,topology);
+                    Y_XMLog(xml,"|" << law << "|^2 = " << law.ua2 << " @" << law.lead);
                 }
 
 

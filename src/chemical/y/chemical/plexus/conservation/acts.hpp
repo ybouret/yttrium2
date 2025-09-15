@@ -42,9 +42,7 @@ namespace Yttrium
                  \param topology primary topology matrix
                  */
                 explicit Acts(XMLog         & xml,
-                              const Laws    & laws,
-                              const EList   & primary,
-                              const iMatrix & topology);
+                              const Laws    & laws);
                 virtual ~Acts() noexcept; //!< cleanup
 
                 //______________________________________________________________
