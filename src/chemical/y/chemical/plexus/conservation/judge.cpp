@@ -11,7 +11,7 @@ namespace Yttrium
             Judge:: ~Judge() noexcept
             {
             }
-
+            
             Judge:: Judge(const Cluster & _cl, const Act &_act) :
             cluster(_cl),
             act(_act),
@@ -24,7 +24,7 @@ namespace Yttrium
             prev(0)
             {
             }
-
+            
             void Judge:: trial(XMLog &       xml,
                                XWritable &   Ctop,
                                Accumulator & Itop)
@@ -34,15 +34,18 @@ namespace Yttrium
                 {
                     Y_XMLog(xml, "need to clear " << *law);
                     Y_XMLog(xml, "with " << act.elist);
+                    
+                    xadd.ldz();
+                    
                 }
             }
-
+            
             const Law * Judge:: lastCase(XMLog &       xml,
-                                      XWritable &   Ctop,
-                                      Accumulator & Itop)
+                                         XWritable &   Ctop,
+                                         Accumulator & Itop)
             {
                 Y_XML_Section(xml, "Judge::LastCase");
-
+                
                 blist.free();
                 slist.free();
                 //--------------------------------------------------------------
@@ -65,7 +68,7 @@ namespace Yttrium
                         return 0;
                     }
                 }
-
+                
                 //--------------------------------------------------------------
                 //
                 //
@@ -85,7 +88,7 @@ namespace Yttrium
                         show = false;
                     }
                 }
-
+                
                 {
                     const Broken &broken = **blist->head;
                     clear = & broken.law;
@@ -97,8 +100,8 @@ namespace Yttrium
                         xml() <<  "[*] " << broken << " <==" << std::endl;
                     }
                 }
-
-
+                
+                
                 //--------------------------------------------------------------
                 //
                 //
@@ -120,7 +123,7 @@ namespace Yttrium
                         blist.popHead();
                     }
                 }
-
+                
                 if(blist->size<=0)
                 {
                     Y_XMLog(xml, "[[ fixed ]] clear=" << *clear);
@@ -128,10 +131,10 @@ namespace Yttrium
                 }
                 goto FIX;
             }
-
-
+            
+            
         }
-
+        
     }
-
+    
 }
