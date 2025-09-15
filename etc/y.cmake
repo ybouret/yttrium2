@@ -127,7 +127,7 @@ if("${Y_CC}" MATCHES "gcc.*")
 		string( APPEND CMAKE_CXX_FLAGS " -std=c++0x")
 	endif()
 	if(APPLE)
-	string( APPEND CMAKE_CXX_FLAGS " -D_Alignof=sizeof")
+		string( APPEND CMAKE_CXX_FLAGS " -D_Alignof=sizeof")
 	endif()
 endif()
 
@@ -172,6 +172,18 @@ if("${Y_CC}" STREQUAL "cl")
 	set(Y_MSC TRUE)
 	string( APPEND CMAKE_C_FLAGS " -Wall")
 	string( APPEND CMAKE_CXX_FLAGS " -Wall -EHsc")
+endif()
+
+################################################################################
+#
+# specifi platform configuration
+#
+################################################################################
+if(Y_Linux)
+	if(Y_GNU OR Y_CLANG OR Y_ICC)
+		string( APPEND CMAKE_C_FLAGS " -fPIC")
+		string( APPEND CMAKE_CXX_FLAGS " -fPIC")
+	endif()
 endif()
 
 
