@@ -57,12 +57,7 @@ namespace Yttrium
                         const Law &   law = **ln;
                         const xreal_t xs = law.excess(xadd,Ctop,TopLevel);
                         if(xs>zero)
-                        {
-                            {
-                                const Broken broken(law,xs);
-                                blist << broken;
-                            }
-                        }
+                            blist << Broken(law,xs);
                     }
                     if(blist->size<=0) {
                         Y_XMLog(xml, "[[ no broken law ]]");
