@@ -56,6 +56,13 @@ namespace Yttrium
             private:
                 Y_Disable_Copy_And_Assign(Judge); //!< discarding
 
+                //! process all broken
+                /**
+                 \param xml output
+                 \param Ctop top-level concentration breaking the act
+                 \param Itop top-level accumulator
+                 \return last broken law
+                 */
                 const Law * lastCase(XMLog &xml, XWritable &Ctop, Accumulator &Itop);
 
                 //______________________________________________________________

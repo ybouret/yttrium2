@@ -30,22 +30,48 @@ namespace Yttrium
             {
             public:
 
+                //______________________________________________________________
+                //
+                //
+                //! Projection on law
+                //
+                //______________________________________________________________
                 class Projection : public Object
                 {
                 public:
-                    explicit Projection(const size_t);
-                    virtual ~Projection() noexcept;
+                    //__________________________________________________________
+                    //
+                    // C++
+                    //__________________________________________________________
+                    explicit Projection(const size_t); //!< setup with number of species
+                    virtual ~Projection() noexcept;    //!< cleanup
 
-                    const XMatrix numer;
-                    const XArray  denom;
+                    //__________________________________________________________
+                    //
+                    // Methods
+                    //__________________________________________________________
 
+                    //! compute new Ctop from a broken law
+                    /**
+                     \param law broken law
+                     \param xadd inner addition
+                     \param Ctop top-level concentrations breaking law
+                     \param Ctmp temporary array for computation
+                     */
                     void compute(const Actors & law,
                                  XAdd         & xadd,
                                  XWritable    & Ctop,
                                  XWritable    & Ctmp) const;
 
+                    //__________________________________________________________
+                    //
+                    // Members
+                    //__________________________________________________________
+                    const XMatrix numer; //!< rows of numerators
+                    const XArray  denom; //!< matching denominators
+
                 private:
-                    Y_Disable_Copy_And_Assign(Projection);
+                    Y_Disable_Copy_And_Assign(Projection); //!< discarding
                 };
 
                 //______________________________________________________________
@@ -72,6 +98,12 @@ namespace Yttrium
                 //! GraphViz with color \return output stream
                 OutputStream & viz(OutputStream &, const String &) const;
 
+                //! projection on valid phase space
+                /**
+                 \param xadd inner addition
+                 \param Ctop top-level concentration breaking the law
+                 \param Ctmp temporary for computation
+                 */
                 void project(XAdd        & xadd,
                              XWritable   & Ctop,
                              XWritable   & Ctmp) const;
@@ -82,7 +114,7 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const AutoPtr<Projection> prj;
+                const AutoPtr<Projection> prj;   //!< projection data
                 const unsigned            ua2;   //!< |*this|^2, unsigned
                 const xreal_t             xa2;   //!< |*this|^2, xreal_t
                 const xreal_t             norm;  //!< |*this| = sqrt(xa2)

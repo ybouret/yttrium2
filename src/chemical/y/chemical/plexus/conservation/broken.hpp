@@ -43,9 +43,9 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
-                static SignType Compare(const Broken &, const Broken &) noexcept; //!< \return increasing dc
-                void            upgrade(Accumulator &) const;
-                bool            still(XAdd &xadd, const XReadable &Ctop) noexcept;
+                static SignType Compare(const Broken &, const Broken &)  noexcept; //!< \return increasing dc
+                void            upgrade(Accumulator &)                      const; //!< dispatch each increase into accumulator
+                bool            still(XAdd &, const XReadable &)         noexcept; //!< \return true iff top-level concentration still brokes the law
 
                 //______________________________________________________________
                 //

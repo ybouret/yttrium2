@@ -2,7 +2,7 @@
 //! \file
 
 #ifndef Y_RTLD_Soak_Included
-#define Y_RTKD_Soak_Included 1
+#define Y_RTLD_Soak_Included 1
 
 #include "y/rtld/dso.h"
 #include "y/exception.hpp"
@@ -24,7 +24,7 @@ namespace Yttrium
     {
     public:
 
-
+        //! create new CLASS on DLL load
         static inline void Enter() noexcept
         {
             try
@@ -38,6 +38,7 @@ namespace Yttrium
             }
         }
 
+        //! delete on DLL unload
         static inline void Leave() noexcept
         {
             if(App)
@@ -48,14 +49,15 @@ namespace Yttrium
         }
 
     private:
-        Y_Disable_Copy_And_Assign(Soak);
-        static CLASS * App;
+        Y_Disable_Copy_And_Assign(Soak); //!< discarding
+        static CLASS * App;              //!< dll main object
 
     };
 
     template <typename CLASS>
     CLASS * Soak<CLASS>:: App = 0;
 
+    //! I/O for dll embedded class
 #define Y_Soak(CLASS) Y_DLL_SETUP(Yttrium::Soak<CLASS>::Enter,Yttrium::Soak<CLASS>::Leave)
 
 }

@@ -52,7 +52,7 @@ namespace Yttrium
             //! cleanup
             inline virtual ~DirectSummator() noexcept {}
 
-
+            //! display inner state
             inline friend std::ostream & operator<<(std::ostream &os, const DirectSummator &self)
             {
                 return os << self.acc;

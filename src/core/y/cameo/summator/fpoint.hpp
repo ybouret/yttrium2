@@ -121,6 +121,7 @@ namespace Yttrium
             {
             }
 
+            //! display inner state
             inline friend std::ostream & operator<<(std::ostream &os, const FPointSummator &self)
             {
                 return os << self.acc;

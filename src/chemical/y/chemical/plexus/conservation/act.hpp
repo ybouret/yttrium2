@@ -63,7 +63,7 @@ namespace Yttrium
                 void query(const EList   & primary,
                            const iMatrix & topology);
 
-
+                //! \return max actors in a law of this act
                 size_t getMaxActors() const noexcept;
 
 
