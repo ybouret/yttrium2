@@ -1,5 +1,6 @@
 include_directories(. ../core)
 add_library(typyc MODULE typyc.cpp)
+Y_LinkLibraries(typyc)
 
 
 add_custom_command( TARGET typyc POST_BUILD 
