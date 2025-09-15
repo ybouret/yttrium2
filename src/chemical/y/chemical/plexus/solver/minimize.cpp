@@ -13,7 +13,7 @@ namespace Yttrium
 
         xreal_t Solver:: minimize(XMLog &xml)
         {
-            static const size_t MaxIter = ceil( -log( Numeric<real_t>::EPSILON) / log(2.0) );
+            static const size_t MaxIter = (size_t) ceil( -log( Numeric<real_t>::EPSILON) / log(2.0) );
 
             Solver & F = *this;
             XTriplet x = { zero, 0, one };

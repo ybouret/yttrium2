@@ -22,6 +22,9 @@ namespace Yttrium
 
         namespace
         {
+#if defined(_MSC_VER)
+#pragma warning ( disable : 4355 )
+#endif
             class WeaselCode : public Weasel::Parser
             {
             public:
@@ -212,7 +215,7 @@ namespace Yttrium
                     const char * const text = EDB::Table[i];    if( Equilibrium::Prefix != *text ) corruptedEDB();
                     const char * const sep  = strchr(text,':'); if(!sep)                           corruptedEDB();
                     const char * const ini  = text+1;
-                    const String       eid(ini,sep-ini); Algo::Crop(Coerce(eid),isspace);
+                    const String       eid(ini,(size_t)(sep-ini)); Algo::Crop(Coerce(eid),isspace);
 
                     if(match.found(Jive::Matching::Exactly,eid,eid))
                     {
