@@ -23,10 +23,11 @@ namespace Yttrium
             {
                 for(const Cluster *cl=cls->head;cl;cl=cl->next)
                 {
-                    if(!cl->canon.isValid()) continue;
-                    for(const Act *act = (*cl->canon)->head; act; act=act->next)
+                    const Cluster &cluster = *cl;
+                    if(!cluster.canon.isValid()) continue;
+                    for(const Act *act = (*cluster.canon)->head; act; act=act->next)
                     {
-                        jlist.pushTail( new Judge(*act) );
+                        jlist.pushTail( new Judge(cluster,*act) );
                     }
 
                 }

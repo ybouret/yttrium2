@@ -6,7 +6,7 @@
 #define Y_Chemical_Conservation_Judge_Included 1
 
 
-#include "y/chemical/plexus/conservation/act.hpp"
+#include "y/chemical/plexus/cluster.hpp"
 #include "y/chemical/plexus/conservation/broken.hpp"
 
 
@@ -14,6 +14,7 @@ namespace Yttrium
 {
     namespace Chemical
     {
+
         namespace Conservation
         {
 
@@ -34,7 +35,7 @@ namespace Yttrium
                 // C++
                 //
                 //______________________________________________________________
-                explicit Judge(const Act &); //!< setup
+                explicit Judge(const Cluster &, const Act &); //!< setup
                 virtual ~Judge() noexcept;   //!< cleanup
 
                 //______________________________________________________________
@@ -50,10 +51,12 @@ namespace Yttrium
                  \param Ctop TopLevel concentrations
                  \param Itop TopLevel accumulator
                  */
-                const Law * trial(XMLog &xml, XWritable &Ctop, Accumulator &Itop);
+                void trial(XMLog &xml, XWritable &Ctop, Accumulator &Itop);
 
             private:
                 Y_Disable_Copy_And_Assign(Judge); //!< discarding
+
+                const Law * lastCase(XMLog &xml, XWritable &Ctop, Accumulator &Itop);
 
                 //______________________________________________________________
                 //
@@ -61,6 +64,7 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
+                const Cluster &cluster; //!< persistent cluster
                 const Act &   act;   //!< persistent Act
                 BList         blist; //!< broken list
                 SRepo         slist; //!< broken species

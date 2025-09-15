@@ -12,7 +12,8 @@ namespace Yttrium
             {
             }
 
-            Judge:: Judge(const Act &_act) :
+            Judge:: Judge(const Cluster & _cl, const Act &_act) :
+            cluster(_cl),
             act(_act),
             blist(),
             slist(),
@@ -24,11 +25,22 @@ namespace Yttrium
             {
             }
 
-            const Law * Judge:: trial(XMLog &       xml,
+            void Judge:: trial(XMLog &       xml,
+                               XWritable &   Ctop,
+                               Accumulator & Itop)
+            {
+                Y_XML_Section(xml, "Judge::Trial");
+                if( const Law *law = lastCase(xml,Ctop,Itop) )
+                {
+                    Y_XMLog(xml, "need to clear " << *law);
+                }
+            }
+
+            const Law * Judge:: lastCase(XMLog &       xml,
                                       XWritable &   Ctop,
                                       Accumulator & Itop)
             {
-                Y_XML_Section(xml, "Judge::Trial");
+                Y_XML_Section(xml, "Judge::LastCase");
 
                 blist.free();
                 slist.free();
@@ -104,7 +116,6 @@ namespace Yttrium
                     Broken &broken = **blist->head;
                     if(broken.still(xadd,Ctop))
                     {
-                        //Y_XMLog(xml, "[+] " << broken);
                         blist->moveHeadToTail();
                     }
                     else
