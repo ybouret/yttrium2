@@ -48,6 +48,7 @@ namespace Yttrium
 }
 
 #include "y/singleton.hpp"
+#include "y/concurrent/life-time.hpp"
 #include "y/container/associative/suffix/set.hpp"
 #include "y/container/associative/hash/map.hpp"
 #include "y/exception.hpp"
@@ -57,14 +58,34 @@ namespace Yttrium
     namespace System
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! RTTI Database
+        //
+        //
+        //______________________________________________________________________
         class RTTI:: DataBase : public Singleton<DataBase,ClassLockPolicy>
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
             static const char * const               CallSign;
-            static const Longevity                  LifeTime = 100;
+            static const Longevity                  LifeTime = LifeTimeOf::RTTI;
             typedef SuffixSet<String,RTTI::Pointer> RTTI_Set;
             typedef HashMap<String,RTTI::Pointer>   RTTI_Map;
 
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             inline virtual void display(std::ostream &os,
                                         size_t        depth) const
             {
@@ -78,7 +99,14 @@ namespace Yttrium
                 quit(os,depth);
             }
 
-            inline RTTI & get(const std::type_info &ti , const size_t len)
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            inline RTTI & get(const std::type_info &ti,
+                              const size_t          len)
             {
                 const String id( ti.name() );
 
