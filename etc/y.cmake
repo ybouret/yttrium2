@@ -179,7 +179,7 @@ endif()
 # specifi platform configuration
 #
 ################################################################################
-if(Y_Linux)
+if(Y_Linux OR Y_SunOS)
 	if(Y_GNU OR Y_CLANG OR Y_ICC)
 		string( APPEND CMAKE_C_FLAGS " -fPIC")
 		string( APPEND CMAKE_CXX_FLAGS " -fPIC")

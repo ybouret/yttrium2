@@ -27,20 +27,6 @@ private:
 
 Y_Soak(Application);
 
-#if 0
-static inline
-void Enter() noexcept
-{
-    std::cerr << "[Enter++]" << std::endl;
-}
-
-
-static inline
-void Leave()
-{
-    std::cerr << "[Leave++]" << std::endl;
-}
-#endif
 
 
 Y_DLL_EXTERN()
@@ -53,6 +39,5 @@ Y_EXPORT double Y_DLL_API sine(double x) noexcept
 
 Y_DLL_FINISH()
 
-//Y_DLL_SETUP(Enter,Leave)
 
 

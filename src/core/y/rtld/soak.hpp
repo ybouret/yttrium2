@@ -48,9 +48,10 @@ namespace Yttrium
             }
         }
 
+        static CLASS * App;              //!< dll main object
+
     private:
         Y_Disable_Copy_And_Assign(Soak); //!< discarding
-        static CLASS * App;              //!< dll main object
 
     };
 
@@ -58,7 +59,10 @@ namespace Yttrium
     CLASS * Soak<CLASS>:: App = 0;
 
     //! I/O for dll embedded class
-#define Y_Soak(CLASS) Y_DLL_SETUP(Yttrium::Soak<CLASS>::Enter,Yttrium::Soak<CLASS>::Leave)
+#define Y_Soak(CLASS) \
+Y_DLL_SETUP(Yttrium::Soak<CLASS>::Enter,Yttrium::Soak<CLASS>::Leave) Y_DLL_EXTERN()     \
+Y_EXPORT bool Y_DLL_API CLASS##WasInit() noexcept { return Yttrium::Soak<CLASS>::App; } \
+Y_DLL_FINISH() \
 
 }
 
