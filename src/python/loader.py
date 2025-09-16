@@ -9,7 +9,7 @@ class Application:
         self.sine = self.dll.sine
         self.sine.argtypes = [ct.c_double]
         self.sine.restype = ct.c_double
-        self.check = self.dll.ApplicationWasInit
+        self.check = self.dll.ApplicationInit
         self.check.restype = ct.c_bool
 
 
