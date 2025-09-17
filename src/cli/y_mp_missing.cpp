@@ -33,7 +33,6 @@ struct Port
                           const String &data)
     {
 
-        //std::cerr << "\t[+] '" << data << "'" << std::endl;
         const char * const origin = strchr(data(),':'); if(!origin) return;
         const String       source(origin+1);
         Strings            target;
