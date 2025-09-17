@@ -5,12 +5,14 @@
 #include "y/container/sequence/vector.hpp"
 #include "y/string/tokenizer.hpp"
 #include "y/container/algorithm/crop.hpp"
+#include "y/container/associative/suffix/set.hpp"
 #include <cstring>
 #include <cctype>
 
 using namespace Yttrium;
 
-typedef Vector<String> Strings;
+typedef Vector<String>           Strings;
+typedef SuffixSet<String,String> PDB;
 
 struct Port
 {
@@ -26,7 +28,8 @@ struct Port
     }
 
 
-    static void QueryDeps(const String &root,
+    static void QueryDeps(PDB          &pdb,
+                          const String &root,
                           const String &data)
     {
 
@@ -37,15 +40,18 @@ struct Port
         Tokenizer::AppendTo(target,source,',');
         for(size_t i=1;i<=target.size();++i)
         {
-            const String &dep = Algo::Crop(target[i], isblank);
+            const String &dep   = Algo::Crop(target[i], isblank);
+            if(pdb.search(dep))  continue;
+            if(!pdb.insert(dep)) throw Specific::Exception("QueryDeps","couldn't insert '%s'", dep.c_str());
             if(IsInstalled(dep)) continue;
-            //std::cerr << "[+] '" << dep << "'" << std::endl;
-            const String child = root + '.' + dep;
-            std::cerr << child << std::endl;
+            const String  child = root + '.' + dep;
+            std::cerr <<  child << std::endl;
+            ScanDeps(pdb,child,dep);
         }
     }
 
-    static void ScanDeps(const String   &root,
+    static void ScanDeps(PDB            &pdb,
+                         const String   &root,
                          const String   &port)
     {
         Strings strings;
@@ -55,10 +61,7 @@ struct Port
         }
         strings.popHead();
         for(size_t i=1;i<=strings.size();++i)
-        {
-            QueryDeps(root,strings[i]);
-        }
-
+            QueryDeps(pdb,root,strings[i]);
     }
 
 };
@@ -77,7 +80,8 @@ Y_PROGRAM()
     }
 
     String         root = port;
-    Port::ScanDeps(root,port);
+    PDB            pdb;
+    Port::ScanDeps(pdb,root,port);
 
 
 }
