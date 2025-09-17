@@ -31,15 +31,17 @@ struct Port
     {
 
         //std::cerr << "\t[+] '" << data << "'" << std::endl;
-        const char * const init = strchr(data(),':'); if(!init) return;
-        const String       list(init+1);
-        Strings            dsub;
-        Tokenizer::AppendTo(dsub,list,',');
-        for(size_t i=1;i<=dsub.size();++i)
+        const char * const origin = strchr(data(),':'); if(!origin) return;
+        const String       source(origin+1);
+        Strings            target;
+        Tokenizer::AppendTo(target,source,',');
+        for(size_t i=1;i<=target.size();++i)
         {
-            const String &dep = Algo::Crop(dsub[i], isblank);
+            const String &dep = Algo::Crop(target[i], isblank);
             if(IsInstalled(dep)) continue;
-            std::cerr << "[+] '" << dep << "'" << std::endl;
+            //std::cerr << "[+] '" << dep << "'" << std::endl;
+            const String child = root + '.' + dep;
+            std::cerr << child << std::endl;
         }
     }
 
@@ -74,7 +76,7 @@ Y_PROGRAM()
         return 0;
     }
 
-    String         root;
+    String         root = port;
     Port::ScanDeps(root,port);
 
 
