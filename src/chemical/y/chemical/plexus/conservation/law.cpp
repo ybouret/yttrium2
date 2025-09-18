@@ -3,7 +3,7 @@
 #include "y/chemical/plexus/conservation/law.hpp"
 #include "y/stream/output.hpp"
 #include "y/apex/simplify.hpp"
-
+#include "y/mkl/tao/3.hpp"
 
 namespace Yttrium
 {
@@ -54,6 +54,7 @@ namespace Yttrium
     }
 }
 
+#include "y/mkl/algebra/lu.hpp"
 
 namespace Yttrium
 {
@@ -61,6 +62,7 @@ namespace Yttrium
     {
         namespace Conservation
         {
+
             Law:: ~Law() noexcept
             {
             }
@@ -124,6 +126,8 @@ namespace Yttrium
                 return res;
             }
 
+
+            using namespace MKL;
 
             void Law:: finalize(XMLog &         xml,
                                 const EList &   primary,
@@ -203,20 +207,36 @@ namespace Yttrium
                 //--------------------------------------------------------------
                 const size_t n = lead->size;
                 const size_t m = list.size;
-                Matrix<int>  Nu(n,m);
+
+                Matrix<apz>  Nu(n,m);
                 {
                     size_t i=1;
                     for(const ENode *en = lead->head;en;en=en->next,++i)
                     {
                         const Equilibrium &eq = **en;
+                        const size_t       ei = eq.indx[SubLevel];
                         size_t             j  = 1;
                         for(const Actor *a=list.head;a;a=a->next,++j)
                         {
-                            Nu[i][j] = eq.stoichiometry(a->sp);
+                            Nu[i][j] = a->sp(topology[ei],SubLevel);
                         }
                     }
                 }
                 Y_XMLog(xml,"Nu=" << Nu);
+                Matrix<apz> G(n,n);
+                Cameo::Addition<apz> iadd;
+                Tao::Gram(iadd,G,Nu);
+                Y_XMLog(xml,"G=" << G);
+                LU<apq> lu(n);
+                const apz dG = lu.determinant(G);
+                std::cerr << "dG=" << dG << std::endl;
+                Matrix<apz> aG(n,n);
+                lu.adjoint(aG,G);
+                std::cerr << "aG=" << aG << std::endl;
+                Matrix<apz> Nil(n,m);
+                Tao::MMul(iadd,Nil,aG,Nu);
+                std::cerr << "Nil=" << Nil << std::endl;
+                
 
             }
 
