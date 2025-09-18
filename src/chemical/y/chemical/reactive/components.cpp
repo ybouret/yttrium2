@@ -28,6 +28,14 @@ namespace Yttrium
         {
         }
 
+        int Components:: stoichiometry(const Species &sp) const
+        {
+            for(const Actor *a=reac->head;a;a=a->next) if( &sp == & a->sp) return - (int) a->nu;
+            for(const Actor *a=prod->head;a;a=a->next) if( &sp == & a->sp) return   (int) a->nu;
+            throw Specific::Exception(name.c_str(),"no involved '%s'", sp.name.c_str());
+        }
+
+
         static inline void displayActor(std::ostream &os, const Actor * const a, const XReadable &C, const Level L)
         {
 

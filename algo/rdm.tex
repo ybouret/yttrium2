@@ -22,11 +22,11 @@ We want to find the minimal $d \vec A$ such that:
 \begin{equation}
 	\langle \vec \alpha \vert \vec A + d\vec A \rangle = 0 \implies \langle \vec \alpha \vert d \vec A \rangle = x_s \implies d \vec A = \dfrac{x_s}{\vec\alpha^2} \vec \alpha
 \end{equation}
-The increase in concentration is:
+The increase in concentrations is:
 \begin{equation}
 	d \vec A^2 = \dfrac{x_s^2}{\vec \alpha^2} = \left( \dfrac{x_s}{\vert\vec\alpha\vert}\right) ^2
 \end{equation}
-
+The new concentrations are:
 \begin{equation}
 	\vec A ' = \vec A + d \vec A = \vec{A} - \dfrac{1}{\vec \alpha^2} \langle \vec \alpha \vert \vec A \rangle \vec \alpha 
 	= \dfrac{1}{\vec \alpha^2} \left[ \vec \alpha^2 \bm I - \vert \vec \alpha \rangle \langle \vec \alpha \vert \right] \vec A
@@ -34,8 +34,15 @@ The increase in concentration is:
 
 \subsection{Nullification of last broken law}
 The last broken law is involved in a reduced set of primary equation with
-compacted topology matrix $\check {\bm \nu}$
- 		
+compacted topology matrix $\check {\bm \nu}$ acting on involved concentrations $\check {\vec A}$ 
+\begin{equation}
+ 	\check {\vec A} = \check {\vec A}_0 + \check {\bm \nu}^T \check{\vec \xi} = \vec 0 \implies \vec 0 = \check {\bm \nu}  \check {\vec A}_0  + \left(\check {\bm \nu} \check {\bm \nu}^T \right) \check {\vec \xi}
+\end{equation}
+The solving extent is:
+\begin{equation}
+	\check {\vec \xi} = - \dfrac{1}{\det \left(\check {\bm \nu} \check {\bm \nu}^T \right) } \left(\check {\bm \nu} \check {\bm \nu}^T \right) ^\ast \check {\bm \nu} \check {\vec A}_0
+\end{equation}
+		
 \section{Solver}
 
 Once the active equilibria are selected, each one has a computable 

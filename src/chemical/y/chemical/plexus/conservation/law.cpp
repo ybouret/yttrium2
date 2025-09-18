@@ -125,7 +125,7 @@ namespace Yttrium
             }
 
 
-            void Law:: finalize(XMLog &          ,
+            void Law:: finalize(XMLog &         xml,
                                 const EList &   primary,
                                 const iMatrix & topology)
             {
@@ -182,9 +182,6 @@ namespace Yttrium
                             Coerce(prj->numer[i][j]) = mproj[i][j].cast<int>("projection numerator");
                         Coerce(prj->denom[i]) = alpha[i].cast<unsigned>("projection denominator");
                     }
-                    //Y_XMLog(xml, "numer=" << prj->numer);
-                    //Y_XMLog(xml, "denom=" << prj->denom);
-
                 }
 
                 //--------------------------------------------------------------
@@ -198,8 +195,28 @@ namespace Yttrium
                     const Readable<int> & nu = topology[ eq.indx[SubLevel] ];
                     if( CommonSpecies(*this,nu) >= 2) Coerce(lead) << eq;
                 }
-                //Y_XMLog(xml, "lead=" << lead);
 
+                //--------------------------------------------------------------
+                //
+                // compute nullify matrix
+                //
+                //--------------------------------------------------------------
+                const size_t n = lead->size;
+                const size_t m = list.size;
+                Matrix<int>  Nu(n,m);
+                {
+                    size_t i=1;
+                    for(const ENode *en = lead->head;en;en=en->next,++i)
+                    {
+                        const Equilibrium &eq = **en;
+                        size_t             j  = 1;
+                        for(const Actor *a=list.head;a;a=a->next,++j)
+                        {
+                            Nu[i][j] = eq.stoichiometry(a->sp);
+                        }
+                    }
+                }
+                Y_XMLog(xml,"Nu=" << Nu);
 
             }
 
