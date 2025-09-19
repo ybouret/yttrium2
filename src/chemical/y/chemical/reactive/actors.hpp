@@ -8,6 +8,7 @@
 
 #include "y/chemical/reactive/actor.hpp"
 #include "y/ability/freezable.hpp"
+#include "y/chemical/type/assembly.hpp"
 
 namespace Yttrium
 {
@@ -25,7 +26,8 @@ namespace Yttrium
         class Actors :
         public Entity,
         public Ingress< const Actor::CoreList >,
-        public Freezable
+        public Freezable,
+        public Assembly
         {
         public:
             //__________________________________________________________________
@@ -91,6 +93,7 @@ namespace Yttrium
 
             String html() const; //!< \return hmtl conservation
 
+            
         private:
             Y_Disable_Assign(Actors); //!< discard
             Y_Ingress_Decl();         //!< helper

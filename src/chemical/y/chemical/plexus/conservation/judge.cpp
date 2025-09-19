@@ -18,7 +18,8 @@ namespace Yttrium
             blist(),
             slist(),
             xadd(),
-            Ctmp( act.getMaxActors() ),
+            Ctmp( act.getMaxSize()    ),
+            Xi(   act.getMaxLead()  ),
             zero(0),
             next(0),
             prev(0)
@@ -33,9 +34,7 @@ namespace Yttrium
                 if( const Law *law = lastCase(xml,Ctop,Itop) )
                 {
                     Y_XMLog(xml, "need to clear " << *law);
-                    
-                    xadd.ldz();
-                    
+                    law->nullify(xadd,Ctop,Xi,Ctmp);
                 }
             }
             

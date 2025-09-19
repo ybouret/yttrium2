@@ -57,9 +57,11 @@ namespace Yttrium
 
                 
                 //! \return max actors in a law of this act
-                size_t getMaxActors() const noexcept;
+                size_t getMaxSize() const noexcept;
 
-
+                //! \return max equilibria in a law of this act
+                size_t getMaxLead() const noexcept;
+                
                 //______________________________________________________________
                 //
                 //

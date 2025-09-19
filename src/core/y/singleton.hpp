@@ -142,8 +142,8 @@ namespace Yttrium
     };
 
     template <typename T,typename LOCK_POLICY>
-    T * Singleton<T,LOCK_POLICY>::Instance_ = 0;
+    T * Singleton<T,LOCK_POLICY>::Instance_ = 0; //!< alias
 
 }
 
-#endif
+#endif // !Y_Singleton_Included

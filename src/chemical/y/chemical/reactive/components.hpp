@@ -110,7 +110,7 @@ namespace Yttrium
                 for(const Actor *a=reac->head;a;a=a->next) a->sp(arr,level) = - (int) a->nu;
             }
 
-            int stoichiometry(const Species &sp) const;
+            int stoichiometry(const Species &sp) const noexcept;
 
             //! display compact content \return ostream
             std::ostream & displayCompact(std::ostream &, const XReadable &, const Level) const;

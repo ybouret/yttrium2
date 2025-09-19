@@ -38,8 +38,6 @@ namespace Yttrium
                 /**
                  \param xml      output
                  \param laws     pre-computed laws
-                 \param primary  list of primary equilibria
-                 \param topology primary topology matrix
                  */
                 explicit Acts(XMLog         & xml,
                               const Laws    & laws);

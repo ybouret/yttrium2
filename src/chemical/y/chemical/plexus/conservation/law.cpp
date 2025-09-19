@@ -11,13 +11,32 @@ namespace Yttrium
     {
         namespace Conservation
         {
-            Law:: Projection:: ~Projection() noexcept {}
+            Remedy:: ~Remedy() noexcept
+            {
+            }
 
-            Law:: Projection:: Projection(const size_t n) :
-            numer(n,n),
+            Remedy:: Remedy(const size_t n, const size_t m) :
+            Object(),
+            numer(n,m),
             denom(n)
             {
             }
+            
+        }
+
+    }
+
+}
+
+namespace Yttrium
+{
+    namespace Chemical
+    {
+        namespace Conservation
+        {
+            Law:: Projection:: ~Projection() noexcept {}
+
+            Law:: Projection:: Projection(const size_t n) : Remedy(n,n) { }
 
 
             void  Law:: Projection:: compute(const Actors & law,
@@ -54,6 +73,57 @@ namespace Yttrium
     }
 }
 
+
+namespace Yttrium
+{
+    namespace Chemical
+    {
+        namespace Conservation
+        {
+            Law:: Correction:: ~Correction() noexcept {}
+
+            Law:: Correction:: Correction(const size_t n, const size_t m) :
+            Remedy(n,m)
+            {
+            }
+
+            void  Law:: Correction:: compute(const Actors & law,
+                                             XAdd         & xadd,
+                                             XWritable    & Ctop,
+                                             XWritable    & xi,
+                                             XWritable    & Ctmp) const
+            {
+                // gather concentrations in Ctmp
+                {
+                    size_t j=0;
+                    for(const Actor *a=law->head;a;a=a->next)
+                    {
+                        Ctmp[++j] = a->sp(Ctop,TopLevel);
+                        law.display(std::cerr,a->sp.name,Justify::Right) << " = " << Ctmp[j].str() << std::endl;
+                    }
+                    assert(numer.cols==j);
+                }
+
+
+                // computing xi
+                const size_t m = numer.cols;
+                for(size_t i=numer.rows;i>0;--i)
+                {
+                    xadd.ldz();
+                    for(size_t j=m;j>0;--j) xadd += Ctmp[j] * numer[i][j];
+                    xi[i] = xadd.sum() / denom[i];
+                }
+
+
+
+            }
+
+        }
+    }
+
+}
+
+
 #include "y/mkl/algebra/lu.hpp"
 
 namespace Yttrium
@@ -70,6 +140,7 @@ namespace Yttrium
             Law:: Law() :
             Actors(Actor::InConservation),
             prj(0),
+            cor(0),
             ua2(0),
             xa2(0),
             norm(0),
@@ -154,39 +225,7 @@ namespace Yttrium
                 // compute projections
                 //
                 //--------------------------------------------------------------
-                {
-                    const size_t  n = list.size;
-                    CxxArray<apz> alpha(n);
-                    {
-                        size_t i=1;
-                        for(const Actor *a = list.head;a;a=a->next,++i)
-                            alpha[i] = a->nu;
-                    }
-                    Matrix<apz>   mproj(n,n);
-                    {
-                        const apz     a2 = ua2;
-                        for(size_t i=n;i>0;--i)
-                        {
-                            const apz alpha_i = alpha[i];
-                            for(size_t j=n;j>i;--j)   mproj[i][j] = - alpha_i * alpha[j];
-                            mproj[i][i] = a2 - alpha_i.sqr();
-                            for(size_t j=i-1;j>0;--j) mproj[i][j] = - alpha_i * alpha[j];
-                        }
-                        for(size_t i=1;i<=n;++i)
-                        {
-                            alpha[i] = a2;
-                            Apex::Simplify::Array(mproj[i],alpha[i]);
-                        }
-                    }
-
-                    Coerce(prj) = new Projection(n);
-                    for(size_t i=1;i<=n;++i)
-                    {
-                        for(size_t j=1;j<=n;++j)
-                            Coerce(prj->numer[i][j]) = mproj[i][j].cast<int>("projection numerator");
-                        Coerce(prj->denom[i]) = alpha[i].cast<unsigned>("projection denominator");
-                    }
-                }
+                computeProjection();
 
                 //--------------------------------------------------------------
                 //
@@ -202,42 +241,10 @@ namespace Yttrium
 
                 //--------------------------------------------------------------
                 //
-                // compute nullify matrix
+                // compute correction matrix
                 //
                 //--------------------------------------------------------------
-                const size_t n = lead->size;
-                const size_t m = list.size;
-
-                Matrix<apz>  Nu(n,m);
-                {
-                    size_t i=1;
-                    for(const ENode *en = lead->head;en;en=en->next,++i)
-                    {
-                        const Equilibrium &eq = **en;
-                        const size_t       ei = eq.indx[SubLevel];
-                        size_t             j  = 1;
-                        for(const Actor *a=list.head;a;a=a->next,++j)
-                        {
-                            Nu[i][j] = a->sp(topology[ei],SubLevel);
-                        }
-                    }
-                }
-                Y_XMLog(xml,"Nu=" << Nu);
-                Matrix<apz> G(n,n);
-                Cameo::Addition<apz> iadd;
-                Tao::Gram(iadd,G,Nu);
-                Y_XMLog(xml,"G=" << G);
-                LU<apq> lu(n);
-                const apz dG = lu.determinant(G);
-                std::cerr << "dG=" << dG << std::endl;
-                Matrix<apz> aG(n,n);
-                lu.adjoint(aG,G);
-                std::cerr << "aG=" << aG << std::endl;
-                Matrix<apz> Nil(n,m);
-                Tao::MMul(iadd,Nil,aG,Nu);
-                std::cerr << "Nil=" << Nil << std::endl;
-                
-
+                computeCorrection();
             }
 
 
@@ -246,6 +253,95 @@ namespace Yttrium
                                XWritable   & Ctmp) const
             {
                 prj->compute(*this,xadd,Ctop,Ctmp);
+            }
+
+
+            void Law:: nullify(XAdd        & xadd,
+                               XWritable   & Ctop,
+                               XWritable   & Xi,
+                               XWritable   & Ctmp) const
+            {
+                cor->compute(*this,xadd,Ctop,Xi,Ctmp);
+            }
+
+            void Law:: computeProjection()
+            {
+                const size_t  n = list.size;
+                CxxArray<apz> alpha(n);
+                {
+                    size_t i=1;
+                    for(const Actor *a = list.head;a;a=a->next,++i)
+                        alpha[i] = a->nu;
+                }
+                Matrix<apz>   mproj(n,n);
+                {
+                    const apz     a2 = ua2;
+                    for(size_t i=n;i>0;--i)
+                    {
+                        const apz alpha_i = alpha[i];
+                        for(size_t j=n;j>i;--j)   mproj[i][j] = - alpha_i * alpha[j];
+                        mproj[i][i] = a2 - alpha_i.sqr();
+                        for(size_t j=i-1;j>0;--j) mproj[i][j] = - alpha_i * alpha[j];
+                    }
+                    for(size_t i=1;i<=n;++i)
+                    {
+                        alpha[i] = a2;
+                        Apex::Simplify::Array(mproj[i],alpha[i]);
+                    }
+                }
+
+                Coerce(prj) = new Projection(n);
+                for(size_t i=1;i<=n;++i)
+                {
+                    for(size_t j=1;j<=n;++j)
+                        Coerce(prj->numer[i][j]) = mproj[i][j].cast<int>("projection numerator");
+                    Coerce(prj->denom[i]) = alpha[i].cast<unsigned>("projection denominator");
+                }
+            }
+
+
+            void Law:: computeCorrection()
+            {
+                const size_t n = lead->size;
+                const size_t m = list.size;
+
+
+                Coerce(cor) = new Correction(n,m);
+                Matrix<apz>  Nil(n,m);
+                Matrix<apz>  Nu(n,m);
+                {
+                    size_t i=1;
+                    for(const ENode *en = lead->head;en;en=en->next,++i)
+                    {
+                        const Equilibrium &eq = **en;
+                        size_t             j  = 1;
+                        for(const Actor *a=list.head;a;a=a->next,++j)
+                        {
+                            Nu[i][j] = eq.stoichiometry(a->sp);
+                        }
+                    }
+                }
+                Matrix<apz>          G(n,n);
+                Cameo::Addition<apz> iadd;
+                Tao::Gram(iadd,G,Nu);
+                LU<apq>              lu(n);
+                const apz            dG = lu.determinant(G);
+                if( __Zero__ == dG.s) throw Specific::Exception(CallSign,"unexpected singular correction");
+                Matrix<apz>          aG(n,n);
+                lu.adjoint(aG,G);
+                Tao::MMul(iadd,Nil,aG,Nu);
+                CxxArray<apz>        Den(n,dG);
+                for(size_t i=1;i<=n;++i)
+                {
+                    Apex::Simplify::Array(Nil[i], Den[i]);
+                    //std::cerr << Nil[i] << "/" << Den[i] << std::endl;
+                    Coerce(cor->denom[i]) = (real_t) Den[i].cast<int>("correction denominator");
+                    for(size_t j=1;j<=m;++j)
+                        Coerce(prj->numer[i][j]) = - (real_t) Nil[i][j].cast<int>("correction numerator");
+                }
+
+
+
             }
         }
 

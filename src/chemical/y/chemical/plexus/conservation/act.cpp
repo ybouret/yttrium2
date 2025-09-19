@@ -112,9 +112,9 @@ namespace Yttrium
                     if( Concerned(*this,nu) ) Coerce(elist) << eq;
                 }
             }
-#endif
+#endif // 0
 
-            size_t Act:: getMaxActors() const noexcept
+            size_t Act:: getMaxSize() const noexcept
             {
                 size_t res = 0;
 
@@ -122,6 +122,19 @@ namespace Yttrium
                 {
                     const Law & law = **ln;
                     InSituMax(res,law->size);
+                }
+
+                return res;
+            }
+
+            size_t Act:: getMaxLead() const noexcept
+            {
+                size_t res = 0;
+
+                for(const LNode *ln = list->head; ln; ln=ln->next)
+                {
+                    const Law & law = **ln;
+                    InSituMax(res,law.lead->size);
                 }
 
                 return res;

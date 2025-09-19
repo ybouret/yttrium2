@@ -16,7 +16,18 @@ namespace Yttrium
         namespace Conservation
         {
 
+            class Remedy : public Object
+            {
+            protected:
+                explicit Remedy(const size_t, const size_t);
+            public:
+                virtual ~Remedy() noexcept;
 
+                const XMatrix numer; //!< rows of numerators
+                const XArray  denom; //!< matching denominators
+            private:
+                Y_Disable_Copy_And_Assign(Remedy);
+            };
 
             //__________________________________________________________________
             //
@@ -36,7 +47,7 @@ namespace Yttrium
                 //! Projection on law
                 //
                 //______________________________________________________________
-                class Projection : public Object
+                class Projection : public Remedy
                 {
                 public:
                     //__________________________________________________________
@@ -63,16 +74,29 @@ namespace Yttrium
                                  XWritable    & Ctop,
                                  XWritable    & Ctmp) const;
 
-                    //__________________________________________________________
-                    //
-                    // Members
-                    //__________________________________________________________
-                    const XMatrix numer; //!< rows of numerators
-                    const XArray  denom; //!< matching denominators
-
+                    
                 private:
                     Y_Disable_Copy_And_Assign(Projection); //!< discarding
                 };
+
+
+                class Correction : public Remedy
+                {
+                public:
+                    explicit Correction(const size_t, const size_t);
+                    virtual ~Correction() noexcept;
+                    
+
+                    void compute(const Actors &law,
+                                 XAdd         &xadd,
+                                 XWritable    &Ctop,
+                                 XWritable    &xi,
+                                 XWritable    &Ctmp) const;
+
+                private:
+                    Y_Disable_Copy_And_Assign(Correction); //!< discarding
+                };
+
 
                 //______________________________________________________________
                 //
@@ -117,6 +141,19 @@ namespace Yttrium
                              XWritable   & Ctop,
                              XWritable   & Ctmp) const;
 
+
+                //! nullify last cleared
+                /**
+                 \param xadd inner addition
+                 \param Ctop top-level concentration breaking the law
+                 \param Ctmp temporary for computation
+                 */
+                void nullify(XAdd        & xadd,
+                             XWritable   & Ctop,
+                             XWritable   & Xi,
+                             XWritable   & Ctmp) const;
+
+
                 //______________________________________________________________
                 //
                 //
@@ -124,6 +161,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 const AutoPtr<Projection> prj;   //!< projection data
+                const AutoPtr<Correction> cor;   //!< correction data
                 const unsigned            ua2;   //!< |*this|^2, unsigned
                 const xreal_t             xa2;   //!< |*this|^2, xreal_t
                 const xreal_t             norm;  //!< |*this| = sqrt(xa2)
@@ -134,6 +172,8 @@ namespace Yttrium
 
             private:
                 Y_Disable_Copy_And_Assign(Law); //!< discarding
+                void computeProjection();
+                void computeCorrection();
             };
 
             typedef Protean::BareLightList<const Law> LList; //!< alias

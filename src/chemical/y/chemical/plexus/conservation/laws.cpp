@@ -55,6 +55,7 @@ namespace Yttrium
                     assert(law->size>=2);
                     law.finalize(xml,primary,topology);
                     Y_XMLog(xml,"|" << law << "|^2 = " << law.ua2 << " @" << law.lead);
+                    Y_XMLog(xml,"\tprj=" << law.prj->numer << "/" << law.prj->denom);
                 }
 
 

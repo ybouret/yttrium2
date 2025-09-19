@@ -28,11 +28,11 @@ namespace Yttrium
         {
         }
 
-        int Components:: stoichiometry(const Species &sp) const
+        int Components:: stoichiometry(const Species &sp) const noexcept
         {
             for(const Actor *a=reac->head;a;a=a->next) if( &sp == & a->sp) return - (int) a->nu;
             for(const Actor *a=prod->head;a;a=a->next) if( &sp == & a->sp) return   (int) a->nu;
-            throw Specific::Exception(name.c_str(),"no involved '%s'", sp.name.c_str());
+            return 0;
         }
 
 

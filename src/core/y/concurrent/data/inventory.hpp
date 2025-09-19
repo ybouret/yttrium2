@@ -67,10 +67,10 @@ namespace Yttrium
         };
 
         template <typename T>
-        const char * const Inventory<T>::CallSign = T::CallSign;
+        const char * const Inventory<T>::CallSign = T::CallSign; //!< alias
     }
 
 }
 
-#endif
+#endif // !Y_Concurrent_Inventory_Included
 

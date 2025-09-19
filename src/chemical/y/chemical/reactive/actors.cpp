@@ -70,6 +70,7 @@ namespace Yttrium
                 else
                     newName += (sep[role] + last.name);
                 Coerce(name).swapFor(newName);
+                enroll(last);
             }
             catch(...)
             {

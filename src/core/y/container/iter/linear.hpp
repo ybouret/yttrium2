@@ -201,12 +201,12 @@ namespace Yttrium
         };
 
         template <Direction D, typename T>
-        const typename Linear<D,T>::WayType Linear<D,T>::Way = {};
+        const typename Linear<D,T>::WayType Linear<D,T>::Way = {}; //!< alias
 
 
     }
 
 }
 
-#endif
+#endif // !Y_Container_Iter_Linear_Included
 
