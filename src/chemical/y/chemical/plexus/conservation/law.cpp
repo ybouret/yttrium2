@@ -106,7 +106,6 @@ namespace Yttrium
 
 
                 // computing xi
-
                 const size_t m = numer.cols;
                 for(size_t i=numer.rows;i>0;--i)
                 {
