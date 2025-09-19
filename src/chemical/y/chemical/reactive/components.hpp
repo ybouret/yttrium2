@@ -115,6 +115,8 @@ namespace Yttrium
             //! display compact content \return ostream
             std::ostream & displayCompact(std::ostream &, const XReadable &, const Level) const;
 
+            std::ostream & print(std::ostream &) const;
+
             //__________________________________________________________________
             //
             //
@@ -207,5 +209,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Chemical_Components_Included
 

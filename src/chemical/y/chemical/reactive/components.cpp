@@ -36,6 +36,12 @@ namespace Yttrium
         }
 
 
+        std::ostream & Components:: print(std::ostream &os) const
+        {
+            return os << name << ':' << reac.name << Arrows << prod.name;
+        }
+
+
         static inline void displayActor(std::ostream &os, const Actor * const a, const XReadable &C, const Level L)
         {
 

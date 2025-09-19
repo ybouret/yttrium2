@@ -106,8 +106,7 @@ namespace Yttrium
 
 
                 // computing xi
-                std::cerr << "numer=" << numer << std::endl;
-                std::cerr << "denom=" << denom << std::endl;
+
                 const size_t m = numer.cols;
                 for(size_t i=numer.rows;i>0;--i)
                 {
@@ -124,7 +123,9 @@ namespace Yttrium
                         const XReadable   &cf = numer[++i];
                         xadd.ldz(); for(size_t j=m;j>0;--j) xadd += Ctmp[j] * cf[j];
                         xi[i] = xadd.sum() / denom[i];
-                        std::cerr << "xi_" << eq.name << " = " << xi[i].str() << std::endl;
+                        eq.displayCompact(eq.print(std::cerr << "xi_" << eq.name << " = " << xi[i].str() << " @") << " ",
+                                          Ctop,TopLevel) << std::endl;
+
                     }
                 }
 
@@ -348,7 +349,6 @@ namespace Yttrium
                 for(size_t i=1;i<=n;++i)
                 {
                     Apex::Simplify::Array(Nil[i], Den[i]);
-                    //std::cerr << Nil[i] << "/" << Den[i] << std::endl;
                     Coerce(cor->denom[i]) = (real_t) Den[i].cast<int>("correction denominator");
                     for(size_t j=1;j<=m;++j)
                         Coerce(cor->numer[i][j]) = - (real_t) Nil[i][j].cast<int>("correction numerator");
