@@ -87,7 +87,7 @@ namespace Yttrium
                     virtual ~Correction() noexcept;
                     
 
-                    void compute(const Actors &law,
+                    void compute(const Law    &law,
                                  XAdd         &xadd,
                                  XWritable    &Ctop,
                                  XWritable    &xi,

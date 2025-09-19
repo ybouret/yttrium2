@@ -87,7 +87,7 @@ namespace Yttrium
             {
             }
 
-            void  Law:: Correction:: compute(const Actors & law,
+            void  Law:: Correction:: compute(const Law    & law,
                                              XAdd         & xadd,
                                              XWritable    & Ctop,
                                              XWritable    & xi,
@@ -99,19 +99,33 @@ namespace Yttrium
                     for(const Actor *a=law->head;a;a=a->next)
                     {
                         Ctmp[++j] = a->sp(Ctop,TopLevel);
-                        law.display(std::cerr,a->sp.name,Justify::Right) << " = " << Ctmp[j].str() << std::endl;
+                        law.display(std::cerr << "[",a->sp.name,Justify::Center) << "] = " << Ctmp[j].str() << std::endl;
                     }
                     assert(numer.cols==j);
                 }
 
 
                 // computing xi
+                std::cerr << "numer=" << numer << std::endl;
+                std::cerr << "denom=" << denom << std::endl;
                 const size_t m = numer.cols;
                 for(size_t i=numer.rows;i>0;--i)
                 {
                     xadd.ldz();
                     for(size_t j=m;j>0;--j) xadd += Ctmp[j] * numer[i][j];
                     xi[i] = xadd.sum() / denom[i];
+                }
+
+                {
+                    size_t i=0;
+                    for(const ENode *en=law.lead->head;en;en=en->next)
+                    {
+                        const Equilibrium &eq = **en;
+                        const XReadable   &cf = numer[++i];
+                        xadd.ldz(); for(size_t j=m;j>0;--j) xadd += Ctmp[j] * cf[j];
+                        xi[i] = xadd.sum() / denom[i];
+                        std::cerr << "xi_" << eq.name << " = " << xi[i].str() << std::endl;
+                    }
                 }
 
 
@@ -337,7 +351,7 @@ namespace Yttrium
                     //std::cerr << Nil[i] << "/" << Den[i] << std::endl;
                     Coerce(cor->denom[i]) = (real_t) Den[i].cast<int>("correction denominator");
                     for(size_t j=1;j<=m;++j)
-                        Coerce(prj->numer[i][j]) = - (real_t) Nil[i][j].cast<int>("correction numerator");
+                        Coerce(cor->numer[i][j]) = - (real_t) Nil[i][j].cast<int>("correction numerator");
                 }
 
 
