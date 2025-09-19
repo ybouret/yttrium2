@@ -61,7 +61,10 @@ namespace Yttrium
 
                 //! \return max equilibria in a law of this act
                 size_t getMaxLead() const noexcept;
-                
+
+                //! \return max clan size
+                size_t getMaxClan() const noexcept;
+
                 //______________________________________________________________
                 //
                 //

@@ -98,46 +98,60 @@ namespace Yttrium
                                              XWritable    & Ctmp,
                                              Accumulator  & Cnew) const
             {
-
+                //--------------------------------------------------------------
                 // initialize Cnew
+                //--------------------------------------------------------------
                 Algo::ForEach(Cnew,&XAdd::ldz);
 
-                // gather concentrations in Ctmp
+                //--------------------------------------------------------------
+                // gather concentrations in Ctmp and initialize Cnew
+                //--------------------------------------------------------------
                 {
                     size_t j=0;
                     for(const Actor *a=law->head;a;a=a->next)
                     {
-                        Ctmp[++j] = a->sp(Ctop,TopLevel);
+                        const Species &sp = a->sp;
+                        sp(Cnew,SubLevel) << (Ctmp[++j] = sp(Ctop,TopLevel));
                         law.display(std::cerr << "[",a->sp.name,Justify::Center) << "] = " << Ctmp[j].str() << std::endl;
                     }
                     assert(numer.cols==j);
                 }
 
-
-                // computing xi
+                //--------------------------------------------------------------
+                // computing xi and dispatch deltaC
+                //--------------------------------------------------------------
                 const size_t m = numer.cols;
-                for(size_t i=numer.rows;i>0;--i)
-                {
-                    xadd.ldz();
-                    for(size_t j=m;j>0;--j) xadd += Ctmp[j] * numer[i][j];
-                    xi[i] = xadd.sum() / denom[i];
-                }
-
                 {
                     size_t i=0;
                     for(const ENode *en=law.lead->head;en;en=en->next)
                     {
-                        const Equilibrium &eq = **en;
-                        const XReadable   &cf = numer[++i];
+                        const Equilibrium & eq = **en;
+                        const XReadable   & cf = numer[++i];
                         xadd.ldz(); for(size_t j=m;j>0;--j) xadd += Ctmp[j] * cf[j];
-                        xi[i] = xadd.sum() / denom[i];
+                        const xreal_t x = (xi[i] = xadd.sum() / denom[i]);
                         eq.displayCompact(eq.print(std::cerr << "xi_" << eq.name << " = " << xi[i].str() << " @") << " ",
                                           Ctop,TopLevel) << std::endl;
 
+                        for(const Actor *a=eq.prod->head;a;a=a->next)
+                        {
+                            a->sp(Cnew,SubLevel) += (x*a->xn);
+                        }
+
+                        for(const Actor *a=eq.reac->head;a;a=a->next)
+                        {
+                            a->sp(Cnew,SubLevel) -= (x*a->xn);
+                        }
                     }
                 }
 
+                for(const SNode *sn=law.clan->head;sn;sn=sn->next)
+                {
+                    const Species &sp = **sn;
+                    const xreal_t  cc = sp(Ctop,TopLevel) = sp(Cnew,SubLevel).sum();
+                    std::cerr << "\t[" << sp << "]=" << cc.str() << std::endl;
+                }
 
+                
             }
 
         }

@@ -35,7 +35,8 @@ namespace Yttrium
                 // C++
                 //
                 //______________________________________________________________
-                explicit Judge(const Cluster &, const Act &); //!< setup
+                explicit Judge(const Cluster &,
+                               const Act     &); //!< setup
                 virtual ~Judge() noexcept;   //!< cleanup
 
                 //______________________________________________________________
@@ -72,14 +73,14 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 const Cluster &cluster; //!< persistent cluster
-                const Act &   act;   //!< persistent Act
-                BList         blist; //!< broken list
-                SRepo         slist; //!< broken species
-                XAdd          xadd;  //!< inner additions
-                XArray        Ctmp;  //!< store temporary new concentrations
-                XArray        Xi;    //!< store temporary extents
-                Accumulator   Cnew;  //!< store new concentrations
-                const xreal_t zero;  //!< helper
+                const Act &   act;      //!< persistent Act
+                BList         blist;    //!< broken list
+                SRepo         slist;    //!< broken species
+                XAdd          xadd;     //!< inner additions
+                XArray        Ctmp;     //!< store temporary new concentrations
+                XArray        Xi;       //!< store temporary extents
+                Accumulator   Cnew;     //!< SubLevel accumulator
+                const xreal_t zero;     //!< helper
             public:
                 Judge *       next;  //!< for list
                 Judge *       prev;  //!< for list

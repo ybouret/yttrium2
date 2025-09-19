@@ -21,10 +21,10 @@ namespace Yttrium
             
 
             Laws:: Laws(XMLog &        xml,
-                        const uMatrix &U,
-                        const SList   &slist,
-                        const EList   &primary,
-                        const iMatrix &topology) :
+                        const uMatrix & U,
+                        const SList   & slist,
+                        const EList   & primary,
+                        const iMatrix & topology) :
             Ingress<const Core::ListOf<Law> >(),
             Assembly(),
             list(),

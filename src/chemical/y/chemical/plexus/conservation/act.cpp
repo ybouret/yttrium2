@@ -54,7 +54,7 @@ namespace Yttrium
                         target->pushTail(source->popHead());
                 }
 
-                ListOps::Make(Coerce(slist), AuxLevel);
+                //ListOps::Make(Coerce(slist), AuxLevel);
 
             }
 
@@ -102,6 +102,19 @@ namespace Yttrium
                 {
                     const Law & law = **ln;
                     InSituMax(res,law.lead->size);
+                }
+
+                return res;
+            }
+
+            size_t Act:: getMaxClan() const noexcept
+            {
+                size_t res = 0;
+
+                for(const LNode *ln = list->head; ln; ln=ln->next)
+                {
+                    const Law & law = **ln;
+                    InSituMax(res,law.clan->size);
                 }
 
                 return res;

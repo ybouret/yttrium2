@@ -57,14 +57,6 @@ namespace Yttrium
                 //! \return true iff species if found in laws
                 bool got(const Species &) const noexcept;
 
-#if 0
-                //! \param Caux aux-level array \param Ctop top-level array
-                void dowload(XWritable &Caux, const XReadable &Ctop) const;
-
-                //! \param Caux aux-level array \param Ctop top-level array
-                void upload(XWritable &Ctop, const XReadable &Caux) const;
-#endif
-                
             private:
                 Y_Disable_Copy_And_Assign(Laws);    //!< discarding
                 Y_Ingress_Decl();                   //!< helper

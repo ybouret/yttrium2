@@ -12,7 +12,8 @@ namespace Yttrium
             {
             }
             
-            Judge:: Judge(const Cluster & _cl, const Act &_act) :
+            Judge:: Judge(const Cluster & _cl,
+                          const Act     & _act) :
             cluster(_cl),
             act(_act),
             blist(),
@@ -20,7 +21,7 @@ namespace Yttrium
             xadd(),
             Ctmp( act.getMaxSize()  ),
             Xi(   act.getMaxLead()  ),
-            Cnew( 10   ),
+            Cnew(cluster.slist->size),
             zero(0),
             next(0),
             prev(0)
