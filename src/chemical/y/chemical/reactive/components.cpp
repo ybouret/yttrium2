@@ -41,6 +41,12 @@ namespace Yttrium
             return os << name << ':' << reac.name << Arrows << prod.name;
         }
 
+        void Components:: mergeSpeciesInto(SList &xlist) const
+        {
+            reac.mergeSpeciesInto(xlist);
+            prod.mergeSpeciesInto(xlist);
+        }
+
 
         static inline void displayActor(std::ostream &os, const Actor * const a, const XReadable &C, const Level L)
         {

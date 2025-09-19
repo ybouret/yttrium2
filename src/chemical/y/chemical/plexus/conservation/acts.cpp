@@ -33,18 +33,21 @@ namespace Yttrium
 
                 Y_XMLog(xml, "|Acts| = " << alist.size);
 
+
                 for(Act *act=alist.head;act;act=act->next)
                 {
                     const size_t count = (*act)->size();
                     Y_XML_Section_Attr(xml, "Conservation::Act",Y_XML_Attr(count));
                     for(const LNode *ln = (**act)->head;ln;ln=ln->next)
                     {
-                        Y_XMLog(xml,**ln);
+                        const Law &law = **ln;
+                        Y_XMLog(xml,law << " / " << law.lead);
+                        for(const ENode *en=law.lead->head;en;en=en->next)
+                        {
+                            (**en).mergeSpeciesInto( Coerce(act->xlist) );
+                        }
                     }
-
-                    //act->query(primary,topology);
-                    //Y_XMLog(xml, "elist=" << act->elist);
-
+                    Y_XMLog(xml, "species=" << act->slist);
                 }
 
             }

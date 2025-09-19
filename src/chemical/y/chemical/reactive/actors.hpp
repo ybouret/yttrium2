@@ -93,7 +93,8 @@ namespace Yttrium
 
             String html() const; //!< \return hmtl conservation
 
-            
+            void mergeSpeciesInto(SList &) const;
+
         private:
             Y_Disable_Assign(Actors); //!< discard
             Y_Ingress_Decl();         //!< helper

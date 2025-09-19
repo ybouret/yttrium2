@@ -173,6 +173,14 @@ namespace Yttrium
             }
             return res;
         }
+
+
+        void Actors:: mergeSpeciesInto(SList &xlist) const
+        {
+            for(const Actor *a=list.head;a;a=a->next)
+                xlist |= a->sp;
+        }
+
     }
 
 }

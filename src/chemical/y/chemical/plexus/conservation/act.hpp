@@ -74,7 +74,8 @@ namespace Yttrium
                 LList       list; //!< laws
 
             public:
-                const SList slist; //!< species
+                const SList slist; //!< species in laws
+                const SList xlist; //!< species in all leads
                 Act *       next;  //!< for list
                 Act *       prev;  //!< for list
             };

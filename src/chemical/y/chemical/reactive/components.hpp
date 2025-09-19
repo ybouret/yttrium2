@@ -115,7 +115,10 @@ namespace Yttrium
             //! display compact content \return ostream
             std::ostream & displayCompact(std::ostream &, const XReadable &, const Level) const;
 
+            //! display compact representation \return ostream
             std::ostream & print(std::ostream &) const;
+
+            void mergeSpeciesInto(SList &) const;
 
             //__________________________________________________________________
             //

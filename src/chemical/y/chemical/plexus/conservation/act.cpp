@@ -80,39 +80,6 @@ namespace Yttrium
 
 
 
-#if 0
-            static inline
-            size_t CommonSpecies(const Law &law, const Readable<int> &nu) noexcept
-            {
-                size_t res = 0;
-                for(const Actor *a=law->head;a;a=a->next)
-                {
-                    if( a->sp(nu,SubLevel) ) ++res;
-                }
-                return res;
-            }
-
-            static inline
-            bool Concerned(const Act &act, const Readable<int> &nu) noexcept
-            {
-                for(const LNode *ln = (*act)->head; ln; ln=ln->next)
-                {
-                    if( CommonSpecies(**ln,nu) >= 2) return true;
-                }
-                return false;
-            }
-
-            void Act:: query(const EList   & primary,
-                             const iMatrix & topology)
-            {
-                for(const ENode *en=primary->head;en;en=en->next)
-                {
-                    const Equilibrium   & eq = **en;
-                    const Readable<int> & nu = topology[ eq.indx[TopLevel] ];
-                    if( Concerned(*this,nu) ) Coerce(elist) << eq;
-                }
-            }
-#endif // 0
 
             size_t Act:: getMaxSize() const noexcept
             {
