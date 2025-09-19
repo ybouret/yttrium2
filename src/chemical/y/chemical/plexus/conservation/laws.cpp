@@ -1,7 +1,6 @@
 
 
 #include "y/chemical/plexus/conservation/laws.hpp"
-#include "y/chemical/type/list-ops.hpp"
 #include "y/mkl/algebra/rank.hpp"
 
 namespace Yttrium
@@ -54,8 +53,7 @@ namespace Yttrium
                     }
                     assert(law->size>=2);
                     law.finalize(xml,primary,topology);
-                    Y_XMLog(xml,"|" << law << "|^2 = " << law.ua2 << " @" << law.lead);
-                    Y_XMLog(xml,"\tprj=" << law.prj->numer << "/" << law.prj->denom);
+                    Y_XMLog(xml,"|" << law << "|^2 = " << law.ua2 << " @" << law.lead << "/" << law.clan);
                 }
 
 

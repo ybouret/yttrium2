@@ -28,6 +28,8 @@ namespace Yttrium
 
 }
 
+#include "y/chemical/type/list-ops.hpp"
+
 namespace Yttrium
 {
     namespace Chemical
@@ -74,6 +76,8 @@ namespace Yttrium
 }
 
 
+#include "y/container/algorithm/for-each.hpp"
+
 namespace Yttrium
 {
     namespace Chemical
@@ -91,8 +95,13 @@ namespace Yttrium
                                              XAdd         & xadd,
                                              XWritable    & Ctop,
                                              XWritable    & xi,
-                                             XWritable    & Ctmp) const
+                                             XWritable    & Ctmp,
+                                             Accumulator  & Cnew) const
             {
+
+                // initialize Cnew
+                Algo::ForEach(Cnew,&XAdd::ldz);
+
                 // gather concentrations in Ctmp
                 {
                     size_t j=0;
@@ -127,7 +136,6 @@ namespace Yttrium
 
                     }
                 }
-
 
 
             }
@@ -255,6 +263,18 @@ namespace Yttrium
 
                 //--------------------------------------------------------------
                 //
+                // compute clan
+                //
+                //--------------------------------------------------------------
+                for(const ENode *en = primary->head;en;en=en->next)
+                {
+                    const Equilibrium & eq = **en;
+                    eq.mergeSpeciesInto( Coerce(clan) );
+                }
+                ListOps::Sort( Coerce(clan) );
+
+                //--------------------------------------------------------------
+                //
                 // compute correction matrix
                 //
                 //--------------------------------------------------------------
@@ -273,9 +293,10 @@ namespace Yttrium
             void Law:: nullify(XAdd        & xadd,
                                XWritable   & Ctop,
                                XWritable   & Xi,
-                               XWritable   & Ctmp) const
+                               XWritable   & Ctmp,
+                               Accumulator & Cnew) const
             {
-                cor->compute(*this,xadd,Ctop,Xi,Ctmp);
+                cor->compute(*this,xadd,Ctop,Xi,Ctmp,Cnew);
             }
 
             void Law:: computeProjection()

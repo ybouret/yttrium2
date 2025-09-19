@@ -75,7 +75,6 @@ namespace Yttrium
 
             public:
                 const SList slist; //!< species in laws
-                const SList xlist; //!< species in all leads
                 Act *       next;  //!< for list
                 Act *       prev;  //!< for list
             };
@@ -85,6 +84,6 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Chemical_Conservation_Act_Included
 
 

@@ -78,6 +78,7 @@ namespace Yttrium
                 XAdd          xadd;  //!< inner additions
                 XArray        Ctmp;  //!< store temporary new concentrations
                 XArray        Xi;    //!< store temporary extents
+                Accumulator   Cnew;  //!< store new concentrations
                 const xreal_t zero;  //!< helper
             public:
                 Judge *       next;  //!< for list

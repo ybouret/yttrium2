@@ -64,7 +64,7 @@ namespace Yttrium
 
                     //! compute new Ctop from a broken law
                     /**
-                     \param law broken law
+                     \param law  broken law
                      \param xadd inner addition
                      \param Ctop top-level concentrations breaking law
                      \param Ctmp temporary array for computation
@@ -91,7 +91,8 @@ namespace Yttrium
                                  XAdd         &xadd,
                                  XWritable    &Ctop,
                                  XWritable    &xi,
-                                 XWritable    &Ctmp) const;
+                                 XWritable    &Ctmp,
+                                 Accumulator  &Cnew) const;
 
                 private:
                     Y_Disable_Copy_And_Assign(Correction); //!< discarding
@@ -151,7 +152,8 @@ namespace Yttrium
                 void nullify(XAdd        & xadd,
                              XWritable   & Ctop,
                              XWritable   & Xi,
-                             XWritable   & Ctmp) const;
+                             XWritable   & Ctmp,
+                             Accumulator & Cnew) const;
 
 
                 //______________________________________________________________
@@ -166,6 +168,7 @@ namespace Yttrium
                 const xreal_t             xa2;   //!< |*this|^2, xreal_t
                 const xreal_t             norm;  //!< |*this| = sqrt(xa2)
                 const EList               lead;  //!< leading primary
+                const SList               clan;  //!< all species from lead
                 const xreal_t             zero;  //!< for computations
                 Law *                     next;  //!< for list
                 Law *                     prev;  //!< for list
@@ -185,5 +188,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Chemical_Conservation_Law_Included
 

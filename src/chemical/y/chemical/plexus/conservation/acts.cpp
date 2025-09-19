@@ -1,5 +1,6 @@
 
 #include "y/chemical/plexus/conservation/acts.hpp"
+#include "y/chemical/type/list-ops.hpp"
 
 namespace Yttrium
 {
@@ -33,7 +34,7 @@ namespace Yttrium
 
                 Y_XMLog(xml, "|Acts| = " << alist.size);
 
-
+                // collect all species
                 for(Act *act=alist.head;act;act=act->next)
                 {
                     const size_t count = (*act)->size();
@@ -42,12 +43,9 @@ namespace Yttrium
                     {
                         const Law &law = **ln;
                         Y_XMLog(xml,law << " / " << law.lead);
-                        for(const ENode *en=law.lead->head;en;en=en->next)
-                        {
-                            (**en).mergeSpeciesInto( Coerce(act->xlist) );
-                        }
                     }
-                    Y_XMLog(xml, "species=" << act->slist);
+                    //ListOps::Sort(Coerce(act->xlist));
+                    //Y_XMLog(xml, "species = " << act->slist)
                 }
 
             }
