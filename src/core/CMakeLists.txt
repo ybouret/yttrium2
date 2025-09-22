@@ -119,6 +119,7 @@ Y_CreateLibrary(y
     y/field
     y/field/layout
     y/rtld
+    y/rtld/soak
 )
 
 add_subdirectory(tests)

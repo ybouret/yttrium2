@@ -4,8 +4,7 @@
 #ifndef Y_RTLD_Soak_Included
 #define Y_RTLD_Soak_Included 1
 
-#include "y/rtld/dso.h"
-#include "y/exception.hpp"
+#include "y/rtld/soak/api.hpp"
 #include <cassert>
 #include <cstring>
 
@@ -13,7 +12,28 @@ namespace Yttrium
 {
 
 
+    template <typename CLASS>
+    class Soak : public SoakAPI
+    {
+    protected:
+        inline explicit Soak() noexcept : SoakAPI() {}
 
+    public:
+        inline virtual ~Soak() noexcept {}
+        inline virtual const char * callSign() const noexcept { return CLASS:: CallSign; }
+
+        
+
+    private:
+        Y_Disable_Copy_And_Assign(Soak);
+        static CLASS * App;
+    };
+
+    template <typename CLASS> CLASS * Soak<CLASS>:: App = 0;
+
+
+
+#if 0
     //__________________________________________________________________________
     //
     //
@@ -82,8 +102,11 @@ Y_EXPORT bool         Y_DLL_API CLASS##Init() noexcept { return Yttrium::Soak<CL
 Y_EXPORT const char * Y_DLL_API CLASS##What() noexcept { return Yttrium::Soak<CLASS>::What; } \
 Y_EXPORT const char * Y_DLL_API CLASS##When() noexcept { return Yttrium::Soak<CLASS>::When; } \
 Y_DLL_FINISH()
+#endif
 
 }
 
-#endif
+
+
+#endif // !Y_RTLD_Soak_Included
 

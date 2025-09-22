@@ -6,6 +6,34 @@
 
 using namespace Yttrium;
 
+class Application : public Soak<Application>
+{
+public:
+    static const char * const CallSign;
+
+
+
+private:
+    Y_Disable_Copy_And_Assign(Application);
+    friend class Soak<Application>;
+
+    explicit Application() noexcept;
+    virtual ~Application() noexcept;
+
+};
+
+Application:: Application() noexcept : Soak<Application>()
+{
+}
+
+Application:: ~Application() noexcept
+{
+}
+
+
+const char * const Application :: CallSign = "Application";
+
+#if 0
 class Application
 {
 public:
@@ -26,7 +54,7 @@ private:
 
 
 Y_Soak(Application);
-
+#endif
 
 
 Y_DLL_EXTERN()
