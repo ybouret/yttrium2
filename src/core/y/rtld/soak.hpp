@@ -69,6 +69,12 @@ namespace Yttrium
             if(App) { delete App; App=0; }
         }
 
+        static inline bool Init() noexcept {
+            const bool res = (0 != App);
+            std::cerr << "<" << CLASS::CallSign << "::Init = " << res << ">" << std::endl;
+            return res;
+        }
+
         //______________________________________________________________________
         //
         //
@@ -82,12 +88,17 @@ namespace Yttrium
 
     template <typename CLASS> CLASS * Soak<CLASS>:: App = 0; //!< implementation
 
+    //__________________________________________________________________________
+    //
+    //
     //! helper for enter/leave and check existence of CLASS
+    //
+    //__________________________________________________________________________
 #define Y_Soak_Impl(CLASS) \
-Y_DLL_SETUP(Yttrium::Soak<CLASS>::Enter,Yttrium::Soak<CLASS>::Leave) Y_DLL_EXTERN()           \
-Y_EXPORT bool         Y_DLL_API CLASS##Init() noexcept { return Yttrium::Soak<CLASS>::App;  } \
-Y_EXPORT const char * Y_DLL_API CLASS##What() noexcept { return Yttrium::Soak<CLASS>::What; } \
-Y_EXPORT const char * Y_DLL_API CLASS##When() noexcept { return Yttrium::Soak<CLASS>::When; } \
+Y_DLL_SETUP(Yttrium::Soak<CLASS>::Enter,Yttrium::Soak<CLASS>::Leave) Y_DLL_EXTERN()             \
+Y_EXPORT bool         Y_DLL_API CLASS##Init() noexcept { return Yttrium::Soak<CLASS>::Init(); } \
+Y_EXPORT const char * Y_DLL_API CLASS##What() noexcept { return Yttrium::Soak<CLASS>::What;   } \
+Y_EXPORT const char * Y_DLL_API CLASS##When() noexcept { return Yttrium::Soak<CLASS>::When;   } \
 Y_DLL_FINISH()
 
 #define Y_Soak_Meth(RETURN,CLASS,METH,ARGS_DECL,ARGS_LIST) \

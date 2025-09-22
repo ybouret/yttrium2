@@ -3,4 +3,5 @@
 - export PATH="C:\Users\yannb\AppData\Local\Programs\Spyder\Python":$PATH
 ~   # yttrium
 - export QT_DEBUG_PLUGINS=1
-- git clone git@github.com:ybouret/yttrium2.git
+- git clone git@github.com:ybouret/yttrium2.gitA
+- xcrun codesign -s - ./typyc.so 
