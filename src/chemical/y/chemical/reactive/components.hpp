@@ -110,6 +110,7 @@ namespace Yttrium
                 for(const Actor *a=reac->head;a;a=a->next) a->sp(arr,level) = - (int) a->nu;
             }
 
+            //! \param sp species \return its coefficient
             int stoichiometry(const Species &sp) const noexcept;
 
             //! display compact content \return ostream
@@ -118,6 +119,7 @@ namespace Yttrium
             //! display compact representation \return ostream
             std::ostream & print(std::ostream &) const;
 
+            //! merge species into target list
             void mergeSpeciesInto(SList &) const;
 
             //__________________________________________________________________

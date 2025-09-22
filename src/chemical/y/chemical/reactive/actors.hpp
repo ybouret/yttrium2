@@ -93,6 +93,7 @@ namespace Yttrium
 
             String html() const; //!< \return hmtl conservation
 
+            //! merge species into target list
             void mergeSpeciesInto(SList &) const;
 
         private:

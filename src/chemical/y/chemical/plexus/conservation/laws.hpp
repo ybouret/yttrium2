@@ -73,5 +73,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Chemical_Conservation_Laws_Included
 

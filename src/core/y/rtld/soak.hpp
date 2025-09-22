@@ -40,6 +40,8 @@ namespace Yttrium
         // Interface
         //
         //______________________________________________________________________
+
+        //! [Identifiable] \return CLASS::CallSign
         inline virtual const char * callSign() const noexcept { return CLASS::CallSign; }
 
         //______________________________________________________________________
@@ -70,6 +72,7 @@ namespace Yttrium
             if(App) { delete App; App=0; }
         }
 
+        //! \return 0 != App
         static inline bool Init() noexcept {
             const bool res = (0 != App);
             std::cerr << "<" << CLASS::CallSign << "::Init = " << res << ">" << std::endl;
