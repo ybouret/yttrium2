@@ -27,8 +27,7 @@ namespace Yttrium
         static void OnError(const Exception &)                          noexcept;
         static void OnError(const char * const, const char * const)     noexcept;
 
-
-    protected:
+        
         static char What[MessageLength];
         static char When[MessageLength];
 
