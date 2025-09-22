@@ -39,17 +39,38 @@ Y_UTEST(apex_rsa)
     std::cerr << "Modular Inv" << std::endl;
     for(size_t in=1;in<=40;in += 1+ran.leq<size_t>(8))
     {
-        for(size_t ia=0;ia<=10;++ia)
+        for(size_t ia=1;ia<=10;++ia)
         {
-            const apn  n(ran,in);
+            apn        n(ran,in);
             const apn  a(ran,ia);
-            //const apn  b = Apex::Modular::Inv(a,n);
+            while( a>=n || 1 != apn::GCD(n,a) ) ++n;
+            const apn b = Apex::Modular::Inv(a,n);
+            const apn r = (a*b) % n;
+            Y_ASSERT(1==r);
         }
     }
 
 
     {
-        
+        const apn p = 11;
+        const apn q = 23;
+        const apn n = p*q;
+        std::cerr << "n=" << n << std::endl;
+        const apn phi = (p-1)*(q-1);
+        const apn e   = 7;
+        const apn d   = Apex::Modular::Inv(e,phi);
+        std::cerr << "e=" << e << ", d=" << d << std::endl;
+
+        for(apn M=0;M<n;++M)
+        {
+            std::cerr << "M=" << std::setw(6) << M;
+            const apn C = Apex::Modular::Exp(M,e,n);
+            std::cerr << " => C=" << std::setw(6) << C;
+            const apn D = Apex::Modular::Exp(C,d,n);
+            std::cerr << " => D=" << std::setw(6) << D;
+            std::cerr << std::endl;
+            Y_ASSERT(D==M);
+        }
     }
 
 }
