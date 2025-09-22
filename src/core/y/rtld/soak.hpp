@@ -6,7 +6,6 @@
 
 #include "y/rtld/soak/api.hpp"
 #include <cassert>
-#include <cstring>
 
 namespace Yttrium
 {
@@ -20,9 +19,25 @@ namespace Yttrium
 
     public:
         inline virtual ~Soak() noexcept {}
-        inline virtual const char * callSign() const noexcept { return CLASS:: CallSign; }
 
-        
+        inline virtual const char * callSign() const noexcept { return CLASS::CallSign; }
+
+        static inline void Enter() noexcept
+        {
+            assert(0==App);
+            try {
+                App = new CLASS();
+            }
+            catch(const Exception &      excp) { OnError(excp); }
+            catch(const std::exception & excp) { OnError(excp,CLASS::CallSign); }
+            catch(...)                         { OnError(UnhandledException,CLASS::CallSign); }
+        }
+
+        static inline void Leave() noexcept
+        {
+            if(App) { delete App; App=0; }
+        }
+
 
     private:
         Y_Disable_Copy_And_Assign(Soak);

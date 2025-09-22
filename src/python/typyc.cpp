@@ -11,7 +11,7 @@ class Application : public Soak<Application>
 public:
     static const char * const CallSign;
 
-
+    
 
 private:
     Y_Disable_Copy_And_Assign(Application);

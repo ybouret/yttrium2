@@ -15,8 +15,8 @@ namespace Yttrium
     class SoakAPI : public Identifiable
     {
     public:
-        static const size_t MessageLength = 256;
-
+        static const size_t       MessageLength = 256;
+        static const char * const UnhandledException;
     protected:
         explicit SoakAPI() noexcept;
 

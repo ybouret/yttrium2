@@ -21,6 +21,10 @@ namespace Yttrium
 
     }
 
+    char SoakAPI:: What[] = { 0 };
+    char SoakAPI:: When[] = { 0 };
+    const char * const SoakAPI:: UnhandledException = "unhandled exception";
+    
     void SoakAPI:: OnError(const std::exception &excp, const char * const when) noexcept
     {
         assert(0!=when);
