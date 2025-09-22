@@ -66,6 +66,9 @@ namespace Yttrium
     private:
         Y_Disable_Copy_And_Assign(SoakAPI); //!< discarding
         static void NoError() noexcept;     //!< clean What/When
+
+    protected:
+        void        onValid() const noexcept; //!< write CallSign in What
     };
 
 }

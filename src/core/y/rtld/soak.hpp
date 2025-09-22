@@ -60,6 +60,7 @@ namespace Yttrium
             catch(const Exception &      excp) { OnError(excp); }
             catch(const std::exception & excp) { OnError(excp,CLASS::CallSign); }
             catch(...)                         { OnError(UnhandledException,CLASS::CallSign); }
+            App->onValid();
         }
 
         //! delete App

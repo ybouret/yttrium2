@@ -18,8 +18,14 @@ namespace Yttrium
     {
         memset(What,0,sizeof(What));
         memset(When,0,sizeof(When));
-
     }
+
+    void SoakAPI:: onValid() const noexcept
+    {
+        NoError();
+        strncpy(What, callSign(), sizeof(What)-1);
+    }
+
 
     char SoakAPI:: What[] = { 0 };
     char SoakAPI:: When[] = { 0 };
