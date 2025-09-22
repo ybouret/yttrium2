@@ -6,6 +6,7 @@
 
 #include "y/rtld/soak/api.hpp"
 #include <cassert>
+#include <iostream>
 
 namespace Yttrium
 {
@@ -24,6 +25,7 @@ namespace Yttrium
 
         static inline void Enter() noexcept
         {
+            std::cerr << "<Enter " << CLASS::CallSign << ">" << std::endl;
             assert(0==App);
             try {
                 App = new CLASS();
@@ -35,6 +37,7 @@ namespace Yttrium
 
         static inline void Leave() noexcept
         {
+            std::cerr << "<Leave " << CLASS::CallSign << ">" << std::endl;
             if(App) { delete App; App=0; }
         }
 
@@ -46,6 +49,8 @@ namespace Yttrium
 
     template <typename CLASS> CLASS * Soak<CLASS>:: App = 0;
 
+
+#define Y_Soak_Impl(CLASS) Y_DLL_SETUP(Yttrium::Soak<CLASS>::Enter,Yttrium::Soak<CLASS>::Leave)
 
 
 #if 0

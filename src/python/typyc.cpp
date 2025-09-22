@@ -33,28 +33,7 @@ Application:: ~Application() noexcept
 
 const char * const Application :: CallSign = "Application";
 
-#if 0
-class Application
-{
-public:
-    explicit Application() : name("TheApplication")
-    {
-        std::cerr << "Created " << name << std::endl;
-    }
-
-    virtual ~Application() noexcept
-    {
-        std::cerr << "Deleted " << name << std::endl;
-    }
-
-    const String name;
-private:
-    Y_Disable_Copy_And_Assign(Application);
-};
-
-
-Y_Soak(Application);
-#endif
+Y_Soak_Impl(Application)
 
 
 Y_DLL_EXTERN()

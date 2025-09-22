@@ -7,12 +7,12 @@
 #include "y/rtld/dso.h"
 #include "y/exception.hpp"
 #include "y/ability/identifiable.hpp"
-
+#include "y/object.hpp"
 
 namespace Yttrium
 {
 
-    class SoakAPI : public Identifiable
+    class SoakAPI : public Object, public Identifiable
     {
     public:
         static const size_t       MessageLength = 256;
