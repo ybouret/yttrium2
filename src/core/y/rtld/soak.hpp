@@ -11,18 +11,45 @@
 namespace Yttrium
 {
 
-
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Shared Object Application Kernel
+    //
+    //
+    //__________________________________________________________________________
     template <typename CLASS>
     class Soak : public SoakAPI
     {
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
     protected:
-        inline explicit Soak() noexcept : SoakAPI() {}
+        inline explicit Soak() noexcept : SoakAPI() {} //!< setup
 
     public:
-        inline virtual ~Soak() noexcept {}
+        inline virtual ~Soak() noexcept {} //!< cleanup
 
+        ///______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
         inline virtual const char * callSign() const noexcept { return CLASS::CallSign; }
 
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+
+        //! create App, intercept errors
         static inline void Enter() noexcept
         {
             std::cerr << "<Enter " << CLASS::CallSign << ">" << std::endl;
@@ -35,20 +62,27 @@ namespace Yttrium
             catch(...)                         { OnError(UnhandledException,CLASS::CallSign); }
         }
 
+        //! delete App
         static inline void Leave() noexcept
         {
             std::cerr << "<Leave " << CLASS::CallSign << ">" << std::endl;
             if(App) { delete App; App=0; }
         }
 
-        static CLASS * App;
+        //______________________________________________________________________
+        //
+        //
+        // Members
+        //
+        //______________________________________________________________________
+        static CLASS * App; //!< module wide application
     private:
-        Y_Disable_Copy_And_Assign(Soak);
+        Y_Disable_Copy_And_Assign(Soak); //!< discarding
     };
 
-    template <typename CLASS> CLASS * Soak<CLASS>:: App = 0;
+    template <typename CLASS> CLASS * Soak<CLASS>:: App = 0; //!< implementation
 
-
+    //! helper for enter/leave and check existence of CLASS
 #define Y_Soak_Impl(CLASS) \
 Y_DLL_SETUP(Yttrium::Soak<CLASS>::Enter,Yttrium::Soak<CLASS>::Leave) Y_DLL_EXTERN()           \
 Y_EXPORT bool         Y_DLL_API CLASS##Init() noexcept { return Yttrium::Soak<CLASS>::App;  } \

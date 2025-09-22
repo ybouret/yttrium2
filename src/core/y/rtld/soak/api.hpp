@@ -12,28 +12,60 @@
 namespace Yttrium
 {
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! API For Soak classes
+    //
+    //
+    //__________________________________________________________________________
     class SoakAPI : public Object, public Identifiable
     {
     public:
-        static const size_t       MessageLength = 256;
-        static const char * const UnhandledException;
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        static const size_t       MessageLength = 256; //!< to store messages
+        static const char * const UnhandledException;  //!< "unhandled exception"
+
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
     protected:
-        explicit SoakAPI() noexcept;
+        explicit SoakAPI() noexcept; //!< setup
 
     public:
-        virtual ~SoakAPI() noexcept;
+        virtual ~SoakAPI() noexcept; //!< cleanup
 
-        static void OnError(const std::exception &, const char * const) noexcept;
-        static void OnError(const Exception &)                          noexcept;
-        static void OnError(const char * const, const char * const)     noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+        static void OnError(const std::exception &, const char * const) noexcept; //!< fill What/When
+        static void OnError(const Exception &)                          noexcept; //!< fill What/When
+        static void OnError(const char * const, const char * const)     noexcept; //!< fill What/When
 
-        
-        static char What[MessageLength];
-        static char When[MessageLength];
+        //______________________________________________________________________
+        //
+        //
+        // Members
+        //
+        //______________________________________________________________________
+        static char What[MessageLength]; //!< store exception/message content
+        static char When[MessageLength]; //!< store exception/message content
 
     private:
-        Y_Disable_Copy_And_Assign(SoakAPI);
-        static void NoError() noexcept;
+        Y_Disable_Copy_And_Assign(SoakAPI); //!< discarding
+        static void NoError() noexcept;     //!< clean What/When
     };
 
 }
