@@ -57,7 +57,7 @@ namespace Yttrium
     template <>
     struct Gen<apn>
     {
-        static const size_t MaxBits = 20;
+        static const size_t MaxBits = 10;
 
         static inline size_t bits(Random::Bits &ran) noexcept
         {

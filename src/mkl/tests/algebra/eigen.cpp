@@ -28,7 +28,7 @@ static inline void TestHessenberg(Random::Bits &ran)
     std::cerr << std::endl;
     std::cerr << "TestHessenberg" << std::endl;
     Eigen::Hessenberg<T> hessenberg;
-    for(size_t n=1;n<=3;++n)
+    for(size_t n=1;n<=4;++n)
     {
         Matrix<T> a0(n,n);
         FillWith<T>::Mat(ran,a0);
@@ -47,6 +47,7 @@ Y_UTEST(algebra_eigen)
     TestBalance<double>(ran);
 
     TestHessenberg<float>(ran);
+    TestHessenberg<apq>(ran);
 
 }
 Y_UDONE()

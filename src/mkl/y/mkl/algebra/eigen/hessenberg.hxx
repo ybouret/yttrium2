@@ -4,24 +4,22 @@ class Eigen:: Hessenberg<real_t>:: Code : public Object
 {
 public:
     inline explicit Code() : zero(0) {}
-    inline virtual ~Code() noexcept {}
+    inline virtual ~Code() noexcept  {}
 
     inline void run(Matrix<real_t> &a)
     {
         assert(a.isSquare());
         const size_t n = a.rows;
-        real_t y;
 
         for (size_t m=2;m<n;m++)
         {
-
-            real_t pivot=0;
-            bool   found=false;
+            real_t pivot = 0;
+            bool   found = false;
             {
                 size_t i=m;
                 for (size_t j=m;j<=n;j++)
                 {
-                    if (fabs(a[j][m-1]) > fabs(pivot))
+                    if (Fabs<real_t>::Of(a[j][m-1]) > Fabs<real_t>::Of(pivot))
                     {
                         pivot=a[j][m-1];
                         found=true;
@@ -30,15 +28,18 @@ public:
                 }
                 if (i != m)
                 {
-                    for (size_t j=m-1;j<=n;j++) Swap(a[i][j],a[m][j]);
-                    for (size_t j=1;j<=n;j++)   Swap(a[j][i],a[j][m]);
+                    for (size_t j=m-1;j<=n;++j) Swap(a[i][j],a[m][j]);
+                    for (size_t j=1;j<=n;++j)   Swap(a[j][i],a[j][m]);
                 }
             }
 
 
             if (found) {
-                for (size_t i=m+1;i<=n;i++) {
-                    if ((y=a[i][m-1]) != 0.0) {
+                for (size_t i=m+1;i<=n;i++)
+                {
+                    real_t y = a[i][m-1];
+                    if (Fabs<real_t>::Of(y)>zero)
+                    {
                         y /= pivot;
                         a[i][m-1]=y;
                         for (size_t j=m;j<=n;j++) a[i][j] -= y*a[m][j];
@@ -50,14 +51,11 @@ public:
 
         // cleanup to Hessenberg final form
         for(size_t j=1;j<=n;++j)
-        {
             for(size_t i=j+2;i<=n;++i) a[i][j] = zero;
-        }
-
+        
     }
 
-    const real_t zero;
-
+    const real_t            zero;
 private:
     Y_Disable_Copy_And_Assign(Code);
 };
