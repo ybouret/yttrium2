@@ -1,5 +1,5 @@
 add_library(ionocell MODULE ionocell.cpp ionocell.hpp)
-Y_LinkLibraries(ionocell y-chemical)
+Y_LinkLibraries(ionocell y-chemical y-jive y-mkl y-lua++ y-lua)
 
 
 #add_custom_command( TARGET typyc POST_BUILD 

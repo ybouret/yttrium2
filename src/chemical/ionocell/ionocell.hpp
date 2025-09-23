@@ -22,6 +22,10 @@ class IonoCell : public Soak<IonoCell>
 public:
     static const char * const CallSign; //!< "IonoCell"
 
+    Weasel &   weasel;
+    Library    lib;
+    Equilibria eqs;
+
 private:
     Y_Disable_Copy_And_Assign(IonoCell); //!< discarding
     friend class Soak<IonoCell>;
