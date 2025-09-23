@@ -18,13 +18,13 @@ public:
     {
     }
 
-    const real_t            RADIX;
-    const real_t            SQRDX;
-    const real_t            one;
-    const real_t            zero;
-    const real_t            safe;
-    Cameo::Addition<real_t> radd; //!< for row norm
-    Cameo::Addition<real_t> cadd; //!< for col norm
+    const real_t            RADIX; //!< numerical RADIX
+    const real_t            SQRDX; //!< RADIX^2
+    const real_t            one;   //!< 1
+    const real_t            zero;  //!< 0
+    const real_t            safe;  //!< 0.95
+    Cameo::Addition<real_t> radd;  //!< for row norm
+    Cameo::Addition<real_t> cadd;  //!< for col norm
 
     inline void run(Matrix<real_t> &a)
     {
@@ -62,7 +62,7 @@ public:
                     if( (c+r)/f < safe*s) {
                         last=0;
                         g=one/f;
-                        for (size_t j=1;j<=n;++j) a[i][j] *= g;
+                        for (size_t j=n;j>0;--j)  a[i][j] *= g;
                         for (size_t j=1;j<=n;++j) a[j][i] *= f;
                     }
                 }
