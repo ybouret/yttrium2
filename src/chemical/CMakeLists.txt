@@ -15,3 +15,6 @@ y/chemical/plexus/solver
 
 add_subdirectory(tests)
 Y_Regression(chemical)
+
+add_subdirectory(ionocell)
+
