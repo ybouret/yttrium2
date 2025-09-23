@@ -13,4 +13,6 @@ eqs()
 {
 }
 
+Y_Soak_Impl(IonoCell)
+
 
