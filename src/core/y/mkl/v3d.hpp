@@ -37,11 +37,11 @@ namespace Yttrium
         //
         //______________________________________________________________________
         inline  V3D()                                noexcept : x(0), y(0), z(0) {}                  //!< setup 0,0,0
-        inline  V3D(const T X, const T Y, const T Z) noexcept : x(X), y(Y), z(Z) {}                  //!< setup
+        inline  V3D(const T X, const T Y, const T Z) noexcept : x(X), y(Y), z(Z) {}                  //!< setup \param X x \param Y y \param Z z
         inline ~V3D()                                noexcept {}                                     //!< cleanup
-        inline  V3D(const V3D &v)                    noexcept : x(v.x), y(v.y), z(v.z) {}            //!< copy
-        inline  V3D & operator=(const V3D &v)        noexcept { x=v.x; y=v.y; z=v.z; return *this; } //!< assign
-        inline  V3D(const T X)                       noexcept : x(X), y(0), z(0) {}                  //!< setup X,0,0
+        inline  V3D(const V3D &v)                    noexcept : x(v.x), y(v.y), z(v.z) {}            //!< copy \param v another vector
+        inline  V3D & operator=(const V3D &v)        noexcept { x=v.x; y=v.y; z=v.z; return *this; } //!< assign \param v another vector \return *this
+        inline  V3D(const T X)                       noexcept : x(X), y(0), z(0) {}                  //!< setup X,0,0 \param X x
 
         //______________________________________________________________________
         //
@@ -51,7 +51,7 @@ namespace Yttrium
         //______________________________________________________________________
 
         //! pseudo writable
-        inline size_t size() const noexcept { return 3; }
+        inline size_t size() const noexcept { return DIMENSIONS; } //!< \return 3
 
         //______________________________________________________________________
         //
@@ -89,7 +89,7 @@ namespace Yttrium
         // division
         //______________________________________________________________________
         inline friend V3D operator/( const V3D &v, const T u)   noexcept { return V3D(v.x/u,v.y/u,v.z/u);  } //!< right division
-        inline V3D &      operator/=(const T u)                 noexcept { x/=u; y/=u; z/=u; return *this; } //!< in place division
+        inline V3D &      operator/=(const T u)                 noexcept { x/=u; y/=u; z/=u; return *this; } //!< in place division \param u denominator \return *this
 
 
         //______________________________________________________________________
@@ -119,7 +119,7 @@ namespace Yttrium
 
         //______________________________________________________________________
         //
-        //! |v|^2
+        //! \return |v|^2
         //______________________________________________________________________
         inline T norm2() const noexcept
         {
@@ -130,7 +130,7 @@ namespace Yttrium
 
         //______________________________________________________________________
         //
-        //! |v|
+        //! \return |v|
         //______________________________________________________________________
         inline T norm() const noexcept
         {
@@ -139,7 +139,7 @@ namespace Yttrium
 
         //______________________________________________________________________
         //
-        //! projection
+        //! projection \return (x,y)
         //______________________________________________________________________
         inline V2D<T> xy() const noexcept
         {
@@ -161,5 +161,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_MKL_V3D_Included
 
