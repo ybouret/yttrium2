@@ -22,6 +22,17 @@ class IonoCell:
         self.numSpecies.restype = ct.c_size_t
         self.numSpecies.argtypes = []
 
+        self.getSpeciesName_ = self.dll.IonoCell_getSpeciesName
+        self.getSpeciesName_.restype = ct.c_char_p
+        self.getSpeciesName_.argtypes = [ct.c_size_t]
+
+        self.getSpeciesCharge = self.dll.IonoCell_getSpeciesCharge
+        self.getSpeciesCharge.restype = ct.c_int
+        self.getSpeciesCharge.argtypes = [ct.c_size_t]
+
+    def getSpeciesName(self,i):
+        return str( self.getSpeciesName_(i), "utf-8")
+
     def mustQuit(self):
         print("Error in IonoCell")
         print( "Reason   : ", str(self.what(), "utf-8") )
@@ -32,5 +43,9 @@ if __name__ == '__main__':
     chemsys = IonoCell()
     if not chemsys.declare(b"Na^+ Cl^-"):
         chemsys.mustQuit()
-
-    print("numSpecies = ", chemsys.numSpecies() )
+    M = chemsys.numSpecies()
+    print("numSpecies = ", M )
+    for i in range(M):
+        spName = chemsys.getSpeciesName(i)
+        spCharge = chemsys.getSpeciesCharge(i)
+        print("#",i," : ", spName, ":", "z=", spCharge)

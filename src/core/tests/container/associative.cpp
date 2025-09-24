@@ -35,6 +35,12 @@ namespace
             Y_ASSERT( db.search( keys[i] ) );
         }
 
+        for(size_t i=1;i<=db.size();++i)
+        {
+            std::cerr << "#" << i << " = " << db.fetch(i) << std::endl;
+        }
+
+
         Iter::Test::AllForward(db);
 
         std::cerr << db << std::endl;
@@ -86,6 +92,7 @@ Y_UTEST(container_associative)
             Y_ASSERT(hshMap.insert(key,key));
         }
     }
+
 
     Random::Shuffle::Cxx(ran,keys);
     std::cerr << keys << std::endl;

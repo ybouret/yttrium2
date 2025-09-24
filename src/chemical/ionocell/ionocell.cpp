@@ -34,3 +34,19 @@ size_t IonoCell:: numSpecies() const noexcept
 }
 
 Y_Soak_Meth(size_t,IonoCell,numSpecies,(),())
+
+const char * IonoCell:: getSpeciesName(const size_t i) const noexcept
+{
+    const Species &sp = *lib->fetch(i+1);
+    return sp.name.c_str();
+}
+
+Y_Soak_Meth(const char *,IonoCell,getSpeciesName,(const size_t i),(i))
+
+int IonoCell:: getSpeciesCharge(const size_t i) const noexcept
+{
+    const Species &sp = *lib->fetch(i+1);
+    return sp.z;
+}
+
+Y_Soak_Meth(int,IonoCell,getSpeciesCharge,(const size_t i),(i))

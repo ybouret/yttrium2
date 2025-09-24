@@ -34,6 +34,8 @@ namespace Yttrium
             typedef typename KNOT::Pool                    KPool;         //!< alias
             typedef Iter::Linked<Iter::Forward,KNOT>       Iterator;      //!< alias
             typedef Iter::Linked<Iter::Forward,const KNOT> ConstIterator; //!< alias
+            typedef typename KNOT::Type      Type;
+            typedef typename KNOT::ConstType ConstType;
 
 
             //__________________________________________________________________
@@ -85,6 +87,23 @@ namespace Yttrium
                 list.reverse();
             }
 
+            //! \param i index in [1:size] \return object at index
+            inline Type & fetch(const size_t i) noexcept
+            {
+                assert(i>=1);
+                assert(i<=list.size);
+                return **list.fetch(i);
+            }
+
+            //! \param i index in [1:size] \return object at index
+            inline ConstType & fetch(const size_t i) const noexcept
+            {
+                assert(i>=1);
+                assert(i<=list.size);
+                return **list.fetch(i);
+            }
+
+
             //__________________________________________________________________
             //
             //
@@ -131,5 +150,5 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Associative_KnotList_Included
 

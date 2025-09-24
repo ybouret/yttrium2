@@ -65,7 +65,9 @@ namespace Yttrium
             const Species & operator[](const char * const);       //!< \return wrapper
             const Species & operator[](const char * const) const; //!< \return wrapper
 
-            const Species & operator[](const Formula &); //!< \return species from formula
+            const Species & operator[](const Formula &);          //!< \return species from formula
+
+            
 
             //! fill array with random concentration
             /**
@@ -147,5 +149,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Chemical_Library_Included
 
