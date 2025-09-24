@@ -27,3 +27,10 @@ bool IonoCell:: declare(const char * const argv)
 }
 
 Y_Soak_Meth(bool,IonoCell,declare,(const char *const argv), (argv) )
+
+size_t IonoCell:: numSpecies() const noexcept
+{
+    return lib->size();
+}
+
+Y_Soak_Meth(size_t,IonoCell,numSpecies,(),())

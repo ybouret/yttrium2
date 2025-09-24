@@ -35,7 +35,7 @@ public:
     //
     //__________________________________________________________________________
     bool   declare(const char * const argv); //!< send code to weasel
-    
+    size_t numSpecies() const noexcept;      //!< species in library
 
     //__________________________________________________________________________
     //
