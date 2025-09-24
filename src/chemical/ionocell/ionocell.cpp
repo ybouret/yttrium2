@@ -16,7 +16,7 @@ eqs()
 Y_Soak_Impl(IonoCell)
 
 
-bool IonoCell:: decl(const char * const argv)
+bool IonoCell:: declare(const char * const argv)
 {
     assert(0!=argv);
     Y_Soak_Bool(
@@ -26,4 +26,4 @@ bool IonoCell:: decl(const char * const argv)
                 );
 }
 
-Y_Soak_Meth(bool,IonoCell,decl,(const char *const argv), (argv) )
+Y_Soak_Meth(bool,IonoCell,declare,(const char *const argv), (argv) )

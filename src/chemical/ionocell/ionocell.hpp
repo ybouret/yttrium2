@@ -34,9 +34,8 @@ public:
     // Methods
     //
     //__________________________________________________________________________
-    bool decl(const char * const argv);
-
-
+    bool   declare(const char * const argv); //!< send code to weasel
+    
 
     //__________________________________________________________________________
     //
