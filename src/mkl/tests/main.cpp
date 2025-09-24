@@ -29,5 +29,7 @@ Y_UTEST_DECL(128)
 
     Y_UTEST(drvs1D);
     Y_UTEST(drvsND);
+
+    Y_UTEST(ode_rk4);
 }
 Y_UTEST_EXEC()

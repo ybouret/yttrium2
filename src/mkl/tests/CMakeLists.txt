@@ -5,6 +5,7 @@ opt
 algebra
 interp
 drvs
+ode
 )
 Y_LinkLibraries(test-mkl y-mkl)
 
@@ -34,3 +35,5 @@ Y_UTEST(algebgra:eigen)
 
 Y_UTEST(drvs1D)
 Y_UTEST(drvsND)
+
+Y_UTEST(ode_rk4)
