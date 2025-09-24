@@ -15,18 +15,37 @@ namespace Yttrium
     {
         namespace Conservation
         {
-
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! base class to project/correct concentrations
+            //
+            //
+            //__________________________________________________________________
             class Remedy : public Object
             {
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
             protected:
-                explicit Remedy(const size_t, const size_t);
+                explicit Remedy(const size_t, const size_t); //!< setup rows x cols
             public:
-                virtual ~Remedy() noexcept;
+                virtual ~Remedy() noexcept; //!< cleanup
 
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
                 const XMatrix numer; //!< rows of numerators
                 const XArray  denom; //!< matching denominators
             private:
-                Y_Disable_Copy_And_Assign(Remedy);
+                Y_Disable_Copy_And_Assign(Remedy); //!< discarding
             };
 
             //__________________________________________________________________

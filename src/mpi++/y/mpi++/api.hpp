@@ -38,17 +38,30 @@ namespace Yttrium
         static const int          DefaultTag = 1;                               //!< default tag
         static const size_t       MaxCount   = IntegerFor<int>::Maximum;        //!< for int/size_t conversion
 
+        //______________________________________________________________________
+        //
+        //
+        //! Rate for statistics
+        //
+        //______________________________________________________________________
         class Rate
         {
         public:
-            Rate() noexcept;
-            ~Rate() noexcept;
-            Rate(const Rate &) noexcept;
-            Rate & operator=(const Rate &) noexcept;
+            //__________________________________________________________________
+            //
+            // C++
+            //__________________________________________________________________
+            Rate()                         noexcept; //!< setup
+            ~Rate()                        noexcept; //!< cleanup
+            Rate(const Rate &)             noexcept; //!< duplicate
+            Rate & operator=(const Rate &) noexcept; //!< assign \return *this
 
-            uint64_t bytes;
-            uint64_t ticks;
-
+            //__________________________________________________________________
+            //
+            // Members
+            //__________________________________________________________________
+            uint64_t bytes; //!< cumulative bytes
+            uint64_t ticks; //!< cumulative ticks
         };
 
         //______________________________________________________________________
@@ -95,7 +108,12 @@ namespace Yttrium
          */
         static MPI & Init(int *argc, char ***argv, const int required = MPI_THREAD_SINGLE);
 
-
+        //! convert size to int
+        /**
+         \param count users's count
+         \param func  name of the function where conversion occurs
+         \return converted with checkw
+         */
         static int GetCount(const size_t count, const char * const func);
 
         //______________________________________________________________________

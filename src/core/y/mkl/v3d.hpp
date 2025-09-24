@@ -57,14 +57,14 @@ namespace Yttrium
         //
         // access
         //______________________________________________________________________
-        inline T &       operator[](const size_t i)       noexcept { assert(i==1||i==2||i==3); return *((&x)+i-1); } //!< access
-        inline const T & operator[](const size_t i) const noexcept { assert(i==1||i==2||i==3); return *((&x)+i-1); } //!< access
+        inline T &       operator[](const size_t i)       noexcept { assert(i==1||i==2||i==3); return *((&x)+i-1); } //!< access \param i index \return coordinate
+        inline const T & operator[](const size_t i) const noexcept { assert(i==1||i==2||i==3); return *((&x)+i-1); } //!< access \param i index \return coordinate
 
         //______________________________________________________________________
         //
         // addition
         //______________________________________________________________________
-        inline V3D        operator+()                          const noexcept { return V3D(x,y,z); }                               //!< unary +
+        inline V3D        operator+()                          const noexcept { return V3D(x,y,z); }                               //!< \return unary +
         inline friend V3D operator+(const V3D  &lhs, const V3D &rhs) noexcept { return V3D(lhs.x+rhs.x,lhs.y+rhs.y,lhs.z+rhs.z); } //!< binary +
         inline V3D &      operator+=(const V3D &rhs)                 noexcept { x+=rhs.x; y+=rhs.y; z+=rhs.z; return *this; }      //!< in place +
 
@@ -72,7 +72,7 @@ namespace Yttrium
         //
         // subtraction
         //______________________________________________________________________
-        inline V3D        operator-()                          const noexcept { return V3D(-x,-y,-z); }                            //!< unary minus
+        inline V3D        operator-()                          const noexcept { return V3D(-x,-y,-z); }                            //!< \return unary minus
         inline friend V3D operator-(const V3D  &lhs, const V3D &rhs) noexcept { return V3D(lhs.x-rhs.x,lhs.y-rhs.y,lhs.z-rhs.z); } //!< binary -
         inline V3D &      operator-=(const V3D &rhs)                 noexcept { x-=rhs.x; y-=rhs.y; z-=rhs.z; return *this; }      //!< in place -
 

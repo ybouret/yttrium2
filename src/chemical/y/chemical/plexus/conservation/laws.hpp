@@ -42,7 +42,7 @@ namespace Yttrium
                               const SList   & species,
                               const EList &   primary,
                               const iMatrix & topology); //!< setup
-                virtual ~Laws() noexcept;       //!< cleanup
+                virtual ~Laws() noexcept;                //!< cleanup
 
                 //______________________________________________________________
                 //

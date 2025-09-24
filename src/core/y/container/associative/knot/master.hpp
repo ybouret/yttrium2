@@ -34,9 +34,8 @@ namespace Yttrium
             typedef typename KNOT::Pool                    KPool;         //!< alias
             typedef Iter::Linked<Iter::Forward,KNOT>       Iterator;      //!< alias
             typedef Iter::Linked<Iter::Forward,const KNOT> ConstIterator; //!< alias
-            typedef typename KNOT::Type      Type;
-            typedef typename KNOT::ConstType ConstType;
-
+            typedef typename KNOT::Type                    Type;          //!< alias
+            typedef typename KNOT::ConstType               ConstType;     //!< alias
 
             //__________________________________________________________________
             //
