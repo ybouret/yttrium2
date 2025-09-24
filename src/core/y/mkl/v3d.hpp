@@ -66,7 +66,7 @@ namespace Yttrium
         //______________________________________________________________________
         inline V3D        operator+()                          const noexcept { return V3D(x,y,z); }                               //!< \return unary +
         inline friend V3D operator+(const V3D  &lhs, const V3D &rhs) noexcept { return V3D(lhs.x+rhs.x,lhs.y+rhs.y,lhs.z+rhs.z); } //!< binary +
-        inline V3D &      operator+=(const V3D &rhs)                 noexcept { x+=rhs.x; y+=rhs.y; z+=rhs.z; return *this; }      //!< in place +
+        inline V3D &      operator+=(const V3D &rhs)                 noexcept { x+=rhs.x; y+=rhs.y; z+=rhs.z; return *this; }      //!< in place + \param rhs rhs \return *this
 
         //______________________________________________________________________
         //
@@ -74,14 +74,14 @@ namespace Yttrium
         //______________________________________________________________________
         inline V3D        operator-()                          const noexcept { return V3D(-x,-y,-z); }                            //!< \return unary minus
         inline friend V3D operator-(const V3D  &lhs, const V3D &rhs) noexcept { return V3D(lhs.x-rhs.x,lhs.y-rhs.y,lhs.z-rhs.z); } //!< binary -
-        inline V3D &      operator-=(const V3D &rhs)                 noexcept { x-=rhs.x; y-=rhs.y; z-=rhs.z; return *this; }      //!< in place -
+        inline V3D &      operator-=(const V3D &rhs)                 noexcept { x-=rhs.x; y-=rhs.y; z-=rhs.z; return *this; }      //!< in place - \param rhs rhs \return *this
 
         //______________________________________________________________________
         //
         // multiplication
         //______________________________________________________________________
         inline friend V3D operator*(const T u, const V3D &v)    noexcept { return V3D(v.x*u,v.y*u,v.z*u);      } //!< left multiplication
-        inline V3D &      operator*=(const T u)                 noexcept { x*=u; y*=u; z*=u; return *this;     } //!< in place multiplication
+        inline V3D &      operator*=(const T u)                 noexcept { x*=u; y*=u; z*=u; return *this;     } //!< in place multiplication \param u factor \return *this
         inline friend T   operator*(const V3D &a, const V3D &b) noexcept { return a.x*b.x + a.y*b.y + a.z*b.z; } //!< dot product
 
         //______________________________________________________________________
