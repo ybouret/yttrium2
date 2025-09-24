@@ -10,6 +10,7 @@ y/mkl/algebra/eigen
 y/mkl/interpolation
 y/mkl/derivatives
 y/mkl/ode
+y/mkl/ode/explicit
 )
 
 add_subdirectory(tests)

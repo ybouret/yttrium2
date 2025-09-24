@@ -1,4 +1,4 @@
-#include "y/mkl/ode/rk4.hpp"
+#include "y/mkl/ode/explicit/rk4.hpp"
 #include "y/mkl/ode/example.hpp"
 #include "y/container/cxx/array.hpp"
 #include "y/mkl/xreal.hpp"
