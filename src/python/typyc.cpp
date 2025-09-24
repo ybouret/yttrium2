@@ -49,9 +49,9 @@ Y_EXPORT double Y_DLL_API sine(double x) noexcept
     return sin(x);
 }
 
-Y_Soak_Meth(double,Application,Norm,(double x, double y),(x,y))
 
 Y_DLL_FINISH()
 
+Y_Soak_Meth(double,Application,Norm,(double x, double y),(x,y))
 
 

@@ -14,3 +14,12 @@ if(FALSE)
     COMMAND xcrun codesign -s - ${TYPYC}
     VERBATIM)
 endif()
+
+add_library(simple MODULE simple.cpp)
+Y_LinkLibraries(simple)
+
+set(SIMPLE ${CMAKE_CURRENT_SOURCE_DIR}/simple.dll)
+add_custom_command( TARGET simple POST_BUILD 
+COMMAND ${CMAKE_COMMAND} -E echo "Copy $<TARGET_FILE:simple>"
+COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:simple> ${SIMPLE}
+VERBATIM)
