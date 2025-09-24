@@ -21,9 +21,9 @@ bool IonoCell:: decl(const char * const argv)
     assert(0!=argv);
     Y_Soak_Bool(
                 const String data = argv;
-                weasel( Jive::Module::OpenData(data,data), lib, eqs)
+                weasel( Jive::Module::OpenData(data,data), lib, eqs);
+                std::cerr << "lib=" << lib << std::endl;
                 );
 }
 
-extern "C"
 Y_Soak_Meth(bool,IonoCell,decl,(const char *const argv), (argv) )

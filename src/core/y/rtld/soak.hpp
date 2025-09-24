@@ -110,15 +110,15 @@ namespace Yttrium
     //! helper for enter/leave and check existence of CLASS
     //
     //__________________________________________________________________________
-#define Y_Soak_Impl(CLASS) \
-Y_DLL_SETUP(Yttrium::Soak<CLASS>::Enter,Yttrium::Soak<CLASS>::Leave) Y_DLL_EXTERN()             \
+#define Y_Soak_Impl(CLASS)                                                                         \
+Y_DLL_SETUP(Yttrium::Soak<CLASS>::Enter,Yttrium::Soak<CLASS>::Leave) Y_DLL_EXTERN()                \
 Y_EXPORT bool         Y_DLL_API CLASS##_##Init() noexcept { return Yttrium::Soak<CLASS>::Init(); } \
 Y_EXPORT const char * Y_DLL_API CLASS##_##What() noexcept { return Yttrium::Soak<CLASS>::What;   } \
 Y_EXPORT const char * Y_DLL_API CLASS##_##When() noexcept { return Yttrium::Soak<CLASS>::When;   } \
 Y_DLL_FINISH()
 
 #define Y_Soak_Meth(RETURN,CLASS,METH,ARGS_DECL,ARGS_LIST) \
-Y_EXPORT RETURN Y_DLL_API CLASS##_##METH ARGS_DECL noexcept { return Yttrium::Soak<CLASS>::App->METH ARGS_LIST ;  } \
+Y_DLL_CPROTO Y_EXPORT RETURN Y_DLL_API CLASS##_##METH ARGS_DECL noexcept { return Yttrium::Soak<CLASS>::App->METH ARGS_LIST ;  } \
 
 }
 
