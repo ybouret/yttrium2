@@ -13,12 +13,20 @@ namespace Yttrium
         namespace ODE
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Definitions
+            //
+            //
+            //__________________________________________________________________
             template <typename T>
             struct Field
             {
 
-                typedef Functor<void,TL3(Writable<T> &,T,const Readable<T>)> Equation;
-                
+                typedef Functor<void,TL3(Writable<T> &,T,const Readable<T>)> Equation; //!< alias
+                typedef Functor<void,TL2(Writable<T> &,T)>                   Callback; //!< alias
             };
 
         }

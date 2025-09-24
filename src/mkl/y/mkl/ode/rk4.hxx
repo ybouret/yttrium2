@@ -26,7 +26,8 @@ public:
              const Readable<real_t> & k1,
              const real_t             x,
              const real_t             h,
-             DiffEq &                 f)
+             Equation &               f,
+             Callback * const         cb)
     {
         assert(yout.size()==y.size());
         assert(yout.size()==k1.size());
@@ -34,11 +35,17 @@ public:
         const real_t hh = h * half;
         const real_t xh = x + hh;
         for(size_t i=n;i>0;--i) yt[i] = y[i] + hh * k1[i];
+        if(cb) (*cb)(yt,xh);
         f(k2,xh,yt);
+
         for(size_t i=n;i>0;--i) yt[i] = y[i] + hh * k2[i];
+        if(cb) (*cb)(yt,xh);
         f(k3,xh,yt);
+
         for(size_t i=n;i>0;--i) yt[i] = y[i] + h  * k3[i];
-        f(k4,x+h,yt);
+        const real_t xnew = x+h;
+        if(cb) (*cb)(yt,xnew);
+        f(k4,xnew,yt);
 
         for(size_t i=n;i>0;--i)
         {
@@ -50,6 +57,7 @@ public:
             xadd << _1 << _2 << _2 << _3 << _3 << _4;
             yout[i] = y[i] + h * ( xadd.sum()/six );
         }
+        if(cb) (*cb)(yout,xnew);
 
     }
 
@@ -93,8 +101,9 @@ void RK4<real_t>:: operator()(Writable<real_t> &       yout,
                               const Readable<real_t> & dydx,
                               const real_t             x,
                               const real_t             h,
-                              DiffEq &                 f)
+                              Equation &               f,
+                              Callback * const         cb)
 {
     assert(code);
-    code->run(yout,y,dydx,x,h,f);
+    code->run(yout,y,dydx,x,h,f,cb);
 }

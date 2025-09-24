@@ -49,6 +49,25 @@ static inline void TestExponential(const char * const id)
 
     }
 
+    {
+        std::cerr << "Spring/" << id << std::endl;
+        const String fileName = "spring-" + String(id) + ".dat";
+        OutputFile   fp(fileName);
+        CxxArray<T>  y(2),dydx(2);
+
+        ODE::dSpring<T> spring(0.7,0.01);
+        x    = 0;
+        y[1] = 1;
+        y[2] = 0;
+        saveTo(fp,x,y);
+        for(size_t i=1;i<=np;++i)
+        {
+            spring.f(dydx,x,y);
+            rk4(y,y,dydx,x,dx,spring.f);
+            x = (((T) (i) ) * x_end) / (T) np;
+            saveTo(fp,x,y);
+        }
+    }
 
 
 
