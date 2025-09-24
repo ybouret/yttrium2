@@ -27,10 +27,12 @@ private:
 
 Application:: Application() noexcept : Soak<Application>()
 {
+    std::cerr << "[+] Application" << std::endl;
 }
 
 Application:: ~Application() noexcept
 {
+    std::cerr << "[-] Application" << std::endl;
 }
 
 

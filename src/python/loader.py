@@ -24,6 +24,10 @@ class Application:
         self.norm.restype = ct.c_double
         self.norm.argtypes = [ct.c_double,ct.c_double]
 
+print("-- Enter Python")
+
 app = Application()
 print( app.sine(0.1) )
 print( app.norm(3,4) )
+
+print("-- Leave Python")

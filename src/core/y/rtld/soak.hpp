@@ -7,6 +7,7 @@
 #include "y/rtld/soak/api.hpp"
 #include <cassert>
 #include <iostream>
+#include "y/concurrent/singulet.hpp"
 
 namespace Yttrium
 {
@@ -73,6 +74,7 @@ namespace Yttrium
         static inline void Enter() noexcept
         {
             std::cerr << "<Enter " << CLASS::CallSign << ">" << std::endl;
+            Concurrent::Singulet::Verbose = true;
             assert(0==App);
             Y_Soak_Code(App = new CLASS(),App->onValid(),return);
         }
