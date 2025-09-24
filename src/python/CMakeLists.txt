@@ -1,5 +1,5 @@
 include_directories(. ../core)
-add_library(typyc SHARED typyc.cpp)
+add_library(typyc MODULE typyc.cpp)
 Y_LinkLibraries(typyc)
 
 set(TYPYC ${CMAKE_CURRENT_SOURCE_DIR}/typyc.so)
