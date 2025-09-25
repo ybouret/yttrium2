@@ -10,6 +10,7 @@ public:
     zero(0),
     one(1),
     CUT(0.1),
+    five(5),
     SAFETY(SAFETY_VALUE),
     PGROW(-0.2),
     PSHRINK(-0.25),
@@ -35,13 +36,14 @@ public:
     {
         const size_t n = y.size(); prepare(n);
         real_t       h = htry;
+        real_t       errmax = zero;
 
+        // trials
         while(true)
         {
             step(ytemp,yerr,y,dydx,x,htry,eq,cb);
-
             // check accuracy
-            real_t errmax = zero;
+            errmax = zero;
             for(size_t i=n;i>0;--i) {
                 const real_t err = yerr[i]/yscal[i];
                 InSituMax(errmax, Fabs<real_t>::Of(err));
@@ -55,8 +57,18 @@ public:
             volatile real_t xnew = x + h;
             if(same(xnew,x))
                 throw Specific::Exception(step.callSign(),"step size underflow");
-            
+
         }
+
+        // compute hnext from control value
+        if (errmax > ERRCON)
+            hnext=SAFETY*h*std::pow(errmax,PGROW);
+        else
+            hnext=five*h;
+
+        // update x
+        x += (h = hdid);
+
 
     }
 
@@ -65,6 +77,7 @@ public:
     const real_t   zero;
     const real_t   one;
     const real_t   CUT;
+    const real_t   five;
     const real_t   SAFETY;
     const fcpu_t   PGROW;
     const fcpu_t   PSHRINK;
