@@ -12,7 +12,7 @@ namespace Yttrium
         {
 
 
-
+            static const char * const CaskKarpID = "Cash-Karp";
             
 #define FOREACH_I for(size_t i=n;i>0;--i)
 

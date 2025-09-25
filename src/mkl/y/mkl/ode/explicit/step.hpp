@@ -5,6 +5,7 @@
 #define Y_MKL_ODE_ExplicitStep_Included 1
 
 #include "y/mkl/ode/field.hpp"
+#include "y/ability/identifiable.hpp"
 
 namespace Yttrium
 {
@@ -13,7 +14,7 @@ namespace Yttrium
         namespace ODE
         {
             template <typename T>
-            class ExplicitStep
+            class ExplicitStep : public Identifiable
             {
             public:
                 typedef Field<T>  FieldType;

@@ -3,12 +3,17 @@ template <>
 class ExplicitDriver<real_t>:: Code : public Object
 {
 public:
+    typedef typename FCPU<real_t>::Type fcpu_t;
 
     inline explicit Code() :
     Object(),
     zero(0),
     one(1),
-    SAFETY(0.9)
+    CUT(0.1),
+    SAFETY(SAFETY_VALUE),
+    PGROW(-0.2),
+    PSHRINK(-0.25),
+    ERRCON(1.89e-4)
     {
     }
 
@@ -36,17 +41,21 @@ public:
             step(ytemp,yerr,y,dydx,x,htry,eq,cb);
 
             // check accuracy
-            {
-                real_t errmax = zero;
-                for(size_t i=n;i>0;--i) {
-                    const real_t err = yerr[i]/yscal[i];
-                    InSituMax(errmax, Fabs<real_t>::Of(err));
-                }
-                errmax /= eps;
-                if(errmax<=one) break;
+            real_t errmax = zero;
+            for(size_t i=n;i>0;--i) {
+                const real_t err = yerr[i]/yscal[i];
+                InSituMax(errmax, Fabs<real_t>::Of(err));
             }
+            errmax /= eps;
+            if(errmax<=one) break;
 
-
+            // step reduction
+            const real_t htemp = SAFETY*h*std::pow(errmax,PSHRINK);
+            h = (h >= zero ? Max(htemp,CUT*h) : Min(htemp,CUT*h));
+            volatile real_t xnew = x + h;
+            if(same(xnew,x))
+                throw Specific::Exception(step.callSign(),"step size underflow");
+            
         }
 
     }
@@ -55,14 +64,24 @@ public:
     Vector<real_t> ytemp;
     const real_t   zero;
     const real_t   one;
+    const real_t   CUT;
     const real_t   SAFETY;
-
+    const fcpu_t   PGROW;
+    const fcpu_t   PSHRINK;
+    const fcpu_t   ERRCON;
 private:
     Y_Disable_Copy_And_Assign(Code);
     inline void prepare(const size_t n)
     {
         yerr.adjust(n,zero);
         ytemp.adjust(n,zero);
+    }
+
+    inline bool same(const real_t a, const real_t b) const noexcept
+    {
+        const real_t delta = a-b;
+        const real_t adiff = Fabs<real_t>::Of(delta);
+        return adiff <= zero;
     }
 };
 

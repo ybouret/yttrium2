@@ -104,3 +104,9 @@ CashKarp<real_t>:: ~CashKarp() noexcept
     assert(code);
     Destroy(code);
 }
+
+template <>
+const char * CashKarp<real_t>:: callSign() const noexcept
+{
+    return CaskKarpID;
+}

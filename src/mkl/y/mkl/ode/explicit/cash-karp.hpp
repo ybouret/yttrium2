@@ -31,6 +31,9 @@ namespace Yttrium
                                         const T             h,
                                         Equation          & f,
                                         Callback * const    cb);
+
+                virtual const char *callSign() const noexcept;
+                
             private:
                 class Code;
                 Y_Disable_Copy_And_Assign(CashKarp);
