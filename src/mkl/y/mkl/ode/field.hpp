@@ -27,6 +27,19 @@ namespace Yttrium
 
                 typedef Functor<void,TL3(Writable<T> &,T,const Readable<T>)> Equation; //!< alias
                 typedef Functor<void,TL2(Writable<T> &,T)>                   Callback; //!< alias
+
+                //! evaluate with pre-callback
+                static inline
+                void Compute(Equation &          eq,
+                             Writable<T> &       dydx,
+                             const T             x,
+                             Writable<T> &       y,
+                             Callback * const    cb)
+                {
+                    if(cb) (*cb)(y,x);
+                    eq(dydx,x,y);
+                }
+
             };
 
         }

@@ -11,7 +11,26 @@ namespace Yttrium
         namespace ODE
         {
 
+
+
+            
+#define FOREACH_I for(size_t i=n;i>0;--i)
+
 #define real_t float
+#define REAL(X) X##f
+#include "cash-karp.hxx"
+#undef real_t
+#undef REAL
+
+#define real_t double
+#define REAL(X) X
+#include "cash-karp.hxx"
+#undef real_t
+#undef REAL
+
+
+#define real_t XReal<float>
+#define REAL(X) real_t(X##f)
 #include "cash-karp.hxx"
 #undef real_t
 

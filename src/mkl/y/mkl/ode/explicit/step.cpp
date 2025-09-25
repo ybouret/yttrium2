@@ -1,8 +1,6 @@
 
-#include "y/mkl/ode/explicit/rk4.hpp"
-#include "y/type/destroy.hpp"
-#include "y/container/sequence/vector.hpp"
-#include "y/cameo/addition.hpp"
+#include "y/mkl/ode/explicit/step.hpp"
+#include "y/mkl/xreal.hpp"
 
 namespace Yttrium
 {
@@ -11,33 +9,33 @@ namespace Yttrium
         namespace ODE
         {
 
-
-
 #define real_t float
-#include "rk4.hxx"
+#include "step.hxx"
 #undef real_t
 
 #define real_t double
-#include "rk4.hxx"
+#include "step.hxx"
 #undef real_t
 
 #define real_t long double
-#include "rk4.hxx"
+#include "step.hxx"
 #undef real_t
 
 
 #define real_t XReal<float>
-#include "rk4.hxx"
+#include "step.hxx"
 #undef real_t
 
 #define real_t XReal<double>
-#include "rk4.hxx"
+#include "step.hxx"
 #undef real_t
 
 #define real_t XReal<long double>
-#include "rk4.hxx"
+#include "step.hxx"
 #undef real_t
-            
+
         }
+
     }
+
 }
