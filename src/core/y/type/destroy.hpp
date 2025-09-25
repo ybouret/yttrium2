@@ -22,4 +22,4 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Type_Destroy_Included

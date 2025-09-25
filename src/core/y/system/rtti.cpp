@@ -265,7 +265,7 @@ namespace Yttrium
 }
 
 
-
+#include "y/mkl/xreal.hpp"
 
 namespace Yttrium
 {
@@ -306,6 +306,10 @@ namespace Yttrium
 
             Y_RTTI(size_t);
             Y_RTTI(ptrdiff_t);
+
+            Y_RTTI(XReal<float>);
+            Y_RTTI(XReal<double>);
+            Y_RTTI(XReal<long double>);
 
         }
     }

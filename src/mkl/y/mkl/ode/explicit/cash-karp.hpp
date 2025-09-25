@@ -1,4 +1,3 @@
-
 //! \file
 
 #ifndef Y_MKL_ODE_CashKarp_Included
@@ -12,7 +11,6 @@ namespace Yttrium
     {
         namespace ODE
         {
-           
 
             template <typename T>
             class CashKarp : public ExplicitStep<T>

@@ -66,5 +66,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_MKL_Half_Included
 

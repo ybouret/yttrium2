@@ -117,5 +117,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_System_RTTI_Included
 
