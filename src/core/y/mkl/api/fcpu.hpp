@@ -10,16 +10,18 @@ namespace Yttrium
 {
     namespace MKL
     {
+        //! default floating point for CPU
         template <typename T>
         struct FCPU
         {
-            typedef T Type;
+            typedef T Type; //!< alias
         };
 
+        //! floating point for CPU when using XReal
         template <typename T>
         struct FCPU< XReal<T> >
         {
-            typedef T Type;
+            typedef T Type; //!< alias
         };
     }
 

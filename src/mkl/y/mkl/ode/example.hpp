@@ -76,7 +76,7 @@ namespace Yttrium
             public:
                 typedef typename ODE::Field<T>::Equation Equation; //!< alias
 
-                //! setup \param kValue coefficient
+                //! setup \param pulsation pulsation \param viscosity viscosity
                 inline dSpring(const T pulsation,
                                const T viscosity) :
                 omega(pulsation),

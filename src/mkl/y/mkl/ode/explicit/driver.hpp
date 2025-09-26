@@ -13,18 +13,59 @@ namespace Yttrium
         namespace ODE
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Explicit Step Driver
+            //
+            //
+            //__________________________________________________________________
             template <typename T>
             class ExplicitDriver
             {
             public:
-                typedef Field<T>                      FieldType;
-                typedef typename  FieldType::Equation Equation;
-                typedef typename  FieldType::Callback Callback;
-                typedef ExplicitStep<T>               StepType;
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                typedef Field<T>                      FieldType; //!< alias
+                typedef typename  FieldType::Equation Equation;  //!< alias
+                typedef typename  FieldType::Callback Callback;  //!< alias
+                typedef ExplicitStep<T>               StepType;  //!< alias
 
-                explicit ExplicitDriver();
-                virtual ~ExplicitDriver() noexcept;
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+                explicit ExplicitDriver();          //!< setup
+                virtual ~ExplicitDriver() noexcept; //!< cleanup
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+
+                //! take a controlled step
+                /**
+                 \param step  explicit step
+                 \param y     in/out variables
+                 \param x     in/out coordinate
+                 \param dydx  original derivatives
+                 \param yscal scaling for error computation
+                 \param htry  trial step
+                 \param hdid  performed step, hdid <= htry
+                 \param hnext estimated next step
+                 \param eps   fractional accuracy
+                 \param eq    equation
+                 \param cb    optional callback
+                 */
                 void operator()(StepType          & step,
                                 Writable<T>       & y,
                                 T                 & x,
@@ -39,8 +80,8 @@ namespace Yttrium
 
             private:
                 class Code;
-                Y_Disable_Copy_And_Assign(ExplicitDriver);
-                Code * const code;
+                Y_Disable_Copy_And_Assign(ExplicitDriver); //!< discarding
+                Code * const code;  //!< inner algorithm
             };
 
         }

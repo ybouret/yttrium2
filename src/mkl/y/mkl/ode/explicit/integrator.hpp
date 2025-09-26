@@ -12,18 +12,55 @@ namespace Yttrium
     {
         namespace ODE
         {
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Explicit Integrator
+            //
+            //
+            //__________________________________________________________________
             template <typename T>
             class ExplicitIntegrator
             {
             public:
-                typedef Field<T>                      FieldType;
-                typedef typename  FieldType::Equation Equation;
-                typedef typename  FieldType::Callback Callback;
-                typedef ExplicitStep<T>               StepType;
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                typedef Field<T>                      FieldType; //!< alias
+                typedef typename  FieldType::Equation Equation;  //!< alias
+                typedef typename  FieldType::Callback Callback;  //!< alias
+                typedef ExplicitStep<T>               StepType;  //!< alias
 
-                explicit ExplicitIntegrator();
-                virtual ~ExplicitIntegrator() noexcept;
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+                explicit ExplicitIntegrator();          //!< setup
+                virtual ~ExplicitIntegrator() noexcept; //!< cleanup
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+
+                //! best effort step
+                /**
+                 \param ystart in/out variables
+                 \param x1 starting coordinate
+                 \param x2 finish coordinate
+                 \param h1 initial step
+                 \param eq equation
+                 \param cb optional callback
+                 \param step explicit step to use
+                 */
                 void operator()(Writable<T> &    ystart,
                                 const T          x1,
                                 const T          x2,
@@ -32,11 +69,18 @@ namespace Yttrium
                                 Callback * const cb,
                                 StepType   &     step);
 
-                T eps;
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                T eps; //!< fractional tolerance
+
             private:
                 class Code;
-                Y_Disable_Copy_And_Assign(ExplicitIntegrator);
-                Code * const code;
+                Y_Disable_Copy_And_Assign(ExplicitIntegrator); //!< discarding
+                Code * const code;                             //!< cleanup
             };
         }
     }

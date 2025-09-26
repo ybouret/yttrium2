@@ -12,17 +12,43 @@ namespace Yttrium
         namespace ODE
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Cash-Karp step
+            //
+            //
+            //__________________________________________________________________
             template <typename T>
             class CashKarp : public ExplicitStep<T>
             {
             public:
-                typedef Field<T>  FieldType;
-                typedef typename  FieldType::Equation Equation;
-                typedef typename  FieldType::Callback Callback;
+                //______________________________________________________________
+                //
+                //
+                // Definitioms
+                //
+                //______________________________________________________________
+                typedef Field<T>  FieldType;                    //!< alias
+                typedef typename  FieldType::Equation Equation; //!< alias
+                typedef typename  FieldType::Callback Callback; //!< alias
 
-                explicit CashKarp();
-                virtual ~CashKarp() noexcept;
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+                explicit CashKarp();          //!< setup
+                virtual ~CashKarp() noexcept; //!< cleanup
 
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
                 virtual void operator()(Writable<T> &       yout,
                                         Writable<T> &       yerr,
                                         const Readable<T> & y,
@@ -36,8 +62,8 @@ namespace Yttrium
                 
             private:
                 class Code;
-                Y_Disable_Copy_And_Assign(CashKarp);
-                Code * const code;
+                Y_Disable_Copy_And_Assign(CashKarp); //!< discard
+                Code * const code;                   //!< inner algorithm
             };
         }
 
