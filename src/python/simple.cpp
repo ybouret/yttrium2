@@ -1,6 +1,6 @@
 #include "y/rtld/dso.h"
 #include "y/concurrent/singulet.hpp"
-#include "y/object.hpp"
+#include "y/string.hpp"
 
 #include <cmath>
 #include <iostream>
@@ -11,13 +11,15 @@ using namespace Yttrium;
 class Simple : public Object
 {
 public:
-    explicit Simple()
+    explicit Simple() : name("Simple")
     {
     }
 
     virtual ~Simple() noexcept
     {
     }
+
+    const String name;
 
     static Simple *App;
 
