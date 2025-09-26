@@ -15,10 +15,14 @@ class Simple:
         self.Init.argtypes = []
         self.Init.restype = ct.c_bool
 
+        self.Quit = self.dll.Simple_Quit
+        self.Quit.argtypes = []
+
         assert self.Init()
 
     def __del__(self):
         print("-- delete --")
+        self.Quit()
 
 print("-- main --")
 simple = Simple()

@@ -53,6 +53,11 @@ Y_EXPORT bool Y_DLL_API Simple_Init() noexcept
     return Simple::Init();
 }
 
+Y_EXPORT void Y_DLL_API Simple_Quit() noexcept
+{
+    Simple::Quit();
+}
+
 Y_DLL_FINISH()
 
 
