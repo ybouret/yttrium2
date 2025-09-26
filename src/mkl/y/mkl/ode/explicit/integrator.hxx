@@ -86,6 +86,7 @@ public:
             {
                 // done
                 for(size_t i=n;i>0;--i) ystart[i] = y[i];
+                return;
             }
 
             // check next step
@@ -93,7 +94,7 @@ public:
                 throw Specific::Exception(step.callSign(),"step underflow");
 
             h = hnext;
-
+            
         }
 
 
