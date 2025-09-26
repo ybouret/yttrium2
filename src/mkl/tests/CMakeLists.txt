@@ -36,4 +36,6 @@ Y_UTEST(algebra:eigen)
 Y_UTEST(drvs1D)
 Y_UTEST(drvsND)
 
-Y_UTEST(ode_rk4)
+Y_UTEST(ode:rk4)
+Y_UTEST(ode:expl)
+

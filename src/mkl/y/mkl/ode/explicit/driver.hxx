@@ -3,7 +3,7 @@ template <>
 class ExplicitDriver<real_t>:: Code : public Object
 {
 public:
-    typedef typename FCPU<real_t>::Type fcpu_t;
+    typedef FCPU<real_t>::Type fcpu_t;
 
     inline explicit Code() :
     Object(),
