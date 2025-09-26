@@ -25,6 +25,18 @@ namespace Yttrium
                 explicit ExplicitDriver();
                 virtual ~ExplicitDriver() noexcept;
 
+                void operator()(StepType          & step,
+                                Writable<T>       & y,
+                                T                 & x,
+                                const Readable<T> & dydx,
+                                const Readable<T> & yscal,
+                                const T             htry,
+                                T                 & hdid,
+                                T                 & hnext,
+                                const T             eps,
+                                Equation &          eq,
+                                Callback * const    cb);
+
             private:
                 class Code;
                 Y_Disable_Copy_And_Assign(ExplicitDriver);

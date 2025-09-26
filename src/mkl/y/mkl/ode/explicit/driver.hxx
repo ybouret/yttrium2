@@ -38,7 +38,7 @@ public:
         real_t       h = htry;
         real_t       errmax = zero;
 
-        // trials
+        // trials with step reduction
         while(true)
         {
             step(ytemp,yerr,y,dydx,x,htry,eq,cb);
@@ -68,8 +68,6 @@ public:
 
         // update x
         x += (h = hdid);
-
-
     }
 
     Vector<real_t> yerr;
@@ -110,4 +108,21 @@ ExplicitDriver<real_t>:: ~ExplicitDriver() noexcept
 {
     assert(code);
     Destroy(code);
+}
+
+template <>
+void ExplicitDriver<real_t>:: operator()  (StepType               & step,
+                                           Writable<real_t>       & y,
+                                           real_t                 & x,
+                                           const Readable<real_t> & dydx,
+                                           const Readable<real_t> & yscal,
+                                           const real_t             htry,
+                                           real_t                 & hdid,
+                                           real_t                 & hnext,
+                                           const real_t             eps,
+                                           Equation &               eq,
+                                           Callback * const         cb)
+{
+    assert(code);
+    code->run(step, y, x, dydx, yscal, htry, hdid, hnext, eps, eq, cb);
 }
