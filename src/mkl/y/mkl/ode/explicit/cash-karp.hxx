@@ -110,3 +110,17 @@ const char * CashKarp<real_t>:: callSign() const noexcept
 {
     return CaskKarpID;
 }
+
+template <>
+void CashKarp<real_t>:: operator()(Writable<real_t> &       yout,
+                                   Writable<real_t> &       yerr,
+                                   const Readable<real_t> & y,
+                                   const Readable<real_t> & dydx,
+                                   const real_t             x,
+                                   const real_t             h,
+                                   Equation               & f,
+                                   Callback * const         cb)
+{
+    assert(code);
+    code->run(yout, yerr, y, dydx, x, h, f, cb);
+}

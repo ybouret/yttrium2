@@ -6,6 +6,7 @@
 #include "y/container/iter.hpp"
 #include "y/core/utils.hpp"
 #include "y/exception.hpp"
+#include "y/mkl/numeric.hpp"
 
 namespace Yttrium
 {

@@ -20,11 +20,19 @@ namespace Yttrium
                 typedef typename  FieldType::Equation Equation;
                 typedef typename  FieldType::Callback Callback;
                 typedef ExplicitStep<T>               StepType;
-                
+
                 explicit ExplicitIntegrator();
                 virtual ~ExplicitIntegrator() noexcept;
 
+                void operator()(Writable<T> &    ystart,
+                                const T          x1,
+                                const T          x2,
+                                const T          h1,
+                                Equation &       eq,
+                                Callback * const cb,
+                                StepType   &     step);
 
+                T eps;
             private:
                 class Code;
                 Y_Disable_Copy_And_Assign(ExplicitIntegrator);

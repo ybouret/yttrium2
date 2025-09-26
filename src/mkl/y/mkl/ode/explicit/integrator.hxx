@@ -124,9 +124,9 @@ public:
             //------------------------------------------------------------------
             if(Fabs<real_t>::Of(hnext) <= zero)
                 throw Specific::Exception(step.callSign(),"step underflow");
-            
+
             h = hnext;
-            
+
         }
 
 
@@ -151,7 +151,9 @@ private:
 
 
 template <>
-ExplicitIntegrator<real_t>::  ExplicitIntegrator() : code( new Code() )
+ExplicitIntegrator<real_t>::  ExplicitIntegrator() :
+eps( Numeric<real_t>::FTOL ),
+code( new Code() )
 {
 }
 
@@ -160,4 +162,17 @@ ExplicitIntegrator<real_t>:: ~ExplicitIntegrator() noexcept
 {
     assert(code);
     Destroy(code);
+}
+
+template <>
+void ExplicitIntegrator<real_t>:: operator()(Writable<real_t> & ystart,
+                                             const real_t       x1,
+                                             const real_t       x2,
+                                             const real_t       h1,
+                                             Equation &         eq,
+                                             Callback * const   cb,
+                                             StepType   &       step)
+{
+    assert(code);
+    code->run(ystart,x1,x2,h1,eps,eq,cb,step);
 }

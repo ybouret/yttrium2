@@ -34,14 +34,15 @@ public:
                     Equation &               eq,
                     Callback * const         cb)
     {
-        const size_t n = y.size(); prepare(n);
-        real_t       h = htry;
+        const size_t n      = y.size(); prepare(n);
+        real_t       h      = htry;
         real_t       errmax = zero;
 
         // trials with step reduction
         while(true)
         {
             step(ytemp,yerr,y,dydx,x,htry,eq,cb);
+
             // check accuracy
             errmax = zero;
             for(size_t i=n;i>0;--i) {
@@ -67,7 +68,7 @@ public:
             hnext=five*h;
 
         // update x
-        x += (h = hdid);
+        x += (hdid=h);
     }
 
     Vector<real_t> yerr;
