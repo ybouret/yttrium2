@@ -58,5 +58,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_MKL_Fabs_Included
 

@@ -38,5 +38,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_MKL_API_Selector_Included
 
