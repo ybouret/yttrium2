@@ -4,7 +4,11 @@ class ExplicitIntegrator<real_t>:: Code : public Object
 {
 public:
 
-    inline explicit Code() : Object(), zero(0)
+    inline explicit Code() :
+    Object(),
+    xadd(),
+    zero(0),
+    TINY(1e-30)
     {
 
     }
@@ -49,8 +53,47 @@ public:
 
         // loop
         {
+            // evaluate at x
             eq(dydx,x,y);
-            
+
+            for(size_t i=n;i>0;--i)
+            {
+                xadd = TINY;
+                xadd += Fabs<real_t>::Of( y[i] );
+                const real_t dy = h * dydx[i];
+                xadd += Fabs<real_t>::Of( dy );
+                yscal[i] = xadd.sum();
+            }
+
+            // check step length
+            bool last = false;
+            switch(d)
+            {
+                case Iter::Forward:
+                    if(x+h>=x2) { h=x2-x; last=true; }
+                    break;
+                case Iter::Reverse:
+                    if(x+h<=x2) { h=x2-x; last=true; }
+                    break;
+            }
+
+            // make a controlled step
+            real_t hdid = zero, hnext= zero;
+            driver(step,y,x,dydx,yscal,h,hdid,hnext,eps,eq,cb);
+
+            // check done
+            if( last && Fabs<real_t>::Of(hdid) >= Fabs<real_t>::Of(h) )
+            {
+                // done
+                for(size_t i=n;i>0;--i) ystart[i] = y[i];
+            }
+
+            // check next step
+            if(Fabs<real_t>::Of(hnext) <= zero)
+                throw Specific::Exception(step.callSign(),"step underflow");
+
+            h = hnext;
+
         }
 
 
@@ -59,7 +102,9 @@ public:
 
 
     Vector<real_t> y, dydx, yscal;
-    const real_t zero;
+    Cameo::Addition<real_t> xadd;
+    const real_t            zero;
+    const real_t            TINY;
 
 private:
     Y_Disable_Copy_And_Assign(Code);
