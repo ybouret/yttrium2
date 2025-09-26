@@ -37,15 +37,24 @@ public:
         a6 = REAL(0.875);
 
         static const real_t b21=REAL(0.2);
+
         static const real_t
         b31 = REAL(3.0)/REAL(40.0),
         b32 = REAL(9.0)/REAL(40.0);
+
         static const real_t
         b41 = REAL(0.3),
         b42 = REAL(-0.9),
         b43 = REAL(1.2);
-        static const real_t b51 = -11.0/54.0, b52=2.5,b53 = -70.0/27.0,b54=35.0/27.0;
+
+        static const real_t
+        b51 = REAL(-11.0)/REAL(54.0),
+        b52 = REAL(2.5),
+        b53 = REAL(-70.0)/REAL(27.0),
+        b54 = REAL(35.0)/REAL(27.0);
+        
         static const real_t b61=1631.0/55296.0,b62=175.0/512.0,b63=575.0/13824.0, b64=44275.0/110592.0,b65=253.0/4096.0;
+
         static const real_t
         c1=REAL(37.0) /REAL(378.0),
         c3=REAL(250.0)/REAL(621.0),
