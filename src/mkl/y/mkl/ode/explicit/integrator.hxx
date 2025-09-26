@@ -43,11 +43,14 @@ public:
         real_t          h = Fabs<real_t>::Of(h1);
         switch( Sign::Of(x2,x1) )
         {
-            case __Zero__: return;
+            case __Zero__:
+                return;
+
             case Positive:
                 assert(x2>x1);
                 h = Min(h,x2-x1);
                 break;
+
             case Negative:
                 assert(x2<x1);
                 d = Iter::Reverse;
@@ -55,7 +58,7 @@ public:
                 break;
         }
 
-        real_t                  x     = x1;
+        real_t                  x    = x1;
         for(size_t i=n;i>0;--i) y[i] = ystart[i];
 
         //----------------------------------------------------------------------
