@@ -5,6 +5,13 @@ public:
 
     inline explicit Code() :
     Object(),
+    ak2(),
+    ak3(),
+    ak4(),
+    ak5(),
+    ak6(),
+    ytemp(),
+    xadd(),
     zero(0)
     {
     }
@@ -39,7 +46,11 @@ public:
         b43 = REAL(1.2);
         static const real_t b51 = -11.0/54.0, b52=2.5,b53 = -70.0/27.0,b54=35.0/27.0;
         static const real_t b61=1631.0/55296.0,b62=175.0/512.0,b63=575.0/13824.0, b64=44275.0/110592.0,b65=253.0/4096.0;
-        static const real_t c1=37.0/378.0,c3=250.0/621.0,c4=125.0/594.0,c6=512.0/1771.0;
+        static const real_t
+        c1=REAL(37.0) /REAL(378.0),
+        c3=REAL(250.0)/REAL(621.0),
+        c4=REAL(125.0)/REAL(594.0),
+        c6=REAL(512.0)/REAL(1771.0);
         static const real_t
         dc1 = c1-REAL(2825.0)/REAL(27648.0),
         dc3 = c3-REAL(18575.0)/REAL(48384.0),

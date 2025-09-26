@@ -7,6 +7,8 @@ public:
 
     inline explicit Code() :
     Object(),
+    yerr(),
+    ytemp(),
     zero(0),
     one(1),
     CUT(0.1),

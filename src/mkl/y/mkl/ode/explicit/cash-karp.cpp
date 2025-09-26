@@ -28,11 +28,30 @@ namespace Yttrium
 #undef real_t
 #undef REAL
 
+#define real_t long double
+#define REAL(X) X##L
+#include "cash-karp.hxx"
+#undef real_t
+#undef REAL
+
 
 #define real_t XReal<float>
 #define REAL(X) real_t(X##f)
 #include "cash-karp.hxx"
 #undef real_t
+#undef REAL
+
+#define real_t XReal<double>
+#define REAL(X) real_t(X)
+#include "cash-karp.hxx"
+#undef real_t
+#undef REAL
+
+#define real_t XReal<long double>
+#define REAL(X) real_t(X##L)
+#include "cash-karp.hxx"
+#undef real_t
+#undef REAL
 
         }
 

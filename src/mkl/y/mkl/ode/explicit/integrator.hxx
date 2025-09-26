@@ -7,6 +7,7 @@ public:
     inline explicit Code() :
     Object(),
     driver(),
+    y(), dydx(), yscal(),
     xadd(),
     zero(0),
     TINY(1e-30)
