@@ -4,7 +4,7 @@
 #ifndef Y_MKL_ODE_ExplicitIntegrator_Included
 #define Y_MKL_ODE_ExplicitIntegrator_Included 1
 
-#include "y/mkl/ode/explicit/driver.hpp"
+#include "y/mkl/ode/explicit/step.hpp"
 
 namespace Yttrium
 {
@@ -20,7 +20,6 @@ namespace Yttrium
                 typedef typename  FieldType::Equation Equation;
                 typedef typename  FieldType::Callback Callback;
                 typedef ExplicitStep<T>               StepType;
-                typedef ExplicitDriver<T>             DriverType;
                 
                 explicit ExplicitIntegrator();
                 virtual ~ExplicitIntegrator() noexcept;

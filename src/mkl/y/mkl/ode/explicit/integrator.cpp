@@ -1,4 +1,5 @@
 #include "y/mkl/ode/explicit/integrator.hpp"
+#include "y/mkl/ode/explicit/driver.hpp"
 #include "y/type/destroy.hpp"
 #include "y/container/sequence/vector.hpp"
 #include "y/cameo/addition.hpp"

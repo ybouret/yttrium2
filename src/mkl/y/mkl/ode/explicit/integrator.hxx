@@ -6,6 +6,7 @@ public:
 
     inline explicit Code() :
     Object(),
+    driver(),
     xadd(),
     zero(0),
     TINY(1e-30)
@@ -27,10 +28,15 @@ public:
                     const real_t       eps,
                     Equation &         eq,
                     Callback * const   cb,
-                    DriverType &       driver,
                     StepType   &       step)
     {
+        //----------------------------------------------------------------------
+        //
+        //
         // initialize
+        //
+        //
+        //----------------------------------------------------------------------
         Iter::Direction d = Iter::Forward;
         const size_t    n = ystart.size(); prepare(n);
         real_t          h = Fabs<real_t>::Of(h1);
@@ -101,7 +107,7 @@ public:
 
     }
 
-
+    ExplicitDriver<real_t>  driver;
     Vector<real_t> y, dydx, yscal;
     Cameo::Addition<real_t> xadd;
     const real_t            zero;
