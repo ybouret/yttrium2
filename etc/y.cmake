@@ -174,9 +174,13 @@ if("${Y_CC}" STREQUAL "cl")
 	string( APPEND CMAKE_CXX_FLAGS " -Wall -EHsc")
 endif()
 
+if(NOT Y_KNOWN_COMPILER)
+	message( FATAL_ERROR "Unknown Compiler ${Y_CC}")
+endif()
+
 ################################################################################
 #
-# specifi platform configuration
+# specific platform configuration
 #
 ################################################################################
 if(Y_Linux OR Y_SunOS OR Y_FreeBSD)
