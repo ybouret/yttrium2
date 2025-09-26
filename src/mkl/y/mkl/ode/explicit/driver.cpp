@@ -5,6 +5,7 @@
 #include "y/core/utils.hpp"
 #include "y/mkl/api/fabs.hpp"
 #include "y/mkl/api/fcpu.hpp"
+#include "y/mkl/api/fpow.hpp"
 #include "y/exception.hpp"
 
 namespace Yttrium
@@ -17,11 +18,29 @@ namespace Yttrium
 #define SAFETY_VALUE 0.9
 
 #define real_t float
-#define REAL(X) X##f
 #include "driver.hxx"
 #undef real_t
-#undef REAL
-            
+
+#define real_t double
+#include "driver.hxx"
+#undef real_t
+
+#define real_t long double
+#include "driver.hxx"
+#undef real_t
+
+#define real_t XReal<float>
+#include "driver.hxx"
+#undef real_t
+
+#define real_t XReal<double>
+#include "driver.hxx"
+#undef real_t
+
+
+#define real_t XReal<long double>
+#include "driver.hxx"
+#undef real_t
 
         }
 

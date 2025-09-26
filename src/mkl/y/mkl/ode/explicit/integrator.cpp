@@ -19,6 +19,28 @@ namespace Yttrium
 #include "integrator.hxx"
 #undef real_t
 
+
+#define real_t double
+#include "integrator.hxx"
+#undef real_t
+
+#define real_t long double
+#include "integrator.hxx"
+#undef real_t
+
+
+#define real_t XReal<float>
+#include "integrator.hxx"
+#undef real_t
+
+#define real_t XReal<double>
+#include "integrator.hxx"
+#undef real_t
+
+#define real_t XReal<long double>
+#include "integrator.hxx"
+#undef real_t
+
         }
     }
 

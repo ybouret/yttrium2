@@ -55,9 +55,10 @@ public:
             if(errmax<=one) break;
 
             // step reduction
-            const real_t htemp = SAFETY*h*std::pow(errmax,PSHRINK);
+            const real_t htemp  = SAFETY*h*Fpow<real_t>::Of(errmax,PSHRINK);
             h = (h >= zero ? Max(htemp,CUT*h) : Min(htemp,CUT*h));
-            volatile real_t xnew = x + h;
+
+            const real_t xnew = x + h;
             if(same(xnew,x))
                 throw Specific::Exception(step.callSign(),"step size underflow");
 
@@ -65,7 +66,7 @@ public:
 
         // compute hnext from control value
         if (errmax > ERRCON)
-            hnext=SAFETY*h*std::pow(errmax,PGROW);
+            hnext=SAFETY*h*Fpow<real_t>::Of(errmax,PGROW);
         else
             hnext=five*h;
 
@@ -91,7 +92,7 @@ private:
         ytemp.adjust(n,zero);
     }
 
-    inline bool same(const real_t a, const real_t b) const noexcept
+    inline bool same(const real_t &a, const real_t &b) const noexcept
     {
         const real_t delta = a-b;
         const real_t adiff = Fabs<real_t>::Of(delta);
