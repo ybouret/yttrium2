@@ -147,10 +147,10 @@ endif()
 
 ################################################################################
 #
-# configuration for icc/icpc
+# configuration for icc/icpc or icx/icpx
 #
 ################################################################################
-if("${Y_CC}" MATCHES "icc.*")
+if("${Y_CC}" MATCHES "ic.*")
 	message( STATUS "Using Intel Compilers")
 	set(Y_KNOWN_COMPILER TRUE)
 	set(Y_ICC TRUE)
