@@ -161,7 +161,7 @@ namespace Yttrium
                 const T        omega2;
                 const T        speed;
                 Callback       proj;
-                
+
             private:
                 Y_Disable_Copy_And_Assign(dAstra);
 
@@ -180,9 +180,18 @@ namespace Yttrium
                 inline void project(Writable<T> & y,
                                     const T)
                 {
-                    const T r = Pythagoras(y[1],y[2]);
-                    y[1] /= r; y[2] /= r;
-                    y[1] *= radius; y[2] *= radius;
+                    {
+                        const T r = Pythagoras(y[1],y[2]);
+                        y[1] /= r; y[2] /= r;
+                        y[1] *= radius; y[2] *= radius;
+                    }
+
+                    {
+                        const T v = Pythagoras(y[3],y[4]);
+                        y[3] /= v; y[4] /= v;
+                        y[3] *= speed; y[4] *= speed;
+                    }
+
                 }
             };
         }
