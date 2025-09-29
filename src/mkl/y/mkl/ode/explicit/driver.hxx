@@ -40,10 +40,14 @@ public:
         real_t       h      = htry;
         real_t       errmax = zero;
 
+        //----------------------------------------------------------------------
+        //
         // trials with step reduction
+        //
+        //----------------------------------------------------------------------
         while(true)
         {
-            step(ytemp,yerr,y,dydx,x,htry,eq,cb);
+            step(ytemp,yerr,y,dydx,x,h,eq,cb);
 
             // check accuracy
             errmax = zero;
@@ -52,7 +56,8 @@ public:
                 InSituMax(errmax, Fabs<real_t>::Of(err));
             }
             errmax /= eps;
-            if(errmax<=one) break;
+            if(errmax<=one)
+                break;
 
             // step reduction
             const real_t htemp  = SAFETY*h*Fpow<real_t>::Of(errmax,PSHRINK);
@@ -70,8 +75,10 @@ public:
         else
             hnext=five*h;
 
-        // update x
+
+        // update x,y
         x += (hdid=h);
+        for(size_t i=n;i>0;--i) y[i] = ytemp[i];
     }
 
     Vector<real_t> yerr;

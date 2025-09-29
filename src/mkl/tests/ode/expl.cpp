@@ -27,7 +27,6 @@ static inline void TestExample(const char * const id)
     ODE::CashKarp<T>           step;
     ODE::ExplicitIntegrator<T> odeint;
 
-    odeint.eps = 1e-5;
 
     T            x     = 0;
     const T      x_end = 7;
@@ -55,10 +54,9 @@ static inline void TestExample(const char * const id)
 
     }
 
-#if 0
     {
         std::cerr << "Spring/" << id << std::endl;
-        const String fileName = "spring-" + String(id) + ".dat";
+        const String fileName = "q-spring-" + String(id) + ".dat";
         OutputFile   fp(fileName);
         CxxArray<T>  y(2),dydx(2);
 
@@ -68,13 +66,14 @@ static inline void TestExample(const char * const id)
         y[2] = 0;
         saveTo(fp,x,y);
         for(size_t i=1;i<=np;++i)
-        {
-            
-            x = (((T) (i) ) * x_end) / (T) np;
-            saveTo(fp,x,y);
-        }
+            for(size_t i=1;i<=np;++i)
+            {
+                const T x1 = x;
+                const T x2 = x = (((T) (i) ) * x_end) / (T) np;
+                odeint(y,x1,x2,dx1,spring.f,0,step);
+                saveTo(fp,x,y);
+            }
     }
-#endif
 
 
 

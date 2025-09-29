@@ -68,10 +68,11 @@ public:
         //
         //
         //----------------------------------------------------------------------
+        while(true)
         {
             //------------------------------------------------------------------
             //
-            // evaluate at x
+            // evaluate dydx at x,y
             //
             //------------------------------------------------------------------
             eq(dydx,x,y);
@@ -84,7 +85,7 @@ public:
                 xadd += Fabs<real_t>::Of( dy );
                 yscal[i] = xadd.sum();
             }
-
+            
             //------------------------------------------------------------------
             //
             // check step length
@@ -109,6 +110,7 @@ public:
             real_t hdid = zero, hnext= zero;
             driver(step,y,x,dydx,yscal,h,hdid,hnext,eps,eq,cb);
 
+
             //------------------------------------------------------------------
             //
             // check if done
@@ -117,7 +119,8 @@ public:
             if( last && Fabs<real_t>::Of(hdid) >= Fabs<real_t>::Of(h) )
             {
                 // done
-                for(size_t i=n;i>0;--i) ystart[i] = y[i];
+                for(size_t i=n;i>0;--i)
+                    ystart[i] = y[i];
                 return;
             }
 
@@ -156,7 +159,7 @@ private:
 
 template <>
 ExplicitIntegrator<real_t>::  ExplicitIntegrator() :
-eps( Numeric<real_t>::FTOL ),
+eps( 1.0e-7 ),
 code( new Code() )
 {
 }
