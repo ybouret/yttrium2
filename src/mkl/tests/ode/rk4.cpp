@@ -41,8 +41,8 @@ static inline void TestExample(const char * const id)
         saveTo(fp,x,y);
         for(size_t i=1;i<=np;++i)
         {
-            dExp.f(dydx,x,y);
-            rk4(y,y,dydx,x,dx,dExp.f);
+            dExp(dydx,x,y);
+            rk4(y,y,dydx,x,dx,dExp);
             x = (((T) (i) ) * x_end) / (T) np;
             saveTo(fp,x,y);
         }
@@ -62,8 +62,8 @@ static inline void TestExample(const char * const id)
         saveTo(fp,x,y);
         for(size_t i=1;i<=np;++i)
         {
-            spring.f(dydx,x,y);
-            rk4(y,y,dydx,x,dx,spring.f);
+            spring(dydx,x,y);
+            rk4(y,y,dydx,x,dx,spring);
             x = (((T) (i) ) * x_end) / (T) np;
             saveTo(fp,x,y);
         }

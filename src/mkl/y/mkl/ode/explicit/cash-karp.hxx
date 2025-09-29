@@ -52,7 +52,7 @@ public:
         b52 = REAL(2.5),
         b53 = REAL(-70.0)/REAL(27.0),
         b54 = REAL(35.0)/REAL(27.0);
-        
+
         static const real_t
         b61=REAL(1631.0)/REAL(55296.0),
         b62=REAL(175.0)/REAL(512.0),
@@ -65,7 +65,7 @@ public:
         c3=REAL(250.0)/REAL(621.0),
         c4=REAL(125.0)/REAL(594.0),
         c6=REAL(512.0)/REAL(1771.0);
-        
+
         static const real_t
         dc1 = c1-REAL(2825.0)/REAL(27648.0),
         dc3 = c3-REAL(18575.0)/REAL(48384.0),
@@ -81,22 +81,42 @@ public:
         }
         FieldType::Compute(f,ak2,x+a2*h,ytemp,cb); //(*derivs)(x+a2*h,ytemp,ak2);
 
+
+
         FOREACH_I
         {
             //ytemp[i]=y[i]+h*(b31*dydx[i]+b32*ak2[i]);
-            const real_t h31 = h*b31;
-            const real_t h32 = h*b32;
-            xadd = y[i];
-            xadd += h31 * dydx[i];
-            xadd += h32 * ak2[i];
-            ytemp[i] = xadd.sum();
+            xadd.ldz();
+            xadd += b31 * dydx[i];
+            xadd += b32 * ak2[i];
+            ytemp[i] = y[i] + h * xadd.sum();
         }
+
         FieldType::Compute(f,ak3,x+a3*h,ytemp,cb); //(*derivs)(x+a3*h,ytemp,ak3);
 
-        FOREACH_I ytemp[i]=y[i]+h*(b41*dydx[i]+b42*ak2[i]+b43*ak3[i]);
+
+        FOREACH_I
+        {
+            //ytemp[i]=y[i]+h*(b41*dydx[i]+b42*ak2[i]+b43*ak3[i]);
+            xadd.ldz();
+            xadd += b41 * dydx[i];
+            xadd += b42 * ak2[i];
+            xadd += b43 * ak3[i];
+            ytemp[i] = y[i] + h * xadd.sum();
+        }
+
         FieldType::Compute(f,ak4,x+a4*h,ytemp,cb); //(*derivs)(x+a4*h,ytemp,ak4);
 
-        FOREACH_I ytemp[i]=y[i]+h*(b51*dydx[i]+b52*ak2[i]+b53*ak3[i]+b54*ak4[i]);
+        FOREACH_I
+        {
+            //ytemp[i]=y[i]+h*(b51*dydx[i]+b52*ak2[i]+b53*ak3[i]+b54*ak4[i]);
+            xadd.ldz();
+            xadd += b51 * dydx[i];
+            xadd += b52 * ak2[i];
+            xadd += b53 * ak3[i];
+            xadd += b54 * ak4[i];
+            ytemp[i] = y[i] + h * xadd.sum();
+        }
         FieldType::Compute(f,ak5,x+a5*h,ytemp,cb);//(*derivs)(x+a5*h,ytemp,ak5);
 
         FOREACH_I ytemp[i]=y[i]+h*(b61*dydx[i]+b62*ak2[i]+b63*ak3[i]+b64*ak4[i]+b65*ak5[i]);

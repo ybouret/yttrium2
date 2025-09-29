@@ -26,8 +26,7 @@ static inline void TestExample(const char * const id)
 {
     ODE::CashKarp<T>           step;
     ODE::ExplicitIntegrator<T> odeint;
-
-
+    
     T            x     = 0;
     const T      x_end = 7;
     const size_t np    = 100;
@@ -48,7 +47,7 @@ static inline void TestExample(const char * const id)
         {
             const T x1 = x;
             const T x2 = x = (((T) (i) ) * x_end) / (T) np;
-            odeint(y,x1,x2,dx1,dExp.f,0,step);
+            odeint(y,x1,x2,dx1,dExp,0,step);
             saveTo(fp,x,y);
         }
 
@@ -66,13 +65,12 @@ static inline void TestExample(const char * const id)
         y[2] = 0;
         saveTo(fp,x,y);
         for(size_t i=1;i<=np;++i)
-            for(size_t i=1;i<=np;++i)
-            {
-                const T x1 = x;
-                const T x2 = x = (((T) (i) ) * x_end) / (T) np;
-                odeint(y,x1,x2,dx1,spring.f,0,step);
-                saveTo(fp,x,y);
-            }
+        {
+            const T x1 = x;
+            const T x2 = x = (((T) (i) ) * x_end) / (T) np;
+            odeint(y,x1,x2,dx1,spring,0,step);
+            saveTo(fp,x,y);
+        }
     }
 
 

@@ -22,26 +22,25 @@ namespace Yttrium
             //
             //__________________________________________________________________
             template <typename T>
-            class dExponential
+            class dExponential : public ODE::Field<T>::Equation
             {
             public:
                 typedef typename ODE::Field<T>::Equation Equation; //!< alias
 
                 //! setup \param kValue coefficient
                 inline dExponential(const T kValue) :
-                k(kValue),
-                f(this, & dExponential<T>::compute )
+                Equation(this, & dExponential<T>::compute ),
+                k(kValue)
                 {
                 }
 
                 //! cleanup
-                inline ~dExponential() noexcept
+                inline virtual ~dExponential() noexcept
                 {
                 }
 
 
                 const T  k; //!< coefficient
-                Equation f; //!< equation
 
             private:
                 Y_Disable_Copy_And_Assign(dExponential); //!< discard
@@ -71,7 +70,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             template <typename T>
-            class dSpring
+            class dSpring : public ODE::Field<T>::Equation
             {
             public:
                 typedef typename ODE::Field<T>::Equation Equation; //!< alias
@@ -79,21 +78,20 @@ namespace Yttrium
                 //! setup \param pulsation pulsation \param viscosity viscosity
                 inline dSpring(const T pulsation,
                                const T viscosity) :
+                Equation(this, & dSpring<T>::compute ),
                 omega(pulsation),
-                lambda(viscosity),
-                f(this, & dSpring<T>::compute )
+                lambda(viscosity)
                 {
                 }
 
                 //! cleanup
-                inline ~dSpring() noexcept
+                inline virtual ~dSpring() noexcept
                 {
                 }
 
 
                 const T  omega;  //!< coefficient
                 const T  lambda; //!< viscosity
-                Equation f;      //!< equation
 
             private:
                 Y_Disable_Copy_And_Assign(dSpring); //!< discard
