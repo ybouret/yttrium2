@@ -9,26 +9,42 @@ class IonoCell:
         self.dll  = ct.cdll.LoadLibrary("./ionocell.dll")
 
         self.what = self.dll.IonoCell_What
+        self.what.argtypes = []
         self.what.restype = ct.c_char_p
 
         self.when = self.dll.IonoCell_When
+        self.when.argtypes = []
         self.when.restype = ct.c_char_p
 
-        self.declare = self.dll.IonoCell_declare
-        self.declare.restype = ct.c_bool
-        self.declare.argtypes = [ct.c_char_p]
+        self.Init = self.dll.IonoCell_Init
+        self.Init.argtypes = []
+        self.Init.restype = ct.c_bool
 
-        self.numSpecies = self.dll.IonoCell_numSpecies
-        self.numSpecies.restype = ct.c_size_t
-        self.numSpecies.argtypes = []
+        self.Quit = self.dll.IonoCell_Quit
+        self.Quit.argtypes = []
 
-        self.getSpeciesName_ = self.dll.IonoCell_getSpeciesName
-        self.getSpeciesName_.restype = ct.c_char_p
-        self.getSpeciesName_.argtypes = [ct.c_size_t]
+        if not self.Init():
+            self.mustQuit()
 
-        self.getSpeciesCharge = self.dll.IonoCell_getSpeciesCharge
-        self.getSpeciesCharge.restype = ct.c_int
-        self.getSpeciesCharge.argtypes = [ct.c_size_t]
+
+        #self.declare = self.dll.IonoCell_declare
+        #self.declare.restype = ct.c_bool
+        #self.declare.argtypes = [ct.c_char_p]
+
+        #self.numSpecies = self.dll.IonoCell_numSpecies
+        #self.numSpecies.restype = ct.c_size_t
+        #self.numSpecies.argtypes = []
+
+        #self.getSpeciesName_ = self.dll.IonoCell_getSpeciesName
+        #self.getSpeciesName_.restype = ct.c_char_p
+        #self.getSpeciesName_.argtypes = [ct.c_size_t]
+
+        #self.getSpeciesCharge = self.dll.IonoCell_getSpeciesCharge
+        #self.getSpeciesCharge.restype = ct.c_int
+        #self.getSpeciesCharge.argtypes = [ct.c_size_t]
+
+    def __del_(self):
+        self.Quit()
 
     def getSpeciesName(self,i):
         return str( self.getSpeciesName_(i), "utf-8")
@@ -45,7 +61,7 @@ if __name__ == '__main__':
         chemsys.mustQuit()
     M = chemsys.numSpecies()
     print("numSpecies = ", M )
-    for i in range(M):
-        spName = chemsys.getSpeciesName(i)
-        spCharge = chemsys.getSpeciesCharge(i)
-        print("#",i," : ", spName, ":", "z=", spCharge)
+    #for i in range(M):
+    #    spName = chemsys.getSpeciesName(i)
+    #    spCharge = chemsys.getSpeciesCharge(i)
+    #    print("#",i," : ", spName, ":", "z=", spCharge)

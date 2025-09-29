@@ -4,7 +4,7 @@
 #define IonoCell_Included 1
 
 #include "y/chemical/weasel.hpp"
-#include "y/rtld/soak.hpp"
+#include "y/rtld/spyndle.hpp"
 
 using namespace Yttrium;
 using namespace Chemical;
@@ -17,7 +17,7 @@ using namespace Chemical;
 //
 //
 //______________________________________________________________________________
-class IonoCell : public Soak<IonoCell>
+class IonoCell : public Spyndle<IonoCell>
 {
 public:
     //__________________________________________________________________________
@@ -51,7 +51,7 @@ public:
 
 private:
     Y_Disable_Copy_And_Assign(IonoCell); //!< discarding
-    friend class Soak<IonoCell>;
+    friend class Spyndle<IonoCell>;
 
     explicit IonoCell();           //!< setup
     virtual ~IonoCell() noexcept;  //!< cleanup

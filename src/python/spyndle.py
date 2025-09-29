@@ -32,6 +32,14 @@ class Application:
         self.norm.argtypes = [ct.c_double,ct.c_double]
         self.norm.restype = ct.c_double
 
+        self.name_ = self.dll.Application_callSign
+        self.name_.argtypes = []
+        self.name_.restype = ct.c_char_p
+
+        self.crc = self.dll.Application_crc
+        self.crc.argtypes = [ct.c_char_p]
+        self.crc.restype = ct.c_uint32
+
     def __del__(self):
         print("-- delete --")
         self.Quit()
@@ -42,9 +50,13 @@ class Application:
     def what(self):
         return str(self.When(),"utf-8")
     
+    def callSign(self):
+        return str(self.name_(),"utf-8")
 
 print("-- main --")
 app = Application()
 print( app.sine(0.1) )
 print( app.norm(3,4) )
+print( app.callSign() )
+print( app.crc( bytes("Hello","utf-8") ) )
 print("-- done --")

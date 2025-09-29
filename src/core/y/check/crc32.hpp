@@ -49,6 +49,16 @@ namespace Yttrium
 
         //______________________________________________________________________
         //
+        //! crc of a message
+        /**
+         \param msg message address
+         \return computed crc
+         */
+        //______________________________________________________________________
+        static uint32_t Of(const char * const msg) noexcept;
+
+        //______________________________________________________________________
+        //
         //! crc of a type
         /**
          \param arg the argument
@@ -71,4 +81,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_CRC32_Included

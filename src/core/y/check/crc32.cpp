@@ -1,6 +1,7 @@
 
 #include "y/check/crc32.hpp"
 #include "y/check/usual.hpp"
+#include <cstring>
 
 namespace Yttrium
 {
@@ -39,11 +40,15 @@ namespace Yttrium
         return ~crc;
     }
 
-    uint32_t CRC32::Of(const void *addr, size_t size) noexcept
+    uint32_t CRC32:: Of(const void *addr, size_t size) noexcept
     {
         return Run(0,addr,size);
     }
 
+    uint32_t CRC32:: Of(const char * const msg) noexcept
+    {
+        return msg ? Run(0,msg,strlen(msg)) : 0;
+    }
 
     
 }

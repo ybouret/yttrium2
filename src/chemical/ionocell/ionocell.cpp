@@ -6,16 +6,17 @@ IonoCell:: ~IonoCell() noexcept
 
 const char * const IonoCell:: CallSign = "IonoCell";
 
-IonoCell:: IonoCell() : Soak<IonoCell>(),
+IonoCell:: IonoCell() : Spyndle<IonoCell>(),
 weasel( Weasel::Instance() ),
 lib(),
 eqs()
 {
 }
 
-Y_Soak_Impl(IonoCell)
+Y_Spyndle(IonoCell)
 
 
+#if 0
 bool IonoCell:: declare(const char * const argv)
 {
     assert(0!=argv);
@@ -50,3 +51,5 @@ int IonoCell:: getSpeciesCharge(const size_t i) const noexcept
 }
 
 Y_Soak_Meth(int,IonoCell,getSpeciesCharge,(const size_t i),(i))
+#endif
+
