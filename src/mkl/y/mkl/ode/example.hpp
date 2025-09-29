@@ -128,6 +128,7 @@ namespace Yttrium
             {
             public:
                 typedef typename ODE::Field<T>::Equation Equation; //!< alias
+                typedef typename ODE::Field<T>::Callback Callback; //!< alias
 
 
                 inline explicit dAstra(const V2D<T> &position, const T pulsation) :
@@ -137,7 +138,8 @@ namespace Yttrium
                 radius(r0.norm()),
                 omega(pulsation),
                 omega2(omega*omega),
-                speed(radius*omega)
+                speed(radius*omega),
+                proj(this, & dAstra<T>::project )
                 {
                     Coerce(v0) /= v0.norm();
                     Coerce(v0) *= speed;
@@ -152,13 +154,14 @@ namespace Yttrium
                     y[3] = v0.x; y[4] = v0.y;
                 }
 
-                const V2D<T> r0;
-                const V2D<T> v0;
-                const T      radius;
-                const T      omega;
-                const T      omega2;
-                const T      speed;
-
+                const V2D<T>   r0;
+                const V2D<T>   v0;
+                const T        radius;
+                const T        omega;
+                const T        omega2;
+                const T        speed;
+                Callback       proj;
+                
             private:
                 Y_Disable_Copy_And_Assign(dAstra);
 
@@ -172,6 +175,14 @@ namespace Yttrium
                     dydt[2] = v.y;
                     dydt[3] = -omega2 * r.x;
                     dydt[4] = -omega2 * r.y;
+                }
+
+                inline void project(Writable<T> & y,
+                                    const T)
+                {
+                    const T r = Pythagoras(y[1],y[2]);
+                    y[1] /= r; y[2] /= r;
+                    y[1] *= radius; y[2] *= radius;
                 }
             };
         }

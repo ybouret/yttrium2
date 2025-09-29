@@ -78,15 +78,14 @@ static inline void TestExample(const char * const id, Random::Bits &ran)
 
 
     {
-        const V2D<T> r0    =  ( (T)0.5 +ran.to<T>()) * Random::OnCircle< V2D<T> >(ran);
-        const T      omega = (T)1.0 + ran.to<T>();
+        std::cerr << "Astra/" << id << std::endl;
+        const V2D<T>   r0    =  ( (T)0.5 +ran.to<T>()) * Random::OnCircle< V2D<T> >(ran);
+        const T        omega = (T)1.0 + ran.to<T>();
+        ODE::dAstra<T> astra(r0,omega);
         {
-            std::cerr << "Astra/" << id << std::endl;
-            const String fileName = "q-astra-" + String(id) + ".dat";
+            const String fileName = "q-astra0-" + String(id) + ".dat";
             OutputFile   fp(fileName);
             CxxArray<T>  y(4),dydx(4);
-
-            ODE::dAstra<T> astra(r0,omega);
             x    = 0;
             astra.init(y);
             saveTo(fp,x,y);
@@ -98,6 +97,23 @@ static inline void TestExample(const char * const id, Random::Bits &ran)
                 saveTo(fp,x,y);
             }
         }
+
+        {
+            const String fileName = "q-astra1-" + String(id) + ".dat";
+            OutputFile   fp(fileName);
+            CxxArray<T>  y(4),dydx(4);
+            x    = 0;
+            astra.init(y);
+            saveTo(fp,x,y);
+            for(size_t i=1;i<=np;++i)
+            {
+                const T x1 = x;
+                const T x2 = x = (((T) (i) ) * x_end) / (T) np;
+                odeint(y,x1,x2,dx1,astra,&astra.proj,step);
+                saveTo(fp,x,y);
+            }
+        }
+
     }
     
 
