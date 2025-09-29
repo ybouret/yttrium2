@@ -3,7 +3,12 @@
 set(MPI_FOUND OFF)
 set(MPI_LIBRARIES "")
 
-find_program(MPICC mpicc)
+if(Y_ICC)
+    set(MPICC "MPICC-NOTFOUND")
+else()
+    find_program(MPICC mpicc)
+endif()
+
  
 cmake_print_variables(MPICC)
 
