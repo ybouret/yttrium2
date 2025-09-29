@@ -15,11 +15,11 @@ if(FALSE)
     VERBATIM)
 endif()
 
-add_library(simple MODULE simple.cpp)
-Y_LinkLibraries(simple)
+add_library(spyndle MODULE spyndle.cpp)
+Y_LinkLibraries(spyndle)
 
-set(SIMPLE ${CMAKE_CURRENT_SOURCE_DIR}/simple.dll)
-add_custom_command( TARGET simple POST_BUILD 
-COMMAND ${CMAKE_COMMAND} -E echo "Copy $<TARGET_FILE:simple>"
-COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:simple> ${SIMPLE}
+set(SPYNDLE ${CMAKE_CURRENT_SOURCE_DIR}/spyndle.dll)
+add_custom_command( TARGET spyndle POST_BUILD 
+COMMAND ${CMAKE_COMMAND} -E echo "Copy $<TARGET_FILE:spyndle>"
+COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:spyndle> ${SPYNDLE}
 VERBATIM)

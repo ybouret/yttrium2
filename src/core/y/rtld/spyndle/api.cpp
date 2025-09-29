@@ -38,6 +38,10 @@ namespace Yttrium
         strncpy(When,excp.when(),sizeof(When)-1);
     }
 
+    SpyndleAPI:: SpyndleAPI() noexcept {}
+
+    SpyndleAPI:: ~SpyndleAPI() noexcept {}
+
 
 }
 
