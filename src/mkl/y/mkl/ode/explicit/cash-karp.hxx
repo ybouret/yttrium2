@@ -119,11 +119,40 @@ public:
         }
         FieldType::Compute(f,ak5,x+a5*h,ytemp,cb);//(*derivs)(x+a5*h,ytemp,ak5);
 
-        FOREACH_I ytemp[i]=y[i]+h*(b61*dydx[i]+b62*ak2[i]+b63*ak3[i]+b64*ak4[i]+b65*ak5[i]);
+        FOREACH_I
+        {
+            //ytemp[i]=y[i]+h*(b61*dydx[i]+b62*ak2[i]+b63*ak3[i]+b64*ak4[i]+b65*ak5[i]);
+            xadd.ldz();
+            xadd += b61 * dydx[i];
+            xadd += b62 * ak2[i];
+            xadd += b63 * ak3[i];
+            xadd += b64 * ak4[i];
+            xadd += b65 * ak5[i];
+            ytemp[i] = y[i] + h * xadd.sum();
+        }
         FieldType::Compute(f,ak6,x+a6*h,ytemp,cb); //(*derivs)(x+a6*h,ytemp,ak6);
 
-        FOREACH_I yout[i]=y[i]+h*(c1*dydx[i]+c3*ak3[i]+c4*ak4[i]+c6*ak6[i]);
-        FOREACH_I yerr[i]=h*(dc1*dydx[i]+dc3*ak3[i]+dc4*ak4[i]+dc5*ak5[i]+dc6*ak6[i]);
+        FOREACH_I
+        {
+            //yout[i]=y[i]+h*(c1*dydx[i]+c3*ak3[i]+c4*ak4[i]+c6*ak6[i]);
+            xadd.ldz();
+            xadd += c1*dydx[i];
+            xadd += c3*ak3[i];
+            xadd += c4*ak4[i];
+            xadd += c6*ak6[i];
+            yout[i] = y[i] + h * xadd.sum();
+        }
+        FOREACH_I
+        {
+            //yerr[i]=h*(dc1*dydx[i]+dc3*ak3[i]+dc4*ak4[i]+dc5*ak5[i]+dc6*ak6[i]);
+            xadd.ldz();
+            xadd += dc1*dydx[i];
+            xadd += dc3*ak3[i];
+            xadd += dc4*ak4[i];
+            xadd += dc5*ak5[i];
+            xadd += dc6*ak6[i];
+            yerr[i] = h * xadd.sum();
+        }
 
 
     }
