@@ -39,8 +39,10 @@ Application:: ~Application() noexcept
 
 const char * const Application :: CallSign = "Application";
 
-Y_Soak_Impl(Application)
+//Y_Soak_Impl(Application)
 
+
+// some C functions
 
 Y_DLL_EXTERN()
 
@@ -48,7 +50,6 @@ Y_EXPORT double Y_DLL_API sine(double x) noexcept
 {
     return sin(x);
 }
-
 
 Y_DLL_FINISH()
 

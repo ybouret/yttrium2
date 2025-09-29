@@ -8,6 +8,7 @@ namespace Yttrium
 
     SoakAPI:: SoakAPI() noexcept : Identifiable()
     {
+        NoError();
     }
 
     SoakAPI:: ~SoakAPI() noexcept
