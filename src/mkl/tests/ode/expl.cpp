@@ -8,6 +8,8 @@
 
 #include "y/utest/run.hpp"
 #include "y/stream/libc/output.hpp"
+#include "../../core/tests/main.hpp"
+#include "y/random/in2d.hpp"
 
 using namespace Yttrium;
 using namespace MKL;
@@ -22,11 +24,11 @@ void saveTo(OutputStream &fp, const T x, const Readable<T> &y)
 }
 
 template <typename T>
-static inline void TestExample(const char * const id)
+static inline void TestExample(const char * const id, Random::Bits &ran)
 {
     ODE::CashKarp<T>           step;
     ODE::ExplicitIntegrator<T> odeint;
-    
+
     T            x     = 0;
     const T      x_end = 7;
     const size_t np    = 100;
@@ -75,12 +77,37 @@ static inline void TestExample(const char * const id)
 
 
 
+    {
+        const V2D<T> r0    =  ( (T)0.5 +ran.to<T>()) * Random::OnCircle< V2D<T> >(ran);
+        const T      omega = (T)1.0 + ran.to<T>();
+        {
+            std::cerr << "Astra/" << id << std::endl;
+            const String fileName = "q-astra-" + String(id) + ".dat";
+            OutputFile   fp(fileName);
+            CxxArray<T>  y(4),dydx(4);
+
+            ODE::dAstra<T> astra(r0,omega);
+            x    = 0;
+            astra.init(y);
+            saveTo(fp,x,y);
+            for(size_t i=1;i<=np;++i)
+            {
+                const T x1 = x;
+                const T x2 = x = (((T) (i) ) * x_end) / (T) np;
+                odeint(y,x1,x2,dx1,astra,0,step);
+                saveTo(fp,x,y);
+            }
+        }
+    }
+    
+
 
 }
 
 Y_UTEST(ode_expl)
 {
-    TestExample<float>("f");
+    Random::MT19937 ran;
+    TestExample<float>("f",ran);
 }
 Y_UDONE()
 
