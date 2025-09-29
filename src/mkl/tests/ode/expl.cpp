@@ -124,6 +124,8 @@ Y_UTEST(ode_expl)
 {
     Random::MT19937 ran;
     TestExample<float>("f",ran);
+    TestExample< XReal<double> >("xd",ran);
+
 }
 Y_UDONE()
 

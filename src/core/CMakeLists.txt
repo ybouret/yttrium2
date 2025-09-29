@@ -120,6 +120,7 @@ Y_CreateLibrary(y
     y/field/layout
     y/rtld
     y/rtld/soak
+    y/rtld/spyndle
 )
 
 add_subdirectory(tests)

@@ -1,4 +1,4 @@
-#include "y/rtld/dso.h"
+#include "y/rtld/spyndle.hpp"
 #include "y/concurrent/singulet.hpp"
 #include "y/string.hpp"
 
@@ -7,6 +7,31 @@
 #include <cassert>
 
 using namespace Yttrium;
+
+
+class Application : public Spyndle<Application>
+{
+public:
+    static const char * const CallSign;
+
+    explicit Application()
+    {
+    }
+
+    virtual ~Application() noexcept
+    {
+
+    }
+
+private:
+    Y_Disable_Copy_And_Assign(Application);
+};
+
+
+const char * const Application:: CallSign = "Application";
+
+Y_Spyndle(Application)
+
 
 class Simple : public Object
 {
