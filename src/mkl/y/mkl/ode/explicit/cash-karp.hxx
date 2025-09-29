@@ -142,6 +142,7 @@ public:
             xadd += c6*ak6[i];
             yout[i] = y[i] + h * xadd.sum();
         }
+
         FOREACH_I
         {
             //yerr[i]=h*(dc1*dydx[i]+dc3*ak3[i]+dc4*ak4[i]+dc5*ak5[i]+dc6*ak6[i]);
@@ -158,7 +159,7 @@ public:
     }
 
 
-    Vector<real_t> ak2,ak3,ak4,ak5,ak6,ytemp;
+    Vector<real_t>          ak2,ak3,ak4,ak5,ak6,ytemp;
     Cameo::Addition<real_t> xadd;
     const real_t            zero;
 

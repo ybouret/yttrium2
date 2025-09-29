@@ -66,7 +66,6 @@ public:
             const real_t xnew = x + h;
             if(same(xnew,x))
                 throw Specific::Exception(step.callSign(),"step size underflow");
-
         }
 
         // compute hnext from control value

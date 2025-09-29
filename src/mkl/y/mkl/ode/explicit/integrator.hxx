@@ -41,6 +41,7 @@ public:
         Iter::Direction d = Iter::Forward;
         const size_t    n = ystart.size(); prepare(n);
         real_t          h = Fabs<real_t>::Of(h1);
+        
         switch( Sign::Of(x2,x1) )
         {
             case __Zero__:
