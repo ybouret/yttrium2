@@ -119,8 +119,7 @@ public:
             if( last && Fabs<real_t>::Of(hdid) >= Fabs<real_t>::Of(h) )
             {
                 // done
-                for(size_t i=n;i>0;--i)
-                    ystart[i] = y[i];
+                for(size_t i=n;i>0;--i) ystart[i] = y[i];
                 return;
             }
 
@@ -129,11 +128,11 @@ public:
             // check next step
             //
             //------------------------------------------------------------------
-            if(Fabs<real_t>::Of(hnext) <= zero)
+            const real_t ah = Fabs<real_t>::Of(hnext);
+            if( AlmostEqual<real_t>::Are(ah,zero) )
                 throw Specific::Exception(step.callSign(),"step underflow");
 
             h = hnext;
-
         }
 
 

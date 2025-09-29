@@ -7,6 +7,7 @@
 #include "y/core/utils.hpp"
 #include "y/exception.hpp"
 #include "y/mkl/numeric.hpp"
+#include "y/mkl/api/almost-equal.hpp"
 
 namespace Yttrium
 {
