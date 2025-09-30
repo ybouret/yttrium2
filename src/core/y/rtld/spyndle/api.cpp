@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "y/rtld/spyndle/api.hpp"
 #include <cstring>
 #include <cassert>

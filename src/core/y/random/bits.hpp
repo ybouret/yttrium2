@@ -158,8 +158,9 @@ namespace Yttrium
             template <typename T> inline
             T lt(const T n) noexcept
             {
-                assert(n > 0);
-                return leq(n - 1);
+                static const T one(1);
+                assert(n>(T)0);
+                return leq<T>(n - one);
             }
 
             //! uniform in integral segement
@@ -172,7 +173,7 @@ namespace Yttrium
             T in(const T a, const T b) noexcept
             {
                 assert(b >= a);
-                return a + leq<T>(b - a);
+                return (T)(a + leq<T>( (T)(b-a) ) );
             }
 
 
