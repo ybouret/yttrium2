@@ -3,6 +3,9 @@ template <>
 class ExplicitIntegrator<real_t>:: Code : public Object
 {
 public:
+    typedef ExplicitDriver<real_t>::Equation Equation;
+    typedef ExplicitDriver<real_t>::Callback Callback;
+    typedef ExplicitDriver<real_t>::StepType StepType;
 
     inline explicit Code() :
     Object(),

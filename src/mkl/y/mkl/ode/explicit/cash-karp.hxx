@@ -2,6 +2,8 @@ template <>
 class CashKarp<real_t>:: Code : public Object
 {
 public:
+    typedef CashKarp<real_t>::Equation Equation;
+    typedef CashKarp<real_t>::Callback Callback;
 
     inline explicit Code() :
     Object(),

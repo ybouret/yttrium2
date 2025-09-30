@@ -4,6 +4,9 @@ class ExplicitDriver<real_t>:: Code : public Object
 {
 public:
     typedef FCPU<real_t>::Type fcpu_t;
+    typedef ExplicitDriver<real_t>::Equation Equation;
+    typedef ExplicitDriver<real_t>::Callback Callback;
+    typedef ExplicitDriver<real_t>::StepType StepType;
 
     inline explicit Code() :
     Object(),

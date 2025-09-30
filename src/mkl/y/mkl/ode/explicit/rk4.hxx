@@ -3,6 +3,8 @@ template <>
 class RK4<real_t>::Code : public Object
 {
 public:
+    typedef Field<real_t>::Equation Equation;
+    typedef Field<real_t>::Callback Callback;
 
     inline explicit Code(const size_t nmax) :
     Object(),
