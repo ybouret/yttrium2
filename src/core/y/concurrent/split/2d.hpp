@@ -55,7 +55,7 @@ namespace Yttrium
                 inline HSegment(const T x0, const T y0, const T x1) noexcept :
                 y(y0),
                 x(x0),
-                w(x1-x0+1),
+                w( (size_t)(x1-x0+1) ),
                 x_end(x1)
                 {
                 }
@@ -256,8 +256,8 @@ namespace Yttrium
                 {
                     if(lower.x>upper.x) CoerceSwap(lower.x,upper.x);
                     if(lower.y>upper.y) CoerceSwap(lower.y,upper.y);
-                    ++(Coerce(width.x) = upper.x - lower.x);
-                    ++(Coerce(width.y) = upper.y - lower.y);
+                    ++(Coerce(width.x) = (size_t)(upper.x - lower.x) );
+                    ++(Coerce(width.y) = (size_t)(upper.y - lower.y) );
                     Coerce(items) = width.x * width.y;
                 }
             };
@@ -287,7 +287,7 @@ namespace Yttrium
                 inline explicit HeavyTile(const V2D<T>       &lo,
                                           const V2D<T>       &up,
                                           const Metrics2D<T> &metrics) :
-                Tile<T>(up.y-lo.y+1),
+                Tile<T>( (size_t) (up.y-lo.y+(T)1) ),
                 arr(h)
                 {
                     assert(h>0);
@@ -296,9 +296,9 @@ namespace Yttrium
                     {
                         const T x_lo = (j==1) ? lo.x : metrics.lower.x;
                         const T x_up = (j==h) ? up.x : metrics.upper.x;
-                        const HSegment<T> s(x_lo,y,x_up);
-                        Coerce(arr)   << s;
-                        Coerce(items) += s.w;
+                        const HSegment<T> hs(x_lo,y,x_up);
+                        Coerce(arr)   << hs;
+                        Coerce(items) += hs.w;
                     }
                     Coerce(s) = & arr[1];
                 }
