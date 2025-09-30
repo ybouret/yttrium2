@@ -108,12 +108,13 @@ namespace Yttrium
             //
             //
             //------------------------------------------------------------------
-            uint8_t * r8 = ((uint8_t *)wksp)-1;
-            double    cy = 0;
+            uint8_t *    r8 = ((uint8_t *)wksp)-1;
+            double       cy = 0;
+            const double den = (double)nc;
             {
                 static const double RX  = 256.0;
                 for(size_t j=nn;j>0;--j) {
-                    const double t = floor( b[j]/nc+cy+0.5 );
+                    const double t = floor( b[j]/den+cy+0.5 );
                     cy=(unsigned long) (t*0.00390625);
                     //*(uint8_t *)&b[j] =
                     r8[j] = (uint8_t)(t-cy*RX);
@@ -255,11 +256,12 @@ namespace Yttrium
             //
             //
             //------------------------------------------------------------------
-            double    cy = 0;
+            double       cy  = 0;
+            const double den = (double)nc;
             {
                 static const double RX  = 256.0;
                 for(size_t j=nn;j>0;--j) {
-                    const double t = floor( b[j]/nc+cy+0.5 );
+                    const double t = floor( b[j]/den+cy+0.5 );
                     cy=(unsigned long) (t*0.00390625);
                     *(uint8_t *)&b[j] = (uint8_t)(t-cy*RX);
                 }
