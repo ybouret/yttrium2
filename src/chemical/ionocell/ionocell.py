@@ -2,6 +2,19 @@
 import ctypes as ct
 import sys
 
+class Species:
+
+    def __init__(self,species_name,species_z):
+        self.name = species_name
+        self.z = species_z
+
+    def __copy__(self):
+        print('__copy__()')
+        return Species(self.name,self.z)
+    
+    def __str__(self):
+        return self.name
+
 """ IonoCell """
 class IonoCell:
 
@@ -53,11 +66,15 @@ class IonoCell:
     def getSpeciesName(self,i):
         return str( self.getSpeciesName_(i), "utf-8")
 
+    def getSpecies(self,i):
+        return Species( self.getSpeciesName(i), self.getSpeciesCharge(i))
+
     def mustQuit(self):
         print("Error in IonoCell")
         print( "Reason   : ", str(self.what(), "utf-8") )
         print( "Location : ", str(self.when(), "utf-8") )
         sys.exit(1)
+
 
 if __name__ == '__main__':
     chemsys = IonoCell()
@@ -65,6 +82,4 @@ if __name__ == '__main__':
     M = chemsys.numSpecies()
     print("numSpecies = ", M )
     for i in range(M):
-        spName = chemsys.getSpeciesName(i)
-        spCharge = chemsys.getSpeciesCharge(i)
-        print("#",i," : ", spName, ":", "z=", spCharge)
+        print( chemsys.getSpecies(i) )
