@@ -6,6 +6,10 @@
 #include "y/system/compiler.hpp"
 #include <iosfwd>
 
+#if defined(_MSC_VER)
+#pragma warning ( disable : 4623 )
+#endif
+
 namespace Yttrium
 {
     //__________________________________________________________________________

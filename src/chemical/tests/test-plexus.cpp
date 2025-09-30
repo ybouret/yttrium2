@@ -83,8 +83,7 @@ Y_UTEST(plexus)
     lib.print(std::cerr << "dC=", "[", dC, "]", xreal_t::ToString);
 
 
-    return 0;
-
+#if 0
     SteadyState s3(cls);
     s3.solve(xml,C0);
 
@@ -106,6 +105,7 @@ Y_UTEST(plexus)
 
     Vizible::DotToPng("cs.dot",true);
 
+#endif
 
 }
 Y_UDONE()

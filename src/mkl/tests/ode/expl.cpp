@@ -1,4 +1,9 @@
 
+
+#if defined(_MSC_VER)
+#pragma warning ( disable : 4464 )
+#endif
+
 #include "y/mkl/ode/explicit/integrator.hpp"
 #include "y/mkl/ode/explicit/cash-karp.hpp"
 #include "y/mkl/ode/example.hpp"
@@ -28,24 +33,24 @@ static inline void TestExample(const char * const id, Random::Bits &ran)
 {
     ODE::CashKarp<T>           step;
     ODE::ExplicitIntegrator<T> odeint;
+    static const unsigned np = 100;
 
-    T            x     = 0;
-    const T      x_end = 7;
-    const size_t np    = 100;
-    const T      dx    = (x_end-x) / (T) np;
-    const T      dx1   = dx / (T) 10.0;;
+    T              x     = 0;
+    const T        x_end = 7;
+    const T        dx    = (x_end-x) / (T) np;
+    const T        dx1   = dx / (T) 10.0;;
     {
         std::cerr << "Exponential/" << id << std::endl;
         const String fileName = "q-exponential-" + String(id) + ".dat";
         OutputFile   fp(fileName);
         CxxArray<T> y(1),dydx(1);
 
-        ODE::dExponential<T> dExp(-0.7);
+        ODE::dExponential<T> dExp(-0.7f);
 
 
         y[1] = 1;
         saveTo(fp,x,y);
-        for(size_t i=1;i<=np;++i)
+        for(unsigned i=1;i<=np;++i)
         {
             const T x1 = x;
             const T x2 = x = (((T) (i) ) * x_end) / (T) np;
@@ -61,12 +66,12 @@ static inline void TestExample(const char * const id, Random::Bits &ran)
         OutputFile   fp(fileName);
         CxxArray<T>  y(2),dydx(2);
 
-        ODE::dSpring<T> spring(0.7,0.01);
+        ODE::dSpring<T> spring(0.7f,0.01f);
         x    = 0;
         y[1] = 1;
         y[2] = 0;
         saveTo(fp,x,y);
-        for(size_t i=1;i<=np;++i)
+        for(unsigned i=1;i<=np;++i)
         {
             const T x1 = x;
             const T x2 = x = (((T) (i) ) * x_end) / (T) np;
@@ -89,7 +94,7 @@ static inline void TestExample(const char * const id, Random::Bits &ran)
             x    = 0;
             astra.init(y);
             saveTo(fp,x,y);
-            for(size_t i=1;i<=np;++i)
+            for(unsigned i=1;i<=np;++i)
             {
                 const T x1 = x;
                 const T x2 = x = (((T) (i) ) * x_end) / (T) np;
@@ -105,7 +110,7 @@ static inline void TestExample(const char * const id, Random::Bits &ran)
             x    = 0;
             astra.init(y);
             saveTo(fp,x,y);
-            for(size_t i=1;i<=np;++i)
+            for(unsigned i=1;i<=np;++i)
             {
                 const T x1 = x;
                 const T x2 = x = (((T) (i) ) * x_end) / (T) np;

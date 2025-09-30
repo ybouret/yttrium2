@@ -98,7 +98,7 @@ namespace Yttrium
 
                             case ReacOnly:
                                 assert(E.drNu<0);
-                                const xreal_t dxi = -K.pow(one / (xreal_t) (E.drNu) );
+                                const xreal_t dxi = -K.pow(one / (real_t) (E.drNu) );
                                 while( (ff.c = F( xx.c += dxi )) <= zero )
                                     ;
                                 break;

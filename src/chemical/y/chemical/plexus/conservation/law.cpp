@@ -236,7 +236,7 @@ namespace Yttrium
 
             using namespace MKL;
 
-            void Law:: finalize(XMLog &         xml,
+            void Law:: finalize(XMLog &         ,
                                 const EList &   primary,
                                 const iMatrix & topology)
             {
