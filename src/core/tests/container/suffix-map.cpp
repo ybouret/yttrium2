@@ -35,7 +35,7 @@ Y_UTEST(container_suffix_map)
 
 
 
-        Y_CHECK(map.search("dum7"));
+        Y_CHECK(0!=map.search("dum7"));
         std::cerr << "search : " << map.search("dum7")->a << std::endl;
         {
             const SuffixMap<String,Dummy> &cmap = map;
@@ -44,7 +44,7 @@ Y_UTEST(container_suffix_map)
         }
 
         Y_CHECK(map.remove("dum7"));
-        Y_CHECK(!map.search("dum7"));
+        Y_CHECK(0==map.search("dum7"));
         Y_CHECK(!map.remove("dum7"));
 
 

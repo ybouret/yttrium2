@@ -22,22 +22,22 @@ Y_UTEST(container_htable)
 
     for(size_t i=0;i<4;++i)
     {
-        Y_CHECK( table.insert(key[i], &arr[i], Same) );
+        Y_CHECK( 0 != table.insert(key[i], &arr[i], Same) );
     }
 
     for(size_t i=0;i<4;++i)
     {
-        Y_CHECK( table.remove(key[i], &arr[i], Same) );
+        Y_CHECK( 0!=table.remove(key[i], &arr[i], Same) );
     }
 
     for(size_t i=0;i<4;++i)
     {
-        Y_CHECK( table.insert(key[i], &arr[i], Same) );
+        Y_CHECK( 0!=table.insert(key[i], &arr[i], Same) );
     }
 
     for(size_t i=0;i<4;++i)
     {
-        Y_CHECK( !table.insert(key[i], &arr[i], Same) );
+        Y_CHECK( 0==table.insert(key[i], &arr[i], Same) );
     }
 
     table.free();

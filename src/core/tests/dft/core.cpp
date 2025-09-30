@@ -52,9 +52,9 @@ namespace
 			xadd.ldz();
 			for (size_t i = data.size(); i > 0; --i)
 			{
-				xadd << Squared(data[i] / n - orig[i]);
+				xadd << Squared(data[i] / (T)n - orig[i]);
 			}
-			const T tmp = sqrt(xadd.sum() / n);
+			const T tmp = std::sqrt(xadd.sum() / (T)n);
 			if (tmp > rms) rms = tmp;
 
 		} while (chrono(chrono.Ticks() - out) < duration);
@@ -201,8 +201,8 @@ void TestTwoDFT(const unsigned p,
 
 	for (size_t i = 1; i <= n; ++i)
 	{
-		Y_ASSERT(static_cast<size_t>(floor(fft1[1 + (i - 1) * 2] / n + 0.5)) == static_cast<size_t>(data1[i]));
-		Y_ASSERT(static_cast<size_t>(floor(fft2[1 + (i - 1) * 2] / n + 0.5)) == static_cast<size_t>(data2[i]));
+		Y_ASSERT(static_cast<size_t>(floor(fft1[1 + (i - 1) * 2] / (T)n + 0.5)) == static_cast<size_t>(data1[i]));
+		Y_ASSERT(static_cast<size_t>(floor(fft2[1 + (i - 1) * 2] / (T)n + 0.5)) == static_cast<size_t>(data2[i]));
 	}
 
 }
@@ -238,7 +238,7 @@ double TestMultiply(const unsigned pmax, Random::Bits &ran)
 			tmx += chrono.Ticks() - ini;
 		} while (chrono(chrono.Ticks() - out) < duration);
 		const long double ell = chrono(tmx);
-		const double      speed = double((static_cast<long double>(cycles)*n) / (ell));
+		const double      speed = double((static_cast<long double>(cycles)*(long double)n) / (ell));
 		(std::cerr << p << '/').flush();
 		xadd << speed;
 	}
@@ -305,7 +305,7 @@ Y_UTEST(dft_core)
 			DFT::Reverse(data() - 1, n);
 			for (size_t i = 1; i <= data.size(); ++i)
 			{
-				data[i] = std::floor(data[i] / n + 0.5f);
+				data[i] = std::floor(data[i] / (float)n + 0.5f);
 				Y_ASSERT(i == static_cast<size_t>(data[i]));
 			}
 			std::cerr << data << std::endl;
