@@ -65,7 +65,7 @@ Function( FUNCTION::__length, FUNCTION::__window), H(), M(H,
             }
 
             //! get function from hmac \param output buffer \param outlen length
-            inline virtual void get(void * const output, const size_t outlen) noexcept
+            inline virtual void get(void * const output, size_t outlen) noexcept
             {
                 const Memory::ReadOnlyBuffer &md = M.get(H);
                 fill(output,outlen,md.ro(),md.length());

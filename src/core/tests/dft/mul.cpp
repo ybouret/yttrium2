@@ -83,7 +83,7 @@ namespace
         double       cy  = 0;
         const double RX  = 256.0;
         for(size_t j=nn;j>0;--j) {
-            const double t = floor( b[j]/nc+cy+0.5 );
+            const double t = floor( b[j]/(double)nc+cy+0.5 );
             cy=(unsigned long) (t*0.00390625);
             *(uint8_t *)&b[j]= (uint8_t)(t-cy*RX);
         }

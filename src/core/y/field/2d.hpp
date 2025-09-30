@@ -44,6 +44,11 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
+            
+#if defined(_MSC_VER)
+#pragma warning (push)
+#pragma warning ( disable : 4355 )
+#endif
             //! standalone field
             /**
              \param uid name
@@ -61,6 +66,10 @@ namespace Yttrium
             {
                 setup();
             }
+
+#if defined(_MSC_VER)
+#pragma warning (pop)
+#endif
 
             //! slice within 3D
             /**

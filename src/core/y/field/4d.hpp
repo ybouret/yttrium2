@@ -42,6 +42,10 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
+#if defined(_MSC_VER)
+#pragma warning (push)
+#pragma warning ( disable : 4355 )
+#endif
 
             //! standalone
             /**
@@ -62,6 +66,10 @@ namespace Yttrium
             {
                 setup();
             }
+
+#if defined(_MSC_VER)
+#pragma warning (pop)
+#endif
 
             //! cleanup
             inline virtual ~In4D() noexcept {}

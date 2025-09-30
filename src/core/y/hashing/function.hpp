@@ -36,10 +36,10 @@ namespace Yttrium
             //
             // virtual interface
             //__________________________________________________________________
-            virtual      ~Function()                             noexcept;     //!< destructor
-            virtual void  set()                                  noexcept = 0; //!< initialize
-            virtual void  run(const void *buffer, size_t buflen) noexcept = 0; //!< process bytes \param buffer address \param buflen length
-            virtual void  get(void *output, size_t outlen)       noexcept = 0; //!< finalize/fill array \param output address \param outlen length
+            virtual      ~Function()                                    noexcept;     //!< destructor
+            virtual void  set()                                         noexcept = 0; //!< initialize
+            virtual void  run(const void * const buffer, size_t buflen) noexcept = 0; //!< process bytes \param buffer address \param buflen length
+            virtual void  get(void * const output, size_t outlen)       noexcept = 0; //!< finalize/fill array \param output address \param outlen length
 
             //__________________________________________________________________
             //
@@ -111,8 +111,8 @@ static const size_t __length = L ;                                       \
 static const size_t __window = W ;                                       \
 inline virtual const char *callSign() const noexcept { return CallSign;} \
 virtual void set() noexcept;                                             \
-virtual void run( const void *buf, size_t len ) noexcept;                \
-virtual void get( void *output, size_t outlen ) noexcept
+virtual void run( const void * const buf, size_t len ) noexcept;          \
+virtual void get( void * const output, size_t outlen ) noexcept
 
     }
 

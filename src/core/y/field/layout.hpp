@@ -37,6 +37,7 @@ namespace Yttrium
 
             using LayoutScope<COUNT>::width;
             using LayoutScope<COUNT>::shift;
+            using LayoutScope<COUNT>::lastShift;
 
             //__________________________________________________________________
             //
@@ -67,7 +68,7 @@ namespace Yttrium
             template <typename SUPER> inline
             explicit Layout(const SubLayout_ &_, const SUPER &super) noexcept :
             LayoutScope<COUNT>(_,super),
-            LayoutMetrics(DIMENSION, this->lastShift() ),
+            LayoutMetrics(DIMENSION, lastShift() ),
             lower( Memory::Stealth::Conv<const COORD,const typename SUPER::CoordType>(super.lower) ),
             upper( Memory::Stealth::Conv<const COORD,const typename SUPER::CoordType>(super.upper) )
             {

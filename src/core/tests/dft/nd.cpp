@@ -31,8 +31,8 @@ namespace  {
                     //std::cerr << "j=" << j << std::endl;
                     for(unit_t i=F->lower.x;i<=F->upper.x;++i)
                     {
-                        F[j][i].re = i;
-                        F[j][i].im = j;
+                        F[j][i].re = (T)i;
+                        F[j][i].im = (T)j;
                     }
                     //Core::Display( std::cerr, &F[j][1].re, 2*F->width.x ) << std::endl;
                 }
@@ -48,7 +48,7 @@ namespace  {
                 {
                     for(unit_t i=F->lower.x;i<=F->upper.x;++i)
                     {
-                        F[j][i] /= F->shift.y;
+                        F[j][i] /= (T) F->shift.y;
                         const unit_t re = (unit_t)( floor(F[j][i].re+half) );
                         const unit_t im = (unit_t)( floor(F[j][i].im+half) );
                         Y_ASSERT(re==i);
@@ -84,8 +84,8 @@ namespace  {
                         {
                             for(unit_t i=F->lower.x;i<=F->upper.x;++i)
                             {
-                                F[k][j][i].re = i+j;
-                                F[k][j][i].im = j+k;
+                                F[k][j][i].re = (T) (i+j);
+                                F[k][j][i].im = (T) (j+k);
                             }
                         }
                     }
@@ -103,7 +103,7 @@ namespace  {
                         {
                             for(unit_t i=F->lower.x;i<=F->upper.x;++i)
                             {
-                                F[k][j][i] /= F->shift.z;
+                                F[k][j][i] /= (T) F->shift.z;
                                 const unit_t re = (unit_t)( floor(F[k][j][i].re+half) );
                                 const unit_t im = (unit_t)( floor(F[k][j][i].im+half) );
                                 Y_ASSERT(re==i+j);

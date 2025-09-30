@@ -42,6 +42,10 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
+#if defined(_MSC_VER)
+#pragma warning (push)
+#pragma warning ( disable : 4355 )
+#endif
             //! standalone
             /**
              \param uid name
@@ -60,6 +64,11 @@ namespace Yttrium
             {
                 setup();
             }
+
+#if defined(_MSC_VER)
+#pragma warning (pop)
+#endif
+
 
             //! volume within 4D
             /**
