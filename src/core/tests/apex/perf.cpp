@@ -93,7 +93,7 @@ Y_UTEST(apex_perf)
                 //(std::cerr << ell << "s    \r").flush();
             }
             while( cycles < 1000 && ell < 0.1 );
-            const long double rate = cycles / ell;
+            const long double rate = (long double)cycles / ell;
             rates[i][j] = rate;
             (std::cerr << ' ' << bits << "/" << cycles).flush();
 
@@ -165,7 +165,7 @@ Y_UTEST(apex_perf)
                 //(std::cerr << ell << "s    \r").flush();
             }
             while( cycles < 1000 && ell < 0.1 );
-            const long double rate = cycles / ell;
+            const long double rate = (long double)cycles / ell;
             std::cerr << ' ' << HumanReadable( (uint64_t)rate ) << "/s @" << std::setw(6) << bits << " bits" << std::endl;
         }
         std::cerr << std::endl;

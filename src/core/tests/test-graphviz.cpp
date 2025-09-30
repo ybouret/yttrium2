@@ -91,9 +91,9 @@ Y_UTEST(graphviz)
         fs.createSubDirs(dirName);
 
 
-        for(unsigned i=0;i<GraphViz::ColorScheme::Count;++i)
+        for(unsigned k=0;k<GraphViz::ColorScheme::Count;++k)
         {
-            const GraphViz::ColorScheme &cs = GraphViz::ColorScheme::Table[i];
+            const GraphViz::ColorScheme &cs = GraphViz::ColorScheme::Table[k];
             const String fileName = dirName + cs.name + ".dot";
             {
                 OutputFile fp(fileName);

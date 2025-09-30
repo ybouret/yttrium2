@@ -1,4 +1,8 @@
 
+#if defined(_MSC_VER)
+#pragma warning ( disable : 4464 )
+#endif
+
 #include "y/apex/simplify.hpp"
 #include "y/utest/run.hpp"
 #include "y/container/matrix.hpp"

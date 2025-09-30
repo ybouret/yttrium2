@@ -361,6 +361,7 @@ namespace Yttrium
                 typedef Tile<T>                        TileType;    //!< alias
                 typedef typename TileType::Pointer     TilePointer; //!< alias
                 typedef typename TileType::Array       TileArray;   //!< alias
+                using TilesComm<T>::empty;
 
                 //______________________________________________________________
                 //
@@ -372,7 +373,7 @@ namespace Yttrium
                 //! setup \param numProcessors parallel size
                 inline explicit Tiles(const size_t numProcessors) :
                 TilesComm<T>(),
-                arr(numProcessors,this->empty)
+                arr(numProcessors,empty)
                 {
                     assert(numProcessors>0);
                 }

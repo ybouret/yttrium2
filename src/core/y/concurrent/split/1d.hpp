@@ -201,6 +201,7 @@ namespace Yttrium
                 typedef Segment<T>                SegType;    //!< alias
                 typedef typename SegType::Pointer SegPointer; //!< alias
                 typedef typename SegType::Array   SegArray;   //!< alias
+                using SegmentsComm<T>::empty;
 
                 //______________________________________________________________
                 //
@@ -211,7 +212,7 @@ namespace Yttrium
 
                 //! setup \param numProcessors parallel size
                 inline explicit Segments(const size_t numProcessors) :
-                arr(numProcessors,this->empty)
+                arr(numProcessors,empty)
                 {
                     assert(numProcessors>0);
                 }
