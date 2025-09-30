@@ -33,7 +33,7 @@ project(libpng
         LANGUAGES C ASM)
 
 if(Y_MSC)
-    string( APPEND CMAKE_C_FLAGS " -wd4820 -wd4464 -wd4668 -wd4574 -wd4711 -wd4255 -wd4710")
+    string( APPEND CMAKE_C_FLAGS " -wd4820 -wd4464 -wd4668 -wd4574 -wd4711 -wd4255 -wd4710 -wd5045")
 endif()
 include(CheckCSourceCompiles)
 include(CheckLibraryExists)
