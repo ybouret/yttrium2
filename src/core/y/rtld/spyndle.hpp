@@ -9,47 +9,75 @@
 namespace Yttrium
 {
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Application in one DLL
+    //
+    //
+    //__________________________________________________________________________
     template <typename T>
     class Spyndle : public SpyndleAPI
     {
     public:
-        typedef T ClassType;
-        static  T * App;
+        //______________________________________________________________________
+        //
+        //
+        // Definitions
+        //
+        //______________________________________________________________________
+        typedef T ClassType; //!< alias
+        static  T * App;     //!< 'singleton' app
 
 
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
         inline virtual const char * callSign() const noexcept
         {
             return ClassType:: CallSign;
         }
 
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
 
+        //! create application \return true iff succcess
         static inline bool Init() noexcept
         {
             assert(0==App);
-            Y_Spyndle_Code(App = new ClassType(),return true,return false);
+            Y_Spyndle_Boolean(App = new ClassType());
         }
 
+        //! delete existing application
         static inline void Quit() noexcept
         {
             if(App) { delete App; App=0; }
         }
 
-        inline virtual ~Spyndle() noexcept
-        {
-
-        }
-
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+        inline virtual ~Spyndle() noexcept {} //!< cleanup
     protected:
-        inline explicit Spyndle() noexcept : SpyndleAPI()
-        {
-        }
+        inline explicit Spyndle() noexcept : SpyndleAPI() {} //!< setup
 
     private:
-        Y_Disable_Copy_And_Assign(Spyndle);
+        Y_Disable_Copy_And_Assign(Spyndle); //!< discarding
 
     };
 
-    template <typename T> T * Spyndle<T>:: App = 0;
+    template <typename T> T * Spyndle<T>:: App = 0; //!< alias
 
 }
 

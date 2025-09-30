@@ -16,30 +16,45 @@ namespace Yttrium
     //
     //
     //
-    //! API For SpyndleClass
+    //! API For Spyndle<Class>
     //
     //
     //__________________________________________________________________________
     class SpyndleAPI : public Object, public Identifiable
     {
     public:
-        static const size_t  MessageLength = 256;
-        static char          What[MessageLength];
-        static char          When[MessageLength];
-        static void          NoMessage() noexcept;
-        static void          OnError(const char * const what, const char * const when) noexcept;
-        static void          OnError(const std::exception &,  const char * const when) noexcept;
-        static void          OnError(const Exception &)                                noexcept;
 
-        
-        virtual ~SpyndleAPI() noexcept;
+        //______________________________________________________________________
+        //
+        //
+        // error handling
+        //
+        //______________________________________________________________________
+
+        static const size_t  MessageLength = 256; //!< alias
+        static char          What[MessageLength]; //!< holds global error what
+        static char          When[MessageLength]; //!< holds global error when
+        static void          NoMessage() noexcept; //!< cleanup
+        static void          OnError(const char * const what, const char * const when) noexcept; //!< \param what what \param when when
+        static void          OnError(const std::exception &,  const char * const when) noexcept; //!< use exception what() \param when when
+        static void          OnError(const Exception &)                                noexcept; //!< use exception what()/when()
+
+
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+        virtual ~SpyndleAPI() noexcept; //!< cleanup
     protected:
-        explicit SpyndleAPI() noexcept;
+        explicit SpyndleAPI() noexcept; //!< setup
 
     private:
-        Y_Disable_Copy_And_Assign(SpyndleAPI);
+        Y_Disable_Copy_And_Assign(SpyndleAPI); //!< discarding
     };
 
+    //! helper to intercept exception
 #define Y_Spyndle_Code(CODE,SUCCESS,FAILURE) \
 /**/ do {\
 /**/    try { CODE; SUCCESS; }\
@@ -48,6 +63,8 @@ namespace Yttrium
 /**/    catch(...) { OnError("Unhandled Exception",ClassType::CallSign); FAILURE; } \
 /**/ } while(false)
 
+    //! boolean code
+#define Y_Spyndle_Boolean(CODE) Y_Spyndle_Code(CODE,return true,return false)
 
 }
 

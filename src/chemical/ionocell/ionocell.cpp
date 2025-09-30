@@ -16,18 +16,20 @@ eqs()
 Y_Spyndle(IonoCell)
 
 
-#if 0
 bool IonoCell:: declare(const char * const argv)
 {
     assert(0!=argv);
-    Y_Soak_Bool(
-                const String data = argv;
-                weasel( Jive::Module::OpenData(data,data), lib, eqs);
-                std::cerr << "lib=" << lib << std::endl;
-                );
+    Y_Spyndle_Boolean(
+                      const String data = argv;
+                      weasel( Jive::Module::OpenData(data,data), lib, eqs);
+                      std::cerr << "lib=" << lib << std::endl;
+                      );
 }
 
-Y_Soak_Meth(bool,IonoCell,declare,(const char *const argv), (argv) )
+
+Y_Spyndle_Meth(bool,IonoCell,declare,(const char *const argv), (argv) )
+
+#if 0
 
 size_t IonoCell:: numSpecies() const noexcept
 {

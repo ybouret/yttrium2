@@ -16,6 +16,11 @@ namespace Yttrium
 		{
 			typedef T Type; //!< alias
 
+            //! cast integral type to floating point type
+            /**
+             \param u integral value
+             \return cast to floating point
+             */
 			template <typename U> static inline
 				Type Cast(const U& u) { return (Type)u; };
 		};
@@ -26,6 +31,11 @@ namespace Yttrium
 		{
 			typedef T Type; //!< alias
 
+            //! cast integral type to x-floating point type
+            /**
+             \param u integral value
+             \return cast to x-floating point
+             */
 			template <typename U> static inline
 				XReal<T> Cast(const U& u) { return (Type)u; };
 		};

@@ -27,9 +27,9 @@ class IonoCell:
             self.mustQuit()
 
 
-        #self.declare = self.dll.IonoCell_declare
-        #self.declare.restype = ct.c_bool
-        #self.declare.argtypes = [ct.c_char_p]
+        self.declare = self.dll.IonoCell_declare
+        self.declare.restype = ct.c_bool
+        self.declare.argtypes = [ct.c_char_p]
 
         #self.numSpecies = self.dll.IonoCell_numSpecies
         #self.numSpecies.restype = ct.c_size_t
@@ -43,7 +43,7 @@ class IonoCell:
         #self.getSpeciesCharge.restype = ct.c_int
         #self.getSpeciesCharge.argtypes = [ct.c_size_t]
 
-    def __del_(self):
+    def __del__(self):
         self.Quit()
 
     def getSpeciesName(self,i):
@@ -57,10 +57,10 @@ class IonoCell:
 
 if __name__ == '__main__':
     chemsys = IonoCell()
-    if not chemsys.declare(b"Na^+ Cl^-"):
-        chemsys.mustQuit()
-    M = chemsys.numSpecies()
-    print("numSpecies = ", M )
+    #if not chemsys.declare(b"Na^+ Cl^-"):
+    #    chemsys.mustQuit()
+    #M = chemsys.numSpecies()
+    #print("numSpecies = ", M )
     #for i in range(M):
     #    spName = chemsys.getSpeciesName(i)
     #    spCharge = chemsys.getSpeciesCharge(i)
