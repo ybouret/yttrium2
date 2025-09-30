@@ -13,7 +13,7 @@ public:
     y(), dydx(), yscal(),
     xadd(),
     zero(0),
-    TINY(1e-30)
+    TINY(1e-30f)
     {
 
     }
@@ -162,7 +162,7 @@ private:
 
 template <>
 ExplicitIntegrator<real_t>::  ExplicitIntegrator() :
-eps( 1.0e-7 ),
+eps( 1.0e-7f ),
 code( new Code() )
 {
 }
