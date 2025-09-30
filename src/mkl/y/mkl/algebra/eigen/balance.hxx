@@ -4,11 +4,11 @@ class Eigen::Balance<real_t>:: Code : public Object
 {
 public:
     inline explicit Code() :
-    RADIX( Numeric<real_t>::RADIX ),
+    RADIX( FLT_RADIX ),
     SQRDX( RADIX * RADIX ),
     one(1),
     zero(0),
-    safe(0.95),
+    safe( REAL(0.95) ),
     radd(),
     cadd()
     {
