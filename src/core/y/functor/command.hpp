@@ -138,8 +138,17 @@ namespace Yttrium {
 
         private:
             Y_Disable_Assign(command); //!< discarding
+
+#if defined(_MSC_VER)
+#pragma warning (push)
+#pragma warning (disable : 4371)
+#endif
             OBJECT_POINTER object_;    //!< object pointer
             METHOD_POINTER method_;    //!< method pointer
+
+#if defined(_MSC_VER)
+#pragma warning (pop)
+#endif
 
             //! copy for the clone function \param other another command
             explicit command( const command &other ) noexcept:

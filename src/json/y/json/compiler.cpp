@@ -21,6 +21,9 @@ namespace Yttrium
 
             inline virtual ~Code() noexcept {}
 
+#if defined(_MSC_VER)
+#pragma warning ( disable : 4355 )
+#endif
             inline explicit Code() :
             Jive::Parser("JSON"),
             Jive::Analyzer( static_cast<Grammar &>(*this) ),
@@ -133,8 +136,8 @@ namespace Yttrium
 
             inline void onnull(const Token &)
             {
-                Value nil;
-                values.add(nil);
+                Value _;
+                values.add(_);
             }
 
             inline void ontrue(const Token &)

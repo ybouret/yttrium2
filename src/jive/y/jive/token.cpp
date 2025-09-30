@@ -123,7 +123,7 @@ namespace Yttrium
                 const uint8_t d = **ch;
                 if(d<zero||d>nine) throw Exception("invalid digit in Token::toNatural");
                 res *= 10;
-                res += (int)(d-zero);
+                res += (unsigned)(d-zero);
             }
             return res;
         }

@@ -2,6 +2,10 @@
 
 #include "y/ink/pixmap.hpp"
 #include "y/utest/run.hpp"
+
+#if defined(_MSC_VER)
+#pragma warning (disable:4464)
+#endif
 #include "../../core/tests/main.hpp"
 
 using namespace Yttrium;
@@ -23,7 +27,7 @@ Y_UTEST(pixmap)
                 const String s = Gen<String>::New(ran);
                 std::cerr << " " << s;
                 p[j][i] = s;
-                Y_ASSERT( &p[j][i] == &p(j)(i) );
+                Y_ASSERT( &p[j][i] == &p( (size_t)j)( (size_t)i) );
             }
             std::cerr << std::endl;
         }

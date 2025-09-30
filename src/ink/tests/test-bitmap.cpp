@@ -49,7 +49,7 @@ Y_UTEST(bitmap)
 
     for(unit_t j=0;j<bmp.upper.y;++j)
     {
-        Ink::BitRow &       r   = bmp.getRow(j);
+        Ink::BitRow &       r   = bmp.getRow( (size_t)j );
         SomeRow<uint32_t> & row = (SomeRow<uint32_t>&)(r);
         for(unit_t i=bmp.lower.y;i<=bmp.upper.y;++i)
         {

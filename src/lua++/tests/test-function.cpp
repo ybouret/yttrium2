@@ -24,7 +24,7 @@ Y_UTEST(function)
 
         for(double x=0;x<=1.0;x+=0.1)
         {
-            std::cerr << "F(" << x << ")=" << Ff(x) << ", " << Fd(x) << std::endl;
+            std::cerr << "F(" << x << ")=" << Ff( (float)x ) << ", " << Fd(x) << std::endl;
         }
 
     }
@@ -33,10 +33,10 @@ Y_UTEST(function)
     {
         Lua::Function<float>  f(vm,"f");
 
-        for(double x=0;x<=0.9;x+=0.1)
+        for(float x=0;x<=0.9;x+=0.1f)
         {
             std::cerr << "x=" << x << ": ";
-            for(double y=0;y<=3;y+=0.5)
+            for(float y=0;y<=3;y+=0.5f)
             {
                 std::cerr << " y=" << y << ":@" << f(x,y);
             }
