@@ -29,14 +29,14 @@ bool IonoCell:: declare(const char * const argv)
 
 Y_Spyndle_Meth(bool,IonoCell,declare,(const char *const argv), (argv) )
 
-#if 0
 
 size_t IonoCell:: numSpecies() const noexcept
 {
     return lib->size();
 }
 
-Y_Soak_Meth(size_t,IonoCell,numSpecies,(),())
+Y_Spyndle_Meth(size_t,IonoCell,numSpecies,(),())
+
 
 const char * IonoCell:: getSpeciesName(const size_t i) const noexcept
 {
@@ -44,7 +44,8 @@ const char * IonoCell:: getSpeciesName(const size_t i) const noexcept
     return sp.name.c_str();
 }
 
-Y_Soak_Meth(const char *,IonoCell,getSpeciesName,(const size_t i),(i))
+Y_Spyndle_Meth(const char *,IonoCell,getSpeciesName,(const size_t i),(i))
+
 
 int IonoCell:: getSpeciesCharge(const size_t i) const noexcept
 {
@@ -52,6 +53,6 @@ int IonoCell:: getSpeciesCharge(const size_t i) const noexcept
     return sp.z;
 }
 
-Y_Soak_Meth(int,IonoCell,getSpeciesCharge,(const size_t i),(i))
-#endif
+Y_Spyndle_Meth(int,IonoCell,getSpeciesCharge,(const size_t i),(i))
+
 
