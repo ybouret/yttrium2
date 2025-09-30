@@ -27,7 +27,7 @@ namespace {
         {
             sum += data[i];
         }
-        const T ave = sum/n;
+        const T ave = sum/(T)n;
         std::cerr << "\tave=" << ave << std::endl;
         T sig = 0;
         for(size_t i=1;i<=n;++i)
@@ -35,7 +35,7 @@ namespace {
             const T del = data[i] -  ave;
             sig += del*del;
         }
-        sig = sqrt(sig/n);
+        sig = std::sqrt(sig/(T)n);
         std::cerr << "\tsig=" << sig << std::endl;
     }
 
@@ -54,7 +54,7 @@ namespace {
         {
             sum += data[i];
         }
-        const long double ave = sum/n;
+        const long double ave = sum/(T)n;
         std::cerr << "\tave=" << ave << std::endl;
         long double sig = 0;
         for(size_t i=1;i<=n;++i)
@@ -62,7 +62,7 @@ namespace {
             const long double del = (long double)data[i] -  ave;
             sig += del*del;
         }
-        sig = sqrt(sig/n);
+        sig = std::sqrt(sig/(T)n);
         std::cerr << "\tsig=" << sig << std::endl;
     }
 
@@ -81,7 +81,7 @@ namespace {
         {
             sum += data[i];
         }
-        const long double ave = sum/n;
+        const long double ave = sum/(T)n;
         std::cerr << "\tave=" << ave << std::endl;
         long double sig = 0;
         for(size_t i=1;i<=n;++i)
@@ -89,7 +89,7 @@ namespace {
             const long double del = (long double)data[i] -  ave;
             sig += del*del;
         }
-        sig = sqrt(sig/n);
+        sig = std::sqrt(sig/(T)n);
         std::cerr << "\tsig=" << sig << std::endl;
     }
 

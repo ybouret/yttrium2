@@ -80,8 +80,15 @@ namespace Yttrium
             //! \return any floating point in ]0:1[
             template <typename T> inline T toR() noexcept
             {
-                const T res = T(real32());
+#if defined(_MSC_VER)
+#pragma warning (push)
+#pragma warning ( disable : 4244 )
+#endif
+                const T res = (T) real32();
                 return res;
+#if defined(_MSC_VER)
+#pragma warning (pop)
+#endif
             }
 
             //! \return any unsigned integral value
@@ -201,8 +208,15 @@ namespace Yttrium
             //! \return ]-1:1[ uniform
             template <typename T> inline T symmetric(const IntToType<Floating> &) noexcept
             {
+#if defined(_MSC_VER)
+#pragma warning (push)
+#pragma warning ( disable : 4244 )
+#endif
                 const T res = (T) symm32();
                 return res;
+#if defined(_MSC_VER)
+#pragma warning (pop)
+#endif
             }
 
             //!\return same than to<T> \param _ type selector
