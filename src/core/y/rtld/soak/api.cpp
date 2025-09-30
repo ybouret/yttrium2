@@ -1,5 +1,7 @@
-#include "y/rtld/soak/api.hpp"
+#define _CRT_SECURE_NO_WARNINGS
 
+#include "y/rtld/soak/api.hpp"
+#include "y/core/text.hpp"
 #include <cassert>
 #include <cstring>
 
