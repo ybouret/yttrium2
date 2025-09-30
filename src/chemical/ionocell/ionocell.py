@@ -27,9 +27,9 @@ class IonoCell:
             self.mustQuit()
 
 
-        self.declare = self.dll.IonoCell_declare
-        self.declare.restype = ct.c_bool
-        self.declare.argtypes = [ct.c_char_p]
+        self.declare_ = self.dll.IonoCell_declare
+        self.declare_.restype = ct.c_bool
+        self.declare_.argtypes = [ct.c_char_p]
 
         #self.numSpecies = self.dll.IonoCell_numSpecies
         #self.numSpecies.restype = ct.c_size_t
@@ -46,6 +46,10 @@ class IonoCell:
     def __del__(self):
         self.Quit()
 
+    def declare(self,python_string):
+        if not self.declare_( bytes(python_string,"utf-8")):
+            self.mustQuit()
+
     def getSpeciesName(self,i):
         return str( self.getSpeciesName_(i), "utf-8")
 
@@ -57,6 +61,7 @@ class IonoCell:
 
 if __name__ == '__main__':
     chemsys = IonoCell()
+    chemsys.declare('Na^+ Cl^- %acetic')
     #if not chemsys.declare(b"Na^+ Cl^-"):
     #    chemsys.mustQuit()
     #M = chemsys.numSpecies()
