@@ -14,12 +14,12 @@ public:
     ytemp(),
     zero(0),
     one(1),
-    CUT(0.1),
+    CUT( REAL(0.1) ),
     five(5),
-    SAFETY(SAFETY_VALUE),
-    PGROW(-0.2),
-    PSHRINK(-0.25),
-    ERRCON(1.89e-4)
+    SAFETY( REAL(0.9) ),
+    PGROW( REAL(-0.2) ),
+    PSHRINK( REAL(-0.25) ),
+    ERRCON( REAL(1.89e-4) )
     {
     }
 

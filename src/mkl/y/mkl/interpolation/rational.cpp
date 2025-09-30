@@ -31,7 +31,7 @@ namespace Yttrium
                              T                 &dy)
             {
                 static const T zero(0);
-                static const T TINY(1e-25);
+                static const T TINY(1e-25f);
                 assert(xa.size() == ya.size());
                 assert(c.size()  == d.size() );
                 assert(xa.size() <= c.size() );

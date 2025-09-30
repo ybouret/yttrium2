@@ -15,30 +15,40 @@ namespace Yttrium
         namespace ODE
         {
 
-#define SAFETY_VALUE 0.9
 
 #define real_t float
+#define REAL(X) X##f
 #include "driver.hxx"
 #undef real_t
+#undef REAL
 
 #define real_t double
+#define REAL(X) X
 #include "driver.hxx"
 #undef real_t
+#undef REAL
 
 #define real_t long double
+#define REAL(X) X##L
 #include "driver.hxx"
 #undef real_t
+#undef REAL
 
 #define real_t XReal<float>
+#define REAL(X) X##f
 #include "driver.hxx"
 #undef real_t
+#undef REAL
 
 #define real_t XReal<double>
+#define REAL(X) X
 #include "driver.hxx"
 #undef real_t
+#undef REAL
 
 
 #define real_t XReal<long double>
+#define REAL(X) X##L
 #include "driver.hxx"
 #undef real_t
 

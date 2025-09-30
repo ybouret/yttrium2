@@ -68,7 +68,7 @@ namespace Yttrium
             two(2),
             half(0.5),
             negativeHalf(-half),
-            ctrl(1.4),
+            ctrl(1.4f),
             ctrl2(ctrl*ctrl),
             ftol( Numeric<T>::SQRT_EPSILON ),
             a(NTAB,NTAB),
@@ -134,7 +134,7 @@ namespace Yttrium
                 else
                 {
                     // adaptive version
-                    static const int weight[4][4] =
+                    static const T weight[4][4] =
                     {
                         {-11, 18,  -9,  2},
                         {-2,  -3,   6, -1},
@@ -156,7 +156,7 @@ namespace Yttrium
                     for(size_t i=1;i<=4;++i)
                     {
                         xadd.ldz();
-                        const int * const w = weight[i-1];
+                        const T * const w = weight[i-1];
                         xadd << w[0] * FF[0] << w[1] * FF[1] << w[2] * FF[2] << w[3] * FF[3];
                         ya[i] = xadd.sum();
                     }
