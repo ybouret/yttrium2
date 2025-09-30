@@ -8,6 +8,7 @@
 #include "y/container/sequence/vector.hpp"
 #include "y/mkl/tao/3.hpp"
 #include "y/container/light-array.hpp"
+#include "y/mkl/api/fcpu.hpp"
 
 using namespace Yttrium;
 using namespace MKL;
@@ -50,7 +51,7 @@ namespace {
 
             {
                 const LightArray<T> arr(M(),M.items);
-                const T             rms2 = Tao::Norm2(xadd,arr) / (T) M.items;
+                const T             rms2 = Tao::Norm2(xadd,arr) / FCPU<T>::Cast(M.items);
                 const T             rms  = Sqrt<T>::Of(rms2);
                 std::cerr << "rms=" << double(rms) << std::endl;
             }

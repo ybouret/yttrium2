@@ -8,22 +8,30 @@
 
 namespace Yttrium
 {
-    namespace MKL
-    {
-        //! default floating point for CPU
-        template <typename T>
-        struct FCPU
-        {
-            typedef T Type; //!< alias
-        };
+	namespace MKL
+	{
+		//! default floating point for CPU
+		template <typename T>
+		struct FCPU
+		{
+			typedef T Type; //!< alias
 
-        //! floating point for CPU when using XReal
-        template <typename T>
-        struct FCPU< XReal<T> >
-        {
-            typedef T Type; //!< alias
-        };
-    }
+			template <typename U> static inline
+				Type Cast(const U& u) { return (Type)u; };
+		};
+
+		//! floating point for CPU when using XReal
+		template <typename T>
+		struct FCPU< XReal<T> >
+		{
+			typedef T Type; //!< alias
+
+			template <typename U> static inline
+				XReal<T> Cast(const U& u) { return (Type)u; };
+		};
+
+
+	}
 
 }
 
