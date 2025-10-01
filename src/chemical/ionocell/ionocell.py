@@ -44,7 +44,7 @@ class IonoCell:
             self.must_quit()
 
         # parse species/equilibria...
-        self.parse_ = self.dll.IonoCell_declare
+        self.parse_ = self.dll.IonoCell_parse
         self.parse_.restype = ct.c_bool
         self.parse_.argtypes = [ct.c_char_p]
 
@@ -57,11 +57,11 @@ class IonoCell:
         self.quit()
 
     def what(self):
-        """ C reason to python string """
+        """ C++ reason to python string """
         return self.c_to_p(self.what_())
 
     def when(self):
-        """ C location to python string """
+        """ C++ location to python string """
         return self.c_to_p(self.when_())
 
     def parse(self, some_code):
