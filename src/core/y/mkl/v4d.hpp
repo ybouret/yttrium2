@@ -25,9 +25,10 @@ namespace Yttrium
         // Definition
         //
         //______________________________________________________________________
-        typedef T             Type; //!< alias
+        typedef T             Type;           //!< alias
         static const size_t   DIMENSIONS = 4; //!< alias
 
+#if !defined(DOXYGEN_SHOULD_SKIP_THIS)
         //______________________________________________________________________
         //
         //
@@ -123,7 +124,7 @@ namespace Yttrium
         {
             return lhs.x != rhs.x || lhs.y != rhs.y || lhs.z != rhs.z || lhs.w != rhs.w;
         }
-
+#endif // !defined(DOXYGEN_SHOULD_SKIP_THIS)
 
 
         //______________________________________________________________________
@@ -142,5 +143,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_MKL_V4D_Included
 

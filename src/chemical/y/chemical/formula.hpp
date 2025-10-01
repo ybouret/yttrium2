@@ -57,9 +57,9 @@ namespace Yttrium
             String html()              const; //!< \return converted to html
             String laTeX()             const; //!< \return converted to LaTeX
 
-            static String ToText(const String &);
-            static String ToHTML(const String &);
-            static String ToLaTeX(const String &);
+            static String ToText(const String &);  //!< \return description to text
+            static String ToHTML(const String &);  //!< \return decription to html
+            static String ToLaTeX(const String &); //!< \return description to latex
 
             //__________________________________________________________________
             //

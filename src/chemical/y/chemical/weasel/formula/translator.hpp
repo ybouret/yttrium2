@@ -39,11 +39,12 @@ namespace Yttrium
             static const char SupInit[]; //!< "<sup>"
             static const char SupQuit[]; //!< "</sup>"
 
+            //! conversion target
             enum Target
             {
-                Text,
-                HTML,
-                LaTeX
+                Text, //!< univocal text
+                HTML, //!< univocal html label
+                LaTeX //!< univocal latex expression
             };
 
             //__________________________________________________________________

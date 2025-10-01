@@ -8,9 +8,12 @@
 #include "y/exception.hpp"
 #include "y/system/wall-time.hpp"
 
-//! disable mpicc
+//! disable mpicxx
 #define OMPI_SKIP_MPICXX 1
+
+//! disable mpicxx
 #define MPICH_SKIP_MPICXX 1
+
 #include <mpi.h>
 
 namespace Yttrium

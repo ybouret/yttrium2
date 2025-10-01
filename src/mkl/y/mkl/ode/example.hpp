@@ -134,7 +134,7 @@ namespace Yttrium
                 typedef typename ODE::Field<T>::Equation Equation; //!< alias
                 typedef typename ODE::Field<T>::Callback Callback; //!< alias
 
-
+                //! setup \param position starting position \param pulsation revolution speed
                 inline explicit dAstra(const V2D<T> &position, const T pulsation) :
                 Equation(this, & dAstra<T>::compute ),
                 r0(position),
@@ -149,26 +149,28 @@ namespace Yttrium
                     Coerce(v0) *= speed;
                 }
 
-
+                //! cleanup
                 inline virtual ~dAstra() noexcept {}
 
+                //! transfer initial phase space \param y phase space
                 inline void init(Writable<T> &y)
                 {
                     y[1] = r0.x; y[2] = r0.y;
                     y[3] = v0.x; y[4] = v0.y;
                 }
 
-                const V2D<T>   r0;
-                const V2D<T>   v0;
-                const T        radius;
-                const T        omega;
-                const T        omega2;
-                const T        speed;
-                Callback       proj;
+                const V2D<T>   r0;      //!< initial position
+                const V2D<T>   v0;      //!< initial veolicty
+                const T        radius;  //!< |r0}
+                const T        omega;   //!< 2 pi / T
+                const T        omega2;  //!< omega&2
+                const T        speed;   //!< |v0|
+                Callback       proj;    //!< project on circular phase space
 
             private:
-                Y_Disable_Copy_And_Assign(dAstra);
+                Y_Disable_Copy_And_Assign(dAstra); //!< discarding
 
+                //! \param dydt phase space derivative \param y phase space
                 inline void compute(Writable<T> &      dydt,
                                     const              T,
                                     const Readable<T> &y)
@@ -181,6 +183,7 @@ namespace Yttrium
                     dydt[4] = -omega2 * r.y;
                 }
 
+                //! \param y phase space to correct
                 inline void project(Writable<T> & y,
                                     const T)
                 {
