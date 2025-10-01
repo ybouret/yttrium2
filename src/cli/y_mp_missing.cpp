@@ -14,6 +14,11 @@ using namespace Yttrium;
 typedef Vector<String>           Strings;
 typedef SuffixSet<String,String> PDB;
 
+static inline String Output(const String &s)
+{
+    return '[' + s + ']';
+}
+
 struct Port
 {
 
@@ -43,7 +48,7 @@ struct Port
             if(pdb.search(dep))  continue;
             if(!pdb.insert(dep)) throw Specific::Exception("QueryDeps","couldn't insert '%s'", dep.c_str());
             if(IsInstalled(dep)) continue;
-            const String  child = root + '.' + dep;
+            const String  child = root + '.' + Output(dep);
             std::cerr <<  child << std::endl;
             ScanDeps(pdb,child,dep);
         }
@@ -78,7 +83,7 @@ Y_PROGRAM()
         return 0;
     }
 
-    String         root = port;
+    String         root = Output(port);
     PDB            pdb;
     Port::ScanDeps(pdb,root,port);
 
