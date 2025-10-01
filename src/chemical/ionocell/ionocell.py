@@ -48,6 +48,11 @@ class IonoCell:
         self.parse_.restype = ct.c_bool
         self.parse_.argtypes = [ct.c_char_p]
 
+        # number of species
+        self.numSpecies = self.dll.IonoCell_numSpecies
+        self.numSpecies.argtypes = []
+        self.numSpecies.restype = ct.c_size_t
+
     def __del__(self):
         self.quit()
 
@@ -75,3 +80,5 @@ class IonoCell:
 if __name__ == '__main__':
     chemsys = IonoCell()
     chemsys.parse('Na^+ Cl^- %acetic')
+    M = chemsys.numSpecies()
+    print("M =",M)
