@@ -16,7 +16,7 @@ eqs()
 Y_Spyndle(IonoCell)
 
 
-bool IonoCell:: declare(const char * const argv)
+bool IonoCell:: parse(const char * const argv)
 {
     assert(0!=argv);
     Y_Spyndle_Boolean(
@@ -27,7 +27,7 @@ bool IonoCell:: declare(const char * const argv)
 }
 
 
-Y_Spyndle_Meth(bool,IonoCell,declare,(const char *const argv), (argv) )
+Y_Spyndle_Meth(bool,IonoCell,parse,(const char *const argv), (argv) )
 
 
 size_t IonoCell:: numSpecies() const noexcept

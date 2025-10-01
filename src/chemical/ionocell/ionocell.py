@@ -17,29 +17,36 @@ class IonoCell:
         return bytes(p_string, "utf-8")
 
     def __init__(self):
+        # loading code
         self.dll = ct.cdll.LoadLibrary("./ionocell.dll")
 
+        # report error reason, need to be converted
         self.what_ = self.dll.IonoCell_What
         self.what_.argtypes = []
         self.what_.restype = ct.c_char_p
 
+        # report error location, need to be converted
         self.when_ = self.dll.IonoCell_When
         self.when_.argtypes = []
         self.when_.restype = ct.c_char_p
 
+        # init application
         self.init = self.dll.IonoCell_Init
         self.init.argtypes = []
         self.init.restype = ct.c_bool
 
+        # quit application
         self.quit = self.dll.IonoCell_Quit
         self.quit.argtypes = []
 
+        # auto-create application
         if not self.init():
             self.must_quit()
 
-        self.declare_ = self.dll.IonoCell_declare
-        self.declare_.restype = ct.c_bool
-        self.declare_.argtypes = [ct.c_char_p]
+        # parse species/equilibria...
+        self.parse_ = self.dll.IonoCell_declare
+        self.parse_.restype = ct.c_bool
+        self.parse_.argtypes = [ct.c_char_p]
 
     def __del__(self):
         self.quit()
@@ -52,8 +59,9 @@ class IonoCell:
         """ C location to python string """
         return self.c_to_p(self.when_())
 
-    def declare(self, some_code):
-        if not self.declare_(self.p_to_c(some_code)):
+    def parse(self, some_code):
+        """ send code to C++ to declare species and equilibria """
+        if not self.parse_(self.p_to_c(some_code)):
             self.must_quit()
 
     def must_quit(self):
@@ -66,4 +74,4 @@ class IonoCell:
 
 if __name__ == '__main__':
     chemsys = IonoCell()
-    chemsys.declare('Na^+ Cl^- %acetic')
+    chemsys.parse('Na^+ Cl^- %acetic')
