@@ -16,7 +16,7 @@ namespace Yttrium
         Jive::Analyzer(G),
         stack(),
         charge(0),
-        html(false)
+        target(Text)
         {
             //verbose = true;
 
@@ -49,9 +49,9 @@ namespace Yttrium
 
         String  Weasel:: FormulaTranslator:: decode(const Formula &f,
                                                     int * const    z,
-                                                    const bool     toHtml)
+                                                    const Target   which)
         {
-            html = toHtml;
+            target = which;
             walk( & *f.code );
             if(z) *z = charge;
             return stack.pullTail();
@@ -103,12 +103,13 @@ namespace Yttrium
             assert( stack.size() >= 2);
             const String cof = stack.pullTail();
             const String grp = stack.pullTail();
-            if(html)
+            switch(target)
             {
-                stack << grp + SubInit + cof + SubQuit;
+                case Text:  stack << grp+cof; break;
+                case HTML:  stack << grp + SubInit + cof + SubQuit; break;
+                case LaTeX: stack << grp + '_' + cof; break;
             }
-            else
-                stack << grp+cof;
+
 
         }
 
@@ -163,17 +164,27 @@ namespace Yttrium
 
             String      &tgt = stack.tail();
             const String xp  = chargeToString(charge);
-            if(html)
+            switch( target )
             {
-                tgt += SupInit;
-                tgt += xp;
-                tgt += SupQuit;
+                case Text:
+                    tgt += '^';
+                    tgt += xp;
+                    break;
+
+                case HTML:
+                    tgt += SupInit;
+                    tgt += xp;
+                    tgt += SupQuit;
+                    break;
+
+                case LaTeX:
+                    tgt += '^';
+                    tgt += '{';
+                    tgt +=  xp;
+                    tgt += '}';
+                    break;
             }
-            else
-            {
-                tgt += '^';
-                tgt += xp;
-            }
+
 
 
         }
@@ -195,6 +206,20 @@ namespace Yttrium
             static Weasel &weasel = Weasel::Instance();
             return weasel.formulaToHTML(*this);
         }
+
+        String Formula:: laTeX() const
+        {
+            static Weasel &weasel = Weasel::Instance();
+            return weasel.formulaToLaTeX(*this);
+        }
+
+        Formula:: Formula(const String &data) :
+        code( Weasel::Instance().parseFormula(data) )
+        {
+            
+        }
+
+
 
 
     }

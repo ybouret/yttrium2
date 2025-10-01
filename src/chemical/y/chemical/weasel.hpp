@@ -66,7 +66,9 @@ namespace Yttrium
             //__________________________________________________________________
             String  formulaToText(const Formula &, int * const); //!< \return formula to text, with optional charge
             String  formulaToHTML(const Formula &);              //!< \return formula to html
+            String  formulaToLaTeX(const Formula &);             //!< \return formula to LaTeX
             XNode * formula1(Jive::Module *);                    //!< \return one formula node from compatible module
+            XNode * parseFormula(const String &);                //!< \return one formula from name
 
             //__________________________________________________________________
             //
@@ -112,5 +114,5 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Chemical_Weasel_Included
 

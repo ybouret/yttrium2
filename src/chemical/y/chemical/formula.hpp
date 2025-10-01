@@ -45,6 +45,7 @@ namespace Yttrium
             Formula(const XCode &)  noexcept; //!< setup
             Formula(const Formula&) noexcept; //!< duplicate
             virtual ~Formula()      noexcept; //!< cleanup
+            Formula(const String &);          //!< parsed and compile name
 
             //__________________________________________________________________
             //
@@ -54,8 +55,12 @@ namespace Yttrium
             //__________________________________________________________________
             String text(int * const z) const; //!< \param z optional charge address \return converted to text
             String html()              const; //!< \return converted to html
+            String laTeX()             const; //!< \return converted to LaTeX
 
-            
+            static String ToText(const String &);
+            static String ToHTML(const String &);
+            static String ToLaTeX(const String &);
+
             //__________________________________________________________________
             //
             //
@@ -71,5 +76,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Chemical_Formula_Included
 

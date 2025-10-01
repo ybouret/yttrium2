@@ -129,13 +129,19 @@ namespace Yttrium
 
         String  Weasel:: formulaToText(const Formula &f, int * const z)
         {
-            return code->ftrans.decode(f,z,false);
+            return code->ftrans.decode(f,z,FormulaTranslator::Text);
         }
 
         String  Weasel:: formulaToHTML(const Formula &f)
         {
-            return code->ftrans.decode(f,0,true);
+            return code->ftrans.decode(f,0,FormulaTranslator::HTML);
         }
+
+        String  Weasel:: formulaToLaTeX(const Formula &f)
+        {
+            return code->ftrans.decode(f,0,FormulaTranslator::LaTeX);
+        }
+
 
         XNode * Weasel:: formula1(Jive::Module *m)
         {
@@ -148,6 +154,11 @@ namespace Yttrium
             if(tree.size!=1)                    throw Specific::Exception(fn,"need exactly one formula in '%s'", m->tag->c_str());
             if(!tree.head->defines<Formula>())  throw Specific::Exception(fn,"bad '%s'", tree.head->name().c_str());
             return tree.popHead();
+        }
+
+        XNode * Weasel:: parseFormula(const String &name)
+        {
+            return formula1( Jive::Module::OpenData(name,name) );
         }
 
         Equilibrium * Weasel:: compile(const XNode *const root,

@@ -35,7 +35,24 @@ namespace Yttrium
 
         }
 
+        String Formula:: ToText(const String &data)
+        {
+            const Formula f(data);
+            int z = 0;
+            return f.text(&z);
+        }
 
+        String Formula:: ToHTML(const String &data)
+        {
+            const Formula f(data);
+            return f.html();
+        }
+
+        String Formula:: ToLaTeX(const String &data)
+        {
+            const Formula f(data);
+            return f.laTeX();
+        }
 
 
     }

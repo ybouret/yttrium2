@@ -63,7 +63,9 @@ namespace Yttrium
             //__________________________________________________________________
 
             //! \return decoded to text or html
-            String decode(const Formula &, int * const, const bool);
+            String decode(const Formula &,
+                          int * const,
+                          const Target);
 
             //__________________________________________________________________
             //
@@ -73,7 +75,7 @@ namespace Yttrium
             //__________________________________________________________________
             Vector<String> stack;  //!< string stack
             int            charge; //!< charge state
-            bool           html;   //!< html flag
+            Target         target; //!< target choice
 
 
         private:
@@ -99,11 +101,11 @@ namespace Yttrium
             void onBody(const size_t);
             void onFormula(const size_t);
             void onZ(const size_t);
-#endif
+#endif // !defined(DOXYGEN_SHOULD_SKIP_THIS)
         };
 
     }
 
 }
 
-#endif
+#endif // !Y_Chemical_Weasel_FormulaTanslator_Included

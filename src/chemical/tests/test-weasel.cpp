@@ -39,7 +39,10 @@ Y_UTEST(weasel)
                     const String  spname  = weasel.formulaToText(formula,&charge);
                     std::cerr << "species=" << spname << ", charge=" << charge << std::endl;
                     const String  sphtml = weasel.formulaToHTML(formula);
-                    std::cerr << "html: " << sphtml << std::endl;
+                    std::cerr << "html:  " << sphtml << std::endl;
+                    const String  splatex = weasel.formulaToLaTeX(formula);
+                    std::cerr << "latex: " << splatex << std::endl;
+
 
                     fp("%u[label=<",indx) << sphtml << ">];\n";
 
