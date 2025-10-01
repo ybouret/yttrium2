@@ -25,7 +25,7 @@ static inline void TestExample(const char * const id)
     ODE::RK4<T> rk4;
     T            x     = 0;
     const T      x_end = 7;
-    const size_t np = 100;
+    static const unsigned np = 100;
     const T      dx = (x_end-x) / (T) np;
 
     {
@@ -34,12 +34,12 @@ static inline void TestExample(const char * const id)
         OutputFile   fp(fileName);
         CxxArray<T> y(1),dydx(1);
 
-        ODE::dExponential<T> dExp(-0.7);
+        ODE::dExponential<T> dExp(-0.7f);
 
 
         y[1] = 1;
         saveTo(fp,x,y);
-        for(size_t i=1;i<=np;++i)
+        for(unsigned i=1;i<=np;++i)
         {
             dExp(dydx,x,y);
             rk4(y,y,dydx,x,dx,dExp);
@@ -55,12 +55,12 @@ static inline void TestExample(const char * const id)
         OutputFile   fp(fileName);
         CxxArray<T>  y(2),dydx(2);
 
-        ODE::dSpring<T> spring(0.7,0.01);
+        ODE::dSpring<T> spring(0.7f,0.01f);
         x    = 0;
         y[1] = 1;
         y[2] = 0;
         saveTo(fp,x,y);
-        for(size_t i=1;i<=np;++i)
+        for(unsigned i=1;i<=np;++i)
         {
             spring(dydx,x,y);
             rk4(y,y,dydx,x,dx,spring);

@@ -17,8 +17,8 @@ namespace
     T F(T x)
     {
         ++CallCount;
-        const T delta = x - T(0.3);
-        return -delta*delta*delta + T(0.2);
+        const T delta = x - T(0.3f);
+        return -delta*delta*delta + T(0.2f);
         //const T fac(1.1);
         //return fac * x;
     }
@@ -52,10 +52,10 @@ Y_UTEST(root_zfind)
         OutputFile     fp("zfind.dat");
         const float    Lmin = -5;
         const float    Lmax =  5;
-        const unsigned np   = 1000;
+        static const unsigned np   = 1000;
         for(unsigned i=0;i<=np;++i)
         {
-            const float x = Lmin + (i *(Lmax-Lmin))/np;
+            const float x = Lmin + ( (float)i *(Lmax-Lmin))/ (float)np;
             fp("%g %g\n", x, F(x));
         }
     }

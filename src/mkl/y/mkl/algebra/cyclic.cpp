@@ -35,6 +35,9 @@ namespace Yttrium
             {
             }
 
+#if defined(_MSC_VER)
+#pragma warning ( disable : 4458 )
+#endif
             bool solve(Writable<T>       &x,
                        const Readable<T> &r,
                        TriDiag<T>        &td)

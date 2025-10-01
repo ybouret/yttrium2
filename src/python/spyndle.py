@@ -1,13 +1,14 @@
 """ importing ctypes """
 import ctypes as ct
 
+
 class Application:
 
     def __init__(self):
         print("-- create --")
         self.dll = ct.cdll.LoadLibrary("./spyndle.dll")
         self.sine = self.dll.sine
-       
+
         self.sine.argtypes = [ct.c_double]
         self.sine.restype = ct.c_double
 
@@ -29,7 +30,7 @@ class Application:
         assert self.Init(), self.what()
 
         self.norm = self.dll.Application_norm
-        self.norm.argtypes = [ct.c_double,ct.c_double]
+        self.norm.argtypes = [ct.c_double, ct.c_double]
         self.norm.restype = ct.c_double
 
         self.name_ = self.dll.Application_callSign
@@ -45,18 +46,19 @@ class Application:
         self.Quit()
 
     def what(self):
-        return str(self.What(),"utf-8")
-    
-    def what(self):
-        return str(self.When(),"utf-8")
-    
+        return str(self.What(), "utf-8")
+
+    def when(self):
+        return str(self.When(), "utf-8")
+
     def callSign(self):
-        return str(self.name_(),"utf-8")
+        return str(self.name_(), "utf-8")
+
 
 print("-- main --")
 app = Application()
-print( app.sine(0.1) )
-print( app.norm(3,4) )
-print( app.callSign() )
-print( app.crc( bytes("Hello","utf-8") ) )
+print(app.sine(0.1))
+print(app.norm(3, 4))
+print(app.callSign())
+print(app.crc(bytes("Hello", "utf-8")))
 print("-- done --")

@@ -30,11 +30,11 @@ Y_UTEST(interp_ratio)
     std::cerr << ratint(0,xa,ya,dy) << " : dy=" << dy << std::endl;
 
     xa << 2;
-    ya << 1.2;
+    ya << 1.2f;
     std::cerr << ratint(0,xa,ya,dy) << " : dy=" << dy << std::endl;
 
     xa << 3;
-    ya << 1.1;
+    ya << 1.1f;
     std::cerr << ratint(0,xa,ya,dy) << " : dy=" << dy << std::endl;
 
 
