@@ -15,6 +15,8 @@ namespace Yttrium
     namespace Chemical
     {
 
+
+
         //______________________________________________________________________
         //
         //
@@ -36,7 +38,14 @@ namespace Yttrium
             static const char SubQuit[]; //!< "</sub>"
             static const char SupInit[]; //!< "<sup>"
             static const char SupQuit[]; //!< "</sup>"
-            
+
+            enum Target
+            {
+                Text,
+                HTML,
+                LaTeX
+            };
+
             //__________________________________________________________________
             //
             //

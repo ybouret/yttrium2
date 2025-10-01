@@ -41,4 +41,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Chemical_Weasel_Parser_Included
