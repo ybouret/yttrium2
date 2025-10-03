@@ -72,7 +72,6 @@ class IonoCell:
         self.getSpeciesZ = self.dll.IonoCell_getSpeciesZ
         self.getSpeciesZ.restype = ct.c_int
         self.getSpeciesZ.argstype = []
-    
 
         self.species = []
 
@@ -103,6 +102,12 @@ class IonoCell:
 
     def getSpeciesName(self, i):
         return self.c_to_p(self.getSpeciesName_(i))
+
+    def collectSpecies(self):
+        self.species = []
+        for i in range(self.numSpecies()):
+            sp = Species(self.getSpeciesName(i), self.getSpeciesZ(i))
+            self.species.append(sp)
 
 
 if __name__ == '__main__':
