@@ -73,7 +73,9 @@ namespace Yttrium
             // Members
             //
             //__________________________________________________________________
-            const int z; //!< algebraic charge
+            const int    z;   //!< algebraic charge
+            const String tex; //!< latex representation, mostly for Pythn
+
         private:
             Y_Disable_Copy_And_Assign(Species);  //!< discarding
         };
@@ -86,5 +88,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Chemical_Species_Included
 

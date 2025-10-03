@@ -11,10 +11,14 @@ namespace Yttrium
         {
         }
 
+#define Y_Species(FORMULA) \
+Indexed(top),     \
+Formula(FORMULA), \
+z(0),             \
+tex( laTeX() )
+
         Species:: Species(const Formula &f, const size_t top) :
-        Indexed(top),
-        Formula(f),
-        z(0)
+        Y_Species(f)
         {
             Coerce(name) = text( & Coerce(z) );
         }
@@ -39,17 +43,13 @@ namespace Yttrium
         }
 
         Species:: Species(const String &id, const size_t top) :
-        Indexed(top),
-        Formula(StringToFormula(id)),
-        z(0)
+        Y_Species(StringToFormula(id))
         {
             Coerce(name) = text( & Coerce(z) );
         }
 
         Species:: Species(const char * const id, const size_t top) :
-        Indexed(top),
-        Formula(StringToFormula(id)),
-        z(0)
+        Y_Species(StringToFormula(id))
         {
             Coerce(name) = text( & Coerce(z) );
         }
