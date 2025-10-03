@@ -49,14 +49,14 @@ namespace Yttrium
         //
         //______________________________________________________________________
 
-        //! create application \return true iff succcess
+        //! create application, shoudl be called in __init__(self)  \return true iff succcess
         static inline bool Init() noexcept
         {
             reset();
             Y_Spyndle_Boolean(App = new ClassType());
         }
 
-        //! delete existing application
+        //! reset, should be called by __del__(self)
         static inline void Quit() noexcept
         {
             reset();
@@ -74,6 +74,8 @@ namespace Yttrium
 
     private:
         Y_Disable_Copy_And_Assign(Spyndle); //!< discarding
+
+        //! delete existing App
         static inline void reset() noexcept
         {
             if(App) { delete App; App=0; }

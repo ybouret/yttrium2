@@ -37,11 +37,20 @@ namespace Yttrium
                 // C++
                 //
                 //______________________________________________________________
+
+                //! setup
+                /**
+                 \param xml     output
+                 \param cmatrix matrix of conservation
+                 \param species current species
+                 \param primary primary equilibria
+                 \param topology primary topology
+                 */
                 explicit Laws(XMLog         & xml,
                               const uMatrix & cmatrix,
                               const SList   & species,
                               const EList &   primary,
-                              const iMatrix & topology); //!< setup
+                              const iMatrix & topology);
                 virtual ~Laws() noexcept;                //!< cleanup
 
                 //______________________________________________________________

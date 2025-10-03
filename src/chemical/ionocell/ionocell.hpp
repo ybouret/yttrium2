@@ -34,11 +34,11 @@ public:
     // Methods
     //
     //__________________________________________________________________________
-    bool         parse(const char * const argv); //!< send code to weasel
-    size_t       numSpecies() const noexcept;      //!< species in library
-    const char * getSpeciesName(const size_t i)  const noexcept;
-    int          getSpeciesZ(const size_t i)     const noexcept;
-    const char * getSpeciesLaTeX(const size_t i) const noexcept;
+    bool         parse(const char * const argv);   //!< send code to weasel \param argv code \return true iff success
+    size_t       numSpecies() const noexcept;      //!< species in library \return M
+    const char * getSpeciesName(const size_t i)  const noexcept; //!< \param i in [0:M-1] \return species name
+    int          getSpeciesZ(const size_t i)     const noexcept; //!< \param i in [0:M-1] \return species charge
+    const char * getSpeciesLaTeX(const size_t i) const noexcept; //!< \param i in [0:M-1] \return LaTeX formula
 
     //__________________________________________________________________________
     //
@@ -46,9 +46,9 @@ public:
     // Members
     //
     //__________________________________________________________________________
-    Weasel &   weasel;
-    Library    lib;
-    Equilibria eqs;
+    Weasel &   weasel; //!< handling code
+    Library    lib;    //!< current library
+    Equilibria eqs;    //!< current equilibria
 
 private:
     Y_Disable_Copy_And_Assign(IonoCell); //!< discarding
