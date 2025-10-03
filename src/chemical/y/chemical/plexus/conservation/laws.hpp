@@ -71,7 +71,6 @@ namespace Yttrium
                 Y_Ingress_Decl();                   //!< helper
                 CxxListOf<Law>                list; //!< laws
             public:
-                //const SList                   clan; //!< used species
                 const size_t                  rank; //!< maximum rank
                 const GraphViz::ColorScheme & cs;   //!< color scheme
             };
