@@ -38,7 +38,8 @@ public:
         a5 = REAL(1.0),
         a6 = REAL(0.875);
 
-        static const real_t b21=REAL(0.2);
+        static const real_t
+        b21=REAL(0.2);
 
         static const real_t
         b31 = REAL(3.0)/REAL(40.0),
