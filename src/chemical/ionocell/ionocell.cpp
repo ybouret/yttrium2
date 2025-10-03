@@ -56,3 +56,10 @@ int IonoCell:: getSpeciesZ(const size_t i) const noexcept
 Y_Spyndle_Meth(int,IonoCell,getSpeciesZ,(const size_t i),(i))
 
 
+const char * IonoCell:: getSpeciesLaTeX(const size_t i) const noexcept
+{
+    const Species &sp = *lib->fetch(i+1);
+    return sp.tex.c_str();
+}
+
+Y_Spyndle_Meth(const char *,IonoCell,getSpeciesLaTeX,(const size_t i),(i))

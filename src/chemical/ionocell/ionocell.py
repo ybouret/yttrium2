@@ -5,9 +5,10 @@ import sys
 
 class Species:
 
-    def __init__(self, sp_name, sp_z):
+    def __init__(self, sp_name, sp_z, sp_latex):
         self.name = sp_name
         self.z = sp_z
+        self.latex = sp_latex
 
     def __str__(self):
         return self.name
@@ -73,6 +74,11 @@ class IonoCell:
         self.getSpeciesZ.restype = ct.c_int
         self.getSpeciesZ.argstype = []
 
+        #latex code for species
+        self.getSpeciesLaTeX_ = self.dll.IonoCell_getSpeciesLaTeX
+        self.getSpeciesLaTeX_.restype = ct.c_char_p
+        self.getSpeciesLaTeX_.argstype = []
+
         self.species = []
 
     def __del__(self):
@@ -93,6 +99,10 @@ class IonoCell:
         if not self.parse_(self.p_to_c(some_code)):
             self.must_quit()
 
+        # second: collect species
+        self.collectSpecies()
+
+
     def must_quit(self):
         """ print error and exit """
         print("Error in IonoCell")
@@ -102,18 +112,21 @@ class IonoCell:
 
     def getSpeciesName(self, i):
         return self.c_to_p(self.getSpeciesName_(i))
+    
+    def getSpeciesLaTeX(self, i):
+        return self.c_to_p(self.getSpeciesLaTeX_(i))
 
     def collectSpecies(self):
         self.species = []
         for i in range(self.numSpecies()):
-            sp = Species(self.getSpeciesName(i), self.getSpeciesZ(i))
+            sp = Species(self.getSpeciesName(i), self.getSpeciesZ(i), self.getSpeciesLaTeX(i) )
             self.species.append(sp)
 
 
 if __name__ == '__main__':
     chemsys = IonoCell()
     chemsys.parse('Na^+ Cl^- %acetic')
-    M = chemsys.numSpecies()
-    print("M =", M)
-    for i in range(M):
-        print(chemsys.getSpeciesName(i), "| z= ", chemsys.getSpeciesZ(i))
+    print(len(chemsys.species))
+    for sp in chemsys.species:
+        print(sp)
+
