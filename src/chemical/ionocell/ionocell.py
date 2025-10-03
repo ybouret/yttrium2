@@ -74,7 +74,7 @@ class IonoCell:
         self.getSpeciesZ.restype = ct.c_int
         self.getSpeciesZ.argstype = []
 
-        #latex code for species
+        # latex code for species
         self.getSpeciesLaTeX_ = self.dll.IonoCell_getSpeciesLaTeX
         self.getSpeciesLaTeX_.restype = ct.c_char_p
         self.getSpeciesLaTeX_.argstype = []
@@ -102,7 +102,6 @@ class IonoCell:
         # second: collect species
         self.collectSpecies()
 
-
     def must_quit(self):
         """ print error and exit """
         print("Error in IonoCell")
@@ -112,14 +111,15 @@ class IonoCell:
 
     def getSpeciesName(self, i):
         return self.c_to_p(self.getSpeciesName_(i))
-    
+
     def getSpeciesLaTeX(self, i):
         return self.c_to_p(self.getSpeciesLaTeX_(i))
 
     def collectSpecies(self):
         self.species = []
         for i in range(self.numSpecies()):
-            sp = Species(self.getSpeciesName(i), self.getSpeciesZ(i), self.getSpeciesLaTeX(i) )
+            sp = Species(self.getSpeciesName(
+                i), self.getSpeciesZ(i), self.getSpeciesLaTeX(i))
             self.species.append(sp)
 
 
@@ -129,4 +129,3 @@ if __name__ == '__main__':
     print(len(chemsys.species))
     for sp in chemsys.species:
         print(sp)
-
