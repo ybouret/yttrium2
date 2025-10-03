@@ -52,14 +52,14 @@ namespace Yttrium
         //! create application \return true iff succcess
         static inline bool Init() noexcept
         {
-            assert(0==App);
+            reset();
             Y_Spyndle_Boolean(App = new ClassType());
         }
 
         //! delete existing application
         static inline void Quit() noexcept
         {
-            if(App) { delete App; App=0; }
+            reset();
         }
 
         //______________________________________________________________________
@@ -74,7 +74,10 @@ namespace Yttrium
 
     private:
         Y_Disable_Copy_And_Assign(Spyndle); //!< discarding
-
+        static inline void reset() noexcept
+        {
+            if(App) { delete App; App=0; }
+        }
     };
 
     template <typename T> T * Spyndle<T>:: App = 0; //!< alias

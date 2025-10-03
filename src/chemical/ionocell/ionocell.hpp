@@ -37,7 +37,8 @@ public:
     bool         parse(const char * const argv); //!< send code to weasel
     size_t       numSpecies() const noexcept;      //!< species in library
     const char * getSpeciesName(const size_t i)   const noexcept;
-    int          getSpeciesCharge(const size_t i) const noexcept;
+    int          getSpeciesZ(const size_t i) const noexcept;
+    //const char * getSpeciesLaTeX(const size_t i);
 
     //__________________________________________________________________________
     //

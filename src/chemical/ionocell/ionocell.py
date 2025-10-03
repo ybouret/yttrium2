@@ -3,6 +3,16 @@ import ctypes as ct
 import sys
 
 
+class Species:
+
+    def __init__(self, sp_name, sp_z):
+        self.name = sp_name
+        self.z = sp_z
+
+    def __str__(self):
+        return self.name
+
+
 class IonoCell:
     """ interface to C++ code """
 
@@ -53,6 +63,19 @@ class IonoCell:
         self.numSpecies.argtypes = []
         self.numSpecies.restype = ct.c_size_t
 
+        # name of species
+        self.getSpeciesName_ = self.dll.IonoCell_getSpeciesName
+        self.getSpeciesName_.restype = ct.c_char_p
+        self.getSpeciesName_.argstype = []
+
+        # charge of species
+        self.getSpeciesZ = self.dll.IonoCell_getSpeciesZ
+        self.getSpeciesZ.restype = ct.c_int
+        self.getSpeciesZ.argstype = []
+    
+
+        self.species = []
+
     def __del__(self):
         self.quit()
 
@@ -66,6 +89,8 @@ class IonoCell:
 
     def parse(self, some_code):
         """ send code to C++ to declare species and equilibria """
+
+        # first: compile code
         if not self.parse_(self.p_to_c(some_code)):
             self.must_quit()
 
@@ -76,9 +101,14 @@ class IonoCell:
         print("Location : ", self.when())
         sys.exit(1)
 
+    def getSpeciesName(self, i):
+        return self.c_to_p(self.getSpeciesName_(i))
+
 
 if __name__ == '__main__':
     chemsys = IonoCell()
     chemsys.parse('Na^+ Cl^- %acetic')
     M = chemsys.numSpecies()
-    print("M =",M)
+    print("M =", M)
+    for i in range(M):
+        print(chemsys.getSpeciesName(i), "| z= ", chemsys.getSpeciesZ(i))
