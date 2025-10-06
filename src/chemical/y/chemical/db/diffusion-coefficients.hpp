@@ -13,6 +13,7 @@ namespace Yttrium
     {
         struct DiffusionCoefficients
         {
+            static const double SI; //!< 10^-9 m^s/s
             static const char   JSDict[];
             static const size_t Length;
         };

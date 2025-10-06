@@ -12,6 +12,7 @@ namespace Yttrium
 
         const size_t DiffusionCoefficients:: Length = sizeof(JSDict);
 
+        const double DiffusionCoefficients:: SI = 1e-9;
     }
 }
 
