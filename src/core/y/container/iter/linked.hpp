@@ -70,6 +70,12 @@ namespace Yttrium
             //! const access \return const content
             inline ConstType  & operator*() const noexcept { assert(0!=node); return **node; }
 
+            inline NodeType *      operator->()       noexcept { assert(0!=node); return node; }
+            inline ConstNodeType * operator->() const noexcept { assert(0!=node); return node; }
+
+
+
+
             //! test equality
             /**
              \param lhs first iterator
@@ -194,5 +200,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Container_Iter_Linked_Included
 

@@ -53,14 +53,19 @@ namespace Yttrium
 
             static void *       WeaselImpl[ Alignment::WordsFor<WeaselCode>::Count ];
             static WeaselCode * code = 0;
+
+            static inline void WeaselCrush() noexcept
+            {
+                assert(0!=code);
+                Destruct(code);
+                code = 0 ;
+                Y_Memory_BZero(WeaselImpl);
+            }
         }
 
         Weasel:: ~Weasel() noexcept
         {
-            assert(0!=code);
-            Destruct(code);
-            code = 0 ;
-            Y_Memory_BZero(WeaselImpl);
+            WeaselCrush();
         }
 
         Weasel:: Weasel() :
@@ -71,6 +76,19 @@ namespace Yttrium
                 code = new ( Y_Memory_BZero(WeaselImpl) ) WeaselCode();
             }
             catch(...) { code = 0; throw; }
+
+            try
+            {
+                // check table id
+                for(DiffusionCoefficientsDB::Iterator it=code->dtable.begin(); it != code->dtable.end(); ++it)
+                    volatile XCode _ = parseFormula(it->key);
+                
+            }
+            catch(...)
+            {
+                WeaselCrush();
+                throw;
+            }
         }
 
 
