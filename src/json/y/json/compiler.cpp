@@ -72,7 +72,6 @@ namespace Yttrium
                 drop("[:blank:]");
                 endl("[:endl:]",false);
 
-                //render();
                 validate();
 
                 //--------------------------------------------------------------

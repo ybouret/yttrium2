@@ -32,7 +32,8 @@ namespace Yttrium
                 inline WeaselCode() :
                 Weasel::Parser(),
                 ftrans(*this),
-                etrans()
+                etrans(),
+                dtable()
                 {
 
                 }
