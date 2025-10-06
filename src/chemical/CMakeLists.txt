@@ -13,6 +13,16 @@ y/chemical/plexus/conservation
 y/chemical/plexus/solver
 )
 
+set(HERE ${CMAKE_CURRENT_SOURCE_DIR})
+set(TARGET ${HERE}/y/chemical/difftab.inc)
+set(SOURCE ${HERE}/y/ionocell/diffusion-coefficient-table.js)
+
+add_custom_command(OUTPUT ${TARGET}
+    COMMAND y_embed ARGS ${SOURCE} ${TARGET}
+    COMMENT "Embedding Diffusion Coefficients"
+    VERBATIM
+)
+
 add_subdirectory(tests)
 Y_Regression(chemical)
 
