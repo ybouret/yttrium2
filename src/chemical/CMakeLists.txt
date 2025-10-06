@@ -16,9 +16,10 @@ y/chemical/plexus/solver
 set(HERE ${CMAKE_CURRENT_SOURCE_DIR})
 set(TARGET ${HERE}/y/chemical/difftab.inc)
 set(SOURCE ${HERE}/y/ionocell/diffusion-coefficient-table.js)
+cmake_print_variables(SOURCE TARGET)
 
 add_custom_command(OUTPUT ${TARGET}
-    COMMAND y_embed ARGS ${SOURCE} ${TARGET}
+    COMMAND y_embed ${SOURCE} ${TARGET}
     COMMENT "Embedding Diffusion Coefficients"
     VERBATIM
 )
