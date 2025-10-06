@@ -53,5 +53,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_JSON_Compiler_Included
 

@@ -1,5 +1,6 @@
 
 #include "y/chemical/weasel.hpp"
+#include "y/chemical/weasel/diffusion-coefficients-table.hpp"
 #include "y/chemical/weasel/parser.hpp"
 #include "y/chemical/weasel/formula/translator.hpp"
 #include "y/chemical/weasel/equilibrium/translator.hpp"
@@ -41,9 +42,9 @@ namespace Yttrium
 
                 }
 
-                Weasel::FormulaTranslator     ftrans;
-                Weasel::EquilibriumTranslator etrans;
-
+                Weasel::FormulaTranslator          ftrans;
+                Weasel::EquilibriumTranslator      etrans;
+                Weasel::DiffusionCoefficientsTable dtable;
             private:
                 Y_Disable_Copy_And_Assign(WeaselCode);
             };

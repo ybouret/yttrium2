@@ -1,7 +1,8 @@
-include_directories(. .. ../core ../jive ../lua++ ../y/lua/src ../mkl)
+include_directories(. .. ../core ../jive ../lua++ ../y/lua/src ../mkl ../json)
 
 Y_CreateLibrary(y-chemical
 y/chemical
+y/chemical/db
 y/chemical/weasel
 y/chemical/type
 y/chemical/reactive
@@ -14,9 +15,10 @@ y/chemical/plexus/solver
 )
 
 set(HERE ${CMAKE_CURRENT_SOURCE_DIR})
-set(TARGET ${HERE}/y/chemical/difftab.inc)
-set(SOURCE ${HERE}/y/ionocell/diffusion-coefficient-table.js)
-cmake_print_variables(SOURCE TARGET)
+set(TARGET ${HERE}/y/chemical/db/iffusion-coefficients.hxx)
+set(SOURCE ${HERE}/ionocell/diffusion-coefficients.js)
+cmake_print_variables(SOURCE)
+cmake_print_variables(TARGET)
 
 add_custom_command(OUTPUT ${TARGET}
     COMMAND y_embed ${SOURCE} ${TARGET}

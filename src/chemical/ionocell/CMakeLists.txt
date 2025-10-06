@@ -1,5 +1,5 @@
 add_library(ionocell MODULE ionocell.cpp ionocell.hpp)
-Y_LinkLibraries(ionocell y-chemical y-jive y-mkl y-lua++ y-lua)
+Y_LinkLibraries(ionocell y-chemical y-json y-jive y-mkl y-lua++ y-lua)
 
 
 set(IONOCELL ${CMAKE_CURRENT_SOURCE_DIR}/ionocell.dll)

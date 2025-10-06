@@ -41,7 +41,8 @@ namespace Yttrium
             class Parser;
             class FormulaTranslator;
             class EquilibriumTranslator;
-
+            class DiffusionCoefficientsTable;
+            
             //__________________________________________________________________
             //
             //
