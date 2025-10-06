@@ -39,6 +39,7 @@ public:
     const char * getSpeciesName(const size_t i)  const noexcept; //!< \param i in [0:M-1] \return species name
     int          getSpeciesZ(const size_t i)     const noexcept; //!< \param i in [0:M-1] \return species charge
     const char * getSpeciesLaTeX(const size_t i) const noexcept; //!< \param i in [0:M-1] \return LaTeX formula
+    double       getD(const char * const name) const;
 
     //__________________________________________________________________________
     //

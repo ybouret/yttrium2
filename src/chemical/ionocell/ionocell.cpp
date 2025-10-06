@@ -63,3 +63,12 @@ const char * IonoCell:: getSpeciesLaTeX(const size_t i) const noexcept
 }
 
 Y_Spyndle_Meth(const char *,IonoCell,getSpeciesLaTeX,(const size_t i),(i))
+
+double IonoCell:: getD(const char * const name) const
+{
+    const String _(name);
+    const double res = weasel.diffusionCoefficient(name);
+    return res;
+}
+
+Y_Spyndle_Meth(double,IonoCell,getD,(const char * const name),(name))

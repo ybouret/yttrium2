@@ -101,7 +101,7 @@ namespace Yttrium
             //! process module into regexp, species, equilibria...
             void operator()(Jive::Module * const, Library &, Equilibria &);
 
-            //double diffusionCoefficient(const String &name);
+            double diffusionCoefficient(const String &name) const noexcept;
 
 
 

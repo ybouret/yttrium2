@@ -270,7 +270,17 @@ namespace Yttrium
 
         }
 
+        double Weasel:: diffusionCoefficient(const String &name) const noexcept
+        {
+            assert(0!=code);
 
+            if(const double * const pDiff = code->dtable.search(name))
+            {
+                return *pDiff;
+            }
+
+            return -1;
+        }
 
     }
 }
