@@ -85,6 +85,26 @@ public:
             FieldType::Compute(f,ak5,x+a5*h,ytemp,cb);
         }
 
+        {
+            static const real_t b61 = REAL(9017.0)/REAL(3168.0);;
+            static const real_t b62 = REAL(-355.0)/REAL(33.0);
+            static const real_t b63 = REAL(46732.0)/REAL(5247.0);
+            static const real_t b64 = REAL(49.0)/REAL(176.0);
+            static const real_t b65 = REAL(-5103.0)/REAL(18656.0);
+            FOREACH_I
+            {
+
+                xadd.ldz();
+                xadd += b61 * dydx[i];
+                xadd += b62 * ak2[i];
+                xadd += b63 * ak3[i];
+                xadd += b64 * ak4[i];
+                xadd += b65 * ak5[i];
+                ytemp[i] = y[i] + h * xadd.sum();
+            }
+            FieldType::Compute(f,ak6,x+h,ytemp,cb);
+        }
+
     }
 
 
