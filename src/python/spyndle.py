@@ -12,19 +12,19 @@ class Application:
         self.sine.argtypes = [ct.c_double]
         self.sine.restype = ct.c_double
 
-        self.What = self.dll.Application_What
+        self.What = self.dll.Spyndle_What
         self.What.argtypes = []
         self.What.restype = ct.c_char_p
 
-        self.When = self.dll.Application_When
+        self.When = self.dll.Spyndle_When
         self.When.argtypes = []
         self.When.restype = ct.c_char_p
 
-        self.Init = self.dll.Application_Init
+        self.Init = self.dll.Spyndle_Init
         self.Init.argtypes = []
         self.Init.restype = ct.c_bool
 
-        self.Quit = self.dll.Application_Quit
+        self.Quit = self.dll.Spyndle_Quit
         self.Quit.argtypes = []
 
         assert self.Init(), self.what()
