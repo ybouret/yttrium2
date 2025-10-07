@@ -144,6 +144,7 @@ public:
             xadd += c6*ak6[i];
             yout[i] = y[i] + h * xadd.sum();
         }
+        if(cb) (*cb)(yout,x+h);
 
         FOREACH_I
         {

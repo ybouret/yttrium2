@@ -18,9 +18,6 @@ public:
                     Equation               & f,
                     Callback * const         cb)
     {
-        static const real_t
-        a6 = REAL(1.0),
-        a7 = REAL(1.0);
 
         const size_t n = y.size(); prepare(n);
 
@@ -106,6 +103,7 @@ public:
             FieldType::Compute(f,ak6,xnew,ytemp,cb);
         }
 
+        // colocation step: compute yout
         {
             static const real_t b71 = REAL(35.0)/REAL(384.0);
             //static const real_t b72 = 0;
@@ -123,10 +121,31 @@ public:
                 xadd += b74 * ak4[i];
                 xadd += b75 * ak5[i];
                 xadd += b75 * ak6[i];
-                ytemp[i] = y[i] + h * xadd.sum();
+                yout[i] = y[i] + h * xadd.sum();
             }
-            FieldType::Compute(f,ak7,xnew,ytemp,cb);
+            FieldType::Compute(f,ak7,xnew,yout,cb);
+
+            static const real_t dc1 = b71 - REAL(5179.0)/REAL(57600.0);
+            // static const real_t dc2 = 0-0
+            static const real_t dc3 = b73 - REAL(7571.0)/REAL(16695.0);
+            static const real_t dc4 = b74 - REAL(393.0)/REAL(640.0);
+            static const real_t dc5 = b75 - (REAL(-92097.0)/REAL(339200.0));
+            static const real_t dc6 = b76 - REAL(187.0)/REAL(2100.0);
+            static const real_t dc7 =     - REAL(1.0)/REAL(40.0);
+
+            FOREACH_I
+            {
+                xadd.ldz();
+                xadd += dc1 * dydx[i];
+                xadd += dc3 * ak3[i];
+                xadd += dc4 * ak4[i];
+                xadd += dc5 * ak5[i];
+                xadd += dc6 * ak6[i];
+                xadd += dc7 * ak7[i];
+                yerr[i] =  h * xadd.sum();
+            }
         }
+
 
 
 
