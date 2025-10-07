@@ -5,6 +5,27 @@ public:
     typedef DormandPrince<real_t>::Equation Equation;
     typedef DormandPrince<real_t>::Callback Callback;
 
+    inline explicit Code() :
+    Object(),
+    ak2(),
+    ak3(),
+    ak4(),
+    ak5(),
+    ak6(),
+    ak7(),
+    ytemp(),
+    xadd(),
+    zero()
+    {
+    }
+
+    inline virtual ~Code() noexcept
+    {
+
+    }
+
+
+
     Vector<real_t>          ak2,ak3,ak4,ak5,ak6,ak7,ytemp;
     Cameo::Addition<real_t> xadd;
     const real_t            zero;
@@ -120,7 +141,7 @@ public:
                 xadd += b73 * ak3[i];
                 xadd += b74 * ak4[i];
                 xadd += b75 * ak5[i];
-                xadd += b75 * ak6[i];
+                xadd += b76 * ak6[i];
                 yout[i] = y[i] + h * xadd.sum();
             }
             FieldType::Compute(f,ak7,xnew,yout,cb);
@@ -188,4 +209,17 @@ void DormandPrince<real_t>:: operator()(Writable<real_t> &       yout,
 {
     assert(code);
     code->run(yout, yerr, y, dydx, x, h, f, cb);
+}
+
+template <>
+DormandPrince<real_t>:: DormandPrince() : code( new Code() )
+{
+}
+
+
+template <>
+DormandPrince<real_t>:: ~DormandPrince() noexcept
+{
+    assert(code);
+    Destroy(code);
 }

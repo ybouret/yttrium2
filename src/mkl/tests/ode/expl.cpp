@@ -6,6 +6,7 @@
 
 #include "y/mkl/ode/explicit/integrator.hpp"
 #include "y/mkl/ode/explicit/cash-karp.hpp"
+#include "y/mkl/ode/explicit/dormand-prince.hpp"
 #include "y/mkl/ode/example.hpp"
 #include "y/container/cxx/array.hpp"
 #include "y/mkl/xreal.hpp"
@@ -28,20 +29,22 @@ void saveTo(OutputStream &fp, const T x, const Readable<T> &y)
     fp << "\n";
 }
 
-template <typename T>
+
+template <typename T, template <typename> class Step>
 static inline void TestExample(const char * const id, Random::Bits &ran)
 {
-    ODE::CashKarp<T>           step;
+    static const unsigned      np = 100;
+    Step<T>                    step;
     ODE::ExplicitIntegrator<T> odeint;
-    static const unsigned np = 100;
+    const String               uid = String(step.callSign()) + '-' + String(id);
 
     T              x     = 0;
     const T        x_end = 7;
     const T        dx    = (x_end-x) / (T) np;
     const T        dx1   = dx / (T) 10.0;;
     {
-        std::cerr << "Exponential/" << id << std::endl;
-        const String fileName = "q-exponential-" + String(id) + ".dat";
+        std::cerr << "Exponential/" << uid << std::endl;
+        const String fileName = "q-exponential-" + uid + ".dat";
         OutputFile   fp(fileName);
         CxxArray<T> y(1),dydx(1);
 
@@ -61,8 +64,8 @@ static inline void TestExample(const char * const id, Random::Bits &ran)
     }
 
     {
-        std::cerr << "Spring/" << id << std::endl;
-        const String fileName = "q-spring-" + String(id) + ".dat";
+        std::cerr << "Spring/" << uid << std::endl;
+        const String fileName = "q-spring-" + uid + ".dat";
         OutputFile   fp(fileName);
         CxxArray<T>  y(2),dydx(2);
 
@@ -83,12 +86,12 @@ static inline void TestExample(const char * const id, Random::Bits &ran)
 
 
     {
-        std::cerr << "Astra/" << id << std::endl;
+        std::cerr << "Astra/" << uid << std::endl;
         const V2D<T>   r0    =  ( (T)0.5 +ran.to<T>()) * Random::OnCircle< V2D<T> >(ran);
         const T        omega = (T)1.0 + ran.to<T>();
         ODE::dAstra<T> astra(r0,omega);
         {
-            const String fileName = "q-astra0-" + String(id) + ".dat";
+            const String fileName = "q-astra0-" + uid + ".dat";
             OutputFile   fp(fileName);
             CxxArray<T>  y(4),dydx(4);
             x    = 0;
@@ -104,7 +107,7 @@ static inline void TestExample(const char * const id, Random::Bits &ran)
         }
 
         {
-            const String fileName = "q-astra1-" + String(id) + ".dat";
+            const String fileName = "q-astra1-" + uid + ".dat";
             OutputFile   fp(fileName);
             CxxArray<T>  y(4),dydx(4);
             x    = 0;
@@ -128,9 +131,10 @@ static inline void TestExample(const char * const id, Random::Bits &ran)
 Y_UTEST(ode_expl)
 {
     Random::MT19937 ran;
-    TestExample<float>("f",ran);
-    TestExample< XReal<double> >("xd",ran);
-
+    TestExample<float,          ODE::CashKarp>("f",ran);
+    TestExample<XReal<double> , ODE::CashKarp>("xd",ran);
+    TestExample<float,          ODE::DormandPrince>("f",ran);
+    TestExample<XReal<double> , ODE::DormandPrince>("xd",ran);
 }
 Y_UDONE()
 
