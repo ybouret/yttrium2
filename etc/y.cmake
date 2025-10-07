@@ -284,7 +284,7 @@ macro(Y_Regression THE_LIB)
 	set(Y_UnitTests ${_UnitTests} PARENT_SCOPE)
 endmacro()
 
-function(Y_DLL_COPY THE_TARGET DLL_NAME)
+function(Y_CopyDLL THE_TARGET DLL_NAME)
 	add_custom_command( TARGET ${THE_TARGET} POST_BUILD 
 	COMMAND ${CMAKE_COMMAND} -E echo "-- Copy '$<TARGET_FILE:${THE_TARGET}>'"
 	COMMAND ${CMAKE_COMMAND} -E echo "-- to   '${DLL_NAME}'"
