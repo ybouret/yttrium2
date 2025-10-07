@@ -70,12 +70,12 @@ namespace Yttrium
             //! const access \return const content
             inline ConstType  & operator*() const noexcept { assert(0!=node); return **node; }
 
+            //! \return access to node type
             inline NodeType *      operator->()       noexcept { assert(0!=node); return node; }
+
+            //! \return access to const node type
             inline ConstNodeType * operator->() const noexcept { assert(0!=node); return node; }
-
-
-
-
+            
             //! test equality
             /**
              \param lhs first iterator

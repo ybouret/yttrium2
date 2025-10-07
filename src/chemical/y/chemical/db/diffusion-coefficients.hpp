@@ -11,11 +11,12 @@ namespace Yttrium
 {
     namespace Chemical
     {
+        //! encoded table of diffusion coefficients in water
         struct DiffusionCoefficients
         {
-            static const double SI; //!< 10^-9 m^s/s
-            static const char   JSDict[];
-            static const size_t Length;
+            static const double SI;       //!< unit is 10^-9 m^s/s
+            static const char   JSDict[]; //!< JSON Dictionary
+            static const size_t Length;   //!< number of entries
         };
     }
 

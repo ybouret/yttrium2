@@ -34,12 +34,12 @@ public:
     // Methods
     //
     //__________________________________________________________________________
-    bool         parse(const char * const argv);   //!< send code to weasel \param argv code \return true iff success
-    size_t       numSpecies() const noexcept;      //!< species in library \return M
+    bool         parse(const char * const argv);                 //!< send code to weasel \param argv code \return true iff success
+    size_t       numSpecies() const noexcept;                    //!< species in library \return M
     const char * getSpeciesName(const size_t i)  const noexcept; //!< \param i in [0:M-1] \return species name
     int          getSpeciesZ(const size_t i)     const noexcept; //!< \param i in [0:M-1] \return species charge
     const char * getSpeciesLaTeX(const size_t i) const noexcept; //!< \param i in [0:M-1] \return LaTeX formula
-    double       getD(const char * const name) const;
+    double       getD(const char * const name)   const;          //!< \param name species name \return D from table
 
     //__________________________________________________________________________
     //

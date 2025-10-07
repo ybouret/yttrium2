@@ -10,19 +10,18 @@ namespace Yttrium
 {
     namespace Chemical
     {
-        typedef HashMap<String,double> DiffusionCoefficientsDB;
+        typedef HashMap<String,double> DiffusionCoefficientsDB; //!< alias
 
+        //! decoded table of diffusion coefficients
         class Weasel:: DiffusionCoefficientsTable :
         public DiffusionCoefficientsDB
         {
         public:
-            explicit DiffusionCoefficientsTable();
-            virtual ~DiffusionCoefficientsTable() noexcept;
-
-
+            explicit DiffusionCoefficientsTable();          //!< decode
+            virtual ~DiffusionCoefficientsTable() noexcept; //!< cleanup
 
         private:
-            Y_Disable_Copy_And_Assign(DiffusionCoefficientsTable);
+            Y_Disable_Copy_And_Assign(DiffusionCoefficientsTable); //!< discarding
         };
     }
 }

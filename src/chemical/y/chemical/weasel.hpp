@@ -101,6 +101,11 @@ namespace Yttrium
             //! process module into regexp, species, equilibria...
             void operator()(Jive::Module * const, Library &, Equilibria &);
 
+            //! query diffusion coefficient for given species
+            /**
+             \param name species name
+             \return value from table, -1 if not found
+             */
             double diffusionCoefficient(const String &name) const noexcept;
 
 
