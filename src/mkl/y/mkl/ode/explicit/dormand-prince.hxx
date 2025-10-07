@@ -19,13 +19,10 @@ public:
     {
     }
 
-    inline virtual ~Code() noexcept
-    {
-
-    }
+    inline virtual ~Code() noexcept {}
 
 
-
+    
     Vector<real_t>          ak2,ak3,ak4,ak5,ak6,ak7,ytemp;
     Cameo::Addition<real_t> xadd;
     const real_t            zero;
