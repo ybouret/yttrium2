@@ -107,7 +107,6 @@ public:
             xadd += b43 * ak3[i];
             ytemp[i] = y[i] + h * xadd.sum();
         }
-
         FieldType::Compute(f,ak4,x+a4*h,ytemp,cb); //(*derivs)(x+a4*h,ytemp,ak4);
 
         FOREACH_I
