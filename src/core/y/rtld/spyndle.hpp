@@ -86,13 +86,13 @@ namespace Yttrium
 
 }
 
-//! define What/When/Init and Quit method for global management
+//! define Spyndle_[What|When|Init|Quit] methods for global management as 
 #define Y_Spyndle(CLASS) \
 Y_DLL_EXTERN() \
-Y_EXPORT const char * Y_DLL_API CLASS##_What() noexcept { return CLASS::What;   } \
-Y_EXPORT const char * Y_DLL_API CLASS##_When() noexcept { return CLASS::When;   } \
-Y_EXPORT bool         Y_DLL_API CLASS##_Init() noexcept { return CLASS::Init(); } \
-Y_EXPORT void         Y_DLL_API CLASS##_Quit() noexcept { CLASS::Quit();        } \
+Y_EXPORT const char * Y_DLL_API Spyndle_What() noexcept { return CLASS::What;   } \
+Y_EXPORT const char * Y_DLL_API Spyndle_When() noexcept { return CLASS::When;   } \
+Y_EXPORT bool         Y_DLL_API Spyndle_Init() noexcept { return CLASS::Init(); } \
+Y_EXPORT void         Y_DLL_API Spyndle_Quit() noexcept { CLASS::Quit();        } \
 Y_DLL_FINISH()
 
 //! helper to call a method thru a C-function

@@ -3,6 +3,57 @@ import ctypes as ct
 import sys
 
 
+class Spyndle:
+    @staticmethod
+    def c_to_p(c_string):
+        """ C-string to python string """
+        return str(c_string, "utf-8")
+
+    @staticmethod
+    def p_to_c(p_string):
+        """  python string to C-string """
+        return bytes(p_string, "utf-8")
+
+    def __init__(self, library_name):
+        self.dll = ct.cdll.LoadLibrary(library_name)
+
+        # init application
+        self.init = self.dll.Spyndle_Init
+        self.init.argtypes = []
+        self.init.restype = ct.c_bool
+
+        # quit application
+        self.quit = self.dll.Spyndle_Quit
+        self.quit.argtypes = []
+
+        # report error reason, need to be converted
+        self.what_ = self.dll.Spyndle_What
+        self.what_.argtypes = []
+        self.what_.restype = ct.c_char_p
+
+        # report error location, need to be converted
+        self.when_ = self.dll.Spyndle_When
+        self.when_.argtypes = []
+        self.when_.restype = ct.c_char_p
+
+        # auto-create application
+        if not self.init():
+            self.must_quit()
+
+        # and done
+
+    def __del__(self):
+        self.quit()
+
+    def what(self):
+        """ C++ reason to python string """
+        return self.c_to_p(self.what_())
+
+    def when(self):
+        """ C++ location to python string """
+        return self.c_to_p(self.when_())
+
+
 class Species:
     """ contains constitutive information """
 
@@ -19,45 +70,11 @@ class Species:
         return '[' + self.name + ']'
 
 
-class IonoCell:
+class IonoCell(Spyndle):
     """ interface to C++ code """
 
-    @staticmethod
-    def c_to_p(c_string):
-        """ C-string to python string """
-        return str(c_string, "utf-8")
-
-    @staticmethod
-    def p_to_c(p_string):
-        """  python string to C-string """
-        return bytes(p_string, "utf-8")
-
     def __init__(self):
-        # loading code
-        self.dll = ct.cdll.LoadLibrary("./ionocell.dll")
-
-        # report error reason, need to be converted
-        self.what_ = self.dll.IonoCell_What
-        self.what_.argtypes = []
-        self.what_.restype = ct.c_char_p
-
-        # report error location, need to be converted
-        self.when_ = self.dll.IonoCell_When
-        self.when_.argtypes = []
-        self.when_.restype = ct.c_char_p
-
-        # init application
-        self.init = self.dll.IonoCell_Init
-        self.init.argtypes = []
-        self.init.restype = ct.c_bool
-
-        # quit application
-        self.quit = self.dll.IonoCell_Quit
-        self.quit.argtypes = []
-
-        # auto-create application
-        if not self.init():
-            self.must_quit()
+        super().__init__("./ionocell.dll")
 
         # parse species/equilibria...
         self.parse_ = self.dll.IonoCell_parse
@@ -90,17 +107,6 @@ class IonoCell:
         self.get_diff_coef_.argstype = [ct.c_char_p]
 
         self.species = []
-
-    def __del__(self):
-        self.quit()
-
-    def what(self):
-        """ C++ reason to python string """
-        return self.c_to_p(self.what_())
-
-    def when(self):
-        """ C++ location to python string """
-        return self.c_to_p(self.when_())
 
     def parse(self, some_code):
         """ send code to C++ to declare species and equilibria """
