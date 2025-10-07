@@ -283,4 +283,20 @@ macro(Y_Regression THE_LIB)
 	list(APPEND _UnitTests "utest-${THE_LIB}")
 	set(Y_UnitTests ${_UnitTests} PARENT_SCOPE)
 endmacro()
- 
+
+function(Y_DLL_COPY THE_TARGET DLL_NAME)
+	add_custom_command( TARGET ${THE_TARGET} POST_BUILD 
+	COMMAND ${CMAKE_COMMAND} -E echo "-- Copy '$<TARGET_FILE:${THE_TARGET}>'"
+	COMMAND ${CMAKE_COMMAND} -E echo "-- to   '${DLL_NAME}'"
+	COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${THE_TARGET}> ${DLL_NAME}
+	VERBATIM)
+
+	if(XCODE)
+		add_custom_command( TARGET ${THE_TARGET} POST_BUILD 
+		COMMAND ${CMAKE_COMMAND} -E echo "-- sign '${DLL_NAME}'"
+    	COMMAND codesign --remove-signature ${DLL_NAME}
+    	COMMAND xcrun codesign -s - ${DLL_NAME}
+    	VERBATIM)
+	endif()
+
+endfunction()

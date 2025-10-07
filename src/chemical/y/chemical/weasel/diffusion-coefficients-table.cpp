@@ -38,7 +38,7 @@ namespace Yttrium
                 }
             }
 
-            std::cerr << *this << std::endl;
+            //std::cerr << *this << std::endl;
 
         }
     }
