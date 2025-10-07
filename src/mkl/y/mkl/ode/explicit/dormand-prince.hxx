@@ -85,8 +85,9 @@ public:
             FieldType::Compute(f,ak5,x+a5*h,ytemp,cb);
         }
 
+        const real_t xnew = x+h;
         {
-            static const real_t b61 = REAL(9017.0)/REAL(3168.0);;
+            static const real_t b61 = REAL(9017.0)/REAL(3168.0);
             static const real_t b62 = REAL(-355.0)/REAL(33.0);
             static const real_t b63 = REAL(46732.0)/REAL(5247.0);
             static const real_t b64 = REAL(49.0)/REAL(176.0);
@@ -102,8 +103,33 @@ public:
                 xadd += b65 * ak5[i];
                 ytemp[i] = y[i] + h * xadd.sum();
             }
-            FieldType::Compute(f,ak6,x+h,ytemp,cb);
+            FieldType::Compute(f,ak6,xnew,ytemp,cb);
         }
+
+        {
+            static const real_t b71 = REAL(35.0)/REAL(384.0);
+            //static const real_t b72 = 0;
+            static const real_t b73 = REAL(500.0)/REAL(1113.0);
+            static const real_t b74 = REAL(125.0)/REAL(192.0);
+            static const real_t b75 = REAL(-2187.0)/REAL(6784.0);
+            static const real_t b76 = REAL(11.0)/REAL(84.0);
+            FOREACH_I
+            {
+
+                xadd.ldz();
+                xadd += b71 * dydx[i];
+                //xadd += b72 * ak2[i];
+                xadd += b73 * ak3[i];
+                xadd += b74 * ak4[i];
+                xadd += b75 * ak5[i];
+                xadd += b75 * ak6[i];
+                ytemp[i] = y[i] + h * xadd.sum();
+            }
+            FieldType::Compute(f,ak7,xnew,ytemp,cb);
+        }
+
+
+
 
     }
 
