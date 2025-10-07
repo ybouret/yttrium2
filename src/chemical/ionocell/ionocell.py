@@ -4,32 +4,18 @@ import ctypes as ct
 from spyndle import Spyndle
 
 
-class Species:
-    """ contains constitutive information """
+###############################################################################
+#
+#
+# extracting info for a species
+#
+#
+###############################################################################
+class SpeciesAPI(Spyndle):
+    """ get species info from parsed code """
 
-    def __init__(self, sp_name, sp_z, sp_latex):
-        self.name = sp_name
-        self.z = sp_z
-        self.latex = sp_latex
-
-    def __str__(self):
-        return self.name
-
-    def as_conc(self):
-        """ return [name] """
-        return '[' + self.name + ']'
-
-
-class IonoCell(Spyndle):
-    """ interface to C++ code """
-
-    def __init__(self):
-        super().__init__("./ionocell.dll")
-
-        # parse species/equilibria...
-        self.parse_ = self.dll.IonoCell_parse
-        self.parse_.restype = ct.c_bool
-        self.parse_.argtypes = [ct.c_char_p]
+    def __init__(self, library_name):
+        super().__init__(library_name)
 
         # number of species
         self.num_species = self.dll.IonoCell_numSpecies
@@ -51,6 +37,57 @@ class IonoCell(Spyndle):
         self.get_species_latex_.restype = ct.c_char_p
         self.get_species_latex_.argstype = []
 
+    def get_species_name(self, i):
+        """ get name of i-th species """
+        return self.c_to_p(self.get_species_name_(i))
+
+    def get_species_latex(self, i):
+        """ get LaTeX formula for i-th species """
+        return self.c_to_p(self.get_species_latex_(i))
+
+###############################################################################
+#
+#
+# a species = name + z + LaTeX formula for graphs..
+#
+#
+###############################################################################
+
+
+class Species:
+    """ contains constitutive information """
+
+    def __init__(self, sp_name, sp_z, sp_latex):
+        self.name = sp_name
+        self.z = sp_z
+        self.latex = sp_latex
+
+    def __str__(self):
+        return self.name
+
+    def as_conc(self):
+        """ return [name] """
+        return '[' + self.name + ']'
+
+
+###############################################################################
+#
+#
+# Local Reactor
+#
+#
+###############################################################################
+class IonoCell(SpeciesAPI):
+    """ interface to C++ code """
+
+    def __init__(self):
+        super().__init__("./ionocell.dll")
+
+        # parse species/equilibria...
+        self.parse_ = self.dll.IonoCell_parse
+        self.parse_.restype = ct.c_bool
+        self.parse_.argtypes = [ct.c_char_p]
+
         # query coefficient of diffusion
         self.get_diff_coef_ = self.dll.IonoCell_getD
         self.get_diff_coef_.restype = ct.c_double
@@ -67,14 +104,6 @@ class IonoCell(Spyndle):
 
         # second: collect species
         self.collect_species()
-
-    def get_species_name(self, i):
-        """ get name of i-th species """
-        return self.c_to_p(self.get_species_name_(i))
-
-    def get_species_latex(self, i):
-        """ get LaTeX formula for i-th species """
-        return self.c_to_p(self.get_species_latex_(i))
 
     def get_diffusion_coefficient(self, name):
         """ query diffusion coefficient for given name, -1 if unknown """
@@ -96,4 +125,4 @@ if __name__ == '__main__':
     chemsys.parse('Na^+ Cl^- %acetic')
     print(len(chemsys.species))
     for sp in chemsys.species:
-        print(sp, "D=", chemsys.get_diffusion_coefficient(sp.name))
+        print(sp.as_conc(), "D=", chemsys.get_diffusion_coefficient(sp.name))
