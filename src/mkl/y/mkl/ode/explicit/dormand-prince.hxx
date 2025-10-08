@@ -45,7 +45,7 @@ public:
             {
                 static const real_t b21 = REAL(0.2);
                 const        real_t h21 = h * b21;
-                FOREACH_I ytemp[i]=y[i]+h21*dydx[i];
+                ytemp[i]=y[i]+h21*dydx[i];
             }
             FieldType::Compute(f,ak2,x+a2*h,ytemp,cb);
         }
