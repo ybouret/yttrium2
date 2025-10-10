@@ -56,7 +56,7 @@ void TestJacobi( Random::Bits &ran )
             }
             const T rms2 = Tao::Norm2(xadd,au) / (T)n;
             const T rms  = Sqrt<T>::Of(rms2);
-            std::cerr << "\trms" << i << " = " << rms << std::endl;
+            std::cerr << "\trms" << i << " = " << (long double)rms << std::endl;
         }
 
     }
@@ -69,6 +69,7 @@ Y_UTEST(algebra_jacobi)
     TestJacobi<float>(ran);
     TestJacobi<double>(ran);
     TestJacobi<long double>(ran);
+    TestJacobi< XReal<float> >(ran);
 
 }
 Y_UDONE()
