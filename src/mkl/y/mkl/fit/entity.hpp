@@ -13,7 +13,7 @@ namespace Yttrium
     {
         namespace Fit
         {
-            class Entity
+            class Entity : public Object
             {
             public:
                 template <typename UID> inline

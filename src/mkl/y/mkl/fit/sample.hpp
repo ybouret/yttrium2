@@ -13,20 +13,27 @@ namespace Yttrium
         namespace Fit
         {
             template <
-            typename ORDINATE,
-            typename ABSCISSA
+            typename ABSCISSA,
+            typename ORDINATE
             >
             class Sample : public Entity
             {
             public:
 
                 template <typename UID> inline
-                explicit Sample(const UID &uid) :
-                Entity(uid)
+                explicit Sample(const UID                & id,
+                                const Readable<ABSCISSA> & _X,
+                                const Readable<ORDINATE> & _Y,
+                                Writable<ORDINATE>       & _Z):
+                Entity(id), X(_X), Y(_Y), Z(_Z)
                 {
                 }
 
                 inline virtual ~Sample() noexcept {}
+
+                const Readable<ABSCISSA> & X;
+                const Readable<ABSCISSA> & Y;
+                Writable<ABSCISSA>       & Z;
 
             private:
                 Y_Disable_Copy_And_Assign(Sample);
