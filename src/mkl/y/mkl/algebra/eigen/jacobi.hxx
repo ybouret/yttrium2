@@ -22,10 +22,20 @@ public:
     const real_t            half;
     const real_t            hundred;
 
-#define ROTATE(a,i,j,k,l) \
-g=a[i][j]; \
-h=a[k][l];a[i][j]=g-s*(h+g*tau);\
-a[k][l]=h+s*(g-h*tau)
+
+    static inline void Rotate(Matrix<real_t> &a,
+                              const real_t    s,
+                              const real_t    tau,
+                              const size_t i,
+                              const size_t j,
+                              const size_t k,
+                              const size_t l)
+    {
+        const real_t g=a[i][j];
+        const real_t h=a[k][l];
+        a[i][j]=g-s*(h+g*tau);
+        a[k][l]=h+s*(g-h*tau);
+    }
 
     inline bool run(Matrix<real_t> &v, Writable<real_t> &d, const Matrix<real_t> &a0)
     {
@@ -49,7 +59,7 @@ a[k][l]=h+s*(g-h*tau)
         }
 
         // loop
-        for(size_t i=1;i<=50;++i)
+        for(size_t i=1;i<=128;++i)
         {
             xadd.ldz();
             for(size_t ip=1;ip<n;++ip)
@@ -63,13 +73,13 @@ a[k][l]=h+s*(g-h*tau)
             {
                 for(size_t iq=ip+1;iq<=n;++iq)
                 {
-                    real_t g = hundred*Fabs<real_t>::Of(a[ip][iq]);
+                    const real_t g = hundred*Fabs<real_t>::Of(a[ip][iq]);
                     if (i > 4 && (float)(fabs(d[ip])+g) == (float)fabs(d[ip])
                         && (float)(fabs(d[iq])+g) == (float)fabs(d[iq]))
                         a[ip][iq]=zero;
                     else if (fabs(a[ip][iq]) > tresh) {
-                        real_t h=d[iq]-d[ip];
-                        real_t       t=zero;
+                        real_t h = d[iq]-d[ip];
+                        real_t t = zero;
                         if ((float)(fabs(h)+g) == (float)fabs(h))
                             t=(a[ip][iq])/h; //t = 1/(2θ)
                         else {
@@ -86,10 +96,10 @@ a[k][l]=h+s*(g-h*tau)
                         d[ip] -= h;
                         d[iq] += h;
                         a[ip][iq]=zero;
-                        for(size_t j=1;j<=ip-1;j++)    { ROTATE(a,j,ip,j,iq); }
-                        for(size_t j=ip+1;j<=iq-1;j++) { ROTATE(a,ip,j,j,iq); }
-                        for(size_t j=iq+1;j<=n;j++)    { ROTATE(a,ip,j,iq,j); }
-                        for(size_t j=1;j<=n;j++)       { ROTATE(v,j,ip,j,iq); }
+                        for(size_t j=1;j<ip;++j)    Rotate(a,s,tau,j,ip,j,iq);
+                        for(size_t j=ip+1;j<iq;++j) Rotate(a,s,tau,ip,j,j,iq);
+                        for(size_t j=iq+1;j<=n;++j) Rotate(a,s,tau,ip,j,iq,j);
+                        for(size_t j=1;j<=n;++j)    Rotate(v,s,tau,j,ip,j,iq);
                     }
                 }
             }
