@@ -7,6 +7,7 @@
 #include "../../core/tests/main.hpp"
 #include "y/utest/run.hpp"
 #include "y/container/cxx/array.hpp"
+#include "y/mkl/tao/2.hpp"
 
 using namespace Yttrium;
 using namespace MKL;
@@ -15,6 +16,7 @@ template <typename T> static inline
 void TestJacobi( Random::Bits &ran )
 {
     Eigen::Jacobi<T> jacobi;
+    Cameo::Addition<T> xadd;
 
     for(size_t n=1;n<=3;++n)
     {
@@ -37,6 +39,19 @@ void TestJacobi( Random::Bits &ran )
         Eigen::Sort(v,d,Sign::Increasing<T>);
         std::cerr << "v=" << v << std::endl;
         std::cerr << "d=" << d << std::endl;
+        //Eigen::Sort(v,d,Fabs<T>::Increasing);
+        //std::cerr << "v=" << v << std::endl;
+        //std::cerr << "d=" << d << std::endl;
+
+        CxxArray<T> u(n);
+        for(size_t i=1;i<=n;++i)
+        {
+            const T lam = d[i];
+            for(size_t j=1;j<=n;++j)
+                u[j] = v[j][i];
+            std::cerr << "\tlam=" << lam << ", u=" << u << std::endl;
+        }
+
     }
 }
 
