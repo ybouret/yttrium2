@@ -5,6 +5,7 @@
 
 #include "y/container/writable.hpp"
 #include "y/mkl/fit/entity.hpp"
+#include "y/functor.hpp"
 
 namespace Yttrium
 {
@@ -34,6 +35,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 static const unsigned Dimensions = sizeof(ORDINATE) / sizeof(ABSCISSA); //!< alias
+                
 
                 //______________________________________________________________
                 //
