@@ -61,6 +61,19 @@ namespace Yttrium
             };
 
 
+            template <typename T>
+            class Jacobi
+            {
+            public:
+                explicit Jacobi();
+                virtual ~Jacobi() noexcept;
+
+            private:
+                class Code;
+                Y_Disable_Copy_And_Assign(Jacobi);
+                Code * const code;
+            };
+
         };
     }
 }
