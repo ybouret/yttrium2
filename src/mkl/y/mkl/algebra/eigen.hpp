@@ -76,7 +76,7 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(Jacobi);
                 Code * const code;
             };
-
+            
             template <typename T, typename PROC> static inline
             void Sort(Matrix<T> &v, Writable<T> &d, PROC &compare)
             {
