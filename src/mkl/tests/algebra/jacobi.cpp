@@ -18,7 +18,7 @@ void TestJacobi( Random::Bits &ran )
     Eigen::Jacobi<T> jacobi;
     Cameo::Addition<T> xadd;
 
-    for(size_t n=1;n<=4;++n)
+    for(size_t n=1;n<=8;++n)
     {
         Matrix<T>   a(n,n);
         Matrix<T>   v(n,n);
@@ -54,7 +54,9 @@ void TestJacobi( Random::Bits &ran )
             {
                 au[j] -= lam *u[j];
             }
-            std::cerr << "\tdelta" << i << " = " << au << std::endl;
+            const T rms2 = Tao::Norm2(xadd,au) / (T)n;
+            const T rms  = Sqrt<T>::Of(rms2);
+            std::cerr << "\trms" << i << " = " << rms << std::endl;
         }
 
     }
@@ -65,5 +67,7 @@ Y_UTEST(algebra_jacobi)
 {
     Random::MT19937 ran;
     TestJacobi<float>(ran);
+    TestJacobi<double>(ran);
+
 }
 Y_UDONE()

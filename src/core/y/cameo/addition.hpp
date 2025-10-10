@@ -124,4 +124,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Cameo_Addition_Included

@@ -61,7 +61,7 @@ public:
         assert(d.size() == a0.rows );
 
         // initialize
-        const size_t n = a0.rows; prepare(n);
+        const size_t n  = a0.rows; prepare(n);
         const real_t n2 = n*n;
         for(size_t i=n;i>0;--i)
         {
