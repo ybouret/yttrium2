@@ -6,6 +6,7 @@
 #include "y/mkl/api/sqrt.hpp"
 #include "y/cameo/addition.hpp"
 #include "y/container/sequence/vector.hpp"
+#include "y/mkl/api/almost-equal.hpp"
 //#include "y/apex/rational.hpp"
 
 namespace Yttrium
@@ -16,6 +17,8 @@ namespace Yttrium
 #define real_t float
 #include "jacobi.hxx"
 #undef real_t
+
+#if 0
 
 #define real_t double
 #include "jacobi.hxx"
@@ -36,10 +39,8 @@ namespace Yttrium
 #define real_t XReal<long double>
 #include "jacobi.hxx"
 #undef real_t
-
-#define real_t apq
-//#include "hessenberg.hxx"
-#undef real_t
+#endif
+        
 
     }
 

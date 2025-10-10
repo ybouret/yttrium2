@@ -22,6 +22,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(algebra_cyclic);
     Y_UTEST(algebra_svd);
     Y_UTEST(algebra_eigen);
+    Y_UTEST(algebra_jacobi);
 
     Y_UTEST(interp_ratio);
     Y_UTEST(interp_poly);

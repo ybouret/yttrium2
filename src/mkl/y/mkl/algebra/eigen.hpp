@@ -68,6 +68,8 @@ namespace Yttrium
                 explicit Jacobi();
                 virtual ~Jacobi() noexcept;
 
+                bool operator()(Matrix<T> &v, Writable<T> &d, const Matrix<T> &a);
+
             private:
                 class Code;
                 Y_Disable_Copy_And_Assign(Jacobi);

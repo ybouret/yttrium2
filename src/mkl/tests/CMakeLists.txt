@@ -32,6 +32,7 @@ Y_UTEST(algebra:tridiag)
 Y_UTEST(algebra:cyclic)
 Y_UTEST(algebra:svd)
 Y_UTEST(algebra:eigen)
+Y_UTEST(algebra:jacobi)
 
 Y_UTEST(drvs1D)
 Y_UTEST(drvsND)
