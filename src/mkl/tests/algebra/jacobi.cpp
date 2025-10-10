@@ -18,7 +18,7 @@ void TestJacobi( Random::Bits &ran )
     Eigen::Jacobi<T> jacobi;
     Cameo::Addition<T> xadd;
 
-    for(size_t n=1;n<=3;++n)
+    for(size_t n=1;n<=4;++n)
     {
         Matrix<T>   a(n,n);
         Matrix<T>   v(n,n);

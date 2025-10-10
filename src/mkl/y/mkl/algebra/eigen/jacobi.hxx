@@ -37,6 +37,23 @@ public:
         a[k][l]=h+s*(g-h*tau);
     }
 
+    inline
+    bool accept(const real_t value, const real_t g) const noexcept
+    {
+        const real_t sum    = value + g;
+        const real_t absVal = Fabs<real_t>::Of(value);
+        const real_t absSum = Fabs<real_t>::Of(sum);
+        const real_t delta  = absVal - absSum;
+        return Fabs<real_t>::Of(delta) <= zero;
+    }
+
+    inline
+    real_t sqrtOnePlusSq(const real_t &x) const noexcept
+    {
+        const real_t arg = one + x*x;
+        return Sqrt<real_t>::Of(arg);
+    }
+
     inline bool run(Matrix<real_t> &v, Writable<real_t> &d, const Matrix<real_t> &a0)
     {
         assert(a0.isSquare());
@@ -66,30 +83,37 @@ public:
                 for(size_t iq=ip+1;iq<=n;++iq)
                     xadd << Fabs<real_t>::Of(a[ip][iq]);
             const real_t sm = xadd.sum();
-            if( Fabs<real_t>::Of(sm) <= zero ) return true;
+
+            if( Fabs<real_t>::Of(sm) <= zero )
+                return true;
 
             const real_t tresh = (i<4) ? fifth * sm / n2 : zero;
-            for(size_t ip=1;ip<=n-1;++ip)
+            for(size_t ip=1;ip<n;++ip)
             {
                 for(size_t iq=ip+1;iq<=n;++iq)
                 {
                     const real_t g = hundred*Fabs<real_t>::Of(a[ip][iq]);
-                    if (i > 4 && (float)(fabs(d[ip])+g) == (float)fabs(d[ip])
-                        && (float)(fabs(d[iq])+g) == (float)fabs(d[iq]))
+                    //if(    i > 4
+                    //    && (float)(fabs(d[ip])+g) == (float)fabs(d[ip])
+                    //    && (float)(fabs(d[iq])+g) == (float)fabs(d[iq])
+                    //   )
+                    if( i>4 && accept(d[ip],g) && accept(d[iq],g) )
                         a[ip][iq]=zero;
-                    else if (fabs(a[ip][iq]) > tresh) {
+                    else if (Fabs<real_t>::Of(a[ip][iq]) > tresh)
+                    {
                         real_t h = d[iq]-d[ip];
                         real_t t = zero;
-                        if ((float)(fabs(h)+g) == (float)fabs(h))
-                            t=(a[ip][iq])/h; //t = 1/(2θ)
+                        //if ((float)(fabs(h)+g) == (float)fabs(h))
+                        if(accept(h,g))
+                            t=(a[ip][iq])/h;
                         else {
-                            const real_t theta=0.5*h/(a[ip][iq]); //Equation (11.1.10).
-                            t=1.0/(fabs(theta)+sqrt(1.0+theta*theta));
-                            if (theta < 0.0) t = -t;
+                            const real_t theta=half*h/(a[ip][iq]);
+                            t=one/(Fabs<real_t>::Of(theta)+sqrtOnePlusSq(theta));
+                            if (theta<zero) t = -t;
                         }
-                        const real_t c=1.0/sqrt(1+t*t);
-                        const real_t s=t*c;
-                        const real_t tau=s/(1.0+c);
+                        const real_t c   = one/sqrtOnePlusSq(t);
+                        const real_t s   = t*c;
+                        const real_t tau = s/(one+c);
                         h=t*a[ip][iq];
                         z[ip] -= h;
                         z[iq] += h;
