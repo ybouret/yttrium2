@@ -21,7 +21,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Entity : public Object
+            class Entity : public CountedObject
             {
             public:
                 //______________________________________________________________
