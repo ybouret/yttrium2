@@ -14,5 +14,18 @@
 We have $N$ data points ordinates $Y_i$ for $N$ absiscae $\vec X_i$.
 We want to fit those data with variables $\vec a \in \mathbb R^M$
 such that
+\begin{equation}
+	D^2(\vec a) = \dfrac{1}{2} \sum_i \left[ Y_i - F(\vec X_i,\vec a) \right]^2 
+\end{equation}
+is minimal.
+
+\begin{equation}
+	D^2(\vec a + \delta a) \simeq D^2(\vec a) + \langle \vec \nabla D^2 \vert \delta \vec a \rangle
+	 + \dfrac{1}{2} \langle \delta \vec a \vert \mathcal H_{D^2} \vert \delta \vec a\rangle
+\end{equation}
+	
+\begin{equation}
+	\beta_j = - \dfrac{\partial D^2}{\partial a_j} = \sum_i \left[ Y_i - F(\vec X_i,\vec a) \right] \left( \dfrac{\partial F_i}{\partial a_j} \right)
+\end{equation}
 
 \end{document}
