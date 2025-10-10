@@ -30,7 +30,10 @@ namespace Yttrium
                     const Parameter::Pointer p = new Parameter(uid,db.size()+1);
                     return grow(p);
                 }
-                
+
+                const Parameter & operator[](const String &)     const;
+                const Parameter & operator[](const char * const) const;
+                const Parameter & operator[](const char )        const;
 
             private:
                 Y_Disable_Copy_And_Assign(Parameters);

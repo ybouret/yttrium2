@@ -21,8 +21,8 @@ namespace Yttrium
             public:
                 explicit Variables();
                 virtual ~Variables() noexcept;
-
                 
+
 
 
             private:

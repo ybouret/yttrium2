@@ -28,6 +28,22 @@ namespace Yttrium
                 return *this;
             }
 
+            const Parameter & Parameters:: operator[](const String &uid) const
+            {
+                const Parameter::Pointer *pp = db.search(uid);
+                if(!pp) throw Specific::Exception(CallSign,"missing parameter '%s'", uid.c_str());
+                return **pp;
+            }
+
+            const Parameter & Parameters:: operator[](const char * const uid) const
+            {
+                const String _(uid); return (*this)[_];
+            }
+
+            const Parameter & Parameters:: operator[](const char uid) const
+            {
+                const String _(uid); return (*this)[_];
+            }
 
         }
     }
