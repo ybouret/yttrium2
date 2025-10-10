@@ -8,6 +8,7 @@
 #include "y/mkl/api/selector.hpp"
 #include "y/mkl/api/scalar-for.hpp"
 #include "y/calculus/iabs.hpp"
+#include "y/type/sign.hpp"
 #include <cmath>
 
 namespace Yttrium
@@ -51,6 +52,14 @@ namespace Yttrium
             {
                 static const typename API_Select<T>::Choice choice = {};
                 return Kernel::Fabs<T>(x,choice);
+            }
+
+            //! \param lhs lhs \param rhs rhs \return |lhs| < |rhs|
+            static inline SignType Increasing(const T &lhs, const T &rhs)
+            {
+                const T la = Of(lhs);
+                const T ra = Of(rhs);
+                return Sign::Of(la,ra);
             }
         };
 
