@@ -6,7 +6,6 @@
 
 #include "y/mkl/fit/parameter.hpp"
 #include "y/container/associative/suffix/set.hpp"
-//#include "y/type/ingress.hpp"
 
 namespace Yttrium
 {
@@ -31,7 +30,7 @@ namespace Yttrium
                     const Parameter::Pointer p = new Parameter(uid,db.size()+1);
                     return grow(p);
                 }
-
+                
             private:
                 Y_Disable_Copy_And_Assign(Parameters);
                 Y_Ingress_Decl();

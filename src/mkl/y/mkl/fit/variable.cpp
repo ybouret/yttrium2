@@ -14,7 +14,8 @@ namespace Yttrium
 
             std::ostream & operator<<(std::ostream &os, const Variable &var)
             {
-                return os;
+                const Parameter &self = var;
+                return os << self << " (-> " << var.parameter << ")";
             }
         }
     }

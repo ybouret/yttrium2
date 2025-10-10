@@ -3,7 +3,7 @@
 #ifndef Y_Fit_Variable_Included
 #define Y_Fit_Variable_Included 1
 
-#include "y/mkl/fit/entity.hpp"
+#include "y/mkl/fit/parameter.hpp"
 
 namespace Yttrium
 {
@@ -12,14 +12,17 @@ namespace Yttrium
         namespace Fit
         {
 
-            class Variable : public Entity
+            class Variable : public Parameter
             {
             public:
 
             protected:
                 template <typename UID> inline
-                explicit Variable(const UID  & uid) :
-                Entity(uid), indx(0)
+                explicit Variable(const UID  &     uid,
+                                  const size_t     idx,
+                                  const Parameter &prm) :
+                Parameter(uid,idx),
+                parameter(prm)
                 {
                 }
 
@@ -28,7 +31,8 @@ namespace Yttrium
 
                 friend std::ostream & operator<<(std::ostream &, const Variable &);
 
-                const size_t indx;
+                const Parameter &parameter;
+
             private:
                 Y_Disable_Copy_And_Assign(Variable);
 
