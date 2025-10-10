@@ -43,13 +43,18 @@ void TestJacobi( Random::Bits &ran )
         //std::cerr << "v=" << v << std::endl;
         //std::cerr << "d=" << d << std::endl;
 
-        CxxArray<T> u(n);
+        CxxArray<T> u(n),au(n);
         for(size_t i=1;i<=n;++i)
         {
             const T lam = d[i];
             for(size_t j=1;j<=n;++j)
                 u[j] = v[j][i];
-            std::cerr << "\tlam=" << lam << ", u=" << u << std::endl;
+            Tao::Mul(xadd,au,a,u);
+            for(size_t j=n;j>0;--j)
+            {
+                au[j] -= lam *u[j];
+            }
+            std::cerr << "\tdelta" << i << " = " << au << std::endl;
         }
 
     }
