@@ -12,6 +12,14 @@ namespace Yttrium
     {
         namespace Fit
         {
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Sample interface
+            //
+            //
+            //__________________________________________________________________
             template <
             typename ABSCISSA,
             typename ORDINATE
@@ -19,8 +27,28 @@ namespace Yttrium
             class Sample : public Entity, public Container
             {
             public:
-                static const unsigned Dimensions = sizeof(ORDINATE) / sizeof(ABSCISSA);
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                static const unsigned Dimensions = sizeof(ORDINATE) / sizeof(ABSCISSA); //!< alias
 
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! setup
+                /**
+                 \param id name
+                 \param _X input abscissae
+                 \param _Y input ordinates
+                 \param _Z ouput ordinates
+                 */
                 template <typename UID> inline
                 explicit Sample(const UID                & id,
                                 const Readable<ABSCISSA> & _X,
@@ -30,8 +58,15 @@ namespace Yttrium
                 {
                 }
 
+                //! cleanup
                 inline virtual ~Sample() noexcept {}
 
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
                 inline virtual size_t size() const noexcept
                 {
                     assert( X.size() == Y.size() );
@@ -39,12 +74,18 @@ namespace Yttrium
                     return X.size();
                 }
 
-                const Readable<ABSCISSA> & X;
-                const Readable<ABSCISSA> & Y;
-                Writable<ABSCISSA>       & Z;
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                const Readable<ABSCISSA> & X; //!< input  abscissae
+                const Readable<ABSCISSA> & Y; //!< input  ordinates
+                Writable<ABSCISSA>       & Z; //!< output ordinates
 
             private:
-                Y_Disable_Copy_And_Assign(Sample);
+                Y_Disable_Copy_And_Assign(Sample); //!< discarding
             };
         }
         

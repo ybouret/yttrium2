@@ -61,22 +61,40 @@ namespace Yttrium
                 Code * const code;                     //!< inner algorithm
             };
 
-
+            //__________________________________________________________________
+            //
+            //
+            //! Jacobi algorithm for symmetric matrices
+            //
+            //__________________________________________________________________
             template <typename T>
             class Jacobi
             {
             public:
-                explicit Jacobi();
-                virtual ~Jacobi() noexcept;
+                explicit Jacobi();          //!< setup
+                virtual ~Jacobi() noexcept; //!< cleanup
 
+                //! try to diagonalize matrix
+                /**
+                 \param v output COLUMN eigen vectors
+                 \param d matching eigen values
+                 \param a input matrix
+                 \return true iff success
+                 */
                 bool operator()(Matrix<T> &v, Writable<T> &d, const Matrix<T> &a);
 
             private:
                 class Code;
-                Y_Disable_Copy_And_Assign(Jacobi);
-                Code * const code;
+                Y_Disable_Copy_And_Assign(Jacobi); //!< discarding
+                Code * const code;                 //!< inner algorithm
             };
-            
+
+            //! co-sort eigen values and eigen vector
+            /**
+             \param v output COLUMN eigen vectors
+             \param d matching eigen values
+             \param compare eigen value comparator
+             */
             template <typename T, typename PROC> static inline
             void Sort(Matrix<T> &v, Writable<T> &d, PROC &compare)
             {
