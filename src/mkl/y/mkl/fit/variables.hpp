@@ -16,12 +16,39 @@ namespace Yttrium
 
             typedef SuffixSet<String,Variable::Pointer> VariableDB;
 
+            class Alias
+            {
+            public:
+                template <typename UID> inline
+                Alias(const UID &uid, const Parameter &prm) :
+                target(uid),source(prm)
+                {
+                }
+
+                Alias(const Alias &);
+                ~Alias() noexcept;
+
+
+                const String     target;
+                const Parameter &source;
+
+            private:
+                Y_Disable_Assign(Alias);
+            };
+
             class Variables : public Ingress<const VariableDB>
             {
             public:
+                static const char * const CallSign;
+                
                 explicit Variables();
                 virtual ~Variables() noexcept;
-                
+
+                //! primary
+                Variables & operator<<(const Parameter &);
+
+                //! replica
+                Variables & operator<<(const Alias &);
 
 
 

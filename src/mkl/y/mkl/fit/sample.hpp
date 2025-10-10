@@ -3,8 +3,7 @@
 #ifndef Y_Fit_Sample_Included
 #define Y_Fit_Sample_Included 1
 
-#include "y/container/writable.hpp"
-#include "y/mkl/fit/entity.hpp"
+#include "y/mkl/fit/variables.hpp"
 #include "y/functor.hpp"
 
 namespace Yttrium
@@ -56,7 +55,7 @@ namespace Yttrium
                                 const Readable<ABSCISSA> & _X,
                                 const Readable<ORDINATE> & _Y,
                                 Writable<ORDINATE>       & _Z):
-                Entity(id), X(_X), Y(_Y), Z(_Z)
+                Entity(id), X(_X), Y(_Y), Z(_Z), vars()
                 {
                 }
 
@@ -82,9 +81,10 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const Readable<ABSCISSA> & X; //!< input  abscissae
-                const Readable<ABSCISSA> & Y; //!< input  ordinates
-                Writable<ABSCISSA>       & Z; //!< output ordinates
+                const Readable<ABSCISSA> & X;    //!< input  abscissae
+                const Readable<ABSCISSA> & Y;    //!< input  ordinates
+                Writable<ABSCISSA>       & Z;    //!< output ordinates
+                Variables                  vars; //!< fitting variables
 
             private:
                 Y_Disable_Copy_And_Assign(Sample); //!< discarding
