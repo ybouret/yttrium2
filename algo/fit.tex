@@ -29,7 +29,16 @@ is minimal.
 \end{equation}
 
 \begin{equation}
-	\alpha_{jk} = - \dfrac{\partial \beta_j}{\partial a_k} = 
+	H_{jk} = - \dfrac{\partial \beta_j}{\partial a_k} = 
 	\sum_i \left[ \left( \dfrac{\partial F_i}{\partial a_j} \right) \left( \dfrac{\partial F_i}{\partial a_k} \right) - \left[ Y_i - F(\vec X_i,\vec a) \right] \left( \dfrac{\partial^2 F_i}{\partial a_j\partial a_k} \right) \right]
 \end{equation}
+
+\begin{equation}
+	\alpha_{jk} = \sum_i \left( \dfrac{\partial F_i}{\partial a_j} \right) \left( \dfrac{\partial F_i}{\partial a_k} \right)
+\end{equation}
+
+\begin{equation}
+	D^2(\vec a + \delta a) \simeq D^2_0 - \langle \vec \beta \vert \delta \vec a \rangle + \dfrac{1}{2}  \langle \delta \vec a \vert \bm{\alpha} \vert \delta \vec a\rangle
+\end{equation}
+
 \end{document}
