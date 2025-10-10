@@ -4,6 +4,7 @@
 #define Y_MKL_Eigen_Included 1
 
 #include "y/container/matrix.hpp"
+#include "y/type/sign.hpp"
 
 namespace Yttrium
 {
@@ -75,6 +76,35 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(Jacobi);
                 Code * const code;
             };
+
+            template <typename T, typename PROC> static inline
+            void Sort(Matrix<T> &v, Writable<T> &d, PROC &compare)
+            {
+                assert(v.isSquare());
+                assert(d.size() == v.rows);
+                const size_t n = v.rows;
+                for(size_t i=1;i<n;++i)
+                {
+                    size_t k = i;
+                    T      p = d[k];
+                    for (size_t j=i+1;j<=n;j++)
+                    {
+                        switch( compare(p,d[j]) )
+                        {
+                            case Negative:  break;
+                            case __Zero__:  break;
+                            case Positive: p = d[k=j]; break;
+                        }
+                    }
+                    if(k!=i)
+                    {
+                        d[k]=d[i];
+                        d[i]=p;
+                        v.swapCols(i,k);
+                    }
+                }
+            }
+
 
         };
     }

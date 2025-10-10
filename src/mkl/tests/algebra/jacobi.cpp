@@ -16,7 +16,7 @@ void TestJacobi( Random::Bits &ran )
 {
     Eigen::Jacobi<T> jacobi;
 
-    for(size_t n=1;n<=2;++n)
+    for(size_t n=1;n<=3;++n)
     {
         Matrix<T>   a(n,n);
         Matrix<T>   v(n,n);
@@ -34,6 +34,7 @@ void TestJacobi( Random::Bits &ran )
             std::cerr << "Couldn't diagonalize" << std::endl;
             continue;
         }
+        Eigen::Sort(v,d,Sign::Increasing<T>);
         std::cerr << "v=" << v << std::endl;
         std::cerr << "d=" << d << std::endl;
     }
