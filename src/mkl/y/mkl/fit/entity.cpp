@@ -9,7 +9,11 @@ namespace Yttrium
             Entity:: ~Entity() noexcept
             {
             }
-            
+
+            const String & Entity:: key() const noexcept
+            {
+                return name;
+            }
         }
     }
 
