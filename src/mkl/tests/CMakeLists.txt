@@ -6,6 +6,7 @@ algebra
 interp
 drvs
 ode
+fit
 )
 Y_LinkLibraries(test-mkl y-mkl)
 
@@ -39,4 +40,6 @@ Y_UTEST(drvsND)
 
 Y_UTEST(ode:rk4)
 Y_UTEST(ode:expl)
+
+Y_UTEST(fit:1d)
 
