@@ -11,6 +11,7 @@ y/mkl/interpolation
 y/mkl/derivatives
 y/mkl/ode
 y/mkl/ode/explicit
+y/mkl/fit
 )
 
 add_subdirectory(tests)

@@ -4,27 +4,35 @@
 #define Y_Fit_Sample_Included 1
 
 #include "y/container/writable.hpp"
-#include "y/string.hpp"
+#include "y/mkl/fit/entity.hpp"
 
 namespace Yttrium
 {
     namespace MKL
     {
-
-        template <
-        typename ORDINATE,
-        typename ABSCISSA
-        >
-        class Sample
+        namespace Fit
         {
-        public:
+            template <
+            typename ORDINATE,
+            typename ABSCISSA
+            >
+            class Sample : public Entity
+            {
+            public:
 
+                template <typename UID> inline
+                explicit Sample(const UID &uid) :
+                Entity(uid)
+                {
+                }
 
-            const String name;
-        private:
-            Y_Disable_Copy_And_Assign(Sample);
-        };
+                inline virtual ~Sample() noexcept {}
 
+            private:
+                Y_Disable_Copy_And_Assign(Sample);
+            };
+        }
+        
     }
 }
 
