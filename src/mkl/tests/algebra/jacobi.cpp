@@ -68,6 +68,7 @@ Y_UTEST(algebra_jacobi)
     Random::MT19937 ran;
     TestJacobi<float>(ran);
     TestJacobi<double>(ran);
+    TestJacobi<long double>(ran);
 
 }
 Y_UDONE()

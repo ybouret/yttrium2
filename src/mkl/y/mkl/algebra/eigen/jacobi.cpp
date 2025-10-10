@@ -23,10 +23,11 @@ namespace Yttrium
 #include "jacobi.hxx"
 #undef real_t
 
-#if 0
 #define real_t long double
 #include "jacobi.hxx"
 #undef real_t
+
+#if 0
 
 #define real_t XReal<float>
 #include "jacobi.hxx"
