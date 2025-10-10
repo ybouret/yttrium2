@@ -15,8 +15,8 @@ namespace Yttrium
             class Variable : public Parameter
             {
             public:
+                typedef Keyed< String, ArcPtr<Variable> > Pointer;
 
-            protected:
                 template <typename UID> inline
                 explicit Variable(const UID  &     uid,
                                   const size_t     idx,
@@ -26,7 +26,6 @@ namespace Yttrium
                 {
                 }
 
-            public:
                 virtual ~Variable() noexcept;
 
                 friend std::ostream & operator<<(std::ostream &, const Variable &);
