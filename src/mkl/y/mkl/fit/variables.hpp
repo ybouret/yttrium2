@@ -19,9 +19,11 @@ namespace Yttrium
             class Variables : public Ingress<const VariableDB>
             {
             public:
-
                 explicit Variables();
                 virtual ~Variables() noexcept;
+
+                
+
 
             private:
                 Y_Disable_Copy_And_Assign(Variables);
