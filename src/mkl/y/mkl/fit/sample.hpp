@@ -16,9 +16,10 @@ namespace Yttrium
             typename ABSCISSA,
             typename ORDINATE
             >
-            class Sample : public Entity
+            class Sample : public Entity, public Container
             {
             public:
+                static const unsigned Dimensions = sizeof(ORDINATE) / sizeof(ABSCISSA);
 
                 template <typename UID> inline
                 explicit Sample(const UID                & id,
@@ -30,6 +31,13 @@ namespace Yttrium
                 }
 
                 inline virtual ~Sample() noexcept {}
+
+                inline virtual size_t size() const noexcept
+                {
+                    assert( X.size() == Y.size() );
+                    assert( X.size() == Z.size() );
+                    return X.size();
+                }
 
                 const Readable<ABSCISSA> & X;
                 const Readable<ABSCISSA> & Y;
