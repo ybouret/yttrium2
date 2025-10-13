@@ -4,7 +4,7 @@
 #define Y_Fit_Sample_Included 1
 
 #include "y/mkl/fit/variables.hpp"
-#include "y/functor.hpp"
+#include "y/mkl/fit/adjustable.hpp"
 
 namespace Yttrium
 {
@@ -21,7 +21,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             template <typename ABSCISSA, typename ORDINATE>
-            class Sample : public Entity, public Container
+            class Sample : public Adjustable<ABSCISSA,ORDINATE>
             {
             public:
                 //______________________________________________________________
@@ -32,6 +32,7 @@ namespace Yttrium
                 //______________________________________________________________
                 static const unsigned Dimensions = sizeof(ORDINATE) / sizeof(ABSCISSA); //!< alias
                 typedef Keyed<String,ArcPtr<Sample>> Pointer;                           //!< alias
+                typedef Adjustable<ABSCISSA,ORDINATE> AdjustableType;
 
                 //______________________________________________________________
                 //
@@ -52,7 +53,7 @@ namespace Yttrium
                                 const Readable<ABSCISSA> & _X,
                                 const Readable<ORDINATE> & _Y,
                                 Writable<ORDINATE>       & _Yf):
-                Entity(id), X(_X), Y(_Y), Yf(_Yf), vars()
+                AdjustableType(id), X(_X), Y(_Y), Yf(_Yf), vars()
                 {
                 }
 
@@ -65,7 +66,7 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
-                inline virtual size_t size() const noexcept
+                inline virtual size_t count() const noexcept
                 {
                     assert( X.size() == Y.size() );
                     assert( X.size() == Yf.size() );

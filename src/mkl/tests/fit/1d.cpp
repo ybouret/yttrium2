@@ -35,10 +35,10 @@ Y_UTEST(fit_1d)
     S2.vars << params["t0"] << Fit::Alias("D", params["D2"]);
 
 
-    std::cerr << "#S1    = " << S1.size() << std::endl;
+    std::cerr << "#S1    = " << S1.count() << std::endl;
     std::cerr << "|_vars = " << S1.vars << std::endl;
 
-    std::cerr << "#S2    = " << S2.size() << std::endl;
+    std::cerr << "#S2    = " << S2.count() << std::endl;
     std::cerr << "|_vars = " << S2.vars << std::endl;
 
 
