@@ -31,7 +31,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 static const unsigned Dimensions = sizeof(ORDINATE) / sizeof(ABSCISSA); //!< alias
-                typedef Keyed<String,ArcPtr<Sample>> Pointer;
+                typedef Keyed<String,ArcPtr<Sample>> Pointer;                           //!< alias
 
                 //______________________________________________________________
                 //
@@ -42,10 +42,10 @@ namespace Yttrium
 
                 //! setup
                 /**
-                 \param id name
-                 \param _X input abscissae
-                 \param _Y input ordinates
-                 \param _Z ouput ordinates
+                 \param id  name
+                 \param _X  input abscissae
+                 \param _Y  input ordinates
+                 \param _Yf ouput ordinates
                  */
                 template <typename UID> inline
                 explicit Sample(const UID                & id,

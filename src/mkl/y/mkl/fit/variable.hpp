@@ -12,11 +12,38 @@ namespace Yttrium
         namespace Fit
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Local variable
+            //
+            //
+            //__________________________________________________________________
             class Variable : public Parameter
             {
             public:
-                typedef Keyed< String, ArcPtr<Variable> > Pointer;
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                typedef Keyed< String, ArcPtr<Variable> > Pointer; //!< alias
 
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! setup
+                /**
+                 \param uid name
+                 \param idx local index
+                 \param prm global parameter
+                 */
                 template <typename UID> inline
                 explicit Variable(const UID  &     uid,
                                   const size_t     idx,
@@ -25,15 +52,23 @@ namespace Yttrium
                 parameter(prm)
                 {
                 }
+
+                //! cleanup
                 virtual ~Variable() noexcept;
 
                 //! display
                 friend std::ostream & operator<<(std::ostream &, const Variable &);
 
-                const Parameter &parameter;
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                const Parameter &parameter; //!< global parameter
 
             private:
-                Y_Disable_Copy_And_Assign(Variable);
+                Y_Disable_Copy_And_Assign(Variable); //!< discarding
 
             };
 

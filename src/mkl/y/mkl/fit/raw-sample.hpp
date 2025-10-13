@@ -77,10 +77,25 @@ namespace Yttrium
             public Sample<ABSCISSA,ORDINATE>
             {
             public:
-                typedef RawSampleData<ABSCISSA,ORDINATE> RawSampleDataType;
+                typedef RawSampleData<ABSCISSA,ORDINATE> RawSampleDataType; //!< alias
                 using RawSampleDataType::X_;
                 using RawSampleDataType::Y_;
 
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! setup
+                /**
+                 \param uid name
+                 \param x c-style abscissae
+                 \param y c-style ordinates
+                 \param n number of parameters
+                 \param Yf_ fit destination
+                 */
                 template <typename UID> inline
                 explicit RawSample(const UID &           uid,
                                     const ABSCISSA * const x,
@@ -92,9 +107,11 @@ namespace Yttrium
                 {
                 }
 
+                //! cleanup
                 inline virtual ~RawSample() noexcept {}
+                
             private:
-                Y_Disable_Copy_And_Assign(RawSample);
+                Y_Disable_Copy_And_Assign(RawSample); //!< discarding
             };
 
         }

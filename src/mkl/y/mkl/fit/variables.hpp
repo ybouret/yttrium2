@@ -14,48 +14,108 @@ namespace Yttrium
         namespace Fit
         {
 
-            typedef SuffixSet<String,Variable::Pointer> VariableDB;
+            typedef SuffixSet<String,Variable::Pointer> VariableDB; //!< alias
 
+
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Alias a global parameter to a local name
+            //
+            //
+            //__________________________________________________________________
             class Alias
             {
             public:
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! setup
+                /**
+                 \param uid local name
+                 \param prm gobal parameter
+                 */
                 template <typename UID> inline
                 Alias(const UID &uid, const Parameter &prm) :
                 target(uid),source(prm)
                 {
                 }
 
-                Alias(const Alias &);
-                ~Alias() noexcept;
+                Alias(const Alias &); //!< duplicate
+                ~Alias() noexcept;    //!< cleanup
 
-
-                const String     target;
-                const Parameter &source;
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                const String     target; //!< target name
+                const Parameter &source; //!< source parameter
 
             private:
-                Y_Disable_Assign(Alias);
+                Y_Disable_Assign(Alias); //!< discarding
             };
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Local variables
+            //
+            //
+            //__________________________________________________________________
             class Variables : public Ingress<const VariableDB>
             {
             public:
-                static const char * const CallSign;
-                
-                explicit Variables();
-                virtual ~Variables() noexcept;
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                static const char * const CallSign; //!< "Fit::Variables"
 
-                //! primary
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+                explicit Variables();           //!< setup
+                virtual ~Variables() noexcept;  //!< cleanup
+
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+
+                //! \return primary variable
                 Variables & operator<<(const Parameter &);
 
-                //! replica
+                //! \return replica variable
                 Variables & operator<<(const Alias &);
 
 
 
             private:
-                Y_Disable_Copy_And_Assign(Variables);
-                Y_Ingress_Decl();
-                VariableDB db;
+                Y_Disable_Copy_And_Assign(Variables); //!< discarding
+                Y_Ingress_Decl();                     //!< helper
+
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                VariableDB db; //!< variables
             };
 
         }

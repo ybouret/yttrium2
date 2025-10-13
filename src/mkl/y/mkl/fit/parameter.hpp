@@ -15,11 +15,33 @@ namespace Yttrium
         namespace Fit
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! global parameter, shared between samples
+            //
+            //
+            //__________________________________________________________________
             class Parameter : public Entity
             {
             public:
-                typedef Keyed< String, ArcPtr<Parameter> > Pointer;
-                
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                typedef Keyed< String, ArcPtr<Parameter> > Pointer; //!< alias
+
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! setup \param uid name \param idx global index
                 template <typename UID> inline
                 explicit Parameter(const UID  & uid,
                                    const size_t idx) :
@@ -27,14 +49,22 @@ namespace Yttrium
                 {
                 }
 
-
+                //! cleanup
                 virtual ~Parameter() noexcept;
 
+                //! display
                 friend std::ostream & operator<<(std::ostream &, const Parameter &);
-                
-                const size_t indx;
+
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                const size_t indx; //!< global index
+
             private:
-                Y_Disable_Copy_And_Assign(Parameter);
+                Y_Disable_Copy_And_Assign(Parameter); //!< discarding
 
             };
 

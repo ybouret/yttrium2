@@ -14,16 +14,44 @@ namespace Yttrium
         namespace Fit
         {
 
-            typedef SuffixSet<String,Parameter::Pointer> ParameterDB;
+            typedef SuffixSet<String,Parameter::Pointer> ParameterDB; //!< alias
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! global parameters collection
+            //
+            //
+            //__________________________________________________________________
             class Parameters : public Ingress< const ParameterDB >
             {
             public:
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
                 static const char * const CallSign; //!< "Fit::Parameters"
 
-                explicit Parameters();
-                virtual ~Parameters() noexcept;
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+                explicit Parameters();           //!< setup
+                virtual ~Parameters() noexcept;  //!< cleanup
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+
+                //! append a new named parameter \param uid requested name \return *this
                 template <typename UID> inline
                 Parameters & operator<<(const UID &uid)
                 {
@@ -31,15 +59,23 @@ namespace Yttrium
                     return grow(p);
                 }
 
-                const Parameter & operator[](const String &)     const;
-                const Parameter & operator[](const char * const) const;
-                const Parameter & operator[](const char )        const;
+
+                const Parameter & operator[](const String &)     const; //!< \return named parameter
+                const Parameter & operator[](const char * const) const; //!< \return named parameter
+                const Parameter & operator[](const char )        const; //!< \return named parameter
 
             private:
-                Y_Disable_Copy_And_Assign(Parameters);
-                Y_Ingress_Decl();
-                Parameters & grow(const Parameter::Pointer &);
-                ParameterDB db;
+                Y_Disable_Copy_And_Assign(Parameters); //!< discaring
+                Y_Ingress_Decl();                      //!< helper
+                Parameters & grow(const Parameter::Pointer &); //!< \return *this*
+
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                ParameterDB db; //!< parameters
             };
         }
 
