@@ -23,7 +23,7 @@ Y_UTEST(fit_1d)
     params << "t0" << "D1" << "D2";
     std::cerr << "params=" << params << std::endl;
 
-    Fit::Samples<double,double> samples;
+    Fit::Samples<double,double> samples("Sall");
 
     Vector<double> x1f(_n1,0);
     Vector<double> x2f(_n2,0);

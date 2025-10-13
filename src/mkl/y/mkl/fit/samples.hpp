@@ -64,6 +64,7 @@ namespace Yttrium
             //__________________________________________________________________
             template <typename ABSICISSA,typename ORDINATE>
             class Samples :
+            public Adjustable<ABSICISSA,ORDINATE>,
             public SuffixSet<String, typename Sample<ABSICISSA,ORDINATE>::Pointer>,
             public SamplesCommon
             {
@@ -74,8 +75,12 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
-                typedef Sample<ABSICISSA,ORDINATE>   SampleType;    //!< alias
-                typedef typename SampleType::Pointer SamplePointer; //!< alias
+                typedef Adjustable<ABSICISSA,ORDINATE>   AdjustableType; //!< alias
+                typedef Sample<ABSICISSA,ORDINATE>       SampleType;     //!< alias
+                typedef typename SampleType::Pointer     SamplePointer;  //!< alias
+                typedef SuffixSet<String,SamplePointer>  SampleDB;       //!< alias
+                typedef typename SampleDB::Iterator      Iterator;       //!< alias
+                typedef typename SampleDB::ConstIterator ConstIterator;  //!< alias
 
                 //______________________________________________________________
                 //
@@ -85,13 +90,33 @@ namespace Yttrium
                 //______________________________________________________________
 
                 //! setup
-                inline explicit Samples() :
+                template <typename UID>
+                inline explicit Samples(const UID &uid) :
+                AdjustableType(uid),
                 SuffixSet<String,SamplePointer>(),
                 SamplesCommon()
                 {}
 
                 //! cleanup
                 inline virtual ~Samples() noexcept {}
+
+
+                //______________________________________________________________
+                //
+                //
+                // interface
+                //
+                //______________________________________________________________
+                inline virtual size_t count() const noexcept
+                {
+                    size_t res = 0;
+                    for(ConstIterator it=this->begin();it!=this->end();++it)
+                    {
+                        res += (**it).count();
+                    }
+                    return res;
+                }
+
 
                 //______________________________________________________________
                 //

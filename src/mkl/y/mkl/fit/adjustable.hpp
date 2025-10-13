@@ -13,10 +13,25 @@ namespace Yttrium
     {
         namespace Fit
         {
-
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Common parts for Adjustable
+            //
+            //
+            //__________________________________________________________________
             class AdjustableCommon : public Entity
             {
             public:
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! setup \param uid name
                 template <typename UID>
                 inline explicit AdjustableCommon(const UID &uid) :
                 Entity(uid)
@@ -25,16 +40,38 @@ namespace Yttrium
 
                 virtual ~AdjustableCommon() noexcept;
 
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
                 virtual size_t count() const noexcept = 0;
 
             private:
-                Y_Disable_Copy_And_Assign(AdjustableCommon);
+                Y_Disable_Copy_And_Assign(AdjustableCommon); //!< discarding
             };
 
+            
             template <typename ABSCISSA,typename ORDINATE>
             class Adjustable : public AdjustableCommon
             {
             public:
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! setup \param uid name
                 template <typename UID>
                 inline explicit Adjustable(const UID &uid) :
                 AdjustableCommon(uid)
@@ -42,10 +79,12 @@ namespace Yttrium
                 }
 
 
+                //! cleanup
                 inline virtual ~Adjustable() noexcept {}
 
             private:
-                Y_Disable_Copy_And_Assign(Adjustable);
+                Y_Disable_Copy_And_Assign(Adjustable); //!< discarding
+
             };
 
 
