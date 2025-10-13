@@ -270,9 +270,9 @@ namespace Yttrium
         //______________________________________________________________________
         virtual bool      tryRemoveFile(const String &path)                         = 0; //!< \param path file path \return true iif removed file from VFS
         virtual Scanner * openDirectory(const String &dirName)                      = 0; //!< create scanner \param dirName directory \return new scanner
-        virtual EntryType findEntryType(const String &path, bool &lnk) const        = 0; //!< get entry attributes
-        virtual void      makeDirectory(const String &dirName, const bool mayExist) = 0; //!< create a directory
-        virtual bool      tryEraseEmpty(const String &dirName)                      = 0; //!< try to erase an empty directory
+        virtual EntryType findEntryType(const String &path, bool &lnk) const        = 0; //!< \param path path \param lnk symbolic link flag \return entry attributes
+        virtual void      makeDirectory(const String &dirName, const bool mayExist) = 0; //!< create a directory \param dirName name \param mayExist ok if already exists
+        virtual bool      tryEraseEmpty(const String &dirName)                      = 0; //!< \param dirName name \return true if empty directory was erased
         virtual String    getCWD()                                                  = 0; //!< \return current working directory
         virtual void      setCWD(const String &)                                    = 0; //!< set current working directory
 
