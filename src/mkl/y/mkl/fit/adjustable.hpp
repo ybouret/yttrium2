@@ -4,9 +4,8 @@
 #ifndef Y_Fit_Adjustable_Included
 #define Y_Fit_Adjustable_Included 1
 
-#include "y/mkl/fit/adjustable/common.hpp"
+#include "y/mkl/fit/adjustable/engine.hpp"
 #include "y/mkl/fit/fwrapper.hpp"
-#include "y/cameo/addition.hpp"
 
 namespace Yttrium
 {
@@ -14,7 +13,7 @@ namespace Yttrium
     {
         namespace Fit
         {
-           
+
 
             //__________________________________________________________________
             //
@@ -25,7 +24,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             template <typename ABSCISSA,typename ORDINATE>
-            class Adjustable : public AdjustableCommon
+            class Adjustable : public AdjustableEngine<ORDINATE>
             {
             public:
                 //______________________________________________________________
@@ -34,10 +33,9 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
-                typedef Cameo::Addition<ORDINATE> XAddition; //!< alias
-                typedef Y_Fit_Function            Function;  //!< alias
-                typedef Y_Fit_Gradient            Gradient;  //!< alias
-
+                typedef Y_Fit_Function             Function;  //!< alias
+                typedef Y_Fit_Gradient             Gradient;  //!< alias
+                typedef AdjustableEngine<ORDINATE> Engine;
 
                 //______________________________________________________________
                 //
@@ -49,7 +47,7 @@ namespace Yttrium
                 //! setup \param uid name
                 template <typename UID>
                 inline explicit Adjustable(const UID &uid) :
-                AdjustableCommon(uid), D2(-1), xadd()
+                Engine(uid)
                 {
                 }
 
@@ -86,15 +84,14 @@ namespace Yttrium
                     return computeD2(F,aorg);
                 }
 
+                
+                //! full D2 evaluation
+                virtual ORDINATE computeD2full(Gradient                 & F,
+                                               const Readable<ORDINATE> & aorg,
+                                               const Readable<bool>     & used) = 0;
 
-                //______________________________________________________________
-                //
-                //
-                // Members
-                //
-                //______________________________________________________________
-                ORDINATE  D2;     //!< last D2
-                XAddition xadd;   //!< helper
+
+
 
             private:
                 Y_Disable_Copy_And_Assign(Adjustable); //!< discarding

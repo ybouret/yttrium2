@@ -84,6 +84,7 @@ namespace Yttrium
                 typedef typename SampleDB::ConstIterator   ConstIterator;  //!< alias
                 typedef typename AdjustableType::XAddition XAddition;      //!< alias
                 typedef typename AdjustableType::Function  Function;       //!< alias
+                typedef typename AdjustableType::Gradient  Gradient;       //!< alias
 				typedef typename FCPU<ORDINATE>::Type      fcpu_t;         //!< alias
                 using AdjustableType::xadd;
                 using AdjustableType::D2;
@@ -144,6 +145,14 @@ namespace Yttrium
                     {
                         return (D2 = xadd.sum());
                     }
+                }
+
+
+                virtual ORDINATE computeD2full(Gradient                 & F,
+                                               const Readable<ORDINATE> & aorg,
+                                               const Readable<bool>     & used)
+                {
+
                 }
 
                 //______________________________________________________________

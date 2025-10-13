@@ -32,11 +32,14 @@ namespace Yttrium
                 //______________________________________________________________
                 static const unsigned Dimensions = sizeof(ABSCISSA) / sizeof(ORDINATE); //!< alias
                 typedef Keyed<String,ArcPtr<Sample>>       Pointer;                     //!< alias
+
                 typedef Adjustable<ABSCISSA,ORDINATE>      AdjustableType;              //!< alias
                 typedef typename AdjustableType::XAddition XAddition;                   //!< alias
                 typedef typename AdjustableType::Function  Function;                    //!< alias
-                using AdjustableType::xadd;
+                typedef typename AdjustableType::Gradient  Gradient;                    //!< alias
                 using AdjustableType::D2;
+                using AdjustableType::xadd;
+                using AdjustableType::dFda;
 
                 //______________________________________________________________
                 //
@@ -87,6 +90,27 @@ namespace Yttrium
                     {
                         const ORDINATE delta = Y[i] - (Yf[i] =  F(X,i,vars,aorg));
                         xadd << delta*delta;
+                    }
+                    return (D2=xadd.sum());
+                }
+
+
+                virtual ORDINATE computeD2full(Gradient                 & F,
+                                               const Readable<ORDINATE> & aorg,
+                                               const Readable<bool>     & used)
+                {
+                    const ORDINATE zero(0);
+                    const size_t nvar = aorg.size();
+                    dFda.adjust(nvar,zero);
+
+                    xadd.ldz();
+                    const size_t n = X.size();
+                    for(size_t i=1;i<=n;++i)
+                    {
+                        dFda.ld(zero);
+                        const ORDINATE delta = Y[i] - (Yf[i] =  F(dFda,X,i,vars,aorg,used));
+                        xadd << delta*delta;
+
                     }
                     return (D2=xadd.sum());
                 }

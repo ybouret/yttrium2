@@ -186,6 +186,26 @@ namespace Yttrium
             return (*function_)(p1,p2,p3,p4,p5);
         }
 
+        //! forward siz arguments call
+        /**
+         \param p1 param1
+         \param p2 param2
+         \param p3 param3
+         \param p4 param4
+         \param p5 param5
+         \param p6 param6
+         \return call value
+         */
+        inline R operator()(param1 p1,
+                            param2 p2,
+                            param3 p3,
+                            param4 p4,
+                            param5 p5,
+                            param6 p6)
+        {
+            assert( function_ );
+            return (*function_)(p1,p2,p3,p4,p5,p6);
+        }
 
         //! direct assignation for binder_first or manual setting
         /**
