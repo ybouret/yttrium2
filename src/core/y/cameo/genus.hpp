@@ -3,14 +3,14 @@
 #ifndef Y_Cameo_Genus_Included
 #define Y_Cameo_Genus_Included 1
 
-#include "y/core/setup.hpp"
+#include "y/object.hpp"
 
 namespace Yttrium
 {
     namespace Cameo
     {
         //! base class for Genus
-        class Genus
+        class Genus : public Object
         {
         public:
             virtual ~Genus() noexcept; //!< cleanup
@@ -24,5 +24,5 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Cameo_Genus_Included
 

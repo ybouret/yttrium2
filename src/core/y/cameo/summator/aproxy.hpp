@@ -90,6 +90,6 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Cameo_AProxySummator_Included
 
 

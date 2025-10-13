@@ -25,5 +25,5 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Cameo_Genus_FPoint_Included
 

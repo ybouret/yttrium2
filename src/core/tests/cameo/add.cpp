@@ -9,7 +9,7 @@
 #include "y/mkl/xreal.hpp"
 #include "../main.hpp"
 #include "y/utest/run.hpp"
-#include <typeinfo>
+#include "y/system/rtti.hpp"
 
 using namespace Yttrium;
 
@@ -18,7 +18,10 @@ namespace {
     void testXAdd(Random::Bits &ran)
     {
         Cameo::Addition<T> xadd;
-        std::cerr << "Genus: " << xadd.callSign() << "@" << typeid(T).name() <<  std::endl;
+        std::cerr << std::endl;
+        std::cerr << "Genus: " << xadd.callSign() << "@" << System::RTTI::Name<T>() <<  std::endl;
+
+        Y_CHECK( Y_Is_SuperSubClass_Strict(Object,Cameo::Addition<T>) );
 
         T s(0);
         const size_t n =ran.leq<size_t>(20);

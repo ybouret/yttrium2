@@ -30,4 +30,4 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Cameo_Genus_Vectorial_Included

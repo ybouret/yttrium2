@@ -26,5 +26,5 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Cameo_Genus_AProxy_Included
 

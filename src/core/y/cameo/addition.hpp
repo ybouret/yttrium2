@@ -57,10 +57,10 @@ namespace Yttrium
             //
             //__________________________________________________________________
             //! setup
-            inline explicit Addition() : SummatorType()  {}
+            inline explicit Addition() : SummatorType(), next(0), prev(0)  {}
 
             //! setup with summator accepting initializer \param n capacity
-            inline explicit Addition(const size_t n) : SummatorType(n) {}
+            inline explicit Addition(const size_t n) : SummatorType(n), next(0), prev(0) {}
 
             //! cleanup
             inline virtual ~Addition() noexcept {}
@@ -115,6 +115,16 @@ namespace Yttrium
                 this->add(w);
                 return this->sum();
             }
+
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+
+            Addition *next; //!< for list
+            Addition *prev; //!< for list
 
         private:
             Y_Disable_Copy_And_Assign(Addition); //!< discarding
