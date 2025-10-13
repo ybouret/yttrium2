@@ -119,7 +119,7 @@ namespace Yttrium
                     return res;
                 }
 
-                virtual ABSCISSA computeD2(Function                 & F,
+                virtual ORDINATE computeD2(Function                 & F,
                                            const Readable<ORDINATE> & aorg)
                 {
 

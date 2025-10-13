@@ -4,8 +4,7 @@
 #ifndef Y_Fit_Adjustable_Included
 #define Y_Fit_Adjustable_Included 1
 
-#include "y/mkl/fit/variables.hpp"
-#include "y/functor.hpp"
+#include "y/mkl/fit/fwrapper.hpp"
 #include "y/cameo/addition.hpp"
 
 namespace Yttrium
@@ -54,9 +53,7 @@ namespace Yttrium
             };
 
 
-#define Y_Fit_Ret_Type ORDINATE
-#define Y_Fit_Fcn_Args TL4(Readable<ABSCISSA>,size_t,Variables,Readable<ORDINATE>)
-#define Y_Fit_Functor  Functor<Y_Fit_Ret_Type,Y_Fit_Fcn_Args>
+
             template <typename ABSCISSA,typename ORDINATE>
             class Adjustable : public AdjustableCommon
             {
@@ -67,8 +64,8 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
-                typedef Cameo::Addition<ORDINATE> XAddition;
-                typedef Y_Fit_Functor             Function;
+                typedef Cameo::Addition<ORDINATE> XAddition; //!< alias
+                typedef Y_Fit_Functor             Function;  //!< alias
 
 
                 //______________________________________________________________
@@ -96,7 +93,14 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
-                virtual ABSCISSA computeD2(Function &F, const Readable<ORDINATE> &aorg) = 0;
+                virtual ORDINATE computeD2(Function &F, const Readable<ORDINATE> &aorg) = 0;
+
+                template <typename FUNC> inline
+                ORDINATE computeD2_(FUNC &func, const Readable<ORDINATE> &aorg)
+                {
+                    FWrapper<FUNC,ABSCISSA,ORDINATE> F(func);
+                    return computeD2(F,aorg);
+                }
 
 
                 //______________________________________________________________
