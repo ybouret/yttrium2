@@ -33,13 +33,14 @@ T getF(const T t, const Fit::Variables &vars, const Readable<T> &aorg)
     return Sqrt<T>::Of(arg);
 }
 
+#include "y/system/rtti.hpp"
 
 template <typename T> static inline
 void testFit(const Fit::Parameters &params)
 {
 	typedef typename FCPU<T>::Type fcpu_t;
     std::cerr << std::endl;
-    std::cerr << "Testing Fit" << std::endl;
+    std::cerr << "Testing Fit / " << System::RTTI::Name<T>() << std::endl;
 
     const T zero(0);
     Vector<T> aorg(params->size(),zero);
@@ -121,7 +122,7 @@ Y_UTEST(fit_1d)
 
 
     testFit<float>(params);
-
+    testFit< XReal<float> >(params);
 
 }
 Y_UDONE()
