@@ -37,6 +37,7 @@ T getF(const T t, const Fit::Variables &vars, const Readable<T> &aorg)
 template <typename T> static inline
 void testFit(const Fit::Parameters &params)
 {
+	typedef typename FCPU<T>::Type fcpu_t;
     std::cerr << std::endl;
     std::cerr << "Testing Fit" << std::endl;
 
@@ -45,23 +46,23 @@ void testFit(const Fit::Parameters &params)
     
 
     aorg[ *params["t0"] ] = -100;
-    aorg[ *params["D1"] ] =  0.15;
-    aorg[ *params["D2"] ] =  0.2;
+    aorg[ *params["D1"] ] =  0.15f;
+    aorg[ *params["D2"] ] =  0.2f;
 
 
     Vector<T> t1, x1, x1f;
     for(size_t i=0;i<_n1;++i)
     {
-        t1 << _t1[i];
-        x1 << _x1[i];
+        t1 << (fcpu_t)_t1[i];
+        x1 << (fcpu_t)_x1[i];
         x1f << zero;
     }
 
     Vector<T> t2, x2, x2f;
     for(size_t i=0;i<_n2;++i)
     {
-        t2 << _t2[i];
-        x2 << _x2[i];
+        t2 << (fcpu_t)_t2[i];
+        x2 << (fcpu_t)_x2[i];
         x2f << zero;
     }
 

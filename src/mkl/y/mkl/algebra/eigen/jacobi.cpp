@@ -7,7 +7,7 @@
 #include "y/cameo/addition.hpp"
 #include "y/container/sequence/vector.hpp"
 #include "y/mkl/api/almost-equal.hpp"
-//#include "y/apex/rational.hpp"
+#include "y/mkl/api/fcpu.hpp"
 
 namespace Yttrium
 {
@@ -15,33 +15,43 @@ namespace Yttrium
     {
 
 #define real_t float
+#define REAL(X) X##f
 #include "jacobi.hxx"
 #undef real_t
-
+#undef REAL
 
 #define real_t double
+#define REAL(X) X
 #include "jacobi.hxx"
 #undef real_t
+#undef REAL
 
 #define real_t long double
+#define REAL(X) X##L
 #include "jacobi.hxx"
 #undef real_t
+#undef REAL
 
 
 #define real_t XReal<float>
+#define REAL(X) X##f
 #include "jacobi.hxx"
 #undef real_t
-        
-#if 0
+#undef REAL
+
 
 #define real_t XReal<double>
+#define REAL(X) X
 #include "jacobi.hxx"
 #undef real_t
+#undef REAL
 
 #define real_t XReal<long double>
+#define REAL(X) X##L
 #include "jacobi.hxx"
 #undef real_t
-#endif
+#undef REAL
+
         
 
     }

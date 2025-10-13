@@ -17,12 +17,19 @@ namespace Yttrium
             class FWrapper : public Y_Fit_Functor
             {
             public:
+#if defined(_MSC_VER)
+#pragma warning (push)
+#pragma warning (disable : 4355 )
+#endif
                 inline explicit FWrapper(FUNCTION &f) :
                 Y_Fit_Functor(this, & FWrapper:: compute ),
                 F(f)
                 {
                 }
 
+#if defined(_MSC_VER)
+#pragma warning (pop)
+#endif
                 inline virtual ~FWrapper() noexcept {}
 
             private:

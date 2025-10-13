@@ -5,6 +5,7 @@
 #define Y_Fit_Samples_Included 1
 
 #include "y/mkl/fit/sample.hpp"
+#include "y/mkl/api/fcpu.hpp"
 
 namespace Yttrium
 {
@@ -83,6 +84,7 @@ namespace Yttrium
                 typedef typename SampleDB::ConstIterator   ConstIterator;  //!< alias
                 typedef typename AdjustableType::XAddition XAddition;      //!< alias
                 typedef typename AdjustableType::Function  Function;       //!< alias
+				typedef typename FCPU<ORDINATE>::Type      fcpu_t;
                 using AdjustableType::xadd;
                 using AdjustableType::D2;
 
@@ -122,20 +124,20 @@ namespace Yttrium
                 virtual ORDINATE computeD2(Function                 & F,
                                            const Readable<ORDINATE> & aorg)
                 {
-
+					
                     xadd.ldz();
                     size_t res  = 0;
                     for(Iterator it=this->begin();it!=this->end();++it)
                     {
                         SampleType &   sample = **it;
                         const size_t   n      = sample.count();
-                        const ORDINATE dof(n);
+                        const ORDINATE dof    = (fcpu_t)n;
                         res += n;
                         xadd << dof * sample.computeD2(F,aorg);
                     }
                     if(res>0)
                     {
-                        const ORDINATE den(res);
+                        const ORDINATE den =  (fcpu_t)res;
                         return (D2 = xadd.sum()/den);
                     }
                     else
