@@ -85,6 +85,11 @@ void testFit(const Fit::Parameters &params)
     std::cerr << "D2_1=" << (double)D2_1 << std::endl;
     const T D2_2 = S2.computeD2_(getF<T>,aorg);
     std::cerr << "D2_2=" << (double)D2_2 << std::endl;
+
+    const T D2 = samples.computeD2_(getF<T>,aorg);
+    std::cerr << "D2  =" << (double)D2 << std::endl;
+
+
 }
 
 
