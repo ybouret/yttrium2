@@ -84,7 +84,7 @@ namespace Yttrium
                 typedef typename SampleDB::ConstIterator   ConstIterator;  //!< alias
                 typedef typename AdjustableType::XAddition XAddition;      //!< alias
                 typedef typename AdjustableType::Function  Function;       //!< alias
-				typedef typename FCPU<ORDINATE>::Type      fcpu_t;
+				typedef typename FCPU<ORDINATE>::Type      fcpu_t;         //!< alias
                 using AdjustableType::xadd;
                 using AdjustableType::D2;
 
@@ -95,7 +95,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-                //! setup
+                //! setup \param uid name
                 template <typename UID>
                 inline explicit Samples(const UID &uid) :
                 AdjustableType(uid),

@@ -62,7 +62,7 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
-                virtual size_t operator*() const noexcept;
+                virtual size_t operator*() const noexcept; //!< \return indx
 
 
                 //______________________________________________________________
@@ -72,6 +72,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
+                //! \param a input \return a[**this]
                 template <typename T> inline
                 T & operator()(Writable<T> &a) const noexcept
                 {
@@ -79,7 +80,7 @@ namespace Yttrium
                     return a[i];
                 }
 
-
+                //! \param a input \return a[**this]
                 template <typename T> inline
                 const T & operator()(const Readable<T> &a) const noexcept
                 {

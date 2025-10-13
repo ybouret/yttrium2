@@ -13,16 +13,32 @@ namespace Yttrium
         namespace Fit
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Regular Function to Adjustable::Function
+            //
+            //
+            //__________________________________________________________________
             template <typename FUNCTION, typename ABSCISSA,typename ORDINATE>
-            class FWrapper : public Y_Fit_Functor
+            class FWrapper : public Y_Fit_Function
             {
             public:
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
 #if defined(_MSC_VER)
 #pragma warning (push)
 #pragma warning (disable : 4355 )
 #endif
+                //! setup \param f persistent compatible function(x,vars,aorg)
                 inline explicit FWrapper(FUNCTION &f) :
-                Y_Fit_Functor(this, & FWrapper:: compute ),
+                Y_Fit_Function(this, & FWrapper:: compute ),
                 F(f)
                 {
                 }
@@ -30,12 +46,22 @@ namespace Yttrium
 #if defined(_MSC_VER)
 #pragma warning (pop)
 #endif
+
+                //! cleanup
                 inline virtual ~FWrapper() noexcept {}
 
             private:
-                Y_Disable_Copy_And_Assign(FWrapper);
-                FUNCTION &F;
+                Y_Disable_Copy_And_Assign(FWrapper); //!< discarding
+                FUNCTION &F;                         //!< callable function
 
+                //! interfacing
+                /**
+                 \param x abscissae
+                 \param i index
+                 \param vars variables
+                 \param aorg current values
+                 \return F(x[i],vars,aorg)
+                 */
                 ORDINATE compute(const Readable<ABSCISSA> &x,
                                  const size_t              i,
                                  const Variables &         vars,

@@ -8,8 +8,19 @@
 #include "y/mkl/fit/variables.hpp"
 #include "y/functor.hpp"
 
+//! return type
 #define Y_Fit_Ret_Type ORDINATE
+
+//! arguments for function
 #define Y_Fit_Fcn_Args TL4(Readable<ABSCISSA>,size_t,Variables,Readable<ORDINATE>)
-#define Y_Fit_Functor  Functor<Y_Fit_Ret_Type,Y_Fit_Fcn_Args>
+
+//! function prototype
+#define Y_Fit_Function Functor<Y_Fit_Ret_Type,Y_Fit_Fcn_Args>
+
+//! arguments for gradient
+#define Y_Fit_Grd_Args TL6(Writable<ORDINATE>,Readable<ABSCISSA>,size_t,Variables,Readable<ORDINATE>,Readable<bool>)
+
+//! prototype for gradient
+#define Y_Fit_Gradient Functor<Y_Fit_Ret_Type,Y_Fit_Grd_Args>
 
 #endif // !Y_Fit_Defs_Included

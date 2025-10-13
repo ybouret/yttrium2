@@ -107,6 +107,7 @@ namespace Yttrium
                 const Variable & get(const char * const) const; //!< \return variable by name
                 const Variable & get(const char)         const; //!< \return variable by name
 
+                //! access variable \param uid name \return variable.name == uid
                 template <typename UID> inline
                 const Variable & operator[](const UID &uid) const
                 {

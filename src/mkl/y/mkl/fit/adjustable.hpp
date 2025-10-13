@@ -46,14 +46,21 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
-                virtual size_t count() const noexcept = 0;
+                virtual size_t count() const noexcept = 0; //!< \return number of data points
 
             private:
                 Y_Disable_Copy_And_Assign(AdjustableCommon); //!< discarding
             };
 
 
-
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Interface for Sample[s]
+            //
+            //
+            //__________________________________________________________________
             template <typename ABSCISSA,typename ORDINATE>
             class Adjustable : public AdjustableCommon
             {
@@ -65,7 +72,8 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 typedef Cameo::Addition<ORDINATE> XAddition; //!< alias
-                typedef Y_Fit_Functor             Function;  //!< alias
+                typedef Y_Fit_Function            Function;  //!< alias
+                typedef Y_Fit_Gradient            Gradient;  //!< alias
 
 
                 //______________________________________________________________
@@ -93,8 +101,21 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
+
+                //! simple D2 evaluation
+                /**
+                 \param F    adjustable function
+                 \param aorg current values
+                 \return D2 at aorg w.r.t F
+                 */
                 virtual ORDINATE computeD2(Function &F, const Readable<ORDINATE> &aorg) = 0;
 
+                //! simple D2 wrapper evaluation
+                /**
+                 \param func compatible function
+                 \param aorg current parameters
+                 \return D2 at aorg w.r.t F
+                 */
                 template <typename FUNC> inline
                 ORDINATE computeD2_(FUNC &func, const Readable<ORDINATE> &aorg)
                 {

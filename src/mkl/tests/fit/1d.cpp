@@ -24,9 +24,7 @@ T getF(const T t, const Fit::Variables &vars, const Readable<T> &aorg)
     const T zero(0);
     const T &t0 = aorg[ *vars["t0"] ];
     const T &D  = aorg[ *vars["D"]  ];
-
-    //std::cerr << "t0=" << t0 << "D=" << D << std::endl;
-
+    
     if(t<=t0) return zero;
     const T arg = D * (t-t0);
 

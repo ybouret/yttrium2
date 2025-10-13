@@ -30,11 +30,11 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
-                static const unsigned Dimensions = sizeof(ORDINATE) / sizeof(ABSCISSA); //!< alias
+                static const unsigned Dimensions = sizeof(ABSCISSA) / sizeof(ORDINATE); //!< alias
                 typedef Keyed<String,ArcPtr<Sample>>       Pointer;                     //!< alias
-                typedef Adjustable<ABSCISSA,ORDINATE>      AdjustableType;
-                typedef typename AdjustableType::XAddition XAddition;
-                typedef typename AdjustableType::Function  Function;
+                typedef Adjustable<ABSCISSA,ORDINATE>      AdjustableType;              //!< alias
+                typedef typename AdjustableType::XAddition XAddition;                   //!< alias
+                typedef typename AdjustableType::Function  Function;                    //!< alias
                 using AdjustableType::xadd;
                 using AdjustableType::D2;
 
@@ -91,6 +91,11 @@ namespace Yttrium
                     return (D2=xadd.sum());
                 }
 
+                //! quick save to file
+                /**
+                 \param fileName file name
+                 \param append optional append flag
+                 */
                 template <typename FILENAME> inline
                 void save(const FILENAME &fileName, const bool append=false) const
                 {
@@ -119,6 +124,7 @@ namespace Yttrium
             private:
                 Y_Disable_Copy_And_Assign(Sample); //!< discarding
 
+                //! \param fp output \param v ordinate \return fp(v)
                 static inline OutputStream & Emit(OutputStream &fp, const ORDINATE v)
                 {
                     return fp("%.15g", (double)v );
