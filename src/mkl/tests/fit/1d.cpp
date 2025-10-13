@@ -1,5 +1,8 @@
+#include "y/mkl/fit/samples.hpp"
 #include "y/mkl/fit/raw-sample.hpp"
 #include "y/utest/run.hpp"
+
+#include "y/container/sequence/vector.hpp"
 
 using namespace Yttrium;
 using namespace MKL;
@@ -15,9 +18,28 @@ static const size_t _n2      = sizeof(_t2)/sizeof(_t2[0]);
 
 Y_UTEST(fit_1d)
 {
+    // declare parameters
     Fit::Parameters params;
     params << "t0" << "D1" << "D2";
     std::cerr << "params=" << params << std::endl;
+
+    Fit::Samples<double,double> samples;
+
+    Vector<double> x1f(_n1,0);
+    Vector<double> x2f(_n2,0);
+
+    Fit::Sample<double,double> &S1 = samples( new Fit::RawSample<double,double>("S1",_t1,_x1,_n1,x1f) );
+    Fit::Sample<double,double> &S2 = samples( new Fit::RawSample<double,double>("S2",_t2,_x2,_n2,x2f) );
+
+    S1.vars << params["t0"];
+
+    std::cerr << "#S1=" << S1.size() << std::endl;
+    std::cerr << "#S2=" << S2.size() << std::endl;
+
+
+
+
+
 }
 Y_UDONE()
 

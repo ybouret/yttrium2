@@ -31,7 +31,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 static const unsigned Dimensions = sizeof(ORDINATE) / sizeof(ABSCISSA); //!< alias
-                
+                typedef Keyed<String,ArcPtr<Sample>> Pointer;
 
                 //______________________________________________________________
                 //

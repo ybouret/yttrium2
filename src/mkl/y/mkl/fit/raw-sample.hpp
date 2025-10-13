@@ -41,8 +41,8 @@ namespace Yttrium
                 inline explicit RawSampleData(const ABSCISSA * const x,
                                               const ORDINATE * const y,
                                               const size_t           n) noexcept :
-                X_(x,n),
-                Y_(y,n)
+                X_((ABSCISSA *)x,n),
+                Y_((ORDINATE *)y,n)
                 {
                 }
 
