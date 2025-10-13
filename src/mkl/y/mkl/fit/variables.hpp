@@ -103,6 +103,18 @@ namespace Yttrium
                 //! \return replica variable
                 Variables & operator<<(const Alias &);
 
+                const Variable & get(const String &)     const; //!< \return variable by name
+                const Variable & get(const char * const) const; //!< \return variable by name
+                const Variable & get(const char)         const; //!< \return variable by name
+
+                template <typename UID> inline
+                const Variable & operator[](const UID &uid) const
+                {
+                    return get(uid);
+                }
+
+                
+
 
 
             private:

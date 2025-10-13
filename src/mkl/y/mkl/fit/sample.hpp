@@ -4,6 +4,7 @@
 #define Y_Fit_Sample_Included 1
 
 #include "y/mkl/fit/adjustable.hpp"
+#include "y/stream/libc/output.hpp"
 
 namespace Yttrium
 {
@@ -90,6 +91,20 @@ namespace Yttrium
                     return (D2=xadd.sum());
                 }
 
+                template <typename FILENAME> inline
+                void save(const FILENAME &fileName, const bool append=false) const
+                {
+                    OutputFile fp(fileName,append);
+                    const size_t n = X.size();
+                    for(size_t i=1;i<=n;++i)
+                    {
+                        Emit(fp,X[i]);
+                        Emit(fp << ' ', Y[i]);
+                        Emit(fp << ' ', Yf[i]);
+                        fp << '\n';
+                    }
+                }
+
                 //______________________________________________________________
                 //
                 //
@@ -103,6 +118,13 @@ namespace Yttrium
 
             private:
                 Y_Disable_Copy_And_Assign(Sample); //!< discarding
+
+                static inline OutputStream & Emit(OutputStream &fp, const ORDINATE v)
+                {
+                    return fp("%.15g", (double)v );
+                }
+
+
             };
         }
         

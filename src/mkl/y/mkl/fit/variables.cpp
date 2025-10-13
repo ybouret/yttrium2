@@ -43,6 +43,27 @@ namespace Yttrium
                     throw Specific::Exception(CallSign,"multiple '%s' (alias '%s')",var->name.c_str(), a.source.name.c_str());
                 return *this;
             }
+
+
+            const Variable & Variables:: get(const String &id)  const
+            {
+                const Variable::Pointer *ppv = db.search(id);
+                if(!ppv)
+                    throw Specific::Exception(CallSign,"no variable '%s'", id.c_str());
+                return **ppv;
+            }
+
+            const Variable & Variables:: get(const char * const id) const
+            {
+                const String _(id); return get(_);
+            }
+
+            const Variable & Variables:: get(const char id) const
+            {
+                const String _(id); return get(_);
+            }
+
+
         }
 
     }

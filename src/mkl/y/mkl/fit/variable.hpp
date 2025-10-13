@@ -59,6 +59,15 @@ namespace Yttrium
                 //! display
                 friend std::ostream & operator<<(std::ostream &, const Variable &);
 
+
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
+                virtual size_t operator*() const noexcept;
+
                 //______________________________________________________________
                 //
                 //

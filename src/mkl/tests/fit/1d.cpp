@@ -4,6 +4,8 @@
 
 #include "y/container/sequence/vector.hpp"
 #include "y/mkl/fit/fwrapper.hpp"
+#include "y/mkl/api/sqrt.hpp"
+
 
 using namespace Yttrium;
 using namespace MKL;
@@ -15,6 +17,75 @@ static const size_t _n1      = sizeof(_t1)/sizeof(_t1[0]);
 static const double _t2[]    = { 60,120,200,270,360,460,580,670,790,920,1040 };
 static const double _x2[]    = { 5.199063,5.854801,6.662763,7.365340,8.067916,8.782201,9.578454,10.175644,10.878220,11.651054,12.213115};
 static const size_t _n2      = sizeof(_t2)/sizeof(_t2[0]);
+
+template <typename T>
+T getF(const T t, const Fit::Variables &vars, const Readable<T> &aorg)
+{
+    const T zero(0);
+    const T &t0 = aorg[ *vars["t0"] ];
+    const T &D  = aorg[ *vars["D"]  ];
+
+    //std::cerr << "t0=" << t0 << "D=" << D << std::endl;
+
+    if(t<=t0) return zero;
+    const T arg = D * (t-t0);
+
+    return Sqrt<T>::Of(arg);
+}
+
+
+template <typename T> static inline
+void testFit(const Fit::Parameters &params)
+{
+    std::cerr << std::endl;
+    std::cerr << "Testing Fit" << std::endl;
+
+    const T zero(0);
+    Vector<T> aorg(params->size(),zero);
+    
+
+    aorg[ *params["t0"] ] = -100;
+    aorg[ *params["D1"] ] =  0.15;
+    aorg[ *params["D2"] ] =  0.2;
+
+
+    Vector<T> t1, x1, x1f;
+    for(size_t i=0;i<_n1;++i)
+    {
+        t1 << _t1[i];
+        x1 << _x1[i];
+        x1f << zero;
+    }
+
+    Vector<T> t2, x2, x2f;
+    for(size_t i=0;i<_n2;++i)
+    {
+        t2 << _t2[i];
+        x2 << _x2[i];
+        x2f << zero;
+    }
+
+    Fit::Samples<T,T> samples("Sall");
+
+    Fit::Sample<T,T> & S1 = samples( new Fit::Sample<T,T>("S1",t1,x1,x1f) );
+    Fit::Sample<T,T> & S2 = samples( new Fit::Sample<T,T>("S2",t2,x2,x2f) );
+
+    S1.vars << params["t0"] << Fit::Alias("D", params["D1"]);
+    std::cerr << "#S1    = " << S1.count() << std::endl;
+    std::cerr << "|_vars = " << S1.vars << std::endl;
+
+    S2.vars << params["t0"] << Fit::Alias("D", params["D2"]);
+    std::cerr << "#S2    = " << S2.count() << std::endl;
+    std::cerr << "|_vars = " << S2.vars << std::endl;
+
+    S1.save("S1.dat");
+    S2.save("S2.dat");
+
+    const T D2_1 = S1.computeD2_(getF<T>,aorg);
+    std::cerr << "D2_1=" << (double)D2_1 << std::endl;
+    const T D2_2 = S2.computeD2_(getF<T>,aorg);
+    std::cerr << "D2_2=" << (double)D2_2 << std::endl;
+}
 
 
 Y_UTEST(fit_1d)
@@ -43,7 +114,7 @@ Y_UTEST(fit_1d)
     std::cerr << "|_vars = " << S2.vars << std::endl;
 
 
-
+    testFit<float>(params);
 
 
 }

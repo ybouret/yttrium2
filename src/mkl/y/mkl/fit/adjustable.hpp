@@ -109,8 +109,9 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                ORDINATE  D2;
-                XAddition xadd;
+                ORDINATE  D2;     //!< last D2
+                XAddition xadd;   //!< helper
+
             private:
                 Y_Disable_Copy_And_Assign(Adjustable); //!< discarding
 

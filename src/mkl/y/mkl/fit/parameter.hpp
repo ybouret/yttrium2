@@ -15,6 +15,7 @@ namespace Yttrium
         namespace Fit
         {
 
+
             //__________________________________________________________________
             //
             //
@@ -54,6 +55,39 @@ namespace Yttrium
 
                 //! display
                 friend std::ostream & operator<<(std::ostream &, const Parameter &);
+
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
+                virtual size_t operator*() const noexcept;
+
+
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+
+                template <typename T> inline
+                T & operator()(Writable<T> &a) const noexcept
+                {
+                    const size_t i = **this; assert(i>0); assert(i<=a.size());
+                    return a[i];
+                }
+
+
+                template <typename T> inline
+                const T & operator()(const Readable<T> &a) const noexcept
+                {
+                    const size_t i = **this; assert(i>0); assert(i<=a.size());
+                    return a[i];
+                }
+
+
 
                 //______________________________________________________________
                 //

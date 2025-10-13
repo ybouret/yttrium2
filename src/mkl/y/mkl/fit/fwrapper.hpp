@@ -23,7 +23,7 @@ namespace Yttrium
                 {
                 }
 
-                inline virtual ~FWrapper() noexcept;
+                inline virtual ~FWrapper() noexcept {}
 
             private:
                 Y_Disable_Copy_And_Assign(FWrapper);
@@ -34,7 +34,7 @@ namespace Yttrium
                                  const Variables &         vars,
                                  const Readable<ORDINATE> &aorg)
                 {
-                    return f(x[i],vars,aorg);
+                    return F(x[i],vars,aorg);
                 }
 
             };

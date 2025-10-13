@@ -17,6 +17,12 @@ namespace Yttrium
                 const Parameter &self = var;
                 return os << self << " (-> " << var.parameter << ")";
             }
+
+
+            size_t Variable:: operator*() const noexcept
+            {
+                return parameter.indx;
+            }
         }
     }
 
