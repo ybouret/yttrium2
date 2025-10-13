@@ -4,8 +4,9 @@
 #ifndef Y_Fit_Adjustable_Included
 #define Y_Fit_Adjustable_Included 1
 
-#include "y/mkl/fit/entity.hpp"
+#include "y/mkl/fit/variables.hpp"
 #include "y/functor.hpp"
+#include "y/cameo/addition.hpp"
 
 namespace Yttrium
 {
@@ -63,6 +64,12 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
+                typedef Readable<ORDINATE>        Ordinates;
+                typedef Readable<ABSCISSA>        Abscissae;
+                typedef Cameo::Addition<ORDINATE> XAddition;
+
+                typedef Functor<ORDINATE,TL4(Abscissae,size_t,Variables,Readable<ORDINATE>)> Function;
+
 
                 //______________________________________________________________
                 //
@@ -74,7 +81,7 @@ namespace Yttrium
                 //! setup \param uid name
                 template <typename UID>
                 inline explicit Adjustable(const UID &uid) :
-                AdjustableCommon(uid)
+                AdjustableCommon(uid), D2(-1), xadd()
                 {
                 }
 
@@ -82,6 +89,24 @@ namespace Yttrium
                 //! cleanup
                 inline virtual ~Adjustable() noexcept {}
 
+
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
+                virtual ABSCISSA computeD2(Function &F, const Readable<ORDINATE> &aorg) = 0;
+
+
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                ORDINATE  D2;
+                XAddition xadd;
             private:
                 Y_Disable_Copy_And_Assign(Adjustable); //!< discarding
 

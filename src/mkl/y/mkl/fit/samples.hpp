@@ -62,10 +62,10 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            template <typename ABSICISSA,typename ORDINATE>
+            template <typename ABSCISSA,typename ORDINATE>
             class Samples :
-            public Adjustable<ABSICISSA,ORDINATE>,
-            public SuffixSet<String, typename Sample<ABSICISSA,ORDINATE>::Pointer>,
+            public Adjustable<ABSCISSA,ORDINATE>,
+            public SuffixSet<String, typename Sample<ABSCISSA,ORDINATE>::Pointer>,
             public SamplesCommon
             {
             public:
@@ -75,12 +75,16 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
-                typedef Adjustable<ABSICISSA,ORDINATE>   AdjustableType; //!< alias
-                typedef Sample<ABSICISSA,ORDINATE>       SampleType;     //!< alias
-                typedef typename SampleType::Pointer     SamplePointer;  //!< alias
-                typedef SuffixSet<String,SamplePointer>  SampleDB;       //!< alias
-                typedef typename SampleDB::Iterator      Iterator;       //!< alias
-                typedef typename SampleDB::ConstIterator ConstIterator;  //!< alias
+                typedef Adjustable<ABSCISSA,ORDINATE>      AdjustableType; //!< alias
+                typedef Sample<ABSCISSA,ORDINATE>          SampleType;     //!< alias
+                typedef typename SampleType::Pointer       SamplePointer;  //!< alias
+                typedef SuffixSet<String,SamplePointer>    SampleDB;       //!< alias
+                typedef typename SampleDB::Iterator        Iterator;       //!< alias
+                typedef typename SampleDB::ConstIterator   ConstIterator;  //!< alias
+                typedef typename AdjustableType::XAddition XAddition;      //!< alias
+                typedef typename AdjustableType::Function  Function;       //!< alias
+                using AdjustableType::xadd;
+                using AdjustableType::D2;
 
                 //______________________________________________________________
                 //
@@ -111,12 +115,34 @@ namespace Yttrium
                 {
                     size_t res = 0;
                     for(ConstIterator it=this->begin();it!=this->end();++it)
-                    {
                         res += (**it).count();
-                    }
                     return res;
                 }
 
+                virtual ABSCISSA computeD2(Function                 & F,
+                                           const Readable<ORDINATE> & aorg)
+                {
+
+                    xadd.ldz();
+                    size_t res  = 0;
+                    for(Iterator it=this->begin();it!=this->end();++it)
+                    {
+                        SampleType &   sample = **it;
+                        const size_t   n      = sample.count();
+                        const ORDINATE dof(n);
+                        res += n;
+                        xadd << dof * sample.computeD2(F,aorg);
+                    }
+                    if(res>0)
+                    {
+                        const ORDINATE den(res);
+                        return (D2 = xadd.sum()/den);
+                    }
+                    else
+                    {
+                        return (D2 = xadd.sum());
+                    }
+                }
 
                 //______________________________________________________________
                 //

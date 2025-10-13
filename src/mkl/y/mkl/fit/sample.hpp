@@ -3,7 +3,6 @@
 #ifndef Y_Fit_Sample_Included
 #define Y_Fit_Sample_Included 1
 
-#include "y/mkl/fit/variables.hpp"
 #include "y/mkl/fit/adjustable.hpp"
 
 namespace Yttrium
@@ -31,8 +30,12 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 static const unsigned Dimensions = sizeof(ORDINATE) / sizeof(ABSCISSA); //!< alias
-                typedef Keyed<String,ArcPtr<Sample>> Pointer;                           //!< alias
-                typedef Adjustable<ABSCISSA,ORDINATE> AdjustableType;
+                typedef Keyed<String,ArcPtr<Sample>>       Pointer;                     //!< alias
+                typedef Adjustable<ABSCISSA,ORDINATE>      AdjustableType;
+                typedef typename AdjustableType::XAddition XAddition;
+                typedef typename AdjustableType::Function  Function;
+                using AdjustableType::xadd;
+                using AdjustableType::D2;
 
                 //______________________________________________________________
                 //
@@ -71,6 +74,20 @@ namespace Yttrium
                     assert( X.size() == Y.size() );
                     assert( X.size() == Yf.size() );
                     return X.size();
+                }
+
+                virtual ABSCISSA computeD2(Function                 & F,
+                                           const Readable<ORDINATE> & aorg)
+                {
+
+                    xadd.ldz();
+                    const size_t n = X.size();
+                    for(size_t i=1;i<=n;++i)
+                    {
+                        const ORDINATE delta = Y[i] - (Yf[i] =  F(X,i,vars,aorg));
+                        xadd << delta*delta;
+                    }
+                    return (D2=xadd.sum());
                 }
 
                 //______________________________________________________________
