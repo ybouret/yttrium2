@@ -25,9 +25,9 @@ namespace Yttrium
                 parameter(prm)
                 {
                 }
-
                 virtual ~Variable() noexcept;
 
+                //! display
                 friend std::ostream & operator<<(std::ostream &, const Variable &);
 
                 const Parameter &parameter;

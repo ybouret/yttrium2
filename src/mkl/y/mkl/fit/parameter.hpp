@@ -21,7 +21,8 @@ namespace Yttrium
                 typedef Keyed< String, ArcPtr<Parameter> > Pointer;
                 
                 template <typename UID> inline
-                explicit Parameter(const UID  & uid, const size_t idx) :
+                explicit Parameter(const UID  & uid,
+                                   const size_t idx) :
                 Entity(uid), indx(idx)
                 {
                 }

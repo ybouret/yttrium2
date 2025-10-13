@@ -31,10 +31,15 @@ Y_UTEST(fit_1d)
     Fit::Sample<double,double> &S1 = samples( new Fit::RawSample<double,double>("S1",_t1,_x1,_n1,x1f) );
     Fit::Sample<double,double> &S2 = samples( new Fit::RawSample<double,double>("S2",_t2,_x2,_n2,x2f) );
 
-    S1.vars << params["t0"];
+    S1.vars << params["t0"] << Fit::Alias("D", params["D1"]);
+    S2.vars << params["t0"] << Fit::Alias("D", params["D2"]);
 
-    std::cerr << "#S1=" << S1.size() << std::endl;
-    std::cerr << "#S2=" << S2.size() << std::endl;
+
+    std::cerr << "#S1    = " << S1.size() << std::endl;
+    std::cerr << "|_vars = " << S1.vars << std::endl;
+
+    std::cerr << "#S2    = " << S2.size() << std::endl;
+    std::cerr << "|_vars = " << S2.vars << std::endl;
 
 
 

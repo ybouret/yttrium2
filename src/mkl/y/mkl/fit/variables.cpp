@@ -29,7 +29,7 @@ namespace Yttrium
             Variables & Variables:: operator<<(const Parameter &p)
             {
                 const Variable::Pointer var = new Variable(p.name,db.size()+1,p);
-                if(db.insert(var))
+                if(!db.insert(var))
                     throw Specific::Exception(CallSign,"multiple '%s'",var->name.c_str());
                 
                 return *this;
@@ -39,7 +39,7 @@ namespace Yttrium
             Variables & Variables:: operator<<(const Alias &a)
             {
                 const Variable::Pointer var = new Variable(a.target,db.size()+1,a.source);
-                if(db.insert(var))
+                if(!db.insert(var))
                     throw Specific::Exception(CallSign,"multiple '%s' (alias '%s')",var->name.c_str(), a.source.name.c_str());
                 return *this;
             }
