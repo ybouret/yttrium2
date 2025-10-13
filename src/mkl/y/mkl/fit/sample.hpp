@@ -20,10 +20,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            template <
-            typename ABSCISSA,
-            typename ORDINATE
-            >
+            template <typename ABSCISSA, typename ORDINATE>
             class Sample : public Entity, public Container
             {
             public:
@@ -54,8 +51,8 @@ namespace Yttrium
                 explicit Sample(const UID                & id,
                                 const Readable<ABSCISSA> & _X,
                                 const Readable<ORDINATE> & _Y,
-                                Writable<ORDINATE>       & _Z):
-                Entity(id), X(_X), Y(_Y), Z(_Z), vars()
+                                Writable<ORDINATE>       & _Yf):
+                Entity(id), X(_X), Y(_Y), Yf(_Yf), vars()
                 {
                 }
 
@@ -71,7 +68,7 @@ namespace Yttrium
                 inline virtual size_t size() const noexcept
                 {
                     assert( X.size() == Y.size() );
-                    assert( X.size() == Z.size() );
+                    assert( X.size() == Yf.size() );
                     return X.size();
                 }
 
@@ -83,7 +80,7 @@ namespace Yttrium
                 //______________________________________________________________
                 const Readable<ABSCISSA> & X;    //!< input  abscissae
                 const Readable<ABSCISSA> & Y;    //!< input  ordinates
-                Writable<ABSCISSA>       & Z;    //!< output ordinates
+                Writable<ABSCISSA>       & Yf;   //!< output ordinates
                 Variables                  vars; //!< fitting variables
 
             private:

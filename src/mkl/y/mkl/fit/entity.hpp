@@ -51,7 +51,7 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const String name;
+                const String name; //!< identifier
 
             private:
                 Y_Disable_Copy_And_Assign(Entity); //!< discarding
