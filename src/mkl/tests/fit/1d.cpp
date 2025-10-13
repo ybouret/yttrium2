@@ -3,6 +3,7 @@
 #include "y/utest/run.hpp"
 
 #include "y/container/sequence/vector.hpp"
+#include "y/mkl/fit/fwrapper.hpp"
 
 using namespace Yttrium;
 using namespace MKL;

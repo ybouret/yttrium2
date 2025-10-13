@@ -53,7 +53,10 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(AdjustableCommon); //!< discarding
             };
 
-            
+
+#define Y_Fit_Ret_Type ORDINATE
+#define Y_Fit_Fcn_Args TL4(Readable<ABSCISSA>,size_t,Variables,Readable<ORDINATE>)
+#define Y_Fit_Functor  Functor<Y_Fit_Ret_Type,Y_Fit_Fcn_Args>
             template <typename ABSCISSA,typename ORDINATE>
             class Adjustable : public AdjustableCommon
             {
@@ -64,11 +67,8 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
-                typedef Readable<ORDINATE>        Ordinates;
-                typedef Readable<ABSCISSA>        Abscissae;
                 typedef Cameo::Addition<ORDINATE> XAddition;
-
-                typedef Functor<ORDINATE,TL4(Abscissae,size_t,Variables,Readable<ORDINATE>)> Function;
+                typedef Y_Fit_Functor             Function;
 
 
                 //______________________________________________________________
