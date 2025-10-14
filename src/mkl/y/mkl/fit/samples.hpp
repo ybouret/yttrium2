@@ -88,6 +88,8 @@ namespace Yttrium
 				typedef typename FCPU<ORDINATE>::Type      fcpu_t;         //!< alias
                 using AdjustableType::xadd;
                 using AdjustableType::D2;
+                using AdjustableType::beta;
+                using AdjustableType::alpha;
 
                 //______________________________________________________________
                 //
@@ -152,6 +154,16 @@ namespace Yttrium
                                                const Readable<ORDINATE> & aorg,
                                                const Readable<bool>     & used)
                 {
+                    const ORDINATE zero(0);
+                    const ORDINATE one(1);
+
+                    assert(aorg.size()==used.size());
+
+                    // initialize global data
+                    const size_t nvar = aorg.size();
+                    beta.adjust(nvar,zero);
+                    alpha.make(nvar,nvar);
+                    alpha.diagonal(one,zero);
 
                     xadd.ldz();
                     size_t res  = 0;
@@ -163,14 +175,18 @@ namespace Yttrium
                         res += n;
                         xadd << dof * sample.computeD2full(F,aorg,used);
                     }
+
                     if(res>0)
                     {
                         const ORDINATE den =  (fcpu_t)res;
+                        
+
+
                         return (D2 = xadd.sum()/den);
                     }
                     else
                     {
-                        return (D2 = xadd.sum());
+                        return (D2 = zero);
                     }
 
                 }
