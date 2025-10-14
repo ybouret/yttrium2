@@ -122,7 +122,7 @@ namespace Yttrium
 
                         {
                             XAddition *node = cadd.head;
-                            for(size_t j=1;j<=n;++j,node=node->next)
+                            for(size_t j=1;j<=nvar;++j,node=node->next)
                             {
                                 (*node) << delta * dFda[j];
                             }
@@ -132,9 +132,9 @@ namespace Yttrium
                     // reduction
                     {
                         XAddition *node = cadd.head;
-                        for(size_t j=1;j<=n;++j,node=node->next)
+                        for(size_t j=1;j<=nvar;++j,node=node->next)
                         {
-                            
+                            beta[j] = node->sum();
                         }
                     }
 

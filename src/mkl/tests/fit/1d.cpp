@@ -46,9 +46,15 @@ T getG(Writable<T> &dFda, const T t, const Fit::Variables &vars, const Readable<
 
 
     if(t<=t0) return zero;
-    const T arg = D * (t-t0);
+    const T dt  = t-t0;
+    const T arg = D * dt;
+    const T res = Sqrt<T>::Of(arg);
+    const T den = res+res;
 
-    return Sqrt<T>::Of(arg);
+    dFda[i_D]  =  dt/den;
+    dFda[i_t0] = - D/den;
+
+    return res;
 }
 
 
@@ -104,15 +110,16 @@ void testFit(const Fit::Parameters &params)
     S2.save("S2.dat");
 
     const T D2_1 = S1.computeD2_(getF<T>,aorg);
-    std::cerr << "D2_1=" << (double)D2_1 << std::endl;
+    std::cerr << "D2_1  = " << (double)D2_1 << std::endl;
     const T D2_2 = S2.computeD2_(getF<T>,aorg);
-    std::cerr << "D2_2=" << (double)D2_2 << std::endl;
+    std::cerr << "D2_2  = " << (double)D2_2 << std::endl;
 
     const T D2 = samples.computeD2_(getF<T>,aorg);
-    std::cerr << "D2  =" << (double)D2 << std::endl;
+    std::cerr << "D2    = " << (double)D2 << std::endl;
 
-    const T D2_1b = S1.computeD2full_(getG<T>, aorg,used);
-
+    const T D2_1b = S1.computeD2full_(getG<T>,aorg,used);
+    std::cerr << "D2_1b = " << (double)D2_1b << std::endl;
+    std::cerr << "beta  = " << S1.beta << std::endl;
 
 }
 
