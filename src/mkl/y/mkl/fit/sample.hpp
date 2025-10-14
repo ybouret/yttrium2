@@ -106,10 +106,10 @@ namespace Yttrium
                 {
                     // initializing
                     const ORDINATE zero(0);
-                    const size_t nvar = aorg.size();
-                    dFda.adjust(nvar,zero);
-                    beta.adjust(nvar,zero);
-                    cadd.adjust(nvar);
+                    //const size_t nvar = aorg.size();
+                   // dFda.adjust(nvar,zero);
+                   // beta.adjust(nvar,zero);
+                    //cadd.adjust(nvar);
 
                     // collecting
                     xadd.ldz();
@@ -133,7 +133,7 @@ namespace Yttrium
 #endif
                     }
 
-                    // reduction
+#if 0
                     if(false)
                     {
                         XAddition *node = cadd.head;
@@ -143,7 +143,8 @@ namespace Yttrium
                             beta[j] = node->sum();
                         }
                     }
-
+#endif
+                    
                     return (D2=xadd.sum());
                 }
 
