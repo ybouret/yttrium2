@@ -39,6 +39,15 @@ namespace Yttrium
                 virtual ~AdjustableEngine() noexcept {}
 
 
+                void symmetrize() noexcept
+                {
+                    const size_t nvar = alpha.rows;
+                    for(size_t i=1;i<=nvar;++i)
+                    {
+                        for(size_t j=1;j<i;++j) alpha[i][j] = alpha[j][i];
+                    }
+                }
+
                 ORDINATE         D2;    //!< current D2
                 XAddition        xadd;  //!< helper to compute D2
                 Vector<ORDINATE> dFda;  //!< store local gradient

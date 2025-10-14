@@ -198,14 +198,8 @@ namespace Yttrium
                                 }
                             }
                         }
-
-                        // make symetric
-                        for(size_t i=1;i<=nvar;++i)
-                        {
-                            for(size_t j=1;j<i;++j) alpha[i][j] = alpha[j][i];
-                        }
                     }
-
+                    this->symmetrize();
 
 
                     return (D2=xadd.sum());
