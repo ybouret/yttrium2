@@ -121,31 +121,33 @@ namespace Yttrium
                         const ORDINATE delta = Y[i] - (Yf[i] =  F(dFda,X,i,vars,aorg,used));
                         xadd << delta*delta;
 
+                        // dispatching
                         {
-                            Variables::ConstIterator iter = vars->begin();
+                            Variables::ConstIterator jter = vars->begin();
                             XAddition               *node = cadd.head;
-                            for(size_t k=nvar;k>0;--k,node=node->next,++iter)
+                            for(size_t j=nvar;j>0;--j,node=node->next,++jter)
                             {
-                                const Variable &var = **iter;
+                                const Variable &var = **jter;
                                 if( !used[var.global.indx] ) continue;
                                 (*node) << delta * var(dFda);
+                                
                             }
                         }
                     }
 
                     // reduction
+
                     {
+                        Variables::ConstIterator iter = vars->begin();
+                        XAddition               *node = cadd.head;
+                        for(size_t j=nvar;j>0;--j,node=node->next,++iter)
                         {
-                            Variables::ConstIterator iter = vars->begin();
-                            XAddition               *node = cadd.head;
-                            for(size_t k=nvar;k>0;--k,node=node->next,++iter)
-                            {
-                                const Variable &var = **iter;
-                                if( !used[var.global.indx] ) continue;
-                                var(beta) = node->sum();
-                            }
+                            const Variable &var = **iter;
+                            if( !used[var.global.indx] ) continue;
+                            var(beta) = node->sum();
                         }
                     }
+
 
 
                     return (D2=xadd.sum());
