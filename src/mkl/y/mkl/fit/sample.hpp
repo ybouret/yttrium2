@@ -108,7 +108,11 @@ namespace Yttrium
                                                const Readable<ORDINATE> & aorg,
                                                const Readable<bool>     & used)
                 {
+                    //----------------------------------------------------------
+                    //
                     // initializing
+                    //
+                    //----------------------------------------------------------
                     const ORDINATE zero(0);
                     const ORDINATE one(1);
                     const size_t nvar = vars->size();
@@ -118,7 +122,11 @@ namespace Yttrium
                     alpha.make(nvar,nvar);
                     alpha.diagonal(one,zero);
 
+                    //----------------------------------------------------------
+                    //
                     // collecting
+                    //
+                    //----------------------------------------------------------
                     xadd.ldz();
                     cadd.ldz();
                     {
@@ -129,7 +137,9 @@ namespace Yttrium
                             const ORDINATE delta = Y[i] - (Yf[i] =  F(dFda,X,i,vars,aorg,used));
                             xadd << delta*delta;
 
+                            //--------------------------------------------------
                             // dispatching
+                            //--------------------------------------------------
                             {
                                 Variables::ConstIterator jter = vars->begin();
                                 XAddition               *node = cadd.head;
@@ -138,7 +148,6 @@ namespace Yttrium
                                     const Variable &var  = **jter; if( !used[var.global.indx] ) continue;
                                     const size_t    J    = var.indx;
                                     const ORDINATE &dF_j = dFda[J];
-                                    //(*node) << delta * dF_j; node=node->next;
                                     Y_Fit_Sample_Store(delta*dF_j);
 
                                     // alpha diagonal term
@@ -160,8 +169,11 @@ namespace Yttrium
                     }
 
 
-
+                    //----------------------------------------------------------
+                    //
                     // reduction
+                    //
+                    //----------------------------------------------------------
                     {
                         Variables::ConstIterator jter = vars->begin();
                         XAddition               *node = cadd.head;
@@ -177,6 +189,8 @@ namespace Yttrium
                             {
                                 Variables::ConstIterator kter = jter;
                                 ++kter; // skip diagonal
+
+                                // extra-diagonal
                                 for(size_t k=j-1;k>0;--k,++kter)
                                 {
                                     const Variable &sub  = **kter; if( !used[sub.global.indx] ) continue;
@@ -184,6 +198,8 @@ namespace Yttrium
                                 }
                             }
                         }
+
+                        // make symetric
                         for(size_t i=1;i<=nvar;++i)
                         {
                             for(size_t j=1;j<i;++j) alpha[i][j] = alpha[j][i];
