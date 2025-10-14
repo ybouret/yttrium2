@@ -388,8 +388,20 @@ namespace Yttrium
             Matrix &self = *this;
             return LightArray<Type>(self(),items);
         }
-        
 
+        //! \param  diag on diagonal \param extra out of diagonal \return *this
+        inline Matrix & diagonal(ParamType diag, ParamType extra)
+        {
+            Matrix &self = *this;
+            for(size_t i=rows;i>0;--i)
+            {
+                Row &r = self[i];
+                r[i]   = diag;
+                for(size_t j=cols;j>i;--j) r[j] = extra;
+                for(size_t j=i-1;j>0;--j)  r[j] = extra;
+            }
+            return self;
+        }
 
 
 

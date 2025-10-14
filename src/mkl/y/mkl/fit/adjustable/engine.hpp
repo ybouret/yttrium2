@@ -7,6 +7,7 @@
 #include "y/mkl/fit/adjustable/common.hpp"
 #include "y/cameo/caddy.hpp"
 #include "y/container/sequence/vector.hpp"
+#include "y/container/matrix.hpp"
 
 namespace Yttrium
 {
@@ -38,11 +39,12 @@ namespace Yttrium
                 virtual ~AdjustableEngine() noexcept {}
 
 
-                ORDINATE         D2;   //!< current D2
-                XAddition        xadd; //!< helper to compute D2
-                Vector<ORDINATE> dFda; //!< store local gradient
-                Vector<ORDINATE> beta; //!< store global gradient
-                CaddyType        cadd; //!< dynamic additions
+                ORDINATE         D2;    //!< current D2
+                XAddition        xadd;  //!< helper to compute D2
+                Vector<ORDINATE> dFda;  //!< store local gradient
+                Vector<ORDINATE> beta;  //!< local D2 gradient
+                Matrix<ORDINATE> alpha; //!< local D2 curvature
+                CaddyType        cadd;  //!< dynamic additions
 
             private:
                 Y_Disable_Copy_And_Assign(AdjustableEngine);

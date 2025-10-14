@@ -65,7 +65,7 @@ T getG(Writable<T> &dFda, const T t, const Fit::Variables &vars, const Readable<
 template <typename T> static inline
 void testFit(const Fit::Parameters &params)
 {
-	typedef typename FCPU<T>::Type fcpu_t;
+    typedef typename FCPU<T>::Type fcpu_t;
     std::cerr << std::endl;
     std::cerr << "Testing Fit / " << System::RTTI::Name<T>() << std::endl;
 
@@ -123,11 +123,14 @@ void testFit(const Fit::Parameters &params)
 
     const T D2_1b = S1.computeD2full_(getG<T>,aorg,used);
     std::cerr << "D2_1b = " << (double)D2_1b << std::endl;
-    std::cerr << "beta  = " << S1.beta << std::endl;
+    std::cerr << "beta  = " << S1.beta  << std::endl;
+    std::cerr << "alpha = " << S1.alpha << std::endl;
+
 
     const T D2_2b = S2.computeD2full_(getG<T>,aorg,used);
     std::cerr << "D2_2b = " << (double)D2_2b << std::endl;
     std::cerr << "beta  = " << S2.beta << std::endl;
+    std::cerr << "alpha = " << S2.alpha << std::endl;
 
 
 
@@ -160,8 +163,17 @@ Y_UTEST(fit_1d)
     std::cerr << "|_vars = " << S2.vars << std::endl;
 
 
-    testFit<float>(params);
     testFit< XReal<float> >(params);
+    testFit<float>(params);
+
+
+    if(false)
+        for(size_t nvar=1;nvar<=10;++nvar)
+        {
+            const size_t twice = nvar * (nvar+3);
+            Y_ASSERT( 0 == (twice&1) );
+            std::cerr << "nvar=" << nvar << " => " << (twice>>1) << std::endl;
+        }
 
 }
 Y_UDONE()

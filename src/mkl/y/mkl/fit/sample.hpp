@@ -45,6 +45,7 @@ namespace Yttrium
                 using AdjustableType::dFda;
                 using AdjustableType::beta;
                 using AdjustableType::cadd;
+                using AdjustableType::alpha;
 
                 //______________________________________________________________
                 //
@@ -100,51 +101,92 @@ namespace Yttrium
                 }
 
 
+#define Y_Fit_Sample_Store(VALUE) do { (*node) << (VALUE); node=node->next; } while(false)
+#define Y_Fit_Sample_Query(VNAME)   do { VNAME = node->sum();  node=node->next; } while(false)
+
                 virtual ORDINATE computeD2full(Gradient                 & F,
                                                const Readable<ORDINATE> & aorg,
                                                const Readable<bool>     & used)
                 {
                     // initializing
                     const ORDINATE zero(0);
+                    const ORDINATE one(1);
                     const size_t nvar = vars->size();
                     dFda.adjust(nvar,zero);
                     beta.adjust(nvar,zero);
-                    cadd.adjust(nvar);
+                    cadd.adjust( (nvar*(nvar+3)) >> 1);
+                    alpha.make(nvar,nvar);
+                    alpha.diagonal(one,zero);
 
                     // collecting
                     xadd.ldz();
                     cadd.ldz();
-                    const size_t n = X.size();
-                    for(size_t i=1;i<=n;++i)
                     {
-                        dFda.ld(zero);
-                        const ORDINATE delta = Y[i] - (Yf[i] =  F(dFda,X,i,vars,aorg,used));
-                        xadd << delta*delta;
-
-                        // dispatching
+                        const size_t n = X.size();
+                        for(size_t i=1;i<=n;++i)
                         {
-                            Variables::ConstIterator jter = vars->begin();
-                            XAddition               *node = cadd.head;
-                            for(size_t j=nvar;j>0;--j,node=node->next,++jter)
+                            dFda.ld(zero);
+                            const ORDINATE delta = Y[i] - (Yf[i] =  F(dFda,X,i,vars,aorg,used));
+                            xadd << delta*delta;
+
+                            // dispatching
                             {
-                                const Variable &var = **jter;
-                                if( !used[var.global.indx] ) continue;
-                                (*node) << delta * var(dFda);
-                                
+                                Variables::ConstIterator jter = vars->begin();
+                                XAddition               *node = cadd.head;
+                                for(size_t j=nvar;j>0;--j,++jter)
+                                {
+                                    const Variable &var  = **jter; if( !used[var.global.indx] ) continue;
+                                    const size_t    J    = var.indx;
+                                    const ORDINATE &dF_j = dFda[J];
+                                    //(*node) << delta * dF_j; node=node->next;
+                                    Y_Fit_Sample_Store(delta*dF_j);
+
+                                    // alpha diagonal term
+                                    Y_Fit_Sample_Store(dF_j * dF_j);
+
+                                    {
+                                        Variables::ConstIterator kter = jter;
+                                        ++kter; // skip diagonal
+                                        for(size_t k=j-1;k>0;--k,++kter)
+                                        {
+                                            const Variable &sub  = **kter; if( !used[sub.global.indx] ) continue;
+                                            Y_Fit_Sample_Store(dF_j * sub(dFda) );
+                                        }
+                                    }
+
+                                }
                             }
                         }
                     }
 
-                    // reduction
 
+
+                    // reduction
                     {
-                        Variables::ConstIterator iter = vars->begin();
+                        Variables::ConstIterator jter = vars->begin();
                         XAddition               *node = cadd.head;
-                        for(size_t j=nvar;j>0;--j,node=node->next,++iter)
+                        for(size_t j=nvar;j>0;--j,++jter)
                         {
-                            const Variable &var = **iter;
-                            if( !used[var.global.indx] ) continue;
-                            var(beta) = node->sum();
+                            const Variable &var = **jter; if( !used[var.global.indx] ) continue;
+                            const size_t    J    = var.indx;
+                            Y_Fit_Sample_Query(beta[J]);
+
+                            // fetch diagonal
+                            Y_Fit_Sample_Query(alpha[J][J]);
+
+                            {
+                                Variables::ConstIterator kter = jter;
+                                ++kter; // skip diagonal
+                                for(size_t k=j-1;k>0;--k,++kter)
+                                {
+                                    const Variable &sub  = **kter; if( !used[sub.global.indx] ) continue;
+                                    Y_Fit_Sample_Query(sub(alpha[J]));
+                                }
+                            }
+                        }
+                        for(size_t i=1;i<=nvar;++i)
+                        {
+                            for(size_t j=1;j<i;++j) alpha[i][j] = alpha[j][i];
                         }
                     }
 

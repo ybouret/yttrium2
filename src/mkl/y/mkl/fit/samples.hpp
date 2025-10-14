@@ -152,7 +152,7 @@ namespace Yttrium
                                                const Readable<ORDINATE> & aorg,
                                                const Readable<bool>     & used)
                 {
-                    
+
                     return 0;
                 }
 
