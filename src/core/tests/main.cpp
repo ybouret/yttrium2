@@ -199,6 +199,7 @@ Y_UTEST_DECL(256)
 
     Y_UTEST(cameo_add);
     Y_UTEST(cameo_mul);
+    Y_UTEST(cameo_caddy);
 
     Y_UTEST(dft_fmt);
     Y_UTEST(dft_core);

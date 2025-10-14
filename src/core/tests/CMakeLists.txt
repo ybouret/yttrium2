@@ -247,6 +247,7 @@ Y_UTEST(mkl:fcpu)
 #cameo
 Y_UTEST(cameo:add)
 Y_UTEST(cameo:mul)
+Y_UTEST(cameo:caddy)
 
 #dft
 Y_UTEST(dft:core)

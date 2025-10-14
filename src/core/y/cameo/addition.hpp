@@ -47,8 +47,8 @@ namespace Yttrium
             //
             //__________________________________________________________________
             typedef typename SummatorFor<T>::Type SummatorType; //!< alias
-            Y_Args_Declare(T,Type); //!< aliases
-            typedef TypeToType<MutableType> MyTypeHint; //!< alias
+            Y_Args_Declare(T,Type);                             //!< aliases
+            typedef TypeToType<MutableType> MyTypeHint;         //!< alias
 
             //__________________________________________________________________
             //

@@ -35,7 +35,7 @@ namespace Yttrium
                 //______________________________________________________________
                 typedef Y_Fit_Function             Function;  //!< alias
                 typedef Y_Fit_Gradient             Gradient;  //!< alias
-                typedef AdjustableEngine<ORDINATE> Engine;
+                typedef AdjustableEngine<ORDINATE> Engine;    //!< alias
 
                 //______________________________________________________________
                 //
@@ -85,7 +85,13 @@ namespace Yttrium
                 }
 
                 
-                //! full D2 evaluation
+                //! full D2/derivatives evaluation
+                /**
+                 \param F    adjustable gradient (+function)
+                 \param aorg current values
+                 \param used current used values flags
+                 \return D2 at aorg w.r.t F
+                 */
                 virtual ORDINATE computeD2full(Gradient                 & F,
                                                const Readable<ORDINATE> & aorg,
                                                const Readable<bool>     & used) = 0;
