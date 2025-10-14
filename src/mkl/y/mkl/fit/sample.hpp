@@ -43,6 +43,7 @@ namespace Yttrium
                 using AdjustableType::D2;
                 using AdjustableType::xadd;
                 using AdjustableType::dFda;
+                using AdjustableType::beta;
                 using AdjustableType::cadd;
 
                 //______________________________________________________________
@@ -103,21 +104,40 @@ namespace Yttrium
                                                const Readable<ORDINATE> & aorg,
                                                const Readable<bool>     & used)
                 {
+                    // initializing
                     const ORDINATE zero(0);
                     const size_t nvar = aorg.size();
                     dFda.adjust(nvar,zero);
+                    beta.adjust(nvar,zero);
                     cadd.adjust(nvar);
 
+                    // collecting
                     xadd.ldz();
                     const size_t n = X.size();
-                    XAddition *  s = cadd.head;
-                    for(size_t i=1;i<=n;++i,s=s->next)
+                    for(size_t i=1;i<=n;++i)
                     {
                         dFda.ld(zero);
                         const ORDINATE delta = Y[i] - (Yf[i] =  F(dFda,X,i,vars,aorg,used));
                         xadd << delta*delta;
 
+                        {
+                            XAddition *node = cadd.head;
+                            for(size_t j=1;j<=n;++j,node=node->next)
+                            {
+                                (*node) << delta * dFda[j];
+                            }
+                        }
                     }
+
+                    // reduction
+                    {
+                        XAddition *node = cadd.head;
+                        for(size_t j=1;j<=n;++j,node=node->next)
+                        {
+                            
+                        }
+                    }
+
                     return (D2=xadd.sum());
                 }
 

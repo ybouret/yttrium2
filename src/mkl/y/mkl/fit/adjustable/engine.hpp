@@ -29,6 +29,7 @@ namespace Yttrium
                 D2(-1),
                 xadd(),
                 dFda(),
+                beta(),
                 cadd()
                 {
                 }
@@ -40,6 +41,7 @@ namespace Yttrium
                 ORDINATE         D2;   //!< current D2
                 XAddition        xadd; //!< helper to compute D2
                 Vector<ORDINATE> dFda; //!< store local gradient
+                Vector<ORDINATE> beta; //!< store global gradient
                 CaddyType        cadd; //!< dynamic additions
 
             private:
