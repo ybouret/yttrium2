@@ -13,7 +13,7 @@ namespace Yttrium
         namespace Fit
         {
 
-#define Y_Fit_Adjustable_API \
+#define Y_Fit_Adjustable_API 
 
             //__________________________________________________________________
             //
@@ -37,7 +37,7 @@ namespace Yttrium
                 typedef Keyed<String,ArcPtr<Sample>>       Pointer;                     //!< alias
 
                 typedef Adjustable<ABSCISSA,ORDINATE>      AdjustableType;              //!< alias
-                //typedef typename AdjustableType::XAddition XAddition;                   //!< alias
+                typedef typename AdjustableType::XAddition XAddition;                   //!< alias
                 typedef typename AdjustableType::Function  Function;                    //!< alias
                 typedef typename AdjustableType::Gradient  Gradient;                    //!< alias
                 using AdjustableType::D2;
@@ -110,7 +110,8 @@ namespace Yttrium
 
                     xadd.ldz();
                     const size_t n = X.size();
-                    for(size_t i=1;i<=n;++i)
+                    XAddition *  s = cadd.head;
+                    for(size_t i=1;i<=n;++i,s=s->next)
                     {
                         dFda.ld(zero);
                         const ORDINATE delta = Y[i] - (Yf[i] =  F(dFda,X,i,vars,aorg,used));

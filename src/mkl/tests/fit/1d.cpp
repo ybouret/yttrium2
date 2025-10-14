@@ -31,6 +31,28 @@ T getF(const T t, const Fit::Variables &vars, const Readable<T> &aorg)
     return Sqrt<T>::Of(arg);
 }
 
+template <typename T>
+T getG(Writable<T> &dFda, const T t, const Fit::Variables &vars, const Readable<T> &aorg, const Readable<bool> &used)
+{
+    const T zero(0);
+    const size_t i_t0 = *vars["t0"];
+    const size_t i_D  = *vars["D"];
+
+    const T &t0 = aorg[ i_t0 ];
+    const T &D  = aorg[ i_D  ];
+
+    dFda[i_t0] = 0;
+    dFda[i_D]  = 0;
+
+
+    if(t<=t0) return zero;
+    const T arg = D * (t-t0);
+
+    return Sqrt<T>::Of(arg);
+}
+
+
+
 #include "y/system/rtti.hpp"
 
 template <typename T> static inline
@@ -41,8 +63,8 @@ void testFit(const Fit::Parameters &params)
     std::cerr << "Testing Fit / " << System::RTTI::Name<T>() << std::endl;
 
     const T zero(0);
-    Vector<T> aorg(params->size(),zero);
-    
+    Vector<T>    aorg(params->size(),zero);
+    Vector<bool> used(params->size(),true);
 
     aorg[ *params["t0"] ] = -100;
     aorg[ *params["D1"] ] =  0.15f;
@@ -88,6 +110,8 @@ void testFit(const Fit::Parameters &params)
 
     const T D2 = samples.computeD2_(getF<T>,aorg);
     std::cerr << "D2  =" << (double)D2 << std::endl;
+
+    const T D2_1b = S1.computeD2full_(getG<T>, aorg,used);
 
 
 }

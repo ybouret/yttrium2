@@ -18,7 +18,7 @@
 #define Y_Fit_Function Functor<Y_Fit_Ret_Type,Y_Fit_Fcn_Args>
 
 //! arguments for gradient
-#define Y_Fit_Grd_Args TL6(Writable<ORDINATE>,Readable<ABSCISSA>,size_t,Variables,Readable<ORDINATE>,Readable<bool>)
+#define Y_Fit_Grd_Args TL6(Writable<ORDINATE> &,Readable<ABSCISSA>,size_t,Variables,Readable<ORDINATE>,Readable<bool>)
 
 //! prototype for gradient
 #define Y_Fit_Gradient Functor<Y_Fit_Ret_Type,Y_Fit_Grd_Args>

@@ -6,6 +6,7 @@
 
 #include "y/mkl/fit/adjustable/engine.hpp"
 #include "y/mkl/fit/fwrapper.hpp"
+#include "y/mkl/fit/gwrapper.hpp"
 
 namespace Yttrium
 {
@@ -84,7 +85,7 @@ namespace Yttrium
                     return computeD2(F,aorg);
                 }
 
-                
+
                 //! full D2/derivatives evaluation
                 /**
                  \param F    adjustable gradient (+function)
@@ -97,7 +98,21 @@ namespace Yttrium
                                                const Readable<bool>     & used) = 0;
 
 
-
+                //! full D2/derivatives evaluation
+                /**
+                 \param F    adjustable gradient (+function)
+                 \param aorg current values
+                 \param used current used values flags
+                 \return D2 at aorg w.r.t F
+                 */
+                template <typename GRAD> inline
+                ORDINATE computeD2full_(GRAD                     & grad,
+                                        const Readable<ORDINATE> & aorg,
+                                        const Readable<bool>     & used)
+                {
+                    GWrapper<GRAD,ABSCISSA,ORDINATE> G(grad);
+                    return computeD2full(G,aorg,used);
+                }
 
             private:
                 Y_Disable_Copy_And_Assign(Adjustable); //!< discarding
