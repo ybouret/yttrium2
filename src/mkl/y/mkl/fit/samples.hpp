@@ -122,10 +122,10 @@ namespace Yttrium
                     return res;
                 }
 
+                inline
                 virtual ORDINATE computeD2(Function                 & F,
                                            const Readable<ORDINATE> & aorg)
                 {
-					
                     xadd.ldz();
                     size_t res  = 0;
                     for(Iterator it=this->begin();it!=this->end();++it)
@@ -147,13 +147,32 @@ namespace Yttrium
                     }
                 }
 
-
+                inline
                 virtual ORDINATE computeD2full(Gradient                 & F,
                                                const Readable<ORDINATE> & aorg,
                                                const Readable<bool>     & used)
                 {
 
-                    return 0;
+                    xadd.ldz();
+                    size_t res  = 0;
+                    for(Iterator it=this->begin();it!=this->end();++it)
+                    {
+                        SampleType &   sample = **it;
+                        const size_t   n      = sample.count();
+                        const ORDINATE dof    = (fcpu_t)n;
+                        res += n;
+                        xadd << dof * sample.computeD2full(F,aorg,used);
+                    }
+                    if(res>0)
+                    {
+                        const ORDINATE den =  (fcpu_t)res;
+                        return (D2 = xadd.sum()/den);
+                    }
+                    else
+                    {
+                        return (D2 = xadd.sum());
+                    }
+
                 }
 
                 //______________________________________________________________
