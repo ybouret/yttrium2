@@ -56,4 +56,4 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_MKL_Function_Included

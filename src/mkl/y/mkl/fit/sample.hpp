@@ -113,6 +113,7 @@ namespace Yttrium
 
                     // collecting
                     xadd.ldz();
+                    cadd.ldz();
                     const size_t n = X.size();
                     for(size_t i=1;i<=n;++i)
                     {
@@ -120,20 +121,25 @@ namespace Yttrium
                         const ORDINATE delta = Y[i] - (Yf[i] =  F(dFda,X,i,vars,aorg,used));
                         xadd << delta*delta;
 
+#if 0
                         {
                             XAddition *node = cadd.head;
                             for(size_t j=1;j<=nvar;++j,node=node->next)
                             {
+                                if(!used[j]) continue;
                                 (*node) << delta * dFda[j];
                             }
                         }
+#endif
                     }
 
                     // reduction
+                    if(false)
                     {
                         XAddition *node = cadd.head;
                         for(size_t j=1;j<=nvar;++j,node=node->next)
                         {
+                            if(!used[j]) continue;
                             beta[j] = node->sum();
                         }
                     }
