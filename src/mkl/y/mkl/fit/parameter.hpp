@@ -56,13 +56,7 @@ namespace Yttrium
                 //! display
                 friend std::ostream & operator<<(std::ostream &, const Parameter &);
 
-                //______________________________________________________________
-                //
-                //
-                // Interface
-                //
-                //______________________________________________________________
-                virtual size_t operator*() const noexcept; //!< \return indx
+
 
 
                 //______________________________________________________________
@@ -76,16 +70,16 @@ namespace Yttrium
                 template <typename T> inline
                 T & operator()(Writable<T> &a) const noexcept
                 {
-                    const size_t i = **this; assert(i>0); assert(i<=a.size());
-                    return a[i];
+                    assert(indx>0); assert(indx<=a.size());
+                    return a[indx];
                 }
 
                 //! \param a input \return a[**this]
                 template <typename T> inline
                 const T & operator()(const Readable<T> &a) const noexcept
                 {
-                    const size_t i = **this; assert(i>0); assert(i<=a.size());
-                    return a[i];
+                    assert(indx>0); assert(indx<=a.size());
+                    return a[indx];
                 }
 
 

@@ -49,7 +49,7 @@ namespace Yttrium
                                   const size_t     idx,
                                   const Parameter &prm) :
                 Parameter(uid,idx),
-                parameter(prm)
+                global(prm)
                 {
                 }
 
@@ -60,13 +60,7 @@ namespace Yttrium
                 friend std::ostream & operator<<(std::ostream &, const Variable &);
 
 
-                //______________________________________________________________
-                //
-                //
-                // Interface
-                //
-                //______________________________________________________________
-                virtual size_t operator*() const noexcept;
+                
 
                 //______________________________________________________________
                 //
@@ -74,7 +68,7 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const Parameter &parameter; //!< global parameter
+                const Parameter &global; //!< global parameter
 
             private:
                 Y_Disable_Copy_And_Assign(Variable); //!< discarding

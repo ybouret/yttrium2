@@ -80,6 +80,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 static const char * const CallSign; //!< "Fit::Variables"
+                typedef VariableDB::ConstIterator ConstIterator;
 
                 //______________________________________________________________
                 //

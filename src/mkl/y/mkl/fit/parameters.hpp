@@ -34,6 +34,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 static const char * const CallSign; //!< "Fit::Parameters"
+                typedef ParameterDB::ConstIterator ConstIterator;
 
                 //______________________________________________________________
                 //

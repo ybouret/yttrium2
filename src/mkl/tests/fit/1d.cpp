@@ -22,9 +22,9 @@ template <typename T>
 T getF(const T t, const Fit::Variables &vars, const Readable<T> &aorg)
 {
     const T zero(0);
-    const T &t0 = aorg[ *vars["t0"] ];
-    const T &D  = aorg[ *vars["D"]  ];
-    
+    const T &t0 = vars["t0"](aorg);
+    const T &D  = vars["D"](aorg);
+
     if(t<=t0) return zero;
     const T arg = D * (t-t0);
 
@@ -35,15 +35,16 @@ template <typename T>
 T getG(Writable<T> &dFda, const T t, const Fit::Variables &vars, const Readable<T> &aorg, const Readable<bool> &used)
 {
     const T zero(0);
-    const size_t i_t0 = *vars["t0"];
-    const size_t i_D  = *vars["D"];
+    const Fit::Variable &v_t0 = vars["t0"];
+    const Fit::Variable &v_D  = vars["D"];
 
-    const T &t0 = aorg[ i_t0 ];
-    const T &D  = aorg[ i_D  ];
+    const T &t0 = v_t0(aorg);
+    const T &D  = v_D(aorg);
+    T & dF_dt0  = v_t0(dFda);
+    T & dF_dD   = v_D(dFda);
 
-    dFda[i_t0] = 0;
-    dFda[i_D]  = 0;
-
+    dF_dt0 = zero;
+    dF_dD  = zero;
 
     if(t<=t0) return zero;
     const T dt  = t-t0;
@@ -51,8 +52,8 @@ T getG(Writable<T> &dFda, const T t, const Fit::Variables &vars, const Readable<
     const T res = Sqrt<T>::Of(arg);
     const T den = res+res;
 
-    dFda[i_D]  =  dt/den;
-    dFda[i_t0] = - D/den;
+    dF_dD  =  dt/den;
+    dF_dt0 = - D/den;
 
     return res;
 }
@@ -72,9 +73,12 @@ void testFit(const Fit::Parameters &params)
     Vector<T>    aorg(params->size(),zero);
     Vector<bool> used(params->size(),true);
 
-    aorg[ *params["t0"] ] = -100;
-    aorg[ *params["D1"] ] =  0.15f;
-    aorg[ *params["D2"] ] =  0.2f;
+    T & t0 = (params["t0"](aorg) = -100);
+    T & D1 = (params["D1"](aorg) = 0.15f);
+    T & D2 = (params["D2"](aorg) = 0.20f);
+    std::cerr << "t0=" << t0 << std::endl;
+    std::cerr << "D1=" << D1 << std::endl;
+    std::cerr << "D2=" << D2 << std::endl;
 
 
     Vector<T> t1, x1, x1f;
@@ -114,12 +118,18 @@ void testFit(const Fit::Parameters &params)
     const T D2_2 = S2.computeD2_(getF<T>,aorg);
     std::cerr << "D2_2  = " << (double)D2_2 << std::endl;
 
-    const T D2 = samples.computeD2_(getF<T>,aorg);
-    std::cerr << "D2    = " << (double)D2 << std::endl;
+    const T D2_A = samples.computeD2_(getF<T>,aorg);
+    std::cerr << "D2_A  = " << (double)D2_A << std::endl;
 
     const T D2_1b = S1.computeD2full_(getG<T>,aorg,used);
     std::cerr << "D2_1b = " << (double)D2_1b << std::endl;
     std::cerr << "beta  = " << S1.beta << std::endl;
+
+    const T D2_2b = S2.computeD2full_(getG<T>,aorg,used);
+    std::cerr << "D2_2b = " << (double)D2_2b << std::endl;
+    std::cerr << "beta  = " << S2.beta << std::endl;
+
+
 
 }
 

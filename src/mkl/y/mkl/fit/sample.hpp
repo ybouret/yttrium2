@@ -13,7 +13,7 @@ namespace Yttrium
         namespace Fit
         {
 
-#define Y_Fit_Adjustable_API 
+#define Y_Fit_Adjustable_API
 
             //__________________________________________________________________
             //
@@ -106,10 +106,10 @@ namespace Yttrium
                 {
                     // initializing
                     const ORDINATE zero(0);
-                    //const size_t nvar = aorg.size();
-                   // dFda.adjust(nvar,zero);
-                   // beta.adjust(nvar,zero);
-                    //cadd.adjust(nvar);
+                    const size_t nvar = vars->size();
+                    dFda.adjust(nvar,zero);
+                    beta.adjust(nvar,zero);
+                    cadd.adjust(nvar);
 
                     // collecting
                     xadd.ldz();
@@ -121,30 +121,33 @@ namespace Yttrium
                         const ORDINATE delta = Y[i] - (Yf[i] =  F(dFda,X,i,vars,aorg,used));
                         xadd << delta*delta;
 
-#if 0
                         {
-                            XAddition *node = cadd.head;
-                            for(size_t j=1;j<=nvar;++j,node=node->next)
+                            Variables::ConstIterator iter = vars->begin();
+                            XAddition               *node = cadd.head;
+                            for(size_t k=nvar;k>0;--k,node=node->next,++iter)
                             {
-                                if(!used[j]) continue;
-                                (*node) << delta * dFda[j];
+                                const Variable &var = **iter;
+                                if( !used[var.global.indx] ) continue;
+                                (*node) << delta * var(dFda);
                             }
                         }
-#endif
                     }
 
-#if 0
-                    if(false)
+                    // reduction
                     {
-                        XAddition *node = cadd.head;
-                        for(size_t j=1;j<=nvar;++j,node=node->next)
                         {
-                            if(!used[j]) continue;
-                            beta[j] = node->sum();
+                            Variables::ConstIterator iter = vars->begin();
+                            XAddition               *node = cadd.head;
+                            for(size_t k=nvar;k>0;--k,node=node->next,++iter)
+                            {
+                                const Variable &var = **iter;
+                                if( !used[var.global.indx] ) continue;
+                                var(beta) = node->sum();
+                            }
                         }
                     }
-#endif
-                    
+
+
                     return (D2=xadd.sum());
                 }
 
@@ -190,7 +193,7 @@ namespace Yttrium
 
             };
         }
-        
+
     }
 }
 

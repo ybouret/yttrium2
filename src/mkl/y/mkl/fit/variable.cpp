@@ -15,14 +15,11 @@ namespace Yttrium
             std::ostream & operator<<(std::ostream &os, const Variable &var)
             {
                 const Parameter &self = var;
-                return os << self << " (-> " << var.parameter << ")";
+                return os << self << "(->" << var.global << ")";
             }
 
 
-            size_t Variable:: operator*() const noexcept
-            {
-                return parameter.indx;
-            }
+
         }
     }
 

@@ -18,10 +18,7 @@ namespace Yttrium
                 return os << p.name << "@" << p.indx;
             }
 
-            size_t Parameter:: operator*() const noexcept
-            {
-                return indx;
-            }
+            
         }
     }
 
