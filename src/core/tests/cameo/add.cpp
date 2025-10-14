@@ -22,6 +22,8 @@ namespace {
         std::cerr << "Genus: " << xadd.callSign() << "@" << System::RTTI::Name<T>() <<  std::endl;
 
         Y_CHECK( Y_Is_SuperSubClass_Strict(Object,Cameo::Addition<T>) );
+        Y_SIZEOF(Cameo::Addition<T>);
+
 
         T s(0);
         const size_t n =ran.leq<size_t>(20);
