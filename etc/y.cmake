@@ -91,7 +91,10 @@ endif()
 ################################################################################
 cmake_print_variables(CMAKE_SYSTEM_PROCESSOR)
 
-message( FATAL_ERROR "stop" )
+string( TOLOWER "${CMAKE_SYSTEM_NAME}"      Y_Platform)
+string( TOLOWER "${CMAKE_SYSTEM_PROCESSOR}" Y_Machine)
+cmake_print_variables(Y_Platform)
+cmake_print_variables(Y_Machine)
 
 
 ################################################################################
@@ -295,6 +298,8 @@ macro(Y_Regression THE_LIB)
 	list(APPEND _UnitTests "utest-${THE_LIB}")
 	set(Y_UnitTests ${_UnitTests} PARENT_SCOPE)
 endmacro()
+
+set(Y_DLL_UUID "-${Y_Platform}-${Y_Machine}.dll")
 
 function(Y_CopyDLL THE_TARGET DLL_NAME)
 	add_custom_command( TARGET ${THE_TARGET} POST_BUILD 
