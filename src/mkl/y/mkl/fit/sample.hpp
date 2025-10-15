@@ -100,8 +100,9 @@ namespace Yttrium
                 }
 
 
-#define Y_Fit_Sample_Store(VALUE) do { (*node) << (VALUE); node=node->next; } while(false)
-#define Y_Fit_Sample_Query(VNAME)   do { VNAME = node->sum();  node=node->next; } while(false)
+#define Y_Fit_Sample_Store(VALUE)     do { (*node) << (VALUE);        node=node->next; } while(false)
+#define Y_Fit_Sample_Query(VNAME)     do { VNAME = node->sum();       node=node->next; } while(false)
+#define Y_Fit_Sample_QMean(VNAME,DEN) do { VNAME = node->sum()/(DEN); node=node->next; } while(false)
 
                 virtual ORDINATE computeD2full(Gradient                 & F,
                                                const Readable<ORDINATE> & aorg,

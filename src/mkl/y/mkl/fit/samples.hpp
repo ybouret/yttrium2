@@ -104,7 +104,8 @@ namespace Yttrium
                 inline explicit Samples(const UID &uid) :
                 AdjustableType(uid),
                 SuffixSet<String,SamplePointer>(),
-                SamplesCommon()
+                SamplesCommon(),
+                weight()
                 {}
 
                 //! cleanup
@@ -188,13 +189,14 @@ namespace Yttrium
                     if(res>0)
                     {
 
+                        // dispatch
                         {
                             XAddition *node = cadd.head;
                             size_t     i    = 1;
                             for(Iterator it=this->begin();it!=this->end();++it,++i)
                             {
-                                SampleType &   sample = **it;
-                                const ORDINATE w      = weight[i];
+                                const SampleType & sample = **it;
+                                const ORDINATE     w      = weight[i];
                                 {
                                     const Readable<ORDINATE> &beta0 = sample.beta;
                                     const Variables &        vars = sample.vars;
@@ -211,9 +213,26 @@ namespace Yttrium
                             }
                         }
 
+                        // collect
                         const ORDINATE den =  (fcpu_t)res;
+                        {
+                            XAddition *node = cadd.head;
+                            for(Iterator it=this->begin();it!=this->end();++it)
+                            {
+                                const SampleType &sample = **it;
+                                const Variables &        vars = sample.vars;
+                                const size_t             nvar = vars->size();
+                                Variables::ConstIterator jter = vars->begin();
+                                for(size_t j=nvar;j>0;--j,++jter)
+                                {
+                                    const Variable &jv = **jter;
+                                    const size_t    jG = jv.global.indx; if( !used[jG] ) continue;
+                                    Y_Fit_Sample_QMean(beta[jG],den);
+                                }
+                            }
+                        }
 
-
+                        // return
                         return (D2 = xadd.sum()/den);
                     }
                     else
@@ -247,6 +266,12 @@ namespace Yttrium
                 }
 
 
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
                 Vector<ORDINATE> weight; //!< weight per sample
 
             private:
