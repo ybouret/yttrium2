@@ -143,6 +143,7 @@ void testFit(const Fit::Parameters &params)
     const T D2_Ab = samples.computeD2full_(getG<T>,aorg,used);
     std::cerr << "D2_Ab = " << (double)D2_Ab << std::endl;
     std::cerr << "beta  = " << samples.beta << std::endl;
+    std::cerr << "alpha = " << samples.alpha << std::endl;
     std::cerr << std::endl;
 
 }

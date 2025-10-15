@@ -86,6 +86,7 @@ namespace Yttrium
                 typedef typename AdjustableType::Function  Function;       //!< alias
                 typedef typename AdjustableType::Gradient  Gradient;       //!< alias
 				typedef typename FCPU<ORDINATE>::Type      fcpu_t;         //!< alias
+                typedef XAddition *                        XAddPtr;        //!< alias
                 using AdjustableType::xadd;
                 using AdjustableType::D2;
                 using AdjustableType::beta;
@@ -167,8 +168,24 @@ namespace Yttrium
                     alpha.make(nvar,nvar);
                     alpha.diagonal(one,zero);
                     weight.free();
+
                     cadd.adjust( (nvar * (nvar+3))>>1 );
                     cadd.ldz();
+                    xBeta.adjust(nvar,0);
+                    xAlpha.make(nvar,nvar);
+                    {
+                        XAddition *node = cadd.head;
+                        for(size_t i=1;i<=nvar;++i)
+                        {
+                            xBeta[i] = node; node=node->next;
+                            for(size_t j=1;j<i;++j) xAlpha[i][j] = 0;
+                            for(size_t j=i;j<=nvar;++j)
+                            {
+                                xAlpha[i][j] = node; node=node->next;
+                            }
+                        }
+                    }
+
 
                     // first part: collect individual
                     xadd.ldz();
@@ -188,9 +205,38 @@ namespace Yttrium
                     // second part: form global metrics
                     if(res>0)
                     {
-                        
+                        // dispatch
+                        {
+                            size_t i=1;
+                            for(Iterator it=this->begin();it!=this->end();++it,++i)
+                            {
+                                const SampleType              & S      = **it;
+                                const ORDINATE                  w      = weight[i];
+                                const Variables               & vars   = S.vars;
+                                const Readable<ORDINATE>      & beta0  = S.beta;
+                                const Matrix<ORDINATE>        & alpha0 = S.alpha;
+                                const Variables::ConstIterator  vend   = vars->end();
+                                for(Variables::ConstIterator jter=vars->begin();jter!=vend;++jter)
+                                {
+                                    const Variable &jv = **jter;
+                                    const size_t    jG = jv.global.indx; if( !used[jG] ) continue;
+                                    const size_t    j0 = jv.indx;
+                                    assert(xBeta[jG]!=0);
+                                    *xBeta[jG] << w * beta0[j0];
+
+                                }
+                            }
+                        }
+
+
                         // collect
                         const ORDINATE den =  (fcpu_t)res;
+                        for(size_t i=1;i<=nvar;++i)
+                        {
+                            if(!used[i]) continue;
+                            beta[i] = xBeta[i]->sum()/den;
+                        }
+
 
                         // return
                         return (D2 = xadd.sum()/den);
@@ -233,6 +279,8 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 Vector<ORDINATE> weight; //!< weight per sample
+                Vector<XAddPtr>  xBeta;
+                Matrix<XAddPtr>  xAlpha;
 
             private:
                 Y_Disable_Copy_And_Assign(Samples); //!< discarding
