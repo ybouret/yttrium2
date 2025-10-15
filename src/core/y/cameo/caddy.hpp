@@ -59,11 +59,9 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            //! clean list
-            inline void ldz() noexcept
-            {
-                for(AddType *node=head;node;node=node->next)
-                    node->ldz();
+            //! clean lists
+            inline void ldz() noexcept {
+                for(AddType *node=head;node;node=node->next) node->ldz();
             }
 
             //! prepare list \param n target

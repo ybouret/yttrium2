@@ -46,12 +46,13 @@ namespace Yttrium
                 xadd(),
                 dFda(),
                 beta(),
+                alpha(),
                 cadd()
                 {
                 }
                 
                 //! cleanup
-                virtual ~AdjustableEngine() noexcept {}
+                virtual ~AdjustableEngine() noexcept;
 
                 //______________________________________________________________
                 //
@@ -61,14 +62,7 @@ namespace Yttrium
                 //______________________________________________________________
 
                 //! symmetrize alpha
-                void symmetrize() noexcept
-                {
-                    const size_t nvar = alpha.rows;
-                    for(size_t i=1;i<=nvar;++i)
-                    {
-                        for(size_t j=1;j<i;++j) alpha[i][j] = alpha[j][i];
-                    }
-                }
+                void symmetrize() noexcept;
 
                 //______________________________________________________________
                 //
@@ -85,7 +79,6 @@ namespace Yttrium
 
             private:
                 Y_Disable_Copy_And_Assign(AdjustableEngine); //!< discarding
-
             };
 
         }
