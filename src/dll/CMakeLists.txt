@@ -10,3 +10,5 @@ add_custom_command( TARGET loader POST_BUILD
     COMMAND $<TARGET_FILE:loader> $<TARGET_FILE:cxxmod>
     COMMENT "Testing DLL Loader"
 )
+
+add_dependencies(loader module cxxmod)
