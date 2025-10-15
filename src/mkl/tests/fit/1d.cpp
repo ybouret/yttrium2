@@ -186,6 +186,7 @@ Y_UTEST(fit_1d)
 
     testFit< XReal<float> >(params);
     testFit<float>(params);
+    testFit<double>(params);
 
 
     if(false)
