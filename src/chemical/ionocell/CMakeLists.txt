@@ -19,7 +19,7 @@ endif()
 
 add_custom_command( TARGET ionocell POST_BUILD 
     COMMAND ${CMAKE_COMMAND} -E echo "-- Building Archive For IonoCell"
-    COMMAND ${CMAKE_COMMAND} -E tar cfvz ionocell.tgz ${ionocell_dll} ionocell.py spyndle.py
+    COMMAND ${CMAKE_COMMAND} -E tar cfvz ionocell${Y_UUID}.tgz ${ionocell_dll} ionocell.py spyndle.py
     COMMAND ${CMAKE_COMMAND} -E echo "-- archived"
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     VERBATIM

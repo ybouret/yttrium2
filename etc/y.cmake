@@ -299,7 +299,8 @@ macro(Y_Regression THE_LIB)
 	set(Y_UnitTests ${_UnitTests} PARENT_SCOPE)
 endmacro()
 
-set(Y_DLL_UUID "-${Y_Platform}-${Y_Machine}.dll")
+set(Y_UUID "-${Y_Platform}-${Y_Machine}")
+set(Y_DLL_UUID "${Y_UUID}.dll")
 
 function(Y_CopyDLL THE_TARGET DLL_NAME)
 	add_custom_command( TARGET ${THE_TARGET} POST_BUILD 
