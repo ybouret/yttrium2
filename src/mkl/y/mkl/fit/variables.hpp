@@ -79,8 +79,8 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
-                static const char * const CallSign; //!< "Fit::Variables"
-                typedef VariableDB::ConstIterator ConstIterator;
+                static const char * const         CallSign;      //!< "Fit::Variables"
+                typedef VariableDB::ConstIterator ConstIterator; //!< alias
 
                 //______________________________________________________________
                 //

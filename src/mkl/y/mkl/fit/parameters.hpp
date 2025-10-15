@@ -65,6 +65,7 @@ namespace Yttrium
                 const Parameter & operator[](const char * const) const; //!< \return named parameter
                 const Parameter & operator[](const char )        const; //!< \return named parameter
 
+                //! query flag for each parameter \param used used flags
                 void  queryEnv(Writable<bool> &used) const;
 
             private:

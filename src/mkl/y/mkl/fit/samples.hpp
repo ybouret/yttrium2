@@ -288,12 +288,13 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 Vector<ORDINATE> weight; //!< weight per sample
-                Vector<XAddPtr>  xBeta;
-                Matrix<XAddPtr>  xAlpha;
-
+                Vector<XAddPtr>  xBeta;  //!< storage of XAddition
+                Matrix<XAddPtr>  xAlpha; //!< storage of XAddition
+                
             private:
                 Y_Disable_Copy_And_Assign(Samples); //!< discarding
 
+                //! initialize dynamic values \param nvar global variables
                 inline void initialize(const size_t nvar)
                 {
                     const ORDINATE zero(0);
@@ -304,7 +305,7 @@ namespace Yttrium
                     alpha.diagonal(one,zero);
                     weight.free();
 
-                    cadd.adjust( (nvar * (nvar+3))>>1 );
+                    cadd.adjust( (nvar * (nvar+3)) >>1 );
                     cadd.ldz();
                     xBeta.adjust(nvar,0);
                     xAlpha.make(nvar,nvar);
