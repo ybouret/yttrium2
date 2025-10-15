@@ -157,37 +157,21 @@ namespace Yttrium
                                                const Readable<ORDINATE> & aorg,
                                                const Readable<bool>     & used)
                 {
-                    const ORDINATE zero(0);
-                    const ORDINATE one(1);
-
                     assert(aorg.size()==used.size());
 
+                    //----------------------------------------------------------
+                    //
                     // initialize global data
+                    //
+                    //----------------------------------------------------------
                     const size_t nvar = aorg.size();
-                    beta.adjust(nvar,zero);
-                    alpha.make(nvar,nvar);
-                    alpha.diagonal(one,zero);
-                    weight.free();
+                    initialize(nvar);
 
-                    cadd.adjust( (nvar * (nvar+3))>>1 );
-                    cadd.ldz();
-                    xBeta.adjust(nvar,0);
-                    xAlpha.make(nvar,nvar);
-                    {
-                        XAddition *node = cadd.head;
-                        for(size_t i=1;i<=nvar;++i)
-                        {
-                            xBeta[i] = node; node=node->next;
-                            for(size_t j=1;j<i;++j) xAlpha[i][j] = 0;
-                            for(size_t j=i;j<=nvar;++j)
-                            {
-                                xAlpha[i][j] = node; node=node->next;
-                            }
-                        }
-                    }
-
-
-                    // first part: collect individual
+                    //----------------------------------------------------------
+                    //
+                    // first part: collect individual metrics
+                    //
+                    //----------------------------------------------------------
                     xadd.ldz();
                     size_t res  = 0;
                     for(Iterator it=this->begin();it!=this->end();++it)
@@ -202,10 +186,16 @@ namespace Yttrium
 
                     assert(this->size() == weight.size() );
 
-                    // second part: dispatch global metrics
+                    //----------------------------------------------------------
+                    //
+                    // second part: build global metrics
+                    //
+                    //----------------------------------------------------------
                     if(res>0)
                     {
+                        //------------------------------------------------------
                         // dispatch
+                        //------------------------------------------------------
                         {
                             size_t i=1;
                             for(Iterator it=this->begin();it!=this->end();++it,++i)
@@ -237,8 +227,9 @@ namespace Yttrium
                             }
                         }
 
-
+                        //------------------------------------------------------
                         // collect
+                        //------------------------------------------------------
                         const ORDINATE den =  (fcpu_t)res;
                         for(size_t i=1;i<=nvar;++i)
                         {
@@ -254,13 +245,14 @@ namespace Yttrium
                         }
                         this->symmetrize();
 
-
+                        //------------------------------------------------------
                         // return
+                        //------------------------------------------------------
                         return (D2 = xadd.sum()/den);
                     }
                     else
                     {
-                        return (D2 = zero);
+                        return (D2 = xadd.sum());
                     }
 
                 }
@@ -301,6 +293,36 @@ namespace Yttrium
 
             private:
                 Y_Disable_Copy_And_Assign(Samples); //!< discarding
+
+                inline void initialize(const size_t nvar)
+                {
+                    const ORDINATE zero(0);
+                    const ORDINATE one(1);
+
+                    beta.adjust(nvar,zero);
+                    alpha.make(nvar,nvar);
+                    alpha.diagonal(one,zero);
+                    weight.free();
+
+                    cadd.adjust( (nvar * (nvar+3))>>1 );
+                    cadd.ldz();
+                    xBeta.adjust(nvar,0);
+                    xAlpha.make(nvar,nvar);
+                    {
+                        XAddition *node = cadd.head;
+                        for(size_t i=1;i<=nvar;++i)
+                        {
+                            xBeta[i] = node; node=node->next;
+                            for(size_t j=1;j<i;++j) xAlpha[i][j] = 0;
+                            for(size_t j=i;j<=nvar;++j)
+                            {
+                                xAlpha[i][j] = node; node=node->next;
+                            }
+                        }
+                    }
+                }
+
+
             };
 
         }
