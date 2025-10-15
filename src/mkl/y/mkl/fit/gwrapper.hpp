@@ -56,10 +56,12 @@ namespace Yttrium
 
                 //! interfacing
                 /**
+                 \param dFda local gradient
                  \param x abscissae
                  \param i index
                  \param vars variables
                  \param aorg current values
+                 \param used flags of used values
                  \return F(x[i],vars,aorg)
                  */
                 ORDINATE compute(Writable<ORDINATE>       &dFda,

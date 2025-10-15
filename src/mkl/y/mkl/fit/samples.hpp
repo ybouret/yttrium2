@@ -90,6 +90,7 @@ namespace Yttrium
                 using AdjustableType::D2;
                 using AdjustableType::beta;
                 using AdjustableType::alpha;
+                using AdjustableType::cadd;
 
                 //______________________________________________________________
                 //
@@ -165,6 +166,8 @@ namespace Yttrium
                     alpha.make(nvar,nvar);
                     alpha.diagonal(one,zero);
                     weight.free();
+                    cadd.adjust( (nvar * (nvar+3))>>1 );
+                    cadd.ldz();
 
                     // first part: collect individual
                     xadd.ldz();
@@ -184,8 +187,31 @@ namespace Yttrium
                     // second part: form global metrics
                     if(res>0)
                     {
-                        const ORDINATE den =  (fcpu_t)res;
 
+                        {
+                            XAddition *node = cadd.head;
+                            size_t     i    = 1;
+                            for(Iterator it=this->begin();it!=this->end();++it,++i)
+                            {
+                                SampleType &   sample = **it;
+                                const ORDINATE w      = weight[i];
+                                {
+                                    const Readable<ORDINATE> &beta0 = sample.beta;
+                                    const Variables &        vars = sample.vars;
+                                    const size_t             nvar = vars->size();
+                                    Variables::ConstIterator jter = vars->begin();
+                                    for(size_t j=nvar;j>0;--j,++jter)
+                                    {
+                                        const Variable &jv = **jter;
+                                        const size_t    jG = jv.global.indx; if( !used[jG] ) continue;
+                                        const ORDINATE  wbeta = w * jv(beta0);
+                                        Y_Fit_Sample_Store( wbeta );
+                                    }
+                                }
+                            }
+                        }
+
+                        const ORDINATE den =  (fcpu_t)res;
 
 
                         return (D2 = xadd.sum()/den);
@@ -221,7 +247,7 @@ namespace Yttrium
                 }
 
 
-                Vector<ORDINATE> weight;
+                Vector<ORDINATE> weight; //!< weight per sample
 
             private:
                 Y_Disable_Copy_And_Assign(Samples); //!< discarding

@@ -13,7 +13,6 @@ namespace Yttrium
         namespace Fit
         {
 
-#define Y_Fit_Adjustable_API
 
             //__________________________________________________________________
             //

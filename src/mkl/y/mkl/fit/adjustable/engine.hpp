@@ -16,7 +16,14 @@ namespace Yttrium
         namespace Fit
         {
 
-            
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Ordinate only data to collect
+            //
+            //
+            //__________________________________________________________________
             template <typename ORDINATE>
             class AdjustableEngine : public AdjustableCommon
             {
@@ -24,6 +31,14 @@ namespace Yttrium
                 typedef Cameo::Addition<ORDINATE> XAddition; //!< alias
                 typedef Cameo::Caddy<ORDINATE>    CaddyType; //!< alias
 
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! setup \param uid name
                 template <typename UID>
                 explicit AdjustableEngine(const UID &uid) :
                 AdjustableCommon(uid),
@@ -35,10 +50,17 @@ namespace Yttrium
                 {
                 }
                 
-
+                //! cleanup
                 virtual ~AdjustableEngine() noexcept {}
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
 
+                //! symmetrize alpha
                 void symmetrize() noexcept
                 {
                     const size_t nvar = alpha.rows;
@@ -48,6 +70,12 @@ namespace Yttrium
                     }
                 }
 
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
                 ORDINATE         D2;    //!< current D2
                 XAddition        xadd;  //!< helper to compute D2
                 Vector<ORDINATE> dFda;  //!< store local gradient
@@ -56,7 +84,7 @@ namespace Yttrium
                 CaddyType        cadd;  //!< dynamic additions
 
             private:
-                Y_Disable_Copy_And_Assign(AdjustableEngine);
+                Y_Disable_Copy_And_Assign(AdjustableEngine); //!< discarding
 
             };
 

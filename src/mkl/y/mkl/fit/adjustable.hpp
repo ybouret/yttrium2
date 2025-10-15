@@ -100,7 +100,7 @@ namespace Yttrium
 
                 //! full D2/derivatives evaluation
                 /**
-                 \param F    adjustable gradient (+function)
+                 \param grad adjustable gradient (+function)
                  \param aorg current values
                  \param used current used values flags
                  \return D2 at aorg w.r.t F
