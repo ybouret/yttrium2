@@ -202,7 +202,7 @@ namespace Yttrium
 
                     assert(this->size() == weight.size() );
 
-                    // second part: form global metrics
+                    // second part: dispatch global metrics
                     if(res>0)
                     {
                         // dispatch
@@ -221,9 +221,18 @@ namespace Yttrium
                                     const Variable &jv = **jter;
                                     const size_t    jG = jv.global.indx; if( !used[jG] ) continue;
                                     const size_t    j0 = jv.indx;
-                                    assert(xBeta[jG]!=0);
-                                    *xBeta[jG] << w * beta0[j0];
-
+                                    assert(xBeta[jG]!=0);assert(xAlpha[jG][jG]!=0);
+                                    *xBeta[jG]      << w * beta0[j0];
+                                    *xAlpha[jG][jG] << w * alpha0[j0][j0];
+                                    Variables::ConstIterator kter = jter;
+                                    for(++kter;kter!=vend;++kter)
+                                    {
+                                        const Variable &kv = **kter;
+                                        const size_t    kG = kv.global.indx; if( !used[kG] ) continue;
+                                        const size_t    k0 = kv.indx;
+                                        assert(xAlpha[jG][kG]!=0);
+                                        *xAlpha[jG][kG] << w * alpha0[j0][k0];
+                                    }
                                 }
                             }
                         }
@@ -234,8 +243,16 @@ namespace Yttrium
                         for(size_t i=1;i<=nvar;++i)
                         {
                             if(!used[i]) continue;
-                            beta[i] = xBeta[i]->sum()/den;
+                            beta[i]     = xBeta[i]->sum()/den;
+                            alpha[i][i] = xAlpha[i][i]->sum()/den;
+                            for(size_t j=i+1;j<=nvar;++j)
+                            {
+                                assert(0!=xAlpha[i][j]);
+                                if(!used[j]) continue;
+                                alpha[i][j] = xAlpha[i][j]->sum()/den;
+                            }
                         }
+                        this->symmetrize();
 
 
                         // return
