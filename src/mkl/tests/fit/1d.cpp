@@ -7,6 +7,8 @@
 #include "y/string/env.hpp"
 #include "y/string/boolean.hpp"
 
+#include "y/mkl/fit/optimizer.hpp"
+
 using namespace Yttrium;
 using namespace MKL;
 
@@ -32,16 +34,20 @@ T getF(const T t, const Fit::Variables &vars, const Readable<T> &aorg)
 }
 
 template <typename T>
-T getG(Writable<T> &dFda, const T t, const Fit::Variables &vars, const Readable<T> &aorg, const Readable<bool> &used)
+T getG(Writable<T> &dFda,
+       const T t,
+       const Fit::Variables &vars,
+       const Readable<T> &aorg,
+       const Readable<bool> &used)
 {
     const T zero(0);
-    const Fit::Variable &v_t0 = vars["t0"];
-    const Fit::Variable &v_D  = vars["D"];
+    const Fit::Variable &_t0 = vars["t0"];
+    const Fit::Variable &_D  = vars["D"];
 
-    const T &t0 = v_t0(aorg);
-    const T &D  = v_D(aorg);
-    T & dF_dt0  = v_t0(dFda);
-    T & dF_dD   = v_D(dFda);
+    const T &t0 = _t0(aorg);
+    const T &D  = _D(aorg);
+    T & dF_dt0  = _t0(dFda);
+    T & dF_dD   = _D(dFda);
 
     dF_dt0 = zero;
     dF_dD  = zero;
@@ -144,6 +150,10 @@ void testFit(const Fit::Parameters &params)
     std::cerr << "beta  = " << samples.beta << std::endl;
     std::cerr << "alpha = " << samples.alpha << std::endl;
     std::cerr << std::endl;
+
+
+    Fit::Optimizer<T> fit;
+
 
 }
 
