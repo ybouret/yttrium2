@@ -188,49 +188,9 @@ namespace Yttrium
                     // second part: form global metrics
                     if(res>0)
                     {
-
-                        // dispatch
-                        {
-                            XAddition *node = cadd.head;
-                            size_t     i    = 1;
-                            for(Iterator it=this->begin();it!=this->end();++it,++i)
-                            {
-                                const SampleType & sample = **it;
-                                const ORDINATE     w      = weight[i];
-                                {
-                                    const Readable<ORDINATE> &beta0 = sample.beta;
-                                    const Variables &        vars = sample.vars;
-                                    const size_t             nvar = vars->size();
-                                    Variables::ConstIterator jter = vars->begin();
-                                    for(size_t j=nvar;j>0;--j,++jter)
-                                    {
-                                        const Variable &jv = **jter;
-                                        const size_t    jG = jv.global.indx; if( !used[jG] ) continue;
-                                        const ORDINATE  wbeta = w * jv(beta0);
-                                        Y_Fit_Sample_Store( wbeta );
-                                    }
-                                }
-                            }
-                        }
-
+                        
                         // collect
                         const ORDINATE den =  (fcpu_t)res;
-                        {
-                            XAddition *node = cadd.head;
-                            for(Iterator it=this->begin();it!=this->end();++it)
-                            {
-                                const SampleType &sample = **it;
-                                const Variables &        vars = sample.vars;
-                                const size_t             nvar = vars->size();
-                                Variables::ConstIterator jter = vars->begin();
-                                for(size_t j=nvar;j>0;--j,++jter)
-                                {
-                                    const Variable &jv = **jter;
-                                    const size_t    jG = jv.global.indx; if( !used[jG] ) continue;
-                                    Y_Fit_Sample_QMean(beta[jG],den);
-                                }
-                            }
-                        }
 
                         // return
                         return (D2 = xadd.sum()/den);
