@@ -2,7 +2,7 @@
 
 import ctypes as ct
 from spyndle import Spyndle
-
+import platform
 
 ###############################################################################
 #
@@ -15,7 +15,8 @@ class SpeciesAPI(Spyndle):
     """ get species info from parsed code """
 
     def __init__(self, library_name):
-        super().__init__(library_name)
+        dll_uuid = "-" + platform.system().lower() + "-" + platform.machine().lower() + ".dll"
+        super().__init__(library_name+dll_uuid)
 
         # number of species
         self.num_species = self.dll.IonoCell_numSpecies
@@ -81,7 +82,7 @@ class IonoCell(SpeciesAPI):
     """ interface to C++ code """
 
     def __init__(self):
-        super().__init__("./ionocell.dll")
+        super().__init__("./ionocell")
 
         # parse species/equilibria...
         self.parse_ = self.dll.IonoCell_parse
