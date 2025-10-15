@@ -32,10 +32,12 @@ add_subdirectory(y)
 add_subdirectory(cli)
 add_subdirectory(dll)
 add_subdirectory(python)
+add_subdirectory(fltk)
 
 if( NOT "" STREQUAL "${Y_UnitTests}")
     add_custom_target(regression 
     DEPENDS ${Y_UnitTests})
 endif()
+
 
 Y_Message("Yttrium is now ready to be built!")

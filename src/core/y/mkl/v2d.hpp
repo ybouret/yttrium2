@@ -140,13 +140,13 @@ namespace Yttrium
         //! \return lower point \param lhs lhs \param rhs rhs
         inline static V2D MinOf(const V2D &lhs, const V2D &rhs) noexcept
         {
-            return V2D(MinOf(lhs.x,rhs.x),MinOf(lhs.y,rhs.y));
+            return V2D(Min(lhs.x,rhs.x),Min(lhs.y,rhs.y));
         }
 
         //! \return upper point \param lhs lhs \param rhs rhs
         inline static V2D MaxOf(const V2D &lhs, const V2D &rhs) noexcept
         {
-            return V2D(MaxOf(lhs.x,rhs.x),MaxOf(lhs.y,rhs.y));
+            return V2D(Max(lhs.x,rhs.x),Max(lhs.y,rhs.y));
         }
 
         //! \return direct orthogonal rotation
