@@ -1,12 +1,13 @@
 """ importing ctypes """
 import ctypes as ct
-
+import platform
 
 class Application:
 
     def __init__(self):
         print("-- create --")
-        self.dll = ct.cdll.LoadLibrary("./spyndle.dll")
+        dll_uuid = "-" + platform.system().lower() + "-" + platform.machine().lower() + ".dll"
+        self.dll = ct.cdll.LoadLibrary("./spyndle" + dll_uuid)
         self.sine = self.dll.sine
 
         self.sine.argtypes = [ct.c_double]
