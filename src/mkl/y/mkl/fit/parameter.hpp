@@ -4,7 +4,7 @@
 #ifndef Y_Fit_Parameter_Included
 #define Y_Fit_Parameter_Included 1
 
-#include "y/mkl/fit/entity.hpp"
+#include "y/mkl/fit/type/entity.hpp"
 #include "y/pointer/arc.hpp"
 #include "y/pointer/keyed.hpp"
 

@@ -5,8 +5,8 @@
 #define Y_Fit_Adjustable_Included 1
 
 #include "y/mkl/fit/adjustable/engine.hpp"
-#include "y/mkl/fit/fwrapper.hpp"
-#include "y/mkl/fit/gwrapper.hpp"
+#include "y/mkl/fit/type/fwrapper.hpp"
+#include "y/mkl/fit/type/gwrapper.hpp"
 
 namespace Yttrium
 {

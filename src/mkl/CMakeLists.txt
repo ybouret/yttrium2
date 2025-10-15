@@ -12,6 +12,7 @@ y/mkl/derivatives
 y/mkl/ode
 y/mkl/ode/explicit
 y/mkl/fit
+y/mkl/fit/type
 y/mkl/fit/adjustable
 )
 

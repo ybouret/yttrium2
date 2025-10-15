@@ -4,7 +4,7 @@
 #ifndef Y_Fit_FWrapper_Included
 #define Y_Fit_FWrapper_Included 1
 
-#include "y/mkl/fit/defs.hpp"
+#include "y/mkl/fit/type/defs.hpp"
 
 namespace Yttrium
 {

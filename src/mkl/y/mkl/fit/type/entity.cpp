@@ -1,4 +1,4 @@
-#include "y/mkl/fit/entity.hpp"
+#include "y/mkl/fit/type/entity.hpp"
 
 namespace Yttrium
 {

@@ -3,7 +3,6 @@
 #include "y/utest/run.hpp"
 
 #include "y/container/sequence/vector.hpp"
-#include "y/mkl/fit/fwrapper.hpp"
 #include "y/mkl/api/sqrt.hpp"
 #include "y/string/env.hpp"
 #include "y/string/boolean.hpp"

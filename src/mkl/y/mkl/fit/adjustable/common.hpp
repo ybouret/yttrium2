@@ -4,7 +4,7 @@
 #ifndef Y_Fit_AdjustableCommon_Included
 #define Y_Fit_AdjustableCommon_Included 1
 
-#include "y/mkl/fit/fwrapper.hpp"
+#include "y/mkl/fit/type/fwrapper.hpp"
 #include "y/cameo/addition.hpp"
 
 namespace Yttrium
