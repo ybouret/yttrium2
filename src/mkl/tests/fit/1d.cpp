@@ -5,7 +5,8 @@
 #include "y/container/sequence/vector.hpp"
 #include "y/mkl/fit/fwrapper.hpp"
 #include "y/mkl/api/sqrt.hpp"
-
+#include "y/string/env.hpp"
+#include "y/string/boolean.hpp"
 
 using namespace Yttrium;
 using namespace MKL;
@@ -80,6 +81,7 @@ void testFit(const Fit::Parameters &params)
     std::cerr << "D1=" << D1 << std::endl;
     std::cerr << "D2=" << D2 << std::endl;
 
+    params.queryEnv(used);
 
     Vector<T> t1, x1, x1f;
     for(size_t i=0;i<_n1;++i)
@@ -105,10 +107,12 @@ void testFit(const Fit::Parameters &params)
     S1.vars << params["t0"] << Fit::Alias("D", params["D1"]);
     std::cerr << "#S1    = " << S1.count() << std::endl;
     std::cerr << "|_vars = " << S1.vars << std::endl;
+    std::cerr << std::endl;
 
     S2.vars << params["t0"] << Fit::Alias("D", params["D2"]);
     std::cerr << "#S2    = " << S2.count() << std::endl;
     std::cerr << "|_vars = " << S2.vars << std::endl;
+    std::cerr << std::endl;
 
     S1.save("S1.dat");
     S2.save("S2.dat");
@@ -120,22 +124,26 @@ void testFit(const Fit::Parameters &params)
 
     const T D2_A = samples.computeD2_(getF<T>,aorg);
     std::cerr << "D2_A  = " << (double)D2_A << std::endl;
+    std::cerr << std::endl;
 
     const T D2_1b = S1.computeD2full_(getG<T>,aorg,used);
     std::cerr << "D2_1b = " << (double)D2_1b << std::endl;
     std::cerr << "beta  = " << S1.beta  << std::endl;
     std::cerr << "alpha = " << S1.alpha << std::endl;
+    std::cerr << std::endl;
 
 
     const T D2_2b = S2.computeD2full_(getG<T>,aorg,used);
     std::cerr << "D2_2b = " << (double)D2_2b << std::endl;
     std::cerr << "beta  = " << S2.beta << std::endl;
     std::cerr << "alpha = " << S2.alpha << std::endl;
+    std::cerr << std::endl;
 
 
     const T D2_Ab = samples.computeD2full_(getG<T>,aorg,used);
     std::cerr << "D2_Ab = " << (double)D2_Ab << std::endl;
     std::cerr << "beta  = " << samples.beta << std::endl;
+    std::cerr << std::endl;
 
 }
 

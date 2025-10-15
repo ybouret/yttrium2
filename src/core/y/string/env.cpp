@@ -14,7 +14,7 @@
 #include "y/exception.hpp"
 #include "y/memory/buffer/out-of.hpp"
 #include "y/memory/allocator/pooled.hpp"
-#endif
+#endif // defined(Y_WIN)
 
 namespace Yttrium
 {
@@ -28,7 +28,7 @@ namespace Yttrium
         if(!s) return false;
         value = s;
         return true;
-#endif
+#endif // defined(Y_BSD)
 
 #if defined(Y_WIN)
 		DWORD dw = ::GetEnvironmentVariable(name.c_str(), 0, 0);
@@ -40,7 +40,7 @@ namespace Yttrium
 			throw Exception("unexpected vanished '%s'", name.c_str());
         value = String(text, dw);
         return true;
-#endif
+#endif // defined(Y_WIN)
     }
 
     bool Environment:: Get(String &value, const char * const name)

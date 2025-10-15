@@ -65,6 +65,8 @@ namespace Yttrium
                 const Parameter & operator[](const char * const) const; //!< \return named parameter
                 const Parameter & operator[](const char )        const; //!< \return named parameter
 
+                void  queryEnv(Writable<bool> &used) const;
+
             private:
                 Y_Disable_Copy_And_Assign(Parameters); //!< discaring
                 Y_Ingress_Decl();                      //!< helper

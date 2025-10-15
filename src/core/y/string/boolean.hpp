@@ -36,4 +36,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_String_Boolean_Included
