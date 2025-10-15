@@ -1,16 +1,15 @@
 #include "y/fltk/axis.hpp"
-//#include "y/type/aliasing.hpp"
 
 namespace Yttrium
 {
     namespace FLTK 
     {
-        Axis:: Axis() throw() : vmin(0),vmax(1),length(vmax-vmin)
+        Axis:: Axis() noexcept : vmin(0),vmax(1),length(vmax-vmin)
         {
             
         }
         
-        Axis:: ~Axis() throw()
+        Axis:: ~Axis() noexcept
         {
         }
         

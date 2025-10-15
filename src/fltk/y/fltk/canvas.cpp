@@ -4,7 +4,7 @@ namespace Yttrium {
 
     namespace FLTK {
 
-        Canvas:: ~Canvas() throw()
+        Canvas:: ~Canvas()  noexcept
         {
 
         }
