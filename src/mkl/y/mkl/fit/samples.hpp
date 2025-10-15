@@ -134,9 +134,9 @@ namespace Yttrium
                     {
                         SampleType &   sample = **it;
                         const size_t   n      = sample.count();
-                        const ORDINATE dof    = (fcpu_t)n;
+                        const ORDINATE w      = (fcpu_t)n;
                         res += n;
-                        xadd << dof * sample.computeD2(F,aorg);
+                        xadd << w * sample.computeD2(F,aorg);
                     }
                     if(res>0)
                     {
@@ -164,22 +164,28 @@ namespace Yttrium
                     beta.adjust(nvar,zero);
                     alpha.make(nvar,nvar);
                     alpha.diagonal(one,zero);
+                    weight.free();
 
+                    // first part: collect individual
                     xadd.ldz();
                     size_t res  = 0;
                     for(Iterator it=this->begin();it!=this->end();++it)
                     {
                         SampleType &   sample = **it;
                         const size_t   n      = sample.count();
-                        const ORDINATE dof    = (fcpu_t)n;
+                        const ORDINATE w      = (fcpu_t)n;
+                        weight << w;
                         res += n;
-                        xadd << dof * sample.computeD2full(F,aorg,used);
+                        xadd << w * sample.computeD2full(F,aorg,used);
                     }
 
+                    assert(this->size() == weight.size() );
+
+                    // second part: form global metrics
                     if(res>0)
                     {
                         const ORDINATE den =  (fcpu_t)res;
-                        
+
 
 
                         return (D2 = xadd.sum()/den);
@@ -214,6 +220,8 @@ namespace Yttrium
                     return *sample;
                 }
 
+
+                Vector<ORDINATE> weight;
 
             private:
                 Y_Disable_Copy_And_Assign(Samples); //!< discarding
