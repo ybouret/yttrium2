@@ -106,7 +106,9 @@ namespace Yttrium
                 AdjustableType(uid),
                 SuffixSet<String,SamplePointer>(),
                 SamplesCommon(),
-                weight()
+                weight(),
+                xBeta(),
+                xAlpha()
                 {}
 
                 //! cleanup
