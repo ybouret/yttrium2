@@ -34,12 +34,15 @@ Optimizer<real_t>:: ~Optimizer() noexcept
 }
 
 template <>
-void Optimizer<real_t>:: prepare(const size_t nvar)
+void Optimizer<real_t>:: prepare(const size_t dims, const size_t nvar)
 {
     alpha.make(nvar,nvar);
     curv.make(nvar,nvar);
     step.adjust(nvar,zero);
     beta.adjust(nvar,zero);
+
+    aini.adjust(dims,zero);
+    aend.adjust(dims,zero);
 }
 
 template <>

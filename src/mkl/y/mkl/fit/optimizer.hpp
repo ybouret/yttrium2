@@ -16,6 +16,8 @@ namespace Yttrium
     {
         namespace Fit
         {
+
+
             class OptimizerCommon
             {
             public:
@@ -38,7 +40,7 @@ namespace Yttrium
 
 
                 template <typename ABSCISSA> inline
-                void run(Adjustable<ABSCISSA,ORDINATE> &                   S,
+                bool run(Adjustable<ABSCISSA,ORDINATE> &                   S,
                          typename Adjustable<ABSCISSA,ORDINATE>::Function &F,
                          typename Adjustable<ABSCISSA,ORDINATE>::Gradient &G,
                          Writable<ORDINATE>   & aorg,
@@ -48,19 +50,31 @@ namespace Yttrium
 
                     p   = pini;
                     lam = lambda[p];
-
                     ORDINATE     D2_org = S.computeD2full(G,aorg,used);
+                    const size_t dims   = aorg.size();
                     const size_t nvar   = S.beta.size();
                     std::cerr << "D2_org=" << D2_org << std::endl;
-                    prepare(nvar);
+                    prepare(dims,nvar);
+
+                    // fetch metrics
                     alpha.assign(S.alpha);
                     beta.ld(S.beta);
-                    getStep();
+                    if(!getStep())
+                    {
+                        return false;
+                    }
 
+                    // build
+                    aini.ld(aorg);
+                    aend.ld(aorg);
+                    
+
+
+                    return false;
                 }
 
                 template <typename ABSCISSA, typename FUNC, typename GRAD> inline
-                void run_(Adjustable<ABSCISSA,ORDINATE> & S,
+                bool run_(Adjustable<ABSCISSA,ORDINATE> & S,
                           FUNC                          & F,
                           GRAD                          & G,
                           Writable<ORDINATE>            & aorg,
@@ -68,7 +82,7 @@ namespace Yttrium
                 {
                     FWrapper<FUNC,ABSCISSA,ORDINATE> f(F);
                     GWrapper<GRAD,ABSCISSA,ORDINATE> g(G);
-                    run(S,f,g,aorg,used);
+                    return run(S,f,g,aorg,used);
                 }
 
 
@@ -76,13 +90,15 @@ namespace Yttrium
             private:
                 Y_Disable_Copy_And_Assign(Optimizer); //!< discarding
 
-                void prepare(const size_t nvar);
+                void prepare(const size_t dims, const size_t nvar);
                 bool getStep();
 
                 Matrix<ORDINATE>          alpha;
                 Vector<ORDINATE>          beta;
                 Matrix<ORDINATE>          curv;
                 Vector<ORDINATE>          step;
+                Vector<ORDINATE>          aini;
+                Vector<ORDINATE>          aend;
                 LU<ORDINATE>              lu;
                 int                       p;      //!< in pmin:pmax
                 ORDINATE                  lam;    //!< 10^p
