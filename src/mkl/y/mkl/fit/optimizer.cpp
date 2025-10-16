@@ -4,6 +4,7 @@
 #include "y/type/destroy.hpp"
 #include "y/mkl/numeric.hpp"
 #include "y/field/1d.hpp"
+#include "y/mkl/api/fcpu.hpp"
 
 namespace Yttrium
 {
@@ -19,9 +20,14 @@ namespace Yttrium
 #undef REAL
 
 
-
 #define real_t double
 #define REAL(X) X
+#include "optimizer.hxx"
+#undef real_t
+#undef REAL
+
+#define real_t long double
+#define REAL(X) X##L
 #include "optimizer.hxx"
 #undef real_t
 #undef REAL
@@ -38,7 +44,12 @@ namespace Yttrium
 #undef real_t
 #undef REAL
 
-            
+#define real_t XReal<long double>
+#define REAL(X) X##L
+#include "optimizer.hxx"
+#undef real_t
+#undef REAL
+
         }
 
     }
