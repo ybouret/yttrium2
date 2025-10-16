@@ -1,8 +1,8 @@
 """ IonoCell """
 
 import ctypes as ct
-from spyndle import Spyndle
 import platform
+from spyndle import Spyndle
 
 ###############################################################################
 #
@@ -11,11 +11,14 @@ import platform
 #
 #
 ###############################################################################
+
+
 class SpeciesAPI(Spyndle):
     """ get species info from parsed code """
 
     def __init__(self, library_name):
-        dll_uuid = "-" + platform.system().lower() + "-" + platform.machine().lower() + ".dll"
+        dll_uuid = "-" + platform.system().lower() + "-" + \
+            platform.machine().lower() + ".dll"
         super().__init__(library_name+dll_uuid)
 
         # number of species
