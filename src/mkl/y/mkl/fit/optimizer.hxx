@@ -3,8 +3,12 @@ template <>
 Optimizer<real_t>:: Optimizer() :
 OptimizerCommon(),
 alpha(),
+beta(),
 curv(),
 step(),
+aini(),
+aend(),
+atry(),
 lu(),
 p(0),
 lam(0),
@@ -43,6 +47,8 @@ void Optimizer<real_t>:: prepare(const size_t dims, const size_t nvar)
 
     aini.adjust(dims,zero);
     aend.adjust(dims,zero);
+    atry.adjust(dims,zero);
+
 }
 
 template <>

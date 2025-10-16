@@ -17,26 +17,61 @@ namespace Yttrium
         namespace Fit
         {
 
-
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Common parts for Optimizers
+            //
+            //
+            //__________________________________________________________________
             class OptimizerCommon
             {
             public:
-                static const char * const CallSign;
-                explicit OptimizerCommon() noexcept;
-                virtual ~OptimizerCommon() noexcept;
+                static const char * const CallSign;  //!< "Fit::Optimizer"
+                explicit OptimizerCommon() noexcept; //!< setup
+                virtual ~OptimizerCommon() noexcept; //!< cleanup
             private:
-                Y_Disable_Copy_And_Assign(OptimizerCommon);
+                Y_Disable_Copy_And_Assign(OptimizerCommon); //!< discarding
             };
 
+
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Optimizer 
+            //
+            //
+            //__________________________________________________________________
             template <typename ORDINATE>
             class Optimizer : public OptimizerCommon
             {
             public:
-                typedef typename FCPU<ORDINATE>::Type fcpu_t;
-                typedef Field::In1D<ORDINATE>         FieldType;
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                typedef typename FCPU<ORDINATE>::Type fcpu_t;    //!< alias
+                typedef Field::In1D<ORDINATE>         FieldType; //!< alias
 
-                explicit Optimizer();
-                virtual ~Optimizer() noexcept;
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+                explicit Optimizer();          //!< setup
+                virtual ~Optimizer() noexcept; //!< cleanup
+
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
 
 
                 template <typename ABSCISSA> inline
@@ -93,22 +128,34 @@ namespace Yttrium
             private:
                 Y_Disable_Copy_And_Assign(Optimizer); //!< discarding
 
+                //! prepare memory \param dims aorg size \param nvar sample variables
                 void prepare(const size_t dims, const size_t nvar);
+
+                //! compute step \return true if not singular
                 bool getStep();
+
+                //! compute scan line \param aorg original value \param S engine to scatter step
                 void setScan(const Readable<ORDINATE>         &aorg,
                              const AdjustableEngine<ORDINATE> &S) noexcept;
 
 
-                Matrix<ORDINATE>          alpha;
-                Vector<ORDINATE>          beta;
-                Matrix<ORDINATE>          curv;
-                Vector<ORDINATE>          step;
-                Vector<ORDINATE>          aini;
-                Vector<ORDINATE>          aend;
-                LU<ORDINATE>              lu;
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                Matrix<ORDINATE>          alpha;  //!< hessian
+                Vector<ORDINATE>          beta;   //!< -gradient
+                Matrix<ORDINATE>          curv;   //!< curvature
+                Vector<ORDINATE>          step;   //!< step
+                Vector<ORDINATE>          aini;   //!< initial values
+                Vector<ORDINATE>          aend;   //!< final values
+                Vector<ORDINATE>          atry;   //!< trial values
+                LU<ORDINATE>              lu;     //!< linear algenra
                 int                       p;      //!< in pmin:pmax
                 ORDINATE                  lam;    //!< 10^p
-                Cameo::Addition<ORDINATE> xadd;
+                Cameo::Addition<ORDINATE> xadd;   //!< internal additions
                 const int                 pmin;   //!< min power, lam=0
                 const int                 pmax;   //!< max power
                 const int                 pini;   //!< initial power
