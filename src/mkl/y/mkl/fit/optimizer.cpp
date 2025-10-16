@@ -1,10 +1,7 @@
 
 #include "y/mkl/fit/optimizer.hpp"
-#include "y/mkl/algebra/lu.hpp"
-#include "y/type/destroy.hpp"
-#include "y/mkl/numeric.hpp"
-#include "y/field/1d.hpp"
-#include "y/mkl/api/fcpu.hpp"
+#include "y/mkl/tao/1.hpp"
+
 
 namespace Yttrium
 {
@@ -12,6 +9,11 @@ namespace Yttrium
     {
         namespace Fit
         {
+
+            const char * const OptimizerCommon:: CallSign = "Fit::Optimizer";
+            OptimizerCommon::  OptimizerCommon() noexcept {}
+            OptimizerCommon:: ~OptimizerCommon() noexcept {}
+
 
 #define real_t float
 #define REAL(X) X##f

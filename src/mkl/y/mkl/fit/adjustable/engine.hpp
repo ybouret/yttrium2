@@ -53,6 +53,7 @@ namespace Yttrium
                 
                 //! cleanup
                 virtual ~AdjustableEngine() noexcept;
+                
 
                 //______________________________________________________________
                 //

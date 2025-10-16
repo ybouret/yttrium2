@@ -1,64 +1,81 @@
 
 template <>
-class Optimizer<real_t>:: Code : public Object
+Optimizer<real_t>:: Optimizer() :
+OptimizerCommon(),
+alpha(),
+curv(),
+step(),
+lu(),
+p(0),
+lam(0),
+xadd(),
+pmin(-(Numeric<real_t>::DIG+1)),
+pmax( Numeric<real_t>::MAX_10_EXP),
+pini(pmin/2),
+ffmt( new Field::Layout1D(pmin,pmax) ),
+lambda("lambda",ffmt),
+zero(0),
+one(1)
 {
-public:
-    typedef typename FCPU<real_t>::Type fcpu_t;
-    typedef Field::In1D<real_t>         FieldType;
+    static const fcpu_t ten = 10;
 
-    inline explicit Code() :
-    Object(),
-    step(),
-    lu(),
-    p(0),
-    pmin(-(Numeric<real_t>::DIG+1)),
-    pmax( Numeric<real_t>::MAX_10_EXP),
-    pini(pmin/2),
-    ffmt( new Field::Layout1D(pmin,pmax) ),
-    lam("lambda",ffmt)
+    std::cerr << "pmin=" << pmin << "; pmax=" << pmax << " =>" << ffmt << std::endl;
+    for(int i=pmin+1;i<=pmax;++i)
     {
-
-        static const fcpu_t ten = 10;
-
-        std::cerr << "pmin=" << pmin << "; pmax=" << pmax << " =>" << ffmt << std::endl;
-        for(int i=pmin+1;i<=pmax;++i)
-        {
-            const fcpu_t l = std::pow(ten,p);
-            Coerce(lam[p]) = l;
-        }
-
-
+        const fcpu_t l = std::pow(ten,p);
+        Coerce(lambda[i]) = l;
     }
-
-    inline virtual ~Code() noexcept
-    {
-    }
-
-    Vector<real_t>   step;
-    LU<real_t>       lu;
-    int              p;
-    const int        pmin;
-    const int        pmax;
-    const int        pini;
-    Field::Format1D  ffmt;
-    const FieldType  lam;
-
-
-
-private:
-    Y_Disable_Copy_And_Assign(Code);
-
-};
-
-
-template <>
-Optimizer<real_t>:: Optimizer() : code( new Code() )
-{
 }
 
 template <>
 Optimizer<real_t>:: ~Optimizer() noexcept
 {
-    assert(code);
-    Destroy(code);
+
+}
+
+template <>
+void Optimizer<real_t>:: prepare(const size_t nvar)
+{
+    alpha.make(nvar,nvar);
+    curv.make(nvar,nvar);
+    step.adjust(nvar,zero);
+    beta.adjust(nvar,zero);
+}
+
+template <>
+bool Optimizer<real_t>:: getStep()
+{
+
+    assert(p>=pmin);
+    assert(p<=pmax);
+    const size_t n = curv.rows;
+
+BUILD_CURV:
+    {
+        std::cerr << "p=" << p << std::endl;
+        curv.assign(alpha);
+        const real_t fac = one + lam;
+        for(size_t i=n;i>0;--i)
+            curv[i][i] *= fac;
+        if(!lu.build(curv))
+        {
+            if(p>=pmax) return false; //!< singular matrix
+            lam = lambda[++p];
+            goto BUILD_CURV;
+        }
+    }
+
+    step.ld(beta);
+    lu.solve(curv,step);
+
+    std::cerr << "beta=" << beta << std::endl;
+    std::cerr << "step=" << step << std::endl;
+
+    const real_t sigma = Tao::Dot(xadd,beta,step);
+    std::cerr << "sigma=" << sigma << std::endl;
+
+    if(sigma<zero)
+        goto BUILD_CURV;
+
+    return true;
 }

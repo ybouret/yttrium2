@@ -154,6 +154,9 @@ void testFit(const Fit::Parameters &params)
 
     Fit::Optimizer<T> fit;
 
+    fit.run_(S1,getF<T>,getG<T>,aorg,used);
+
+
 
 }
 
