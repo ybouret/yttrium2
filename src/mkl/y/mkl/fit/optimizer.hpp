@@ -19,6 +19,8 @@ namespace Yttrium
                 explicit Optimizer();
                 virtual ~Optimizer() noexcept;
 
+
+
             private:
                 class Code;
                 Y_Disable_Copy_And_Assign(Optimizer); //!< discarding
