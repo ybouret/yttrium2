@@ -85,6 +85,17 @@ namespace Yttrium
                     return X.size();
                 }
 
+
+                virtual void scatter(Writable<ORDINATE>       &a_global,
+                                      const Readable<ORDINATE> &a_local) const noexcept
+                {
+                    for(Variables::ConstIterator it=vars->begin();it!=vars->end();++it)
+                    {
+                        const Variable &v = **it;
+                        a_global[v.global.indx] = a_local[v.indx];
+                    }
+                }
+                
                 virtual ORDINATE computeD2(Function                 & F,
                                            const Readable<ORDINATE> & aorg)
                 {

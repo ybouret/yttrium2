@@ -82,3 +82,23 @@ BUILD_CURV:
 
     return true;
 }
+
+
+template <>
+void Optimizer<real_t>:: setScan(const Readable<real_t>         &aorg,
+                                 const AdjustableEngine<real_t> &S) noexcept
+{
+    aini.ld(aorg);
+    aend.ld(zero);
+    S.scatter(aend,step);
+    std::cerr << "a_step=" << aend << std::endl;
+    for(size_t j=aorg.size();j>0;--j)
+    {
+        aend[j] += aini[j];
+    }
+
+    std::cerr << "\taini = " << aini << std::endl;
+    std::cerr << "\taend = " << aend << std::endl;
+
+
+}

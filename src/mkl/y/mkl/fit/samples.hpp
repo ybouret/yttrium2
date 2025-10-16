@@ -128,6 +128,16 @@ namespace Yttrium
                 }
 
                 inline
+                virtual void scatter(Writable<ORDINATE>       &a_global,
+                                     const Readable<ORDINATE> &a_local) const noexcept
+                {
+                    for(ConstIterator it=this->begin();it!=this->end();++it)
+                    {
+                        (**it).scatter(a_global,a_local);
+                    }
+                }
+
+                inline
                 virtual ORDINATE computeD2(Function                 & F,
                                            const Readable<ORDINATE> & aorg)
                 {

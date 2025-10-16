@@ -50,24 +50,27 @@ namespace Yttrium
 
                     p   = pini;
                     lam = lambda[p];
-                    ORDINATE     D2_org = S.computeD2full(G,aorg,used);
+                    ORDINATE     D2_ini = S.computeD2full(G,aorg,used);
                     const size_t dims   = aorg.size();
                     const size_t nvar   = S.beta.size();
-                    std::cerr << "D2_org=" << D2_org << std::endl;
+                    std::cerr << "D2_org=" << D2_ini << std::endl;
                     prepare(dims,nvar);
 
                     // fetch metrics
                     alpha.assign(S.alpha);
                     beta.ld(S.beta);
-                    if(!getStep())
-                    {
-                        return false;
-                    }
 
-                    // build
-                    aini.ld(aorg);
-                    aend.ld(aorg);
-                    
+                    // build step
+                    if(!getStep())
+                        return false;
+
+
+                    // build ini/end variables
+                    setScan(aorg,S);
+
+                    const ORDINATE D2_end = S.computeD2(F,aend);
+                    std::cerr << "D2_end=" << D2_end << std::endl;
+
 
 
                     return false;
@@ -92,6 +95,9 @@ namespace Yttrium
 
                 void prepare(const size_t dims, const size_t nvar);
                 bool getStep();
+                void setScan(const Readable<ORDINATE>         &aorg,
+                             const AdjustableEngine<ORDINATE> &S) noexcept;
+
 
                 Matrix<ORDINATE>          alpha;
                 Vector<ORDINATE>          beta;

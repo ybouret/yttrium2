@@ -53,7 +53,15 @@ namespace Yttrium
                 
                 //! cleanup
                 virtual ~AdjustableEngine() noexcept;
-                
+
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
+                virtual void scatter(Writable<ORDINATE>       &a_global,
+                                     const Readable<ORDINATE> &a_local) const noexcept = 0;
 
                 //______________________________________________________________
                 //
