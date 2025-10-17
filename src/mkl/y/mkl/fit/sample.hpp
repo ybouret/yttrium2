@@ -62,10 +62,10 @@ namespace Yttrium
                  */
                 template <typename UID> inline
                 explicit Sample(const UID                & id,
-                                const Readable<ABSCISSA> & _X,
-                                const Readable<ORDINATE> & _Y,
-                                Writable<ORDINATE>       & _Yf):
-                AdjustableType(id), X(_X), Y(_Y), Yf(_Yf), vars(), half(0.5)
+                                const Readable<ABSCISSA> & theX,
+                                const Readable<ORDINATE> & theY,
+                                Writable<ORDINATE>       & theYf):
+                AdjustableType(id), X(theX), Y(theY), Yf(theYf), vars(), half(0.5)
                 {
                 }
 

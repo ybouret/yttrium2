@@ -41,8 +41,8 @@ namespace Yttrium
                 inline explicit RawSampleData(const ABSCISSA * const x,
                                               const ORDINATE * const y,
                                               const size_t           n) noexcept :
-                X_((ABSCISSA *)x,n),
-                Y_((ORDINATE *)y,n)
+                Xh((ABSCISSA *)x,n),
+                Yh((ORDINATE *)y,n)
                 {
                 }
 
@@ -56,8 +56,8 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const LightArray<ABSCISSA> X_; //!< holding x
-                const LightArray<ORDINATE> Y_; //!< holding y
+                const LightArray<ABSCISSA> Xh; //!< holding x
+                const LightArray<ORDINATE> Yh; //!< holding y
 
             private:
                 Y_Disable_Copy_And_Assign(RawSampleData); //!< discarding
@@ -78,8 +78,8 @@ namespace Yttrium
             {
             public:
                 typedef RawSampleData<ABSCISSA,ORDINATE> RawSampleDataType; //!< alias
-                using RawSampleDataType::X_;
-                using RawSampleDataType::Y_;
+                using RawSampleDataType::Xh;
+                using RawSampleDataType::Yh;
 
                 //______________________________________________________________
                 //
@@ -101,9 +101,9 @@ namespace Yttrium
                                     const ABSCISSA * const x,
                                     const ORDINATE * const y,
                                     const size_t           n,
-                                    Writable<ORDINATE> &   Yf_) :
+                                    Writable<ORDINATE> &   theYf) :
                 RawSampleDataType(x,y,n),
-                Sample<ABSCISSA,ORDINATE>(uid,X_,Y_,Yf_)
+                Sample<ABSCISSA,ORDINATE>(uid,Xh,Yh,theYf)
                 {
                 }
 
