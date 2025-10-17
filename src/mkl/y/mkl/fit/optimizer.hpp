@@ -41,6 +41,7 @@ namespace Yttrium
             class Phi
             {
             public:
+                typedef typename FCPU<ORDINATE>::Type     fcpu_t;    //!< alias
                 typedef Adjustable<ABSCISSA,ORDINATE>     AdjustableType;
                 typedef typename AdjustableType::Function Function;
                 typedef Readable<ORDINATE>                RO_Ordinates;
@@ -71,6 +72,18 @@ namespace Yttrium
                     return S.computeD2(F,atry);
                 }
 
+                template <typename UID> inline
+                void save(const UID &fileName, const bool append=false)
+                {
+                    static const unsigned   np = 100;
+                    Phi &phi = *this;
+                    OutputFile fp(fileName,append);
+                    for(unsigned i=0;i<=np;++i)
+                    {
+                        const ORDINATE u = (fcpu_t)i/(fcpu_t)np;
+                        fp("%.15g %.15g\n", (double)u, (double)phi(u));
+                    }
+                }
 
                 AdjustableType     & S;
                 Function           & F;
@@ -155,16 +168,7 @@ namespace Yttrium
                     std::cerr << "D2_end=" << D2_end << std::endl;
 
                     Phi<ABSCISSA,ORDINATE> phi(S,F,aini,aend,atry);
-
-                    {
-                        static const unsigned   np = 100;
-                        OutputFile fp( S.name + "-phi.dat");
-                        for(unsigned i=0;i<=np;++i)
-                        {
-                            const ORDINATE u = (fcpu_t)i/(fcpu_t)np;
-                            fp("%.15g %.15g\n", (double)u, (double)phi(u));
-                        }
-                    }
+                    phi.save( S.name + "-phi.dat" );
 
                     if(D2_end>D2_ini)
                     {
@@ -172,6 +176,11 @@ namespace Yttrium
                         lam = lambda[++p];
                         goto COMPUTE_STEP;
                     }
+
+                    assert(D2_end<=D2_ini);
+                    
+
+
 
 
                     return false;
