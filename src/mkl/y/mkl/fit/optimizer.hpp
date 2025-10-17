@@ -9,6 +9,7 @@
 #include "y/mkl/numeric.hpp"
 #include "y/field/1d.hpp"
 #include "y/mkl/api/fcpu.hpp"
+#include "y/stream/libc/output.hpp"
 
 namespace Yttrium
 {
@@ -88,13 +89,14 @@ namespace Yttrium
                     ORDINATE     D2_ini = S.computeD2full(G,aorg,used);
                     const size_t dims   = aorg.size();
                     const size_t nvar   = S.beta.size();
-                    std::cerr << "D2_org=" << D2_ini << std::endl;
+                    std::cerr << "D2_ini=" << D2_ini << std::endl;
                     prepare(dims,nvar);
 
                     // fetch metrics
                     alpha.assign(S.alpha);
                     beta.ld(S.beta);
 
+                COMPUTE_STEP:
                     // build step
                     if(!getStep())
                         return false;
@@ -106,6 +108,43 @@ namespace Yttrium
                     const ORDINATE D2_end = S.computeD2(F,aend);
                     std::cerr << "D2_end=" << D2_end << std::endl;
 
+                    struct Phi
+                    {
+                        Adjustable<ABSCISSA,ORDINATE>                    &S;
+                        typename Adjustable<ABSCISSA,ORDINATE>::Function &F;
+                        const Readable<ORDINATE> &aini;
+                        const Readable<ORDINATE> &aend;
+                        Writable<ORDINATE>       &atry;
+                        const ORDINATE            one;
+                        ORDINATE operator()(const ORDINATE u)
+                        {
+                            const ORDINATE v = one - u;
+                            for(size_t j=aini.size();j>0;--j)
+                            {
+                                atry[j] = aini[j] * v + aend[j] * u;
+                            }
+                            return S.computeD2(F,atry);
+                        }
+                    };
+
+                    Phi phi = { S, F, aini, aend, atry, one };
+
+                    {
+                        static const unsigned   np = 100;
+                        OutputFile fp( S.name + "-phi.dat");
+                        for(unsigned i=0;i<=np;++i)
+                        {
+                            const ORDINATE u = (fcpu_t)i/(fcpu_t)np;
+                            fp("%.15g %.15g\n", (double)u, (double)phi(u));
+                        }
+                    }
+
+                    if(D2_end>D2_ini)
+                    {
+                        if(p>=pmax) return false;
+                        lam = lambda[++p];
+                        goto COMPUTE_STEP;
+                    }
 
 
                     return false;

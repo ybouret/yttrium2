@@ -85,7 +85,7 @@ namespace Yttrium
                 Vector<ORDINATE> beta;  //!< local D2 gradient
                 Matrix<ORDINATE> alpha; //!< local D2 curvature
                 CaddyType        cadd;  //!< dynamic additions
-
+                
             private:
                 Y_Disable_Copy_And_Assign(AdjustableEngine); //!< discarding
             };

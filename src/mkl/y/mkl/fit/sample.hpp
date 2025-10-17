@@ -65,7 +65,7 @@ namespace Yttrium
                                 const Readable<ABSCISSA> & _X,
                                 const Readable<ORDINATE> & _Y,
                                 Writable<ORDINATE>       & _Yf):
-                AdjustableType(id), X(_X), Y(_Y), Yf(_Yf), vars()
+                AdjustableType(id), X(_X), Y(_Y), Yf(_Yf), vars(), half(0.5)
                 {
                 }
 
@@ -107,7 +107,7 @@ namespace Yttrium
                         const ORDINATE delta = Y[i] - (Yf[i] =  F(X,i,vars,aorg));
                         xadd << delta*delta;
                     }
-                    return (D2=xadd.sum());
+                    return (D2=xadd.sum()*half);
                 }
 
 
@@ -215,7 +215,7 @@ namespace Yttrium
                     this->symmetrize();
 
 
-                    return (D2=xadd.sum());
+                    return (D2=xadd.sum()*half);
                 }
 
                 //! quick save to file
@@ -247,6 +247,7 @@ namespace Yttrium
                 const Readable<ABSCISSA> & Y;    //!< input  ordinates
                 Writable<ABSCISSA>       & Yf;   //!< output ordinates
                 Variables                  vars; //!< fitting variables
+                const ORDINATE             half; //!< 0.5
 
             private:
                 Y_Disable_Copy_And_Assign(Sample); //!< discarding
