@@ -26,7 +26,7 @@ one(1)
     std::cerr << "pmin=" << pmin << "; pmax=" << pmax << " =>" << ffmt << std::endl;
     for(int i=pmin+1;i<=pmax;++i)
     {
-        const fcpu_t l = std::pow(ten,p);
+        const fcpu_t l = std::pow(ten,i);
         Coerce(lambda[i]) = l;
     }
 }
@@ -62,11 +62,12 @@ bool Optimizer<real_t>:: getStep(real_t &sigma)
 
 BUILD_CURV:
     {
-        std::cerr << "p=" << p << std::endl;
+        std::cerr << "p=" << p << "/lam=" << lam << std::endl;
         curv.assign(alpha);
         const real_t fac = one + lam;
         for(size_t i=n;i>0;--i)
             curv[i][i] *= fac;
+        std::cerr << "alam=" << curv << std::endl;
         if(!lu.build(curv))
         {
             if(p>=pmax) return false; //!< singular matrix

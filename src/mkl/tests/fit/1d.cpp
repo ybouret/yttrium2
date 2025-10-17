@@ -155,7 +155,7 @@ void testFit(const Fit::Parameters &params)
     Fit::Optimizer<T> fit;
 
     std::cerr << std::endl;
-    fit.run_(S1,getF<T>,getG<T>,aorg,used);
+    //fit.run_(S1,getF<T>,getG<T>,aorg,used);
 
     std::cerr << std::endl;
     fit.run_(S2,getF<T>,getG<T>,aorg,used);

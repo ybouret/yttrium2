@@ -149,6 +149,7 @@ namespace Yttrium
 
                     p   = pini;
                     lam = lambda[p];
+                    std::cerr << "p=" << p << "/lam=" << lam << std::endl;
                     ORDINATE     D2_ini = S.computeD2full(G,aorg,used);
                     const size_t dims   = aorg.size();
                     const size_t nvar   = S.beta.size();
@@ -160,8 +161,24 @@ namespace Yttrium
                     alpha.assign(S.alpha);
                     beta.ld(S.beta);
 
-                    std::cerr << "\talpha = " << alpha << std::endl;
-                    std::cerr << "\tbeta  = " << beta  << std::endl;
+                    std::cerr << "\talpha = " << alpha << " // " << S.alpha << std::endl;
+                    std::cerr << "\tbeta  = " << beta  << " // " << S.beta  << std::endl;
+
+                    {
+                        const ORDINATE h(0.001f);
+                        for(size_t i=1;i<=nvar;++i)
+                        {
+                            atry.ld(aorg);
+                            atry[i] = aorg[i] + h;
+                            const ORDINATE Dp = S.computeD2(F,atry);
+                            atry[i] = aorg[i] - h;
+                            const ORDINATE Dm = S.computeD2(F,atry);
+                            const ORDINATE dd = (Dm-Dp)/(h+h);
+                            std::cerr << "descent[" << i << "]=" << dd << std::endl;
+                        }
+                        //return false;
+                    }
+
 
 
                 COMPUTE_STEP:

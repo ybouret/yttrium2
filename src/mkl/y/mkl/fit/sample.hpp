@@ -160,10 +160,12 @@ namespace Yttrium
                                 {
                                     const Variable &var  = **jter; if( !used[var.global.indx] ) continue;
                                     const size_t    J    = var.indx;
-                                    const ORDINATE &dF_j = dFda[J];
+                                    const ORDINATE  dF_j = dFda[J];
+
+                                    // accumulate beta[J]
                                     Y_Fit_Sample_Store(delta*dF_j);
 
-                                    // alpha diagonal term
+                                    // alpha diagonal term alpha[J][J]
                                     Y_Fit_Sample_Store(dF_j * dF_j);
 
                                     {
