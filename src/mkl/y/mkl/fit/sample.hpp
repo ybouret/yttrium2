@@ -87,7 +87,7 @@ namespace Yttrium
 
 
                 virtual void scatter(Writable<ORDINATE>       &a_global,
-                                      const Readable<ORDINATE> &a_local) const noexcept
+                                     const Readable<ORDINATE> &a_local) const noexcept
                 {
                     for(Variables::ConstIterator it=vars->begin();it!=vars->end();++it)
                     {

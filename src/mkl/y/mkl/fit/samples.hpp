@@ -133,6 +133,8 @@ namespace Yttrium
                 virtual void scatter(Writable<ORDINATE>       &a_global,
                                      const Readable<ORDINATE> &a_local) const noexcept
                 {
+
+                    // may write same value multiple times...
                     for(ConstIterator it=this->begin();it!=this->end();++it)
                         (**it).scatter(a_global,a_local);
                 }
@@ -142,23 +144,23 @@ namespace Yttrium
                                            const Readable<ORDINATE> & aorg)
                 {
                     xadd.ldz();
-                    size_t res  = 0;
+                    size_t total  = 0;
                     for(Iterator it=this->begin();it!=this->end();++it)
                     {
                         SampleType &   sample = **it;
                         const size_t   n      = sample.count();
                         const ORDINATE w      = (fcpu_t)n;
-                        res += n;
+                        total += n;
                         xadd << w * sample.computeD2(F,aorg);
                     }
-                    if(res>0)
+                    if(total>0)
                     {
-                        const ORDINATE den =  (fcpu_t)res;
+                        const ORDINATE den =  (fcpu_t)total;
                         return (D2 = xadd.sum()/den);
                     }
                     else
                     {
-                        return (D2 = xadd.sum());
+                        return (D2 = xadd.sum()); // zero
                     }
                 }
 
@@ -183,17 +185,16 @@ namespace Yttrium
                     //
                     //----------------------------------------------------------
                     xadd.ldz();
-                    size_t res  = 0;
+                    size_t total  = 0;
                     for(Iterator it=this->begin();it!=this->end();++it)
                     {
                         SampleType &   sample = **it;
                         const size_t   n      = sample.count();
                         const ORDINATE w      = (fcpu_t)n;
                         weight << w;
-                        res += n;
+                        total += n;
                         xadd << w * sample.computeD2full(F,aorg,used);
                     }
-
                     assert(this->size() == weight.size() );
 
                     //----------------------------------------------------------
@@ -201,13 +202,13 @@ namespace Yttrium
                     // second part: build global metrics
                     //
                     //----------------------------------------------------------
-                    if(res>0)
+                    if(total>0)
                     {
                         //------------------------------------------------------
                         // dispatch
                         //------------------------------------------------------
                         {
-                            size_t i=1;
+                            size_t i=1; // sample index for weight
                             for(Iterator it=this->begin();it!=this->end();++it,++i)
                             {
                                 const SampleType              & S      = **it;
@@ -240,7 +241,7 @@ namespace Yttrium
                         //------------------------------------------------------
                         // collect
                         //------------------------------------------------------
-                        const ORDINATE den =  (fcpu_t)res;
+                        const ORDINATE den =  (fcpu_t)total;
                         for(size_t i=1;i<=nvar;++i)
                         {
                             if(!used[i]) continue;
