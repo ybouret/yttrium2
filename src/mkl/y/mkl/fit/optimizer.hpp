@@ -89,6 +89,7 @@ namespace Yttrium
                     ORDINATE     D2_ini = S.computeD2full(G,aorg,used);
                     const size_t dims   = aorg.size();
                     const size_t nvar   = S.beta.size();
+                    ORDINATE     sigma  = zero;
                     std::cerr << "D2_ini=" << D2_ini << std::endl;
                     prepare(dims,nvar);
 
@@ -98,7 +99,7 @@ namespace Yttrium
 
                 COMPUTE_STEP:
                     // build step
-                    if(!getStep())
+                    if(!getStep(sigma))
                         return false;
 
 
@@ -171,7 +172,7 @@ namespace Yttrium
                 void prepare(const size_t dims, const size_t nvar);
 
                 //! compute step \return true if not singular
-                bool getStep();
+                bool getStep(ORDINATE &sigma);
 
                 //! compute scan line \param aorg original value \param S engine to scatter step
                 void setScan(const Readable<ORDINATE>         &aorg,

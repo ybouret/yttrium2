@@ -52,12 +52,13 @@ void Optimizer<real_t>:: prepare(const size_t dims, const size_t nvar)
 }
 
 template <>
-bool Optimizer<real_t>:: getStep()
+bool Optimizer<real_t>:: getStep(real_t &sigma)
 {
 
     assert(p>=pmin);
     assert(p<=pmax);
     const size_t n = curv.rows;
+    sigma = zero;
 
 BUILD_CURV:
     {
@@ -80,7 +81,7 @@ BUILD_CURV:
     std::cerr << "beta=" << beta << std::endl;
     std::cerr << "step=" << step << std::endl;
 
-    const real_t sigma = Tao::Dot(xadd,beta,step);
+    sigma = Tao::Dot(xadd,beta,step);
     std::cerr << "sigma=" << sigma << std::endl;
 
     if(sigma<zero)
