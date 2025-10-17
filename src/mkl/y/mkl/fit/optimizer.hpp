@@ -10,6 +10,7 @@
 #include "y/field/1d.hpp"
 #include "y/mkl/api/fcpu.hpp"
 #include "y/stream/libc/output.hpp"
+#include "y/core/utils.hpp"
 
 namespace Yttrium
 {
@@ -36,7 +37,51 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(OptimizerCommon); //!< discarding
             };
 
+            template <typename ABSCISSA,typename ORDINATE>
+            class Phi
+            {
+            public:
+                typedef Adjustable<ABSCISSA,ORDINATE>     AdjustableType;
+                typedef typename AdjustableType::Function Function;
+                typedef Readable<ORDINATE>                RO_Ordinates;
+                typedef Writable<ORDINATE>                RW_Ordinates;
 
+                inline explicit Phi(AdjustableType & S_,
+                                    Function       & F_,
+                                    const RO_Ordinates & aini_,
+                                    const RO_Ordinates & aend_,
+                                    RW_Ordinates       & atry_) noexcept :
+                S(S_), F(F_), aini(aini_), aend(aend_), atry(atry_), one(1)
+                {
+
+                }
+
+                inline ~Phi() noexcept {}
+
+                inline ORDINATE operator()(const ORDINATE u)
+                {
+                    const ORDINATE v = one - u;
+                    for(size_t i=atry.size();i>0;--i)
+                    {
+                        const ORDINATE cv = aini[i];
+                        const ORDINATE cu = aend[i];
+                        ORDINATE cmin=cv,cmax=cu;if(cmin>cmax) Swap(cmin,cmax);
+                        atry[i] = Clamp(cmin,cv*v+cu*u,cmax);
+                    }
+                    return S.computeD2(F,atry);
+                }
+
+
+                AdjustableType     & S;
+                Function           & F;
+                const RO_Ordinates & aini;
+                const RO_Ordinates & aend;
+                RW_Ordinates       & atry;
+                const ORDINATE       one;
+
+            private:
+                Y_Disable_Copy_And_Assign(Phi);
+            };
             //__________________________________________________________________
             //
             //
@@ -109,26 +154,7 @@ namespace Yttrium
                     const ORDINATE D2_end = S.computeD2(F,aend);
                     std::cerr << "D2_end=" << D2_end << std::endl;
 
-                    struct Phi
-                    {
-                        Adjustable<ABSCISSA,ORDINATE>                    &S;
-                        typename Adjustable<ABSCISSA,ORDINATE>::Function &F;
-                        const Readable<ORDINATE> &aini;
-                        const Readable<ORDINATE> &aend;
-                        Writable<ORDINATE>       &atry;
-                        const ORDINATE            one;
-                        ORDINATE operator()(const ORDINATE u)
-                        {
-                            const ORDINATE v = one - u;
-                            for(size_t j=aini.size();j>0;--j)
-                            {
-                                atry[j] = aini[j] * v + aend[j] * u;
-                            }
-                            return S.computeD2(F,atry);
-                        }
-                    };
-
-                    Phi phi = { S, F, aini, aend, atry, one };
+                    Phi<ABSCISSA,ORDINATE> phi(S,F,aini,aend,atry);
 
                     {
                         static const unsigned   np = 100;
