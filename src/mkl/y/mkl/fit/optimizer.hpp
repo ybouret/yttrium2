@@ -206,7 +206,7 @@ namespace Yttrium
                         goto COMPUTE_STEP;
                     }
 
-                    if(false)
+                    //if(false)
                     {
                         const ORDINATE h(0.001f);
                         const ORDINATE phi_0 = phi(zero);
