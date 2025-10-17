@@ -135,6 +135,9 @@ namespace Yttrium
                     alpha.make(nvar,nvar);
                     alpha.diagonal(one,zero);
 
+
+                    
+
                     //----------------------------------------------------------
                     //
                     // collecting

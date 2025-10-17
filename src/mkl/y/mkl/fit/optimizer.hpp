@@ -72,6 +72,7 @@ namespace Yttrium
                         assert(cmin<=cmax);
                         atry[i] = Clamp(cmin,cv*v+cu*u,cmax);
                     }
+                    std::cerr << "atry@" << u << " = " << atry << std::endl;
                     return S.computeD2(F,atry);
                 }
 
@@ -148,8 +149,8 @@ namespace Yttrium
                     assert(aorg.size() == used.size() );
 
                     p   = pini;
+                    p   = 0;
                     lam = lambda[p];
-                    std::cerr << "p=" << p << "/lam=" << lam << std::endl;
                     ORDINATE     D2_ini = S.computeD2full(G,aorg,used);
                     const size_t dims   = aorg.size();
                     const size_t nvar   = S.beta.size();
@@ -161,12 +162,12 @@ namespace Yttrium
                     alpha.assign(S.alpha);
                     beta.ld(S.beta);
 
-                    std::cerr << "\talpha = " << alpha << " // " << S.alpha << std::endl;
-                    std::cerr << "\tbeta  = " << beta  << " // " << S.beta  << std::endl;
-
+                    std::cerr << "\talpha = " << alpha << " # " << S.alpha << std::endl;
+                    std::cerr << "\tbeta  = " << beta  << " # " << S.beta  << std::endl;
+                    std::cerr << "\taorg  = " << aorg  << std::endl;
                     {
                         const ORDINATE h(0.001f);
-                        for(size_t i=1;i<=nvar;++i)
+                        for(size_t i=1;i<=dims;++i)
                         {
                             atry.ld(aorg);
                             atry[i] = aorg[i] + h;
@@ -194,13 +195,22 @@ namespace Yttrium
                     std::cerr << "D2_end=" << D2_end << std::endl;
 
                     Phi<ABSCISSA,ORDINATE> phi(S,F,aini,aend,atry);
-                    phi.save( S.name + "-phi.dat" );
+                    //phi.save( S.name + "-phi.dat" );
 
                     if(D2_end>D2_ini)
                     {
                         if(p>=pmax) return false;
                         lam = lambda[++p];
                         goto COMPUTE_STEP;
+                    }
+
+                    {
+                        const ORDINATE h(0.001f);
+                        const ORDINATE phi_0 = phi(zero);
+                        const ORDINATE phi_p = phi(h);
+                        const ORDINATE d_phi = (phi_p-phi_0)/h;
+                        std::cerr << "d_phi=" << d_phi << std::endl;
+                        (void)phi(one);
                     }
 
                     assert(D2_end<=D2_ini);

@@ -77,9 +77,9 @@ BUILD_CURV:
     }
 
     step.ld(beta);
+    std::cerr << "beta=" << beta << " # " << step << std::endl;
     lu.solve(curv,step);
 
-    std::cerr << "beta=" << beta << std::endl;
     std::cerr << "step=" << step << std::endl;
 
     sigma = Tao::Dot(xadd,beta,step);
@@ -98,8 +98,11 @@ void Optimizer<real_t>:: setScan(const Readable<real_t>         &aorg,
 {
     aini.ld(aorg);
     aend.ld(zero);
+
+    // scatter current step into a_end
     S.scatter(aend,step);
-    std::cerr << "a_step=" << aend << std::endl;
+    std::cerr << "\tscatter_step=" << aend << std::endl;
+
     for(size_t j=aorg.size();j>0;--j)
     {
         aend[j] += aini[j];
