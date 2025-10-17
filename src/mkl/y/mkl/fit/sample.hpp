@@ -177,7 +177,7 @@ namespace Yttrium
                                         for(size_t k=j-1;k>0;--k,++kter)
                                         {
                                             const Variable &sub  = **kter; if( !used[sub.global.indx] ) continue;
-                                            Y_Fit_Sample_Store(dF_j * sub(dFda) );
+                                            Y_Fit_Sample_Store(dF_j * dFda[sub.indx] );
                                         }
                                     }
 
@@ -212,7 +212,7 @@ namespace Yttrium
                                 for(size_t k=j-1;k>0;--k,++kter)
                                 {
                                     const Variable &sub  = **kter; if( !used[sub.global.indx] ) continue;
-                                    Y_Fit_Sample_Query(sub(alpha[J]));
+                                    Y_Fit_Sample_Query(alpha[J][sub.indx]);
                                 }
                             }
                         }

@@ -51,7 +51,7 @@ namespace Yttrium
                 for(ConstIterator it=db.begin();it!=db.end();++it)
                 {
                     const Parameter &p = **it;
-                    p(used) = p.queryEnv();
+                    used[p.indx] = p.queryEnv();
                 }
             }
         }

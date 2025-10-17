@@ -72,7 +72,7 @@ namespace Yttrium
                         assert(cmin<=cmax);
                         atry[i] = Clamp(cmin,cv*v+cu*u,cmax);
                     }
-                    std::cerr << "atry@" << u << " = " << atry << std::endl;
+                    //std::cerr << "atry@" << u << " = " << atry << std::endl;
                     return S.computeD2(F,atry);
                 }
 
@@ -164,8 +164,10 @@ namespace Yttrium
 
                     std::cerr << "\talpha = " << alpha << " # " << S.alpha << std::endl;
                     std::cerr << "\tbeta  = " << beta  << " # " << S.beta  << std::endl;
-                    std::cerr << "\taorg  = " << aorg  << std::endl;
+
+                    if(false)
                     {
+                        std::cerr << "\taorg  = " << aorg  << std::endl;
                         const ORDINATE h(0.001f);
                         for(size_t i=1;i<=dims;++i)
                         {
@@ -195,7 +197,7 @@ namespace Yttrium
                     std::cerr << "D2_end=" << D2_end << std::endl;
 
                     Phi<ABSCISSA,ORDINATE> phi(S,F,aini,aend,atry);
-                    //phi.save( S.name + "-phi.dat" );
+                    phi.save( S.name + "-phi.dat" );
 
                     if(D2_end>D2_ini)
                     {
@@ -204,6 +206,7 @@ namespace Yttrium
                         goto COMPUTE_STEP;
                     }
 
+                    if(false)
                     {
                         const ORDINATE h(0.001f);
                         const ORDINATE phi_0 = phi(zero);

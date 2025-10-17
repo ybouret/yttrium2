@@ -24,8 +24,8 @@ template <typename T>
 T getF(const T t, const Fit::Variables &vars, const Readable<T> &aorg)
 {
     const T zero(0);
-    const T &t0 = vars["t0"](aorg);
-    const T &D  = vars["D"](aorg);
+    const T &t0 = aorg[vars["t0"].global.indx];
+    const T &D  = aorg[vars["D"].global.indx];
 
     if(t<=t0) return zero;
     const T arg = D * (t-t0);
@@ -35,19 +35,19 @@ T getF(const T t, const Fit::Variables &vars, const Readable<T> &aorg)
 
 template <typename T>
 T getG(Writable<T> &dFda,
-       const T t,
+       const T               t,
        const Fit::Variables &vars,
-       const Readable<T> &aorg,
-       const Readable<bool> &used)
+       const Readable<T   > &aorg,
+       const Readable<bool> & )
 {
     const T zero(0);
     const Fit::Variable &_t0 = vars["t0"];
     const Fit::Variable &_D  = vars["D"];
 
-    const T &t0 = _t0(aorg);
-    const T &D  = _D(aorg);
-    T & dF_dt0  = _t0(dFda);
-    T & dF_dD   = _D(dFda);
+    const T &t0 = aorg[_t0.global.indx];
+    const T &D  = aorg[_D.global.indx];
+    T & dF_dt0  = dFda[_t0.indx];
+    T & dF_dD   = dFda[_D.indx];
 
     dF_dt0 = zero;
     dF_dD  = zero;
@@ -79,9 +79,9 @@ void testFit(const Fit::Parameters &params)
     Vector<T>    aorg(params->size(),zero);
     Vector<bool> used(params->size(),true);
 
-    T & t0 = (params["t0"](aorg) = -100);
-    T & D1 = (params["D1"](aorg) = 0.15f);
-    T & D2 = (params["D2"](aorg) = 0.20f);
+    T & t0 = (aorg[ params["t0"].indx ] = -100);
+    T & D1 = (aorg[ params["D1"].indx ] = 0.15f);
+    T & D2 = (aorg[ params["D2"].indx ] = 0.20f);
     std::cerr << "t0=" << t0 << std::endl;
     std::cerr << "D1=" << D1 << std::endl;
     std::cerr << "D2=" << D2 << std::endl;
@@ -155,13 +155,13 @@ void testFit(const Fit::Parameters &params)
     Fit::Optimizer<T> fit;
 
     std::cerr << std::endl;
-    //fit.run_(S1,getF<T>,getG<T>,aorg,used);
+    fit.run_(S1,getF<T>,getG<T>,aorg,used);
 
     std::cerr << std::endl;
     fit.run_(S2,getF<T>,getG<T>,aorg,used);
 
     std::cerr << std::endl;
-    //fit.run_(samples,getF<T>,getG<T>,aorg,used);
+    fit.run_(samples,getF<T>,getG<T>,aorg,used);
 
 
 }

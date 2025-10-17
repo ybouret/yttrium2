@@ -65,22 +65,7 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
-
-                //! \param a input \return a[**this]
-                template <typename T> inline
-                T & operator()(Writable<T> &a) const noexcept
-                {
-                    assert(indx>0); assert(indx<=a.size());
-                    return a[indx];
-                }
-
-                //! \param a input \return a[**this]
-                template <typename T> inline
-                const T & operator()(const Readable<T> &a) const noexcept
-                {
-                    assert(indx>0); assert(indx<=a.size());
-                    return a[indx];
-                }
+                
 
                 //! \return true if no environnment variable, or the boolean value of the variable
                 bool queryEnv() const;
