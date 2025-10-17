@@ -161,7 +161,7 @@ void testFit(const Fit::Parameters &params)
     fit.run_(S2,getF<T>,getG<T>,aorg,used);
 
     std::cerr << std::endl;
-    fit.run_(samples,getF<T>,getG<T>,aorg,used);
+    //fit.run_(samples,getF<T>,getG<T>,aorg,used);
 
 
 }

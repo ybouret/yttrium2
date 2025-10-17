@@ -64,9 +64,12 @@ namespace Yttrium
                     const ORDINATE v = one - u;
                     for(size_t i=atry.size();i>0;--i)
                     {
-                        const ORDINATE cv = aini[i];
-                        const ORDINATE cu = aend[i];
-                        ORDINATE cmin=cv,cmax=cu;if(cmin>cmax) Swap(cmin,cmax);
+                        const ORDINATE cv   = aini[i];
+                        const ORDINATE cu   = aend[i];
+                        ORDINATE       cmin = cv;
+                        ORDINATE       cmax = cu;
+                        if(cmin>cmax) Swap(cmin,cmax);
+                        assert(cmin<=cmax);
                         atry[i] = Clamp(cmin,cv*v+cu*u,cmax);
                     }
                     return S.computeD2(F,atry);
@@ -134,12 +137,14 @@ namespace Yttrium
 
 
                 template <typename ABSCISSA> inline
-                bool run(Adjustable<ABSCISSA,ORDINATE> &                   S,
-                         typename Adjustable<ABSCISSA,ORDINATE>::Function &F,
-                         typename Adjustable<ABSCISSA,ORDINATE>::Gradient &G,
-                         Writable<ORDINATE>   & aorg,
-                         const Readable<bool> & used)
+                bool run(Adjustable<ABSCISSA,ORDINATE>                    & S,
+                         typename Adjustable<ABSCISSA,ORDINATE>::Function & F,
+                         typename Adjustable<ABSCISSA,ORDINATE>::Gradient & G,
+                         Writable<ORDINATE>                               & aorg,
+                         const Readable<bool>                             & used)
                 {
+                    std::cerr << "Running for " << S.name << std::endl;
+
                     assert(aorg.size() == used.size() );
 
                     p   = pini;
@@ -154,6 +159,10 @@ namespace Yttrium
                     // fetch metrics
                     alpha.assign(S.alpha);
                     beta.ld(S.beta);
+
+                    std::cerr << "\talpha = " << alpha << std::endl;
+                    std::cerr << "\tbeta  = " << beta  << std::endl;
+
 
                 COMPUTE_STEP:
                     // build step
@@ -178,8 +187,11 @@ namespace Yttrium
                     }
 
                     assert(D2_end<=D2_ini);
-                    
-
+                    xadd = D2_end; xadd += sigma; xadd -= D2_ini;
+                    const ORDINATE gamma = xadd.sum();
+                    std::cerr << "sigma=" << sigma << std::endl;
+                    std::cerr << "gamma=" << gamma << std::endl;
+                    std::cerr << D2_ini << " -(" << sigma << ")*x+(" << gamma << ")*x*x" << std::endl;
 
 
 

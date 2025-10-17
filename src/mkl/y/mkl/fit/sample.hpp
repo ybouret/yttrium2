@@ -128,7 +128,7 @@ namespace Yttrium
                     //----------------------------------------------------------
                     const ORDINATE zero(0);
                     const ORDINATE one(1);
-                    const size_t nvar = vars->size();
+                    const size_t   nvar = vars->size();
                     dFda.adjust(nvar,zero);
                     beta.adjust(nvar,zero);
                     cadd.adjust( (nvar*(nvar+3)) >> 1);
