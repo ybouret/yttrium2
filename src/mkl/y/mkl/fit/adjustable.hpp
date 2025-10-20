@@ -85,8 +85,13 @@ namespace Yttrium
                     return computeD2(F,aorg);
                 }
 
-                
-                virtual void display(XMLog &xml, const Readable<ORDINATE> &, const char * const sfx) const = 0;
+                //! display array according to GLOBAL variables
+                /**
+                 \param xml output
+                 \param arr array
+                 \param sfx optional suffix
+                 */
+                virtual void display(XMLog &xml, const Readable<ORDINATE> &arr, const char * const sfx) const = 0;
 
 
                 //! full D2/derivatives evaluation

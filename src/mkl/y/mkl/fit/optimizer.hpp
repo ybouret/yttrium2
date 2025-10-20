@@ -38,18 +38,47 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(OptimizerCommon); //!< discarding
             };
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Linear scanline helper
+            //
+            //
+            //__________________________________________________________________
             template <typename ABSCISSA,typename ORDINATE>
             class Phi
             {
             public:
-                typedef typename FCPU<ORDINATE>::Type     fcpu_t;    //!< alias
-                typedef Adjustable<ABSCISSA,ORDINATE>     AdjustableType;
-                typedef typename AdjustableType::Function Function;
-                typedef Readable<ORDINATE>                RO_Ordinates;
-                typedef Writable<ORDINATE>                RW_Ordinates;
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                typedef typename FCPU<ORDINATE>::Type     fcpu_t;         //!< alias
+                typedef Adjustable<ABSCISSA,ORDINATE>     AdjustableType; //!< alias
+                typedef typename AdjustableType::Function Function;       //!< alias
+                typedef Readable<ORDINATE>                RO_Ordinates;   //!< alias
+                typedef Writable<ORDINATE>                RW_Ordinates;   //!< alias
 
-                inline explicit Phi(AdjustableType & S_,
-                                    Function       & F_,
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! setup
+                /**
+                 \param S_    sample(s)
+                 \param F_    function
+                 \param aini_ init values
+                 \param aend_ end values
+                 \param atry_ trial values
+                 */
+                inline explicit Phi(AdjustableType     & S_,
+                                    Function           & F_,
                                     const RO_Ordinates & aini_,
                                     const RO_Ordinates & aend_,
                                     RW_Ordinates       & atry_) noexcept :
@@ -58,8 +87,17 @@ namespace Yttrium
 
                 }
 
+                //! cleanup
                 inline ~Phi() noexcept {}
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+
+                //! \param u step fraction \return return scanline value
                 inline ORDINATE operator()(const ORDINATE u)
                 {
                     const ORDINATE v = one - u;
@@ -76,6 +114,7 @@ namespace Yttrium
                     return S.computeD2(F,atry);
                 }
 
+                //! save scanline profile \param fileName file name \param append append mode
                 template <typename UID> inline
                 void save(const UID &fileName, const bool append=false)
                 {
@@ -89,16 +128,23 @@ namespace Yttrium
                     }
                 }
 
-                AdjustableType     & S;
-                Function           & F;
-                const RO_Ordinates & aini;
-                const RO_Ordinates & aend;
-                RW_Ordinates       & atry;
-                const ORDINATE       one;
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                AdjustableType     & S;    //!< sample(s)
+                Function           & F;    //!< fit function
+                const RO_Ordinates & aini; //!< init   values
+                const RO_Ordinates & aend; //!< end   values
+                RW_Ordinates       & atry; //!< trial values
+                const ORDINATE       one;  //!< 1
 
             private:
-                Y_Disable_Copy_And_Assign(Phi);
+                Y_Disable_Copy_And_Assign(Phi); //!< discarding
             };
+
             //__________________________________________________________________
             //
             //
@@ -136,7 +182,16 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-
+                //! run a fit session
+                /**
+                 \param xml output
+                 \param S   sample(s)
+                 \param F   fit function
+                 \param G   fit gradient
+                 \param aorg in/out values
+                 \param used flags to pin some variables
+                 \return something
+                 */
                 template <typename ABSCISSA> inline
                 bool run(XMLog                                            & xml,
                          Adjustable<ABSCISSA,ORDINATE>                    & S,
@@ -275,6 +330,16 @@ namespace Yttrium
                     goto CYCLE;
                 }
 
+                //! run a fit session wrapper
+                /**
+                 \param xml output
+                 \param S   sample(s)
+                 \param F   fit function
+                 \param G   fit gradient
+                 \param aorg in/out values
+                 \param used flags to pin some variables
+                 \return something
+                 */
                 template <typename ABSCISSA, typename FUNC, typename GRAD> inline
                 bool run_(XMLog                         & xml,
                           Adjustable<ABSCISSA,ORDINATE> & S,
@@ -296,7 +361,7 @@ namespace Yttrium
                 //! prepare memory \param dims aorg size \param nvar sample variables
                 void prepare(const size_t dims, const size_t nvar);
 
-                //! compute step \return true if not singular
+                //! compute step \param sigma slope \return true if not singular
                 bool getStep(ORDINATE &sigma);
 
                 //! compute scan line \param aorg original value \param S engine to scatter step

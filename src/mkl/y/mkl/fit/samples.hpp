@@ -15,8 +15,8 @@ namespace Yttrium
     {
         namespace Fit
         {
-            typedef Protean::SoloLightList<const Variable> VList;
-            typedef VList::NodeType                        VNode;
+            typedef Protean::SoloLightList<const Variable> VList; //!< alias
+            typedef VList::NodeType                        VNode; //!< alias
 
             //__________________________________________________________________
             //
@@ -58,10 +58,10 @@ namespace Yttrium
 
             protected:
                 VList vlist; //!< collected variables from individual sample
-                void collect(const Variables &);
+                void collect(const Variables &); //!< collect variables
 
             private:
-                bool found(const Variable &) const noexcept;
+                bool found(const Variable &) const noexcept; //!< \return true iff variable in vlist
                 Y_Disable_Copy_And_Assign(SamplesCommon); //!< discarding
             };
 

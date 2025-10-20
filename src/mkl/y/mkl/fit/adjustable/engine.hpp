@@ -60,6 +60,12 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
+
+                //! scatter local values into global values
+                /**
+                 \param a_global global array
+                 \param a_local  local array
+                 */
                 virtual void scatter(Writable<ORDINATE>       &a_global,
                                      const Readable<ORDINATE> &a_local) const noexcept = 0;
 

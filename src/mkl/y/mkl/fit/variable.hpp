@@ -63,6 +63,12 @@ namespace Yttrium
                 //! check equality
                 friend bool operator==(const Variable &,const Variable &) noexcept;
 
+                //! helper to display some GLOBAL value
+                /**
+                 \param xml output
+                 \param arr values
+                 \param sfx optional suffix
+                 */
                 template <typename T> inline
                 void display(XMLog &xml, const Readable<T> &arr, const char * sfx=0) const
                 {

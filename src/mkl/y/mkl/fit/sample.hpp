@@ -55,10 +55,10 @@ namespace Yttrium
 
                 //! setup
                 /**
-                 \param id  name
-                 \param _X  input abscissae
-                 \param _Y  input ordinates
-                 \param _Yf ouput ordinates
+                 \param id    name
+                 \param theX  input abscissae
+                 \param theY  input ordinates
+                 \param theYf ouput ordinates
                  */
                 template <typename UID> inline
                 explicit Sample(const UID                & id,

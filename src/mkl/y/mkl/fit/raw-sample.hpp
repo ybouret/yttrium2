@@ -90,11 +90,11 @@ namespace Yttrium
 
                 //! setup
                 /**
-                 \param uid name
-                 \param x c-style abscissae
-                 \param y c-style ordinates
-                 \param n number of parameters
-                 \param Yf_ fit destination
+                 \param uid  name
+                 \param x     c-style abscissae
+                 \param y     c-style ordinates
+                 \param n     number of parameters
+                 \param theYf fit destination
                  */
                 template <typename UID> inline
                 explicit RawSample(const UID &           uid,
