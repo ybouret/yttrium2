@@ -159,8 +159,12 @@ void testFit(const Fit::Parameters &params)
     std::cerr << std::endl;
     fit.run_(xml,S1,getF<T>,getG<T>,aorg,used);
 
+
     std::cerr << std::endl;
     fit.run_(xml,S2,getF<T>,getG<T>,aorg,used);
+
+    return;
+
 
     std::cerr << std::endl;
     fit.run_(xml,samples,getF<T>,getG<T>,aorg,used);

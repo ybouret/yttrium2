@@ -62,12 +62,12 @@ bool Optimizer<real_t>:: getStep(real_t &sigma)
 
 BUILD_CURV:
     {
-        std::cerr << "p=" << p << "/lam=" << lam << std::endl;
+        //std::cerr << "p=" << p << "/lam=" << lam << std::endl;
         curv.assign(alpha);
         const real_t fac = one + lam;
         for(size_t i=n;i>0;--i)
             curv[i][i] *= fac;
-        std::cerr << "alam=" << curv << std::endl;
+        //std::cerr << "alam=" << curv << std::endl;
         if(!lu.build(curv))
         {
             if(p>=pmax) return false; //!< singular matrix
@@ -77,13 +77,8 @@ BUILD_CURV:
     }
 
     step.ld(beta);
-    std::cerr << "beta=" << beta << " # " << step << std::endl;
     lu.solve(curv,step);
-
-    std::cerr << "step=" << step << std::endl;
-
     sigma = Tao::Dot(xadd,beta,step);
-    std::cerr << "sigma=" << sigma << std::endl;
 
     if(sigma<zero)
         goto BUILD_CURV;
@@ -108,8 +103,8 @@ void Optimizer<real_t>:: setScan(const Readable<real_t>         &aorg,
         aend[j] += aini[j];
     }
 
-    std::cerr << "\taini = " << aini << std::endl;
-    std::cerr << "\taend = " << aend << std::endl;
+    //std::cerr << "\taini = " << aini << std::endl;
+    //std::cerr << "\taend = " << aend << std::endl;
 
 
 }

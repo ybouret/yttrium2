@@ -95,7 +95,7 @@ namespace Yttrium
                 typedef typename AdjustableType::XAddition XAddition;      //!< alias
                 typedef typename AdjustableType::Function  Function;       //!< alias
                 typedef typename AdjustableType::Gradient  Gradient;       //!< alias
-				typedef typename FCPU<ORDINATE>::Type      fcpu_t;         //!< alias
+                typedef typename FCPU<ORDINATE>::Type      fcpu_t;         //!< alias
                 typedef XAddition *                        XAddPtr;        //!< alias
                 using AdjustableType::xadd;
                 using AdjustableType::D2;
@@ -139,13 +139,22 @@ namespace Yttrium
                     return res;
                 }
 
-                inline
-                virtual void scatter(Writable<ORDINATE>       &a_global,
-                                     const Readable<ORDINATE> &a_local) const noexcept
+                inline virtual
+                void scatter(Writable<ORDINATE>       &a_global,
+                             const Readable<ORDINATE> &a_local) const noexcept
                 {
 
                     assert(a_local.size()==a_global.size());
                     a_global.ld(a_local);
+                }
+
+                inline virtual
+                void display(XMLog                    & xml,
+                             const Readable<ORDINATE> & arr,
+                             const char * const         sfx) const
+                {
+                    for(VNode *vn=vlist->head;vn;vn=vn->next)
+                        (**vn).display(xml,arr,sfx);
                 }
 
                 inline
@@ -310,7 +319,7 @@ namespace Yttrium
                 Vector<ORDINATE> weight; //!< weight per sample
                 Vector<XAddPtr>  xBeta;  //!< storage of XAddition
                 Matrix<XAddPtr>  xAlpha; //!< storage of XAddition
-                
+
             private:
                 Y_Disable_Copy_And_Assign(Samples); //!< discarding
 
@@ -324,7 +333,6 @@ namespace Yttrium
                     vlist.free();
                     for(Iterator it=this->begin();it!=this->end();++it)
                         collect( (**it).vars );
-                    std::cerr << "vlist=" << vlist << std::endl;
 
                     beta.adjust(nvar,zero);
                     alpha.make(nvar,nvar);

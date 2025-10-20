@@ -226,6 +226,13 @@ namespace Yttrium
                     return (D2=xadd.sum()*half);
                 }
 
+                inline virtual
+                void display(XMLog &xml, const Readable<ORDINATE> &arr, const char * const sfx) const
+                {
+                    for(Variables::ConstIterator iv=vars->begin();iv!=vars->end();++iv)
+                        (**iv).display(xml,arr,sfx);
+                }
+
                 //! quick save to file
                 /**
                  \param fileName file name

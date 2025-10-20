@@ -4,6 +4,7 @@
 #define Y_Fit_Variable_Included 1
 
 #include "y/mkl/fit/parameter.hpp"
+#include "y/stream/xmlog.hpp"
 
 namespace Yttrium
 {
@@ -62,7 +63,12 @@ namespace Yttrium
                 //! check equality
                 friend bool operator==(const Variable &,const Variable &) noexcept;
 
-                
+                template <typename T> inline
+                void display(XMLog &xml, const Readable<T> &arr, const char * sfx=0) const
+                {
+                    if(!sfx) sfx = "";
+                    Y_XMLog(xml,"\t" << global.name << sfx << " = " << arr[global.indx]);
+                }
 
                 //______________________________________________________________
                 //

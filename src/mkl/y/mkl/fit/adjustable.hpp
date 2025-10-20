@@ -85,6 +85,9 @@ namespace Yttrium
                     return computeD2(F,aorg);
                 }
 
+                
+                virtual void display(XMLog &xml, const Readable<ORDINATE> &, const char * const sfx) const = 0;
+
 
                 //! full D2/derivatives evaluation
                 /**

@@ -11,7 +11,7 @@
 #include "y/mkl/api/fcpu.hpp"
 #include "y/stream/libc/output.hpp"
 #include "y/core/utils.hpp"
-#include "y/stream/xmlog.hpp"
+#include "y/mkl/api/almost-equal.hpp"
 
 namespace Yttrium
 {
@@ -73,7 +73,6 @@ namespace Yttrium
                         assert(cmin<=cmax);
                         atry[i] = Clamp(cmin,cv*v+cu*u,cmax);
                     }
-                    //std::cerr << "atry@" << u << " = " << atry << std::endl;
                     return S.computeD2(F,atry);
                 }
 
@@ -146,7 +145,7 @@ namespace Yttrium
                          Writable<ORDINATE>                               & aorg,
                          const Readable<bool>                             & used)
                 {
-                    std::cerr << "Running for " << S.name << std::endl;
+                    Y_XML_Section_Attr(xml,"Fit::Run"," name='" << S.name << "'");
 
                     assert(aorg.size() == used.size() );
 
@@ -163,7 +162,6 @@ namespace Yttrium
                     const size_t dims   = aorg.size();   // total dimensions
                     const size_t nvar   = S.beta.size(); // known after computeD2full
                     ORDINATE     sigma  = zero;          // slope, to be computed
-                    std::cerr << "D2_ini=" << D2_ini << std::endl;
                     prepare(dims,nvar);
 
                     //----------------------------------------------------------
@@ -173,6 +171,10 @@ namespace Yttrium
                     //----------------------------------------------------------
                 CYCLE:
                     ++cycle;
+                    Y_XML_Section_Attr(xml,"Iterate", Y_XML_Attr(cycle) << Y_XML_Attr(p) << Y_XML_Attr(lam) );
+                    Y_XMLog(xml,"D2_ini = " << D2_ini);
+                    S.display(xml,aorg,"_org");
+
                     alpha.assign(S.alpha);
                     beta.ld(S.beta);
 
@@ -200,7 +202,11 @@ namespace Yttrium
                     //
                     //----------------------------------------------------------
                     if(!getStep(sigma))
+                    {
+                        Y_XMLog(xml, "singular step");
                         return false;
+                    }
+
 
                     //----------------------------------------------------------
                     //
@@ -210,14 +216,21 @@ namespace Yttrium
                     setScan(aorg,S);
                     
                     const ORDINATE D2_end = S.computeD2(F,aend);
-                    std::cerr << "D2_end=" << D2_end << std::endl;
+                    Y_XMLog(xml,"D2_end = " << D2_end);
+                    S.display(xml,aend,"_end");
+
 
                     Phi<ABSCISSA,ORDINATE> phi(S,F,aini,aend,atry);
                     phi.save( S.name + "-phi.dat" );
 
                     if(D2_end>D2_ini)
                     {
-                        if(p>=pmax) return false;
+                        Y_XMLog(xml,"increasing D2...");
+                        if(p>=pmax)
+                        {
+                            Y_XMLog(xml, "stalled...");
+                            return false;
+                        }
                         lam = lambda[++p];
                         goto COMPUTE_STEP;
                     }
@@ -233,24 +246,36 @@ namespace Yttrium
                     }
 
                     assert(D2_end<=D2_ini);
-                    xadd = D2_end; xadd += sigma; xadd -= D2_ini;
-                    const ORDINATE gamma = xadd.sum();
-                    std::cerr << "sigma=" << sigma << std::endl;
-                    std::cerr << "gamma=" << gamma << std::endl;
-                    std::cerr << D2_ini << " -(" << sigma << ")*x+(" << gamma << ")*x*x" << std::endl;
-
-                    aorg.ld(aend);
-
-                    // test convergence
-
-                    if(cycle<=2)
+                    if(true)
                     {
-                        D2_ini = S.computeD2full(G,aorg,used);
-                        goto CYCLE;
+                        xadd = D2_end; xadd += sigma; xadd -= D2_ini;
+                        const ORDINATE gamma = xadd.sum();
+                        Y_XMLog(xml,"sigma=" << sigma);
+                        Y_XMLog(xml,"gamma=" << gamma);
+                        std::cerr << "\t\t\t" << D2_ini << " -(" << sigma << ")*x+(" << gamma << ")*x*x" << std::endl;
                     }
 
+                    // update and test convergence
+                    bool converged = true;
+                    for(size_t i=dims;i>0;--i)
+                    {
+                        aorg[i] = aend[i];
+                        if( !AlmostEqual<ORDINATE>::Are(aorg[i],aini[i]) ) converged = false;
+                    }
 
-                    return false;
+                    if(converged)
+                    {
+                        return true;
+                    }
+
+                    // upgrade
+                    if(--p<pmin) p=pmin;
+                    lam = lambda[p];
+                    D2_ini = S.computeD2full(G,aorg,used);
+
+                    // next cycle;
+                    if(cycle>4) return false;
+                    goto CYCLE;
                 }
 
                 template <typename ABSCISSA, typename FUNC, typename GRAD> inline
