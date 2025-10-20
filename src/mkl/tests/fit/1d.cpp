@@ -88,7 +88,7 @@ void testFit(const Fit::Parameters &params)
 
     t0 = t0_ini;
     D1 = D1_ini;
-    D2 = D1_ini;
+    D2 = D2_ini;
 
 
     std::cerr << "t0=" << t0 << std::endl;
@@ -171,19 +171,25 @@ void testFit(const Fit::Parameters &params)
 
 
 
-    t0 = t0_ini;
-    D1 = D1_ini;
-    D2 = D1_ini;
+
 
     std::cerr << std::endl;
+    t0 = t0_ini;
+    D1 = D1_ini;
+    D2 = D2_ini;
     fit.run_(xml,S2,getF<T>,getG<T>,aorg,used);
     S2.save(S2.name + ".dat");
 
-    return;
 
 
     std::cerr << std::endl;
+    t0 = t0_ini;
+    D1 = D1_ini;
+    D2 = D2_ini;
     fit.run_(xml,samples,getF<T>,getG<T>,aorg,used);
+
+    S1.save(S1.name + "-all.dat");
+    S2.save(S2.name + "-all.dat");
 
 
 }
