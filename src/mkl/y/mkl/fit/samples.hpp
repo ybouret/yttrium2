@@ -134,7 +134,6 @@ namespace Yttrium
                                      const Readable<ORDINATE> &a_local) const noexcept
                 {
 
-                    //for(ConstIterator it=this->begin();it!=this->end();++it) (**it).scatter(a_global,a_local);
                     assert(a_local.size()==a_global.size());
                     a_global.ld(a_local);
                 }

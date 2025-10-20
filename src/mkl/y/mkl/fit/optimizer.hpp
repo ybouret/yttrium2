@@ -148,22 +148,28 @@ namespace Yttrium
 
                     assert(aorg.size() == used.size() );
 
+                    //----------------------------------------------------------
+                    //
+                    // first initialization
+                    //
+                    //----------------------------------------------------------
                     p   = pini;
                     p   = 0;
                     lam = lambda[p];
                     ORDINATE     D2_ini = S.computeD2full(G,aorg,used);
-                    const size_t dims   = aorg.size();
-                    const size_t nvar   = S.beta.size();
-                    ORDINATE     sigma  = zero;
+                    const size_t dims   = aorg.size();   // total dimensions
+                    const size_t nvar   = S.beta.size(); // known after computeD2full
+                    ORDINATE     sigma  = zero;          // slope, to be computed
                     std::cerr << "D2_ini=" << D2_ini << std::endl;
                     prepare(dims,nvar);
 
+                    //----------------------------------------------------------
+                    //
                     // fetch metrics
+                    //
+                    //----------------------------------------------------------
                     alpha.assign(S.alpha);
                     beta.ld(S.beta);
-
-                    std::cerr << "\talpha = " << alpha << " # " << S.alpha << std::endl;
-                    std::cerr << "\tbeta  = " << beta  << " # " << S.beta  << std::endl;
 
                     if(false)
                     {
@@ -183,16 +189,21 @@ namespace Yttrium
                     }
 
 
-
+                    //----------------------------------------------------------
+                    //
                 COMPUTE_STEP:
-                    // build step
+                    //
+                    //----------------------------------------------------------
                     if(!getStep(sigma))
                         return false;
 
-
+                    //----------------------------------------------------------
+                    //
                     // build ini/end variables
+                    //
+                    //----------------------------------------------------------
                     setScan(aorg,S);
-
+                    
                     const ORDINATE D2_end = S.computeD2(F,aend);
                     std::cerr << "D2_end=" << D2_end << std::endl;
 
