@@ -233,6 +233,18 @@ namespace Yttrium
                         (**iv).display(xml,arr,sfx);
                 }
 
+
+                inline virtual
+                size_t active(const Readable<bool> &used) const noexcept
+                {
+                    size_t res = 0;
+                    for(Variables::ConstIterator iv=vars->begin();iv!=vars->end();++iv)
+                    {
+                        if( used[ (**iv).global.indx] ) ++res;
+                    }
+                    return res;
+                }
+
                 //! quick save to file
                 /**
                  \param fileName file name

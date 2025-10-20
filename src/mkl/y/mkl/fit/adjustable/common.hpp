@@ -46,7 +46,8 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
-                virtual size_t count() const noexcept = 0; //!< \return number of data points
+                virtual size_t count()                            const noexcept = 0; //!< \return number of data points
+                virtual size_t active(const Readable<bool> &used) const noexcept = 0;
 
             private:
                 Y_Disable_Copy_And_Assign(AdjustableCommon); //!< discarding

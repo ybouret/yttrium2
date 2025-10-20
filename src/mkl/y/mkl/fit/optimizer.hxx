@@ -62,7 +62,6 @@ bool Optimizer<real_t>:: getStep(real_t &sigma)
 
 BUILD_CURV:
     {
-        //std::cerr << "p=" << p << "/lam=" << lam << std::endl;
         curv.assign(alpha);
         const real_t fac = one + lam;
         for(size_t i=n;i>0;--i)
@@ -112,6 +111,44 @@ void Optimizer<real_t>:: errors(Writable<real_t>               &aerr,
                                 const AdjustableEngine<real_t> &S)
 {
     assert( used.size() == aerr.size() );
+
+    const size_t active = S.active(used); if(active<=0) return;
+    size_t       dof    = S.count();
+    switch( Sign::Of(active,dof) )
+    {
+        case Negative:
+            assert(active<dof);
+            dof -= active;
+            break;
+
+        case __Zero__: assert(active==dof);
+            atry.ld(zero);
+            goto DONE; // interpolation
+
+        case Positive: assert(active>dof);
+            return; // undefined
+    }
+
+    assert( alpha.gotSameMetricsThan(S.alpha) );
+    alpha.assign(S.alpha);
+    if( !lu.build(alpha) )
+    {
+        throw Specific::Exception(CallSign,"unexpected singular covariance");
+    }
+
+    lu.inv(alpha,curv);
+
+    std::cerr << "alpha= " << S.alpha << std::endl;
+    std::cerr << "curv = " << curv    << std::endl;
+
+    {
+        const real_t sig2 = S.D2 / (fcpu_t)dof;
+    }
+
+DONE:
+    S.scatter(aerr,atry);
+
+#if 0
     const size_t fullDims = aerr.size();
     size_t       usedDims = fullDims;
 
@@ -159,6 +196,7 @@ void Optimizer<real_t>:: errors(Writable<real_t>               &aerr,
         aerr[i] = Sqrt<real_t>::Of(err2);
     }
     std::cerr << "aerr=" << aerr << std::endl;
+#endif // 0
 
 
 }

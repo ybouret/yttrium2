@@ -157,6 +157,17 @@ namespace Yttrium
                         (**vn).display(xml,arr,sfx);
                 }
 
+                inline virtual
+                size_t active(const Readable<bool> &used) const noexcept
+                {
+                    size_t res = used.size();
+                    for(size_t i=res;i>0;--i)
+                    {
+                        if(!used[i]) --res;
+                    }
+                    return res;
+                }
+
                 inline
                 virtual ORDINATE computeD2(Function                 & F,
                                            const Readable<ORDINATE> & aorg)
