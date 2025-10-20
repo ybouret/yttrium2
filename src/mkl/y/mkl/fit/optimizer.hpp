@@ -225,13 +225,14 @@ namespace Yttrium
 
                     if(D2_end>D2_ini)
                     {
-                        Y_XMLog(xml,"increasing D2...");
+                        Y_XMLog(xml,"increasing D2:");
                         if(p>=pmax)
                         {
-                            Y_XMLog(xml, "stalled...");
+                            Y_XMLog(xml, "-- stalled --");
                             return false;
                         }
                         lam = lambda[++p];
+                        Y_XMLog(xml,"-> " << Y_XML_Attr(p)<<Y_XML_Attr(lam));
                         goto COMPUTE_STEP;
                     }
 
@@ -256,15 +257,11 @@ namespace Yttrium
                     }
 
                     // update and test convergence
-                    bool converged = true;
-                    for(size_t i=dims;i>0;--i)
-                    {
-                        aorg[i] = aend[i];
-                        if( !AlmostEqual<ORDINATE>::Are(aorg[i],aini[i]) ) converged = false;
-                    }
+                    aorg.ld(aend);
 
-                    if(converged)
+                    if( AlmostEqual<ORDINATE>::Are(D2_end,D2_ini))
                     {
+                        Y_XMLog(xml, "converged!");
                         return true;
                     }
 
@@ -274,7 +271,7 @@ namespace Yttrium
                     D2_ini = S.computeD2full(G,aorg,used);
 
                     // next cycle;
-                    if(cycle>4) return false;
+                    //if(cycle>4) return false;
                     goto CYCLE;
                 }
 

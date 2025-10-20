@@ -67,6 +67,9 @@ T getG(Writable<T> &dFda,
 
 
 #include "y/system/rtti.hpp"
+#define t0_ini -100
+#define D1_ini 0.15f
+#define D2_ini 0.20f
 
 template <typename T> static inline
 void testFit(const Fit::Parameters &params)
@@ -79,9 +82,15 @@ void testFit(const Fit::Parameters &params)
     Vector<T>    aorg(params->size(),zero);
     Vector<bool> used(params->size(),true);
 
-    T & t0 = (aorg[ params["t0"].indx ] = -100);
-    T & D1 = (aorg[ params["D1"].indx ] = 0.15f);
-    T & D2 = (aorg[ params["D2"].indx ] = 0.20f);
+    T & t0 = (aorg[ params["t0"].indx ]);
+    T & D1 = (aorg[ params["D1"].indx ]);
+    T & D2 = (aorg[ params["D2"].indx ]);
+
+    t0 = t0_ini;
+    D1 = D1_ini;
+    D2 = D1_ini;
+
+
     std::cerr << "t0=" << t0 << std::endl;
     std::cerr << "D1=" << D1 << std::endl;
     std::cerr << "D2=" << D2 << std::endl;
@@ -158,10 +167,17 @@ void testFit(const Fit::Parameters &params)
 
     std::cerr << std::endl;
     fit.run_(xml,S1,getF<T>,getG<T>,aorg,used);
+    S1.save(S1.name + ".dat");
 
+
+
+    t0 = t0_ini;
+    D1 = D1_ini;
+    D2 = D1_ini;
 
     std::cerr << std::endl;
     fit.run_(xml,S2,getF<T>,getG<T>,aorg,used);
+    S2.save(S2.name + ".dat");
 
     return;
 

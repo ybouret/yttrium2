@@ -96,7 +96,7 @@ void Optimizer<real_t>:: setScan(const Readable<real_t>         &aorg,
 
     // scatter current step into a_end
     S.scatter(aend,step);
-    std::cerr << "\tscatter_step=" << aend << std::endl;
+    //std::cerr << "\tscatter_step=" << aend << std::endl;
 
     for(size_t j=aorg.size();j>0;--j)
     {
