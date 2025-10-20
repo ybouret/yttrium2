@@ -198,11 +198,13 @@ namespace Yttrium
                          typename Adjustable<ABSCISSA,ORDINATE>::Function & F,
                          typename Adjustable<ABSCISSA,ORDINATE>::Gradient & G,
                          Writable<ORDINATE>                               & aorg,
-                         const Readable<bool>                             & used)
+                         const Readable<bool>                             & used,
+                         Writable<ORDINATE>                               & aerr)
                 {
                     Y_XML_Section_Attr(xml,"Fit::Run"," name='" << S.name << "'");
 
-                    assert(aorg.size() == used.size() );
+                    assert( aorg.size() == used.size() );
+                    assert( aorg.size() == aerr.size() );
 
                     size_t cycle=0;
                     //----------------------------------------------------------
@@ -213,6 +215,7 @@ namespace Yttrium
                     p   = pini;
                     p   = 0;
                     lam = lambda[p];
+                    { const ORDINATE _(-1); aerr.ld(_); }
                     ORDINATE     D2_ini = S.computeD2full(G,aorg,used);
                     const size_t dims   = aorg.size();   // total dimensions
                     const size_t nvar   = S.beta.size(); // known after computeD2full
@@ -247,7 +250,6 @@ namespace Yttrium
                             const ORDINATE dd = (Dm-Dp)/(h+h);
                             std::cerr << "descent[" << i << "]=" << dd << std::endl;
                         }
-                        //return false;
                     }
 
 
@@ -256,8 +258,7 @@ namespace Yttrium
                 COMPUTE_STEP:
                     //
                     //----------------------------------------------------------
-                    if(!getStep(sigma))
-                    {
+                    if(!getStep(sigma)) {
                         Y_XMLog(xml, "singular step");
                         return false;
                     }
@@ -317,7 +318,7 @@ namespace Yttrium
                     if( AlmostEqual<ORDINATE>::Are(D2_end,D2_ini))
                     {
                         Y_XMLog(xml, "converged!");
-                        return true;
+                        goto FINALIZE;
                     }
 
                     // upgrade
@@ -325,9 +326,13 @@ namespace Yttrium
                     lam = lambda[p];
                     D2_ini = S.computeD2full(G,aorg,used);
 
-                    // next cycle;
-                    //if(cycle>4) return false;
                     goto CYCLE;
+
+                FINALIZE:
+                    lam    = lambda[p=pmin];
+                    (void)S.computeD2full(G,aorg,used);
+                    errors(aerr,used,S);
+                    return true;
                 }
 
                 //! run a fit session wrapper
@@ -346,11 +351,12 @@ namespace Yttrium
                           FUNC                          & F,
                           GRAD                          & G,
                           Writable<ORDINATE>            & aorg,
-                          const Readable<bool>          & used)
+                          const Readable<bool>          & used,
+                          Writable<ORDINATE>            & aerr)
                 {
                     FWrapper<FUNC,ABSCISSA,ORDINATE> f(F);
                     GWrapper<GRAD,ABSCISSA,ORDINATE> g(G);
-                    return run(xml,S,f,g,aorg,used);
+                    return run(xml,S,f,g,aorg,used,aerr);
                 }
 
 
@@ -367,6 +373,10 @@ namespace Yttrium
                 //! compute scan line \param aorg original value \param S engine to scatter step
                 void setScan(const Readable<ORDINATE>         &aorg,
                              const AdjustableEngine<ORDINATE> &S) noexcept;
+
+                void errors(Writable<ORDINATE>               & aerr,
+                            const Readable<bool>             & used,
+                            const AdjustableEngine<ORDINATE> & sample);
 
 
                 //______________________________________________________________

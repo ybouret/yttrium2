@@ -78,9 +78,10 @@ void testFit(const Fit::Parameters &params)
     std::cerr << std::endl;
     std::cerr << "Testing Fit / " << System::RTTI::Name<T>() << std::endl;
 
-    const T zero(0);
+    const T      zero(0);
     Vector<T>    aorg(params->size(),zero);
     Vector<bool> used(params->size(),true);
+    Vector<T>    aerr(params->size(),zero);
 
     T & t0 = (aorg[ params["t0"].indx ]);
     T & D1 = (aorg[ params["D1"].indx ]);
@@ -166,7 +167,7 @@ void testFit(const Fit::Parameters &params)
     XMLog xml(std::cerr,verbose);
 
     std::cerr << std::endl;
-    fit.run_(xml,S1,getF<T>,getG<T>,aorg,used);
+    fit.run_(xml,S1,getF<T>,getG<T>,aorg,used,aerr);
     S1.save(S1.name + ".dat");
 
 
@@ -177,7 +178,7 @@ void testFit(const Fit::Parameters &params)
     t0 = t0_ini;
     D1 = D1_ini;
     D2 = D2_ini;
-    fit.run_(xml,S2,getF<T>,getG<T>,aorg,used);
+    fit.run_(xml,S2,getF<T>,getG<T>,aorg,used,aerr);
     S2.save(S2.name + ".dat");
 
 
@@ -186,7 +187,7 @@ void testFit(const Fit::Parameters &params)
     t0 = t0_ini;
     D1 = D1_ini;
     D2 = D2_ini;
-    fit.run_(xml,samples,getF<T>,getG<T>,aorg,used);
+    fit.run_(xml,samples,getF<T>,getG<T>,aorg,used,aerr);
 
     S1.save(S1.name + "-all.dat");
     S2.save(S2.name + "-all.dat");

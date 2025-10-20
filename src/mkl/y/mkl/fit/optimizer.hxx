@@ -103,8 +103,62 @@ void Optimizer<real_t>:: setScan(const Readable<real_t>         &aorg,
         aend[j] += aini[j];
     }
 
-    //std::cerr << "\taini = " << aini << std::endl;
-    //std::cerr << "\taend = " << aend << std::endl;
+
+}
+
+template <>
+void Optimizer<real_t>:: errors(Writable<real_t>               &aerr,
+                                const Readable<bool>           &used,
+                                const AdjustableEngine<real_t> &S)
+{
+    assert( used.size() == aerr.size() );
+    const size_t fullDims = aerr.size();
+    size_t       usedDims = fullDims;
+
+    for(size_t i=fullDims;i>0;--i)
+        if(!used[i]) --usedDims;
+
+    if(usedDims<=0)
+        return; // undefined
+
+    size_t dof  = S.count();
+    switch( Sign::Of(usedDims,dof) )
+    {
+        case Negative:
+            assert(usedDims<dof);
+            dof -= usedDims;
+            break;
+
+        case __Zero__: assert(usedDims==dof);
+            aerr.ld(zero);
+            return; // interpolation
+
+        case Positive: assert(usedDims>dof);
+            return; // undefined
+    }
+
+    assert( alpha.gotSameMetricsThan(S.alpha) );
+
+    alpha.assign(S.alpha);
+    if( !lu.build(alpha) )
+    {
+        throw Specific::Exception(CallSign,"unexpected singular covariance");
+    }
+
+    lu.inv(alpha,curv);
+
+    std::cerr << "alpha= " << S.alpha << std::endl;
+    std::cerr << "curv = " << curv    << std::endl;
+
+
+    const real_t sig2 = S.D2 / (fcpu_t)dof;
+    for(size_t i=fullDims;i>0;--i)
+    {
+        if(!used[i]) { aerr[i] = zero; continue; }
+        const real_t err2 = sig2 * curv[i][i];
+        aerr[i] = Sqrt<real_t>::Of(err2);
+    }
+    std::cerr << "aerr=" << aerr << std::endl;
 
 
 }

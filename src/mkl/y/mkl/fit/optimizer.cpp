@@ -1,7 +1,8 @@
 
 #include "y/mkl/fit/optimizer.hpp"
 #include "y/mkl/tao/1.hpp"
-
+#include "y/exception.hpp"
+#include "y/mkl/api/sqrt.hpp"
 
 namespace Yttrium
 {
