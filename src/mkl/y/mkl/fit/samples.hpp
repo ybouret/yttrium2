@@ -49,9 +49,11 @@ namespace Yttrium
                 //______________________________________________________________
                 //
                 //
-                // methods
+                // Methods
                 //
                 //______________________________________________________________
+
+                size_t width() const noexcept;
 
                 //! throw exception if multiple name is detected
                 static void ErrorMultipleName(const String &);
@@ -148,13 +150,15 @@ namespace Yttrium
                     a_global.ld(a_local);
                 }
 
+                
                 inline virtual
                 void display(XMLog                    & xml,
                              const Readable<ORDINATE> & arr,
                              const char * const         sfx) const
                 {
+                    const size_t w = width();
                     for(VNode *vn=vlist->head;vn;vn=vn->next)
-                        (**vn).display(xml,arr,sfx);
+                        (**vn).display(xml,arr,sfx,w);
                 }
 
                 inline virtual

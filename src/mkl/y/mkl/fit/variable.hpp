@@ -5,6 +5,7 @@
 
 #include "y/mkl/fit/parameter.hpp"
 #include "y/stream/xmlog.hpp"
+#include "y/format/justify.hpp"
 
 namespace Yttrium
 {
@@ -70,10 +71,13 @@ namespace Yttrium
                  \param sfx optional suffix
                  */
                 template <typename T> inline
-                void display(XMLog &xml, const Readable<T> &arr, const char * sfx=0) const
+                void display(XMLog             & xml,
+                             const Readable<T> & arr,
+                             const char *        sfx,
+                             const size_t        width) const
                 {
                     if(!sfx) sfx = "";
-                    Y_XMLog(xml,"\t" << global.name << sfx << " = " << arr[global.indx]);
+                    Y_XMLog(xml,"\t" << Justify(global.name,width,Justify::Right) << sfx << " = " << arr[global.indx]);
                 }
 
                 //______________________________________________________________

@@ -1,5 +1,6 @@
 #include "y/mkl/fit/variables.hpp"
 #include "y/exception.hpp"
+#include "y/core/utils.hpp"
 
 namespace Yttrium
 {
@@ -63,6 +64,15 @@ namespace Yttrium
                 const String _(id); return get(_);
             }
 
+            size_t Variables:: width() const noexcept
+            {
+                size_t w = 0;
+                for(ConstIterator it=db.begin();it!=db.end();++it)
+                {
+                    InSituMax(w, (**it).global.name.size() );
+                }
+                return w;
+            }
 
         }
 

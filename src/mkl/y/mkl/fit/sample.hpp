@@ -229,8 +229,9 @@ namespace Yttrium
                 inline virtual
                 void display(XMLog &xml, const Readable<ORDINATE> &arr, const char * const sfx) const
                 {
+                    const size_t w = vars.width();
                     for(Variables::ConstIterator iv=vars->begin();iv!=vars->end();++iv)
-                        (**iv).display(xml,arr,sfx);
+                        (**iv).display(xml,arr,sfx,w);
                 }
 
 

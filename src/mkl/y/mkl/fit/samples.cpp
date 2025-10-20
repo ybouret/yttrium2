@@ -1,5 +1,6 @@
 #include "y/mkl/fit/samples.hpp"
 #include "y/exception.hpp"
+#include "y/core/utils.hpp"
 
 namespace Yttrium
 {
@@ -41,6 +42,14 @@ namespace Yttrium
                     const Variable &var = **it; if(found(var)) continue;
                     vlist << var;
                 }
+            }
+
+            size_t SamplesCommon:: width() const noexcept
+            {
+                size_t w = 0;
+                for(VNode *vn=vlist->head;vn;vn=vn->next)
+                    InSituMax(w, (**vn).global.name.size() );
+                return w;
             }
 
 

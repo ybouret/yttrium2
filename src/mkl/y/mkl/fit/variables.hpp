@@ -115,7 +115,9 @@ namespace Yttrium
                     return get(uid);
                 }
 
-                
+                //! \return max global name length
+                size_t width() const noexcept;
+
 
 
 
