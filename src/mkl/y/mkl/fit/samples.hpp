@@ -168,6 +168,18 @@ namespace Yttrium
                     return res;
                 }
 
+                virtual void flatten(Matrix<ORDINATE>     &localMatrix,
+                                     const Readable<bool> &globalUsed) const noexcept
+                {
+                    const ORDINATE zero(0);
+                    size_t n = globalUsed.size();
+                    for(size_t i=n;i>0;--i)
+                    {
+                        if(globalUsed[i]) continue;
+                        localMatrix[i][i] = zero;
+                    }
+                }
+
                 inline
                 virtual ORDINATE computeD2(Function                 & F,
                                            const Readable<ORDINATE> & aorg)

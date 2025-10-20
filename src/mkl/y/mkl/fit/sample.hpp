@@ -245,6 +245,19 @@ namespace Yttrium
                     return res;
                 }
 
+                virtual void flatten(Matrix<ORDINATE>     &localMatrix,
+                                     const Readable<bool> &globalUsed) const noexcept
+                {
+                    const ORDINATE zero(0);
+                    for(Variables::ConstIterator iv=vars->begin();iv!=vars->end();++iv)
+                    {
+                        const Variable &v = **iv;
+                        if( globalUsed[ v.global.indx] ) continue;
+                        const size_t i = v.indx;
+                        localMatrix[i][i] = zero;
+                    }
+                }
+
                 //! quick save to file
                 /**
                  \param fileName file name

@@ -138,15 +138,24 @@ void Optimizer<real_t>:: errors(Writable<real_t>               &aerr,
 
     lu.inv(alpha,curv);
 
-    std::cerr << "alpha= " << S.alpha << std::endl;
-    std::cerr << "curv = " << curv    << std::endl;
+    std::cerr << "alpha = " << S.alpha << std::endl;
+    std::cerr << "curv0 = " << curv    << std::endl;
+    S.flatten(curv,used);
+    std::cerr << "curv  = " << curv    << std::endl;
+
 
     {
         const real_t sig2 = S.D2 / (fcpu_t)dof;
+        for(size_t i=curv.rows;i>0;--i)
+        {
+            const real_t err2 = sig2 * curv[i][i];
+            atry[i] = Sqrt<real_t>::Of(err2);
+        }
     }
 
 DONE:
     S.scatter(aerr,atry);
+    std::cerr << "aerr=" << aerr << std::endl;
 
 #if 0
     const size_t fullDims = aerr.size();

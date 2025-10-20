@@ -69,6 +69,10 @@ namespace Yttrium
                 virtual void scatter(Writable<ORDINATE>       &a_global,
                                      const Readable<ORDINATE> &a_local) const noexcept = 0;
 
+                //! zero diagonal of local matrix
+                virtual void flatten(Matrix<ORDINATE>     & localMatrix,
+                                     const Readable<bool> & globalUsed) const noexcept = 0;
+
                 //______________________________________________________________
                 //
                 //
