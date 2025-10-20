@@ -10,7 +10,7 @@ namespace Yttrium
 
             const char * const SamplesCommon:: CallSign = "Fit::Samples";
             
-            SamplesCommon:: SamplesCommon() noexcept
+            SamplesCommon:: SamplesCommon() noexcept : vlist()
             {
                 
             }

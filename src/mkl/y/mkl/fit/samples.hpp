@@ -7,12 +7,17 @@
 #include "y/mkl/fit/sample.hpp"
 #include "y/mkl/api/fcpu.hpp"
 
+#include "y/protean/solo/light/list.hpp"
+
 namespace Yttrium
 {
     namespace MKL
     {
         namespace Fit
         {
+            typedef Protean::SoloLightList<const Variable> VList;
+            typedef VList::NodeType                        VNode;
+
             //__________________________________________________________________
             //
             //
@@ -51,6 +56,9 @@ namespace Yttrium
                 //! throw exception if multiple name is detected
                 static void ErrorMultipleName(const String &);
 
+            protected:
+                VList vlist;
+                
             private:
                 Y_Disable_Copy_And_Assign(SamplesCommon); //!< discarding
             };
@@ -304,11 +312,14 @@ namespace Yttrium
             private:
                 Y_Disable_Copy_And_Assign(Samples); //!< discarding
 
+
                 //! initialize dynamic values \param nvar global variables
                 inline void initialize(const size_t nvar)
                 {
                     const ORDINATE zero(0);
                     const ORDINATE one(1);
+
+
 
                     beta.adjust(nvar,zero);
                     alpha.make(nvar,nvar);
