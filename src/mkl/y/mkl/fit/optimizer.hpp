@@ -11,6 +11,7 @@
 #include "y/mkl/api/fcpu.hpp"
 #include "y/stream/libc/output.hpp"
 #include "y/core/utils.hpp"
+#include "y/stream/xmlog.hpp"
 
 namespace Yttrium
 {
@@ -138,7 +139,8 @@ namespace Yttrium
 
 
                 template <typename ABSCISSA> inline
-                bool run(Adjustable<ABSCISSA,ORDINATE>                    & S,
+                bool run(XMLog                                            & xml,
+                         Adjustable<ABSCISSA,ORDINATE>                    & S,
                          typename Adjustable<ABSCISSA,ORDINATE>::Function & F,
                          typename Adjustable<ABSCISSA,ORDINATE>::Gradient & G,
                          Writable<ORDINATE>                               & aorg,
@@ -148,6 +150,7 @@ namespace Yttrium
 
                     assert(aorg.size() == used.size() );
 
+                    size_t cycle=0;
                     //----------------------------------------------------------
                     //
                     // first initialization
@@ -168,6 +171,8 @@ namespace Yttrium
                     // fetch metrics
                     //
                     //----------------------------------------------------------
+                CYCLE:
+                    ++cycle;
                     alpha.assign(S.alpha);
                     beta.ld(S.beta);
 
@@ -234,13 +239,23 @@ namespace Yttrium
                     std::cerr << "gamma=" << gamma << std::endl;
                     std::cerr << D2_ini << " -(" << sigma << ")*x+(" << gamma << ")*x*x" << std::endl;
 
+                    aorg.ld(aend);
+
+                    // test convergence
+
+                    if(cycle<=2)
+                    {
+                        D2_ini = S.computeD2full(G,aorg,used);
+                        goto CYCLE;
+                    }
 
 
                     return false;
                 }
 
                 template <typename ABSCISSA, typename FUNC, typename GRAD> inline
-                bool run_(Adjustable<ABSCISSA,ORDINATE> & S,
+                bool run_(XMLog                         & xml,
+                          Adjustable<ABSCISSA,ORDINATE> & S,
                           FUNC                          & F,
                           GRAD                          & G,
                           Writable<ORDINATE>            & aorg,
@@ -248,7 +263,7 @@ namespace Yttrium
                 {
                     FWrapper<FUNC,ABSCISSA,ORDINATE> f(F);
                     GWrapper<GRAD,ABSCISSA,ORDINATE> g(G);
-                    return run(S,f,g,aorg,used);
+                    return run(xml,S,f,g,aorg,used);
                 }
 
 

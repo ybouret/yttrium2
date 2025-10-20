@@ -153,15 +153,17 @@ void testFit(const Fit::Parameters &params)
 
 
     Fit::Optimizer<T> fit;
+    bool              verbose = true;
+    XMLog xml(std::cerr,verbose);
 
     std::cerr << std::endl;
-    fit.run_(S1,getF<T>,getG<T>,aorg,used);
+    fit.run_(xml,S1,getF<T>,getG<T>,aorg,used);
 
     std::cerr << std::endl;
-    fit.run_(S2,getF<T>,getG<T>,aorg,used);
+    fit.run_(xml,S2,getF<T>,getG<T>,aorg,used);
 
     std::cerr << std::endl;
-    fit.run_(samples,getF<T>,getG<T>,aorg,used);
+    fit.run_(xml,samples,getF<T>,getG<T>,aorg,used);
 
 
 }
