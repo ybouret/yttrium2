@@ -315,7 +315,7 @@ namespace Yttrium
                     // update and test convergence
                     aorg.ld(aend);
 
-                    if( AlmostEqual<ORDINATE>::Are(D2_end,D2_ini))
+                    if( AlmostEqual<ORDINATE>::Are(D2_end,D2_ini) )
                     {
                         Y_XMLog(xml, "converged!");
                         goto FINALIZE;
@@ -332,6 +332,7 @@ namespace Yttrium
                     lam    = lambda[p=pmin];
                     (void)S.computeD2full(G,aorg,used);
                     errors(aerr,used,S);
+                    S.display(xml,aerr, "_err");
                     return true;
                 }
 

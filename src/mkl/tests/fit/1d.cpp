@@ -170,7 +170,7 @@ void testFit(const Fit::Parameters &params)
     fit.run_(xml,S1,getF<T>,getG<T>,aorg,used,aerr);
     S1.save(S1.name + ".dat");
 
-    return;
+    //return;
 
     std::cerr << std::endl;
     t0 = t0_ini;
@@ -179,6 +179,7 @@ void testFit(const Fit::Parameters &params)
     fit.run_(xml,S2,getF<T>,getG<T>,aorg,used,aerr);
     S2.save(S2.name + ".dat");
 
+    return;
 
 
     std::cerr << std::endl;
