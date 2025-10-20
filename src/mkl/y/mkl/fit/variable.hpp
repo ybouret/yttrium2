@@ -59,6 +59,8 @@ namespace Yttrium
                 //! display
                 friend std::ostream & operator<<(std::ostream &, const Variable &);
 
+                //! check equality
+                friend bool operator==(const Variable &,const Variable &) noexcept;
 
                 
 

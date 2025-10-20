@@ -24,6 +24,26 @@ namespace Yttrium
             {
                 throw Specific::Exception(CallSign,"found multiple name '%s'", id.c_str());
             }
+
+            bool SamplesCommon:: found(const Variable &var) const noexcept
+            {
+                for(const VNode *vn=vlist->head;vn;vn=vn->next)
+                {
+                    if( **vn == var ) return true;
+                }
+                return false;
+            }
+
+            void SamplesCommon:: collect(const Variables &vars)
+            {
+                for(Variables::ConstIterator it=vars->begin();it!=vars->end();++it)
+                {
+                    const Variable &var = **it; if(found(var)) continue;
+                    vlist << var;
+                }
+            }
+
+
         }
 
     }

@@ -57,9 +57,11 @@ namespace Yttrium
                 static void ErrorMultipleName(const String &);
 
             protected:
-                VList vlist;
-                
+                VList vlist; //!< collected variables from individual sample
+                void collect(const Variables &);
+
             private:
+                bool found(const Variable &) const noexcept;
                 Y_Disable_Copy_And_Assign(SamplesCommon); //!< discarding
             };
 
@@ -319,7 +321,10 @@ namespace Yttrium
                     const ORDINATE zero(0);
                     const ORDINATE one(1);
 
-
+                    vlist.free();
+                    for(Iterator it=this->begin();it!=this->end();++it)
+                        collect( (**it).vars );
+                    std::cerr << "vlist=" << vlist << std::endl;
 
                     beta.adjust(nvar,zero);
                     alpha.make(nvar,nvar);
