@@ -26,6 +26,7 @@ include(CMakePrintHelpers)
 Y_Message("Project Settings")
 cmake_print_variables(PROJECT_SOURCE_DIR)
 cmake_print_variables(CMAKE_GENERATOR)
+cmake_print_variables(CMAKE_SIZEOF_VOID_P)
 
 ################################################################################
 ##
