@@ -111,5 +111,5 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Type_Moniker_Included
 

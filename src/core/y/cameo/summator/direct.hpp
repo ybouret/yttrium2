@@ -84,6 +84,6 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Cameo_DirectSummator_Included
 
 
