@@ -17,6 +17,26 @@
 using namespace Yttrium;
 using namespace MKL;
 
+
+template <typename T> static inline
+T getZ(const V2D<T> &X, const T radius, const V2D<T> &center)
+{
+    return radius - (X-center).norm();
+}
+
+template <typename T> static inline
+T getF(const V2D<T> &X, const Fit::Variables &vars, const Readable<T> &aorg)
+{
+    const Fit::Variable &_r = vars["r"];
+    const Fit::Variable &_x = vars["x"];
+    const Fit::Variable &_y = vars["y"];
+
+    const T      radius = aorg[_r.global.indx];
+    const V2D<T> center( aorg[_x.global.indx], aorg[_y.global.indx] );
+    return getZ<T>(X,radius,center);
+}
+
+
 template <typename T>
 class CircleData
 {
@@ -26,10 +46,13 @@ public:
 
     explicit CircleData(Random::Bits &ran, const T radius) :
     n( ran.in<size_t>(3,100) ),
-    p( WithAtLeast, n )
+    center( ran.symm<fcpu_t>() * 10, ran.symm<fcpu_t>() * 10),
+    p( WithAtLeast, n ),
+    z( WithAtLeast, n )
     {
-        const fcpu_t one(1);
-        const fcpu_t err(0.05);
+        static const fcpu_t one(1);
+        static const fcpu_t err(0.05);
+
 
         const T dtheta = Twice(Numeric<T>::PI) / (fcpu_t)n;
         for(size_t i=0;i<n;++i)
@@ -37,12 +60,14 @@ public:
             const fcpu_t theta = ((fcpu_t) i) * dtheta * ( one + err * ran.symm<fcpu_t>() );
             const fcpu_t r     = radius * ( one + err * ran.symm<fcpu_t>() );
             const VTX    v( r * std::cos(theta), r * std::sin(theta) );
-            p << v;
+            p << v+center;
         }
     }
 
     const size_t n;
+    const VTX    center;
     Vector<VTX>  p;
+    Vector<T>    z;
 
 private:
     Y_Disable_Copy_And_Assign(CircleData);
