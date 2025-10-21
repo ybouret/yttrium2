@@ -24,8 +24,8 @@ template <typename T>
 T getF(const T t, const Fit::Variables &vars, const Readable<T> &aorg)
 {
     const T zero(0);
-    const T &t0 = aorg[vars["t0"].global.indx];
-    const T &D  = aorg[vars["D"].global.indx];
+    const T &t0 = vars["t0"][aorg];
+    const T &D  = vars["D"][aorg];
 
     if(t<=t0) return zero;
     const T arg = D * (t-t0);
@@ -44,8 +44,8 @@ T getG(Writable<T> &dFda,
     const Fit::Variable &_t0 = vars["t0"];
     const Fit::Variable &_D  = vars["D"];
 
-    const T &t0 = aorg[_t0.global.indx];
-    const T &D  = aorg[_D.global.indx];
+    const T &t0 = _t0[aorg];
+    const T &D  = _D[aorg];
     T & dF_dt0  = dFda[_t0.indx];
     T & dF_dD   = dFda[_D.indx];
 

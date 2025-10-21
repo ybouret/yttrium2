@@ -61,6 +61,43 @@ namespace Yttrium
                 //! display
                 friend std::ostream & operator<<(std::ostream &, const Variable &);
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+
+                //! \param arr array \return arr[global.indx]
+                template <typename T> inline
+                T & operator[](Writable<T> &arr) const noexcept
+                {
+                    return arr[global.indx];
+                }
+
+                //! \param arr array \return arr[global.indx]
+                template <typename T> inline
+                const T & operator[](const Readable<T> &arr) const noexcept
+                {
+                    return arr[global.indx];
+                }
+
+                //! \param arr array \return arr[indx]
+                template <typename T> inline
+                T & operator()(Writable<T> &arr) const noexcept
+                {
+                    return arr[indx];
+                }
+
+                //! \param arr array \return arr[indx]
+                template <typename T> inline
+                const T & operator()(const Readable<T> &arr) const noexcept
+                {
+                    return arr[indx];
+                }
+
+
+
                 //! check equality
                 friend bool operator==(const Variable &,const Variable &) noexcept;
 
@@ -80,6 +117,9 @@ namespace Yttrium
                     if(!sfx) sfx = "";
                     Y_XMLog(xml,"\t" << Justify(global.name,width,Justify::Right) << sfx << " = " << arr[global.indx]);
                 }
+
+                
+
 
                 //______________________________________________________________
                 //

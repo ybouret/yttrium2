@@ -59,5 +59,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Justify_Included
 
