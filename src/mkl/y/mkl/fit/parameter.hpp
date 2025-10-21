@@ -65,7 +65,9 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
+
                 
+
 
                 //! \return true if no environnment variable, or the boolean value of the variable
                 bool queryEnv() const;
