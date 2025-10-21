@@ -13,6 +13,7 @@
 
 #include "y/mkl/fit/optimizer.hpp"
 
+#include "y/mkl/statistics/average.hpp"
 
 using namespace Yttrium;
 using namespace MKL;
@@ -46,15 +47,15 @@ public:
 
     explicit CircleData(Random::Bits &ran, const T radius) :
     n( ran.in<size_t>(3,100) ),
-    center( ran.symm<fcpu_t>() * 10, ran.symm<fcpu_t>() * 10),
     p( WithAtLeast, n ),
-    z( WithAtLeast, n )
+    z( WithAtLeast, n ),
+    g()
     {
         static const fcpu_t one(1);
         static const fcpu_t err(0.05);
 
-
-        const T dtheta = Twice(Numeric<T>::PI) / (fcpu_t)n;
+        const VTX center( ran.symm<fcpu_t>() * 10, ran.symm<fcpu_t>() * 10);
+        const T   dtheta = Twice(Numeric<T>::PI) / (fcpu_t)n;
         for(size_t i=0;i<n;++i)
         {
             const fcpu_t theta = ((fcpu_t) i) * dtheta * ( one + err * ran.symm<fcpu_t>() );
@@ -62,12 +63,15 @@ public:
             const VTX    v( r * std::cos(theta), r * std::sin(theta) );
             p << v+center;
         }
+
+        Statistics::Average<VTX> average;
+        Coerce(g) = average(p);
     }
 
     const size_t n;
-    const VTX    center;
     Vector<VTX>  p;
     Vector<T>    z;
+    const VTX    g;
 
 private:
     Y_Disable_Copy_And_Assign(CircleData);

@@ -55,7 +55,23 @@ namespace Yttrium
                         throw;
                     }
                 }
-                
+
+                template <typename ITER> inline
+                T operator()(ITER it, size_t n)
+                {
+                    Average &self = *this;
+                    free();
+                    while(n-- > 0) self << *(it++);
+                    return self();
+                }
+
+                template <typename SEQ> inline
+                T operator()(const SEQ &seq)
+                {
+                    return (*this)(seq.begin(),seq.size());
+                }
+
+
 
 
             private:
