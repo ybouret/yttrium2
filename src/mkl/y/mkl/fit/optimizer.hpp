@@ -190,6 +190,7 @@ namespace Yttrium
                  \param G   fit gradient
                  \param aorg in/out values
                  \param used flags to pin some variables
+                 \param aerr error estimates
                  \return something
                  */
                 template <typename ABSCISSA> inline
@@ -344,6 +345,7 @@ namespace Yttrium
                  \param G   fit gradient
                  \param aorg in/out values
                  \param used flags to pin some variables
+                 \param aerr error estimates
                  \return something
                  */
                 template <typename ABSCISSA, typename FUNC, typename GRAD> inline
@@ -375,6 +377,12 @@ namespace Yttrium
                 void setScan(const Readable<ORDINATE>         &aorg,
                              const AdjustableEngine<ORDINATE> &S) noexcept;
 
+                //! compute errors from a last computeD2full
+                /**
+                 \param aerr errors, initialized to -1
+                 \param used flags
+                 \param sample engine part of a sample
+                 */
                 void errors(Writable<ORDINATE>               & aerr,
                             const Readable<bool>             & used,
                             const AdjustableEngine<ORDINATE> & sample);

@@ -53,7 +53,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-                size_t width() const noexcept;
+                size_t width() const noexcept; //!< \return max name length
 
                 //! throw exception if multiple name is detected
                 static void ErrorMultipleName(const String &);

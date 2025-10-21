@@ -69,6 +69,7 @@ namespace Yttrium
                  \param xml output
                  \param arr values
                  \param sfx optional suffix
+                 \param width optional alignment width
                  */
                 template <typename T> inline
                 void display(XMLog             & xml,
