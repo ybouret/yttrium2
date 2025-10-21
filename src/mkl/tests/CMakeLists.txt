@@ -7,6 +7,7 @@ interp
 drvs
 ode
 fit
+statistics
 )
 Y_LinkLibraries(test-mkl y-mkl)
 
@@ -44,4 +45,5 @@ Y_UTEST(ode:expl)
 Y_UTEST(fit:1d)
 Y_UTEST(fit:2d)
 
+Y_UTEST(statistics:average)
 
