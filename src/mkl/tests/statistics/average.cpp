@@ -27,7 +27,7 @@ void TestAverage(Random::Bits &ran)
     {
         average << Gen<T>::New(ran);
     }
-    std::cerr << "count=" << average.size() << std::endl;
+    std::cerr << average() << std::endl;
 
 }
 

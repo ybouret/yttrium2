@@ -41,6 +41,21 @@ namespace Yttrium
                     return *this;
                 }
 
+                inline T operator()(void)
+                {
+                    try {
+                        if(nadd<=0) return *zero;
+                        const fcpu_t denom = (fcpu_t)nadd;
+                        ConstType    numer = xadd.sum();
+                        return numer/denom;
+                    }
+                    catch(...)
+                    {
+                        free();
+                        throw;
+                    }
+                }
+                
 
 
             private:
