@@ -56,6 +56,18 @@ void TestDescriptive(Random::Bits &ran)
     std::cerr << "v_adev=" << v_adev << std::endl;
     std::cerr << "l_adev=" << l_adev << std::endl;
 
+    const T v_skew = sd.skewness(v,v_ave,v_sdev);
+    const T l_skew = sd.skewness(l,l_ave,l_sdev);
+
+    std::cerr << "v_skew=" << v_skew << std::endl;
+    std::cerr << "l_skew=" << l_skew << std::endl;
+
+    const T v_kurt = sd.kurtosis(v,v_ave,v_sdev);
+    const T l_kurt = sd.kurtosis(l,l_ave,l_sdev);
+
+    std::cerr << "v_kurt=" << v_kurt << std::endl;
+    std::cerr << "l_kurt=" << l_kurt << std::endl;
+
 }
 
 

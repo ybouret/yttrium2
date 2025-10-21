@@ -26,7 +26,7 @@ namespace Yttrium
                 typedef typename FCPU<T>::Type fcpu_t;
                 Y_Args_Declare(T,Type);
 
-                inline explicit Descriptive() : xadd(), zero() {}
+                inline explicit Descriptive() : xadd(), zero(), three(3) {}
                 inline virtual ~Descriptive() noexcept {}
 
 
@@ -97,8 +97,52 @@ namespace Yttrium
                     return absdev(seq.begin(),seq.size(),ave);
                 }
 
+                template <typename ITER> inline
+                T skewness(ITER it, size_t n, ParamType ave, ParamType sig)
+                {
+                    if(n<=1) return *zero;
+                    ConstType denom = (fcpu_t)n;
+                    xadd.ldz();
+                    while(n-- > 0)
+                    {
+                        ConstType arg = (*(it++)-ave)/sig;
+                        ConstType arg3 = arg*arg*arg;
+                        xadd << arg3;
+                    }
+                    return xadd.sum()/denom;
+                }
+
+                template <typename SEQ> inline
+                T skewness(const SEQ &seq, ParamType ave, ParamType sig)
+                {
+                    return skewness(seq.begin(),seq.size(),ave,sig);
+                }
+
+                template <typename ITER> inline
+                T kurtosis(ITER it, size_t n, ParamType ave, ParamType sig)
+                {
+                    if(n<=1) return *zero;
+                    ConstType denom = (fcpu_t)n;
+                    xadd.ldz();
+                    while(n-- > 0)
+                    {
+                        ConstType arg  = (*(it++)-ave)/sig;
+                        ConstType arg2 = arg*arg;
+                        ConstType arg4 = arg2*arg2;
+                        xadd << arg4;
+                    }
+                    return xadd.sum()/denom - *three;
+                }
+
+                template <typename SEQ> inline
+                T kurtosis(const SEQ &seq, ParamType ave, ParamType sig)
+                {
+                    return kurtosis(seq.begin(),seq.size(),ave,sig);
+                }
+
                 Cameo::Addition<T>               xadd;
                 const Static::Moniker<ConstType> zero;
+                const Static::Moniker<ConstType> three;
 
             private:
                 Y_Disable_Copy_And_Assign(Descriptive);
