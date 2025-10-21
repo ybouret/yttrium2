@@ -50,6 +50,12 @@ void TestDescriptive(Random::Bits &ran)
     std::cerr << "v_sdev=" << v_sdev << std::endl;
     std::cerr << "l_sdev=" << l_sdev << std::endl;
 
+    const T v_adev = sd.absdev(v,v_ave);
+    const T l_adev = sd.absdev(l,l_ave);
+
+    std::cerr << "v_adev=" << v_adev << std::endl;
+    std::cerr << "l_adev=" << l_adev << std::endl;
+
 }
 
 
