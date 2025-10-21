@@ -42,4 +42,6 @@ Y_UTEST(ode:rk4)
 Y_UTEST(ode:expl)
 
 Y_UTEST(fit:1d)
+Y_UTEST(fit:2d)
+
 

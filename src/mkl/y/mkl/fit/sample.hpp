@@ -285,8 +285,8 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 const Readable<ABSCISSA> & X;    //!< input  abscissae
-                const Readable<ABSCISSA> & Y;    //!< input  ordinates
-                Writable<ABSCISSA>       & Yf;   //!< output ordinates
+                const Readable<ORDINATE> & Y;    //!< input  ordinates
+                Writable<ORDINATE>       & Yf;   //!< output ordinates
                 Variables                  vars; //!< fitting variables
                 const ORDINATE             half; //!< 0.5
 

@@ -35,5 +35,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(ode_expl);
     
     Y_UTEST(fit_1d);
+    Y_UTEST(fit_2d);
+
 }
 Y_UTEST_EXEC()
