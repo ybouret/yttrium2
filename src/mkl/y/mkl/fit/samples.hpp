@@ -240,7 +240,7 @@ namespace Yttrium
                         total += n;
                         xadd << w * sample.computeD2full(F,aorg,used);
                     }
-                    assert(this->size() == weight.size() );
+                    assert( this->size() == weight.size() );
 
                     //----------------------------------------------------------
                     //
