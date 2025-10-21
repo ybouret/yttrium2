@@ -266,7 +266,8 @@ namespace Yttrium
 
 
 #include "y/mkl/xreal.hpp"
-#include "y/mkl/v3d.hpp"
+#include "y/mkl/v4d.hpp"
+#include "y/mkl/complex.hpp"
 
 namespace Yttrium
 {
@@ -314,8 +315,12 @@ namespace Yttrium
 
             Y_RTTI(V2D<float>);
             Y_RTTI(V2D<double>);
+
             Y_RTTI(V3D<float>);
             Y_RTTI(V3D<double>);
+
+            Y_RTTI(Complex<float>);
+            Y_RTTI(Complex<double>);
         }
     }
 

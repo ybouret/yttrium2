@@ -1,6 +1,7 @@
 #if defined(_MSC_VER)
 #pragma warning ( disable : 4464 )
 #endif
+#include "../../core/tests/main.hpp"
 
 #include "y/mkl/fit/samples.hpp"
 #include "y/utest/run.hpp"
@@ -12,7 +13,6 @@
 
 #include "y/mkl/fit/optimizer.hpp"
 
-#include "../../core/tests/main.hpp"
 
 using namespace Yttrium;
 using namespace MKL;
