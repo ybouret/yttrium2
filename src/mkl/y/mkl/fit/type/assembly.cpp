@@ -22,13 +22,8 @@ namespace Yttrium
                 InSituMax( Coerce(maxNameSize), ent.name.size() );
             }
 
-            void Assembly:: clear() noexcept
-            {
-                Coerce(maxNameSize) = 0;
-                clear_();
-            }
-
             
+
 
         }
     }

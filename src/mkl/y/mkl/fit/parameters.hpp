@@ -73,7 +73,6 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(Parameters); //!< discaring
                 Y_Ingress_Decl();                      //!< helper
                 Parameters & grow(const Parameter::Pointer &); //!< \return *this*
-                virtual void clear_() noexcept;
                 
                 //______________________________________________________________
                 //

@@ -70,7 +70,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Variables : public Ingress<const VariableDB>
+            class Variables : public Ingress<const VariableDB>, public Assembly
             {
             public:
                 //______________________________________________________________
@@ -115,16 +115,13 @@ namespace Yttrium
                     return get(uid);
                 }
 
-                //! \return max global name length
-                size_t width() const noexcept;
-
-
-
+                
 
             private:
                 Y_Disable_Copy_And_Assign(Variables); //!< discarding
                 Y_Ingress_Decl();                     //!< helper
 
+                
                 //______________________________________________________________
                 //
                 //

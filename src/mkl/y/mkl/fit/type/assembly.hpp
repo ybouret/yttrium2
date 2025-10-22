@@ -44,7 +44,6 @@ namespace Yttrium
             protected:
                 void admit(const Entity &) noexcept; //!< register
             public:
-                void clear() noexcept;               //!< cleanup
 
                 //______________________________________________________________
                 //
@@ -56,7 +55,6 @@ namespace Yttrium
 
             private:
                 Y_Disable_Copy_And_Assign(Assembly); //!< discarding
-                virtual void clear_() noexcept = 0;  //!< removal of entities
             };
 
         }

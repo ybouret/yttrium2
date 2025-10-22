@@ -27,12 +27,16 @@ namespace Yttrium
 
             const char * const Variables:: CallSign = "Fit::Variables";
 
+            
+
             Variables & Variables:: operator<<(const Parameter &p)
             {
                 const Variable::Pointer var = new Variable(p.name,db.size()+1,p);
+
                 if(!db.insert(var))
                     throw Specific::Exception(CallSign,"multiple '%s'",var->name.c_str());
-                
+
+                admit(*var);
                 return *this;
             }
 
@@ -42,6 +46,8 @@ namespace Yttrium
                 const Variable::Pointer var = new Variable(a.target,db.size()+1,a.source);
                 if(!db.insert(var))
                     throw Specific::Exception(CallSign,"multiple '%s' (alias '%s')",var->name.c_str(), a.source.name.c_str());
+
+                admit(*var);
                 return *this;
             }
 
@@ -64,15 +70,7 @@ namespace Yttrium
                 const String _(id); return get(_);
             }
 
-            size_t Variables:: width() const noexcept
-            {
-                size_t w = 0;
-                for(ConstIterator it=db.begin();it!=db.end();++it)
-                {
-                    InSituMax(w, (**it).global.name.size() );
-                }
-                return w;
-            }
+            
 
         }
 

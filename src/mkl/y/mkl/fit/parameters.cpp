@@ -56,10 +56,7 @@ namespace Yttrium
                 }
             }
 
-            void Parameters:: clear_() noexcept
-            {
-                db.free();
-            }
+            
         }
     }
 
