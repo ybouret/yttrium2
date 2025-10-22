@@ -14,14 +14,33 @@ namespace Yttrium
 
         namespace Statistics
         {
-
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! flexible average computation
+            //
+            //
+            //__________________________________________________________________
             template <typename T>
             class Average  : public Recyclable
             {
             public:
-                typedef typename FCPU<T>::Type fcpu_t;
-                Y_Args_Declare(T,Type);
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                typedef typename FCPU<T>::Type fcpu_t; //!< alias
+                Y_Args_Declare(T,Type);                //!< aliases
 
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
                 inline explicit Average() :
                 Recyclable(),
                 xadd(),
@@ -31,9 +50,23 @@ namespace Yttrium
 
                 inline virtual ~Average() noexcept {}
 
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
                 inline virtual size_t size() const noexcept { return nadd; }
                 inline virtual void   free() noexcept { xadd.ldz(); nadd = 0; }
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+
+                //! append data \param args value \return *this
                 inline Average & operator<<(ParamType args)
                 {
                     xadd << args;
@@ -41,6 +74,7 @@ namespace Yttrium
                     return *this;
                 }
 
+                //! compute average from current state \return averaged values
                 inline T operator()(void)
                 {
                     try {
@@ -56,6 +90,7 @@ namespace Yttrium
                     }
                 }
 
+                //! \param it iterator \param n items \return range average
                 template <typename ITER> inline
                 T operator()(ITER it, size_t n)
                 {
@@ -65,6 +100,7 @@ namespace Yttrium
                     return self();
                 }
 
+                //! \param seq sequence-like \return sequence average
                 template <typename SEQ> inline
                 T operator()(const SEQ &seq)
                 {
@@ -75,11 +111,11 @@ namespace Yttrium
 
 
             private:
-                Y_Disable_Copy_And_Assign(Average);
-                Cameo::Addition<T>       xadd;
-                size_t                   nadd;
+                Y_Disable_Copy_And_Assign(Average); //!< discarding
+                Cameo::Addition<T>       xadd;      //!< inner addition
+                size_t                   nadd;      //!< current count
             public:
-                const Static::Moniker<T> zero;
+                const Static::Moniker<T> zero;      //!< zero value
 
             };
 

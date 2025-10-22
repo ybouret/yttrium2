@@ -12,21 +12,46 @@ namespace Yttrium
         namespace Fit
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! interface to display assembly of entities
+            //
+            //
+            //__________________________________________________________________
             class Assembly
             {
             public:
-                explicit Assembly() noexcept;
-                virtual ~Assembly() noexcept;
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+                explicit Assembly() noexcept; //!< setup
+                virtual ~Assembly() noexcept; //!< cleanup
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+                void admit(const Entity &) noexcept; //!< register
+                void clear() noexcept;               //!< cleanup
 
-                void admit(const Entity &) noexcept;
-                void clear() noexcept;
-
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
                 const size_t maxNameSize; //!< max name size
 
             private:
-                Y_Disable_Copy_And_Assign(Assembly);
-                virtual void clear_() noexcept = 0;
+                Y_Disable_Copy_And_Assign(Assembly); //!< discarding
+                virtual void clear_() noexcept = 0;  //!< removal of entities
             };
 
         }

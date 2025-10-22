@@ -19,17 +19,46 @@ namespace Yttrium
         namespace Statistics
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Descriptive values
+            //
+            //
+            //__________________________________________________________________
             template <typename T>
             class Descriptive
             {
             public:
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
                 typedef typename FCPU<T>::Type fcpu_t;
                 Y_Args_Declare(T,Type);
 
-                inline explicit Descriptive() : xadd(), zero(), three(3) {}
-                inline virtual ~Descriptive() noexcept {}
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                inline explicit Descriptive() : xadd(), zero(), three(3) {} //!< setup
+                inline virtual ~Descriptive() noexcept {}                   //!< cleanup
 
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+
+                //! \param it iterator \param n items \return range average
                 template <typename ITER> inline
                 T average(ITER it, size_t n)
                 {
@@ -40,9 +69,12 @@ namespace Yttrium
                     return xadd.sum()/denom;
                 }
 
+                //! \param seq sequence like \return sequence average
                 template <typename SEQ> inline
                 T average(const SEQ &seq) { return average(seq.begin(),seq.size()); }
 
+
+                //! \param it iterator \param n items \return range variance
                 template <typename ITER> inline
                 T variance(ITER it, size_t n, ParamType ave)
                 {
