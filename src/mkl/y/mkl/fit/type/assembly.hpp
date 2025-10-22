@@ -29,7 +29,10 @@ namespace Yttrium
                 // C++
                 //
                 //______________________________________________________________
+            protected:
                 explicit Assembly() noexcept; //!< setup
+
+            public:
                 virtual ~Assembly() noexcept; //!< cleanup
 
                 //______________________________________________________________
@@ -38,7 +41,9 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
+            protected:
                 void admit(const Entity &) noexcept; //!< register
+            public:
                 void clear() noexcept;               //!< cleanup
 
                 //______________________________________________________________

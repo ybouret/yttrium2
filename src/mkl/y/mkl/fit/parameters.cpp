@@ -25,6 +25,7 @@ namespace Yttrium
             {
                 if(!db.insert(p))
                     throw Specific::Exception(CallSign,"multiple parameter '%s'", p->name.c_str());
+                admit(*p);
                 return *this;
             }
 
@@ -53,6 +54,11 @@ namespace Yttrium
                     const Parameter &p = **it;
                     used[p.indx] = p.queryEnv();
                 }
+            }
+
+            void Parameters:: clear_() noexcept
+            {
+                db.free();
             }
         }
     }

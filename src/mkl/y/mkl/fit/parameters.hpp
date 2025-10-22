@@ -6,6 +6,7 @@
 
 #include "y/mkl/fit/parameter.hpp"
 #include "y/container/associative/suffix/set.hpp"
+#include "y/mkl/fit/type/assembly.hpp"
 
 namespace Yttrium
 {
@@ -24,7 +25,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Parameters : public Ingress< const ParameterDB >
+            class Parameters : public Ingress< const ParameterDB >, public Assembly
             {
             public:
                 //______________________________________________________________
@@ -72,7 +73,8 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(Parameters); //!< discaring
                 Y_Ingress_Decl();                      //!< helper
                 Parameters & grow(const Parameter::Pointer &); //!< \return *this*
-
+                virtual void clear_() noexcept;
+                
                 //______________________________________________________________
                 //
                 //
