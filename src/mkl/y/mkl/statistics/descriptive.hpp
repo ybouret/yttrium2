@@ -37,8 +37,8 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
-                typedef typename FCPU<T>::Type fcpu_t;
-                Y_Args_Declare(T,Type);
+                typedef typename FCPU<T>::Type fcpu_t; //!< alias
+                Y_Args_Declare(T,Type);                //!< aliases
 
                 //______________________________________________________________
                 //
@@ -46,7 +46,6 @@ namespace Yttrium
                 // C++
                 //
                 //______________________________________________________________
-
                 inline explicit Descriptive() : xadd(), zero(), three(3) {} //!< setup
                 inline virtual ~Descriptive() noexcept {}                   //!< cleanup
 
@@ -74,7 +73,7 @@ namespace Yttrium
                 T average(const SEQ &seq) { return average(seq.begin(),seq.size()); }
 
 
-                //! \param it iterator \param n items \return range variance
+                //! \param it iterator \param n items \param ave average \return range variance
                 template <typename ITER> inline
                 T variance(ITER it, size_t n, ParamType ave)
                 {
@@ -88,13 +87,14 @@ namespace Yttrium
                     }
                     return xadd.sum()/denom;
                 }
-
+                //! \param seq sequence like \param ave average \return sequence variance
                 template <typename SEQ> inline
                 T variance(const SEQ &seq, ParamType ave)
                 {
                     return variance(seq.begin(),seq.size(),ave);
                 }
 
+                //! \param it iterator \param n items \param ave average \return range standard deviation
                 template <typename ITER> inline
                 T stddev(ITER it, size_t n, ParamType ave)
                 {
@@ -102,6 +102,7 @@ namespace Yttrium
                     return Sqrt<T>::Of(var);
                 }
 
+                //! \param seq sequence like \param ave average \return sequence standard deviation
                 template <typename SEQ> inline
                 T stddev(const SEQ &seq, ParamType ave)
                 {
@@ -109,6 +110,7 @@ namespace Yttrium
                     return Sqrt<T>::Of(var);
                 }
 
+                //! \param it iterator \param n items \param ave average \return range absolute deviation
                 template <typename ITER> inline
                 T absdev(ITER it, size_t n, ParamType ave)
                 {
@@ -123,12 +125,14 @@ namespace Yttrium
                     return xadd.sum()/denom;
                 }
 
+                //! \param seq sequence like \param ave average \return sequence absolute deviation
                 template <typename SEQ> inline
                 T absdev(const SEQ &seq, ParamType ave)
                 {
                     return absdev(seq.begin(),seq.size(),ave);
                 }
 
+                //! \param it iterator \param n items \param ave average \param sig standard deviation \return range skenwess
                 template <typename ITER> inline
                 T skewness(ITER it, size_t n, ParamType ave, ParamType sig)
                 {
@@ -143,13 +147,14 @@ namespace Yttrium
                     }
                     return xadd.sum()/denom;
                 }
-
+                //! \param seq sequence like \param ave average \param sig standard deviation \return sequence skenwess
                 template <typename SEQ> inline
                 T skewness(const SEQ &seq, ParamType ave, ParamType sig)
                 {
                     return skewness(seq.begin(),seq.size(),ave,sig);
                 }
 
+                //! \param it iterator \param n items \param ave average \param sig standard deviation \return range kurtosis
                 template <typename ITER> inline
                 T kurtosis(ITER it, size_t n, ParamType ave, ParamType sig)
                 {
@@ -166,18 +171,25 @@ namespace Yttrium
                     return xadd.sum()/denom - *three;
                 }
 
+                //! \param seq sequence like \param ave average \param sig standard deviation \return sequence kurtosis
                 template <typename SEQ> inline
                 T kurtosis(const SEQ &seq, ParamType ave, ParamType sig)
                 {
                     return kurtosis(seq.begin(),seq.size(),ave,sig);
                 }
 
-                Cameo::Addition<T>               xadd;
-                const Static::Moniker<ConstType> zero;
-                const Static::Moniker<ConstType> three;
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                Cameo::Addition<T>               xadd;  //!< inner additions
+                const Static::Moniker<ConstType> zero;  //!< zero
+                const Static::Moniker<ConstType> three; //!< three
 
             private:
-                Y_Disable_Copy_And_Assign(Descriptive);
+                Y_Disable_Copy_And_Assign(Descriptive); //!< discarding
             };
         }
 

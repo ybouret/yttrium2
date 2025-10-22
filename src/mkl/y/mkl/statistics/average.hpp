@@ -23,7 +23,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             template <typename T>
-            class Average  : public Recyclable
+            class Average  : public Container, public Recyclable
             {
             public:
                 //______________________________________________________________
@@ -42,6 +42,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 inline explicit Average() :
+                Container(),
                 Recyclable(),
                 xadd(),
                 nadd(0),
