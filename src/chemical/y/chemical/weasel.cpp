@@ -81,7 +81,7 @@ namespace Yttrium
             {
                 // check table id
                 for(DiffusionCoefficientsDB::Iterator it=code->dtable.begin(); it != code->dtable.end(); ++it)
-                    volatile XCode _ = parseFormula(it->key);
+                    volatile XCode _( parseFormula(it->key) );
                 
             }
             catch(...)
