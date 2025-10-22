@@ -124,7 +124,9 @@ if(Y_SunOS)
 endif()
 
 if(Y_Windows)
-
+	if(Y32)
+		set(Y_Machine "i686")
+	endif()
 endif()
 
 
