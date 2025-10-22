@@ -25,7 +25,7 @@ void TestDescriptive(Random::Bits &ran)
     Vector<T> v;
     List<T>   l;
 
-    for(size_t i = ran.leq(100);i>0;--i)
+    for(size_t i = ran.leq<size_t>(100);i>0;--i)
     {
         const T x = Gen<T>::New(ran);
         v << x;

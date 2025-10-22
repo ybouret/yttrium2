@@ -52,7 +52,7 @@ public:
     g()
     {
         static const fcpu_t one(1);
-        static const fcpu_t err(0.05);
+        static const fcpu_t err(0.05f);
 
         const VTX center( ran.symm<fcpu_t>() * 10, ran.symm<fcpu_t>() * 10);
         const T   dtheta = Twice(Numeric<T>::PI) / (fcpu_t)n;
