@@ -41,6 +41,8 @@ namespace Yttrium
                 // C++
                 //
                 //______________________________________________________________
+
+                //! setup
                 inline explicit Average() :
                 Container(),
                 Recyclable(),
@@ -49,6 +51,7 @@ namespace Yttrium
                 zero()
                 {}
 
+                //! cleanup
                 inline virtual ~Average() noexcept {}
 
                 //______________________________________________________________
