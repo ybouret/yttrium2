@@ -68,7 +68,7 @@ public:
 		assert(a0.isSquare());
 		assert(v.gotSameMetricsThan(a0));
 		assert(d.size() == a0.rows);
-		typedef typename FCPU<real_t>::Type fcpu_t;
+		typedef FCPU<real_t>::Type fcpu_t;
 
 		// initialize
 		const size_t n = a0.rows; prepare(n);
