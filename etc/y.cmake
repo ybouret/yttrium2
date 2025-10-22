@@ -93,8 +93,15 @@ endif()
 cmake_print_variables(CMAKE_SYSTEM_PROCESSOR)
 
 string( TOLOWER "${CMAKE_SYSTEM_NAME}"      Y_Platform)
-string( TOLOWER "${CMAKE_SYSTEM_PROCESSOR}" Y_Machine)
 cmake_print_variables(Y_Platform)
+
+
+string( TOLOWER "${CMAKE_SYSTEM_PROCESSOR}" Y_Machine)
+
+if(Y_SunOS)
+	set(Y_Machine "i86pc")
+endif()
+
 cmake_print_variables(Y_Machine)
 
 
