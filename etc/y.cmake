@@ -28,6 +28,23 @@ cmake_print_variables(PROJECT_SOURCE_DIR)
 cmake_print_variables(CMAKE_GENERATOR)
 cmake_print_variables(CMAKE_SIZEOF_VOID_P)
 
+set(Y_KNOWN_BITS OFF)
+
+if( "4" STREQUAL "${CMAKE_SIZEOF_VOID_P}")
+	set(Y_KNOWN_BITS ON)
+	set(Y32 ON)
+endif()
+
+if( "8" STREQUAL "${CMAKE_SIZEOF_VOID_P}")
+	set(Y_KNOWN_BITS ON)
+	set(Y64 ON)
+endif()
+
+if(NOT Y_KNOWN_BITS)
+	message( FATAL_ERROR "unknown sizeof(void*)" )
+endif()
+
+
 ################################################################################
 ##
 ##
@@ -71,16 +88,20 @@ endif()
 Y_Message("Checking Platforms")
 cmake_print_variables(CMAKE_SYSTEM_NAME)
 
-if( "Linux" STREQUAL "${CMAKE_SYSTEM_NAME}")
+if( "Linux" STREQUAL "${CMAKE_SYSTEM_NAME}" )
 	set(Y_Linux ON)
 endif()
 
-if( "FreeBSD" STREQUAL "${CMAKE_SYSTEM_NAME}")
+if( "FreeBSD" STREQUAL "${CMAKE_SYSTEM_NAME}" )
 	set(Y_FreeBSD ON)
 endif()
 
-if( "SunOS" STREQUAL "${CMAKE_SYSTEM_NAME}")
+if( "SunOS" STREQUAL "${CMAKE_SYSTEM_NAME}" )
 	set(Y_SunOS ON)
+endif()
+
+if( "Windows" STREQUAL "${CMAKE_SYSTEM_NAME}" )
+	set(Y_Windows ON)
 endif()
 
 ################################################################################
@@ -101,6 +122,11 @@ string( TOLOWER "${CMAKE_SYSTEM_PROCESSOR}" Y_Machine)
 if(Y_SunOS)
 	set(Y_Machine "i86pc")
 endif()
+
+if(Y_Windows)
+
+endif()
+
 
 cmake_print_variables(Y_Machine)
 
