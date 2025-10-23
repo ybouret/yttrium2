@@ -70,15 +70,37 @@ void TestDescriptive(Random::Bits &ran)
 
 }
 
+#include "y/random/gaussian.hpp"
+template <typename T>
+static inline void TestNormal(Random::SharedBits &bits)
+{
+    std::cerr << std::endl;
+    std::cerr << "TestNormal Metrics" << std::endl;
+    Random::Gaussian<T> gran(bits);
+    Vector<T>           v;
+    for(size_t i=10000;i>0;--i)
+    {
+        v << gran();
+    }
+    Statistics::Descriptive<T> sd;
+    const T ave  = sd.average(v);          std::cerr << "ave = " << std::setw(15) << ave << std::endl;
+    const T sig  = sd.stddev(v,ave);       std::cerr << "sig = " << std::setw(15) << sig << std::endl;
+    const T skw  = sd.skewness(v,ave,sig); std::cerr << "skw = " << std::setw(15) << skw << std::endl;
+    const T krt  = sd.kurtosis(v,ave,sig); std::cerr << "krt = " << std::setw(15) << krt << std::endl;
+
+}
 
 Y_UTEST(statistics_descriptive)
 {
 
-    Random::MT19937 ran;
+    Random::SharedBits bits = new Random::MT19937();
 
-    TestDescriptive<float>(ran);
+    TestDescriptive<float>(*bits);
+    TestDescriptive< XReal<float> >(*bits);
 
-    TestDescriptive< XReal<float> >(ran);
+    TestNormal<float>(bits);
+    TestNormal<double>(bits);
+
 
 }
 Y_UDONE()
