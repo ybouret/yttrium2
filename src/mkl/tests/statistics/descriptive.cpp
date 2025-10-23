@@ -78,7 +78,7 @@ static inline void TestNormal(Random::SharedBits &bits)
     std::cerr << "TestNormal Metrics" << std::endl;
     Random::Gaussian<T> gran(bits);
     Vector<T>           v;
-    for(size_t i=10000;i>0;--i)
+    for(size_t i=100000;i>0;--i)
     {
         v << gran();
     }
