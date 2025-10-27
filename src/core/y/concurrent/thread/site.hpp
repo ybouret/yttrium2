@@ -11,29 +11,69 @@ namespace Yttrium
 {
     namespace Concurrent
     {
-        typedef Protean::BareHeavyList<size_t> PList;
-        typedef PList::NodeType                PNode;
+        typedef Protean::BareHeavyList<size_t> PList; //!< alias
+        typedef PList::NodeType                PNode; //!< alias
 
-
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Site for processor(s)
+        //
+        //
+        //______________________________________________________________________
         class Site : public Ingress<const PList>
         {
         public:
-            static const char * const Y_NUM_THREADS;
-            
-            Site();
-            Site(const String &);
-            Site(const Site &);
-            Site & operator=(const Site &);
-            virtual ~Site() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const char * const CallSign;        //!< "Concurrent::Site"
+            static const char * const Y_NUM_THREADS;   //!< environment variable name
+            static const char         COMMA = ',';
+            static const char         COLON = ':';
+
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            Site(); //!< setup to hardware or parsed environment variable if found
+
+            //! setup linear case
+            /**
+             \param nprocs number of processors >= 1
+             \param offset first processor index
+             \param stride stride between processors >= 1
+             */
+            Site(const size_t nprocs, const size_t offset=0, const size_t stride=1);
+            Site(const String &);           //!< parse
+            Site(const Site &);             //!< duplicate
+            Site & operator=(const Site &); //!< duplicate/swap
+            virtual ~Site() noexcept;       //!< cleanup
 
         private:
             Y_Ingress_Decl();
             PList plist;
 
-            void parse(const String &);
+            void parse(const String &); //!< parse string
+
+            //! setup linear cases
+            /**
+             \param nprocs number of processors >= 1
+             \param offset first processor index
+             \param stride stride between processors >= 1
+             */
             void setup(const size_t nprocs,
                        const size_t offset,
                        const size_t stride);
+
+            void parseLinear(const String &); 
+            void parseCalled(const String &);
         };
 
     }
