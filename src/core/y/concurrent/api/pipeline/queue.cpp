@@ -1,38 +1,85 @@
 #include "y/concurrent/api/pipeline/queue.hpp"
 #include "y/type/destroy.hpp"
+#include "y/concurrent/thread.hpp"
+#include "y/object/school-of.hpp"
 
 namespace Yttrium
 {
     namespace Concurrent
     {
-        class Queue:: Code : public Object
+
+        class Queue:: Player : public Thread
         {
         public:
-            inline explicit Code(const size_t n)
+
+            inline explicit Player(Proc proc, void * const args) :
+            Thread(proc,args)
             {
             }
 
-            inline virtual ~Code() noexcept
-            {
-            }
+            inline virtual ~Player() noexcept {}
 
         private:
-            Y_Disable_Copy_And_Assign(Code);
+            Y_Disable_Copy_And_Assign(Player);
         };
+
+
+
+        class Queue:: Coach : public Object
+        {
+        public:
+            inline explicit Coach(const size_t n) :
+            size(n),
+            built(0),
+            ready(0),
+            team(size)
+            {
+                try {
+                    init();
+                }
+                catch(...)
+                {
+                    quit();
+                    throw;
+                }
+            }
+
+            inline virtual ~Coach() noexcept
+            {
+                quit();
+            }
+
+            const size_t             size;
+            size_t                   built;
+            size_t                   ready;
+            Memory::SchoolOf<Player> team;
+
+        private:
+            Y_Disable_Copy_And_Assign(Coach);
+            static void Launch(void * const) noexcept;
+            void init();
+            void quit() noexcept;
+        };
+
+
+        void Queue:: Coach:: Launch(void * const args) noexcept
+        {
+
+        }
 
 
         const char * const Queue:: CallSign = "Concurrent::Queue";
 
         Queue:: Queue(const size_t n) :
         Pipeline(n,CallSign),
-        code( new Code(n) )
+        coach( new Coach(n) )
         {
         }
 
         Queue:: ~Queue() noexcept
         {
-            assert(code);
-            Destroy(code);
+            assert(coach);
+            Destroy(coach);
         }
 
     }

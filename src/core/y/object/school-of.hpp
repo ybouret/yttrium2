@@ -74,7 +74,7 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Object_School_Of_Included
 
 
 

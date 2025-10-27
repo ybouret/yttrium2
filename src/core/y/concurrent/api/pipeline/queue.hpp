@@ -47,9 +47,10 @@ namespace Yttrium
 
 
         private:
-            class Code;
+            class Coach;
+            class Player;
             Y_Disable_Copy_And_Assign(Queue); //!< discarding
-            Code * const code; //!< inner code
+            Coach * const coach; //!< inner code
         };
     }
 
