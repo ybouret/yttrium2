@@ -72,7 +72,7 @@ namespace Yttrium
                        const size_t offset,
                        const size_t stride);
 
-            void parseLinear(const String &); 
+            void parseLinear(const String &);
             void parseCalled(const String &);
         };
 
