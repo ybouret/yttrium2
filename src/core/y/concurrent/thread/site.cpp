@@ -46,7 +46,9 @@ namespace Yttrium
 
         const char * const Site:: Y_NUM_THREADS = "Y_NUM_THREADS";
 
-        Site:: Site() : plist()
+        Site:: Site() :
+        Ingress<const PList>(),
+        plist()
         {
             String info;
             if( Environment::Get(info,Y_NUM_THREADS) )
@@ -60,6 +62,7 @@ namespace Yttrium
 
 
         Site:: Site(const String &info) :
+        Ingress<const PList>(),
         plist()
         {
             parse(info);
@@ -67,6 +70,7 @@ namespace Yttrium
 
 
         Site:: Site(const Site &site) :
+        Ingress<const PList>(),
         plist(site.plist)
         {
         }
@@ -120,8 +124,8 @@ namespace Yttrium
             size_t stride = 1;
             switch(words.size())
             {
-                case 3: stride = getField("stride",words[3]);
-                case 2: offset = getField("offset",words[2]);
+                case 3: stride = getField("stride",words[3]); // FALLTHRU
+                case 2: offset = getField("offset",words[2]); // FALLTHRU
                 case 1: nprocs = getField("nprocs",words[1]); break;
                 default:
                     throw Specific::Exception(CallSign,"invalid number of linear fields");
