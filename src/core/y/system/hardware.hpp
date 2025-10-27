@@ -17,5 +17,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Hardware_Included
 

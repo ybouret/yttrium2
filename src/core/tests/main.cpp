@@ -64,6 +64,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(concurrent_split2d);
     Y_UTEST(concurrent_simd);
     Y_UTEST(concurrent_pipeline);
+    Y_UTEST(concurrent_site);
 
 
 

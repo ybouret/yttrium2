@@ -19,11 +19,16 @@ namespace Yttrium
 
             Site();
             Site(const Site &);
+            Site & operator=(const Site &);
             virtual ~Site() noexcept;
 
         private:
             Y_Ingress_Decl();
             PList plist;
+            
+            void setup(const size_t nprocs,
+                       const size_t offset,
+                       const size_t stride);
         };
 
     }

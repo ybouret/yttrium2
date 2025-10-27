@@ -98,7 +98,8 @@ Y_UTEST(concurrent:inventory)
 Y_UTEST(concurrent:split1d)
 Y_UTEST(concurrent:split2d)
 Y_UTEST(concurrent:simd)
-Y_UTEST(concurrent:pipe)
+Y_UTEST(concurrent:pipeline)
+Y_UTEST(concurrent:site)
 
 #memory
 Y_UTEST(memory:gc)
