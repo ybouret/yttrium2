@@ -90,6 +90,11 @@ namespace Yttrium
                 return parseLinear(info);
             }
 
+            if( strchr(str,COMMA) )
+            {
+                return parseCalled(info);
+            }
+
             // default
             return parseLinear(info);
         }
@@ -122,6 +127,20 @@ namespace Yttrium
                     throw Specific::Exception(CallSign,"invalid number of linear fields");
             }
             setup(nprocs,offset,stride);
+        }
+
+        void Site:: parseCalled(const String &info)
+        {
+            Vector<String> words;
+            Tokenizer::AppendTo(words,info,COMMA);
+
+            for(size_t i=1;i<=words.size();++i)
+            {
+                plist << getField("processor",words[i]);
+            }
+
+            if(plist->size<=0)
+                throw Specific::Exception(CallSign,"no processor found");
         }
     }
 }
