@@ -13,16 +13,40 @@ namespace Yttrium
     namespace Concurrent
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Pipeline to carry out independent tasks
+        //
+        //
+        //______________________________________________________________________
         class Pipeline : public Parallel
         {
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
         protected:
+            //! setup
             explicit Pipeline(const size_t, const char * const);
 
         public:
+            //! cleanup
             virtual ~Pipeline() noexcept;
-            
+
+
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
+
         private:
-            Y_Disable_Copy_And_Assign(Pipeline);
+            Y_Disable_Copy_And_Assign(Pipeline); //!< discarding
         };
     }
 
