@@ -1,6 +1,7 @@
 
 #include "y/concurrent/thread/site.hpp"
 #include "y/system/hardware.hpp"
+#include "y/string/env.hpp"
 
 namespace Yttrium
 {
@@ -25,13 +26,31 @@ namespace Yttrium
             }
         }
 
-        Site:: Site() : plist()
+        void Site:: parse(const String &info)
         {
-
-            setup( Hardware::NumProcs(), 0, 1 );
-
+            std::cerr << "parsing '" << info << "'" << std::endl;
         }
 
+        const char * const Site:: Y_NUM_THREADS = "Y_NUM_THREADS";
+
+        Site:: Site() : plist()
+        {
+            String info;
+            if( Environment::Get(info,Y_NUM_THREADS) )
+            {
+                parse(info);
+            }
+            else
+                setup( Hardware::NumProcs(), 0, 1 );
+        }
+
+
+
+        Site:: Site(const String &info) :
+        plist()
+        {
+            parse(info);
+        }
 
 
         Site:: Site(const Site &site) :
