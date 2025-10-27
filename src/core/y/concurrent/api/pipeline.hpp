@@ -17,9 +17,10 @@ namespace Yttrium
         {
         protected:
             explicit Pipeline(const size_t, const char * const);
+
         public:
             virtual ~Pipeline() noexcept;
-
+            
         private:
             Y_Disable_Copy_And_Assign(Pipeline);
         };

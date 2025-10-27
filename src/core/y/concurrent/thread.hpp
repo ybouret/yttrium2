@@ -69,5 +69,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Concurrent_Thread_Included
 
