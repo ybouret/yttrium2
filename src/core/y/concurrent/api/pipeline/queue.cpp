@@ -2,6 +2,7 @@
 #include "y/type/destroy.hpp"
 #include "y/concurrent/thread.hpp"
 #include "y/object/school-of.hpp"
+#include "y/concurrent/condition.hpp"
 
 namespace Yttrium
 {
@@ -32,6 +33,8 @@ namespace Yttrium
             size(n),
             built(0),
             ready(0),
+            mutex(),
+            synch(),
             team(size)
             {
                 try {
@@ -52,6 +55,8 @@ namespace Yttrium
             const size_t             size;
             size_t                   built;
             size_t                   ready;
+            Mutex                    mutex;
+            Condition                synch;
             Memory::SchoolOf<Player> team;
 
         private:
@@ -67,6 +72,16 @@ namespace Yttrium
 
         }
 
+        void Queue:: Coach:: init()
+        {
+
+        }
+
+        void Queue:: Coach:: quit() noexcept
+        {
+
+        }
+
 
         const char * const Queue:: CallSign = "Concurrent::Queue";
 
@@ -74,6 +89,7 @@ namespace Yttrium
         Pipeline(n,CallSign),
         coach( new Coach(n) )
         {
+            //std::cerr << "sizeof(Coach)=" << sizeof(Coach) << std::endl;
         }
 
         Queue:: ~Queue() noexcept
