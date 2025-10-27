@@ -1,8 +1,8 @@
 
 //! \file
 
-#ifndef Y_Concurrent_Loop_Included
-#define Y_Concurrent_Loop_Included 1
+#ifndef Y_Concurrent_SIMD_Included
+#define Y_Concurrent_SIMD_Included 1
 
 #include "y/concurrent/api/parallel.hpp"
 #include "y/concurrent/api/context.hpp"
@@ -63,5 +63,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Concurrent_SIMD_Included
 

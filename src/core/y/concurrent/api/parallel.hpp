@@ -51,5 +51,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Concurrent_Parallel_Included
 
