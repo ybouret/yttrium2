@@ -43,14 +43,14 @@ namespace Yttrium
             //
             //__________________________________________________________________
             virtual const char * callSign() const noexcept;
-            
+            virtual void         flush()          noexcept;
 
         private:
             class Code;
             Y_Disable_Copy_And_Assign(Alone); //!< discarding
             Code * const code;
             
-            virtual void enqueue(Task * const) noexcept;
+            virtual void enqueueTask(Task * const) noexcept;
         };
     }
 

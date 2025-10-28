@@ -67,9 +67,8 @@ namespace Yttrium
             inline virtual ~Coach() noexcept { quit(); }
 
             void parallelRun()         noexcept;
-
             void enqueue(Task * const) noexcept;
-
+            void flush()               noexcept;
 
             const size_t             size;
             size_t                   ready;
@@ -169,6 +168,11 @@ namespace Yttrium
             
         }
 
+        void Queue:: Coach:: flush() noexcept
+        {
+            
+        }
+
 
 
         const char * const Queue:: CallSign = "Concurrent::Queue";
@@ -192,12 +196,19 @@ namespace Yttrium
         }
 
 
-        void Queue:: enqueue(Task * const task) noexcept
+        void Queue:: enqueueTask(Task * const task) noexcept
         {
             assert(task);
             assert(coach);
             coach->enqueue(task);
         }
+
+        void Queue:: flush() noexcept
+        {
+            assert(coach);
+            coach->flush();
+        }
+
     }
 
 }

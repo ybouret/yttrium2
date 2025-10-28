@@ -43,12 +43,35 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
-       
+            virtual void flush() noexcept = 0;
+
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            template <typename CALLABLE> inline
+            Task::ID enqueue(const CALLABLE &fcn)
+            {
+                enqueueTask( new Task(fcn,counter) );
+                return counter++;
+            }
+
+            template <typename OBJECT, typename METHOD> inline
+            Task::ID enqueue(OBJECT & host,
+                             METHOD   meth)
+            {
+                enqueueTask( new Task(host,meth,counter) );
+                return counter++;
+            }
+
+
 
         private:
             Y_Disable_Copy_And_Assign(Pipeline); //!< discarding
             Task::ID counter;
-            virtual void enqueue(Task * const) noexcept = 0;
+            virtual void enqueueTask(Task * const) noexcept = 0;
         };
     }
 

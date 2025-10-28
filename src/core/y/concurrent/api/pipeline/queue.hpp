@@ -45,6 +45,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             virtual const char * callSign() const noexcept;
+            virtual void         flush()          noexcept;
 
 
         private:
@@ -52,7 +53,7 @@ namespace Yttrium
             class Player;
             Y_Disable_Copy_And_Assign(Queue);   //!< discarding
             Coach * const coach;                //!< inner code
-            virtual void enqueue(Task * const) noexcept;
+            virtual void enqueueTask(Task * const) noexcept;
         };
     }
 

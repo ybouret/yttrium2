@@ -47,11 +47,16 @@ namespace Yttrium
             return CallSign;
         }
 
-        void Alone:: enqueue(Task * const task) noexcept
+        void Alone:: enqueueTask(Task * const task) noexcept
         {
             assert(0!=task);
             const AutoPtr<Task> guard(task);
             task->perform(code->context);
+        }
+
+        void Alone :: flush() noexcept
+        {
+            
         }
 
     }
