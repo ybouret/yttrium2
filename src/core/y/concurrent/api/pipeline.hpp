@@ -5,8 +5,7 @@
 #define Y_Concurrent_Pipeline_Included 1
 
 #include "y/concurrent/api/parallel.hpp"
-#include "y/concurrent/api/context.hpp"
-#include "y/functor.hpp"
+#include "y/concurrent/api/kernel.hpp"
 
 namespace Yttrium
 {
@@ -14,7 +13,8 @@ namespace Yttrium
     {
 
 
-      
+        
+
         //______________________________________________________________________
         //
         //
