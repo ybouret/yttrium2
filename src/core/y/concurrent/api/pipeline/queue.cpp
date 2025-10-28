@@ -17,11 +17,17 @@ namespace Yttrium
         public:
 
             inline explicit Player(Proc proc, void * const args) :
-            Thread(proc,args)
+            Thread(proc,args),
+            next(0),
+            prev(0)
             {
+                Y_Thread_Message("in player");
             }
 
             inline virtual ~Player() noexcept {}
+
+            Player *next;
+            Player *prev;
 
         private:
             Y_Disable_Copy_And_Assign(Player);
@@ -34,8 +40,8 @@ namespace Yttrium
         public:
             inline explicit Coach(const size_t n) :
             size(n),
-            built(0),
             ready(0),
+            built(0),
             mutex(),
             team(size)
             {
@@ -57,18 +63,18 @@ namespace Yttrium
             void run() noexcept;
 
             const size_t             size;
-            size_t                   built;
             size_t                   ready;
+            size_t                   built;
             Mutex                    mutex;
             Condition                stop;
-            Condition                wait;
+            Condition                sync;
             Memory::SchoolOf<Player> team;
 
         private:
             Y_Disable_Copy_And_Assign(Coach);
             static void Launch(void * const) noexcept;
-            void init();
-            void quit() noexcept;
+            void        init();
+            void        quit() noexcept;
         };
 
 
@@ -83,11 +89,23 @@ namespace Yttrium
             while(built<size)
             {
                 new (team.entry+built) Player(Launch,this);
+                ++built;
+                mutex.lock();
+                if(ready<built)
+                {
+                    sync.wait(mutex);
+                    assert(ready==built);
+                }
+                mutex.unlock();
             }
+            std::cerr << "all built" << std::endl;
         }
 
         void Queue:: Coach:: quit() noexcept
         {
+            std::cerr << "quit" << std::endl;
+            stop.broadcast();
+
             while(built>0) {
                 Destruct(team.entry+(--built));
             }
@@ -95,11 +113,26 @@ namespace Yttrium
 
         void Queue:: Coach:: run() noexcept
         {
-            // entering a new thread @built
+            // entering a new thread
             mutex.lock();
-            const Context ctx(mutex,size,built);
-            Y_Thread_Message("built=" << built);
 
+            // setup
+            const Context ctx(mutex,size,ready);
+            Y_Thread_Message("ready=" << ready);
+
+
+            // synchronize
+            ++ready;
+            sync.broadcast();
+
+            // wait on a lock mutex
+            stop.wait(mutex);
+
+            // wake up on a locked mutex
+            {
+                Y_Thread_Message("leaving " << ctx);
+            }
+            mutex.unlock();
         }
 
 
@@ -116,6 +149,11 @@ namespace Yttrium
         {
             assert(coach);
             Destroy(coach);
+        }
+
+        const char * Queue:: callSign() const noexcept
+        {
+            return CallSign;
         }
 
     }

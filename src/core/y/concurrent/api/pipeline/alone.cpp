@@ -14,8 +14,13 @@ namespace Yttrium
         {
         }
 
-        Pipeline:: ~Pipeline() noexcept
+        Alone:: ~Alone() noexcept
         {
+        }
+
+        const char * Alone:: callSign() const noexcept
+        {
+            return CallSign;
         }
 
     }
