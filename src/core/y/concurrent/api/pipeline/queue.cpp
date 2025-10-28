@@ -1,8 +1,11 @@
 #include "y/concurrent/api/pipeline/queue.hpp"
 #include "y/type/destroy.hpp"
+#include "y/type/destruct.hpp"
 #include "y/concurrent/thread.hpp"
 #include "y/object/school-of.hpp"
 #include "y/concurrent/condition.hpp"
+
+#include <iostream>
 
 namespace Yttrium
 {
@@ -34,7 +37,6 @@ namespace Yttrium
             built(0),
             ready(0),
             mutex(),
-            synch(),
             team(size)
             {
                 try {
@@ -52,11 +54,14 @@ namespace Yttrium
                 quit();
             }
 
+            void run() noexcept;
+
             const size_t             size;
             size_t                   built;
             size_t                   ready;
             Mutex                    mutex;
-            Condition                synch;
+            Condition                stop;
+            Condition                wait;
             Memory::SchoolOf<Player> team;
 
         private:
@@ -69,16 +74,31 @@ namespace Yttrium
 
         void Queue:: Coach:: Launch(void * const args) noexcept
         {
-
+            assert(args);
+            static_cast<Coach *>(args)->run();
         }
 
         void Queue:: Coach:: init()
         {
-
+            while(built<size)
+            {
+                new (team.entry+built) Player(Launch,this);
+            }
         }
 
         void Queue:: Coach:: quit() noexcept
         {
+            while(built>0) {
+                Destruct(team.entry+(--built));
+            }
+        }
+
+        void Queue:: Coach:: run() noexcept
+        {
+            // entering a new thread @built
+            mutex.lock();
+            const Context ctx(mutex,size,built);
+            Y_Thread_Message("built=" << built);
 
         }
 
