@@ -73,8 +73,8 @@ Y_UTEST(concurrent_simd)
     Compute compute(10000000,n);
     Concurrent::Crew         crew(n);
     Concurrent::Sole         sole;
-    Concurrent::SIMD::Kernel code = cfunctor(DoSomething);
-    Concurrent::SIMD::Kernel code2( &compute, & Compute::Run );
+    Concurrent::Kernel code = cfunctor(DoSomething);
+    Concurrent::Kernel code2( &compute, & Compute::Run );
 
     sole(code);
     crew(code);

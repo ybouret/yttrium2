@@ -5,8 +5,7 @@
 #define Y_Concurrent_SIMD_Included 1
 
 #include "y/concurrent/api/parallel.hpp"
-#include "y/concurrent/api/context.hpp"
-#include "y/functor.hpp"
+#include "y/concurrent/api/kernel.hpp"
 
 namespace Yttrium
 {
@@ -30,8 +29,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            static bool                        Verbose; //!< helper
-            typedef Functor<void,TL1(Context)> Kernel;  //!< alias
+            static bool Verbose; //!< helper
 
             //__________________________________________________________________
             //
