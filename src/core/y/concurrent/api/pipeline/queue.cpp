@@ -4,7 +4,7 @@
 #include "y/concurrent/thread.hpp"
 #include "y/object/school-of.hpp"
 #include "y/concurrent/condition.hpp"
-
+#include "y/core/linked/list/raw.hpp"
 #include <iostream>
 
 namespace Yttrium
@@ -38,21 +38,21 @@ namespace Yttrium
         class Queue:: Coach : public Object
         {
         public:
+            typedef RawListOf<Player> Players;
+
             inline explicit Coach(const size_t n) :
             size(n),
             ready(0),
             built(0),
             mutex(),
+            stop(),
+            sync(),
+            running(),
+            waiting(),
             team(size)
             {
-                try {
-                    init();
-                }
-                catch(...)
-                {
-                    quit();
-                    throw;
-                }
+                try { init(); }
+                catch(...) { quit(); throw; }
             }
 
             inline virtual ~Coach() noexcept
@@ -68,6 +68,8 @@ namespace Yttrium
             Mutex                    mutex;
             Condition                stop;
             Condition                sync;
+            Players                  running;
+            Players                  waiting;
             Memory::SchoolOf<Player> team;
 
         private:
@@ -113,15 +115,24 @@ namespace Yttrium
 
         void Queue:: Coach:: run() noexcept
         {
+            //------------------------------------------------------------------
+            //
             // entering a new thread
+            //
+            //------------------------------------------------------------------
             mutex.lock();
 
+            //------------------------------------------------------------------
+            //
             // setup
+            //
+            //------------------------------------------------------------------
             const Context ctx(mutex,size,ready);
             Y_Thread_Message("ready=" << ready);
+            Player * const player = team.entry + ready;
+            waiting.pushTail(player);
 
-
-            // synchronize
+            // synchronize with main thread
             ++ready;
             sync.broadcast();
 
