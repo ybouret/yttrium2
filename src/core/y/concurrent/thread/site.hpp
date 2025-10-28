@@ -35,6 +35,8 @@ namespace Yttrium
             static const char * const Y_NUM_THREADS;   //!< environment variable name
             static const char         COMMA = ',';
             static const char         COLON = ':';
+            typedef TypeToType<Site>  Default_;
+            static const Default_     Default;
 
             //__________________________________________________________________
             //
@@ -42,7 +44,8 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            Site(); //!< setup to hardware or parsed environment variable if found
+            Site(const Default_ &); //!< setup to hardware or parsed environment variable if found
+
 
             //! setup linear case
             /**

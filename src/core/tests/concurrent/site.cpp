@@ -4,11 +4,23 @@
 
 using namespace Yttrium;
 
+namespace
+{
+    static inline void Show(const Concurrent::Site site)
+    {
+        std::cerr << "site = " << site << std::endl;
+    }
+}
+
 Y_UTEST(concurrent_site)
 {
-    Concurrent::Site site;
+    Concurrent::Site site(Concurrent::Site::Default);
     std::cerr << site->size() << std::endl;
-    std::cerr << site << std::endl;
+
+    Show(site);
+    Show(3);
+    Show(Concurrent::Site::Default);
+    
 }
 Y_UDONE()
 

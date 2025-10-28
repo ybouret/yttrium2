@@ -4,6 +4,7 @@
 #define Y_Concurrent_Queue_Included 1
 
 #include "y/concurrent/api/pipeline.hpp"
+#include "y/concurrent/thread/site.hpp"
 
 namespace Yttrium
 {
@@ -34,7 +35,7 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            explicit Queue(const size_t n);
+            explicit Queue(const Site);
             virtual ~Queue() noexcept;
 
             //__________________________________________________________________

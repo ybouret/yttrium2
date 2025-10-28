@@ -20,6 +20,8 @@ namespace Yttrium
             
         }
 
+        const Site::Default_ Site::Default = {};
+
         void Site:: setup(const size_t nprocs,
                           const size_t offset,
                           const size_t stride)
@@ -46,7 +48,7 @@ namespace Yttrium
 
         const char * const Site:: Y_NUM_THREADS = "Y_NUM_THREADS";
 
-        Site:: Site() :
+        Site:: Site(const Default_ &) :
         Ingress<const PList>(),
         plist()
         {

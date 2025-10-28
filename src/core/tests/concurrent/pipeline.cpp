@@ -7,7 +7,7 @@ using namespace Yttrium;
 Y_UTEST(concurrent_pipeline)
 {
     Concurrent::Alone stQ;
-    Concurrent::Queue mtQ(4);
+    Concurrent::Queue mtQ(Concurrent::Site::Default);
     
 }
 Y_UDONE()

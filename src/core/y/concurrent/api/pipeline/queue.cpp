@@ -40,8 +40,8 @@ namespace Yttrium
         public:
             typedef RawListOf<Player> Players;
 
-            inline explicit Coach(const size_t n) :
-            size(n),
+            inline explicit Coach(const Site &site) :
+            size(site->size()),
             ready(0),
             built(0),
             mutex(),
@@ -53,12 +53,17 @@ namespace Yttrium
             {
                 try { init(); }
                 catch(...) { quit(); throw; }
+
+                // localize
+                assert(site->size() == built);
+                Player * player = team.entry;
+                for(const PNode *node= (*site)->head;node;node=node->next,++player)
+                {
+                    (void) player->assign(**node);
+                }
             }
 
-            inline virtual ~Coach() noexcept
-            {
-                quit();
-            }
+            inline virtual ~Coach() noexcept { quit(); }
 
             void run() noexcept;
 
@@ -100,6 +105,7 @@ namespace Yttrium
                 }
                 mutex.unlock();
             }
+
             std::cerr << "all built" << std::endl;
         }
 
@@ -139,7 +145,11 @@ namespace Yttrium
             // wait on a lock mutex
             stop.wait(mutex);
 
+            //------------------------------------------------------------------
+            //
             // wake up on a locked mutex
+            //
+            //------------------------------------------------------------------
             {
                 Y_Thread_Message("leaving " << ctx);
             }
@@ -149,9 +159,9 @@ namespace Yttrium
 
         const char * const Queue:: CallSign = "Concurrent::Queue";
 
-        Queue:: Queue(const size_t n) :
-        Pipeline(n,CallSign),
-        coach( new Coach(n) )
+        Queue:: Queue(const Site site) :
+        Pipeline(site->size(),CallSign),
+        coach( new Coach(site) )
         {
             //std::cerr << "sizeof(Coach)=" << sizeof(Coach) << std::endl;
         }
