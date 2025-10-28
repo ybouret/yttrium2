@@ -66,7 +66,10 @@ namespace Yttrium
 
             inline virtual ~Coach() noexcept { quit(); }
 
-            void parallelRun() noexcept;
+            void parallelRun()         noexcept;
+
+            void enqueue(Task * const) noexcept;
+
 
             const size_t             size;
             size_t                   ready;
@@ -99,13 +102,12 @@ namespace Yttrium
             {
                 new (team.entry+built) Player(Launch,this);
                 ++built;
-                mutex.lock();
+                Y_Lock(mutex);
                 if(ready<built)
                 {
                     sync.wait(mutex);
                     assert(ready==built);
                 }
-                mutex.unlock();
             }
 
             std::cerr << "all built" << std::endl;
@@ -144,7 +146,7 @@ namespace Yttrium
             ++ready;
             sync.broadcast();
 
-            // wait on a lock mutex
+            // wait on a lock mutex for first loop
             stop.wait(mutex);
 
             //------------------------------------------------------------------
@@ -157,6 +159,13 @@ namespace Yttrium
             }
             mutex.unlock();
         }
+
+        void Queue::Coach:: enqueue(Task * const task) noexcept
+        {
+            assert(task);
+
+        }
+
 
 
         const char * const Queue:: CallSign = "Concurrent::Queue";
@@ -184,6 +193,7 @@ namespace Yttrium
         {
             assert(task);
             assert(coach);
+            coach->enqueue(task);
         }
     }
 
