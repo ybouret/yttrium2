@@ -6,6 +6,7 @@
 
 #include "y/concurrent/api/parallel.hpp"
 #include "y/concurrent/api/kernel.hpp"
+#include "y/core/linked/list/cxx.hpp"
 
 namespace Yttrium
 {
@@ -13,7 +14,34 @@ namespace Yttrium
     {
 
 
-        
+        class Task : public Kernel
+        {
+        public:
+            typedef uint32_t ID;
+
+            template <typename CALLABLE> inline
+            explicit Task(const CALLABLE &fcn,
+                          const ID        tid) :
+            Kernel(fcn),
+            uuid(tid),
+            next(0),
+            prev(0)
+            {
+            }
+            
+
+            virtual ~Task() noexcept {}
+
+            const uint32_t uuid;
+            Task *         next;
+            Task *         prev;
+
+        private:
+            Y_Disable_Copy_And_Assign(Task);
+        };
+
+        typedef CxxListOf<Task> Tasks;
+
 
         //______________________________________________________________________
         //

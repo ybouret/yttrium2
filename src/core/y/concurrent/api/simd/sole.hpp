@@ -58,4 +58,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Concurrent_Sole_Included
