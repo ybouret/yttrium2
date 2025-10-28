@@ -50,8 +50,9 @@ namespace Yttrium
         private:
             class Coach;
             class Player;
-            Y_Disable_Copy_And_Assign(Queue); //!< discarding
-            Coach * const coach; //!< inner code
+            Y_Disable_Copy_And_Assign(Queue);   //!< discarding
+            Coach * const coach;                //!< inner code
+            virtual void enqueue(Task * const) noexcept;
         };
     }
 

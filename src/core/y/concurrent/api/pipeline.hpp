@@ -5,54 +5,12 @@
 #define Y_Concurrent_Pipeline_Included 1
 
 #include "y/concurrent/api/parallel.hpp"
-#include "y/concurrent/api/kernel.hpp"
-#include "y/core/linked/list/cxx.hpp"
+#include "y/concurrent/api/pipeline/task.hpp"
 
 namespace Yttrium
 {
     namespace Concurrent
     {
-
-
-        class Task : public Kernel
-        {
-        public:
-            typedef uint32_t ID;
-
-            template <typename CALLABLE> inline
-            explicit Task(const CALLABLE &fcn,
-                          const ID        tid) :
-            Kernel(fcn),
-            uuid(tid),
-            next(0),
-            prev(0)
-            {
-            }
-
-            template <typename OBJECT, typename METHOD> inline
-            explicit Task(OBJECT &host, METHOD meth, const ID tid) :
-            Kernel(&host,meth),
-            uuid(tid),
-            next(0),
-            prev(0)
-            {
-            }
-            
-
-
-
-            virtual ~Task() noexcept {}
-
-            const uint32_t uuid;
-            Task *         next;
-            Task *         prev;
-
-        private:
-            Y_Disable_Copy_And_Assign(Task);
-        };
-
-        typedef CxxListOf<Task> Tasks;
-
 
         //______________________________________________________________________
         //
@@ -85,9 +43,12 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
+       
 
         private:
             Y_Disable_Copy_And_Assign(Pipeline); //!< discarding
+            Task::ID counter;
+            virtual void enqueue(Task * const) noexcept = 0;
         };
     }
 

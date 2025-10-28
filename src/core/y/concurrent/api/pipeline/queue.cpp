@@ -49,6 +49,7 @@ namespace Yttrium
             sync(),
             running(),
             waiting(),
+            pending(),
             team(size)
             {
                 try { init(); }
@@ -65,7 +66,7 @@ namespace Yttrium
 
             inline virtual ~Coach() noexcept { quit(); }
 
-            void run() noexcept;
+            void parallelRun() noexcept;
 
             const size_t             size;
             size_t                   ready;
@@ -75,6 +76,7 @@ namespace Yttrium
             Condition                sync;
             Players                  running;
             Players                  waiting;
+            Tasks                    pending;
             Memory::SchoolOf<Player> team;
 
         private:
@@ -88,7 +90,7 @@ namespace Yttrium
         void Queue:: Coach:: Launch(void * const args) noexcept
         {
             assert(args);
-            static_cast<Coach *>(args)->run();
+            static_cast<Coach *>(args)->parallelRun();
         }
 
         void Queue:: Coach:: init()
@@ -119,7 +121,7 @@ namespace Yttrium
             }
         }
 
-        void Queue:: Coach:: run() noexcept
+        void Queue:: Coach:: parallelRun() noexcept
         {
             //------------------------------------------------------------------
             //
@@ -177,6 +179,12 @@ namespace Yttrium
             return CallSign;
         }
 
+
+        void Queue:: enqueue(Task * const task) noexcept
+        {
+            assert(task);
+            assert(coach);
+        }
     }
 
 }

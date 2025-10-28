@@ -9,7 +9,8 @@ namespace Yttrium
         //bool SIMD::Verbose = false;
 
         Pipeline:: Pipeline(const size_t n, const char * const id) :
-        Parallel(n,id)
+        Parallel(n,id),
+        counter(0)
         {
         }
 
