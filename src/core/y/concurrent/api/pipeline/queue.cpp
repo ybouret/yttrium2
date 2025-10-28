@@ -163,7 +163,10 @@ namespace Yttrium
         void Queue::Coach:: enqueue(Task * const task) noexcept
         {
             assert(task);
-
+            mutex.lock();
+            pending.pushTail(task);
+            mutex.unlock();
+            
         }
 
 
