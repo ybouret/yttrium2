@@ -28,7 +28,18 @@ namespace Yttrium
             prev(0)
             {
             }
+
+            template <typename OBJECT, typename METHOD> inline
+            explicit Task(OBJECT &host, METHOD meth, const ID tid) :
+            Kernel(&host,meth),
+            uuid(tid),
+            next(0),
+            prev(0)
+            {
+            }
             
+
+
 
             virtual ~Task() noexcept {}
 

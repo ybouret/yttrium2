@@ -22,9 +22,15 @@ namespace
 
         }
 
-        inline void operator()(const Concurrent::Context &ctx)
+        inline void routine(const Concurrent::Context &ctx)
         {
             Y_Thread_Message("a=" << a << " @" << ctx);
+
+        }
+
+        inline void operator()(const Concurrent::Context &ctx)
+        {
+            routine(ctx);
         }
 
         int a;
@@ -51,6 +57,14 @@ Y_UTEST(concurrent_pipeline)
 
     something.a += 2;
     something(seq);
+    (*tasks.tail)(seq);
+    tasks.pushTail( new Concurrent::Task(something, & Something::routine, 2) );
+    (*tasks.tail)(seq);
+
+    something.a -= 4;
+    Concurrent::Kernel k(something);
+    k(seq);
+    tasks.pushTail( new Concurrent::Task(k,3) );
     (*tasks.tail)(seq);
 
 
