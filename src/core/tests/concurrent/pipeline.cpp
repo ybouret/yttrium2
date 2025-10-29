@@ -68,13 +68,21 @@ Y_UTEST(concurrent_pipeline)
         (*tasks.tail)(seq);
     }
 
+    std::cerr << std::endl;
+    std::cerr << "Using Pipelines..." << std::endl;
+
+    something.a = 7;
 
     Concurrent::Alone stQ;
     Concurrent::Queue mtQ(Concurrent::Site::Default);
 
-    stQ.enqueue(something);
-    
+    //stQ.enqueue(something);
+    //stQ.flush();
 
+    mtQ.enqueue(something);
+    mtQ.flush();
 
+    std::cerr << std::endl;
+    std::cerr << "...Done!" << std::endl;
 }
 Y_UDONE()

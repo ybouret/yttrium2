@@ -156,9 +156,15 @@ namespace Yttrium
             // wake up on a locked mutex
             //
             //------------------------------------------------------------------
-            Y_Thread_Message("awaking " << ctx);
+            Y_Thread_Message("awaking " << ctx << ", #pending=" << pending.size);
             assert(waiting.owns(player));
             if(pending.size<=0) goto RETURN;
+
+            
+
+
+
+
             goto SUSPEND;
 
         RETURN:
@@ -178,7 +184,12 @@ namespace Yttrium
 
         void Queue:: Coach:: flush() noexcept
         {
-            
+            Y_Lock(mutex);
+            if(pending.size>0)
+            {
+                Y_Thread_Message("flushing...");
+                primary.wait(mutex);
+            }
         }
 
         void Queue:: Coach:: purge() noexcept
