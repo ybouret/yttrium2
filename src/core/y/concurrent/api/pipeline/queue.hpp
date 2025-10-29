@@ -46,6 +46,7 @@ namespace Yttrium
             //__________________________________________________________________
             virtual const char * callSign() const noexcept;
             virtual void         flush()          noexcept;
+            virtual void         purge()          noexcept;
 
 
         private:

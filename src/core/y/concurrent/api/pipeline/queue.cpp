@@ -209,6 +209,13 @@ namespace Yttrium
             coach->flush();
         }
 
+        void Queue :: purge() noexcept
+        {
+            assert(coach);
+            Y_Lock(coach->mutex);
+
+        }
+
     }
 
 }

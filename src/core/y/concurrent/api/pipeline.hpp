@@ -47,6 +47,9 @@ namespace Yttrium
             //! process all pending tasks
             virtual void flush() noexcept = 0;
 
+            //! remove all pending tasks
+            virtual void purge() noexcept = 0;
+
             //__________________________________________________________________
             //
             //

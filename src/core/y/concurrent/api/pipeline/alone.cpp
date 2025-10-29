@@ -59,6 +59,11 @@ namespace Yttrium
             
         }
 
+        void Alone :: purge() noexcept
+        {
+
+        }
+
     }
 
 }
