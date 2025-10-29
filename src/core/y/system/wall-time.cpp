@@ -44,6 +44,13 @@ namespace Yttrium
             return code->convert( Ticks() - start );
         }
 
+        void WallTime:: waitFor(const double seconds)
+        {
+            const uint64_t mark = Ticks();
+            while( since(mark) < seconds )
+                ;
+        }
+
     }
 
 }

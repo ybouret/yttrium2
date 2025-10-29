@@ -121,6 +121,7 @@ namespace Yttrium
         {
             std::cerr << "quit" << std::endl;
             purge();
+            flush();
             suspend.broadcast();
 
             while(built>0) {
@@ -188,14 +189,19 @@ namespace Yttrium
                 // perform unlocked
                 //
                 //--------------------------------------------------------------
-
-                (void) task;
+                {
+                    mutex.unlock();
+                    task->perform(ctx);
+                    mutex.lock();
+                }
 
                 //--------------------------------------------------------------
                 //
                 // locked administrativia
                 //
                 //--------------------------------------------------------------
+
+                // garbage task
                 (void) garbage.pushTail( working.pop(task) );
 
                 if(pending.size>0)
@@ -209,10 +215,14 @@ namespace Yttrium
                 else
                 {
                     //----------------------------------------------------------
-                    // all done,
+                    // all pending tasks are done
                     //----------------------------------------------------------
+                    Y_Thread_Message("waiting " << ctx << ", #pending=" << pending.size);
                     (void) waiting.pushTail( running.pop(player) ); // change player state
-                    primary.broadcast();                            // inform primary
+
+                    if(0==running.size)
+                        primary.broadcast(); // all tasked are carried out
+
                     goto SUSPEND;
                 }
 
@@ -244,7 +254,12 @@ namespace Yttrium
                 Y_Thread_Message("flushing...");
                 primary.wait(mutex);
             }
+            Y_Thread_Message("flushed!");
             garbage.release();
+            assert(0    == pending.size);
+            assert(0    == working.size);
+            assert(size == waiting.size);
+            assert(0    == running.size);
         }
 
         void Queue:: Coach:: purge() noexcept

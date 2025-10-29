@@ -40,6 +40,7 @@ namespace Yttrium
             static uint64_t Ticks(); //!< unlocked \return system ticks
             long double operator()(const uint64_t) const noexcept; //!< convert ticks \return seconds
             long double since(const uint64_t start) const;         //!< ellapsed time \param start origin \return seconds
+            void        waitFor(const double seconds);             //!< \param seconds to wait for
 
         private:
             Y_Disable_Copy_And_Assign(WallTime); //!< discarding
@@ -58,6 +59,6 @@ const uint64_t Y_WallTime_Mark64 = (Y_WallTime_DoMark ? Yttrium::System::WallTim
 #define Y_WallTime_Gain(U64PTR) \
 do { if(Y_WallTime_DoMark) (*U64PTR) += Yttrium::System::WallTime::Ticks() - Y_WallTime_Mark64; } while(false)
 
-#endif
+#endif // !Y_System_WallTime_Included
 
 

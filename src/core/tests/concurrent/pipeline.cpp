@@ -5,7 +5,8 @@
 #include "y/concurrent/thread.hpp"
 #include "y/concurrent/fake-lock.hpp"
 #include "y/random/park-miller.hpp"
-#include "y/system/wall-time.hpp"
+
+#include <cmath>
 
 using namespace Yttrium;
 
@@ -13,24 +14,28 @@ using namespace Yttrium;
 namespace
 {
 
-    static double MaxWait = 0.1;
-
+    
     class Something
     {
     public:
 
-        Something(const int value) : a(value) {}
+        Something(const int value) : a(value), sum(0), ran() {}
         ~Something() noexcept {}
 
-        Something(const Something &_) : a(_.a)
+        Something(const Something &_) : a(_.a), sum(0), ran()
         {
 
         }
 
         inline void routine(const Concurrent::Context &ctx)
         {
-            const double ns = ran.to<double>() * MaxWait;
-            Y_Thread_Message("a=" << a << " @" << ctx << " : " << ns);
+            Y_Thread_Message("\ta=" << a << " @" << ctx);
+            sum = 0;
+            for(size_t i=ran.leq<size_t>(10000);i>0;--i)
+            {
+                const double c = std::cos( 3.14 * ran.to<double>() );
+                sum += c*c;
+            }
 
         }
 
@@ -40,6 +45,7 @@ namespace
         }
 
         int                a;
+        double             sum;
         Random::ParkMiller ran;
 
     private:
@@ -90,7 +96,6 @@ Y_UTEST(concurrent_pipeline)
         something.a = i;
         mtQ.enqueue(something);
     }
-    
     mtQ.flush();
 
     std::cerr << std::endl;
