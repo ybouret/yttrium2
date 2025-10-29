@@ -69,6 +69,7 @@ namespace Yttrium
             void parallelRun()         noexcept;
             void enqueue(Task * const) noexcept;
             void flush()               noexcept;
+            void purge()               noexcept;
 
             const size_t             size;
             size_t                   ready;
@@ -173,6 +174,11 @@ namespace Yttrium
             
         }
 
+        void Queue:: Coach:: purge() noexcept
+        {
+            Y_Lock(mutex);
+            pending.release();
+        }
 
 
         const char * const Queue:: CallSign = "Concurrent::Queue";
@@ -181,7 +187,6 @@ namespace Yttrium
         Pipeline(site->size(),CallSign),
         coach( new Coach(site) )
         {
-            //std::cerr << "sizeof(Coach)=" << sizeof(Coach) << std::endl;
         }
 
         Queue:: ~Queue() noexcept
@@ -212,8 +217,7 @@ namespace Yttrium
         void Queue :: purge() noexcept
         {
             assert(coach);
-            Y_Lock(coach->mutex);
-
+            coach->purge();
         }
 
     }
