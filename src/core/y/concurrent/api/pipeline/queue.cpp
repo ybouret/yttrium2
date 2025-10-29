@@ -50,6 +50,8 @@ namespace Yttrium
             running(),
             waiting(),
             pending(),
+            working(),
+            garbage(),
             team(size)
             {
                 try { init(); }
@@ -80,6 +82,8 @@ namespace Yttrium
             Players                  running; //!< actually running
             Players                  waiting; //!< actually waiting
             Tasks                    pending; //!< pending tasks
+            Tasks                    working; //!< working tasks
+            Tasks                    garbage; //!< garbage tasks
             Memory::SchoolOf<Player> team;    //!< memory for players
 
         private:
@@ -153,19 +157,66 @@ namespace Yttrium
 
             //------------------------------------------------------------------
             //
-            // wake up on a locked mutex
+            // wake up on a LOCKED mutex
             //
             //------------------------------------------------------------------
             Y_Thread_Message("awaking " << ctx << ", #pending=" << pending.size);
             assert(waiting.owns(player));
-            if(pending.size<=0) goto RETURN;
+            if(pending.size<=0)
+            {
+                // this is the end...
+                goto RETURN;
+            }
+            else
+            {
+                //--------------------------------------------------------------
+                //
+                // change player state
+                //
+                //--------------------------------------------------------------
+                (void) running.pushTail( waiting.pop(player) );
+            PERFORM:
+                //--------------------------------------------------------------
+                //
+                // change task state
+                //
+                //--------------------------------------------------------------
+                Task * const task = working.pushTail( pending.popHead() );
 
-            
+                //--------------------------------------------------------------
+                //
+                // perform unlocked
+                //
+                //--------------------------------------------------------------
 
+                (void) task;
 
+                //--------------------------------------------------------------
+                //
+                // change task state
+                //
+                //--------------------------------------------------------------
+                (void) garbage.pushTail( working.pop(task) );
 
+                if(pending.size>0)
+                {
+                    //----------------------------------------------------------
+                    // directly take next job
+                    //----------------------------------------------------------
+                    goto PERFORM;
+                }
+                else
+                {
+                    //----------------------------------------------------------
+                    // all done,
+                    //----------------------------------------------------------
+                    (void) waiting.pushTail( running.pop(player) ); // change player state
+                    primary.broadcast();                            // inform primary
+                    goto SUSPEND;
+                }
 
-            goto SUSPEND;
+            }
+
 
         RETURN:
             Y_Thread_Message("leaving " << ctx);
@@ -190,12 +241,14 @@ namespace Yttrium
                 Y_Thread_Message("flushing...");
                 primary.wait(mutex);
             }
+            garbage.release();
         }
 
         void Queue:: Coach:: purge() noexcept
         {
             Y_Lock(mutex);
             pending.release();
+            garbage.release();
         }
 
 
