@@ -43,6 +43,8 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
+
+            //! process all pending tasks
             virtual void flush() noexcept = 0;
 
             //__________________________________________________________________
@@ -51,6 +53,12 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
+
+            //! create and enqueue a new task
+            /**
+             \param fcn callable, Kernel...
+             \return task ID
+             */
             template <typename CALLABLE> inline
             Task::ID enqueue(const CALLABLE &fcn)
             {
@@ -58,6 +66,12 @@ namespace Yttrium
                 return counter++;
             }
 
+            //! create and enqueue a new task
+            /**
+             \param host persistent host reference
+             \param meth host method
+             \return task ID
+             */
             template <typename OBJECT, typename METHOD> inline
             Task::ID enqueue(OBJECT & host,
                              METHOD   meth)
@@ -70,7 +84,9 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(Pipeline); //!< discarding
-            Task::ID counter;
+            Task::ID counter; //!< global task counter
+
+            //! enqueue a new task
             virtual void enqueueTask(Task * const) noexcept = 0;
         };
     }

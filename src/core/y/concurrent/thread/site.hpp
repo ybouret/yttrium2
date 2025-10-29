@@ -33,10 +33,10 @@ namespace Yttrium
             //__________________________________________________________________
             static const char * const CallSign;        //!< "Concurrent::Site"
             static const char * const Y_NUM_THREADS;   //!< environment variable name
-            static const char         COMMA = ',';
-            static const char         COLON = ':';
-            typedef TypeToType<Site>  Default_;
-            static const Default_     Default;
+            static const char         COMMA = ',';     //!< alias
+            static const char         COLON = ':';     //!< alias
+            typedef TypeToType<Site>  Default_;        //!< alias
+            static const Default_     Default;         //!< alias
 
             //__________________________________________________________________
             //
@@ -56,13 +56,19 @@ namespace Yttrium
             Site(const size_t nprocs, const size_t offset=0, const size_t stride=1);
             Site(const String &);           //!< parse
             Site(const Site &);             //!< duplicate
-            Site & operator=(const Site &); //!< duplicate/swap
+            Site & operator=(const Site &); //!< duplicate/swap \return *this
             virtual ~Site() noexcept;       //!< cleanup
 
         private:
-            Y_Ingress_Decl();
-            PList plist;
+            Y_Ingress_Decl(); //!< helper
+            PList plist;      //!< processor(s) list
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
             void parse(const String &); //!< parse string
 
             //! setup linear cases
@@ -75,8 +81,8 @@ namespace Yttrium
                        const size_t offset,
                        const size_t stride);
 
-            void parseLinear(const String &);
-            void parseCalled(const String &);
+            void parseLinear(const String &); //!< parse nprocs:offset:stride
+            void parseCalled(const String &); //!< parse index[,index]*
         };
 
     }

@@ -12,12 +12,33 @@ namespace Yttrium
     namespace Concurrent
     {
 
-
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Task for Pipeline
+        //
+        //
+        //______________________________________________________________________
         class Task : public Kernel
         {
         public:
-            typedef uint32_t ID;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef uint32_t ID; //!< alias
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup \param fcn callable \param tid task ID
             template <typename CALLABLE> inline
             explicit Task(const CALLABLE &fcn,
                           const ID        tid) :
@@ -28,6 +49,7 @@ namespace Yttrium
             {
             }
 
+            //! setup \param host persistent host \param meth method \param tid task ID
             template <typename OBJECT, typename METHOD> inline
             explicit Task(OBJECT & host,
                           METHOD   meth,
@@ -39,21 +61,35 @@ namespace Yttrium
             {
             }
 
-
-            void perform(const Context &ctx) noexcept;
-
+            //! cleanup
             virtual ~Task() noexcept;
 
+            //__________________________________________________________________
+            //
+            //
+            // Method
+            //
+            //__________________________________________________________________
 
-            const uint32_t uuid;
-            Task *         next;
-            Task *         prev;
+            //! perform kernel
+            void perform(const Context &) noexcept;
+
+
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const uint32_t uuid; //!< identifier from pipeline
+            Task *         next; //!< for list
+            Task *         prev; //!< for list
 
         private:
-            Y_Disable_Copy_And_Assign(Task);
+            Y_Disable_Copy_And_Assign(Task); //!< discarding
         };
 
-        typedef CxxListOf<Task> Tasks;
+        typedef CxxListOf<Task> Tasks; //!< alias
 
     }
 

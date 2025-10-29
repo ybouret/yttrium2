@@ -14,7 +14,7 @@ namespace Yttrium
         //
         //
         //
-        //! Paralle pipeline
+        //! Parallel pipeline
         //
         //
         //______________________________________________________________________
@@ -35,8 +35,8 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            explicit Queue(const Site);
-            virtual ~Queue() noexcept;
+            explicit Queue(const Site); //!< setup
+            virtual ~Queue() noexcept;  //!< cleanup
 
             //__________________________________________________________________
             //

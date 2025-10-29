@@ -48,7 +48,7 @@ namespace Yttrium
         private:
             class Code;
             Y_Disable_Copy_And_Assign(Alone); //!< discarding
-            Code * const code;
+            Code * const code; //!< inner code
             
             virtual void enqueueTask(Task * const) noexcept;
         };
