@@ -116,6 +116,7 @@ namespace Yttrium
         void Queue:: Coach:: quit() noexcept
         {
             std::cerr << "quit" << std::endl;
+            purge();
             stop.broadcast();
 
             while(built>0) {
