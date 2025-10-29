@@ -54,5 +54,5 @@ namespace Yttrium
     
 }
 
-#endif
+#endif // !Y_Latch_Included
 

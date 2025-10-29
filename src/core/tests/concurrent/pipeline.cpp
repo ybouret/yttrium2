@@ -5,7 +5,7 @@
 #include "y/concurrent/thread.hpp"
 #include "y/concurrent/fake-lock.hpp"
 #include "y/random/park-miller.hpp"
-
+#include "y/container/sequence/vector.hpp"
 #include <cmath>
 
 using namespace Yttrium;
@@ -14,7 +14,8 @@ using namespace Yttrium;
 namespace
 {
 
-    
+    static Writable<size_t> *target = 0;
+
     class Something
     {
     public:
@@ -36,7 +37,7 @@ namespace
                 const double c = std::cos( 3.14 * ran.to<double>() );
                 sum += c*c;
             }
-
+            if(target) (*target)[ctx.indx]++;
         }
 
         inline void operator()(const Concurrent::Context &ctx)
@@ -56,9 +57,8 @@ namespace
 Y_UTEST(concurrent_pipeline)
 {
 
-
-
     Something         something(7);
+    Vector<size_t>    scatter;
 
     {
         Concurrent::Tasks tasks;
@@ -88,15 +88,21 @@ Y_UTEST(concurrent_pipeline)
     Concurrent::Alone stQ;
     Concurrent::Queue mtQ(Concurrent::Site::Default);
 
-    //stQ.enqueue(something);
-    //stQ.flush();
+    scatter.adjust(mtQ.size,0);
+    scatter.ld(0);
+    //target = &scatter;
 
-    for(int i=1;i<=10;++i)
+    for(int n=0;n<=100;++n)
     {
-        something.a = i;
-        mtQ.enqueue(something);
+        (std::cerr << "---- n=" << n <<  " ----" << std::endl).flush();
+        for(int i=1;i<=n;++i)
+        {
+            something.a = i;
+            mtQ.enqueue(something);
+        }
+        mtQ.flush();
+        //break;
     }
-    mtQ.flush();
 
     std::cerr << std::endl;
     std::cerr << "...Done!" << std::endl;

@@ -155,7 +155,7 @@ namespace Yttrium
             // wait on a lock mutex for first loop
         SUSPEND:
             suspend.wait(mutex);
-
+            
             //------------------------------------------------------------------
             //
             // wake up on a LOCKED mutex
@@ -190,9 +190,9 @@ namespace Yttrium
                 //
                 //--------------------------------------------------------------
                 {
-                    mutex.unlock();
-                    task->perform(ctx);
-                    mutex.lock();
+                    mutex.unlock();     // Local Unlock
+                    task->perform(ctx); // perform task
+                    mutex.lock();       // Local Re-Lock
                 }
 
                 //--------------------------------------------------------------
@@ -221,7 +221,10 @@ namespace Yttrium
                     (void) waiting.pushTail( running.pop(player) ); // change player state
 
                     if(0==running.size)
+                    {
+                        assert(0==working.size);
                         primary.broadcast(); // all tasked are carried out
+                    }
 
                     goto SUSPEND;
                 }
@@ -258,6 +261,7 @@ namespace Yttrium
             garbage.release();
             assert(0    == pending.size);
             assert(0    == working.size);
+
             assert(size == waiting.size);
             assert(0    == running.size);
         }
