@@ -33,23 +33,25 @@ namespace Yttrium
             explicit Mutex();           //!< initialize
             virtual ~Mutex() noexcept;  //!< cleanup
 
-        private:
-            Y_Disable_Copy_And_Assign(Mutex); //!< discading
-            Code * const code;                //!< platform specific
-
-            friend class Condition;
             //__________________________________________________________________
             //
             //
             // Interface
             //
             //__________________________________________________________________
-            virtual bool doTryLock() noexcept;
-            virtual void doLock()    noexcept;
-            virtual void doUnlock()  noexcept;
+            virtual bool tryLock() noexcept;
+            virtual void lock()    noexcept;
+            virtual void unlock()  noexcept;
+
+
+        private:
+            Y_Disable_Copy_And_Assign(Mutex); //!< discading
+            Code * const code;                //!< platform specific
+            friend class Condition;
+
         };
     }
 }
 
-#endif
+#endif // !Y_Concurrent_Mutex_Included
 

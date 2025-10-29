@@ -24,7 +24,8 @@ namespace
 
         void method()
         {
-            std::cerr << "Method with with #lock=" << count << std::endl;
+            std::cerr << "Method With FakeLock!" << std::endl;
+            //std::cerr << "Method with with #lock=" << count << std::endl;
         }
 
     private:
@@ -37,7 +38,6 @@ Y_UTEST(ptr_auto)
     AutoPtr<int> ip; std::cerr << ip << std::endl;
     ip = new int(4); std::cerr << ip << std::endl;
 
-    Concurrent::FakeLock::Trace = true;
     {
         AutoPtr<Dummy,FlashLock> p;
         p = new Dummy();

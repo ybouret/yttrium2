@@ -24,20 +24,33 @@ namespace Yttrium
         class FakeLock : public Latch
         {
         public:
-            static bool Trace; //!< tracing, mostly to debug
-
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
             explicit FakeLock() noexcept;
             virtual ~FakeLock() noexcept;
 
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
+            virtual bool tryLock() noexcept;
+            virtual void lock()    noexcept;
+            virtual void unlock()  noexcept;
+            
         private:
             Y_Disable_Copy_And_Assign(FakeLock); //!< discarding
-            Y_Lockable_Decl();                   //!< lockable API
-            Y_Latchable_Decl();                  //!< latchable API
+           
         };
 
     }
 
 }
 
-#endif
+#endif // !Y_Concurrent_FakeLock_Included
 

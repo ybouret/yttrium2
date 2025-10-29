@@ -31,13 +31,13 @@ namespace Yttrium
             Coerce(jmutex) = 0;
         }
 
-        void Shield:: doLock() noexcept
+        void Shield:: lock() noexcept
         {
             assert(jmutex);
             static_cast<JointMutex *>(jmutex)->lock();
         }
 
-        void Shield:: doUnlock() noexcept
+        void Shield:: unlock() noexcept
         {
             assert(jmutex);
             static_cast<JointMutex *>(jmutex)->unlock();

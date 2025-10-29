@@ -33,25 +33,21 @@ namespace Yttrium
         //______________________________________________________________________
         //
         //
-        // Methods
+        // Interface
         //
         //______________________________________________________________________
         
         //! try lock and update count
         /** \return success of operation */
-        bool tryLock() noexcept;
+        virtual bool tryLock() noexcept = 0;
 
     private:
         Y_Disable_Copy_And_Assign(Latch); //!< discarding
 
-        //! do try lock
-        /** \return success of operation*/
-        virtual bool doTryLock() noexcept = 0;
+
     };
 
-    //! helper for Latchable API
-#define Y_Latchable_Decl() virtual bool doTryLock() noexcept
-    
+
 }
 
 #endif // !Y_Latch_Included

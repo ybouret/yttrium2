@@ -34,32 +34,24 @@ namespace Yttrium
         //______________________________________________________________________
         //
         //
-        // Methods
+        // Interface
         //
         //______________________________________________________________________
-        void              lock()           noexcept; //!< lock object
-        void              unlock()         noexcept; //!< unlock object
-        bool              isLocked() const noexcept; //!< \return count>0
-        static Lockable & Giant();                   //!< \return Nucleus lock
+        virtual void lock()   noexcept = 0; //!< lock object
+        virtual void unlock() noexcept = 0; //!< unlock object
 
         //______________________________________________________________________
         //
         //
-        // Members
+        // Method
         //
         //______________________________________________________________________
-        const size_t count; //!< bookkeeping of lock/unlock
+        static Lockable & Giant();      //!< \return Nucleus lock
 
     private:
         Y_Disable_Copy_And_Assign(Lockable);  //!< discarding
-        virtual void doLock()   noexcept = 0; //!< perform lock
-        virtual void doUnlock() noexcept = 0; //!< perform unlock
     };
 
-    //! Helper for Lockable API
-#define Y_Lockable_Decl()               \
-/**/  virtual void doLock()   noexcept; \
-/**/  virtual void doUnlock() noexcept
 
     //__________________________________________________________________________
     //

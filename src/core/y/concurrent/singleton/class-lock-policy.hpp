@@ -46,4 +46,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Concurrent_Singleton_ClassLockPolicy_Included

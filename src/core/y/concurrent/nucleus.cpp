@@ -83,26 +83,26 @@ namespace Yttrium
                     if(0!=err) Libc::Error::Critical(err,"pthread_mutex_destroy");
                 }
 
-
-
-            private:
-                Y_Disable_Copy_And_Assign(PThreadMutex);
-                virtual void doLock() noexcept
+                virtual void lock() noexcept
                 {
                     const int err = pthread_mutex_lock(data);
                     if(0!=err) Libc::Error::Critical(err,"pthread_mutex_lock/%s",Nucleus::CallSign);
                 }
 
-                virtual void doUnlock() noexcept
+                virtual void unlock() noexcept
                 {
                     const int err = pthread_mutex_unlock(data);
                     if(0!=err) Libc::Error::Critical(err,"pthread_mutex_unlock/%s",Nucleus::CallSign);
                 }
 
+            private:
+                Y_Disable_Copy_And_Assign(PThreadMutex);
+
+
             };
 
             typedef PThreadMutex SystemMutex;
-#endif
+#endif // defined(Y_BSD)
 
 #if defined(Y_WIN)
             class WindowsMutex :
@@ -123,22 +123,25 @@ namespace Yttrium
                 {
                     ::DeleteCriticalSection(data);
                 }
-            private:
-                Y_Disable_Copy_And_Assign(WindowsMutex);
-                inline virtual void doLock() noexcept
+
+                inline virtual void lock() noexcept
                 {
                     ::EnterCriticalSection(data);
                 }
 
-                inline virtual void doUnlock() noexcept
+                inline virtual void unlock() noexcept
                 {
                     ::LeaveCriticalSection(data);
                 }
 
+            private:
+                Y_Disable_Copy_And_Assign(WindowsMutex);
+
+
             };
 
             typedef WindowsMutex SystemMutex;
-#endif
+#endif // defined(Y_WIN)
 
             //! holds a few mutexes
             template <typename MUTEX, size_t N>
@@ -158,7 +161,7 @@ namespace Yttrium
                 {
                     setup();
                 }
-#endif
+#endif // defined(Y_WIN)
 
 #if defined(Y_BSD)
                 //! setup with one argument
@@ -171,7 +174,7 @@ namespace Yttrium
                 {
                     setup();
                 }
-#endif
+#endif // defined(Y_BSD)
 
                 //! cleanup
                 inline virtual ~InnerLocking() noexcept { cleanup();  }

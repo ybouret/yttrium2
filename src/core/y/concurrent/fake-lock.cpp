@@ -16,23 +16,20 @@ namespace Yttrium
         {
         }
 
-        void FakeLock:: doLock() noexcept
+        void FakeLock:: lock() noexcept
         {
-            if(Trace) std::cerr << "[Lock   @" << count << "]" << std::endl;
         }
 
-        void FakeLock:: doUnlock()  noexcept
+        void FakeLock:: unlock()  noexcept
         {
-            if(Trace) std::cerr << "[Unlock @" << count << "]" << std::endl;
         }
 
-        bool FakeLock:: doTryLock() noexcept
+        bool FakeLock:: tryLock() noexcept
         {
-            if(Trace) std::cerr << "[TryLock@" << count << "]" << std::endl;
             return true;
         }
 
-        bool FakeLock::Trace = false;
+        
     }
 
 }

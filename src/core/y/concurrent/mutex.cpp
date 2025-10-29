@@ -44,19 +44,19 @@ namespace Yttrium
             provider.deleteAs( Coerce(code) );
         }
         
-        void Mutex:: doLock() noexcept
+        void Mutex:: lock() noexcept
         {
             assert(0!=code);
             code->lock();
         }
 
-        void Mutex:: doUnlock() noexcept
+        void Mutex:: unlock() noexcept
         {
             assert(0!=code);
             code->unlock();
         }
 
-        bool Mutex:: doTryLock() noexcept
+        bool Mutex:: tryLock() noexcept
         {
             assert(0!=code);
             return code->tryLock();
@@ -74,7 +74,6 @@ namespace Yttrium
 
         Condition:: Condition() : code( Provider::Instance().createAs<Code>() )
         {
-            //std::cerr << "sizeof(Condition::Code)=" << sizeof(Code) << std::endl;
         }
 
         Condition:: ~Condition() noexcept
