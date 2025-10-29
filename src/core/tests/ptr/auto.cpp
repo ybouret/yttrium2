@@ -24,8 +24,8 @@ namespace
 
         void method()
         {
-            std::cerr << "Method With FakeLock!" << std::endl;
-            //std::cerr << "Method with with #lock=" << count << std::endl;
+            //std::cerr << "Method With FakeLock!" << std::endl;
+            std::cerr << "Method with with #lock=" << count << std::endl;
         }
 
     private:

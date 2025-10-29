@@ -90,7 +90,7 @@ Y_UTEST(concurrent_pipeline)
 
     scatter.adjust(mtQ.size,0);
     scatter.ld(0);
-    //target = &scatter;
+    target = &scatter;
 
     for(int n=0;n<=100;++n)
     {
@@ -101,10 +101,10 @@ Y_UTEST(concurrent_pipeline)
             mtQ.enqueue(something);
         }
         mtQ.flush();
-        //break;
     }
 
     std::cerr << std::endl;
     std::cerr << "...Done!" << std::endl;
+    std::cerr << "scatter=" << scatter << std::endl;
 }
 Y_UDONE()

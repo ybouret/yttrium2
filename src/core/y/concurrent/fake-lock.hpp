@@ -42,7 +42,15 @@ namespace Yttrium
             virtual bool tryLock() noexcept;
             virtual void lock()    noexcept;
             virtual void unlock()  noexcept;
-            
+
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const size_t count;
+
         private:
             Y_Disable_Copy_And_Assign(FakeLock); //!< discarding
            
