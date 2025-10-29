@@ -43,29 +43,37 @@ namespace
 
 Y_UTEST(concurrent_pipeline)
 {
+
+
+
+    Something         something(7);
+
     {
-        Concurrent::Alone stQ;
-        Concurrent::Queue mtQ(Concurrent::Site::Default);
+        Concurrent::Tasks tasks;
+        tasks.pushTail( new Concurrent::Task(something,1) );
+
+        Concurrent::FakeLock       fakeLock;
+        const Concurrent::Context  seq(fakeLock,1,0);
+
+        something.a += 2;
+        something(seq);
+        (*tasks.tail)(seq);
+        tasks.pushTail( new Concurrent::Task(something, & Something::routine, 2) );
+        (*tasks.tail)(seq);
+
+        something.a -= 4;
+        Concurrent::Kernel k(something);
+        k(seq);
+        tasks.pushTail( new Concurrent::Task(k,3) );
+        (*tasks.tail)(seq);
     }
 
-    Concurrent::Tasks tasks;
-    Something         something(7);
-    tasks.pushTail( new Concurrent::Task(something,1) );
 
-    Concurrent::FakeLock       fakeLock;
-    const Concurrent::Context  seq(fakeLock,1,0);
+    Concurrent::Alone stQ;
+    Concurrent::Queue mtQ(Concurrent::Site::Default);
 
-    something.a += 2;
-    something(seq);
-    (*tasks.tail)(seq);
-    tasks.pushTail( new Concurrent::Task(something, & Something::routine, 2) );
-    (*tasks.tail)(seq);
-
-    something.a -= 4;
-    Concurrent::Kernel k(something);
-    k(seq);
-    tasks.pushTail( new Concurrent::Task(k,3) );
-    (*tasks.tail)(seq);
+    stQ.enqueue(something);
+    
 
 
 }

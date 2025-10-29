@@ -45,8 +45,8 @@ namespace Yttrium
             ready(0),
             built(0),
             mutex(),
-            stop(),
-            sync(),
+            suspend(),
+            primary(),
             running(),
             waiting(),
             pending(),
@@ -71,16 +71,16 @@ namespace Yttrium
             void flush()               noexcept;
             void purge()               noexcept;
 
-            const size_t             size;
-            size_t                   ready;
-            size_t                   built;
-            Mutex                    mutex;
-            Condition                stop;
-            Condition                sync;
-            Players                  running;
-            Players                  waiting;
-            Tasks                    pending;
-            Memory::SchoolOf<Player> team;
+            const size_t             size;    //!< team size
+            size_t                   ready;   //!< ready counter
+            size_t                   built;   //!< built indicator
+            Mutex                    mutex;   //!< common mutex
+            Condition                suspend; //!< suspend players
+            Condition                primary; //!< communication with primary thread
+            Players                  running; //!< actually running
+            Players                  waiting; //!< actually waiting
+            Tasks                    pending; //!< pending tasks
+            Memory::SchoolOf<Player> team;    //!< memory for players
 
         private:
             Y_Disable_Copy_And_Assign(Coach);
@@ -105,7 +105,7 @@ namespace Yttrium
                 Y_Lock(mutex);
                 if(ready<built)
                 {
-                    sync.wait(mutex);
+                    primary.wait(mutex);
                     assert(ready==built);
                 }
             }
@@ -117,7 +117,7 @@ namespace Yttrium
         {
             std::cerr << "quit" << std::endl;
             purge();
-            stop.broadcast();
+            suspend.broadcast();
 
             while(built>0) {
                 Destruct(team.entry+(--built));
@@ -131,7 +131,7 @@ namespace Yttrium
             // entering a new thread
             //
             //------------------------------------------------------------------
-            mutex.lock();
+            mutex.lock(); // PRIMARY Lock
 
             //------------------------------------------------------------------
             //
@@ -143,22 +143,27 @@ namespace Yttrium
             Player * const player = team.entry + ready;
             waiting.pushTail(player);
 
-            // synchronize with main thread
+            // synchronize with primary thread
             ++ready;
-            sync.broadcast();
+            primary.broadcast();
 
             // wait on a lock mutex for first loop
-            stop.wait(mutex);
+        SUSPEND:
+            suspend.wait(mutex);
 
             //------------------------------------------------------------------
             //
             // wake up on a locked mutex
             //
             //------------------------------------------------------------------
-            {
-                Y_Thread_Message("leaving " << ctx);
-            }
-            mutex.unlock();
+            Y_Thread_Message("awaking " << ctx);
+            assert(waiting.owns(player));
+            if(pending.size<=0) goto RETURN;
+            goto SUSPEND;
+
+        RETURN:
+            Y_Thread_Message("leaving " << ctx);
+            mutex.unlock(); // PRIMARY UNLOCK
         }
 
         void Queue::Coach:: enqueue(Task * const task) noexcept
@@ -166,8 +171,9 @@ namespace Yttrium
             assert(task);
             mutex.lock();
             pending.pushTail(task);
+            if(waiting.size>0)
+                suspend.signal();
             mutex.unlock();
-            
         }
 
         void Queue:: Coach:: flush() noexcept
