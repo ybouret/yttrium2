@@ -85,8 +85,12 @@ Y_UTEST(concurrent_pipeline)
     //stQ.enqueue(something);
     //stQ.flush();
 
-
-    mtQ.enqueue(something);
+    for(int i=1;i<=10;++i)
+    {
+        something.a = i;
+        mtQ.enqueue(something);
+    }
+    
     mtQ.flush();
 
     std::cerr << std::endl;

@@ -193,7 +193,7 @@ namespace Yttrium
 
                 //--------------------------------------------------------------
                 //
-                // change task state
+                // locked administrativia
                 //
                 //--------------------------------------------------------------
                 (void) garbage.pushTail( working.pop(task) );
@@ -203,6 +203,7 @@ namespace Yttrium
                     //----------------------------------------------------------
                     // directly take next job
                     //----------------------------------------------------------
+                    Y_Thread_Message("running " << ctx << ", #pending=" << pending.size);
                     goto PERFORM;
                 }
                 else
@@ -226,11 +227,13 @@ namespace Yttrium
         void Queue::Coach:: enqueue(Task * const task) noexcept
         {
             assert(task);
-            mutex.lock();
+            Y_Lock(mutex);
             pending.pushTail(task);
+            garbage.release();
             if(waiting.size>0)
+            {
                 suspend.signal();
-            mutex.unlock();
+            }
         }
 
         void Queue:: Coach:: flush() noexcept
