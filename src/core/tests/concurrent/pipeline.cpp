@@ -4,12 +4,17 @@
 
 #include "y/concurrent/thread.hpp"
 #include "y/concurrent/fake-lock.hpp"
+#include "y/random/park-miller.hpp"
+#include "y/system/wall-time.hpp"
 
 using namespace Yttrium;
 
 
 namespace
 {
+
+    static double MaxWait = 0.1;
+
     class Something
     {
     public:
@@ -24,7 +29,8 @@ namespace
 
         inline void routine(const Concurrent::Context &ctx)
         {
-            Y_Thread_Message("a=" << a << " @" << ctx);
+            const double ns = ran.to<double>() * MaxWait;
+            Y_Thread_Message("a=" << a << " @" << ctx << " : " << ns);
 
         }
 
@@ -33,8 +39,8 @@ namespace
             routine(ctx);
         }
 
-        int a;
-
+        int                a;
+        Random::ParkMiller ran;
 
     private:
         Y_Disable_Assign(Something);
@@ -78,6 +84,7 @@ Y_UTEST(concurrent_pipeline)
 
     //stQ.enqueue(something);
     //stQ.flush();
+
 
     mtQ.enqueue(something);
     mtQ.flush();
