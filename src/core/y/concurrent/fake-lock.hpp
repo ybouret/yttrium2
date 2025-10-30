@@ -49,7 +49,7 @@ namespace Yttrium
             // Members
             //
             //__________________________________________________________________
-            const size_t count;
+            const size_t count; //!< lock count
 
         private:
             Y_Disable_Copy_And_Assign(FakeLock); //!< discarding

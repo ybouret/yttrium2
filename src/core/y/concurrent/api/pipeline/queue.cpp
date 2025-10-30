@@ -12,6 +12,7 @@ namespace Yttrium
     namespace Concurrent
     {
 
+        //! Thread to be used in raw list
         class Queue:: Player : public Thread
         {
         public:
@@ -34,7 +35,7 @@ namespace Yttrium
         };
 
 
-
+        //! pipeline implementation
         class Queue:: Coach : public Object
         {
         public:
@@ -104,8 +105,11 @@ namespace Yttrium
         {
             while(built<size)
             {
+                // start construction
                 new (team.entry+built) Player(Launch,this);
                 ++built;
+
+                // wait for construction to be complete
                 Y_Lock(mutex);
                 if(ready<built)
                 {
@@ -114,19 +118,18 @@ namespace Yttrium
                 }
             }
 
-            std::cerr << "all built" << std::endl;
         }
 
         void Queue:: Coach:: quit() noexcept
         {
-            std::cerr << "quit" << std::endl;
-            purge();
-            flush();
-            suspend.broadcast();
+            purge();             // remove   pending
+            flush();             // wait for working
+            suspend.broadcast(); // wake up all with no tasks
 
-            while(built>0) {
+            // destruct threads
+            while(built>0)
                 Destruct(team.entry+(--built));
-            }
+
         }
 
         void Queue:: Coach:: parallelRun() noexcept
@@ -140,19 +143,26 @@ namespace Yttrium
 
             //------------------------------------------------------------------
             //
-            // setup
+            // setup player and put it in the waiting list
             //
             //------------------------------------------------------------------
-            const Context ctx(mutex,size,ready);
-            Y_Thread_Message("ready=" << ready);
+            const Context  ctx(mutex,size,ready);
             Player * const player = team.entry + ready;
             waiting.pushTail(player);
 
+            //------------------------------------------------------------------
+            //
             // synchronize with primary thread
+            //
+            //------------------------------------------------------------------
             ++ready;
             primary.broadcast();
 
-            // wait on a lock mutex for first loop
+            //------------------------------------------------------------------
+            //
+            // wait on a LOCKED mutex for [first] loop
+            //
+            //------------------------------------------------------------------
         SUSPEND:
             suspend.wait(mutex);
             
@@ -161,11 +171,15 @@ namespace Yttrium
             // wake up on a LOCKED mutex
             //
             //------------------------------------------------------------------
-            Y_Thread_Message("awaking " << ctx << ", #pending=" << pending.size);
+            //Y_Thread_Message("awaking " << ctx << ", #pending=" << pending.size);
             assert(waiting.owns(player));
             if(pending.size<=0)
             {
+                //--------------------------------------------------------------
+                //
                 // this is the end...
+                //
+                //--------------------------------------------------------------
                 goto RETURN;
             }
             else
@@ -186,7 +200,7 @@ namespace Yttrium
 
                 //--------------------------------------------------------------
                 //
-                // perform unlocked
+                // perform unlocked task
                 //
                 //--------------------------------------------------------------
                 {
@@ -201,13 +215,15 @@ namespace Yttrium
                 //
                 //--------------------------------------------------------------
 
-                // garbage task
+                // move task for garbage
                 (void) garbage.pushTail( working.pop(task) );
 
                 if(pending.size>0)
                 {
                     //----------------------------------------------------------
+                    //
                     // directly take next job
+                    //
                     //----------------------------------------------------------
                     Y_Thread_Message("running " << ctx << ", #pending=" << pending.size);
                     goto PERFORM;
@@ -215,7 +231,9 @@ namespace Yttrium
                 else
                 {
                     //----------------------------------------------------------
+                    //
                     // all pending tasks are done
+                    //
                     //----------------------------------------------------------
                     Y_Thread_Message("waiting " << ctx << ", #pending=" << pending.size);
                     (void) waiting.pushTail( running.pop(player) ); // change player state
