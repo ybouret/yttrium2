@@ -26,8 +26,8 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            explicit Code(const size_t n) :
-            size(n),
+            explicit Code(const Site &site) :
+            size(site->size()),
             ready(0),
             inUse(0),
             kcode(0),
@@ -77,9 +77,17 @@ namespace Yttrium
                     }
                 }
 
-                for(size_t i=1;i<=size;++i)
+                //--------------------------------------------------------------
+                //
+                // and localize
+                //
+                //--------------------------------------------------------------
                 {
-                    team[i].assign((i-1)%4);
+                    size_t i=1;
+                    for(const PNode *node= (*site)->head;node;node=node->next,++i)
+                    {
+                        team[i].assign(**node);
+                    }
                 }
 
             }
@@ -207,9 +215,9 @@ namespace Yttrium
         };
 
 
-        Crew:: Crew(const size_t n) :
-        SIMD(n,CallSign),
-        code( new Code(n) )
+        Crew:: Crew(const Site site) :
+        SIMD(site->size(),CallSign),
+        code( new Code(site) )
         {
         }
 

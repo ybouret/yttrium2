@@ -5,6 +5,7 @@
 #define Y_Concurrent_Crew_Included 1
 
 #include "y/concurrent/api/simd.hpp"
+#include "y/concurrent/thread/site.hpp"
 
 namespace Yttrium
 {
@@ -35,7 +36,7 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            explicit Crew(const size_t); //!< setup
+            explicit Crew(const Site);   //!< setup
             virtual ~Crew()    noexcept; //!< cleanup
 
             //__________________________________________________________________
@@ -56,4 +57,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Concurrent_Crew_Included
