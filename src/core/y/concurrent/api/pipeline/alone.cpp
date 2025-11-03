@@ -63,12 +63,15 @@ namespace Yttrium
         {
 
         }
-
-
-
-        Task::Status Alone:: query(const Task::ID) const noexcept
+        
+        Task::Status Alone:: getUnlocked(const Task::ID) const noexcept
         {
             return Task::CarriedOut;
+        }
+
+        Lockable & Alone:: getLockable() const noexcept
+        {
+            return code->fakeLock;
         }
 
         void Alone:: enqueueBand(Task::Dict &,

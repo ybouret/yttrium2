@@ -8,6 +8,8 @@
 #include "y/core/linked/list/cxx.hpp"
 #include "y/container/ordered/data-book.hpp"
 #include "y/container/cxx/series.hpp"
+#include "y/object/counted.hpp"
+#include "y/pointer/arc.hpp"
 
 namespace Yttrium
 {
@@ -40,6 +42,16 @@ namespace Yttrium
                 CarriedOut, //!< finished
                 InProgress, //!< currently processed
                 Registered  //!< still pending
+            };
+
+            class Batch : public CountedObject, public CxxSeries<Kernel>
+            {
+            public:
+                explicit Batch(const size_t);
+                virtual ~Batch() noexcept;
+
+            private:
+                Y_Disable_Copy_And_Assign(Batch);
             };
 
             //__________________________________________________________________
@@ -100,7 +112,8 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Task); //!< discarding
         };
 
-        typedef CxxListOf<Task> Tasks; //!< alias
+        typedef CxxListOf<Task>     Tasks; //!< alias
+        typedef ArcPtr<Task::Batch> Batch; //!< alias
 
     }
 

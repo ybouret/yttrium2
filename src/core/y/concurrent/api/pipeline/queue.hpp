@@ -47,16 +47,18 @@ namespace Yttrium
             virtual const char * callSign()            const noexcept;
             virtual void         flush()                     noexcept;
             virtual void         purge()                     noexcept;
-            virtual Task::Status query(const Task::ID) const noexcept;
-
+            
         private:
             class Coach;
             class Player;
             Y_Disable_Copy_And_Assign(Queue);   //!< discarding
             Coach * const coach;                //!< inner code
-            virtual void enqueueTask(Task * const) noexcept;
-            virtual void enqueueBand(Task::Dict &             dict,
-                                     const Readable<Kernel> & todo);
+
+            virtual Lockable &   getLockable()               const noexcept;
+            virtual Task::Status getUnlocked(const Task::ID) const noexcept;
+            virtual void         enqueueTask(Task * const)         noexcept;
+            virtual void         enqueueBand(Task::Dict &             dict,
+                                             const Readable<Kernel> & todo);
         };
     }
 

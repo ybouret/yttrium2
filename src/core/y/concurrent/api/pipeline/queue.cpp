@@ -167,7 +167,7 @@ namespace Yttrium
             //------------------------------------------------------------------
         SUSPEND:
             suspend.wait(mutex);
-            
+
             //------------------------------------------------------------------
             //
             // wake up on a LOCKED mutex
@@ -358,10 +358,9 @@ namespace Yttrium
             coach->purge();
         }
 
-        Task::Status Queue:: query(const Task::ID tid) const noexcept
+        Task::Status Queue:: getUnlocked(const Task::ID tid) const noexcept
         {
             assert(coach);
-            Y_Lock(coach->mutex);
             for(const Task *task = coach->working.head;task;task=task->next)
             {
                 if(tid == task->uuid) return Task::InProgress;
@@ -373,6 +372,12 @@ namespace Yttrium
             }
 
             return Task::CarriedOut;
+        }
+
+
+        Lockable & Queue:: getLockable() const noexcept
+        {
+            return coach->mutex;
         }
 
     }

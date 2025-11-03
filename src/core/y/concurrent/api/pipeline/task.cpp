@@ -15,6 +15,17 @@ namespace Yttrium
             try { self(ctx); } catch(...) { }
         }
 
+
+        Task:: Batch:: ~Batch() noexcept
+        {
+            
+        }
+
+        Task:: Batch:: Batch(const size_t n) : CountedObject(), CxxSeries<Kernel>(n)
+        {
+        }
+        
+
     }
 
 }
