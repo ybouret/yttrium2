@@ -88,6 +88,7 @@ namespace Yttrium
             }
 
 
+
         protected:
             Task::ID counter; //!< global task counter
 
