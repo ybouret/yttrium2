@@ -44,10 +44,10 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
-            virtual const char * callSign() const noexcept;
-            virtual void         flush()          noexcept;
-            virtual void         purge()          noexcept;
-
+            virtual const char * callSign()            const noexcept;
+            virtual void         flush()                     noexcept;
+            virtual void         purge()                     noexcept;
+            virtual Task::Status query(const Task::ID) const noexcept;
 
         private:
             class Coach;

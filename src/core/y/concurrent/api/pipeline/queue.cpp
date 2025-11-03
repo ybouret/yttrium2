@@ -331,6 +331,23 @@ namespace Yttrium
             coach->purge();
         }
 
+        Task::Status Queue:: query(const Task::ID tid) const noexcept
+        {
+            assert(coach);
+            Y_Lock(coach->mutex);
+            for(const Task *task = coach->working.head;task;task=task->next)
+            {
+                if(tid == task->uuid) return Task::InProgress;
+            }
+
+            for(const Task *task = coach->pending.head;task;task=task->next)
+            {
+                if(tid == task->uuid) return Task::Registered;
+            }
+
+            return Task::CarriedOut;
+        }
+
     }
 
 }

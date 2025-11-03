@@ -50,6 +50,8 @@ namespace Yttrium
             //! remove all pending tasks
             virtual void purge() noexcept = 0;
 
+            virtual Task::Status query(const Task::ID) const noexcept = 0;
+
             //__________________________________________________________________
             //
             //

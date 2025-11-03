@@ -64,6 +64,12 @@ namespace Yttrium
 
         }
 
+
+
+        Task::Status Alone:: query(const Task::ID) const noexcept
+        {
+            return Task::CarriedOut;
+        }
     }
 
 }
