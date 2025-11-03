@@ -7,6 +7,7 @@
 #include "y/concurrent/api/kernel.hpp"
 #include "y/core/linked/list/cxx.hpp"
 #include "y/container/ordered/data-book.hpp"
+#include "y/container/cxx/series.hpp"
 
 namespace Yttrium
 {

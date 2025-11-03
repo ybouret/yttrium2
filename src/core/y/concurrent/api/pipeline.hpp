@@ -6,7 +6,6 @@
 
 #include "y/concurrent/api/parallel.hpp"
 #include "y/concurrent/api/pipeline/task.hpp"
-#include "y/container/readable.hpp"
 
 namespace Yttrium
 {

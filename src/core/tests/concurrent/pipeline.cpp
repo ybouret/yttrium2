@@ -6,6 +6,8 @@
 #include "y/concurrent/fake-lock.hpp"
 #include "y/random/park-miller.hpp"
 #include "y/container/sequence/vector.hpp"
+#include "y/container/cxx/series.hpp"
+
 #include <cmath>
 
 using namespace Yttrium;
