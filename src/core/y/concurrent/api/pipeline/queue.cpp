@@ -227,7 +227,7 @@ namespace Yttrium
                     // directly take next job
                     //
                     //----------------------------------------------------------
-                    Y_Thread_Message("running " << ctx << ", #pending=" << pending.size);
+                    //Y_Thread_Message("running " << ctx << ", #pending=" << pending.size);
                     goto PERFORM;
                 }
                 else
@@ -237,7 +237,7 @@ namespace Yttrium
                     // all pending tasks are done
                     //
                     //----------------------------------------------------------
-                    Y_Thread_Message("waiting " << ctx << ", #pending=" << pending.size);
+                    //Y_Thread_Message("waiting " << ctx << ", #pending=" << pending.size);
                     (void) waiting.pushTail( running.pop(player) ); // change player state
 
                     if(0==running.size)
@@ -253,7 +253,7 @@ namespace Yttrium
 
 
         RETURN:
-            Y_Thread_Message("leaving " << ctx);
+            //Y_Thread_Message("leaving " << ctx);
             mutex.unlock(); // PRIMARY UNLOCK
         }
 
@@ -281,6 +281,7 @@ namespace Yttrium
                     try { dict += counter; }
                     catch(...) { delete task; throw; }
                     (void) pending.pushTail(task);
+                    ++counter;
                 }
             }
             if(waiting.size>0)
@@ -292,10 +293,10 @@ namespace Yttrium
             Y_Lock(mutex);
             if(pending.size>0)
             {
-                Y_Thread_Message("flushing...");
+                //Y_Thread_Message("flushing...");
                 primary.wait(mutex);
             }
-            Y_Thread_Message("flushed!");
+            //Y_Thread_Message("flushed!");
             garbage.release();
             assert(0    == pending.size);
             assert(0    == working.size);

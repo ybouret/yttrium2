@@ -108,5 +108,35 @@ Y_UTEST(concurrent_pipeline)
     std::cerr << std::endl;
     std::cerr << "...Done!" << std::endl;
     std::cerr << "scatter=" << scatter << std::endl;
+
+    std::cerr << std::endl;
+    std::cerr << "Using Batch..." << std::endl;
+
+    DataBook<>::PoolType   pool;
+    Concurrent::Task::Dict dict(pool);
+    {
+        const int n = 100;
+        scatter.ld(0);
+        Concurrent::Batch batch = new Concurrent::Task::Batch(n);
+        for(int i=1;i<=n;++i)
+        {
+            something.a = i;
+            (*batch) << something;
+        }
+
+        stQ.batch(dict,batch);
+        stQ.flush();
+
+        dict.free();
+        mtQ.batch(dict,batch);
+
+
+
+        mtQ.flush();
+
+
+    }
+
+
 }
 Y_UDONE()

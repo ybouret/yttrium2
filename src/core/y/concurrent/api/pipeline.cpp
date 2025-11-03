@@ -5,9 +5,7 @@ namespace Yttrium
 {
     namespace Concurrent
     {
-
-        //bool SIMD::Verbose = false;
-
+        
         Pipeline:: Pipeline(const size_t n, const char * const id) :
         Parallel(n,id),
         counter(0)
@@ -34,8 +32,18 @@ namespace Yttrium
         {
 
             Y_Lock( getLockable() );
-
-            
+            Task::Dict::Iterator it = dict.begin();
+            while(it != dict.end())
+            {
+                const Task::ID tid = Task::Dict::Cast<Task::ID>( *(it++) );
+                switch( getUnlocked(tid) )
+                {
+                    case Task::CarriedOut: dict.remove(tid); continue;
+                    case Task::InProgress:
+                    case Task::Registered:
+                        continue;
+                }
+            }
             return dict->size();
         }
 
