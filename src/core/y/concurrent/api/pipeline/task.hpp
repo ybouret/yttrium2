@@ -6,6 +6,7 @@
 
 #include "y/concurrent/api/kernel.hpp"
 #include "y/core/linked/list/cxx.hpp"
+#include "y/container/ordered/data-book.hpp"
 
 namespace Yttrium
 {
@@ -29,13 +30,15 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            typedef uint32_t ID; //!< alias
+            typedef uint32_t   ID;   //!< alias
+            typedef DataBook<> Dict; //!< alias
 
+            //! status to query
             enum Status
             {
-                CarriedOut,
-                InProgress,
-                Registered
+                CarriedOut, //!< finished
+                InProgress, //!< currently processed
+                Registered  //!< still pending
             };
 
             //__________________________________________________________________

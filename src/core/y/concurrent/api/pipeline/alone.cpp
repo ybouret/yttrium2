@@ -70,6 +70,14 @@ namespace Yttrium
         {
             return Task::CarriedOut;
         }
+
+        void Alone:: enqueueBand(Task::Dict &,
+                                 const Readable<Kernel> & todo)
+        {
+            const size_t n = todo.size();
+            for(size_t i=1;i<=n;++i)
+                enqueue( todo[i] );
+        }
     }
 
 }

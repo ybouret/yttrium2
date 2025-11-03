@@ -53,6 +53,8 @@ namespace Yttrium
             Code * const code; //!< inner code
             
             virtual void enqueueTask(Task * const) noexcept;
+            virtual void enqueueBand(Task::Dict &             dict,
+                                     const Readable<Kernel> & todo);
         };
     }
 

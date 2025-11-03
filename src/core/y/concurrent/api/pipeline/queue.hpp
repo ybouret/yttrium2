@@ -55,6 +55,8 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Queue);   //!< discarding
             Coach * const coach;                //!< inner code
             virtual void enqueueTask(Task * const) noexcept;
+            virtual void enqueueBand(Task::Dict &             dict,
+                                     const Readable<Kernel> & todo);
         };
     }
 

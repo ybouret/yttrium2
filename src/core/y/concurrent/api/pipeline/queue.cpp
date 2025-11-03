@@ -74,6 +74,8 @@ namespace Yttrium
             void flush()               noexcept;
             void purge()               noexcept;
 
+            void enqueue(Task::Dict &, const Readable<Kernel> &, Task::ID &);
+
             const size_t             size;    //!< team size
             size_t                   ready;   //!< ready counter
             size_t                   built;   //!< built indicator
@@ -259,12 +261,30 @@ namespace Yttrium
         {
             assert(task);
             Y_Lock(mutex);
-            pending.pushTail(task);
             garbage.release();
+            (void) pending.pushTail(task);
             if(waiting.size>0)
-            {
                 suspend.signal();
+        }
+
+        void Queue::Coach:: enqueue(Task::Dict             & dict,
+                                    const Readable<Kernel> & todo,
+                                    Task::ID               & counter)
+        {
+            Y_Lock(mutex);
+            garbage.release();
+            {
+                const size_t n = todo.size();
+                for(size_t i=1;i<=n;++i)
+                {
+                    Task * const task = new Task(todo[i],counter);
+                    try { dict += counter; }
+                    catch(...) { delete task; throw; }
+                    (void) pending.pushTail(task);
+                }
             }
+            if(waiting.size>0)
+                suspend.signal();
         }
 
         void Queue:: Coach:: flush() noexcept
@@ -317,6 +337,13 @@ namespace Yttrium
             assert(task);
             assert(coach);
             coach->enqueue(task);
+        }
+
+        void Queue:: enqueueBand(Task::Dict             & dict,
+                                 const Readable<Kernel> & todo)
+        {
+            assert(coach);
+            coach->enqueue(dict,todo,counter);
         }
 
         void Queue:: flush() noexcept

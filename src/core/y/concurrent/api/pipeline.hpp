@@ -6,11 +6,13 @@
 
 #include "y/concurrent/api/parallel.hpp"
 #include "y/concurrent/api/pipeline/task.hpp"
+#include "y/container/readable.hpp"
 
 namespace Yttrium
 {
     namespace Concurrent
     {
+
 
         //______________________________________________________________________
         //
@@ -86,13 +88,18 @@ namespace Yttrium
             }
 
 
+        protected:
+            Task::ID counter; //!< global task counter
 
         private:
             Y_Disable_Copy_And_Assign(Pipeline); //!< discarding
-            Task::ID counter; //!< global task counter
 
             //! enqueue a new task
             virtual void enqueueTask(Task * const) noexcept = 0;
+
+            virtual void enqueueBand(Task::Dict &             dict,
+                                     const Readable<Kernel> & todo) = 0;
+
         };
     }
 
