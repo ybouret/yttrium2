@@ -1,4 +1,3 @@
-
 Y_CreateTest(test-core
 core
 format
@@ -100,6 +99,7 @@ Y_UTEST(concurrent:split2d)
 Y_UTEST(concurrent:simd)
 Y_UTEST(concurrent:pipeline)
 Y_UTEST(concurrent:site)
+Y_UTEST(concurrent:worker)
 
 #memory
 Y_UTEST(memory:gc)
