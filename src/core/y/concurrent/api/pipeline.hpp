@@ -98,6 +98,11 @@ namespace Yttrium
             //! enqueue a new task
             virtual void enqueueTask(Task * const) noexcept = 0;
 
+            //! enqueue a batch of kernels
+            /**
+             \param dict dictionary of tasks
+             \param todo pre-compiled kernels
+             */
             virtual void enqueueBand(Task::Dict &             dict,
                                      const Readable<Kernel> & todo) = 0;
 
