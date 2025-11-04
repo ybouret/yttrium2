@@ -1,5 +1,9 @@
 project(sqlite3 C)
 
+Y_Message("Building SQLite3")
+if(Y_MSC)
+        string( APPEND CMAKE_C_FLAGS " -wd4711 -wd5045 -wd4242 -wd4820 -wd4668 -wd4191 -wd4574")
+endif()
 
 add_definitions(-DSQLITE_ENABLE_FTS4)
 add_definitions(-DSQLITE_ENABLE_FTS5)
