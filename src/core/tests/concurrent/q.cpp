@@ -2,7 +2,7 @@
 #include "y/concurrent/thread.hpp"
 #include "y/concurrent/mutex.hpp"
 #include "y/concurrent/condition.hpp"
-#include "y/concurrent/api/kernel.hpp"
+#include "y/concurrent/api/pipeline/task.hpp"
 #include "y/container/cxx/series.hpp"
 #include "y/core/linked/list/raw.hpp"
 #include "y/concurrent/runnable.hpp"
@@ -122,7 +122,7 @@ namespace Yttrium
         {
             // flush
 
-            // unleash waiting with no task
+            // unleash waiting with no task, no control
             std::cerr << "waiting = " << waiting.size << std::endl;
             assert(ready==waiting.size);
             while(waiting.size>0)
