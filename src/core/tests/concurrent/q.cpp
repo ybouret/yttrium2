@@ -71,6 +71,8 @@ namespace Yttrium
         public:
             explicit Brigade(const Site site) :
             Leader(site->size()),
+            waiting(),
+            running(),
             workers(size),
             ready(0)
             {
@@ -104,6 +106,7 @@ namespace Yttrium
             }
 
             Workers           waiting;
+            Workers           running;
             CxxSeries<Worker> workers;
             size_t            ready;
 
