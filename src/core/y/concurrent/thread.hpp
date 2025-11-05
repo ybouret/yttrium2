@@ -4,6 +4,7 @@
 #define Y_Concurrent_Thread_Included 1
 
 #include "y/core/setup.hpp"
+#include <cassert>
 
 namespace Yttrium
 {
@@ -58,6 +59,17 @@ namespace Yttrium
             //
             //__________________________________________________________________
             bool assign(const size_t) noexcept; //!< \return true if was assigned to CPU
+
+            //! helper to call run() of arguments
+            /**
+             \param args address of a RUNNABLE with run() method
+             */
+            template <typename RUNNABLE> static inline
+            void Run(void * const args) noexcept
+            {
+                assert(0!=args);
+                static_cast<RUNNABLE *>(args)->run();
+            }
 
         private:
             Y_Disable_Copy_And_Assign(Thread); //!< discarding

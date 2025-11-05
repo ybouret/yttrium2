@@ -13,8 +13,55 @@ namespace Yttrium
     namespace Concurrent
     {
 
+        class Leader
+        {
+        public:
+
+            inline explicit Leader(const size_t sz) :
+            mutex(), chief(), size(sz)
+            {
+            }
 
 
+            inline virtual ~Leader() noexcept
+            {
+            }
+
+            Mutex        mutex;
+            Condition    chief;
+            const size_t size;
+
+        private:
+            Y_Disable_Copy_And_Assign(Leader);
+        };
+
+        class Worker : public Context
+        {
+        public:
+
+            inline explicit Worker(Leader &     ld,
+                                   const size_t rk) :
+            Context(ld.mutex,ld.size,rk),
+            mutex(ld.mutex),
+            chief(ld.chief)
+            {
+            }
+
+            Mutex     & mutex;
+            Condition & chief;
+
+
+        private:
+            Y_Disable_Copy_And_Assign(Worker);
+        };
+
+        class Brigade : public Leader
+        {
+        public:
+
+        private:
+            Y_Disable_Copy_And_Assign(Brigade);
+        };
 
 
 
