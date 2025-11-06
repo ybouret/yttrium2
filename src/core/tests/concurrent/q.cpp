@@ -90,8 +90,6 @@ namespace Yttrium
                         waiting.pushTail( &workers[wi] )->thread.assign( **node );
                     }
 
-
-
                 }
                 catch(...)
                 {
@@ -105,10 +103,10 @@ namespace Yttrium
                 quit();
             }
 
-            Workers           waiting;
-            Workers           running;
-            CxxSeries<Worker> workers;
-            size_t            ready;
+            Workers           waiting; //!< waiting workers
+            Workers           running; //!< running workers
+            CxxSeries<Worker> workers; //!< memory for workers
+            size_t            ready;   //!< count sync
 
         private:
             Y_Disable_Copy_And_Assign(Brigade);
@@ -120,9 +118,19 @@ namespace Yttrium
 
         void Brigade:: quit() noexcept
         {
+            //------------------------------------------------------------------
+            //
             // flush
+            //
+            //------------------------------------------------------------------
 
+
+            //------------------------------------------------------------------
+            //
             // unleash waiting with no task, no control
+            // just wait for threads to return
+            //
+            //------------------------------------------------------------------
             std::cerr << "waiting = " << waiting.size << std::endl;
             assert(ready==waiting.size);
             while(waiting.size>0)
@@ -135,8 +143,11 @@ namespace Yttrium
         {
             mutex.lock();
 
-
+            //------------------------------------------------------------------
+            //
             // entering thread with LOCKED mutex
+            //
+            //------------------------------------------------------------------
             assert(ready<size);
             Worker & worker = workers[++ready]; assert(worker.indx==ready);
 
@@ -146,13 +157,24 @@ namespace Yttrium
             // signal chief that worker is ready
             chief.signal();
 
+            //------------------------------------------------------------------
+            //
             // block worker on the LOCKED mutex
+            //
+            //------------------------------------------------------------------
             worker.block.wait(mutex);
 
+            //------------------------------------------------------------------
+            //
             // wake up on a LOCKED mutex
+            //
+            //------------------------------------------------------------------
 
-
+            //------------------------------------------------------------------
+            //
             // returning
+            //
+            //------------------------------------------------------------------
             Y_Thread_Message("[-] " << worker);
             assert(ready>0);
             --ready;

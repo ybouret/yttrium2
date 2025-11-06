@@ -605,5 +605,5 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Core_Linked_List_Included
 

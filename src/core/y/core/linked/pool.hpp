@@ -238,5 +238,5 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Core_Linked_Pool_Included
 
