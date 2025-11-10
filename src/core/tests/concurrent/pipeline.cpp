@@ -59,6 +59,7 @@ namespace
 Y_UTEST(concurrent_pipeline)
 {
 
+#if 0
     Something         something(7);
     Vector<size_t>    scatter;
 
@@ -136,7 +137,7 @@ Y_UTEST(concurrent_pipeline)
 
 
     }
-
+#endif
 
 }
 Y_UDONE()

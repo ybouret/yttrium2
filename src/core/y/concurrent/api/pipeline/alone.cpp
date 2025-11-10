@@ -46,41 +46,7 @@ namespace Yttrium
         {
             return CallSign;
         }
-
-        void Alone:: enqueueTask(Task * const task) noexcept
-        {
-            assert(0!=task);
-            const AutoPtr<Task> guard(task);
-            task->perform(code->context);
-        }
-
-        void Alone :: flush() noexcept
-        {
-            
-        }
-
-        void Alone :: purge() noexcept
-        {
-
-        }
         
-        Task::Status Alone:: getUnlocked(const Task::ID) const noexcept
-        {
-            return Task::CarriedOut;
-        }
-
-        Lockable & Alone:: getLockable() const noexcept
-        {
-            return code->fakeLock;
-        }
-
-        void Alone:: enqueueBand(Task::Dict &,
-                                 const Readable<Kernel> & todo)
-        {
-            const size_t n = todo.size();
-            for(size_t i=1;i<=n;++i)
-                enqueue( todo[i] );
-        }
     }
 
 }

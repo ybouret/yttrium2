@@ -2,7 +2,7 @@
 #include "y/concurrent/thread.hpp"
 #include "y/concurrent/mutex.hpp"
 #include "y/concurrent/condition.hpp"
-#include "y/concurrent/api/pipeline/task.hpp"
+#include "y/concurrent/api/pipeline.hpp"
 #include "y/container/cxx/series.hpp"
 #include "y/core/linked/list/raw.hpp"
 #include "y/concurrent/runnable.hpp"
@@ -73,6 +73,7 @@ namespace Yttrium
             Leader(site->size()),
             waiting(),
             running(),
+            pending(),
             workers(size),
             ready(0)
             {
@@ -81,10 +82,10 @@ namespace Yttrium
                     const PNode *node = (**site).head;
                     for(size_t rk=0,wi=1;rk<size;++rk,++wi,node=node->next)
                     {
-                        // start construction
+                        // start worker construction
                         workers.push(*this,rk);
 
-                        // finish construction
+                        // finish worker construction and assign it
                         Y_Lock(mutex);
                         if(ready<wi) chief.wait(mutex);
                         waiting.pushTail( &workers[wi] )->thread.assign( **node );
@@ -103,8 +104,10 @@ namespace Yttrium
                 quit();
             }
 
+
             Workers           waiting; //!< waiting workers
             Workers           running; //!< running workers
+            Tasks             pending; //!< pending tasks
             CxxSeries<Worker> workers; //!< memory for workers
             size_t            ready;   //!< count sync
 
@@ -127,8 +130,8 @@ namespace Yttrium
 
             //------------------------------------------------------------------
             //
-            // unleash waiting with no task, no control
-            // just wait for threads to return
+            // unleash waiting with no task, no control...
+            // ...just wait for threads to return
             //
             //------------------------------------------------------------------
             std::cerr << "waiting = " << waiting.size << std::endl;
