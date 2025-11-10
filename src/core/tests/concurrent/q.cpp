@@ -15,26 +15,47 @@ namespace Yttrium
     namespace Concurrent
     {
 
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        // Necessary to initialize worker
+        //
+        //
+        //______________________________________________________________________
         class Leader : public Runnable
         {
         public:
-
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
             inline explicit Leader(const size_t sz) :
             mutex(), chief(), size(sz)
             {
             }
 
 
+            
             inline virtual ~Leader() noexcept
             {
             }
 
-            Mutex        mutex;
-            Condition    chief;
-            const size_t size;
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            Mutex        mutex; //!< common mutes
+            Condition    chief; //!< communication condition
+            const size_t size;  //!< number of workers to build
 
         private:
-            Y_Disable_Copy_And_Assign(Leader);
+            Y_Disable_Copy_And_Assign(Leader); //!< discarding
         };
 
         class Worker : public Context
@@ -64,11 +85,12 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Worker);
         };
 
-        typedef RawListOf<Worker> Workers;
 
         class Brigade : public Leader
         {
         public:
+            typedef RawListOf<Worker> Workers;
+
             explicit Brigade(const Site site) :
             Leader(site->size()),
             waiting(),
