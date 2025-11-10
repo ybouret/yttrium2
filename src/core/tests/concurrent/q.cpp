@@ -253,6 +253,7 @@ namespace
         void operator()(const Concurrent::Context &ctx)
         {
             Y_Lock(ctx.sync);
+            (std::cerr << ctx << " => " << value << std::endl).flush();
 
         }
 
@@ -267,15 +268,19 @@ namespace
 
 Y_UTEST(concurrent_q)
 {
-    Concurrent::Brigade q( Concurrent::Site::Default );
-
     Concurrent::Kernels klist;
     Something           something(7);
     klist.pushTail(something);
     for(Concurrent::Kernels::Iterator it=klist.begin();it!=klist.end();++it)
     {
-        Concurrent::Kernel &k = *it;
+        Concurrent::KernelTest::ST(*it);
     }
+    
+    {
+        Concurrent::Brigade q( Concurrent::Site::Default );
+    }
+
+
 
 }
 Y_UDONE()
