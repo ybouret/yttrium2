@@ -39,7 +39,7 @@ namespace Yttrium
             }
 
 
-            
+
             inline virtual ~Leader() noexcept
             {
             }
@@ -68,6 +68,7 @@ namespace Yttrium
             mutex(ld.mutex),
             chief(ld.chief),
             block(),
+            task(0),
             next(0),
             prev(0),
             thread( Thread::Run<Leader>, &ld )
@@ -77,6 +78,7 @@ namespace Yttrium
             Mutex     & mutex;
             Condition & chief;
             Condition   block;
+            Task *      task;
             Worker    * next;
             Worker    * prev;
             Thread      thread;
@@ -125,6 +127,9 @@ namespace Yttrium
             {
                 quit();
             }
+
+            //! dispatch on a locked mutex
+            void dispatch() noexcept;
 
 
             Workers           waiting; //!< waiting workers
@@ -194,12 +199,16 @@ namespace Yttrium
             // wake up on a LOCKED mutex
             //
             //------------------------------------------------------------------
+            assert(waiting.owns(&worker));
+            if(!worker.task) goto RETURN;
+
 
             //------------------------------------------------------------------
             //
             // returning
             //
             //------------------------------------------------------------------
+        RETURN:
             Y_Thread_Message("[-] " << worker);
             assert(ready>0);
             --ready;
