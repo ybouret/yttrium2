@@ -48,9 +48,9 @@ namespace Yttrium
 
 
         private:
-            class Code;
+            class Squad;
             Y_Disable_Copy_And_Assign(Queue);   //!< discarding
-
+            Squad * const squad;
         };
     }
 

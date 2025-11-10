@@ -17,7 +17,8 @@ namespace Yttrium
         const char * const Queue:: CallSign = "Concurrent::Queue";
 
         Queue:: Queue(const Site site) :
-        Pipeline(site->size(),CallSign)
+        Pipeline(site->size(),CallSign),
+        squad(0)
         {
         }
 
