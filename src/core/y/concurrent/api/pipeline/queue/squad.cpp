@@ -48,9 +48,11 @@ namespace Yttrium
         void Queue:: Squad:: flush() noexcept
         {
             Y_Lock(mutex);
+            garbage.release();
             Y_Thread_Message("flush...");
             if(running.size>0)
                 chief.wait(mutex);
+            garbage.release();
         }
 
 
@@ -58,6 +60,7 @@ namespace Yttrium
         {
             Y_Lock(mutex);
             pending.release();
+            garbage.release();
         }
 
         void Queue:: Squad:: quit() noexcept
@@ -68,6 +71,7 @@ namespace Yttrium
             //
             //------------------------------------------------------------------
             prune();
+
 
             //------------------------------------------------------------------
             //
@@ -81,7 +85,6 @@ namespace Yttrium
             // unleash waiting with no task, no control, wait for threads to end
             //
             //------------------------------------------------------------------
-            std::cerr << "waiting = " << waiting.size << std::endl;
             assert(ready==waiting.size);
 
             while(waiting.size>0)
