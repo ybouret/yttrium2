@@ -74,15 +74,28 @@ namespace Yttrium
                 Y_Must_Lock();
                 list.pushTail( pool.summon(args) );
             }
-            
 
-            
             //! preprend new node \param args for node constructor
             inline void pushHead(ParamType args)
             {
                 Y_Must_Lock();
                 list.pushHead( pool.summon(args) );
             }
+
+            template <typename U, typename V> inline
+            void pushTail(U &u, V &v)
+            {
+                Y_Must_Lock();
+                list.pushTail( pool.summon(u,v) );
+            }
+
+            template <typename U, typename V> inline
+            void pushHead(U &u, V &v)
+            {
+                Y_Must_Lock();
+                list.pushHead( pool.summon(u,v) );
+            }
+
 
             //! remove head node
             inline void popHead() noexcept
