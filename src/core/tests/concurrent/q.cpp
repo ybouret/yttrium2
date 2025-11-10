@@ -111,7 +111,8 @@ namespace Yttrium
 
                         // finish worker construction and assign it
                         Y_Lock(mutex);
-                        if(ready<wi) chief.wait(mutex);
+                        if(ready<wi)
+                            chief.wait(mutex);
                         waiting.pushTail( &workers[wi] )->thread.assign( **node );
                     }
 
@@ -157,14 +158,15 @@ namespace Yttrium
 
             //------------------------------------------------------------------
             //
-            // unleash waiting with no task, no control...
-            // ...just wait for threads to return
+            // unleash waiting with no task, no control, wait for threads to end
             //
             //------------------------------------------------------------------
             std::cerr << "waiting = " << waiting.size << std::endl;
             assert(ready==waiting.size);
+
             while(waiting.size>0)
                 waiting.popHead()->block.signal();
+
 
         }
 
@@ -199,8 +201,10 @@ namespace Yttrium
             // wake up on a LOCKED mutex
             //
             //------------------------------------------------------------------
+            if(!worker.task)
+                goto RETURN;
+
             assert(waiting.owns(&worker));
-            if(!worker.task) goto RETURN;
 
 
             //------------------------------------------------------------------
