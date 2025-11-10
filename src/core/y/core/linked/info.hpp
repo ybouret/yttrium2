@@ -37,5 +37,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Core_Linked_Info_Included
 

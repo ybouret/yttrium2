@@ -147,6 +147,11 @@ namespace Yttrium
                 return Sign::Of(lhs,rhs);
             }
 
+            inline  bool isOrderedByNodeAddress() const noexcept
+            {
+                return isOrderedBy( CompareAddresses, Sign::StriclyIncreasing );
+            }
+
             //__________________________________________________________________
             //
             //
