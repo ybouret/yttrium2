@@ -54,7 +54,7 @@ Y_UTEST(concurrent_q)
 
 
     std::cerr << "Create Kernels..." << std::endl;
-    for(int i=1;i<=3;++i)
+    for(int i=1;i<=30;++i)
     {
         something.value = i;
         klist << something;

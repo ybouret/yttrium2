@@ -186,6 +186,10 @@ namespace Yttrium
             {
                 // take next task
                 worker.task = pending.popHead();
+
+                // and dispatch remaining tasks to waiting
+                dispatch();
+                
                 goto PERFORM;
             }
             else
