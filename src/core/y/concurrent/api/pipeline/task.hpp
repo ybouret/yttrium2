@@ -30,7 +30,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             typedef uint32_t   ID;   //!< alias
-            
+
             //! status to query
             enum Status
             {
@@ -101,6 +101,7 @@ namespace Yttrium
 
         typedef CxxListOf<Task>     Tasks; //!< alias
         
+
     }
 
 }

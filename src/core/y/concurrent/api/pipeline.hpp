@@ -6,11 +6,15 @@
 
 #include "y/concurrent/api/parallel.hpp"
 #include "y/concurrent/api/pipeline/task.hpp"
+#include "y/container/sequence/list.hpp"
 
 namespace Yttrium
 {
     namespace Concurrent
     {
+
+        typedef List<Kernel> Kernels;
+
 
         //______________________________________________________________________
         //

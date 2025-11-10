@@ -3,6 +3,7 @@
 #include "y/concurrent/mutex.hpp"
 #include "y/concurrent/condition.hpp"
 #include "y/concurrent/api/pipeline.hpp"
+
 #include "y/container/cxx/series.hpp"
 #include "y/core/linked/list/raw.hpp"
 #include "y/concurrent/runnable.hpp"
@@ -225,13 +226,57 @@ namespace Yttrium
 
 
     }
+
 }
 
 using namespace Yttrium;
 
+namespace
+{
+    class Something
+    {
+    public:
+
+        inline Something(const int arg) : value(arg)
+        {
+        }
+
+
+        inline ~Something() noexcept
+        {
+        }
+
+        inline Something(const Something &_) : value(_.value)
+        {
+        }
+
+        void operator()(const Concurrent::Context &ctx)
+        {
+            Y_Lock(ctx.sync);
+
+        }
+
+
+
+        int value;
+
+    private:
+        Y_Disable_Assign(Something);
+    };
+}
+
 Y_UTEST(concurrent_q)
 {
     Concurrent::Brigade q( Concurrent::Site::Default );
+
+    Concurrent::Kernels klist;
+    Something           something(7);
+    klist.pushTail(something);
+    for(Concurrent::Kernels::Iterator it=klist.begin();it!=klist.end();++it)
+    {
+        Concurrent::Kernel &k = *it;
+    }
+
 }
 Y_UDONE()
 
