@@ -53,7 +53,8 @@ namespace Yttrium
                          Task::ID      & counter);
 
             void flush() noexcept;
-
+            void prune() noexcept;
+            
             //__________________________________________________________________
             //
             //

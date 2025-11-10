@@ -34,7 +34,7 @@ namespace
         void operator()(const Concurrent::Context &ctx)
         {
             Y_Lock(ctx.sync);
-            (std::cerr << ctx << " => " << value << std::endl).flush();
+            (std::cerr << "exec @" << ctx << " => " << value << std::endl).flush();
 
         }
 
@@ -73,6 +73,9 @@ Y_UTEST(concurrent_q)
     Concurrent::TaskIDs  tids;
     Concurrent::Task::ID counter = 0;
     q.enqueue(tids,klist,counter);
+
+    q.flush();
+
 
 
 

@@ -54,16 +54,24 @@ namespace Yttrium
         }
 
 
+        void Queue:: Squad:: prune() noexcept
+        {
+            Y_Lock(mutex);
+            pending.release();
+        }
+
         void Queue:: Squad:: quit() noexcept
         {
-            {
-                Y_Lock(mutex);
-                pending.release();
-            }
+            //------------------------------------------------------------------
+            //
+            // prune pending
+            //
+            //------------------------------------------------------------------
+            prune();
 
             //------------------------------------------------------------------
             //
-            // flush
+            // flush running
             //
             //------------------------------------------------------------------
             flush();
