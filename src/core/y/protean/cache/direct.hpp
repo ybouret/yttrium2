@@ -72,6 +72,20 @@ namespace Yttrium
                 catch(...) { guild.releaseBlock(addr); throw; }
             }
 
+
+            //! zombi node to live node with two args
+            /**
+             \param u first arg
+             \param v second arg
+             \return live node
+             */
+            template <typename U, typename V>
+            inline NodeType * summon( U &u, V &v) {
+                void * const addr = guild.acquireBlock();
+                try { return new (addr) NodeType(u,v); }
+                catch(...) { guild.releaseBlock(addr); throw; }
+            }
+
             //! live node to zombi node \param node conjured node
             inline void banish(NodeType * const node) noexcept
             {
