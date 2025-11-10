@@ -129,6 +129,9 @@ namespace Yttrium
                 quit();
             }
 
+
+            
+
             //! dispatch on a locked mutex
             void dispatch() noexcept;
 

@@ -53,7 +53,7 @@ namespace Yttrium
             //__________________________________________________________________
 
             //! build with inner object \param arg passed to data constructor
-            inline HeavyNode(ParamType arg) noexcept :
+            inline HeavyNode(ParamType arg) :
             next(0), prev(0), data(arg)
             {
             }
@@ -66,6 +66,15 @@ namespace Yttrium
             next(0), prev(0), data(node.data)
             {
             }
+
+            //! build with two args \param u first arg \param v second arg
+            template <typename U, typename V> inline
+            HeavyNode(U &u, V &v) :
+            next(0), prev(0), data(u,v)
+            {
+
+            }
+
 
             //__________________________________________________________________
             //

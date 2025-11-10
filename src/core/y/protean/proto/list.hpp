@@ -48,14 +48,14 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            typedef Core::ListOf<NODE>             ListType;   //!< alias
-            typedef POOL                           PoolType;   //!< alias
-            typedef Ingress<ListType>              Entrance;   //!< alias
-            typedef typename NODE::Type            Type;       //!< alias
-            typedef typename NODE::ConstType       ConstType;  //!< alias
-            typedef typename NODE::ParamType       ParamType;  //!< alias
-            typedef typename NODE::ReturnType      ReturnType; //!< alias
-            typedef typename ThreadingPolicy::Lock Lock;       //!< alias
+            typedef Core::ListOf<NODE>                     ListType;             //!< alias
+            typedef POOL                                   PoolType;             //!< alias
+            typedef Ingress<ListType>                      Entrance;             //!< alias
+            typedef typename NODE::Type                    Type;                 //!< alias
+            typedef typename NODE::ConstType               ConstType;            //!< alias
+            typedef typename NODE::ParamType               ParamType;            //!< alias
+            typedef typename NODE::ReturnType              ReturnType;           //!< alias
+            typedef typename ThreadingPolicy::Lock         Lock;                 //!< alias
             typedef Iter::Linked<Iter::Forward,NODE>       Iterator;             //!< alias
             typedef Iter::Linked<Iter::Forward,const NODE> ConstIterator;        //!< alias
             typedef Iter::Linked<Iter::Reverse,NODE>       ReverseIterator;      //!< alias
