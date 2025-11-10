@@ -94,7 +94,7 @@ namespace Yttrium
         public:
             typedef RawListOf<Worker> Workers;
 
-            explicit Brigade(const Site site) :
+            explicit Brigade(const Site &site) :
             Leader(site->size()),
             waiting(),
             running(),
@@ -125,16 +125,12 @@ namespace Yttrium
                 }
             }
 
-            virtual ~Brigade() noexcept
-            {
-                quit();
-            }
+            virtual ~Brigade() noexcept;
 
 
             
 
-            //! dispatch on a locked mutex
-            void dispatch() noexcept;
+
 
 
             Workers           waiting; //!< waiting workers
@@ -150,6 +146,10 @@ namespace Yttrium
             virtual void run() noexcept;
         };
 
+        Brigade:: ~Brigade() noexcept
+        {
+            quit();
+        }
 
         void Brigade:: quit() noexcept
         {
@@ -275,7 +275,7 @@ Y_UTEST(concurrent_q)
     {
         Concurrent::KernelTest::ST(*it);
     }
-    
+
     {
         Concurrent::Brigade q( Concurrent::Site::Default );
     }
