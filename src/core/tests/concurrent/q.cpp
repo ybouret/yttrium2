@@ -16,6 +16,7 @@ namespace Yttrium
     namespace Concurrent
     {
 
+        
 
         //______________________________________________________________________
         //
@@ -128,10 +129,17 @@ namespace Yttrium
             virtual ~Brigade() noexcept;
 
 
-            
-
-
-
+            void enqueue(TaskIDs       & taskIDs,
+                         const Kernels & kernels,
+                         Task::ID      & counter)
+            {
+                for(Kernels::ConstIterator it=kernels.begin();it!=kernels.end();++it)
+                {
+                    if( taskIDs.found(counter) )
+                        throw Specific::Exception("blabla","multiple Task ID!!");
+                    
+                }
+            }
 
             Workers           waiting; //!< waiting workers
             Workers           running; //!< running workers

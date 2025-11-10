@@ -13,7 +13,8 @@ namespace Yttrium
     namespace Concurrent
     {
 
-        typedef List<Kernel> Kernels;
+        typedef List<Kernel>   Kernels;
+        typedef List<Task::ID> TaskIDs;
 
 
         //______________________________________________________________________
