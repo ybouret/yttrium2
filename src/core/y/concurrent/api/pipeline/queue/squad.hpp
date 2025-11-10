@@ -22,7 +22,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Queue:: Squad : public Leader
+        class Queue:: Squad : public Object, public Leader
         {
         public:
             //__________________________________________________________________
@@ -61,6 +61,7 @@ namespace Yttrium
             Workers           waiting; //!< waiting workers
             Workers           running; //!< running workers
             Tasks             pending; //!< pending tasks
+            Tasks             garbage; //!< garbage tasks ?
             CxxSeries<Worker> workers; //!< memory for workers
             size_t            ready;   //!< count sync
 
@@ -68,6 +69,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Squad);
             void         quit() noexcept;
             virtual void run()  noexcept;
+            void         dispatch() noexcept;
         };
 
     }

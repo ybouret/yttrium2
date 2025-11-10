@@ -8,10 +8,12 @@ namespace Yttrium
     {
 
         Queue:: Squad:: Squad(const Site &site) :
+        Object(),
         Leader(site->size()),
         waiting(),
         running(),
         pending(),
+        garbage(),
         workers(size),
         ready(0)
         {
@@ -92,6 +94,14 @@ namespace Yttrium
                 // update counter
                 ++counter;
             }
+            dispatch();
+        }
+
+        void Queue:: Squad:: dispatch() noexcept
+        {
+            // enter with a LOCKED mutex
+            
+
         }
 
 
