@@ -14,12 +14,13 @@ namespace Yttrium
     namespace Concurrent
     {
 
-        class Brigade : public Leader
+
+        class Squad : public Leader
         {
         public:
             typedef RawListOf<Worker> Workers;
 
-            explicit Brigade(const Site &site) :
+            explicit Squad(const Site &site) :
             Leader(site->size()),
             waiting(),
             running(),
@@ -50,7 +51,7 @@ namespace Yttrium
                 }
             }
 
-            virtual ~Brigade() noexcept;
+            virtual ~Squad() noexcept;
 
 
             void enqueue(TaskIDs       & taskIDs,
@@ -87,18 +88,18 @@ namespace Yttrium
             size_t            ready;   //!< count sync
 
         private:
-            Y_Disable_Copy_And_Assign(Brigade);
+            Y_Disable_Copy_And_Assign(Squad);
             void quit() noexcept;
 
             virtual void run() noexcept;
         };
 
-        Brigade:: ~Brigade() noexcept
+        Squad:: ~Squad() noexcept
         {
             quit();
         }
 
-        void Brigade:: quit() noexcept
+        void Squad:: quit() noexcept
         {
             //------------------------------------------------------------------
             //
@@ -122,7 +123,7 @@ namespace Yttrium
         }
 
 
-        void Brigade:: run() noexcept
+        void Squad:: run() noexcept
         {
             mutex.lock();
 
@@ -234,11 +235,11 @@ Y_UTEST(concurrent_q)
 
     std::cerr << "Enqueuing..." << std::endl;
 
-    Concurrent::Brigade q( Concurrent::Site::Default );
+    Concurrent::Squad q( Concurrent::Site::Default );
 
-    Concurrent::TaskIDs tid;
+    Concurrent::TaskIDs  tids;
     Concurrent::Task::ID counter = 0;
-    q.enqueue(tid,klist,counter);
+    q.enqueue(tids,klist,counter);
 
 
 
