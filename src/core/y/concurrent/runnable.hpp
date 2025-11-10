@@ -11,18 +11,38 @@ namespace Yttrium
     namespace Concurrent
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Simple runnable interface
+        //
+        //
+        //______________________________________________________________________
         class Runnable
         {
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
         protected:
-            explicit Runnable() noexcept;
+            explicit Runnable() noexcept; //!< setup
 
         public:
-            virtual ~Runnable() noexcept;
+            virtual ~Runnable() noexcept; //!< cleanup
 
-            virtual void run() noexcept = 0;
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
+            virtual void run() noexcept = 0; //!< to be run in parallel
 
         private:
-            Y_Disable_Copy_And_Assign(Runnable);
+            Y_Disable_Copy_And_Assign(Runnable); //!< discarding
         };
     }
 

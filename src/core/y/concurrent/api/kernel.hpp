@@ -14,10 +14,18 @@ namespace Yttrium
         //! High-Level Kernel function
         typedef Functor<void,TL1(Context)> Kernel;  
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Kernel testing
+        //
+        //
+        //______________________________________________________________________
         struct KernelTest
         {
-            static void ST(Kernel &);
-            static void MT(Kernel &);
+            static void ST(Kernel &); //!< test in sequential environment
+            static void MT(Kernel &); //!< test in one thread environment
 
         };
 
