@@ -33,6 +33,7 @@ Y_CreateLibrary(y
     y/concurrent/api
     y/concurrent/api/simd
     y/concurrent/api/pipeline
+    y/concurrent/api/pipeline/queue
     y/container
     y/container/matrix
     y/container/iter

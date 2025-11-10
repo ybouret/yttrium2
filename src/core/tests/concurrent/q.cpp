@@ -1,7 +1,5 @@
 #include "y/concurrent/thread/site.hpp"
-#include "y/concurrent/thread.hpp"
-#include "y/concurrent/mutex.hpp"
-#include "y/concurrent/condition.hpp"
+#include "y/concurrent/api/pipeline/queue/worker.hpp"
 #include "y/concurrent/api/pipeline.hpp"
 
 #include "y/container/cxx/series.hpp"
@@ -15,80 +13,6 @@ namespace Yttrium
 {
     namespace Concurrent
     {
-
-        
-
-        //______________________________________________________________________
-        //
-        //
-        //
-        // Necessary to initialize worker
-        //
-        //
-        //______________________________________________________________________
-        class Leader : public Runnable
-        {
-        public:
-            //__________________________________________________________________
-            //
-            //
-            // C++
-            //
-            //__________________________________________________________________
-            inline explicit Leader(const size_t sz) :
-            mutex(), chief(), size(sz)
-            {
-            }
-
-
-
-            inline virtual ~Leader() noexcept
-            {
-            }
-
-            //__________________________________________________________________
-            //
-            //
-            // Members
-            //
-            //__________________________________________________________________
-            Mutex        mutex; //!< common mutes
-            Condition    chief; //!< communication condition
-            const size_t size;  //!< number of workers to build
-
-        private:
-            Y_Disable_Copy_And_Assign(Leader); //!< discarding
-        };
-
-        class Worker : public Context
-        {
-        public:
-
-            inline explicit Worker(Leader &     ld,
-                                   const size_t rk) :
-            Context(ld.mutex,ld.size,rk),
-            mutex(ld.mutex),
-            chief(ld.chief),
-            block(),
-            task(0),
-            next(0),
-            prev(0),
-            thread( Thread::Run<Leader>, &ld )
-            {
-            }
-
-            Mutex     & mutex;
-            Condition & chief;
-            Condition   block;
-            Task *      task;
-            Worker    * next;
-            Worker    * prev;
-            Thread      thread;
-
-        private:
-            Y_Disable_Copy_And_Assign(Worker);
-        };
-
 
         class Brigade : public Leader
         {
