@@ -148,8 +148,13 @@ namespace Yttrium
                         taskIDs.popTail();
                         throw;
                     }
+                    ++counter;
                 }
             }
+
+            void dispatch() noexcept;
+
+
 
             Workers           waiting; //!< waiting workers
             Workers           running; //!< running workers
@@ -288,15 +293,28 @@ Y_UTEST(concurrent_q)
 {
     Concurrent::Kernels klist;
     Something           something(7);
-    klist.pushTail(something);
+
+
+    std::cerr << "Create Kernels..." << std::endl;
+    for(int i=1;i<=3;++i)
+    {
+        something.value = i;
+        klist << something;
+    }
+
+    std::cerr << "Show Kernels..." << std::endl;
     for(Concurrent::Kernels::Iterator it=klist.begin();it!=klist.end();++it)
     {
         Concurrent::KernelTest::ST(*it);
     }
 
-    {
-        Concurrent::Brigade q( Concurrent::Site::Default );
-    }
+    std::cerr << "Enqueuing..." << std::endl;
+
+    Concurrent::Brigade q( Concurrent::Site::Default );
+
+    Concurrent::TaskIDs tid;
+    Concurrent::Task::ID counter = 0;
+    q.enqueue(tid,klist,counter);
 
 
 
