@@ -133,11 +133,21 @@ namespace Yttrium
                          const Kernels & kernels,
                          Task::ID      & counter)
             {
+                Y_Lock(mutex);
                 for(Kernels::ConstIterator it=kernels.begin();it!=kernels.end();++it)
                 {
                     if( taskIDs.found(counter) )
                         throw Specific::Exception("blabla","multiple Task ID!!");
-                    
+                    taskIDs << counter;
+                    try
+                    {
+                        pending.pushTail( new Task(*it,counter) );
+                    }
+                    catch(...)
+                    {
+                        taskIDs.popTail();
+                        throw;
+                    }
                 }
             }
 
