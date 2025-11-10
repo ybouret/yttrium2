@@ -1,6 +1,6 @@
 #include "y/concurrent/thread/site.hpp"
 #include "y/concurrent/api/pipeline/queue/worker.hpp"
-#include "y/concurrent/api/pipeline.hpp"
+#include "y/concurrent/api/pipeline/queue/squad.hpp"
 
 #include "y/container/cxx/series.hpp"
 #include "y/core/linked/list/raw.hpp"
@@ -15,6 +15,7 @@ namespace Yttrium
     {
 
 
+#if 0
         class Squad : public Leader
         {
         public:
@@ -93,83 +94,13 @@ namespace Yttrium
 
             virtual void run() noexcept;
         };
+#endif
 
-        Squad:: ~Squad() noexcept
-        {
-            quit();
-        }
-
-        void Squad:: quit() noexcept
-        {
-            //------------------------------------------------------------------
-            //
-            // flush
-            //
-            //------------------------------------------------------------------
+       
+     
 
 
-            //------------------------------------------------------------------
-            //
-            // unleash waiting with no task, no control, wait for threads to end
-            //
-            //------------------------------------------------------------------
-            std::cerr << "waiting = " << waiting.size << std::endl;
-            assert(ready==waiting.size);
-
-            while(waiting.size>0)
-                waiting.popHead()->block.signal();
-
-
-        }
-
-
-        void Squad:: run() noexcept
-        {
-            mutex.lock();
-
-            //------------------------------------------------------------------
-            //
-            // entering thread with LOCKED mutex
-            //
-            //------------------------------------------------------------------
-            assert(ready<size);
-            Worker & worker = workers[++ready]; assert(worker.indx==ready);
-
-            Y_Thread_Message("[+] " << worker);
-
-
-            // signal chief that worker is ready
-            chief.signal();
-
-            //------------------------------------------------------------------
-            //
-            // block worker on the LOCKED mutex
-            //
-            //------------------------------------------------------------------
-            worker.block.wait(mutex);
-
-            //------------------------------------------------------------------
-            //
-            // wake up on a LOCKED mutex
-            //
-            //------------------------------------------------------------------
-            if(!worker.task)
-                goto RETURN;
-
-            assert(waiting.owns(&worker));
-
-
-            //------------------------------------------------------------------
-            //
-            // returning
-            //
-            //------------------------------------------------------------------
-        RETURN:
-            Y_Thread_Message("[-] " << worker);
-            assert(ready>0);
-            --ready;
-            mutex.unlock();
-        }
+       
 
 
 
@@ -235,7 +166,7 @@ Y_UTEST(concurrent_q)
 
     std::cerr << "Enqueuing..." << std::endl;
 
-    Concurrent::Squad q( Concurrent::Site::Default );
+    Concurrent::Queue::Squad q( Concurrent::Site::Default );
 
     Concurrent::TaskIDs  tids;
     Concurrent::Task::ID counter = 0;

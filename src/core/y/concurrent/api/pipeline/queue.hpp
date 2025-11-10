@@ -28,6 +28,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             static const char * const CallSign; //!< "Concurrent::Queue"
+            class Squad;
 
             //__________________________________________________________________
             //
@@ -48,7 +49,6 @@ namespace Yttrium
 
 
         private:
-            class Squad;
             Y_Disable_Copy_And_Assign(Queue);   //!< discarding
             Squad * const squad;
         };
