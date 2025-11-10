@@ -74,17 +74,22 @@ namespace Yttrium
             for(Kernels::ConstIterator it=kernels.begin();it!=kernels.end();++it)
             {
                 if( taskIDs.found(counter) )
-                    throw Specific::Exception("blabla","multiple Task ID!!");
+                    throw Specific::Exception(CallSign,"multiple Task ID!!");
+
+                // enqueue counter
                 taskIDs << counter;
                 try
                 {
+                    // create task
                     pending.pushTail( new Task(*it,counter) );
                 }
                 catch(...)
                 {
-                    taskIDs.popTail();
+                    taskIDs.popTail(); // emergency removal of coutner
                     throw;
                 }
+
+                // update counter
                 ++counter;
             }
         }
