@@ -52,6 +52,8 @@ namespace Yttrium
                          const Kernels & kernels,
                          Task::ID      & counter);
 
+            void flush() noexcept;
+
             //__________________________________________________________________
             //
             //

@@ -20,6 +20,25 @@ namespace Yttrium
         {
         }
 
+        void Worker:: suspend() noexcept
+        {
+            block.wait(mutex);
+        }
+
+        void Worker:: resume() noexcept
+        {
+            block.signal();
+        }
+
+        void Worker:: operator()(void) noexcept
+        {
+            assert(task);
+            mutex.unlock();
+            task->perform(*this);
+            mutex.lock();
+        }
+
+
     }
 
 }

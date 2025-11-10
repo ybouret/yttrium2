@@ -45,14 +45,28 @@ namespace Yttrium
             quit();
         }
 
+        void Queue:: Squad:: flush() noexcept
+        {
+            Y_Lock(mutex);
+            Y_Thread_Message("flush...");
+            if(running.size>0)
+                chief.wait(mutex);
+        }
+
+
         void Queue:: Squad:: quit() noexcept
         {
+            {
+                Y_Lock(mutex);
+                pending.release();
+            }
+
             //------------------------------------------------------------------
             //
             // flush
             //
             //------------------------------------------------------------------
-
+            flush();
 
             //------------------------------------------------------------------
             //
@@ -72,35 +86,45 @@ namespace Yttrium
                                     const Kernels & kernels,
                                     Task::ID      & counter)
         {
+            // LOCK mutex
             Y_Lock(mutex);
             for(Kernels::ConstIterator it=kernels.begin();it!=kernels.end();++it)
             {
                 if( taskIDs.found(counter) )
                     throw Specific::Exception(CallSign,"multiple Task ID!!");
 
-                // enqueue counter
+                // enqueue the counter
                 taskIDs << counter;
                 try
                 {
-                    // create task
+                    // create task with the counter
                     pending.pushTail( new Task(*it,counter) );
                 }
                 catch(...)
                 {
-                    taskIDs.popTail(); // emergency removal of coutner
+                    taskIDs.popTail(); // emergency removal of counter
                     throw;
                 }
 
                 // update counter
                 ++counter;
             }
+
+            // still locked => dispatch algorithm
             dispatch();
+
+            // return: UNLOCK
         }
 
         void Queue:: Squad:: dispatch() noexcept
         {
-            // enter with a LOCKED mutex
-            
+            // called with a LOCKED mutex
+            while(waiting.size && pending.size)
+            {
+                Worker * const worker = running.pushTail( waiting.popHead() );
+                worker->task = pending.popHead();
+                worker->resume();
+            }
 
         }
 
@@ -128,7 +152,8 @@ namespace Yttrium
             // block worker on the LOCKED mutex
             //
             //------------------------------------------------------------------
-            worker.block.wait(mutex);
+        SUSPEND:
+            worker.suspend();
 
             //------------------------------------------------------------------
             //
@@ -138,7 +163,32 @@ namespace Yttrium
             if(!worker.task)
                 goto RETURN;
 
-            assert(waiting.owns(&worker));
+        PERFORM:
+            assert(running.owns(&worker));
+
+            // perform unlocked
+            worker();
+
+
+            // task is done, return LOCKED
+            (void)garbage.pushTail(worker.task);
+            worker.task = 0;
+
+            if(pending.size>0)
+            {
+                // take next task
+                worker.task = pending.popHead();
+                goto PERFORM;
+            }
+            else
+            {
+                // back to suspend
+                worker.task = 0;
+                waiting.pushTail( running.pop( &worker) );
+                if(running.size<=0)
+                    chief.signal();
+                goto SUSPEND;
+            }
 
 
             //------------------------------------------------------------------
