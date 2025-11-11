@@ -22,10 +22,14 @@ namespace Yttrium
                 const PNode *node = (**site).head;
                 for(size_t rk=0,wi=1;rk<size;++rk,++wi,node=node->next)
                 {
-                    // start worker construction
+                    //----------------------------------------------------------
+                    // start UNLOCKED worker construction
+                    //----------------------------------------------------------
                     workers.push(*this,rk);
 
-                    // finish worker construction and assign it
+                    //----------------------------------------------------------
+                    // finish LOCKED worker construction and assign it
+                    //----------------------------------------------------------
                     Y_Lock(mutex);
                     if(ready<wi)
                         chief.wait(mutex);

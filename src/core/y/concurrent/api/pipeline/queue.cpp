@@ -1,11 +1,5 @@
-#include "y/concurrent/api/pipeline/queue.hpp"
+#include "y/concurrent/api/pipeline/queue/squad.hpp"
 #include "y/type/destroy.hpp"
-#include "y/type/destruct.hpp"
-#include "y/concurrent/thread.hpp"
-#include "y/object/school-of.hpp"
-#include "y/concurrent/condition.hpp"
-#include "y/core/linked/list/raw.hpp"
-#include <iostream>
 
 namespace Yttrium
 {
@@ -18,13 +12,14 @@ namespace Yttrium
 
         Queue:: Queue(const Site site) :
         Pipeline(site->size(),CallSign),
-        squad(0)
+        squad( new Squad(site) )
         {
         }
 
         Queue:: ~Queue() noexcept
         {
-
+            assert(squad);
+            Destroy(squad);
         }
 
         const char * Queue:: callSign() const noexcept
