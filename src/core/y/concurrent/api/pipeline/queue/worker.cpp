@@ -7,6 +7,14 @@ namespace Yttrium
 
         Worker:: ~Worker() noexcept {}
 
+
+        static inline
+        void RunLeader(void * const args) noexcept
+        {
+            assert(args);
+            static_cast<Leader *>(args)->run();
+        }
+
         Worker:: Worker(Leader &     ld,
                         const size_t rk) :
         Context(ld.mutex,ld.size,rk),
@@ -16,7 +24,7 @@ namespace Yttrium
         task(0),
         next(0),
         prev(0),
-        thread( Thread::Run<Leader>, &ld )
+        thread( RunLeader, &ld )
         {
         }
 

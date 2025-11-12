@@ -20,10 +20,10 @@ namespace Yttrium
             class MTExec
             {
             public:
-                inline MTExec(Kernel &k) :
+                inline MTExec(Kernel &k, const size_t sz, const size_t rk) :
                 kernel(k),
                 mutex(),
-                context(mutex,1,0),
+                context(mutex,sz,rk),
                 thread( Launch, this )
                 {
 
@@ -61,9 +61,9 @@ namespace Yttrium
             };
         }
 
-        void KernelTest:: MT(Kernel &k)
+        void KernelTest:: MT(Kernel &k, const size_t sz, const size_t rk)
         {
-            volatile MTExec mt(k);
+            volatile MTExec mt(k,sz,rk);
         }
     }
 }

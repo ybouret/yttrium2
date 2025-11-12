@@ -25,7 +25,7 @@ namespace Yttrium
         struct KernelTest
         {
             static void ST(Kernel &); //!< test in sequential environment
-            static void MT(Kernel &); //!< test in one thread environment
+            static void MT(Kernel &, const size_t sz=1, const size_t rk=0); //!< test in one thread environment
 
         };
 

@@ -64,20 +64,9 @@ namespace Yttrium
             //
             //__________________________________________________________________
             bool assign(const size_t) noexcept; //!< \return true if was assigned to CPU
-
-#if 1
-            //! helper to call run() of arguments
-            /**
-             \param args address of a RUNNABLE with run() method
-             */
-            template <typename RUNNABLE> static inline
-            void Run(void * const args) noexcept
-            {
-                assert(0!=args);
-                static_cast<RUNNABLE *>(args)->run();
-            }
-#endif
             
+
+
         private:
             Y_Disable_Copy_And_Assign(Thread); //!< discarding
             Code * const code;                 //!< internal code
