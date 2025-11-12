@@ -42,9 +42,10 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
-            virtual const char * callSign()            const noexcept;
-            virtual void flush() noexcept; 
-            virtual void prune() noexcept;
+            virtual const char * callSign() const noexcept;
+            virtual void         flush()          noexcept;
+            virtual void         prune()          noexcept;
+            virtual void         enqueue(TaskIDs &,const Kernels &);
 
         private:
             class Code;

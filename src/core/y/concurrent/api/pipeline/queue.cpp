@@ -39,6 +39,12 @@ namespace Yttrium
             assert(squad);
             squad->prune();
         }
+
+        void Queue:: enqueue(TaskIDs &taskIDs, const Kernels &kernels)
+        {
+            assert(squad);
+            squad->enqueue(taskIDs,kernels,counter);
+        }
     }
 
 }

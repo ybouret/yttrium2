@@ -47,8 +47,9 @@ namespace Yttrium
             // interface
             //
             //__________________________________________________________________
-            virtual void prune() noexcept = 0; //!< remove pending tasks
-            virtual void flush() noexcept = 0; //!< wait for all tasks to be done
+            virtual void prune() noexcept = 0;                   //!< remove pending tasks
+            virtual void flush() noexcept = 0;                   //!< wait for all tasks to be done
+            virtual void enqueue(TaskIDs &,const Kernels &) = 0; //!< enqueue each kernel and update TaskIDs
 
             //__________________________________________________________________
             //

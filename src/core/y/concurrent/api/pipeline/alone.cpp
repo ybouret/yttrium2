@@ -56,6 +56,17 @@ namespace Yttrium
         {
 
         }
+
+        void Alone:: enqueue(TaskIDs &,const Kernels &kernels)
+        {
+            assert(code);
+            for(Kernels::ConstIterator it=kernels.begin();it!=kernels.end();++it)
+            {
+                Kernel &k = Coerce(*it);
+                k(code->context);
+                ++counter;
+            }
+        }
     }
 
 }
