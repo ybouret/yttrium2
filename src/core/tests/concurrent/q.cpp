@@ -1,10 +1,9 @@
 #include "y/concurrent/thread/site.hpp"
-#include "y/concurrent/api/pipeline/queue/worker.hpp"
+//#include "y/concurrent/api/pipeline/queue/worker.hpp"
 #include "y/concurrent/api/pipeline/queue/squad.hpp"
 
-#include "y/container/cxx/series.hpp"
-#include "y/core/linked/list/raw.hpp"
-#include "y/concurrent/runnable.hpp"
+#include "y/concurrent/api/pipeline/queue.hpp"
+#include "y/concurrent/api/pipeline/alone.hpp"
 
 
 #include "y/utest/run.hpp"

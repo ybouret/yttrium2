@@ -216,7 +216,6 @@ namespace Yttrium
             //
             //------------------------------------------------------------------
         RETURN:
-            Y_Thread_Message("[-] " << worker);
             assert(ready>0);
             --ready;
             mutex.unlock();

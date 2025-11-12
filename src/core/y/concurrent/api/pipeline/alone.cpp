@@ -46,7 +46,16 @@ namespace Yttrium
         {
             return CallSign;
         }
-        
+
+
+        void Alone:: flush() noexcept
+        {
+        }
+
+        void Alone:: prune() noexcept
+        {
+
+        }
     }
 
 }

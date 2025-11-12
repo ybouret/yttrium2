@@ -41,6 +41,21 @@ namespace Yttrium
             //! cleanup
             virtual ~Pipeline() noexcept;
 
+            //__________________________________________________________________
+            //
+            //
+            // interface
+            //
+            //__________________________________________________________________
+            virtual void prune() noexcept = 0; //!< remove pending tasks
+            virtual void flush() noexcept = 0; //!< wait for all tasks to be done
+
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
         protected:
             Task::ID counter; //!< global task counter
 

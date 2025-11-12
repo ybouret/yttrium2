@@ -16,7 +16,7 @@ namespace Yttrium
         //
         //
         //
-        // Necessary to initialize worker
+        //! Worker with tunable state
         //
         //
         //______________________________________________________________________
@@ -38,9 +38,9 @@ namespace Yttrium
             // methods
             //
             //__________________________________________________________________
-            void suspend() noexcept;
-            void resume()  noexcept;
-            void operator()(void) noexcept;
+            void suspend()        noexcept; //!< wait on blopck
+            void resume()         noexcept; //!< wake up from block
+            void operator()(void) noexcept; //!< perform task UNLOCKED
 
             //__________________________________________________________________
             //
@@ -57,7 +57,7 @@ namespace Yttrium
             Thread      thread; //!< execute leader run()
 
         private:
-            Y_Disable_Copy_And_Assign(Worker);
+            Y_Disable_Copy_And_Assign(Worker); //!< discarding
         };
     }
 

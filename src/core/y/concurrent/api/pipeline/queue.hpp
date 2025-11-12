@@ -45,12 +45,13 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
-            virtual const char * callSign()            const noexcept;
-
+            virtual const char * callSign() const noexcept;
+            virtual void flush() noexcept;
+            virtual void prune() noexcept;
 
         private:
             Y_Disable_Copy_And_Assign(Queue);   //!< discarding
-            Squad * const squad;
+            Squad * const squad;                //!< inner squad
         };
     }
 

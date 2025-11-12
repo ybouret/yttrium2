@@ -82,6 +82,11 @@ namespace Yttrium
                 list.pushHead( pool.summon(args) );
             }
 
+            //! push tail item with two args constructor
+            /**
+             \param u first arg
+             \param v second arg
+             */
             template <typename U, typename V> inline
             void pushTail(U &u, V &v)
             {
@@ -89,6 +94,11 @@ namespace Yttrium
                 list.pushTail( pool.summon(u,v) );
             }
 
+            //! push head item with two args constructor
+            /**
+             \param u first arg
+             \param v second arg
+             */
             template <typename U, typename V> inline
             void pushHead(U &u, V &v)
             {
@@ -141,11 +151,11 @@ namespace Yttrium
                 pool.banish( list.pop(node) );
             }
 
-            
+
 
             //! \return live objects
             inline virtual size_t size() const noexcept { return list.size; }
-            
+
 
             //! append \param rhs value \return *this
             inline ListProto & operator<<(ParamType rhs)
@@ -264,7 +274,7 @@ namespace Yttrium
             Y_Protean_List_Proto(), pool(shared)
             {}
 
-            
+
 
             //__________________________________________________________________
             //

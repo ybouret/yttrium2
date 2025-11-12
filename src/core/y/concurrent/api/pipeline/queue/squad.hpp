@@ -31,7 +31,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            typedef RawListOf<Worker> Workers;
+            typedef RawListOf<Worker> Workers; //!< alias
 
             //__________________________________________________________________
             //
@@ -39,8 +39,8 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            explicit Squad(const Site &);
-            virtual ~Squad() noexcept;
+            explicit Squad(const Site &); //!< setup
+            virtual ~Squad() noexcept;    //!< cleanup
 
             //__________________________________________________________________
             //
@@ -52,9 +52,9 @@ namespace Yttrium
                          const Kernels & kernels,
                          Task::ID      & counter);
 
-            void flush() noexcept;
-            void prune() noexcept;
-            
+            void flush() noexcept; //!< wait for running workers
+            void prune() noexcept; //!< remove pending tasks
+
             //__________________________________________________________________
             //
             //
@@ -69,10 +69,10 @@ namespace Yttrium
             size_t            ready;   //!< count sync
 
         private:
-            Y_Disable_Copy_And_Assign(Squad);
-            void         quit() noexcept;
-            virtual void run()  noexcept;
-            void         dispatch() noexcept;
+            Y_Disable_Copy_And_Assign(Squad); //!< discarding
+            void         quit()     noexcept; //!< prune/flush/wait
+            virtual void run()      noexcept; //!< threaded entry point
+            void         dispatch() noexcept; //!< reactivating
         };
 
     }

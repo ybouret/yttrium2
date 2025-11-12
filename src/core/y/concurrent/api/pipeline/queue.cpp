@@ -28,7 +28,17 @@ namespace Yttrium
         }
 
 
-      
+        void Queue:: flush() noexcept
+        {
+            assert(squad);
+            squad->flush();
+        }
+
+        void Queue :: prune() noexcept
+        {
+            assert(squad);
+            squad->prune();
+        }
     }
 
 }
