@@ -7,7 +7,7 @@
 
 namespace Yttrium
 {
-	namespace Concurrent
+    namespace Concurrent
     {
 
 
@@ -71,24 +71,40 @@ namespace Yttrium
 #endif
 
 #include "y/type/destroy.hpp"
-
+#include "y/concurrent/runnable.hpp"
 
 namespace Yttrium
 {
-	namespace Concurrent
-	{
-		Thread::Thread(Proc proc, void* const args) :
-			code(new Code(proc, args))
-		{
-		}
+    namespace Concurrent
+    {
+        Thread::Thread(Proc proc, void* const args) :
+        code(new Code(proc, args))
+        {
+        }
 
-		Thread:: ~Thread() noexcept
-		{
-			assert(0 != code);
-			Destroy(code);
-		}
+        namespace
+        {
+            static inline void CallRun(void * const args) noexcept
+            {
+                assert(args);
+                static_cast<Runnable *>(args)->run();
+            }
+        }
 
-	}
+        Thread:: Thread(Runnable &obj) :
+        code( new Code( CallRun, &obj) )
+        {
+
+        }
+
+
+        Thread:: ~Thread() noexcept
+        {
+            assert(0 != code);
+            Destroy(code);
+        }
+
+    }
 
 }
 
@@ -124,7 +140,7 @@ namespace Yttrium
 
         }
 
-#endif
+#endif // defined(Y_Darwin)
 
 #if defined(Y_Linux)|| defined(Y_FreeBSD)
 #   define Y_THREAD_AFFINITY 1
@@ -173,7 +189,7 @@ namespace Yttrium
                 return true;
             }
         }
-#endif
+#endif // defined(Y_WIN)
 
 #if defined(Y_SunOS)
 #   define Y_THREAD_AFFINITY 1

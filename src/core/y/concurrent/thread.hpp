@@ -14,6 +14,9 @@ namespace Yttrium
         //! global locking output
 #define Y_Thread_Message(MSG) do { Y_Giant_Lock(); (std::cerr << MSG << std::endl).flush(); } while(false)
 
+
+        class Runnable;
+
         //______________________________________________________________________
         //
         //
@@ -52,6 +55,8 @@ namespace Yttrium
             //! wait for thread to return
             virtual ~Thread() noexcept;
 
+            explicit Thread(Runnable &);
+
             //__________________________________________________________________
             //
             //
@@ -60,6 +65,7 @@ namespace Yttrium
             //__________________________________________________________________
             bool assign(const size_t) noexcept; //!< \return true if was assigned to CPU
 
+#if 1
             //! helper to call run() of arguments
             /**
              \param args address of a RUNNABLE with run() method
@@ -70,7 +76,8 @@ namespace Yttrium
                 assert(0!=args);
                 static_cast<RUNNABLE *>(args)->run();
             }
-
+#endif
+            
         private:
             Y_Disable_Copy_And_Assign(Thread); //!< discarding
             Code * const code;                 //!< internal code

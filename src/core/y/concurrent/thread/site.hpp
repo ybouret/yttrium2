@@ -59,6 +59,7 @@ namespace Yttrium
             Site & operator=(const Site &); //!< duplicate/swap \return *this
             virtual ~Site() noexcept;       //!< cleanup
 
+            
         private:
             Y_Ingress_Decl(); //!< helper
             PList plist;      //!< processor(s) list
@@ -66,7 +67,7 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //
-            // Methods
+            // Private Methods
             //
             //__________________________________________________________________
             void parse(const String &); //!< parse string
