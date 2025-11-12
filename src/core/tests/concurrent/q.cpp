@@ -65,15 +65,28 @@ Y_UTEST(concurrent_q)
         Concurrent::KernelTest::ST(*it);
     }
 
-    std::cerr << "Enqueuing..." << std::endl;
 
-    Concurrent::Queue::Squad q( Concurrent::Site::Default );
 
     Concurrent::TaskIDs  tids;
+
+#if 0
+    Concurrent::Queue::Squad q( Concurrent::Site::Default );
     Concurrent::Task::ID counter = 0;
     q.enqueue(tids,klist,counter);
-
     q.flush();
+#endif
+
+    Concurrent::Alone    stQ;
+    std::cerr << "Enqueuing/Alone" << std::endl;
+    stQ.enqueue(tids,klist);
+    stQ.flush();
+    tids.free();
+
+    std::cerr << "Enqueuing/Queue" << std::endl;
+    Concurrent::Queue    mtQ( Concurrent::Site::Default );
+    mtQ.enqueue(tids,klist);
+    mtQ.flush();
+
 
 
 
