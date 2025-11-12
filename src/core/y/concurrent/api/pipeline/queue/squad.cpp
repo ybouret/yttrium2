@@ -181,11 +181,18 @@ namespace Yttrium
         PERFORM:
             assert(running.owns(&worker));
 
+            //------------------------------------------------------------------
+            //
             // perform unlocked
+            //
+            //------------------------------------------------------------------
             worker();
 
-
+            //------------------------------------------------------------------
+            //
             // task is done, return LOCKED
+            //
+            //------------------------------------------------------------------
             (void)garbage.pushTail(worker.task);
             worker.task = 0;
 
@@ -195,6 +202,7 @@ namespace Yttrium
                 worker.task = pending.popHead();
 
                 // and dispatch remaining tasks to waiting
+                Y_Thread_Message("calling dispatch from " << worker);
                 dispatch();
                 
                 goto PERFORM;
@@ -202,7 +210,6 @@ namespace Yttrium
             else
             {
                 // back to suspend
-                worker.task = 0;
                 waiting.pushTail( running.pop( &worker) );
                 if(running.size<=0)
                     chief.signal();
