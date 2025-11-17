@@ -4,6 +4,7 @@
 #include "y/concurrent/thread/site.hpp"
 #include "y/container/cxx/series.hpp"
 #include "y/concurrent/condition.hpp"
+#include "y/concurrent/runnable.hpp"
 
 
 #include "y/utest/run.hpp"
@@ -15,7 +16,7 @@ namespace Yttrium
     {
 
 
-        class Scheduler
+        class Scheduler : public Runnable
         {
         public:
             explicit Scheduler();
@@ -52,10 +53,24 @@ namespace Yttrium
 
             Scheduler & sched;
             Condition   block;
+            Thread      thread;
 
         private:
             Y_Disable_Copy_And_Assign(Agent);
         };
+
+        Agent:: Agent(Scheduler &_) :
+        sched(_),
+        block(),
+        thread(sched)
+        {
+
+        }
+
+        Agent:: ~Agent() noexcept
+        {
+
+        }
 
         class Engine : public Scheduler
         {
@@ -65,24 +80,35 @@ namespace Yttrium
 
             const size_t     size;
             CxxSeries<Agent> agents;
+            size_t           ready;
 
         private:
             Y_Disable_Copy_And_Assign(Engine);
             void quit() noexcept;
+            virtual void run() noexcept;  //!< for agent
+            //virtual void loop() noexcept; //!< for engine
         };
 
         Engine:: Engine(const Site &site) :
         Scheduler(),
         size( site->size() ),
-        agents(size)
+        agents(size),
+        ready(0)
         {
         }
 
+
+
+        void Engine:: run() noexcept
+        {
+
+        }
 
         Engine:: ~Engine() noexcept
         {
             quit();
         }
+
 
 
         void Engine:: quit() noexcept
