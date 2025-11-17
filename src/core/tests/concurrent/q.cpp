@@ -178,6 +178,7 @@ namespace Yttrium
                     }
                 }
 
+
             }
             catch(...)
             {
@@ -203,6 +204,7 @@ namespace Yttrium
             if(pending.size>0)
                 primary.wait(mutex);
             garbage.release();
+            Y_Thread_Message("flushed!");
         }
 
 
@@ -240,7 +242,9 @@ namespace Yttrium
                 Y_Thread_Message("pending=#" << pending.size);
                 while(waiting.size>0 && pending.size>0)
                 {
-                    running.pushTail( waiting.popHead() )->task = pending.popHead();
+                    Agent * const agent = running.pushTail( waiting.popHead() );
+                    agent->task = pending.popHead();
+                    agent->block.signal();
                 }
                 goto WAIT_FOR_TASKS;
             }
@@ -287,10 +291,16 @@ namespace Yttrium
             //------------------------------------------------------------------
             if(agent.task)
             {
+                Y_Thread_Message("running @" << agent);
                 assert(running.owns(&agent));
                 agent.work();
                 waiting.pushTail( running.pop( &agent) );
-                if(pending.size<=0) primary.signal();
+                Y_Thread_Message("alldone @" << agent);
+                if(pending.size<=0)
+                {
+                    Y_Thread_Message("signal primary");
+                    primary.signal();
+                }
                 goto SUSPEND;
             }
 
