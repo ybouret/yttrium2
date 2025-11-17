@@ -93,9 +93,9 @@ namespace Yttrium
             explicit Engine(const Site &site);
             virtual ~Engine() noexcept;
 
-            CxxSeries<Agent> agents;
             Agents           waiting;
             Agents           running;
+            CxxSeries<Agent> agents;
             size_t           ready;
             bool             armed;
             Launch           launch;
@@ -112,6 +112,8 @@ namespace Yttrium
 
         Engine:: Engine(const Site &site) :
         Scheduler(site),
+        waiting(),
+        running(),
         agents(size),
         ready(0),
         armed(false),
@@ -120,14 +122,22 @@ namespace Yttrium
 
             try
             {
+                //--------------------------------------------------------------
+                //
                 // wait for loop() to be armed
+                //
+                //--------------------------------------------------------------
                 {
                     Y_Lock(mutex);
                     if(!armed) primary.wait(mutex);
                     Y_Thread_Message("loop is armed");
                 }
 
+                //--------------------------------------------------------------
+                //
                 // construct synchronized agents
+                //
+                //--------------------------------------------------------------
                 {
                     PNode *node = (**site).head;;
                     for(size_t i=1;i<=size;++i,node=node->next)
@@ -164,8 +174,8 @@ namespace Yttrium
             //------------------------------------------------------------------
             mutex.lock();
 
-            armed = true;
-            primary.signal();
+            armed = true;     // update status
+            primary.signal(); // resume primary thread if waiting
 
             Y_Thread_Message("loop is ok");
 
@@ -218,14 +228,14 @@ namespace Yttrium
 
             //------------------------------------------------------------------
             //
-            // resume on a locked mutex
+            // resume on a LOCKED mutex
             //
             //------------------------------------------------------------------
 
 
             //------------------------------------------------------------------
             //
-            // returning
+            // returning 
             //
             //------------------------------------------------------------------
             Y_Thread_Message(agent << " is done");
