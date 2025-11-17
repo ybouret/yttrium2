@@ -7,6 +7,8 @@
 #include "y/concurrent/runnable.hpp"
 
 #include "y/concurrent/thread/launch.hpp"
+#include "y/type/copy-of.hpp"
+#include "y/core/linked/list/raw.hpp"
 
 #include "y/utest/run.hpp"
 
@@ -20,12 +22,13 @@ namespace Yttrium
         class Scheduler : public Runnable
         {
         public:
-            explicit Scheduler();
+            explicit Scheduler(const Site &site);
             virtual ~Scheduler() noexcept;
 
+            const size_t     size;
             Mutex     mutex;
-            Condition primary; //!< primary condition
-            Condition replica; //!< replica condition
+            Condition primary;
+            Condition replica;
             Tasks     pending;
             Tasks     garbage;
 
@@ -33,10 +36,9 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Scheduler);
         };
 
-        Scheduler:: Scheduler() :
+        Scheduler:: Scheduler(const Site &site) :
+        size(site->size()),
         mutex(),
-        primary(),
-        replica(),
         pending(),
         garbage()
         {
@@ -48,23 +50,31 @@ namespace Yttrium
         }
 
 
-        class Agent
+        class Agent : public Context
         {
         public:
-            explicit Agent(Scheduler &);
+            explicit Agent(Scheduler &, const size_t rk);
             virtual ~Agent() noexcept;
+
 
             Scheduler & sched;
             Condition   block;
+            Agent      *next;
+            Agent      *prev;
             Thread      thread;
 
         private:
             Y_Disable_Copy_And_Assign(Agent);
         };
 
-        Agent:: Agent(Scheduler &_) :
+        typedef RawListOf<Agent> Agents;
+
+        Agent:: Agent(Scheduler &_, const size_t rk) :
+        Context(_.mutex,_.size,rk),
         sched(_),
         block(),
+        next(0),
+        prev(0),
         thread(sched)
         {
 
@@ -75,14 +85,17 @@ namespace Yttrium
 
         }
 
+
+
         class Engine : public Scheduler
         {
         public:
             explicit Engine(const Site &site);
             virtual ~Engine() noexcept;
 
-            const size_t     size;
             CxxSeries<Agent> agents;
+            Agents           waiting;
+            Agents           running;
             size_t           ready;
             bool             armed;
             Launch           launch;
@@ -98,20 +111,45 @@ namespace Yttrium
 
 
         Engine:: Engine(const Site &site) :
-        Scheduler(),
-        size( site->size() ),
+        Scheduler(site),
         agents(size),
         ready(0),
         armed(false),
         launch( self(), & Engine::loop )
         {
 
-            // wait for loop() to be armed
+            try
             {
-                Y_Lock(mutex);
-                if(!armed) primary.wait(mutex);
-                Y_Thread_Message("loop is armed");
+                // wait for loop() to be armed
+                {
+                    Y_Lock(mutex);
+                    if(!armed) primary.wait(mutex);
+                    Y_Thread_Message("loop is armed");
+                }
+
+                // construct synchronized agents
+                {
+                    PNode *node = (**site).head;;
+                    for(size_t i=1;i<=size;++i,node=node->next)
+                    {
+                        assert(ready<i);
+                        agents.push(*this,ready);
+                        {
+                            Y_Lock(mutex);
+                            if(ready<i) primary.wait(mutex);
+                        }
+                        std::cerr << "ok" << std::endl;
+                        waiting.pushTail( &agents[i] )->thread.assign(**node);
+                    }
+                }
+
             }
+            catch(...)
+            {
+                quit();
+                throw;
+            }
+
 
         }
 
@@ -119,7 +157,11 @@ namespace Yttrium
 
         void Engine:: loop() noexcept
         {
+            //------------------------------------------------------------------
+            //
             // entering main loop
+            //
+            //------------------------------------------------------------------
             mutex.lock();
 
             armed = true;
@@ -127,13 +169,25 @@ namespace Yttrium
 
             Y_Thread_Message("loop is ok");
 
+            //------------------------------------------------------------------
+            //
             // wait on the lock mutex
+            //
+            //------------------------------------------------------------------
             replica.wait(mutex);
 
+            //------------------------------------------------------------------
+            //
             // wake up on a locked mutex
+            //
+            //------------------------------------------------------------------
 
 
+            //------------------------------------------------------------------
+            //
             // return
+            //
+            //------------------------------------------------------------------
             Y_Thread_Message("loop is done");
             mutex.unlock();
 
@@ -141,7 +195,42 @@ namespace Yttrium
 
         void Engine:: run() noexcept
         {
+            //------------------------------------------------------------------
+            //
+            // entering run agent
+            //
+            //------------------------------------------------------------------
+            mutex.lock();
 
+            assert(ready<size);
+            Agent &agent = agents[++ready];
+            assert(ready==agent.indx);
+            Y_Thread_Message(agent << " is ready#" << ready);
+            primary.signal();
+
+            //------------------------------------------------------------------
+            //
+            // suspend on a LOCKED mutex
+            //
+            //------------------------------------------------------------------
+            agent.block.wait(mutex);
+
+
+            //------------------------------------------------------------------
+            //
+            // resume on a locked mutex
+            //
+            //------------------------------------------------------------------
+
+
+            //------------------------------------------------------------------
+            //
+            // returning
+            //
+            //------------------------------------------------------------------
+            Y_Thread_Message(agent << " is done");
+            --ready;
+            mutex.unlock();
         }
 
         Engine:: ~Engine() noexcept
@@ -153,6 +242,19 @@ namespace Yttrium
 
         void Engine:: quit() noexcept
         {
+
+            // prune/flush
+
+            // stop agents
+            assert(waiting.size==size);
+
+            waiting.reset();
+            running.reset();
+            for(size_t i=size;i>0;--i)
+            {
+                agents[i].block.signal();
+            }
+
 
             // stop loop
             replica.signal();
