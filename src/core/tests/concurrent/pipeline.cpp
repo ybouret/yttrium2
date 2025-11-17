@@ -1,5 +1,4 @@
 #include "y/concurrent/thread/site.hpp"
-//#include "y/concurrent/api/pipeline/queue/worker.hpp"
 #include "y/concurrent/api/pipeline/queue/squad.hpp"
 
 #include "y/concurrent/api/pipeline/queue.hpp"

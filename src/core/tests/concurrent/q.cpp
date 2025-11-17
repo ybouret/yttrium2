@@ -1,5 +1,6 @@
 
-#include "y/concurrent/api/pipeline/task.hpp"
+#include "y/concurrent/api/pipeline.hpp"
+
 #include "y/concurrent/thread.hpp"
 #include "y/concurrent/thread/site.hpp"
 #include "y/container/cxx/series.hpp"
@@ -94,6 +95,11 @@ namespace Yttrium
         public:
             explicit Engine(const Site &site);
             virtual ~Engine() noexcept;
+
+
+            void         enqueue(TaskIDs       &taskIDs,
+                                 const Kernels &kernels,
+                                 Task::ID      &counter);
 
             Agents           waiting;
             Agents           running;
@@ -252,6 +258,21 @@ namespace Yttrium
         }
 
 
+        void Engine:: enqueue(TaskIDs       &taskIDs,
+                              const Kernels &kernels,
+                              Task::ID      &counter)
+        {
+            Y_Lock(mutex);
+            for(Kernels::ConstIterator it=kernels.begin();it!=kernels.end();++it)
+            {
+                if(taskIDs.found(counter)) throw Specific::Exception("TODO", "multiple task ID");
+                taskIDs << counter;
+                try { pending.pushTail( new Task(*it,counter) ); }
+                catch(...) { taskIDs.popTail(); throw; }
+                ++counter;
+            }
+        }
+
 
         void Engine:: quit() noexcept
         {
@@ -281,22 +302,16 @@ using namespace Yttrium;
 namespace
 {
 
-    class Something : public Concurrent:: Runnable
+    class Something
     {
     public:
         Something(const int a) : value(a) {}
-        virtual ~Something() noexcept {}
-        Something(const Something &_) : Runnable(), value(_.value) {}
+        ~Something() noexcept {}
+        Something(const Something &_) : value(_.value) {}
 
-        void compute() noexcept
+        void operator()(const Concurrent::Context &ctx)
         {
-            Y_Thread_Message("<" << value << ">");
-
-        }
-
-        virtual void run() noexcept
-        {
-            compute();
+            Y_Thread_Message(value << " @" << ctx);
         }
 
         int value;
@@ -309,9 +324,23 @@ namespace
 Y_UTEST(concurrent_q)
 {
 
-    Something              something(7);
-
+    Something          something(7);
     Concurrent::Engine engine( Concurrent::Site::Default );
+
+    Concurrent::Kernels kernels;
+    for(int i=1;i<=30;++i)
+    {
+        something.value = i;
+        kernels << something;
+    }
+
+    Concurrent::TaskIDs  taskIDs;
+    Concurrent::Task::ID counter = 0;
+
+    engine.enqueue(taskIDs,kernels,counter);
+
+
+
 
 
 }
