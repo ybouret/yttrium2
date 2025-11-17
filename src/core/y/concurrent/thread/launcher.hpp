@@ -4,63 +4,58 @@
 #define Y_Concurrent_Thread_Launcher_Included 1
 
 #include "y/concurrent/thread.hpp"
+#include "y/calculus/alignment.hpp"
+#include "y/memory/stealth.hpp"
+#include "y/concurrent/runnable.hpp"
 
 namespace Yttrium
 {
     namespace Concurrent
     {
-        template <typename OBJECT, typename METHOD>
-        class ThreadData
+
+        class ThreadData : public Runnable
         {
         public:
+            typedef void (ThreadData::*Meth)(void);
 
-            inline explicit ThreadData(OBJECT &theObject,
-                                       METHOD  theMethod) noexcept :
-            host(theObject),
-            meth(theMethod)
+
+            template <typename OBJECT,typename METHOD> inline
+            explicit ThreadData(OBJECT &o, METHOD m) noexcept :
+            mine( & ThreadData::call<OBJECT,METHOD> ),
+            host( &o ),
+            wksp()
             {
+                Memory::Stealth::Copy(wksp,&m,sizeof(METHOD));
             }
 
+            virtual ~ThreadData() noexcept {}
 
-            inline virtual ~ThreadData() noexcept {}
-
-
-        protected:
-            OBJECT &host;
-            METHOD  meth;
-
-            inline void  call() noexcept {
-                try { (host.*meth)(); } catch(...) {}
+            virtual void run() noexcept {
+                (*this.*mine)();
             }
 
         private:
             Y_Disable_Copy_And_Assign(ThreadData);
+            Meth   const mine;
+            void * const host;
+            void *       wksp[Alignment::WordsFor<Meth>::Count];
+
+            template <typename OBJECT, typename METHOD>
+            void call() noexcept
+            {
+                OBJECT & o = *Memory::Stealth::Cast<OBJECT>(host);
+                METHOD & m = *Memory::Stealth::Cast<METHOD>(wksp);
+                (o.*m)();
+            }
         };
 
-        template <typename OBJECT, typename METHOD>
-        class Launcher : public ThreadData<OBJECT,METHOD>, public Thread
+        class Launcher
         {
         public:
-            typedef ThreadData<OBJECT,METHOD> DataType;
-
-            inline explicit Launcher(OBJECT &theObject,
-                              METHOD  theMethod) :
-            DataType(theObject,theMethod),
-            Thread(Call,this)
-            {
-            }
-
-            inline virtual ~Launcher() noexcept {}
 
         private:
             Y_Disable_Copy_And_Assign(Launcher);
-            static inline void Call(void * const args) noexcept
-            {
-                assert(args);
-                static_cast<Launcher *>(args)->call();
-            }
         };
-
 
     }
 

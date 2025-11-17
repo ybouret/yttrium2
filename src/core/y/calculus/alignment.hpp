@@ -152,5 +152,5 @@ namespace Yttrium
     
 }
 
-#endif
+#endif // !Y_Calculus_Alignment_Included
 

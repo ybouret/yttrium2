@@ -6,6 +6,7 @@
 #include "y/concurrent/condition.hpp"
 #include "y/concurrent/runnable.hpp"
 
+#include "y/concurrent/thread/launcher.hpp"
 
 #include "y/utest/run.hpp"
 
@@ -81,7 +82,7 @@ namespace Yttrium
             const size_t     size;
             CxxSeries<Agent> agents;
             size_t           ready;
-
+            
         private:
             Y_Disable_Copy_And_Assign(Engine);
             void quit() noexcept;
@@ -121,8 +122,39 @@ namespace Yttrium
 
 using namespace Yttrium;
 
+namespace
+{
+
+    class Something : public Concurrent:: Runnable
+    {
+    public:
+        Something(const int a) : value(a) {}
+        virtual ~Something() noexcept {}
+        Something(const Something &_) : Runnable(), value(_.value) {}
+
+        virtual void run() noexcept
+        {
+            Y_Thread_Message("<" << value << ">");
+        }
+
+        int value;
+    private:
+        Y_Disable_Assign(Something);
+    };
+
+}
+
 Y_UTEST(concurrent_q)
 {
+    Y_SIZEOF(Concurrent::ThreadData::Meth);
+
+    Something              something(7);
+    Concurrent::ThreadData data(something, & Something::run );
+
+
+    data.run();
+
+
 
 }
 Y_UDONE()
