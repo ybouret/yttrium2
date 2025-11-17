@@ -59,7 +59,9 @@ namespace Yttrium
             explicit Agent(Scheduler &, const size_t rk);
             virtual ~Agent() noexcept;
 
+            void work() noexcept;
 
+            Task      * task;   //!< task to perform
             Scheduler & sched;  //!< persistent schedular
             Condition   block;  //!< local condition variable to suspend/resume
             Agent      *next;   //!< for list
@@ -74,6 +76,7 @@ namespace Yttrium
 
         Agent:: Agent(Scheduler &_, const size_t rk) :
         Context(_.mutex,_.size,rk),
+        task(0),
         sched(_),
         block(),
         next(0),
@@ -82,6 +85,17 @@ namespace Yttrium
         {
 
         }
+
+        void Agent:: work() noexcept
+        {
+            assert(0!=task);
+            sched.mutex.unlock();
+            task->perform(*this);
+            sched.mutex.lock();
+            sched.garbage.pushHead(task);
+            task = 0;
+        }
+
 
         Agent:: ~Agent() noexcept
         {
@@ -96,6 +110,8 @@ namespace Yttrium
             explicit Engine(const Site &site);
             virtual ~Engine() noexcept;
 
+            void prune() noexcept;
+            void flush() noexcept;
 
             void         enqueue(TaskIDs       &taskIDs,
                                  const Kernels &kernels,
@@ -172,6 +188,24 @@ namespace Yttrium
 
         }
 
+        void Engine:: prune() noexcept
+        {
+            Y_Lock(mutex);
+            pending.release();
+            garbage.release();
+        }
+
+        void Engine:: flush() noexcept
+        {
+            Y_Lock(mutex);
+            Y_Thread_Message("flushing...");
+            garbage.release();
+            if(pending.size>0)
+                primary.wait(mutex);
+            garbage.release();
+        }
+
+
         Engine & Engine:: self() noexcept { return *this; }
 
         void Engine:: loop() noexcept
@@ -193,14 +227,23 @@ namespace Yttrium
             // wait on the lock mutex
             //
             //------------------------------------------------------------------
+        WAIT_FOR_TASKS:
             replica.wait(mutex);
 
             //------------------------------------------------------------------
             //
-            // wake up on a locked mutex
+            // wake up on a LOCKED mutex
             //
             //------------------------------------------------------------------
-
+            if(pending.size>0)
+            {
+                Y_Thread_Message("pending=#" << pending.size);
+                while(waiting.size>0 && pending.size>0)
+                {
+                    running.pushTail( waiting.popHead() )->task = pending.popHead();
+                }
+                goto WAIT_FOR_TASKS;
+            }
 
             //------------------------------------------------------------------
             //
@@ -208,6 +251,7 @@ namespace Yttrium
             //
             //------------------------------------------------------------------
             Y_Thread_Message("loop is done");
+            armed = false;
             mutex.unlock();
 
         }
@@ -232,6 +276,7 @@ namespace Yttrium
             // suspend on a LOCKED mutex
             //
             //------------------------------------------------------------------
+        SUSPEND:
             agent.block.wait(mutex);
 
 
@@ -240,11 +285,18 @@ namespace Yttrium
             // resume on a LOCKED mutex
             //
             //------------------------------------------------------------------
-
+            if(agent.task)
+            {
+                assert(running.owns(&agent));
+                agent.work();
+                waiting.pushTail( running.pop( &agent) );
+                if(pending.size<=0) primary.signal();
+                goto SUSPEND;
+            }
 
             //------------------------------------------------------------------
             //
-            // returning
+            // returning from a LOCKED mutex with no task
             //
             //------------------------------------------------------------------
             Y_Thread_Message(agent << " is done");
@@ -262,6 +314,11 @@ namespace Yttrium
                               const Kernels &kernels,
                               Task::ID      &counter)
         {
+            //------------------------------------------------------------------
+            //
+            // creating tasks in primary thread
+            //
+            //------------------------------------------------------------------
             Y_Lock(mutex);
             for(Kernels::ConstIterator it=kernels.begin();it!=kernels.end();++it)
             {
@@ -271,13 +328,21 @@ namespace Yttrium
                 catch(...) { taskIDs.popTail(); throw; }
                 ++counter;
             }
+
+            //------------------------------------------------------------------
+            //
+            // signal replica in loop() to dispatch and run
+            //
+            //------------------------------------------------------------------
+            replica.signal();
+
         }
 
 
         void Engine:: quit() noexcept
         {
-
-            // prune/flush
+            prune();
+            flush();
 
             // stop agents
             assert(waiting.size==size);
