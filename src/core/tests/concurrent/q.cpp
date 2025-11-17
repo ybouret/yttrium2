@@ -6,7 +6,7 @@
 #include "y/concurrent/condition.hpp"
 #include "y/concurrent/runnable.hpp"
 
-#include "y/concurrent/thread/launcher.hpp"
+#include "y/concurrent/thread/launch.hpp"
 
 #include "y/utest/run.hpp"
 
@@ -132,9 +132,15 @@ namespace
         virtual ~Something() noexcept {}
         Something(const Something &_) : Runnable(), value(_.value) {}
 
-        virtual void run() noexcept
+        void compute() noexcept
         {
             Y_Thread_Message("<" << value << ">");
+
+        }
+
+        virtual void run() noexcept
+        {
+            compute();
         }
 
         int value;
@@ -154,7 +160,13 @@ Y_UTEST(concurrent_q)
 
     data.run();
 
+    {
+        Concurrent::Thread thread(something);
+    }
 
+    {
+        Concurrent::Launch launch(something, & Something::compute );
+    }
 
 }
 Y_UDONE()
