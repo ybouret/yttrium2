@@ -24,7 +24,8 @@ namespace Yttrium
             virtual ~Scheduler() noexcept;
 
             Mutex     mutex;
-            Condition cv;
+            Condition primary; //!< primary condition
+            Condition replica; //!< replica condition
             Tasks     pending;
             Tasks     garbage;
 
@@ -34,7 +35,8 @@ namespace Yttrium
 
         Scheduler:: Scheduler() :
         mutex(),
-        cv(),
+        primary(),
+        replica(),
         pending(),
         garbage()
         {
@@ -82,23 +84,60 @@ namespace Yttrium
             const size_t     size;
             CxxSeries<Agent> agents;
             size_t           ready;
-            
+            bool             armed;
+            Launch           launch;
+
         private:
             Y_Disable_Copy_And_Assign(Engine);
-            void quit() noexcept;
+            void         quit() noexcept;
+            Engine      &self() noexcept;
             virtual void run() noexcept;  //!< for agent
-            //virtual void loop() noexcept; //!< for engine
+            virtual void loop() noexcept; //!< for engine
         };
+
+
 
         Engine:: Engine(const Site &site) :
         Scheduler(),
         size( site->size() ),
         agents(size),
-        ready(0)
+        ready(0),
+        armed(false),
+        launch( self(), & Engine::loop )
         {
+
+            // wait for loop() to be armed
+            {
+                Y_Lock(mutex);
+                if(!armed) primary.wait(mutex);
+                Y_Thread_Message("loop is armed");
+            }
+
         }
 
+        Engine & Engine:: self() noexcept { return *this; }
 
+        void Engine:: loop() noexcept
+        {
+            // entering main loop
+            mutex.lock();
+
+            armed = true;
+            primary.signal();
+
+            Y_Thread_Message("loop is ok");
+
+            // wait on the lock mutex
+            replica.wait(mutex);
+
+            // wake up on a locked mutex
+
+
+            // return
+            Y_Thread_Message("loop is done");
+            mutex.unlock();
+
+        }
 
         void Engine:: run() noexcept
         {
@@ -115,6 +154,8 @@ namespace Yttrium
         void Engine:: quit() noexcept
         {
 
+            // stop loop
+            replica.signal();
         }
 
     }
@@ -152,21 +193,11 @@ namespace
 
 Y_UTEST(concurrent_q)
 {
-    Y_SIZEOF(Concurrent::ThreadData::Meth);
 
     Something              something(7);
-    Concurrent::ThreadData data(something, & Something::run );
 
+    Concurrent::Engine engine( Concurrent::Site::Default );
 
-    data.run();
-
-    {
-        Concurrent::Thread thread(something);
-    }
-
-    {
-        Concurrent::Launch launch(something, & Something::compute );
-    }
 
 }
 Y_UDONE()
