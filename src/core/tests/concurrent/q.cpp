@@ -25,12 +25,12 @@ namespace Yttrium
             explicit Scheduler(const Site &site);
             virtual ~Scheduler() noexcept;
 
-            const size_t     size;
-            Mutex     mutex;
-            Condition primary;
-            Condition replica;
-            Tasks     pending;
-            Tasks     garbage;
+            const size_t size;       //!< number of threads
+            Mutex        mutex;      //!< shared mutex
+            Condition    primary;    //!< communication with primary
+            Condition    replica;    //!< communication with replica
+            Tasks        pending;    //!< pending tasks
+            Tasks        garbage;    //!< garbage tasks
 
         private:
             Y_Disable_Copy_And_Assign(Scheduler);
@@ -39,6 +39,8 @@ namespace Yttrium
         Scheduler:: Scheduler(const Site &site) :
         size(site->size()),
         mutex(),
+        primary(),
+        replica(),
         pending(),
         garbage()
         {
@@ -57,11 +59,11 @@ namespace Yttrium
             virtual ~Agent() noexcept;
 
 
-            Scheduler & sched;
-            Condition   block;
-            Agent      *next;
-            Agent      *prev;
-            Thread      thread;
+            Scheduler & sched;  //!< persistent schedular
+            Condition   block;  //!< local condition variable to suspend/resume
+            Agent      *next;   //!< for list
+            Agent      *prev;   //!< for list
+            Thread      thread; //!< running thread
 
         private:
             Y_Disable_Copy_And_Assign(Agent);
@@ -132,6 +134,7 @@ namespace Yttrium
                     if(!armed) primary.wait(mutex);
                     Y_Thread_Message("loop is armed");
                 }
+                launch.assign( **(**site).tail );
 
                 //--------------------------------------------------------------
                 //
@@ -148,7 +151,7 @@ namespace Yttrium
                             Y_Lock(mutex);
                             if(ready<i) primary.wait(mutex);
                         }
-                        std::cerr << "ok" << std::endl;
+                        // prepare and assign
                         waiting.pushTail( &agents[i] )->thread.assign(**node);
                     }
                 }
@@ -235,7 +238,7 @@ namespace Yttrium
 
             //------------------------------------------------------------------
             //
-            // returning 
+            // returning
             //
             //------------------------------------------------------------------
             Y_Thread_Message(agent << " is done");
