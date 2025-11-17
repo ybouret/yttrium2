@@ -68,13 +68,7 @@ Y_UTEST(concurrent_q)
 
 
     Concurrent::TaskIDs  tids;
-
-#if 0
-    Concurrent::Queue::Squad q( Concurrent::Site::Default );
-    Concurrent::Task::ID counter = 0;
-    q.enqueue(tids,klist,counter);
-    q.flush();
-#endif
+    
 
     Concurrent::Alone    stQ;
     std::cerr << "Enqueuing/Alone" << std::endl;

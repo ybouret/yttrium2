@@ -55,6 +55,7 @@ namespace Yttrium
             //! wait for thread to return
             virtual ~Thread() noexcept;
 
+            //! execute runnable
             explicit Thread(Runnable &);
 
             //__________________________________________________________________
