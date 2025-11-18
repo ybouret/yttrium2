@@ -87,15 +87,10 @@ namespace Yttrium
 
         }
 
-
-
-
         Agent:: ~Agent() noexcept
         {
 
         }
-
-
 
         class Engine : public Scheduler
         {
@@ -105,6 +100,7 @@ namespace Yttrium
 
             void prune() noexcept;
             void flush() noexcept;
+            
 
             void         enqueue(TaskIDs       &taskIDs,
                                  const Kernels &kernels,
@@ -119,10 +115,10 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(Engine);
-            void         quit() noexcept;
-            Engine      &self() noexcept;
-            virtual void run() noexcept;  //!< for agent
-            virtual void loop() noexcept; //!< for engine
+            void          quit() noexcept; //!< clean finish
+            Engine      & self() noexcept; //!< helper
+            virtual void  run()  noexcept; //!< for agent
+            virtual void  loop() noexcept; //!< for engine
         };
 
 
@@ -153,7 +149,7 @@ namespace Yttrium
 
                 //--------------------------------------------------------------
                 //
-                // construct synchronized agents
+                // construct synchronized agents with run()
                 //
                 //--------------------------------------------------------------
                 {
@@ -166,12 +162,15 @@ namespace Yttrium
                             Y_Lock(mutex);
                             if(ready<i) primary.wait(mutex);
                         }
-                        // prepare and assign
                         waiting.pushTail( &agents[i] )->thread.assign(**node);
                     }
                 }
 
-
+                //--------------------------------------------------------------
+                //
+                // ready!
+                //
+                //--------------------------------------------------------------
             }
             catch(...)
             {
@@ -189,12 +188,13 @@ namespace Yttrium
             garbage.release();
         }
 
+
         void Engine:: flush() noexcept
         {
             Y_Lock(mutex);
             Y_Thread_Message("flushing pending #" << pending.size);
             garbage.release();
-            if(pending.size>0)
+            if(running.size>0||pending.size>0)
                 primary.wait(mutex);
             garbage.release();
             Y_Thread_Message("flushed!");
@@ -215,7 +215,7 @@ namespace Yttrium
             armed = true;     // update status
             primary.signal(); // resume primary thread if waiting
 
-            Y_Thread_Message("loop is ok");
+            Y_Thread_Message("loop is ready");
 
             //------------------------------------------------------------------
             //
@@ -285,24 +285,44 @@ namespace Yttrium
             //------------------------------------------------------------------
             if(agent.task)
             {
-                Y_Thread_Message("running @" << agent);
+                Y_Thread_Message("running  @" << agent);
                 assert(running.owns(&agent));
 
+                //--------------------------------------------------------------
+                //
                 // perform unlocked task
+                //
+                //--------------------------------------------------------------
                 {
                     mutex.unlock();
                     agent.task->perform(agent);
                     mutex.lock();
                 }
 
+                //--------------------------------------------------------------
+                //
                 // thrash task
+                //
+                //--------------------------------------------------------------
                 garbage.pushHead(agent.task);
                 agent.task = 0;
 
+                //--------------------------------------------------------------
+                //
                 // update status
+                //
+                //--------------------------------------------------------------
                 waiting.pushTail( running.pop( &agent) );
-                Y_Thread_Message("alldone @" << agent);
-                if(pending.size<=0)
+                Y_Thread_Message("finished @" << agent);
+
+                //--------------------------------------------------------------
+                //
+                // send signal according to state
+                //
+                //--------------------------------------------------------------
+
+
+                if(running.size<=0 && pending.size<=0)
                 {
                     Y_Thread_Message("signal primary");
                     primary.signal();
@@ -419,7 +439,7 @@ Y_UTEST(concurrent_q)
     Concurrent::Task::ID counter = 0;
 
     engine.enqueue(taskIDs,kernels,counter);
-
+    engine.flush();
 
 
 

@@ -41,8 +41,9 @@ namespace Yttrium
             Code * const code;                    //!< platform dependent condition
         };
 
+        
     }
 
 }
-#endif
+#endif // !Y_Concurrent_Condition_Included
 
