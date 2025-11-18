@@ -7,6 +7,7 @@ namespace Yttrium
     namespace Concurrent
     {
 
+#if 0
         Queue:: Squad:: Squad(const Site &site) :
         Object(),
         Leader(site->size()),
@@ -228,6 +229,8 @@ namespace Yttrium
             mutex.unlock();
         }
 
+#endif
+        
     }
 
 }

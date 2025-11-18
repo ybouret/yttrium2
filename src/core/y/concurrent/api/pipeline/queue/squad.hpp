@@ -14,6 +14,7 @@ namespace Yttrium
     namespace Concurrent
     {
 
+#if 0
         //______________________________________________________________________
         //
         //
@@ -75,6 +76,8 @@ namespace Yttrium
             void         dispatch() noexcept; //!< reactivating
         };
 
+#endif
+        
     }
 
 }
