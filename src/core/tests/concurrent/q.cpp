@@ -59,14 +59,14 @@ namespace Yttrium
             explicit Agent(Scheduler &, const size_t rk);
             virtual ~Agent() noexcept;
 
-            void work() noexcept;
 
-            Task      * task;   //!< task to perform
-            Scheduler & sched;  //!< persistent schedular
-            Condition   block;  //!< local condition variable to suspend/resume
-            Agent      *next;   //!< for list
-            Agent      *prev;   //!< for list
-            Thread      thread; //!< running thread
+
+            Task      * task;       //!< task to perform
+            Scheduler & scheduler;  //!< persistent schedular
+            Condition   computing;  //!< local condition variable to suspend/resume
+            Agent      *next;       //!< for list
+            Agent      *prev;       //!< for list
+            Thread      thread;     //!< running thread
 
         private:
             Y_Disable_Copy_And_Assign(Agent);
@@ -77,24 +77,16 @@ namespace Yttrium
         Agent:: Agent(Scheduler &_, const size_t rk) :
         Context(_.mutex,_.size,rk),
         task(0),
-        sched(_),
-        block(),
+        scheduler(_),
+        computing(),
         next(0),
         prev(0),
-        thread(sched)
+        thread(scheduler)
         {
 
         }
 
-        void Agent:: work() noexcept
-        {
-            assert(0!=task);
-            sched.mutex.unlock();
-            task->perform(*this);
-            sched.mutex.lock();
-            sched.garbage.pushHead(task);
-            task = 0;
-        }
+
 
 
         Agent:: ~Agent() noexcept
@@ -226,7 +218,7 @@ namespace Yttrium
 
             //------------------------------------------------------------------
             //
-            // wait on the lock mutex
+            // wait on the LOCKED mutex
             //
             //------------------------------------------------------------------
         WAIT_FOR_TASKS:
@@ -244,7 +236,7 @@ namespace Yttrium
                 {
                     Agent * const agent = running.pushTail( waiting.popHead() );
                     agent->task = pending.popHead();
-                    agent->block.signal();
+                    agent->computing.signal();
                 }
                 goto WAIT_FOR_TASKS;
             }
@@ -264,7 +256,7 @@ namespace Yttrium
         {
             //------------------------------------------------------------------
             //
-            // entering run agent
+            // entering run() for  agent
             //
             //------------------------------------------------------------------
             mutex.lock();
@@ -281,7 +273,7 @@ namespace Yttrium
             //
             //------------------------------------------------------------------
         SUSPEND:
-            agent.block.wait(mutex);
+            agent.computing.wait(mutex);
 
 
             //------------------------------------------------------------------
@@ -293,7 +285,19 @@ namespace Yttrium
             {
                 Y_Thread_Message("running @" << agent);
                 assert(running.owns(&agent));
-                agent.work();
+
+                // perform unlocked task
+                {
+                    mutex.unlock();
+                    agent.task->perform(agent);
+                    mutex.lock();
+                }
+
+                // thrash task
+                garbage.pushHead(agent.task);
+                agent.task = 0;
+
+                // update status
                 waiting.pushTail( running.pop( &agent) );
                 Y_Thread_Message("alldone @" << agent);
                 if(pending.size<=0)
@@ -361,7 +365,7 @@ namespace Yttrium
             running.reset();
             for(size_t i=size;i>0;--i)
             {
-                agents[i].block.signal();
+                agents[i].computing.signal();
             }
 
 
