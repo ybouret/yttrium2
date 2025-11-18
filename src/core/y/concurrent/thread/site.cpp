@@ -118,6 +118,9 @@ namespace Yttrium
 
         void Site:: parseLinear(const String &info)
         {
+            std::cerr << "parseLinear('" << info << "')" << std::endl;
+            for (size_t i = 1; i <= info.size(); ++i)
+                std::cerr << "[+] " << info[i] << std::endl;
             Vector<String> words(WithAtLeast,3);
             Tokenizer::AppendTo(words,info,COLON);
 

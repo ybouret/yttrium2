@@ -87,8 +87,7 @@ namespace Yttrium
         template <> Tokenizer<CH>:: ~Tokenizer() noexcept
         {
             assert(0!=code);
-            delete code;
-            code = 0;
+            Destroy(code);
         }
 
         template <>

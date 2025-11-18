@@ -2,6 +2,7 @@
 #include "y/ascii/convert.hpp"
 #include "y/exception.hpp"
 #include "y/check/usual.hpp"
+#include "y/ascii/printable.hpp"
 
 namespace Yttrium
 {
@@ -41,7 +42,7 @@ namespace Yttrium
                             continue;
 
                         default:
-                            throw Specific::Exception(fn,"invalid char '%c'",c);
+                            throw Specific::Exception(fn,"invalid char '%s'",Printable::Text(c));
                     }
                 }
 

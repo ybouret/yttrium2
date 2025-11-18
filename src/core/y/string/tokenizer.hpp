@@ -124,7 +124,7 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(Tokenizer); //!< discarding
             class Code;
-            Code *code; //!< inner code
+            Code * const code; //!< inner code
         };
     }
 

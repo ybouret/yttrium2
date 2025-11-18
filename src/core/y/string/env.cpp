@@ -38,7 +38,7 @@ namespace Yttrium
 		const DWORD rd = ::GetEnvironmentVariable(name.c_str(), text, dw);
         if (rd <= 0)
 			throw Exception("unexpected vanished '%s'", name.c_str());
-        value = String(text, dw);
+        value = String(text); // avoid multiple 0 at end...
         return true;
 #endif // defined(Y_WIN)
     }
