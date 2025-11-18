@@ -89,7 +89,7 @@ namespace Yttrium
 
         }
 
-        
+
         class Queue:: Engine : public Scheduler
         {
         public:
@@ -98,11 +98,9 @@ namespace Yttrium
 
             void prune() noexcept;
             void flush() noexcept;
-
-
-            void         enqueue(TaskIDs       &taskIDs,
-                                 const Kernels &kernels,
-                                 Task::ID      &counter);
+            void enqueue(TaskIDs       &taskIDs,
+                         const Kernels &kernels,
+                         Task::ID      &counter);
 
             Agents           waiting;
             Agents           running;
@@ -390,19 +388,19 @@ namespace Yttrium
 
         void Queue:: Engine:: quit() noexcept
         {
+            // prune
             prune();
+
+            // flush
             flush();
 
             // stop agents
             assert(waiting.size==size);
-
             waiting.reset();
             running.reset();
             for(size_t i=size;i>0;--i)
-            {
                 agents[i].computing.signal();
-            }
-
+            
 
             // stop loop
             replica.signal();
