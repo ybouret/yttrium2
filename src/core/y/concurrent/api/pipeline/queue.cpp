@@ -13,79 +13,83 @@ namespace Yttrium
     namespace Concurrent
     {
 
-
-        class Scheduler : public Runnable
+        namespace
         {
-        public:
-            explicit Scheduler(const Site &site);
-            virtual ~Scheduler() noexcept;
+            class Scheduler : public Runnable
+            {
+            public:
+                explicit Scheduler(const Site &site);
+                virtual ~Scheduler() noexcept;
 
-            const size_t size;       //!< number of threads
-            Mutex        mutex;      //!< shared mutex
-            Condition    primary;    //!< communication with primary
-            Condition    replica;    //!< communication with replica
-            Tasks        pending;    //!< pending tasks
-            Tasks        garbage;    //!< garbage tasks
+                const size_t size;       //!< number of threads
+                Mutex        mutex;      //!< shared mutex
+                Condition    primary;    //!< communication with primary
+                Condition    replica;    //!< communication with replica
+                Tasks        pending;    //!< pending tasks
+                Tasks        garbage;    //!< garbage tasks
 
-        private:
-            Y_Disable_Copy_And_Assign(Scheduler);
-        };
+            private:
+                Y_Disable_Copy_And_Assign(Scheduler);
+            };
 
-        Scheduler:: Scheduler(const Site &site) :
-        size(site->size()),
-        mutex(),
-        primary(),
-        replica(),
-        pending(),
-        garbage()
-        {
+            Scheduler:: Scheduler(const Site &site) :
+            size(site->size()),
+            mutex(),
+            primary(),
+            replica(),
+            pending(),
+            garbage()
+            {
+            }
+
+            Scheduler:: ~Scheduler() noexcept
+            {
+
+            }
+
+
+            class Agent : public Context
+            {
+            public:
+                explicit Agent(Scheduler &, const size_t rk);
+                virtual ~Agent() noexcept;
+
+
+
+                Task      * task;       //!< task to perform
+                Scheduler & scheduler;  //!< persistent schedular
+                Condition   computing;  //!< local condition variable to suspend/resume
+                Agent *     next;       //!< for list
+                Agent *     prev;       //!< for list
+                Thread      thread;     //!< running thread
+
+            private:
+                Y_Disable_Copy_And_Assign(Agent);
+            };
+
+            typedef RawListOf<Agent> Agents;
+
+            Agent:: Agent(Scheduler  & sc,
+                          const size_t rk) :
+            Context(sc.mutex,sc.size,rk),
+            task(0),
+            scheduler(sc),
+            computing(),
+            next(0),
+            prev(0),
+            thread(scheduler)
+            {
+
+            }
+
+            Agent:: ~Agent() noexcept
+            {
+
+            }
+
         }
 
-        Scheduler:: ~Scheduler() noexcept
-        {
-
-        }
-
-
-        class Agent : public Context
-        {
-        public:
-            explicit Agent(Scheduler &, const size_t rk);
-            virtual ~Agent() noexcept;
-
-
-
-            Task      * task;       //!< task to perform
-            Scheduler & scheduler;  //!< persistent schedular
-            Condition   computing;  //!< local condition variable to suspend/resume
-            Agent *     next;       //!< for list
-            Agent *     prev;       //!< for list
-            Thread      thread;     //!< running thread
-
-        private:
-            Y_Disable_Copy_And_Assign(Agent);
-        };
-
-        typedef RawListOf<Agent> Agents;
-
-        Agent:: Agent(Scheduler  & sc,
-                      const size_t rk) :
-        Context(sc.mutex,sc.size,rk),
-        task(0),
-        scheduler(sc),
-        computing(),
-        next(0),
-        prev(0),
-        thread(scheduler)
-        {
-
-        }
-
-        Agent:: ~Agent() noexcept
-        {
-
-        }
-
+        
         class Queue:: Engine : public Scheduler
         {
         public:
