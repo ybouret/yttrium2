@@ -115,10 +115,10 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(Engine);
-            void          quit() noexcept; //!< clean finish
-            Engine      & self() noexcept; //!< helper
-            virtual void  run()  noexcept; //!< for agent
-            virtual void  loop() noexcept; //!< for engine
+            void          quit()     noexcept; //!< clean finish
+            Engine      & self()     noexcept; //!< helper
+            virtual void  run()      noexcept; //!< for agent
+            virtual void  dispatch() noexcept; //!< for engine
         };
 
 
@@ -130,7 +130,7 @@ namespace Yttrium
         agents(size),
         ready(0),
         armed(false),
-        launch( self(), & Engine::loop )
+        launch( self(), & Engine::dispatch )
         {
 
             try
@@ -203,7 +203,7 @@ namespace Yttrium
 
         Engine & Engine:: self() noexcept { return *this; }
 
-        void Engine:: loop() noexcept
+        void Engine:: dispatch() noexcept
         {
             //------------------------------------------------------------------
             //
@@ -232,20 +232,20 @@ namespace Yttrium
             //------------------------------------------------------------------
             if(pending.size>0)
             {
-                Y_Thread_Message("pending  =#" << pending.size);
+                //Y_Thread_Message("pending  =#" << pending.size);
                 while(waiting.size>0 && pending.size>0)
                 {
                     Agent * const agent = running.pushTail( waiting.popHead() );
                     agent->task = pending.popHead();
                     agent->computing.signal();
                 }
-                Y_Thread_Message("remaining=#" << pending.size);
+                //Y_Thread_Message("remaining=#" << pending.size);
                 goto WAIT_FOR_TASKS;
             }
 
             //------------------------------------------------------------------
             //
-            // return
+            // else return
             //
             //------------------------------------------------------------------
             Y_Thread_Message("loop is returning");
@@ -285,7 +285,7 @@ namespace Yttrium
             //------------------------------------------------------------------
             if(agent.task)
             {
-                Y_Thread_Message("running  @" << agent);
+                //Y_Thread_Message("running  @" << agent);
                 assert(running.owns(&agent));
 
                 //--------------------------------------------------------------
@@ -313,26 +313,41 @@ namespace Yttrium
                 //
                 //--------------------------------------------------------------
                 waiting.pushTail( running.pop( &agent) );
-                Y_Thread_Message("finished @" << agent);
+                //Y_Thread_Message("finished @" << agent);
 
                 //--------------------------------------------------------------
                 //
-                // send signal according to state
+                // send signal according to state before going to SUSPEND
                 //
                 //--------------------------------------------------------------
-
-
-                if(running.size<=0 && pending.size<=0)
+                if(pending.size<=0)
                 {
-                    Y_Thread_Message("signal primary");
-                    primary.signal();
+
+                    // no more work to do
+                    if(running.size<=0)
+                    {
+                        // this was the last running
+                        //Y_Thread_Message("signal primary all done");
+                        primary.signal();
+                    }
+
                 }
+                else
+                {
+
+                    // still go work to do
+                    //Y_Thread_Message("still some work to do");
+                    replica.signal();
+                }
+
+
+
                 goto SUSPEND;
             }
 
             //------------------------------------------------------------------
             //
-            // returning from a LOCKED mutex with no task
+            // returning from a LOCKED mutex (task==NULL)
             //
             //------------------------------------------------------------------
             Y_Thread_Message(agent << " is returning");
@@ -398,7 +413,12 @@ namespace Yttrium
     }
 }
 
+#include "y/random/park-miller.hpp"
+#include "y/container/sequence/vector.hpp"
+
 using namespace Yttrium;
+
+static Writable<size_t> * track = 0;
 
 namespace
 {
@@ -406,16 +426,26 @@ namespace
     class Something
     {
     public:
-        Something(const int a) : value(a) {}
+        Something(const int a) : value(a), ran() {}
         ~Something() noexcept {}
-        Something(const Something &_) : value(_.value) {}
+        Something(const Something &_) : value(_.value), ran() {}
 
         void operator()(const Concurrent::Context &ctx)
         {
             Y_Thread_Message(value << " @" << ctx);
+            volatile double sum = 0;
+            for(size_t i = ran.in<size_t>(1000,1000000);i>0;--i)
+            {
+                sum += ran.to<double>();
+            }
+            if(track)
+            {
+                ++(*track)[ctx.indx];
+            }
         }
 
-        int value;
+        int                value;
+        Random::ParkMiller ran;
     private:
         Y_Disable_Assign(Something);
     };
@@ -437,10 +467,13 @@ Y_UTEST(concurrent_q)
 
     Concurrent::TaskIDs  taskIDs;
     Concurrent::Task::ID counter = 0;
+    Vector<size_t>       tracking(engine.size,0);
+    track = & tracking;
 
     engine.enqueue(taskIDs,kernels,counter);
     engine.flush();
 
+    std::cerr << "tracking=" << tracking << std::endl;
 
 
 
