@@ -139,7 +139,7 @@ namespace Yttrium
                 {
                     Y_Lock(mutex);
                     if(!armed) primary.wait(mutex);
-                    Y_Thread_Message("loop is armed");
+                    //Y_Thread_Message("loop is armed");
                 }
                 launch.assign( **(**site).tail );
 
@@ -188,12 +188,10 @@ namespace Yttrium
         void Queue::Engine:: flush() noexcept
         {
             Y_Lock(mutex);
-            Y_Thread_Message("flushing pending #" << pending.size);
             garbage.release();
             if(running.size>0||pending.size>0)
                 primary.wait(mutex);
             garbage.release();
-            Y_Thread_Message("flushed!");
         }
 
 
@@ -211,7 +209,7 @@ namespace Yttrium
             armed = true;     // update status
             primary.signal(); // resume primary thread if waiting
 
-            Y_Thread_Message("loop is ready");
+            //Y_Thread_Message("loop is ready");
 
             //------------------------------------------------------------------
             //
@@ -244,7 +242,7 @@ namespace Yttrium
             // else return
             //
             //------------------------------------------------------------------
-            Y_Thread_Message("loop is returning");
+            //Y_Thread_Message("loop is returning");
             armed = false;
             mutex.unlock();
 
@@ -262,7 +260,7 @@ namespace Yttrium
             assert(ready<size);
             Agent &agent = agents[++ready];
             assert(ready==agent.indx);
-            Y_Thread_Message(agent << " is ready#" << ready);
+            //Y_Thread_Message(agent << " is ready#" << ready);
             primary.signal();
 
             //------------------------------------------------------------------
@@ -346,7 +344,7 @@ namespace Yttrium
             // returning from a LOCKED mutex (task==NULL)
             //
             //------------------------------------------------------------------
-            Y_Thread_Message(agent << " is returning");
+            //Y_Thread_Message(agent << " is returning");
             --ready;
             mutex.unlock();
         }
@@ -400,7 +398,7 @@ namespace Yttrium
             running.reset();
             for(size_t i=size;i>0;--i)
                 agents[i].computing.signal();
-            
+
 
             // stop loop
             replica.signal();
