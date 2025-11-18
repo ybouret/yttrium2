@@ -118,7 +118,7 @@ namespace Yttrium
             void          quit()     noexcept; //!< clean finish
             Engine      & self()     noexcept; //!< helper
             virtual void  run()      noexcept; //!< for agent
-            virtual void  dispatch() noexcept; //!< for engine
+            virtual void  balance()  noexcept; //!< for engine
         };
 
 
@@ -130,7 +130,7 @@ namespace Yttrium
         agents(size),
         ready(0),
         armed(false),
-        launch( self(), & Engine::dispatch )
+        launch( self(), & Engine::balance )
         {
 
             try
@@ -203,7 +203,7 @@ namespace Yttrium
 
         Engine & Engine:: self() noexcept { return *this; }
 
-        void Engine:: dispatch() noexcept
+        void Engine:: balance() noexcept
         {
             //------------------------------------------------------------------
             //
@@ -222,7 +222,7 @@ namespace Yttrium
             // wait on the LOCKED mutex
             //
             //------------------------------------------------------------------
-        WAIT_FOR_TASKS:
+        DISPATCH:
             replica.wait(mutex);
 
             //------------------------------------------------------------------
@@ -240,7 +240,7 @@ namespace Yttrium
                     agent->computing.signal();
                 }
                 //Y_Thread_Message("remaining=#" << pending.size);
-                goto WAIT_FOR_TASKS;
+                goto DISPATCH;
             }
 
             //------------------------------------------------------------------
