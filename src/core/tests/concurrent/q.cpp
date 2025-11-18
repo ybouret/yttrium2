@@ -1,5 +1,7 @@
 
 #include "y/concurrent/api/pipeline/queue.hpp"
+#include "y/concurrent/api/pipeline/alone.hpp"
+
 #include "y/random/park-miller.hpp"
 #include "y/container/sequence/vector.hpp"
 #include "y/utest/run.hpp"
@@ -50,7 +52,8 @@ namespace
 Y_UTEST(concurrent_q)
 {
 
-    Concurrent::Queue   Q( Concurrent::Site::Default );
+    Concurrent::Alone   stQ;
+    Concurrent::Queue   mtQ( Concurrent::Site::Default );
     Concurrent::Kernels kernels;
     for(int i=1;i<=30;++i)
     {
@@ -59,12 +62,16 @@ Y_UTEST(concurrent_q)
 
     Concurrent::TaskIDs  taskIDs;
 
-    //Concurrent::Task::ID counter = 0;
-    Vector<size_t> tracking(Q.size,0);
+    std::cerr << "-- sequential -- " << std::endl;
+    stQ.enqueue(taskIDs,kernels);
+    stQ.flush();
+
+    Vector<size_t> tracking(mtQ.size,0);
     track = & tracking;
 
-    Q.enqueue(taskIDs,kernels);
-    Q.flush();
+    std::cerr << "-- parallel -- " << std::endl;
+    mtQ.enqueue(taskIDs,kernels);
+    mtQ.flush();
 
     std::cerr << "tracking=" << tracking << std::endl;
 
