@@ -6,7 +6,7 @@
 #include "y/container/sequence/vector.hpp"
 #include "y/utest/run.hpp"
 
-
+#include <cmath>
 
 
 
@@ -33,8 +33,9 @@ namespace
             volatile double sum = 0;
             for(size_t i = ran.in<size_t>(1000,1000000);i>0;--i)
             {
-                sum += ran.to<double>();
+                sum += cos( ran.to<double>() );
             }
+
             if(track)
             {
                 ++(*track)[ctx.indx];
