@@ -74,10 +74,11 @@ namespace Yttrium
 
         typedef RawListOf<Agent> Agents;
 
-        Agent:: Agent(Scheduler &_, const size_t rk) :
-        Context(_.mutex,_.size,rk),
+        Agent:: Agent(Scheduler  & sc,
+                      const size_t rk) :
+        Context(sc.mutex,sc.size,rk),
         task(0),
-        scheduler(_),
+        scheduler(sc),
         computing(),
         next(0),
         prev(0),
@@ -191,7 +192,7 @@ namespace Yttrium
         void Engine:: flush() noexcept
         {
             Y_Lock(mutex);
-            Y_Thread_Message("flushing...");
+            Y_Thread_Message("flushing pending #" << pending.size);
             garbage.release();
             if(pending.size>0)
                 primary.wait(mutex);
@@ -231,13 +232,14 @@ namespace Yttrium
             //------------------------------------------------------------------
             if(pending.size>0)
             {
-                Y_Thread_Message("pending=#" << pending.size);
+                Y_Thread_Message("pending  =#" << pending.size);
                 while(waiting.size>0 && pending.size>0)
                 {
                     Agent * const agent = running.pushTail( waiting.popHead() );
                     agent->task = pending.popHead();
                     agent->computing.signal();
                 }
+                Y_Thread_Message("remaining=#" << pending.size);
                 goto WAIT_FOR_TASKS;
             }
 
@@ -246,7 +248,7 @@ namespace Yttrium
             // return
             //
             //------------------------------------------------------------------
-            Y_Thread_Message("loop is done");
+            Y_Thread_Message("loop is returning");
             armed = false;
             mutex.unlock();
 
@@ -313,7 +315,7 @@ namespace Yttrium
             // returning from a LOCKED mutex with no task
             //
             //------------------------------------------------------------------
-            Y_Thread_Message(agent << " is done");
+            Y_Thread_Message(agent << " is returning");
             --ready;
             mutex.unlock();
         }
