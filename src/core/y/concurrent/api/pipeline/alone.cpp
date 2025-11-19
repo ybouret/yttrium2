@@ -67,6 +67,11 @@ namespace Yttrium
                 ++counter;
             }
         }
+
+        size_t Alone:: size() const noexcept
+        {
+            return 1;
+        }
     }
 
 }

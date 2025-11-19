@@ -443,6 +443,12 @@ namespace Yttrium
             assert(engine);
             engine->enqueue(taskIDs,kernels,counter);
         }
+
+        size_t Queue:: size() const noexcept
+        {
+            assert(engine);
+            return engine->size;
+        }
     }
 
 }

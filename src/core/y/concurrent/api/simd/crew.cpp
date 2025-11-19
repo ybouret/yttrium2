@@ -18,7 +18,7 @@ namespace Yttrium
 
       
 
-        class Crew:: Code : public Object
+        class Crew:: Code : public Object, public Runnable
         {
         public:
             //__________________________________________________________________
@@ -139,7 +139,7 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(Code);
 
-            virtual void run() noexcept
+            inline virtual void run() noexcept
             {
                 //--------------------------------------------------------------
                 //
