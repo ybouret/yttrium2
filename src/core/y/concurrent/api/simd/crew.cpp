@@ -34,7 +34,7 @@ namespace Yttrium
             inUse(0),
             kcode(0),
             mutex(),
-            cond(),
+            barrier(),
             primary(),
             team(size)
             {
@@ -105,20 +105,20 @@ namespace Yttrium
                     const Temporary<Kernel *> tmp(kcode, &k);
                     assert(0!=kcode);
                     inUse = size;
-                    cond.broadcast();
+                    barrier.broadcast();
                     Y_Thread_Wait_If(inUse>0,primary,mutex);
                 }
                 assert(0==kcode);
             }
 
-            const size_t      size;  //!< number of threads
-            size_t            ready; //!< ready threads for init/quit
-            size_t            inUse; //!< for cycle
-            Kernel *          kcode; //!< kernel code
-            Mutex             mutex; //!< mutex
-            Condition         cond;  //!< threads conditions
-            Condition         primary;  //!< communication with primary
-            CxxSeries<Thread> team;     //!< local threads
+            const size_t      size;    //!< number of threads
+            size_t            ready;   //!< ready threads for init/quit
+            size_t            inUse;   //!< for cycle
+            Kernel *          kcode;   //!< kernel code
+            Mutex             mutex;   //!< mutex
+            Condition         barrier; //!< threads conditions
+            Condition         primary; //!< communication with primary
+            CxxSeries<Thread> team;    //!< local threads
 
         private:
             Y_Disable_Copy_And_Assign(Code);
@@ -143,7 +143,7 @@ namespace Yttrium
                 //
                 //--------------------------------------------------------------
             CYCLE:
-                cond.wait(mutex);
+                barrier.wait(mutex);
 
                 //--------------------------------------------------------------
                 //
@@ -177,7 +177,7 @@ namespace Yttrium
             inline void quit() noexcept
             {
                 assert(0==kcode);
-                cond.broadcast();
+                barrier.broadcast();
                 Y_Thread_Wait_If(ready>0,primary,mutex);
             }
 
