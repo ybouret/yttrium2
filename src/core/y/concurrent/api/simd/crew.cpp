@@ -101,15 +101,14 @@ namespace Yttrium
             inline void execute(Kernel &k) noexcept
             {
                 assert(0==kcode);
-                const Temporary<Kernel *> tmp(kcode, &k);
-                assert(0!=kcode);
-                inUse = size;
-                cond.broadcast();
                 {
-                    Y_Lock(mutex);
-                    if(inUse>0)
-                        primary.wait(mutex);
+                    const Temporary<Kernel *> tmp(kcode, &k);
+                    assert(0!=kcode);
+                    inUse = size;
+                    cond.broadcast();
+                    Y_Thread_Wait_If(inUse>0,primary,mutex);
                 }
+                assert(0==kcode);
             }
 
             const size_t      size;  //!< number of threads
@@ -154,39 +153,35 @@ namespace Yttrium
                 if(!kcode)
                 {
                     assert(ready>0);
+                    assert(0==inUse);
                     if(--ready<=0)
-                        primary.broadcast(); // awake primary thread
-                    mutex.unlock();          // primary unlock
-                    return;                  // end
+                        primary.signal(); // awake primary thread
+                    mutex.unlock();       // primary unlock
+                    return;               // end of thread
                 }
 
                 assert(kcode);
                 assert(inUse>0);
-                mutex.unlock();
-                (*kcode)(context);
-                mutex.lock();
+                {
+                    mutex.unlock();
+                    try { (*kcode)(context); } catch(...) {}
+                    mutex.lock();
+                }
                 assert(inUse>0);
-                if(--inUse<=0) primary.broadcast();
+                if(--inUse<=0)
+                    primary.signal();
                 goto CYCLE;
             }
 
 
             inline void quit() noexcept
             {
-
-                kcode = 0;
+                assert(0==kcode);
                 cond.broadcast();
-                {
-                    Y_Lock(mutex);
-                    if(ready>0)
-                    {
-                        primary.wait(mutex);
-                    }
-                }
-
+                Y_Thread_Wait_If(ready>0,primary,mutex);
             }
 
-            static void Run(void * const args)
+            static inline  void Run(void * const args)
             {
                 assert(args);
                 static_cast<Code *>(args)->run();
