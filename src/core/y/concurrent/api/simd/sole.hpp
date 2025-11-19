@@ -46,6 +46,7 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
+            virtual size_t       size()           const noexcept;
             virtual const char * callSign()       const noexcept;
             virtual void         operator()( Kernel & ) noexcept;
 

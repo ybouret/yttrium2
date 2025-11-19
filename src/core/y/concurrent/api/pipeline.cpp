@@ -6,8 +6,8 @@ namespace Yttrium
     namespace Concurrent
     {
         
-        Pipeline:: Pipeline(const size_t n, const char * const id) :
-        Parallel(n,id),
+        Pipeline:: Pipeline() noexcept :
+        Parallel(),
         counter(0)
         {
         }

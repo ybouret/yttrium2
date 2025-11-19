@@ -45,6 +45,7 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
+            virtual size_t       size()           const noexcept;
             virtual const char * callSign()       const noexcept;
             virtual void         operator()( Kernel & ) noexcept;
 
@@ -52,6 +53,7 @@ namespace Yttrium
             class Code;
             Y_Disable_Copy_And_Assign(Crew); //!< discarding
             Code * const code;               //!< inner code
+
         };
     }
 

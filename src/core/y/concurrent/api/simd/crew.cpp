@@ -5,15 +5,18 @@
 #include "y/concurrent/thread.hpp"
 #include "y/type/destroy.hpp"
 #include "y/type/temporary.hpp"
+#include "y/concurrent/runnable.hpp"
 
 namespace Yttrium
 {
     namespace Concurrent
     {
 
-        const char * const Crew:: CallSign = "Crew";
+        const char * const Crew:: CallSign = "Concurrent::Crew";
 
 #define Y_Print(MSG) do { if(Verbose) { (std::cerr << CallSign << ": " << MSG << std::endl).flush(); } } while(false)
+
+      
 
         class Crew:: Code : public Object
         {
@@ -106,11 +109,11 @@ namespace Yttrium
             //
             //
             //
-            // execture
+            // execute kernel
             //
             //
             //__________________________________________________________________
-            inline void run(Kernel &k) noexcept
+            inline void execute(Kernel &k) noexcept
             {
                 assert(0==kcode);
                 const Temporary<Kernel *> tmp(kcode, &k);
@@ -136,7 +139,7 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(Code);
 
-            void loop() noexcept
+            virtual void run() noexcept
             {
                 //--------------------------------------------------------------
                 //
@@ -210,13 +213,13 @@ namespace Yttrium
             static void Launch(void * const args)
             {
                 assert(args);
-                static_cast<Code *>(args)->loop();
+                static_cast<Code *>(args)->run();
             }
         };
 
 
         Crew:: Crew(const Site site) :
-        SIMD(site->size(),CallSign),
+        SIMD(),
         code( new Code(site) )
         {
         }
@@ -236,8 +239,14 @@ namespace Yttrium
         void Crew:: operator()(Kernel &k) noexcept
         {
             assert(code);
-            code->run(k);
+            code->execute(k);
         }
+
+        size_t Crew:: size() const noexcept
+        {
+            return code->size;
+        }
+        
 
     }
 

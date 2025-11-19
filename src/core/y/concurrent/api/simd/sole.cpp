@@ -13,7 +13,7 @@ namespace Yttrium
         }
 
         Sole:: Sole() noexcept :
-        SIMD(1,CallSign),
+        SIMD(),
         mutex(),
         context(mutex,1,0)
         {
@@ -28,6 +28,12 @@ namespace Yttrium
             k(context);
         }
 
+        size_t Sole:: size() const noexcept
+        {
+            return 1;
+        }
+
+        
     }
 
 }

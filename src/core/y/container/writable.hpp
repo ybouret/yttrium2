@@ -101,5 +101,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Container_Writable_Included
 

@@ -31,7 +31,7 @@ namespace Yttrium
         };
 
         Alone:: Alone() :
-        Pipeline(1,CallSign),
+        Pipeline(),
         code( new Code() )
         {
         }

@@ -1,7 +1,4 @@
-
 #include "y/concurrent/api/parallel.hpp"
-#include "y/exception.hpp"
-#include <cassert>
 
 namespace Yttrium
 {
@@ -13,11 +10,9 @@ namespace Yttrium
         }
 
 
-        Parallel:: Parallel(const size_t n, const char * const id) :
-        size(n)
+        Parallel:: Parallel() noexcept : Identifiable(), Container()
         {
-            assert(id);
-            if(size<=0) throw Specific::Exception(id,"null size");
+
         }
 
     }

@@ -67,7 +67,7 @@ Y_UTEST(concurrent_pipeline)
     stQ.enqueue(taskIDs,kernels);
     stQ.flush();
 
-    Vector<size_t> tracking(mtQ.size,0);
+    Vector<size_t> tracking(mtQ.size(),0);
     track = & tracking;
 
     std::cerr << "-- parallel -- " << std::endl;

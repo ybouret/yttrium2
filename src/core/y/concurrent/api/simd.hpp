@@ -39,7 +39,7 @@ namespace Yttrium
             //__________________________________________________________________
         protected:
             //! setup
-            explicit SIMD(const size_t, const char * const);
+            explicit SIMD() noexcept;
 
         public:
             //cleanup

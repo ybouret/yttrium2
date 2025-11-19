@@ -1,8 +1,8 @@
 
 //! \file
 
-#ifndef Y_DynamicContainer_Included
-#define Y_DynamicContainer_Included 1
+#ifndef Y_Dynamic_Included
+#define Y_Dynamic_Included 1
 
 #include "y/ability/collectable.hpp"
 #include "y/container/expandable.hpp"
@@ -41,5 +41,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Dynamic_Included
 

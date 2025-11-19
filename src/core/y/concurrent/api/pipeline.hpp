@@ -35,7 +35,7 @@ namespace Yttrium
             //__________________________________________________________________
         protected:
             //! setup
-            explicit Pipeline(const size_t, const char * const);
+            explicit Pipeline() noexcept;
 
         public:
             //! cleanup

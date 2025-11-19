@@ -113,7 +113,12 @@ namespace Yttrium
         virtual ConstType & getItemAt(const size_t indx) const noexcept = 0;
     };
 
+    //! helper to declare readable
+#define Y_Readable_Decl() \
+public:  virtual size_t      size()                  const noexcept; \
+private: virtual ConstType & getItemAt(const size_t) const noexcept
+
 }
 
-#endif
+#endif // !Y_Container_Readable_Included
 
