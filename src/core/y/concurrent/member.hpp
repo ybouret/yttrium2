@@ -46,4 +46,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Concurrent_Member_Included

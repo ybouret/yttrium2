@@ -36,10 +36,11 @@ namespace Yttrium
                 // C++
                 //
                 //______________________________________________________________
-                Zone()            noexcept; //!< setup to zeor
+                Zone()            noexcept; //!< setup to zero
                 Zone(const Zone&) noexcept; //!< duplicate
                 virtual ~Zone()   noexcept; //!< cleanup
-
+                Y_OSTREAM_PROTO(Zone);
+                
                 //______________________________________________________________
                 //
                 //
@@ -278,7 +279,7 @@ namespace Yttrium
                 void boot(const size_t numProcessors,
                           const size_t initialOffset) noexcept;
 
-                //! \return true if a new zone was computer
+                //! \return true if a new zone was computed
                 bool next() noexcept;
 
                 //! \return matching zone with initial offset
@@ -320,5 +321,5 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Concurrent_Split1D_Included
 

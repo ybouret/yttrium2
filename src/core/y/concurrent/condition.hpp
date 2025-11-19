@@ -41,7 +41,9 @@ namespace Yttrium
             Code * const code;                    //!< platform dependent condition
         };
 
-        
+
+#define Y_Thread_Wait_If(TEST,CV,MUTEX) do { Y_Lock(MUTEX); if(TEST) CV.wait(MUTEX); } while(false)
+
     }
 
 }

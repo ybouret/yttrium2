@@ -22,7 +22,17 @@ namespace Yttrium
             length(zone.length)
             {
             }
-            
+
+            std::ostream & operator<< (std::ostream &os, const Zone &zone)
+            {
+                os << "@" << zone.offset << "[" << zone.length << "]";
+                return os;
+            }
+
+        }
+
+        namespace Split
+        {
 
             In1D:: ~In1D() noexcept
             {
