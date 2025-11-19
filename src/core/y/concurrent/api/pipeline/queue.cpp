@@ -357,7 +357,7 @@ namespace Yttrium
 
         void Queue:: Engine:: enqueue(TaskIDs       &taskIDs,
                                       const Kernels &kernels,
-                                      Task::ID      &counter)
+                                      Task::ID      &tskIndx)
         {
             //------------------------------------------------------------------
             //
@@ -367,11 +367,11 @@ namespace Yttrium
             Y_Lock(mutex);
             for(Kernels::ConstIterator it=kernels.begin();it!=kernels.end();++it)
             {
-                if(taskIDs.found(counter)) throw Specific::Exception(CallSign, "multiple task ID");
-                taskIDs << counter;
-                try { pending.pushTail( new Task(*it,counter) ); }
+                if(taskIDs.found(tskIndx)) throw Specific::Exception(CallSign, "multiple task ID");
+                taskIDs << tskIndx;
+                try { pending.pushTail( new Task(*it, tskIndx) ); }
                 catch(...) { taskIDs.popTail(); throw; }
-                ++counter;
+                ++tskIndx;
             }
 
             //------------------------------------------------------------------
