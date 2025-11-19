@@ -7,6 +7,12 @@
 #include "y/concurrent/life-time.hpp"
 #include "y/exception.hpp"
 #include "y/system/wall-time.hpp"
+#include "y/string.hpp"
+#include "y/pointer/arc.hpp"
+#include "y/pointer/keyed.hpp"
+#include "y/container/associative/hash/set.hpp"
+
+#include <typeinfo>
 
 //! disable mpicxx
 #define OMPI_SKIP_MPICXX 1
@@ -41,6 +47,29 @@ namespace Yttrium
         static const char *       HumanReadableThreadLevel(const int) noexcept; //!< \return thread level
         static const int          DefaultTag = 1;                               //!< default tag
         static const size_t       MaxCount   = IntegerFor<int>::Maximum;        //!< for int/size_t conversion
+
+        class DataType : public CountedObject
+        {
+        public:
+            typedef ArcPtr<DataType>        PtrType; //!< alias
+            typedef Keyed<String,PtrType>   Pointer; //!< alias
+            typedef HashSet<String,Pointer> Set;
+
+            virtual ~DataType() noexcept;
+            explicit DataType(MPI_Datatype          dt,
+                              const size_t          sz,
+                              const std::type_info &ti);
+            
+            const String & key() const noexcept;
+
+            const MPI_Datatype info;
+            const size_t       size;
+            const String       uuid;
+
+
+        private:
+            Y_Disable_Copy_And_Assign(DataType);
+        };
 
         //______________________________________________________________________
         //
@@ -132,22 +161,27 @@ namespace Yttrium
                   const int          dest,
                   const int          tag = DefaultTag);
 
-        void recv(void * const entru,
-                  const size_t count,
+        void recv(void * const       entry,
+                  const size_t       count,
                   const MPI_Datatype datatype,
-                  const int source,
-                  const int tag = DefaultTag);
+                  const int          source,
+                  const int          tag = DefaultTag);
+
+        void decl(MPI_Datatype          dt,
+                  const size_t          sz,
+                  const std::type_info &ti);
 
     public:
-        const size_t       size;          //!< COMM_WORLD size
-        const size_t       rank;          //!< COMM_WORLD rank
-        const int          threadLevel;   //!< current thread level
-        const bool         primary;       //!< primary flag
-        const bool         replica;       //!< replica flag
-        System::WallTime   chrono;        //!< chronometer
-        const char * const processorName; //!< MPI_GetProcessorName
-        Rate               sendRate;      //!< sending rate
-        Rate               recvRate;      //!< receiving rate
+        const size_t        size;          //!< COMM_WORLD size
+        const size_t        rank;          //!< COMM_WORLD rank
+        const int           threadLevel;   //!< current thread level
+        const bool          primary;       //!< primary flag
+        const bool          replica;       //!< replica flag
+        System::WallTime    chrono;        //!< chronometer
+        const char * const  processorName; //!< MPI_GetProcessorName
+        Rate                sendRate;      //!< sending rate
+        Rate                recvRate;      //!< receiving rate
+        const DataType::Set dts;
 
     private:
         friend class Singleton<MPI,ClassLockPolicy>;

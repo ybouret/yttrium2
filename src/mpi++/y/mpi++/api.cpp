@@ -1,6 +1,5 @@
 
 #include "y/mpi++/api.hpp"
-#include "y/system/exception.hpp"
 #include "y/type/temporary.hpp"
 #include "y/xml/attribute.hpp"
 
@@ -95,6 +94,11 @@ namespace Yttrium
             int res = 0;
             Y_MPI_Call( MPI_Get_processor_name(__mpi_processor_name,&res) );
         }
+
+        {
+            
+        }
+
     }
 
 }
