@@ -39,7 +39,7 @@ namespace Yttrium
                 Zone()            noexcept; //!< setup to zero
                 Zone(const Zone&) noexcept; //!< duplicate
                 virtual ~Zone()   noexcept; //!< cleanup
-                Y_OSTREAM_PROTO(Zone);
+                Y_OSTREAM_PROTO(Zone);      //!< display
                 
                 //______________________________________________________________
                 //
