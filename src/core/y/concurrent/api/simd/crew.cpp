@@ -54,7 +54,7 @@ namespace Yttrium
                     for(size_t i=1;i<=size;++i)
                     {
                         team.push(proc,args);
-                        Y_Thread_Wait_If(ready<i,primary,mutex);
+                        Y_Thread_Suspend_If(ready<i,primary,mutex);
                     }
                     assert(size==ready);
                 }
@@ -106,7 +106,7 @@ namespace Yttrium
                     assert(0!=kcode);
                     inUse = size;
                     barrier.broadcast();
-                    Y_Thread_Wait_If(inUse>0,primary,mutex);
+                    Y_Thread_Suspend_If(inUse>0,primary,mutex);
                 }
                 assert(0==kcode);
             }
@@ -178,7 +178,7 @@ namespace Yttrium
             {
                 assert(0==kcode);
                 barrier.broadcast();
-                Y_Thread_Wait_If(ready>0,primary,mutex);
+                Y_Thread_Suspend_If(ready>0,primary,mutex);
             }
 
             static inline  void Run(void * const args)

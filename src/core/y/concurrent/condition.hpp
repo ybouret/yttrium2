@@ -42,7 +42,7 @@ namespace Yttrium
         };
 
         //! helper to wait if test is true (until a thread signal the condition)
-#define Y_Thread_Wait_If(TEST,CV,MUTEX) do { Y_Lock(MUTEX); if(TEST) CV.wait(MUTEX); } while(false)
+#define Y_Thread_Suspend_If(TEST,CV,MUTEX) do { Y_Lock(MUTEX); if(TEST) CV.wait(MUTEX); } while(false)
 
     }
 
