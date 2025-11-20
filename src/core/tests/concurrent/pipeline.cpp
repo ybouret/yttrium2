@@ -33,7 +33,8 @@ namespace
             volatile double sum = 0;
             for(size_t i = ran.in<size_t>(1000,1000000);i>0;--i)
             {
-                sum += cos( ran.to<double>() );
+                const double c = cos( ran.to<double>() );
+                sum += c * c;
             }
 
             if(track)
