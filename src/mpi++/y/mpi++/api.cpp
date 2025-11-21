@@ -74,8 +74,7 @@ namespace Yttrium
     }
 
     MPI:: MPI() :
-    size(0),
-    rank(0),
+    Concurrent::Member(1,0),
     threadLevel(-1),
     primary(true),
     replica(false),
@@ -95,6 +94,7 @@ namespace Yttrium
             int rk = 0;
             Y_MPI_Call( MPI_Comm_size(MPI_COMM_WORLD, &rk) );
             Coerce(rank) = (size_t) rk;
+            Coerce(indx) = rank+1;
         }
 
         if(0!=rank) CoerceSwap(primary,replica);

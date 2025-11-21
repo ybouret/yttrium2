@@ -7,11 +7,15 @@
 #include "y/concurrent/life-time.hpp"
 #include "y/exception.hpp"
 #include "y/system/wall-time.hpp"
+
 #include "y/string.hpp"
 #include "y/pointer/arc.hpp"
 #include "y/pointer/keyed.hpp"
 #include "y/container/associative/hash/set.hpp"
 #include "y/protean/bare/heavy/list.hpp"
+
+#include "y/concurrent/member.hpp"
+
 #include <typeinfo>
 
 //! disable mpicxx
@@ -33,7 +37,7 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    class MPI : public Singleton<MPI,ClassLockPolicy>
+    class MPI : public Singleton<MPI,ClassLockPolicy>, public Concurrent::Member
     {
     public:
         //______________________________________________________________________
@@ -153,6 +157,14 @@ namespace Yttrium
          */
         static int GetCount(const size_t count, const char * const func);
 
+        void decl(MPI_Datatype          dt,
+                  const size_t          sz,
+                  const std::type_info &ti);
+
+        void buildDTS();
+
+        const DataType & getDataType( const std::type_info & ) const;
+
         //______________________________________________________________________
         //
         //
@@ -171,15 +183,9 @@ namespace Yttrium
                   const int          source,
                   const int          tag = DefaultTag);
 
-        void decl(MPI_Datatype          dt,
-                  const size_t          sz,
-                  const std::type_info &ti);
 
-        void buildDTS();
 
     public:
-        const size_t        size;          //!< COMM_WORLD size
-        const size_t        rank;          //!< COMM_WORLD rank
         const int           threadLevel;   //!< current thread level
         const bool          primary;       //!< primary flag
         const bool          replica;       //!< replica flag
@@ -206,5 +212,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_MPI_Included
 

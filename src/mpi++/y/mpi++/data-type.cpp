@@ -58,8 +58,19 @@ namespace Yttrium
     {
         Y_MPI_DECL(FLOAT,float);
         Y_MPI_DECL(DOUBLE,double);
+        Y_MPI_DECL(INT,int);
+        Y_MPI_DECL(UNSIGNED,unsigned);
 
     }
+
+    const MPI:: DataType & MPI:: getDataType( const std::type_info &ti ) const
+    {
+        const String                     key = ti.name();
+        const DataType::Pointer * const  pDT = dts.search(key);
+        if(!pDT) throw Specific::Exception(CallSign,"no DataType for '%s'", key.c_str());
+        return **pDT;
+    }
+
 
 
 }
