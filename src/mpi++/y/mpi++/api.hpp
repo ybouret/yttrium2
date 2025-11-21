@@ -11,7 +11,7 @@
 #include "y/pointer/arc.hpp"
 #include "y/pointer/keyed.hpp"
 #include "y/container/associative/hash/set.hpp"
-
+#include "y/protean/bare/heavy/list.hpp"
 #include <typeinfo>
 
 //! disable mpicxx
@@ -48,6 +48,9 @@ namespace Yttrium
         static const int          DefaultTag = 1;                               //!< default tag
         static const size_t       MaxCount   = IntegerFor<int>::Maximum;        //!< for int/size_t conversion
 
+
+        typedef Protean::BareHeavyList<const MPI_Datatype> DTList;
+
         class DataType : public CountedObject
         {
         public:
@@ -62,9 +65,9 @@ namespace Yttrium
             
             const String & key() const noexcept;
 
-            const MPI_Datatype info;
-            const size_t       size;
-            const String       uuid;
+            const DTList list;
+            const size_t size;
+            const String uuid;
 
 
         private:
@@ -170,6 +173,8 @@ namespace Yttrium
         void decl(MPI_Datatype          dt,
                   const size_t          sz,
                   const std::type_info &ti);
+
+        void buildDTS();
 
     public:
         const size_t        size;          //!< COMM_WORLD size
