@@ -61,7 +61,16 @@ namespace Yttrium
     void MPI:: display(std::ostream &os, size_t indent) const
     {
         initProlog(os,indent) << Y_XML_Attr(size) << Y_XML_Attr(rank) << Y_XML_Attr(processorName);
-        initEpilog(os,true);
+        //initEpilog(os,true);
+        initEpilog(os,false);
+        for(DataType::Set::ConstIterator it=dts.begin();it!=dts.end();++it)
+        {
+            const DataType &dt = **it;
+
+            XML::Indent(std::cerr,indent+1) << "type='" << dt.uuid << "'";
+            std::cerr << std::endl;
+        }
+        quit(os,indent);
     }
 
     MPI:: MPI() :

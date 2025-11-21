@@ -50,6 +50,7 @@ namespace Yttrium
 
 
         typedef Protean::BareHeavyList<const MPI_Datatype> DTList;
+        typedef DTList::NodeType                           DTNode;
 
         class DataType : public CountedObject
         {

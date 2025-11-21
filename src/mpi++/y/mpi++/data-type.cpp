@@ -57,6 +57,8 @@ namespace Yttrium
     void MPI:: buildDTS()
     {
         Y_MPI_DECL(FLOAT,float);
+        Y_MPI_DECL(DOUBLE,double);
+
     }
 
 

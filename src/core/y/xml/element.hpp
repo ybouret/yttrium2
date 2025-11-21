@@ -93,4 +93,4 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_XML_Element_Included
