@@ -169,7 +169,7 @@ namespace Yttrium
         enum { IsFundamental        = (IsArithmetic  || IsSameType<T,void>::Value) };
         enum { IsPointingTo         = (IsPointer     || IsPointerToMember) };
         enum { IsPrimitive          = (IsFundamental || IsPointingTo) /*!< IsPrimitive */ };
-#endif
+#endif // !defined(DOXYGEN_SHOULD_SKIP_THIS)
         
         typedef typename
         Pick<IsReference,          // T is 'U &' or 'const U &' ?
@@ -187,5 +187,5 @@ namespace Yttrium
 }
 
 
-#endif
+#endif // !Y_Type_Traits_Included
 

@@ -74,6 +74,8 @@ static inline void TestP2P(MPI &mpi)
 
 }
 
+#define SHOW_PLAIN(TYPE) std::cerr << #TYPE << " => plain=" << MPI::Plain<TYPE>::Used << std::endl
+
 Y_UTEST(p2p)
 {
     MPI & mpi = MPI::Init(&argc,&argv);
@@ -106,7 +108,12 @@ Y_UTEST(p2p)
 
     Y_MPI_ForEach(mpi,std::cerr << "string @" << mpi << " : " << str << std::endl);
 
-
+    if(mpi.primary)
+    {
+        SHOW_PLAIN(char);
+        SHOW_PLAIN(String);
+        
+    }
 
 
 }

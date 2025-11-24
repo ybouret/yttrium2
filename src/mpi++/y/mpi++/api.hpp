@@ -17,6 +17,10 @@
 #include "y/concurrent/member.hpp"
 #include "y/static/moniker.hpp"
 
+#include "y/mkl/complex.hpp"
+#include "y/mkl/v4d.hpp"
+
+
 #include <typeinfo>
 
 //! disable mpicxx
@@ -332,31 +336,76 @@ namespace Yttrium
         void syncWith(const size_t target);  //!< \param target ack then syn with target
 
 
+        // for arithmetic types
         template <typename T> struct Plain
         {
+            static  const bool Used = TypeTraits<T>::IsArithmetic;
+            typedef T          Type;
+
             static inline void Send(MPI        & mpi,
-                                    const T    & value,
+                                    const Type & value,
                                     const size_t target,
                                     const int    tag)
             {
                 mpi.send(&value,1,target,tag);
             }
 
-            static inline T Recv(MPI        & mpi,
-                                 const size_t source,
-                                 const int    tag)
+            static inline Type Recv(MPI        & mpi,
+                                    const size_t source,
+                                    const int    tag)
             {
-                Static::Moniker<T> temp;
+                Static::Moniker<Type> temp;
                 mpi.recv(& *temp, 1, source, tag);
                 return *temp;
 
             }
         };
+
+
+        template <typename T, template <typename> class LINEAR> struct Plain< LINEAR<T> >
+        {
+            static const bool   Used = TypeTraits<T>::IsArithmetic;
+            typedef LINEAR<T>   Type;
+            static const size_t DIMS = sizeof(LINEAR<T>)/sizeof(T);
+
+            static inline void Send(MPI &            mpi,
+                                    const Type &     value,
+                                    const size_t     target,
+                                    const int        tag)
+            {
+                mpi.send( *(T *) &value, DIMS, target, tag);
+            }
+
+            static inline Type Recv(MPI        & mpi,
+                                    const size_t source,
+                                    const int    tag)
+            {
+                Static::Moniker<Type> temp;
+                mpi.recv(& *temp, DIMS, source, tag);
+                return *temp;
+            }
+
+        };
+
+
+
+
+
+
         template <typename T> struct Codec
         {
             static void Send(MPI &, const T &, const size_t, const int);
             static T    Recv(MPI &, const size_t, const int);
         };
+
+
+        template <typename T> struct IOSelect
+        {
+            static const bool UsePlain = Plain<T>::Used;
+            
+        };
+
+
 
         template <typename T> inline
         void send1(const T &    arg,

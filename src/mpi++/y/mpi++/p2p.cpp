@@ -103,30 +103,7 @@ namespace Yttrium
         ack(target);
         syn(target);
     }
-
-    void MPI:: sendString(const String &str,
-                          const size_t  target,
-                          const int     tag)
-    {
-        const size_t sz = str.size();
-        sendCount(sz,target,tag);
-        if(sz>0)
-        {
-            sendBlock(str.c_str(),sz,target,tag);
-        }
-    }
-
-    String MPI:: recvString(const size_t source, const int tag)
-    {
-        const size_t sz = recvCount(source,tag,"string.size");
-        String s(WithAtLeast,sz,true);
-        if(sz>0)
-        {
-            recvBlock( &s[1], sz, source, tag);
-        }
-        return s;
-
-    }
+    
 
 }
 
