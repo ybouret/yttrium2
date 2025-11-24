@@ -92,13 +92,15 @@ Y_UTEST(p2p)
         str = "Hello, World!";
         for(size_t rank=1;rank<mpi.size;++rank)
         {
-            mpi.sendString(str,rank);
+            //mpi.sendString(str,rank);
+            mpi.send1(str,rank);
         }
     }
     else
     {
         if(mpi.parallel) {
-            str = mpi.recvString(0);
+            //str = mpi.recvString(0);
+            str = mpi.recv1<String>(0);
         }
     }
 

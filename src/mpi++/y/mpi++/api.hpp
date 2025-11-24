@@ -15,6 +15,7 @@
 #include "y/protean/bare/heavy/list.hpp"
 
 #include "y/concurrent/member.hpp"
+#include "y/static/moniker.hpp"
 
 #include <typeinfo>
 
@@ -110,6 +111,8 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(DataType); //!< discarding
         };
+
+
 
         //______________________________________________________________________
         //
@@ -211,14 +214,14 @@ namespace Yttrium
         //
         //______________________________________________________________________
 
-        //! send data
+        //! send data, low-level
         /**
-         \param entry data entry
-         \param count block count
+         \param entry    data entry
+         \param count    block count
          \param datatype MPI data type
-         \param bytes bytes for data
-         \param dest  destination
-         \param tag   tag
+         \param bytes    bytes for data
+         \param dest     destination
+         \param tag      tag
          */
         void send(const void * const entry,
                   const size_t       count,
@@ -227,14 +230,14 @@ namespace Yttrium
                   const size_t       dest,
                   const int          tag);
 
-        //! recv data
+        //! recv data, low-level
         /**
          \param entry    data entry
          \param count    block count
          \param datatype MPI data type
          \param bytes    bytes for data
-         \param source  source
-         \param tag     tag
+         \param source   source
+         \param tag      tag
          */
         void recv(void * const       entry,
                   const size_t       count,
@@ -243,7 +246,7 @@ namespace Yttrium
                   const size_t       source,
                   const int          tag);
 
-        //! send data
+        //! send generic data, low-level
         /**
          \param entry data entry
          \param count block count
@@ -261,7 +264,7 @@ namespace Yttrium
             send(entry,count,datatype,dt.bytesFor(count),dest,tag);
         }
 
-        //! receive data
+        //! receive generic data, low-level
         /**
          \param entry  data entry
          \param count  block count
@@ -279,21 +282,46 @@ namespace Yttrium
             recv(entry,count,datatype,dt.bytesFor(count),source,tag);
         }
 
-        void sendBlock(const void * const entry,
-                       const size_t       count,
-                       const size_t       dest,
-                       const int          tag);
+        //! utility send block of bytes
+        /**
+         \param entry data address
+         \param count number of bytes
+         \param dest  destination
+         \param tag   tag
+         */
+        void    sendBlock(const void * const entry,
+                          const size_t       count,
+                          const size_t       dest,
+                          const int          tag);
 
-        void recvBlock(void * const entry,
-                       const size_t count,
-                       const size_t source,
-                       const int    tag);
+        //! utility recv block of bytes
+        /**
+         \param entry  data address
+         \param count  number of bytes
+         \param source originia
+         \param tag    tag
+         */
+        void    recvBlock(void * const entry,
+                          const size_t count,
+                          const size_t source,
+                          const int    tag);
 
-
+        //! utility to send a size_t
+        /**
+         \param value to be sent
+         \param dest  destination
+         \param tag   tag
+         */
         void   sendCount(const size_t value,
                          const size_t dest,
                          const int    tag);
 
+        //! utility to receive a size_t
+        /**
+         \param source origin
+         \param tag    tag
+         \param varName optional variable name
+         */
         size_t recvCount(const size_t       source,
                          const int          tag,
                          const char * const varName = 0);
@@ -303,13 +331,56 @@ namespace Yttrium
         void ack(const size_t target);       //!< \param target send info to targert
         void syncWith(const size_t target);  //!< \param target ack then syn with target
 
+
+        template <typename T> struct Plain
+        {
+            static inline void Send(MPI        & mpi,
+                                    const T    & value,
+                                    const size_t target,
+                                    const int    tag)
+            {
+                mpi.send(&value,1,target,tag);
+            }
+
+            static inline T Recv(MPI        & mpi,
+                                 const size_t source,
+                                 const int    tag)
+            {
+                Static::Moniker<T> temp;
+                mpi.recv(& *temp, 1, source, tag);
+                return *temp;
+
+            }
+        };
+        template <typename T> struct Codec
+        {
+            static void Send(MPI &, const T &, const size_t, const int);
+            static T    Recv(MPI &, const size_t, const int);
+        };
+
+        template <typename T> inline
+        void send1(const T &    arg,
+                   const size_t target,
+                   const int    tag = DefaultTag)
+        {
+            Codec<T>::Send(*this,arg,target,tag);
+        }
+
+        template <typename T> inline
+        T recv1(const size_t source,
+                const int    tag = DefaultTag )
+        {
+            return Codec<T>::Recv(*this,source,tag);
+        }
+
+
         void sendString(const String &str,
                         const size_t  target,
                         const int     tag = DefaultTag);
 
         String recvString(const size_t source,
                           const int    tag = DefaultTag);
-        
+
     public:
         const int           threadLevel;   //!< current thread level
         const bool          primary;       //!< primary flag
