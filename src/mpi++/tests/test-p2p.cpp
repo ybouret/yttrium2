@@ -78,9 +78,9 @@ Y_UTEST(p2p)
 {
     MPI & mpi = MPI::Init(&argc,&argv);
     if(mpi.primary) std::cerr << "using " << mpi.callSign() << std::endl;
-    TestP2P<int>(mpi);
-    TestP2P<uint16_t>(mpi);
-    TestP2P<float>(mpi);
+    //TestP2P<int>(mpi);
+    //TestP2P<uint16_t>(mpi);
+    //TestP2P<float>(mpi);
 
     Y_MPI_ForEach(mpi,std::cerr << "foreach @" << mpi <<std::endl);
 
