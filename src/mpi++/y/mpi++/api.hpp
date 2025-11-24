@@ -227,6 +227,15 @@ namespace Yttrium
                   const int          dest,
                   const int          tag);
 
+        //! recv data
+        /**
+         \param entry    data entry
+         \param count    block count
+         \param datatype MPI data type
+         \param bytes    bytes for data
+         \param source  source
+         \param tag     tag
+         */
         void recv(void * const       entry,
                   const size_t       count,
                   const MPI_Datatype datatype,
@@ -234,6 +243,13 @@ namespace Yttrium
                   const int          source,
                   const int          tag);
 
+        //! send data
+        /**
+         \param entry data entry
+         \param count block count
+         \param dest  destination
+         \param tag   tag
+         */
         template <typename T> inline
         void send(const T * const entry,
                   const size_t    count,
@@ -245,7 +261,13 @@ namespace Yttrium
             send(entry,count,datatype,dt.bytesFor(count),dest,tag);
         }
 
-
+        //! receive data
+        /**
+         \param entry  data entry
+         \param count  block count
+         \param source source
+         \param tag    tag
+         */
         template <typename T> inline
         void recv(T * const    entry,
                   const size_t count,
