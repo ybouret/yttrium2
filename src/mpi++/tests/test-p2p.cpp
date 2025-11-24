@@ -4,11 +4,10 @@
 
 using namespace Yttrium;
 
-Y_UTEST(init)
+Y_UTEST(p2p)
 {
     MPI & mpi = MPI::Init(&argc,&argv);
-    mpi.display(std::cerr,0);
-
+    if(mpi.primary) std::cerr << "using " << mpi.callSign() << std::endl;
 }
 Y_UDONE()
 

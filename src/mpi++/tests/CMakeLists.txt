@@ -7,3 +7,4 @@ Y_Message("Preparing ${Y_Test}")
 
 Y_UTEST(excp) 
 Y_UTEST(init)
+Y_UTEST(p2p)
