@@ -10,4 +10,4 @@ namespace Yttrium
     typedef Core::String<char> String; //!< alias
 }
 
-#endif
+#endif // !Y_String_Included

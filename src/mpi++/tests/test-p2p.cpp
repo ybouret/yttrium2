@@ -27,7 +27,7 @@ static inline void TestP2P(MPI &mpi)
         {
             for(size_t rank=1;rank<mpi.size;++rank)
             {
-                mpi.sendCount(num,rank);
+                mpi.sendCount(num,rank,MPI::DefaultTag);
                 mpi.syn(rank);
             }
         }
@@ -36,7 +36,7 @@ static inline void TestP2P(MPI &mpi)
     {
         if(mpi.parallel)
         {
-            num = mpi.recvCount(0,"num");
+            num = mpi.recvCount(0,MPI::DefaultTag,"num");
             std::cerr << "@replica " << mpi << " : " << num << std::endl;
             mpi.ack(0);
         }
@@ -78,13 +78,33 @@ Y_UTEST(p2p)
 {
     MPI & mpi = MPI::Init(&argc,&argv);
     if(mpi.primary) std::cerr << "using " << mpi.callSign() << std::endl;
-    //TestP2P<int>(mpi);
-    //TestP2P<uint16_t>(mpi);
-    //TestP2P<float>(mpi);
+
 
     Y_MPI_ForEach(mpi,std::cerr << "foreach @" << mpi <<std::endl);
 
+    TestP2P<int>(mpi);
+    TestP2P<uint16_t>(mpi);
     TestP2P<float>(mpi);
+
+    String str;
+    if(mpi.primary)
+    {
+        str = "Hello, World!";
+        for(size_t rank=1;rank<mpi.size;++rank)
+        {
+            mpi.sendString(str,rank);
+        }
+    }
+    else
+    {
+        if(mpi.parallel) {
+            str = mpi.recvString(0);
+        }
+    }
+
+    Y_MPI_ForEach(mpi,std::cerr << "string @" << mpi << " : " << str << std::endl);
+
+
 
 
 }

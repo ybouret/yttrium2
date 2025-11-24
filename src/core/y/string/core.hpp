@@ -198,4 +198,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_String_Core_Included

@@ -282,27 +282,34 @@ namespace Yttrium
         void sendBlock(const void * const entry,
                        const size_t       count,
                        const size_t       dest,
-                       const int          tag = DefaultTag);
+                       const int          tag);
 
         void recvBlock(void * const entry,
                        const size_t count,
                        const size_t source,
-                       const int    tag = DefaultTag);
+                       const int    tag);
 
 
         void   sendCount(const size_t value,
                          const size_t dest,
-                         const int    tag = DefaultTag);
+                         const int    tag);
 
         size_t recvCount(const size_t       source,
-                         const char * const varName = 0,
-                         const int          tag = DefaultTag);
+                         const int          tag,
+                         const char * const varName = 0);
 
 
         void syn(const size_t source);       //!< \param source wait for info from source
         void ack(const size_t target);       //!< \param target send info to targert
         void syncWith(const size_t target);  //!< \param target ack then syn with target
 
+        void sendString(const String &str,
+                        const size_t  target,
+                        const int     tag = DefaultTag);
+
+        String recvString(const size_t source,
+                          const int    tag = DefaultTag);
+        
     public:
         const int           threadLevel;   //!< current thread level
         const bool          primary;       //!< primary flag
