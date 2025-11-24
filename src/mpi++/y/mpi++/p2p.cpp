@@ -86,16 +86,23 @@ namespace Yttrium
 
     static const char SYMB = 'Y';
 
-    void MPI:: syn(const size_t target)
+    void MPI:: syn(const size_t source)
     {
         char c = 0;
-        recv(&c,1,target);
+        recv(&c,1,source);
         if(SYMB!=c) throw Specific::Exception("MPI::syn","corrupted");
     }
 
-    void MPI:: ack(const size_t source)
+    void MPI:: ack(const size_t target)
     {
-        send(&SYMB,1,source);
+        send(&SYMB,1,target);
     }
+
+    void MPI:: syncWith(const size_t target)
+    {
+        ack(target);
+        syn(target);
+    }
+
 }
 

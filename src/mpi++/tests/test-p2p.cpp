@@ -8,6 +8,9 @@
 
 using namespace Yttrium;
 
+
+
+
 template <typename T>
 static inline void TestP2P(MPI &mpi)
 {
@@ -78,6 +81,10 @@ Y_UTEST(p2p)
     TestP2P<int>(mpi);
     TestP2P<uint16_t>(mpi);
     TestP2P<float>(mpi);
+
+    Y_MPI_ForEach(mpi,std::cerr << "foreach @" << mpi <<std::endl);
+
+
 
 }
 Y_UDONE()

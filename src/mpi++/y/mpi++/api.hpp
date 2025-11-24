@@ -284,26 +284,24 @@ namespace Yttrium
                        const size_t       dest,
                        const int          tag = DefaultTag);
 
-
-
-
         void recvBlock(void * const entry,
                        const size_t count,
                        const size_t source,
                        const int    tag = DefaultTag);
 
 
-        void sendCount(const size_t value,
-                       const size_t dest,
-                       const int    tag = DefaultTag);
+        void   sendCount(const size_t value,
+                         const size_t dest,
+                         const int    tag = DefaultTag);
 
         size_t recvCount(const size_t       source,
                          const char * const varName = 0,
                          const int          tag = DefaultTag);
 
 
-        void syn(const size_t target);
-        void ack(const size_t source);
+        void syn(const size_t source);       //!< \param source wait for info from source
+        void ack(const size_t target);       //!< \param target send info to targert
+        void syncWith(const size_t target);  //!< \param target ack then syn with target
 
     public:
         const int           threadLevel;   //!< current thread level
@@ -332,7 +330,22 @@ namespace Yttrium
 #define Y_MPI_Mark() const uint64_t __mark__ = System::WallTime::Ticks()
 #define Y_MPI_Gain() (System::WallTime::Ticks() - __mark__)
 
-    
+#define  Y_MPI_ForEach(THE_MPI,CODE) do \
+/**/    { \
+/**/        MPI &mpi_ = (THE_MPI); \
+/**/        if(mpi_.primary) \
+/**/        {\
+/**/            do { CODE; } while(false); \
+/**/            for(size_t rank=1;rank<mpi_.size;++rank) \
+/**/                mpi_.syncWith(rank);\
+/**/        }\
+/**/        else\
+/**/        {\
+/**/            mpi_.syn(0);\
+/**/            do { CODE; } while(false); \
+/**/            mpi_.ack(0);\
+/**/        }\
+/**/    } while(false)
 }
 
 #endif // !Y_MPI_Included
