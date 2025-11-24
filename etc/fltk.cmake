@@ -72,7 +72,7 @@ if(FLTK_FOUND)
 	#-----------------------------------------------------------------------
 	# extract include directories
 	#-----------------------------------------------------------------------
-	string( REGEX MATCHALL "[-][I]([^ ;])+" FLTK-INCLUDES ${FLTK-CXXFLAGS} )
+	string( REGEX MATCHALL "[-][I]([^ ;])+" FLTK-INCLUDES "${FLTK-CXXFLAGS}" )
 	string( REPLACE  "-I" "" FLTK-INCLUDES "${FLTK-INCLUDES}")
 	list(REMOVE_DUPLICATES FLTK-INCLUDES)
 	if(FLTK_VERBOSE)
@@ -83,7 +83,7 @@ if(FLTK_FOUND)
 	#-----------------------------------------------------------------------
 	# extract definitions
 	#-----------------------------------------------------------------------
-	string( REGEX MATCHALL "[-][D]([^ ;])+" FLTK-DEFINES ${FLTK-CXXFLAGS} )
+	string( REGEX MATCHALL "[-][D]([^ ;])+" FLTK-DEFINES "${FLTK-CXXFLAGS}" )
 	if(FLTK_VERBOSE)
 		message( STATUS "@FLTK-DEFINES='${FLTK-DEFINES}'")
 	endif()
