@@ -284,12 +284,26 @@ namespace Yttrium
                        const size_t       dest,
                        const int          tag = DefaultTag);
 
+
+
+
         void recvBlock(void * const entry,
                        const size_t count,
                        const size_t source,
                        const int    tag = DefaultTag);
 
 
+        void sendCount(const size_t value,
+                       const size_t dest,
+                       const int    tag = DefaultTag);
+
+        size_t recvCount(const size_t       source,
+                         const char * const varName = 0,
+                         const int          tag = DefaultTag);
+
+
+        void syn(const size_t target);
+        void ack(const size_t source);
 
     public:
         const int           threadLevel;   //!< current thread level
@@ -316,7 +330,9 @@ namespace Yttrium
 } while(false)
 
 #define Y_MPI_Mark() const uint64_t __mark__ = System::WallTime::Ticks()
+#define Y_MPI_Gain() (System::WallTime::Ticks() - __mark__)
 
+    
 }
 
 #endif // !Y_MPI_Included

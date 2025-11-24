@@ -3,28 +3,57 @@
 #include "y/random/park-miller.hpp"
 #include <cstring>
 #include "y/format/hexadecimal.hpp"
+#include "y/container/sequence/vector.hpp"
+
 
 using namespace Yttrium;
 
-template <typename T, const size_t N>
+template <typename T>
 static inline void TestP2P(MPI &mpi)
 {
     Random::ParkMiller ran;
-
-    int original[N];
-    memset(original,0,sizeof(original));
+    const T            zero = 0;
+    size_t             num = 0;
+    Vector<T>          arr;
 
     if(mpi.primary)
     {
-        for(size_t i=0;i<N;++i) original[i] = ran.to<T>();
-        Hexadecimal::Display(std::cerr << "@" << mpi << ": original=",original,N) << std::endl;
-        for(size_t k=1;k<mpi.size;++k)
+        num = ran.in<size_t>(1,10);
+        std::cerr << "@primary " << mpi << " : " << num << std::endl;
+        if(mpi.parallel)
         {
-            mpi.send(original,N,k);
-            int received[N];
-            memset(received,0,sizeof(received));
-            mpi.recv(received,N,k);
-            Y_CHECK( 0 == memcmp(original,received, sizeof(original) )  );
+            for(size_t rank=1;rank<mpi.size;++rank)
+            {
+                mpi.sendCount(num,rank);
+                mpi.syn(rank);
+            }
+        }
+    }
+    else
+    {
+        if(mpi.parallel)
+        {
+            num = mpi.recvCount(0,"num");
+            std::cerr << "@replica " << mpi << " : " << num << std::endl;
+            mpi.ack(0);
+        }
+    }
+
+    arr.adjust(num,zero);
+    if(mpi.primary)
+    {
+        for(size_t i=num;i>0;--i)
+        {
+            arr[i] = ran.to<T>();
+        }
+        std::cerr << "@" << mpi << " : " << arr << std::endl;
+        if(mpi.parallel)
+        {
+            for(size_t rank=1;rank<mpi.size;++rank)
+            {
+                mpi.send(&arr[1],num,rank);
+                mpi.syn(rank);
+            }
         }
 
     }
@@ -32,12 +61,12 @@ static inline void TestP2P(MPI &mpi)
     {
         if(mpi.parallel)
         {
-            mpi.recv(original,N,0);
-            //Hexadecimal::Display(std::cerr << "@" << mpi << ": original=",original,N) << std::endl;
-            mpi.send(original,N,0);
+            mpi.recv(&arr[1],num,0);
+            std::cerr << "@" << mpi << " : " << arr << std::endl;
+            mpi.ack(0);
         }
-        
     }
+
 
 
 }
@@ -46,8 +75,9 @@ Y_UTEST(p2p)
 {
     MPI & mpi = MPI::Init(&argc,&argv);
     if(mpi.primary) std::cerr << "using " << mpi.callSign() << std::endl;
-    TestP2P<int,10>(mpi);
-
+    TestP2P<int>(mpi);
+    TestP2P<uint16_t>(mpi);
+    TestP2P<float>(mpi);
 
 }
 Y_UDONE()
