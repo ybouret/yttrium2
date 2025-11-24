@@ -73,8 +73,19 @@ namespace Yttrium
     {
         Y_MPI_DECL(FLOAT,float);
         Y_MPI_DECL(DOUBLE,double);
+
+        Y_MPI_DECL(CHAR,char);
+        Y_MPI_DECL(SHORT,short);
         Y_MPI_DECL(INT,int);
+        Y_MPI_DECL(LONG,long);
+        Y_MPI_DECL(LONG_LONG,long long);
+
+        Y_MPI_DECL(UNSIGNED_CHAR,unsigned char);
+        Y_MPI_DECL(UNSIGNED_SHORT,unsigned short);
         Y_MPI_DECL(UNSIGNED,unsigned);
+        Y_MPI_DECL(UNSIGNED_LONG,unsigned long);
+        Y_MPI_DECL(UNSIGNED_LONG_LONG,unsigned long long);
+
     }
 
     const MPI:: DataType & MPI:: getDataType( const std::type_info &ti ) const

@@ -224,7 +224,7 @@ namespace Yttrium
                   const size_t       count,
                   const MPI_Datatype datatype,
                   const uint64_t     bytes,
-                  const int          dest,
+                  const size_t       dest,
                   const int          tag);
 
         //! recv data
@@ -240,7 +240,7 @@ namespace Yttrium
                   const size_t       count,
                   const MPI_Datatype datatype,
                   const uint64_t     bytes,
-                  const int          source,
+                  const size_t       source,
                   const int          tag);
 
         //! send data
@@ -253,7 +253,7 @@ namespace Yttrium
         template <typename T> inline
         void send(const T * const entry,
                   const size_t    count,
-                  const int       dest,
+                  const size_t    dest,
                   const int       tag = DefaultTag )
         {
             static const DataType &   dt       = getDataTypeOf<T>();
@@ -271,7 +271,7 @@ namespace Yttrium
         template <typename T> inline
         void recv(T * const    entry,
                   const size_t count,
-                  const int    source,
+                  const size_t source,
                   const int    tag = DefaultTag )
         {
             static const DataType &   dt       = getDataTypeOf<T>();
@@ -279,7 +279,17 @@ namespace Yttrium
             recv(entry,count,datatype,dt.bytesFor(count),source,tag);
         }
 
-        
+        void sendBlock(const void * const entry,
+                       const size_t       count,
+                       const size_t       dest,
+                       const int          tag = DefaultTag);
+
+        void recvBlock(void * const entry,
+                       const size_t count,
+                       const size_t source,
+                       const int    tag = DefaultTag);
+
+
 
     public:
         const int           threadLevel;   //!< current thread level
