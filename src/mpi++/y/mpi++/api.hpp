@@ -188,8 +188,9 @@ namespace Yttrium
         void recv(void * const       entry,
                   const size_t       count,
                   const MPI_Datatype datatype,
+                  const uint64_t     bytes,
                   const int          source,
-                  const int          tag = DefaultTag);
+                  const int          tag);
 
 
 
@@ -197,10 +198,9 @@ namespace Yttrium
         const int           threadLevel;   //!< current thread level
         const bool          primary;       //!< primary flag
         const bool          replica;       //!< replica flag
-        System::WallTime    chrono;        //!< chronometer
-        const char * const  processorName; //!< MPI_GetProcessorName
         Rate                sendRate;      //!< sending rate
         Rate                recvRate;      //!< receiving rate
+        const char * const  processorName; //!< MPI_GetProcessorName
         const DataType::Set dts;
 
     private:

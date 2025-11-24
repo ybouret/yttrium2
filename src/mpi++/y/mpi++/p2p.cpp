@@ -19,5 +19,23 @@ namespace Yttrium
         sendRate.ticks += System::WallTime::Ticks() - mark;
         sendRate.bytes += bytes;
     }
+
+
+
+    void MPI:: recv(void * const       entry,
+                    const size_t       count,
+                    const MPI_Datatype datatype,
+                    const uint64_t     bytes,
+                    const int          source,
+                    const int          tag)
+    {
+        assert( Good(entry,count) );
+        const uint64_t mark = System::WallTime::Ticks();
+        MPI_Status     status;
+        Y_MPI_Call( MPI_Recv(entry, GetCount(count,"MPI::recv"), datatype, source, tag, MPI_COMM_WORLD, &status) );
+        recvRate.ticks += System::WallTime::Ticks() - mark;
+        recvRate.bytes += bytes;
+    }
+
 }
 

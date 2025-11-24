@@ -78,7 +78,10 @@ namespace Yttrium
     threadLevel(-1),
     primary(true),
     replica(false),
-    processorName(__mpi_processor_name)
+    sendRate(),
+    recvRate(),
+    processorName(__mpi_processor_name),
+    dts()
     {
         if(!__mpi_auth) throw Specific:: Exception(CallSign,"must call Init(...)");
 
