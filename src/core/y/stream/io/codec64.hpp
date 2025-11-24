@@ -23,5 +23,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Stream_IO_Codec64_Included
 

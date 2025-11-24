@@ -78,7 +78,7 @@ namespace Yttrium
     threadLevel(-1),
     primary(true),
     replica(false),
-    parallel(size>1),
+    parallel(false),
     sendRate(),
     recvRate(),
     processorName(__mpi_processor_name),
@@ -104,7 +104,8 @@ namespace Yttrium
         
 
         if(0!=rank) CoerceSwap(primary,replica);
-
+        if(size>1)  Coerce(parallel) = true;
+        
         {
             int res = 0;
             Y_MPI_Call( MPI_Get_processor_name(__mpi_processor_name,&res) );

@@ -35,4 +35,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Output_Sizing_Stream_Included
