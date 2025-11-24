@@ -65,14 +65,14 @@ namespace Yttrium
 
             virtual ~DataType() noexcept;
             explicit DataType(MPI_Datatype          dt,
-                              const size_t          sz,
+                              const unsigned        sh,
                               const std::type_info &ti);
             
             const String & key() const noexcept;
 
-            const DTList list;
-            const size_t size;
-            const String uuid;
+            const DTList   list; //!< matching data types
+            const unsigned ishl; //!< left shift
+            const String   uuid; //!< identifier
 
 
         private:
@@ -158,12 +158,19 @@ namespace Yttrium
         static int GetCount(const size_t count, const char * const func);
 
         void decl(MPI_Datatype          dt,
-                  const size_t          sz,
+                  const unsigned        sz,
                   const std::type_info &ti);
 
         void buildDTS();
 
         const DataType & getDataType( const std::type_info & ) const;
+
+        template <typename T> inline
+        const DataType & getDataTypeOf() const
+        {
+            static const DataType & dt = getDataType( typeid(T) );
+            return dt;
+        }
 
         //______________________________________________________________________
         //
@@ -174,8 +181,9 @@ namespace Yttrium
         void send(const void * const entry,
                   const size_t       count,
                   const MPI_Datatype datatype,
+                  const uint64_t     bytes,
                   const int          dest,
-                  const int          tag = DefaultTag);
+                  const int          tag);
 
         void recv(void * const       entry,
                   const size_t       count,

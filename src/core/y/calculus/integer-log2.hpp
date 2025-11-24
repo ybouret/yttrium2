@@ -42,4 +42,4 @@ template <> struct IntegerLog2<(1<<LN2)> { enum { Value = LN2 }; }
 
 }
 
-#endif
+#endif // !Y_Calculus_IntegerLog2_Included
