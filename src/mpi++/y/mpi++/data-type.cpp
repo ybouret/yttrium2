@@ -32,6 +32,13 @@ namespace Yttrium
         return (count << ishl);
     }
 
+
+    MPI_Datatype  MPI:: DataType:: type() const noexcept
+    {
+        assert(list->size>0);
+        return **(list->head);
+    }
+
     void MPI:: decl(MPI_Datatype          dt,
                     const unsigned        sh,
                     const std::type_info &ti)

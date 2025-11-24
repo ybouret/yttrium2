@@ -53,31 +53,62 @@ namespace Yttrium
         static const size_t       MaxCount   = IntegerFor<int>::Maximum;        //!< for int/size_t conversion
 
 
-        typedef Protean::BareHeavyList<const MPI_Datatype> DTList;
-        typedef DTList::NodeType                           DTNode;
+        typedef Protean::BareHeavyList<const MPI_Datatype> DTList; //!< alias
+        typedef DTList::NodeType                           DTNode; //!< alias
 
+        //______________________________________________________________________
+        //
+        //
+        //! Extended DataType
+        //
+        //______________________________________________________________________
         class DataType : public CountedObject
         {
         public:
+            //__________________________________________________________________
+            //
+            // Definitions
+            //__________________________________________________________________
             typedef ArcPtr<DataType>        PtrType; //!< alias
             typedef Keyed<String,PtrType>   Pointer; //!< alias
-            typedef HashSet<String,Pointer> Set;
+            typedef HashSet<String,Pointer> Set;     //!< alias
 
-            virtual ~DataType() noexcept;
+            //__________________________________________________________________
+            //
+            // C++
+            //__________________________________________________________________
+
+            //! setup
+            /**
+             \param dt MPI_Datatype
+             \param sh integer log2 of type size
+             \param ti system type id
+             */
             explicit DataType(MPI_Datatype          dt,
                               const unsigned        sh,
                               const std::type_info &ti);
-            
-            const String & key() const noexcept;
-            uint64_t       bytesFor(const size_t count) const;
 
+            //! cleanup
+            virtual ~DataType() noexcept;
+
+            //__________________________________________________________________
+            //
+            // Methods
+            //__________________________________________________________________
+            const String & key()         const noexcept; //!< \return identifier
+            MPI_Datatype   type()        const noexcept; //!< \return head type
+            uint64_t       bytesFor(const size_t) const; //!< \return check count to bytes
+
+            //__________________________________________________________________
+            //
+            // Members
+            //__________________________________________________________________
             const DTList   list; //!< matching data types
             const unsigned ishl; //!< left shift
             const String   uuid; //!< identifier
 
-
         private:
-            Y_Disable_Copy_And_Assign(DataType);
+            Y_Disable_Copy_And_Assign(DataType); //!< discarding
         };
 
         //______________________________________________________________________
@@ -158,14 +189,14 @@ namespace Yttrium
          */
         static int GetCount(const size_t count, const char * const func);
 
-        void decl(MPI_Datatype          dt,
-                  const unsigned        sz,
-                  const std::type_info &ti);
+        //! helper to declare MPI_Datatype for a given type
+        void decl(MPI_Datatype, const unsigned , const std::type_info &);
 
-        void buildDTS();
 
+        //! \return DataType for declared, matching type id
         const DataType & getDataType( const std::type_info & ) const;
 
+        //! \return DataType for declared, matching type
         template <typename T> inline
         const DataType & getDataTypeOf() const
         {
@@ -179,6 +210,16 @@ namespace Yttrium
         // Point to point
         //
         //______________________________________________________________________
+
+        //! send data
+        /**
+         \param entry data entry
+         \param count block count
+         \param datatype MPI data type
+         \param bytes bytes for data
+         \param dest  destination
+         \param tag   tag
+         */
         void send(const void * const entry,
                   const size_t       count,
                   const MPI_Datatype datatype,
@@ -200,7 +241,7 @@ namespace Yttrium
                   const int       tag = DefaultTag )
         {
             static const DataType &   dt       = getDataTypeOf<T>();
-            static const MPI_Datatype datatype = **(dt.list->head);
+            static const MPI_Datatype datatype = dt.type();
             send(entry,count,datatype,dt.bytesFor(count),dest,tag);
         }
 
@@ -212,7 +253,7 @@ namespace Yttrium
                   const int    tag = DefaultTag )
         {
             static const DataType &   dt       = getDataTypeOf<T>();
-            static const MPI_Datatype datatype = **(dt.list->head);
+            static const MPI_Datatype datatype = dt.type();
             recv(entry,count,datatype,dt.bytesFor(count),source,tag);
         }
 
@@ -226,13 +267,14 @@ namespace Yttrium
         Rate                sendRate;      //!< sending rate
         Rate                recvRate;      //!< receiving rate
         const char * const  processorName; //!< MPI_GetProcessorName
-        const DataType::Set dts;
+        const DataType::Set dts;           //!< DataType set
 
     private:
         friend class Singleton<MPI,ClassLockPolicy>;
         Y_Disable_Copy_And_Assign(MPI); //!< discarding
         explicit MPI();                 //!< initialize by Init
         virtual ~MPI() noexcept;        //!< cleanup, MPI_Finalize()
+        void buildDTS();                //!< build DataType Set
     };
 
     //! helper to handle errors

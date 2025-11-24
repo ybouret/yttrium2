@@ -14,6 +14,8 @@ namespace Yttrium
                     const int          tag)
     {
         assert( Good(entry,count) );
+        assert(dest<(int)size);
+        assert(dest!=(int)rank);
         const uint64_t mark = System::WallTime::Ticks();
         Y_MPI_Call( MPI_Send(entry, GetCount(count,"MPI::send"), datatype, dest, tag, MPI_COMM_WORLD) );
         sendRate.ticks += System::WallTime::Ticks() - mark;
@@ -30,6 +32,8 @@ namespace Yttrium
                     const int          tag)
     {
         assert( Good(entry,count) );
+        assert(source<(int)size);
+        assert(source!=(int)rank);
         const uint64_t mark = System::WallTime::Ticks();
         MPI_Status     status;
         Y_MPI_Call( MPI_Recv(entry, GetCount(count,"MPI::recv"), datatype, source, tag, MPI_COMM_WORLD, &status) );
