@@ -16,7 +16,7 @@ static inline void TestP2P(MPI &mpi)
 {
     Random::ParkMiller ran;
     const T            zero = 0;
-    size_t             num = 0;
+    size_t             num  = 0;
     Vector<T>          arr;
 
     if(mpi.primary)
@@ -84,6 +84,7 @@ Y_UTEST(p2p)
 
     Y_MPI_ForEach(mpi,std::cerr << "foreach @" << mpi <<std::endl);
 
+    TestP2P<float>(mpi);
 
 
 }
