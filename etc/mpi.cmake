@@ -13,24 +13,26 @@ endif()
 cmake_print_variables(MPICC)
 
 if( "MPICC-NOTFOUND" STREQUAL "${MPICC}" )
-    # Microsoft MPI ?
-	set(MSMPI_INC "$ENV{MSMPI_INC}" )
-	cmake_print_variables(MSMPI_INC)
-	if( "" STREQUAL "${MSMPI_INC}")
-		# no
-	else()
-		# yes
-		set(MPI_FOUND ON)
-		message( STATUS "found MSMPI")
-		include_directories("${MSMPI_INC}")
-		if(Y32)
-			set(MSMPI_DIR "$ENV{MSMPI_LIB32}")
+
+    if(MSVC)
+		set(MSMPI_INC "$ENV{MSMPI_INC}" )
+		cmake_print_variables(MSMPI_INC)
+		if( "" STREQUAL "${MSMPI_INC}")
+			# no
 		else()
-			set(MSMPI_DIR "$ENV{MSMPI_LIB64}")
+			# yes
+			set(MPI_FOUND ON)
+			message( STATUS "found MSMPI")
+			include_directories("${MSMPI_INC}")
+			if(Y32)
+				set(MSMPI_DIR "$ENV{MSMPI_LIB32}")
+			else()
+				set(MSMPI_DIR "$ENV{MSMPI_LIB64}")
+			endif()
+			cmake_print_variables(MSMPI_DIR)
+			link_directories("${MSMPI_DIR}")
+			set(MPI_LIBRARIES msmpi)
 		endif()
-		cmake_print_variables(MSMPI_DIR)
-		link_directories("${MSMPI_DIR}")
-		set(MPI_LIBRARIES msmpi)
 	endif()
 
 else()
