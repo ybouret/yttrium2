@@ -69,6 +69,7 @@ namespace Yttrium
                               const std::type_info &ti);
             
             const String & key() const noexcept;
+            uint64_t       bytesFor(const size_t count) const;
 
             const DTList   list; //!< matching data types
             const unsigned ishl; //!< left shift
@@ -192,12 +193,36 @@ namespace Yttrium
                   const int          source,
                   const int          tag);
 
+        template <typename T> inline
+        void send(const T * const entry,
+                  const size_t    count,
+                  const int       dest,
+                  const int       tag = DefaultTag )
+        {
+            static const DataType &   dt       = getDataTypeOf<T>();
+            static const MPI_Datatype datatype = **(dt.list->head);
+            send(entry,count,datatype,dt.bytesFor(count),dest,tag);
+        }
 
+
+        template <typename T> inline
+        void recv(T * const    entry,
+                  const size_t count,
+                  const int    source,
+                  const int    tag = DefaultTag )
+        {
+            static const DataType &   dt       = getDataTypeOf<T>();
+            static const MPI_Datatype datatype = **(dt.list->head);
+            recv(entry,count,datatype,dt.bytesFor(count),source,tag);
+        }
+
+        
 
     public:
         const int           threadLevel;   //!< current thread level
         const bool          primary;       //!< primary flag
         const bool          replica;       //!< replica flag
+        const bool          parallel;      //!< size>1
         Rate                sendRate;      //!< sending rate
         Rate                recvRate;      //!< receiving rate
         const char * const  processorName; //!< MPI_GetProcessorName

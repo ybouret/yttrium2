@@ -78,6 +78,7 @@ namespace Yttrium
     threadLevel(-1),
     primary(true),
     replica(false),
+    parallel(size>1),
     sendRate(),
     recvRate(),
     processorName(__mpi_processor_name),

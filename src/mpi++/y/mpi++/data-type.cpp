@@ -25,6 +25,13 @@ namespace Yttrium
         return uuid;
     }
 
+    uint64_t MPI:: DataType:: bytesFor(const size_t count) const
+    {
+        // TODO: check max
+
+        return (count << ishl);
+    }
+
     void MPI:: decl(MPI_Datatype          dt,
                     const unsigned        sh,
                     const std::type_info &ti)
@@ -61,7 +68,6 @@ namespace Yttrium
         Y_MPI_DECL(DOUBLE,double);
         Y_MPI_DECL(INT,int);
         Y_MPI_DECL(UNSIGNED,unsigned);
-
     }
 
     const MPI:: DataType & MPI:: getDataType( const std::type_info &ti ) const
