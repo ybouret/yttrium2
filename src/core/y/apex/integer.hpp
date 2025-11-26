@@ -51,7 +51,7 @@ namespace Yttrium
             Integer(const integer_t);                      //!< setup from integral
             Integer & operator=(const integer_t) noexcept; //!< assign integral \return *this*
             Integer(const Natural &);                      //!< setup from Natural
-            Integer(const SignType,const Natural &);       //!< setup from sign + natura
+            Integer(const SignType,const Natural &);       //!< setup from sign + natural
             Integer(Random::Bits &, const size_t);         //!< setup with random bits and sign
             Integer & operator=(const Natural &);          //!< assign integral \return *this
             Integer(InputStream &, const char * const=0);  //!< reload from saved state

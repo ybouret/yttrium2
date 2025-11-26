@@ -21,17 +21,24 @@ namespace Yttrium
                                const int      tag)
     {
 
+        // send sign
         switch(z.s)
         {
             case __Zero__: mpi.send1(Is__Zero__,target,tag); return;
             case Positive: mpi.send1(IsPositive,target,tag); break;
             case Negative: mpi.send1(IsNegative,target,tag); break;
         }
+
+        
+        // send non-zero integer
+        mpi.send1(z.n,target,tag);
     }
 
     template <>
     apz MPI::Codec<apz>::Recv(MPI &mpi, const size_t source, const int tag)
     {
+
+        // recv sign
         SignType    s  = __Zero__;
 
         {
@@ -47,8 +54,8 @@ namespace Yttrium
         }
 
         assert(__Zero__!=s);
-
-        return apz();
+        const apn n = mpi.recv1<apn>(source,tag);
+        return apz(s,n);
     }
 
 

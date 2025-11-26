@@ -96,6 +96,8 @@ Y_UTEST(p2p)
     String         str;
     Complex<float> cpx;
     apn            nnn;
+    apz            zzz;
+    apq            qqq;
 
     if(mpi.primary)
     {
@@ -104,6 +106,8 @@ Y_UTEST(p2p)
         cpx.re = 1.2;
         cpx.im = -0.3;
         nnn    = 101;
+        zzz    = -42;
+        qqq    = Fraction { 2, 3 };
 
         for(size_t rank=1;rank<mpi.size;++rank)
         {
@@ -111,6 +115,8 @@ Y_UTEST(p2p)
             mpi.send1(str,rank);
             mpi.send1(cpx,rank);
             mpi.send1(nnn,rank);
+            mpi.send1(zzz,rank);
+            mpi.send1(qqq,rank);
         }
     }
     else
@@ -120,6 +126,8 @@ Y_UTEST(p2p)
             mpi.load1(str,0);
             mpi.load1(cpx,0);
             mpi.load1(nnn,0);
+            mpi.load1(zzz,0);
+            mpi.load1(qqq,0);
         }
     }
 
@@ -127,6 +135,9 @@ Y_UTEST(p2p)
     Y_MPI_ForEach(mpi,std::cerr << "string  @" << mpi << " : " << str << std::endl);
     Y_MPI_ForEach(mpi,std::cerr << "complex @" << mpi << " : " << cpx << std::endl);
     Y_MPI_ForEach(mpi,std::cerr << "apn     @" << mpi << " : " << nnn << std::endl);
+    Y_MPI_ForEach(mpi,std::cerr << "apz     @" << mpi << " : " << zzz << std::endl);
+    Y_MPI_ForEach(mpi,std::cerr << "apq     @" << mpi << " : " << qqq << std::endl);
+
 
     if(mpi.primary)
     {
