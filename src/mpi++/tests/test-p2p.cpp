@@ -11,7 +11,6 @@ using namespace Yttrium;
 
 
 
-
 template <typename T>
 static inline void TestP2P(MPI &mpi)
 {

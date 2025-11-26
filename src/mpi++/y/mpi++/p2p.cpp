@@ -49,6 +49,42 @@ namespace Yttrium
     }
 
 
+    void MPI:: sendrecv(const void * const sendEntry,
+                        const size_t       sendCount,
+                        const MPI_Datatype sendDatatype,
+                        const uint64_t     sendBytes,
+                        const size_t       sendTarget,
+                        const int          sendTag,
+                        void * const       recvEntry,
+                        const size_t       recvCount,
+                        const MPI_Datatype recvDatatype,
+                        const uint64_t     recvBytes,
+                        const size_t       recvSource,
+                        const int          recvTag)
+    {
+        static const char fn[] = "MPI::sendrecv";
+        assert( Good(sendEntry,sendCount) );
+        assert( Good(recvEntry,recvCount) );
+        assert(recvSource<size);
+        assert(recvSource!=rank);
+        assert(sendTarget<size);
+        assert(sendTarget!=rank);
+
+        MPI_Status     status;
+        Y_MPI_Mark();
+        Y_MPI_Call( MPI_Sendrecv(sendEntry,GetCount(sendCount,fn),sendDatatype, (int) sendTarget, sendTag,
+                                 recvEntry,GetCount(recvCount,fn),recvDatatype, (int) recvSource, recvTag,
+                                 MPI_COMM_WORLD,
+                                 &status));
+        {
+            const uint64_t delta = Y_MPI_Gain();
+            recvRate.ticks += delta;
+            sendRate.ticks += delta;
+        }
+        sendRate.bytes += sendBytes;
+        recvRate.bytes += recvBytes;
+    }
+
     void MPI:: recvBlock(void * const entry,
                          const size_t count,
                          const size_t source,
@@ -103,7 +139,9 @@ namespace Yttrium
         ack(target);
         syn(target);
     }
-    
+
+
+
 
 }
 

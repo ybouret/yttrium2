@@ -248,6 +248,21 @@ namespace Yttrium
                   const size_t       source,
                   const int          tag);
 
+
+        void sendrecv(const void * const sendEntry,
+                      const size_t       sendCount,
+                      const MPI_Datatype sendDatatype,
+                      const uint64_t     sendBytes,
+                      const size_t       sendTarget,
+                      const int          sendTag,
+                      void * const       recvEntry,
+                      const size_t       recvCount,
+                      const MPI_Datatype recvDatatype,
+                      const uint64_t     recvBytes,
+                      const size_t       recvSource,
+                      const int          recvTag);
+        
+
         //! send generic data, low-level
         /**
          \param entry data entry
@@ -283,6 +298,28 @@ namespace Yttrium
             static const MPI_Datatype datatype = dt.type();
             recv(entry,count,datatype,dt.bytesFor(count),source,tag);
         }
+
+        template <typename T, typename U> inline
+        void sendrecv(const T * const sendEntry,
+                      const size_t    sendCount,
+                      const size_t    sendTarget,
+                      const int       sendTag,
+                      U * const       recvEntry,
+                      const size_t    recvCount,
+                      const size_t    recvSource,
+                      const int       recvTag)
+        {
+            static const DataType   & t_dt       = getDataTypeOf<T>();
+            static const DataType   & u_dt       = getDataTypeOf<U>();
+            static const MPI_Datatype t_datatype = t_dt.type();
+            static const MPI_Datatype u_datatype = u_dt.type();
+
+            sendrecv(sendEntry,sendCount,t_datatype,t_dt.bytesFor(sendCount), sendTarget, sendTag,
+                     recvEntry,recvCount,u_datatype,u_dt.bytesFor(recvCount), recvSource, recvTag);
+
+        }
+
+
 
         //! utility send block of bytes
         /**
@@ -332,6 +369,8 @@ namespace Yttrium
         void syn(const size_t source);       //!< \param source wait for info from source
         void ack(const size_t target);       //!< \param target send info to targert
         void syncWith(const size_t target);  //!< \param target ack then syn with target
+
+
 
 
         // for arithmetic types
