@@ -93,6 +93,25 @@ namespace Yttrium
             static MultiplicationAlgorithm Get() noexcept;                              //!< \return current method
             static const char *            MultiplicationName() noexcept;               //!< \return human readable method
 
+            //__________________________________________________________________
+            //
+            //
+            // Locking Proxy
+            //
+            //__________________________________________________________________
+            class LockedBuffer : public Memory::ReadOnlyBuffer
+            {
+            public:
+                explicit LockedBuffer(const Natural &) noexcept;
+                virtual ~LockedBuffer() noexcept;
+
+                virtual const void * ro()     const noexcept;
+                virtual size_t       length() const noexcept;
+                
+            private:
+                const Natural & host;
+                const ScopedLock keep;
+            };
 
             //__________________________________________________________________
             //

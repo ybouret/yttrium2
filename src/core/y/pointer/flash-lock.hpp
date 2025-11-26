@@ -57,6 +57,12 @@ namespace Yttrium
                 return pointee;
             }
 
+            //! \return locked object address
+            inline ConstType * operator->() const noexcept {
+                assert(0!=pointee);
+                return pointee;
+            }
+
             //! duplicate \param other
             inline LockingProxy(const LockingProxy &other) noexcept :
             pointee(other.pointee)
@@ -121,4 +127,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Pointer_FlashLock_Included

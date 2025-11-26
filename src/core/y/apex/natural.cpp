@@ -213,3 +213,30 @@ namespace Yttrium
         }
     }
 }
+
+
+namespace Yttrium
+{
+    namespace Apex
+    {
+        const void * Natural:: LockedBuffer:: ro() const noexcept
+        {
+            return host.data8();
+        }
+
+        Natural:: LockedBuffer:: LockedBuffer(const Natural &n) noexcept :
+        Memory::ReadOnlyBuffer(),
+        host(n),
+        keep( *n )
+        {
+
+        }
+
+        size_t Natural:: LockedBuffer:: length() const noexcept
+        {
+            return host.bytes();
+        }
+    }
+
+}
+
