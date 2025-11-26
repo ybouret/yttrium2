@@ -96,21 +96,29 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //
-            // Locking Proxy
+            //! Locking Proxy to memory read-only buffer
             //
             //__________________________________________________________________
             class LockedBuffer : public Memory::ReadOnlyBuffer
             {
             public:
+                //______________________________________________________________
+                //
+                // C++
+                //______________________________________________________________
                 explicit LockedBuffer(const Natural &) noexcept;
                 virtual ~LockedBuffer() noexcept;
 
+                //______________________________________________________________
+                //
+                // Interface
+                //______________________________________________________________
                 virtual const void * ro()     const noexcept;
                 virtual size_t       length() const noexcept;
                 
             private:
-                const Natural & host;
-                const ScopedLock keep;
+                const Natural &  host; //!< persistent host
+                const ScopedLock keep; //!< locking
             };
 
             //__________________________________________________________________

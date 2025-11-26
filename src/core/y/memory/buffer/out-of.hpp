@@ -3,8 +3,8 @@
 
 //! \file
 
-#ifndef Y_Memory_StaticBuffer_Included
-#define Y_Memory_StaticBuffer_Included 1
+#ifndef Y_Memory_Buffer_Out_Of_Included
+#define Y_Memory_Buffer_Out_Of_Included 1
 
 #include "y/memory/buffer/rw.hpp"
 
@@ -63,4 +63,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Memory_Buffer_Out_Of_Included

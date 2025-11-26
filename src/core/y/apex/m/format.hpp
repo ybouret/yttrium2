@@ -124,5 +124,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Apex_Format_Included
 

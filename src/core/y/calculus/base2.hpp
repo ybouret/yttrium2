@@ -30,9 +30,6 @@ namespace Yttrium
         static const bool     SignedType = IsSigned<T>::Value;               //!< alias
         static const unsigned MaxShift   = SignedType ? (Bits-2) : (Bits-1); //!< max shift
         static const Type     MaxBytes   = One << MaxShift;                  //!< max value
-
-
-
     };
 
 

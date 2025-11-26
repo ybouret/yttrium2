@@ -26,6 +26,6 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Apex_JMutex_Included
 
 

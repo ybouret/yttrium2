@@ -232,6 +232,11 @@ namespace Yttrium
 
         }
 
+        Natural:: LockedBuffer:: ~LockedBuffer() noexcept
+        {
+            
+        }
+
         size_t Natural:: LockedBuffer:: length() const noexcept
         {
             return host.bytes();

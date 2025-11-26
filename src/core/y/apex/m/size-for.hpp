@@ -29,5 +29,5 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Apex_Size_For_Included
 
