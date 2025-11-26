@@ -92,30 +92,41 @@ Y_UTEST(p2p)
     TestP2P<uint16_t>(mpi);
     TestP2P<float>(mpi);
 
+    long int       idx = 0;
     String         str;
     Complex<float> cpx;
+    apn            nnn;
 
     if(mpi.primary)
     {
+        idx = 7;
         str = "Hello, World!";
         cpx.re = 1.2;
         cpx.im = -0.3;
+        nnn    = 101;
+
         for(size_t rank=1;rank<mpi.size;++rank)
         {
+            mpi.send1(idx,rank);
             mpi.send1(str,rank);
             mpi.send1(cpx,rank);
+            mpi.send1(nnn,rank);
         }
     }
     else
     {
         if(mpi.parallel) {
-            str = mpi.recv1<String>(0);
-            cpx = mpi.recv1<Complex<float>>(0);
+            mpi.load1(idx,0);
+            mpi.load1(str,0);
+            mpi.load1(cpx,0);
+            mpi.load1(nnn,0);
         }
     }
 
+    Y_MPI_ForEach(mpi,std::cerr << "index   @" << mpi << " : " << idx << std::endl);
     Y_MPI_ForEach(mpi,std::cerr << "string  @" << mpi << " : " << str << std::endl);
     Y_MPI_ForEach(mpi,std::cerr << "complex @" << mpi << " : " << cpx << std::endl);
+    Y_MPI_ForEach(mpi,std::cerr << "apx     @" << mpi << " : " << nnn << std::endl);
 
     if(mpi.primary)
     {

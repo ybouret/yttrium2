@@ -419,6 +419,14 @@ namespace Yttrium
             return IO<T>::API::Recv(*this,source,tag);
         }
 
+        template <typename T> inline
+        void load1(T &arg, const size_t source, const int tag = DefaultTag)
+        {
+            arg = recv1<T>(source,tag);
+        }
+
+
+
 
         
     public:
