@@ -30,7 +30,7 @@ namespace Yttrium
         {
             Apex::MemBuff buff(sz);
             mpi.recvBlock(buff.rw(),sz,source,tag);
-            return apn();
+            return apn(buff.ro(),sz,"apn.content");
         }
     }
 

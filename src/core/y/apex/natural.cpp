@@ -178,7 +178,16 @@ namespace Yttrium
         {
 
         }
-        
+
+        Natural:: Natural(const void * const blockAddr,
+                          const size_t       blockSize,
+                          const char * const varName ) :
+        SmartDev( Device::Load(blockAddr,blockSize,varName) ),
+        Shielded()
+        {
+
+        }
+
 
     }
 

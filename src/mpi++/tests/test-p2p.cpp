@@ -126,7 +126,7 @@ Y_UTEST(p2p)
     Y_MPI_ForEach(mpi,std::cerr << "index   @" << mpi << " : " << idx << std::endl);
     Y_MPI_ForEach(mpi,std::cerr << "string  @" << mpi << " : " << str << std::endl);
     Y_MPI_ForEach(mpi,std::cerr << "complex @" << mpi << " : " << cpx << std::endl);
-    Y_MPI_ForEach(mpi,std::cerr << "apx     @" << mpi << " : " << nnn << std::endl);
+    Y_MPI_ForEach(mpi,std::cerr << "apn     @" << mpi << " : " << nnn << std::endl);
 
     if(mpi.primary)
     {

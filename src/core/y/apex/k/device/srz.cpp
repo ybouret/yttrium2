@@ -20,14 +20,16 @@ namespace Yttrium
 #include "y/pointer/auto.hpp"
 #include "y/exception.hpp"
 #include "y/format/decimal.hpp"
+#include <cstring>
 
 namespace Yttrium
 {
     namespace Apex
     {
+        static const char fn[]     = "Apex::Load";
+
         Device * Device::Load(InputStream &fp, const char * const varName)
         {
-            static const char fn[]     = "Apex::Load";
             const size_t      numBytes = fp.readVBR<size_t>(varName,"bytes");
             AutoPtr<Device>   device   = new Device(numBytes,Plan8);
             {
@@ -47,6 +49,24 @@ namespace Yttrium
                     throw Specific::Exception(fn,"corrupted %s",id);
                 }
 
+            }
+            return device.yield();
+        }
+
+        Device * Device:: Load(const void * const blockAddr, const size_t blockSize, const char * const varName)
+        {
+            assert( Good(blockAddr,blockSize) );
+            AutoPtr<Device> device= new Device(blockSize,Plan8);
+            {
+                Parcel<uint8_t> & p = device->get<uint8_t>();
+                memcpy(p.data,blockAddr,blockSize);
+                p.size = blockSize;
+                device->fix();
+                if(blockSize != p.size)
+                {
+                    const char * const id = varName ? varName : "variable";
+                    throw Specific::Exception(fn,"corrupted %s",id);
+                }
             }
             return device.yield();
         }

@@ -75,6 +75,9 @@ namespace Yttrium
             //! \return previously written device
             static Device * Load(InputStream &, const char * const = 0);
 
+            //! \return from binary data
+            static Device * Load(const void * const, const size_t, const char * const = 0);
+
             //__________________________________________________________________
             //
             //
