@@ -35,4 +35,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Type_Pick_Included

@@ -49,4 +49,4 @@ namespace Yttrium
 }
 
 
-#endif
+#endif // !Y_Type_Conversion_Included

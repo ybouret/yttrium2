@@ -17,8 +17,6 @@
 #include "y/concurrent/member.hpp"
 #include "y/static/moniker.hpp"
 
-#include "y/mkl/complex.hpp"
-#include "y/mkl/v4d.hpp"
 
 
 #include <typeinfo>
@@ -339,8 +337,9 @@ namespace Yttrium
         // for arithmetic types
         template <typename T> struct Plain
         {
-            static  const bool Used = TypeTraits<T>::IsArithmetic;
-            typedef T          Type;
+            static  const bool    Used = TypeTraits<T>::IsArithmetic;
+            typedef T             Type;
+            static const unsigned DIMS = 1;
 
             static inline void Send(MPI        & mpi,
                                     const Type & value,
@@ -361,12 +360,13 @@ namespace Yttrium
             }
         };
 
-
+        // for straight compact derived types
         template <typename T, template <typename> class LINEAR> struct Plain< LINEAR<T> >
         {
-            static const bool   Used = TypeTraits<T>::IsArithmetic;
-            typedef LINEAR<T>   Type;
-            static const size_t DIMS = sizeof(LINEAR<T>)/sizeof(T);
+            typedef LINEAR<T>     Type;
+            static const bool     Derived = Y_Is_SuperSubClass(Readable<T>,Type);
+            static const unsigned DIMS    = sizeof(LINEAR<T>)/sizeof(T);
+            static const bool     Used    = TypeTraits<T>::IsArithmetic && !Derived;
 
             static inline void Send(MPI &            mpi,
                                     const Type &     value,
@@ -388,10 +388,7 @@ namespace Yttrium
         };
 
 
-
-
-
-
+        //! for specific types
         template <typename T> struct Codec
         {
             static void Send(MPI &, const T &, const size_t, const int);
@@ -399,10 +396,10 @@ namespace Yttrium
         };
 
 
-        template <typename T> struct IOSelect
+        template <typename T> struct IO
         {
             static const bool UsePlain = Plain<T>::Used;
-            
+            typedef typename Pick<UsePlain,Plain<T>,Codec<T>>::Type API;
         };
 
 
@@ -412,24 +409,18 @@ namespace Yttrium
                    const size_t target,
                    const int    tag = DefaultTag)
         {
-            Codec<T>::Send(*this,arg,target,tag);
+            IO<T>::API::Send(*this,arg,target,tag);
         }
 
         template <typename T> inline
         T recv1(const size_t source,
                 const int    tag = DefaultTag )
         {
-            return Codec<T>::Recv(*this,source,tag);
+            return IO<T>::API::Recv(*this,source,tag);
         }
 
 
-        void sendString(const String &str,
-                        const size_t  target,
-                        const int     tag = DefaultTag);
-
-        String recvString(const size_t source,
-                          const int    tag = DefaultTag);
-
+        
     public:
         const int           threadLevel;   //!< current thread level
         const bool          primary;       //!< primary flag

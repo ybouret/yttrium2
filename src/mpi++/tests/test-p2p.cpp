@@ -4,6 +4,7 @@
 #include <cstring>
 #include "y/format/hexadecimal.hpp"
 #include "y/container/sequence/vector.hpp"
+#include "y/mkl/complex.hpp"
 
 
 using namespace Yttrium;
@@ -74,7 +75,10 @@ static inline void TestP2P(MPI &mpi)
 
 }
 
-#define SHOW_PLAIN(TYPE) std::cerr << #TYPE << " => plain=" << MPI::Plain<TYPE>::Used << std::endl
+#define SHOW_PLAIN(TYPE) \
+Y_SIZEOF(TYPE); \
+std::cerr << #TYPE << " => plain=" << MPI::Plain<TYPE>::Used  << " | DIMS=" << MPI::Plain<TYPE>::DIMS << std::endl;\
+std::cerr << std::endl
 
 Y_UTEST(p2p)
 {
@@ -112,7 +116,7 @@ Y_UTEST(p2p)
     {
         SHOW_PLAIN(char);
         SHOW_PLAIN(String);
-        
+        SHOW_PLAIN(Complex<float>);
     }
 
 
