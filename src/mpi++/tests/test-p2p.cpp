@@ -5,7 +5,7 @@
 #include "y/format/hexadecimal.hpp"
 #include "y/container/sequence/vector.hpp"
 #include "y/mkl/complex.hpp"
-
+#include "y/apex/rational.hpp"
 
 using namespace Yttrium;
 
@@ -92,25 +92,30 @@ Y_UTEST(p2p)
     TestP2P<uint16_t>(mpi);
     TestP2P<float>(mpi);
 
-    String str;
+    String         str;
+    Complex<float> cpx;
+
     if(mpi.primary)
     {
         str = "Hello, World!";
+        cpx.re = 1.2;
+        cpx.im = -0.3;
         for(size_t rank=1;rank<mpi.size;++rank)
         {
-            //mpi.sendString(str,rank);
             mpi.send1(str,rank);
+            mpi.send1(cpx,rank);
         }
     }
     else
     {
         if(mpi.parallel) {
-            //str = mpi.recvString(0);
             str = mpi.recv1<String>(0);
+            cpx = mpi.recv1<Complex<float>>(0);
         }
     }
 
-    Y_MPI_ForEach(mpi,std::cerr << "string @" << mpi << " : " << str << std::endl);
+    Y_MPI_ForEach(mpi,std::cerr << "string  @" << mpi << " : " << str << std::endl);
+    Y_MPI_ForEach(mpi,std::cerr << "complex @" << mpi << " : " << cpx << std::endl);
 
     if(mpi.primary)
     {

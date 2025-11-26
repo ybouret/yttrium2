@@ -1,6 +1,7 @@
 
 #include "y/mpi++/api.hpp"
 #include "y/apex/natural.hpp"
+#include "y/apex/m/mem-buff.hpp"
 
 namespace Yttrium
 {
@@ -27,7 +28,8 @@ namespace Yttrium
             return apn();
         else
         {
-
+            Apex::MemBuff buff(sz);
+            mpi.recvBlock(buff.rw(),sz,source,tag);
             return apn();
         }
     }

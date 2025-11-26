@@ -36,7 +36,7 @@ namespace Yttrium
         shift(0),
         entry( getBlock( Coerce(bytes), Coerce(shift)) )
         {
-            
+
         }
 
 
@@ -47,6 +47,16 @@ namespace Yttrium
             Coerce(bytes) = 0;
             Coerce(shift) = 0;
             Coerce(entry) = 0;
+        }
+
+        size_t MemBuff:: length() const noexcept
+        {
+            return bytes;
+        }
+
+        const void * MemBuff:: ro() const noexcept
+        {
+            return entry;
         }
     }
 

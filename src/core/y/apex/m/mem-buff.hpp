@@ -18,6 +18,8 @@ namespace Yttrium
             explicit MemBuff(const size_t minimalSize);
             virtual ~MemBuff() noexcept;
 
+            virtual size_t       length() const noexcept;  
+            virtual const void * ro()     const noexcept;
 
         private:
             Y_Disable_Copy_And_Assign(MemBuff);

@@ -373,7 +373,7 @@ namespace Yttrium
                                     const size_t     target,
                                     const int        tag)
             {
-                mpi.send( *(T *) &value, DIMS, target, tag);
+                mpi.send( (T *) &value, DIMS, target, tag);
             }
 
             static inline Type Recv(MPI        & mpi,
@@ -381,7 +381,7 @@ namespace Yttrium
                                     const int    tag)
             {
                 Static::Moniker<Type> temp;
-                mpi.recv(& *temp, DIMS, source, tag);
+                mpi.recv( (T *)& *temp, DIMS, source, tag);
                 return *temp;
             }
 
