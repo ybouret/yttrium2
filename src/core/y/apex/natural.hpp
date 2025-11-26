@@ -91,7 +91,7 @@ namespace Yttrium
 
             static MultiplicationAlgorithm Set(const MultiplicationAlgorithm) noexcept; //!< set new method \return old methods
             static MultiplicationAlgorithm Get() noexcept;                              //!< \return current method
-            static const char *            MultiplicationName() noexcept;               //!< \return humann readable method
+            static const char *            MultiplicationName() noexcept;               //!< \return human readable method
 
 
             //__________________________________________________________________
@@ -156,7 +156,7 @@ namespace Yttrium
             Y_APN_Operator_Impl(*,Mul)
             Y_APN_DivMod_Impl(/,Div)
             Y_APN_DivMod_Impl(%,Mod)
-#endif
+#endif // !defined(DOXYGEN_SHOULD_SKIP_THIS)
 
             //__________________________________________________________________
             //
@@ -319,4 +319,4 @@ namespace Yttrium
     typedef Apex::Natural apn; //!< alias
 }
 
-#endif
+#endif // !Y_Apex_Natural_Included
