@@ -273,4 +273,4 @@ namespace Yttrium
 }
 
 
-#endif
+#endif // !Y_Container_Contiguous_Included

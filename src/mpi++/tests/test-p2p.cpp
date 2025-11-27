@@ -81,6 +81,7 @@ std::cerr << std::endl
 
 Y_UTEST(p2p)
 {
+    Random::ParkMiller ran;
     MPI & mpi = MPI::Init(&argc,&argv);
     if(mpi.primary) std::cerr << "using " << mpi.callSign() << std::endl;
 
@@ -136,6 +137,27 @@ Y_UTEST(p2p)
     Y_MPI_ForEach(mpi,std::cerr << "apn     @" << mpi << " : " << nnn << std::endl);
     Y_MPI_ForEach(mpi,std::cerr << "apz     @" << mpi << " : " << zzz << std::endl);
     Y_MPI_ForEach(mpi,std::cerr << "apq     @" << mpi << " : " << qqq << std::endl);
+
+
+    {
+        const size_t nv = 3;
+        Vector<int>  ivec(nv,0);
+
+        if( mpi.primary )
+        {
+            for(size_t i=nv;i>0;--i)
+                ivec[i] = (int)i;
+            
+        }
+        else
+        {
+            if(mpi.parallel)
+            {
+
+            }
+        }
+
+    }
 
 
     if(mpi.primary)

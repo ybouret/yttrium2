@@ -261,7 +261,7 @@ namespace Yttrium
                       const uint64_t     recvBytes,
                       const size_t       recvSource,
                       const int          recvTag);
-        
+
 
         //! send generic data, low-level
         /**
@@ -317,6 +317,19 @@ namespace Yttrium
             sendrecv(sendEntry,sendCount,t_datatype,t_dt.bytesFor(sendCount), sendTarget, sendTag,
                      recvEntry,recvCount,u_datatype,u_dt.bytesFor(recvCount), recvSource, recvTag);
 
+        }
+
+        template <typename T> inline
+        void sendrecv(const T * const sendEntry,
+                      const size_t    sendCount,
+                      const size_t    sendTarget,
+                      T * const       recvEntry,
+                      const size_t    recvCount,
+                      const size_t    recvSource,
+                      const int       tag =  DefaultTag)
+        {
+            sendrecv<T,T>(sendEntry,sendCount,sendTarget,tag,
+                          recvEntry,recvCount,recvSource,tag);
         }
 
 
@@ -399,7 +412,7 @@ namespace Yttrium
             }
         };
 
-        // for straight compact derived types
+        // for straight compact linear types
         template <typename T, template <typename> class LINEAR> struct Plain< LINEAR<T> >
         {
             typedef LINEAR<T>     Type;
@@ -437,8 +450,88 @@ namespace Yttrium
 
         template <typename T> struct IO
         {
+        public:
             static const bool UsePlain = Plain<T>::Used;
             typedef typename Pick<UsePlain,Plain<T>,Codec<T>>::Type API;
+
+            template <typename CONTIGUOUS> static inline
+            void Send(MPI                   & mpi,
+                      const CONTIGUOUS      & arr,
+                      const size_t            target,
+                      const int               tag)
+            {
+                static const IntToType<UsePlain> way = {};
+                Send(way,mpi,arr,target,tag);
+            }
+
+            template <typename CONTIGUOUS> static inline
+            void Recv(MPI                   & mpi,
+                      CONTIGUOUS            & arr,
+                      const size_t            source,
+                      const int               tag)
+            {
+                static const IntToType<UsePlain> way = {};
+                Recv(way,mpi,arr,source,tag);
+            }
+
+        private:
+            template <typename CONTIGUOUS>
+            static inline void Send(const IntToType<true> &,
+                                    MPI                   & mpi,
+                                    const CONTIGUOUS      & arr,
+                                    const size_t            target,
+                                    const int               tag)
+            {
+                const size_t sz = arr.size();
+                if(sz>0)
+                {
+                    mpi.send( (const T *)&arr[1],sz*T::DIMS,target,tag);
+                }
+            }
+
+            template <typename CONTIGUOUS>
+            static inline void Recv(const IntToType<true> &,
+                                    MPI                   & mpi,
+                                    CONTIGUOUS            & arr,
+                                    const size_t            source,
+                                    const int               tag)
+
+            {
+                const size_t sz = arr.size();
+                if(sz>0)
+                {
+                    mpi.recv( (T* )&arr[1],sz*T::DOMS,source,tag);
+                }
+            }
+
+            template <typename CONTIGUOUS>
+            static inline void Send(const IntToType<false> &,
+                                    MPI                   & mpi,
+                                    const CONTIGUOUS      & arr,
+                                    const size_t            target,
+                                    const int               tag)
+            {
+                for(size_t i=arr.size();i>0;--i)
+                {
+                    Codec<T>::Send(mpi,arr[i],target,tag);
+                }
+            }
+
+
+            template <typename CONTIGUOUS>
+            static inline void Recv(const IntToType<false> &,
+                                    MPI                   & mpi,
+                                    CONTIGUOUS            & arr,
+                                    const size_t            source,
+                                    const int               tag)
+
+            {
+                for(size_t i=arr.size();i>0;--i)
+                {
+                    Codec<T>::Recv(mpi,arr[i],source,tag);
+                }
+            }
+
         };
 
 
@@ -464,10 +557,10 @@ namespace Yttrium
             arg = recv1<T>(source,tag);
         }
 
-
-
-
         
+
+
+
     public:
         const int           threadLevel;   //!< current thread level
         const bool          primary;       //!< primary flag
