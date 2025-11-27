@@ -79,6 +79,23 @@ built(0)
         {
         }
 
+        //! setup with new () T()
+        /**
+         \param n      number of objects
+         */
+        inline explicit Vector(const size_t n) :
+        Y_Vector_Ctor(),
+        code( n>0 ? new Code(n) : 0)
+        {
+            try {
+                for(size_t i=n;i>0;--i) {
+                    new (code->entry+built) T();
+                    ++built;
+                }
+            }
+            catch(...) { release_(); throw; }
+        }
+        
         //! setup with new () T(param)
         /**
          \param n      number of objects
@@ -96,6 +113,8 @@ built(0)
             }
             catch(...) { release_(); throw; }
         }
+
+
 
         //! duplicate \param other another vector
         inline Vector(const Vector &other) :

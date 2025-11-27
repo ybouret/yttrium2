@@ -73,6 +73,7 @@ namespace Yttrium
     {
         Y_MPI_DECL(FLOAT,float);
         Y_MPI_DECL(DOUBLE,double);
+        Y_MPI_DECL(LONG_DOUBLE,long double);
 
         Y_MPI_DECL(CHAR,char);
         Y_MPI_DECL(SHORT,short);

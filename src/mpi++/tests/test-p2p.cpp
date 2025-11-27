@@ -6,6 +6,7 @@
 #include "y/container/sequence/vector.hpp"
 #include "y/mkl/complex.hpp"
 #include "y/apex/rational.hpp"
+#include "y/mkl/v3d.hpp"
 
 using namespace Yttrium;
 
@@ -141,8 +142,9 @@ Y_UTEST(p2p)
 
     {
         const size_t nv = 3;
-        Vector<int>               ivec(nv,0);
-        Vector< Complex<double> > cvec(nv,0);
+        Vector<int>                ivec(nv);
+        Vector< Complex<double> >  cvec(nv);
+        Vector< V3D<long double> > vec3(nv);
 
         if( mpi.primary )
         {
@@ -151,12 +153,16 @@ Y_UTEST(p2p)
                 ivec[i] = (int)i;
                 cvec[i].re = ran.symm<double>();
                 cvec[i].im = ran.symm<double>();
+                vec3[i].x  = ran.symm<double>();
+                vec3[i].y  = ran.symm<double>();
+                vec3[i].z  = ran.symm<double>();
 
             }
             for(size_t rank=1;rank<mpi.size;++rank)
             {
                 mpi.sendN(ivec,rank);
-                //mpi.sendN(cvec,rank);
+                mpi.sendN(cvec,rank);
+                mpi.sendN(vec3,rank);
             }
         }
         else
@@ -164,12 +170,14 @@ Y_UTEST(p2p)
             if(mpi.parallel)
             {
                 mpi.recvN(ivec,0);
-                //mpi.recvN(cvec,0);
+                mpi.recvN(cvec,0);
+                mpi.recvN(vec3,0);
             }
         }
 
         Y_MPI_ForEach(mpi,std::cerr << "ivec   @" << mpi << " : " << ivec << std::endl);
-        //Y_MPI_ForEach(mpi,std::cerr << "cvec   @" << mpi << " : " << cvec << std::endl);
+        Y_MPI_ForEach(mpi,std::cerr << "cvec   @" << mpi << " : " << cvec << std::endl);
+        Y_MPI_ForEach(mpi,std::cerr << "vec3   @" << mpi << " : " << vec3 << std::endl);
 
     }
 

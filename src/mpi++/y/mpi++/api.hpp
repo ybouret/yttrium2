@@ -415,24 +415,24 @@ namespace Yttrium
         // for straight compact linear types
         template <typename T, template <typename> class LINEAR> struct Plain< LINEAR<T> >
         {
-            typedef LINEAR<T>     Type;
-            static const bool     Derived = Y_Is_SuperSubClass(Readable<T>,Type);
+            typedef T             Type;
+            static const bool     Derived = Y_Is_SuperSubClass(Readable<T>,LINEAR<T>);
             static const unsigned DIMS    = sizeof(LINEAR<T>)/sizeof(T);
             static const bool     Used    = TypeTraits<T>::IsArithmetic && !Derived;
 
-            static inline void Send(MPI &            mpi,
-                                    const Type &     value,
-                                    const size_t     target,
-                                    const int        tag)
+            static inline void Send(MPI &             mpi,
+                                    const LINEAR<T> & value,
+                                    const size_t      target,
+                                    const int         tag)
             {
                 mpi.send( (T *) &value, DIMS, target, tag);
             }
 
-            static inline Type Recv(MPI        & mpi,
-                                    const size_t source,
-                                    const int    tag)
+            static inline LINEAR<T>Recv(MPI        & mpi,
+                                         const size_t source,
+                                         const int    tag)
             {
-                Static::Moniker<Type> temp;
+                Static::Moniker< LINEAR<T> > temp;
                 mpi.recv( (T *)& *temp, DIMS, source, tag);
                 return *temp;
             }
@@ -484,7 +484,7 @@ namespace Yttrium
             {
                 const size_t sz = arr.size();
                 if(sz>0)
-                    mpi.send( (const T *)&arr[1],sz*Plain<T>::DIMS,target,tag);
+                    mpi.send( (const typename Plain<T>::Type *)&arr[1],sz*Plain<T>::DIMS,target,tag);
             }
 
             template <typename CONTIGUOUS>
@@ -497,7 +497,7 @@ namespace Yttrium
             {
                 const size_t sz = arr.size();
                 if(sz>0)
-                    mpi.recv( (T* )&arr[1],sz*Plain<T>::DIMS,source,tag);
+                    mpi.recv( (typename Plain<T>::Type *)&arr[1],sz*Plain<T>::DIMS,source,tag);
             }
 
             template <typename CONTIGUOUS>
