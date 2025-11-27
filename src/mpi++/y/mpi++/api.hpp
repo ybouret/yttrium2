@@ -484,9 +484,7 @@ namespace Yttrium
             {
                 const size_t sz = arr.size();
                 if(sz>0)
-                {
-                    mpi.send( (const T *)&arr[1],sz*T::DIMS,target,tag);
-                }
+                    mpi.send( (const T *)&arr[1],sz*Plain<T>::DIMS,target,tag);
             }
 
             template <typename CONTIGUOUS>
@@ -499,9 +497,7 @@ namespace Yttrium
             {
                 const size_t sz = arr.size();
                 if(sz>0)
-                {
-                    mpi.recv( (T* )&arr[1],sz*T::DOMS,source,tag);
-                }
+                    mpi.recv( (T* )&arr[1],sz*Plain<T>::DIMS,source,tag);
             }
 
             template <typename CONTIGUOUS>
@@ -512,9 +508,7 @@ namespace Yttrium
                                     const int               tag)
             {
                 for(size_t i=arr.size();i>0;--i)
-                {
                     Codec<T>::Send(mpi,arr[i],target,tag);
-                }
             }
 
 
@@ -527,9 +521,7 @@ namespace Yttrium
 
             {
                 for(size_t i=arr.size();i>0;--i)
-                {
                     Codec<T>::Recv(mpi,arr[i],source,tag);
-                }
             }
 
         };
@@ -557,7 +549,24 @@ namespace Yttrium
             arg = recv1<T>(source,tag);
         }
 
-        
+        template <typename CONTIGUOUS> inline
+        void sendN(const CONTIGUOUS &arr,
+                   const size_t      target,
+                   const int         tag = DefaultTag)
+        {
+            IO< typename CONTIGUOUS::Type >::Send(*this,arr,target,tag);
+        }
+
+
+        template <typename CONTIGUOUS> inline
+        void recvN(  CONTIGUOUS &arr,
+                   const size_t  source,
+                   const int     tag = DefaultTag)
+        {
+            IO< typename CONTIGUOUS::Type >::Recv(*this,arr,source,tag);
+        }
+
+
 
 
 

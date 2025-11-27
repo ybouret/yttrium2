@@ -141,21 +141,35 @@ Y_UTEST(p2p)
 
     {
         const size_t nv = 3;
-        Vector<int>  ivec(nv,0);
+        Vector<int>               ivec(nv,0);
+        Vector< Complex<double> > cvec(nv,0);
 
         if( mpi.primary )
         {
             for(size_t i=nv;i>0;--i)
+            {
                 ivec[i] = (int)i;
-            
+                cvec[i].re = ran.symm<double>();
+                cvec[i].im = ran.symm<double>();
+
+            }
+            for(size_t rank=1;rank<mpi.size;++rank)
+            {
+                mpi.sendN(ivec,rank);
+                //mpi.sendN(cvec,rank);
+            }
         }
         else
         {
             if(mpi.parallel)
             {
-
+                mpi.recvN(ivec,0);
+                //mpi.recvN(cvec,0);
             }
         }
+
+        Y_MPI_ForEach(mpi,std::cerr << "ivec   @" << mpi << " : " << ivec << std::endl);
+        //Y_MPI_ForEach(mpi,std::cerr << "cvec   @" << mpi << " : " << cvec << std::endl);
 
     }
 
