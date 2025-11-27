@@ -65,4 +65,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Protean_SoloHeavyList_Included

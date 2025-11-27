@@ -61,6 +61,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
+            
             //! zombi node to live node
             /**
              \param args passed to node constructor
@@ -126,4 +127,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Protean_DirectCache_Included

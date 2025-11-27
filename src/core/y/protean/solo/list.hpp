@@ -121,5 +121,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Protean_SoloList_Included
 

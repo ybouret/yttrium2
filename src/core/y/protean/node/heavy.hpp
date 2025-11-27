@@ -52,6 +52,12 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
+            //! build with inner object, no argument constructor
+            inline HeavyNode() : next(0), prev(0), data()
+            {
+
+            }
+
             //! build with inner object \param arg passed to data constructor
             inline HeavyNode(ParamType arg) :
             next(0), prev(0), data(arg)
@@ -103,5 +109,5 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Protean_HeavyNode_Included
 

@@ -67,6 +67,7 @@ namespace Yttrium
             // Interface/Methods
             //
             //__________________________________________________________________
+            
 
             //! append new node \param args for node constructor
             inline virtual void pushTail(ParamType args)
