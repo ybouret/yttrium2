@@ -7,6 +7,7 @@
 #include "y/concurrent/api/parallel.hpp"
 #include "y/concurrent/api/pipeline/task.hpp"
 #include "y/container/sequence/list.hpp"
+#include "y/object/counted.hpp"
 
 namespace Yttrium
 {
@@ -25,7 +26,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Pipeline : public Parallel
+        class Pipeline : public CountedObject, public Parallel
         {
             //__________________________________________________________________
             //
