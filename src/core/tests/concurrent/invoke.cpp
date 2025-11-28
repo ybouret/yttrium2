@@ -45,14 +45,21 @@ namespace Yttrium
             {
             public:
                 Y_Args_Declare(T,Type);
-                inline Job(Asynchronous &self,
-                           ParamType     args) :
-                async( self ),
-                value( args )
+                typedef void (ENGINE::*Meth)(Lockable &, Type &);
+
+                inline Job(Asynchronous &async,
+                           Meth const    which,
+                           ParamType     value) :
+                self(async),
+                meth(which),
+                args(value)
                 {
                 }
 
-                inline Job(const Job &job) : async(job.async), value(job.value)
+                inline Job(const Job &job) :
+                self(job.self),
+                meth(job.meth),
+                args(job.args)
                 {
                 }
 
@@ -61,14 +68,15 @@ namespace Yttrium
                 inline void operator()(const Context &ctx)
                 {
                     Y_Giant_Lock();
-                    (std::cerr << "job @" << ctx << ", value=" << value << std::endl).flush();
-                    assert(ctx.indx<=async.meta.size());
-                    ENGINE &engine = *async.meta[ctx.indx];
-                    engine.call(ctx.sync,value);
+                    (std::cerr << "job @" << ctx << ", args=" << args << std::endl).flush();
+                    assert(ctx.indx<=self.meta.size());
+                    ENGINE &host = *self.meta[ctx.indx];
+                    (host.*meth)(ctx.sync,args);
                 }
 
-                Asynchronous & async;
-                Type           value;
+                Asynchronous & self;
+                Meth           meth;
+                Type           args;
 
             private:
                 Y_Disable_Assign(Job);
@@ -173,8 +181,8 @@ Y_UTEST(concurrent_invoke)
     Concurrent::Appliance            app = new Concurrent::Queue( Concurrent::Site::Default );
     Concurrent::Asynchronous<Engine> eng( app );
 
-    Concurrent::Asynchronous<Engine>::Job<int>    job1(eng,2);
-    Concurrent::Asynchronous<Engine>::Job<String> job2(eng,"Hello");
+    Concurrent::Asynchronous<Engine>::Job<int>    job1(eng, & Engine::call<int>,     2);
+    Concurrent::Asynchronous<Engine>::Job<String> job2(eng, & Engine::call<String>, "Hello");
     Concurrent::Kernel  ker1(job1);
     Concurrent::Kernel  ker2(job2);
 
