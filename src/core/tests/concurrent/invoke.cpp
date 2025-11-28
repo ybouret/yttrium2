@@ -19,11 +19,14 @@ namespace Yttrium
         class Asynchronous
         {
         public:
-            
+
+            // Node containing engine
             class ENode : public Object
             {
             public:
-                inline explicit ENode() : Object(), engine() {}
+                template <typename ARG>
+                inline explicit ENode(ARG &arg) : Object(), engine(arg) {}
+                inline explicit ENode()         : Object(), engine()    {}
                 inline virtual ~ENode() noexcept {}
 
                 ENGINE  engine;
@@ -34,6 +37,38 @@ namespace Yttrium
             };
 
             typedef CxxListOf<ENode> EList;
+
+
+            template <typename T>
+            class Job
+            {
+            public:
+                Y_Args_Declare(T,Type);
+                inline Job(Asynchronous &self,
+                           ParamType     args) :
+                async( self ),
+                value( args )
+                {
+                }
+
+                inline Job(const Job &job) : async(job.async), value(job.value)
+                {
+                }
+
+                inline ~Job() noexcept {}
+
+                inline void operator()(const Context &ctx)
+                {
+                    Y_Giant_Lock();
+                    (std::cerr << "job @" << ctx << ", value=" << value << std::endl).flush();
+                }
+
+                Asynchronous & async;
+                Type           value;
+
+            private:
+                Y_Disable_Assign(Job);
+            };
 
 
             inline explicit Asynchronous(const Appliance &app) :
@@ -59,7 +94,7 @@ namespace Yttrium
         protected:
             Appliance      appliance;
             EList          engines;
-
+            
         private:
             Y_Disable_Copy_And_Assign(Asynchronous);
             inline void pre() noexcept {
@@ -116,6 +151,15 @@ Y_UTEST(concurrent_invoke)
 
     Concurrent::Appliance            app = new Concurrent::Queue( Concurrent::Site::Default );
     Concurrent::Asynchronous<Engine> eng( app );
+
+    Concurrent::Asynchronous<Engine>::Job<int>    job1(eng,2);
+    Concurrent::Asynchronous<Engine>::Job<String> job2(eng,"Hello");
+    Concurrent::Kernel  ker1(job1);
+    Concurrent::Kernel  ker2(job2);
+
+    Concurrent::KernelTest::ST(ker1);
+    Concurrent::KernelTest::MT(ker2);
+
 
 }
 Y_UDONE()
