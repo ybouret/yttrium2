@@ -6,6 +6,7 @@
 #include "y/utest/run.hpp"
 
 #include "y/pointer/arc.hpp"
+#include "y/container/cxx/array.hpp"
 #include "y/container/sequence/vector.hpp"
 
 
@@ -61,6 +62,9 @@ namespace Yttrium
                 {
                     Y_Giant_Lock();
                     (std::cerr << "job @" << ctx << ", value=" << value << std::endl).flush();
+                    assert(ctx.indx<=async.meta.size());
+                    ENGINE &engine = *async.meta[ctx.indx];
+                    engine.call(ctx.sync,value);
                 }
 
                 Asynchronous & async;
@@ -71,19 +75,21 @@ namespace Yttrium
             };
 
 
-            inline explicit Asynchronous(const Appliance &app) :
-            appliance(app),
-            engines()
+            inline explicit Asynchronous(const Appliance &appliance) :
+            app(appliance),
+            list(),
+            meta(app->size())
             {
-                upgrade();
+                setup();
             }
 
             template <typename ARG>
-            inline explicit Asynchronous(const Appliance &app, ARG &arg) :
-            appliance(app),
-            engines()
+            inline explicit Asynchronous(const Appliance &appliance, ARG &arg) :
+            app(appliance),
+            list(),
+            meta(app->size())
             {
-                upgrade(arg);
+                setup(arg);
             }
 
 
@@ -91,34 +97,42 @@ namespace Yttrium
             {
             }
 
+
         protected:
-            Appliance      appliance;
-            EList          engines;
-            
+            Appliance           app;
+            EList               list;
+            CxxArray<ENGINE *>  meta;
+
         private:
             Y_Disable_Copy_And_Assign(Asynchronous);
-            inline void pre() noexcept {
-                while(engines.size>appliance->size()) delete engines.popTail();
-            }
 
-            inline void post() noexcept {
-                engines.sortByIncreasingAddress();
-            }
-
-            inline void upgrade()
+            inline void post() noexcept
             {
-                pre();
-                while(engines.size<appliance->size()) engines.pushTail( new ENode() );
+                assert(app->size() == list.size);
+                assert(meta.size() == list.size);
+
+                list.sortByIncreasingAddress();
+                size_t i=1;
+                for(ENode *node=list.head;node;node=node->next,++i)
+                    meta[i] = & node->engine;
+            }
+
+            inline void setup()
+            {
+                const size_t n = app->size();
+                while(list.size<n) list.pushTail(new ENode());
                 post();
             }
 
             template <typename ARG>
-            inline void upgrade(ARG &arg)
+            inline void setup(ARG &arg)
             {
-                pre();
-                while(engines.size<appliance->size()) engines.pushTail( new ENode(arg) );
+                const size_t n = app->size();
+                while(list.size<n) list.pushTail(new ENode(arg));
                 post();
             }
+
+
         };
 
     }
@@ -138,6 +152,13 @@ namespace
 
         virtual ~Engine() noexcept
         {
+        }
+
+        template <typename T>
+        inline void call(Lockable &sync, T & data)
+        {
+            Y_Lock(sync);
+            (std::cerr << "processing (" << data << ")" << std::endl).flush();
         }
 
 

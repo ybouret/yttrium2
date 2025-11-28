@@ -39,7 +39,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
 
-        //! setup with default value
+        //! setup with default constructor
         /**
          \param num number of created object
          */
