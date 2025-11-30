@@ -108,6 +108,7 @@ namespace Yttrium
             
 
 
+
         protected:
             Appliance           app;
             EList               list;
