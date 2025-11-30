@@ -41,29 +41,29 @@ namespace Yttrium
 
 
             template <typename T>
-            class Job
+            class UnaryJob
             {
             public:
                 Y_Args_Declare(T,Type);
                 typedef void (ENGINE::*Meth)(Lockable &, Type &);
 
-                inline Job(Asynchronous &async,
-                           Meth const    which,
-                           ParamType     value) :
+                inline UnaryJob(Asynchronous &async,
+                           Meth const         which,
+                           ParamType          value) :
                 self(async),
                 meth(which),
                 args(value)
                 {
                 }
 
-                inline Job(const Job &job) :
+                inline UnaryJob(const UnaryJob &job) :
                 self(job.self),
                 meth(job.meth),
                 args(job.args)
                 {
                 }
 
-                inline ~Job() noexcept {}
+                inline ~UnaryJob() noexcept {}
 
                 inline void operator()(const Context &ctx)
                 {
@@ -79,7 +79,7 @@ namespace Yttrium
                 Type           args;
 
             private:
-                Y_Disable_Assign(Job);
+                Y_Disable_Assign(UnaryJob);
             };
 
 
@@ -105,8 +105,15 @@ namespace Yttrium
             {
             }
 
-            
-
+            template <typename T> inline
+            void invoke( void (ENGINE::*meth)(Lockable &, T &), const Readable<T> &data )
+            {
+                const size_t n = data.size();
+                for(size_t i=1;i<=n;++i)
+                {
+                    
+                }
+            }
 
 
         protected:
@@ -184,8 +191,8 @@ Y_UTEST(concurrent_invoke)
     Concurrent::Appliance            app = new Concurrent::Queue( Concurrent::Site::Default );
     Concurrent::Asynchronous<Engine> eng( app );
 
-    Concurrent::Asynchronous<Engine>::Job<int>    job1(eng, & Engine::call<int>,     2);
-    Concurrent::Asynchronous<Engine>::Job<String> job2(eng, & Engine::call<String>, "Hello");
+    Concurrent::Asynchronous<Engine>::UnaryJob<int>    job1(eng, & Engine::call<int>,     2);
+    Concurrent::Asynchronous<Engine>::UnaryJob<String> job2(eng, & Engine::call<String>, "Hello");
     Concurrent::Kernel  ker1(job1);
     Concurrent::Kernel  ker2(job2);
 
