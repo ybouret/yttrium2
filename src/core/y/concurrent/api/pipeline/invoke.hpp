@@ -65,7 +65,7 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //
-            //! Job on a persistent argument
+            //! lightweight Job on a persistent argument
             //
             //__________________________________________________________________
             template <typename T>
@@ -83,6 +83,13 @@ namespace Yttrium
                 //
                 // C++
                 //______________________________________________________________
+
+                //! initialize
+                /**
+                 \param async where engines are
+                 \param which method to inoke
+                 \param value persistent value
+                 */
                 inline UnaryJob(Invoke       &async,
                                 Meth const    which,
                                 Type &        value) noexcept :
@@ -109,10 +116,6 @@ namespace Yttrium
                 //! Kernel behavior \param ctx context of the calling thread
                 inline void operator()(const Context &ctx)
                 {
-                    {
-                        //Y_Giant_Lock();
-                        //(std::cerr << "job @" << ctx << ", args=" << args << std::endl).flush();
-                    }
                     assert(ctx.indx<=self.meta.size());
                     ENGINE &host = *self.meta[ctx.indx];
                     (host.*meth)(ctx.sync,args);
