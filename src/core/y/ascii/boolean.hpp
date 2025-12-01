@@ -34,5 +34,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_ASCII_Boolean_Included
 

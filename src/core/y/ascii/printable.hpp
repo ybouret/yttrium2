@@ -27,5 +27,5 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Text_ASCII_Printable_Included
 
