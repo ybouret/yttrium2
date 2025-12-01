@@ -57,6 +57,9 @@ Y_UTEST(calculus_primes)
     }
 #endif
 
+    const uint32_t Next32 = Prime::Next<uint32_t>( 65536 );
+    std::cerr << "Next32 = " << Next32 << std::endl;
+    Y_CHECK( Prime::Test(Next32) );
 
 
 }

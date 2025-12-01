@@ -13,6 +13,8 @@ namespace Yttrium
         template <typename T, typename TEST> inline
         T FindNext(T n, TEST &isPrime) noexcept
         {
+            static const T one = 1;
+            n |= one;
             while(! isPrime(n) ) n += 2;
             return n;
         }

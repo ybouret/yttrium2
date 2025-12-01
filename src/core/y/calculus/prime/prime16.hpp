@@ -15,7 +15,7 @@ namespace Yttrium
         {
             static const size_t   Count = 6488;
             static const uint16_t Entry[Count];
-            static const uint32_t Next32;
+            static const uint32_t Next32 = 65537;
         };
 
     }
