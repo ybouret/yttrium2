@@ -88,7 +88,7 @@ namespace Yttrium
              \param ti system type id
              */
             explicit DataType(MPI_Datatype          dt,
-                              const unsigned        sh,
+                              const unsigned        sz,
                               const std::type_info &ti);
 
             //! cleanup
@@ -107,7 +107,7 @@ namespace Yttrium
             // Members
             //__________________________________________________________________
             const DTList   list; //!< matching data types
-            const unsigned ishl; //!< left shift
+            const unsigned size; //!< type size
             const String   uuid; //!< identifier
 
         private:

@@ -228,7 +228,6 @@ Y_UTEST(concurrent_invoke)
     Concurrent::TaskIDs taskIDs;
     {
         Vector<int> iVec; iVec << 2 << 3 << 5;
-        //eng.invoke(  & Engine::call<int>, taskIDs, iVec.begin(), iVec.size() );
         eng.invoke( &Engine::call<int>, taskIDs, iVec);
         app->flush();
     }

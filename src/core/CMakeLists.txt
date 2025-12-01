@@ -23,6 +23,7 @@ Y_CreateLibrary(y
     y/ascii/convert
     y/utf8
     y/calculus
+    y/calculus/prime
     y/concurrent
     y/concurrent/windows
     y/concurrent/singleton

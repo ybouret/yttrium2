@@ -1,6 +1,5 @@
 
 #include "y/mpi++/api.hpp"
-#include "y/calculus/integer-log2.hpp"
 
 namespace Yttrium
 {
@@ -11,10 +10,10 @@ namespace Yttrium
     }
 
     MPI:: DataType:: DataType(MPI_Datatype          dt,
-                              const unsigned        sh,
+                              const unsigned        sz,
                               const std::type_info &ti) :
     list(),
-    ishl( sh ),
+    size( sz ),
     uuid( ti.name() )
     {
         Coerce(list) << dt;
@@ -29,7 +28,7 @@ namespace Yttrium
     {
         // TODO: check max
 
-        return (count << ishl);
+        return count * size;
     }
 
 
@@ -67,7 +66,7 @@ namespace Yttrium
 
     }
 
-#define Y_MPI_DECL(DT,TYPE) do { decl(MPI_##DT,IntegerLog2For<TYPE>::Value,typeid(TYPE)); } while(false)
+#define Y_MPI_DECL(DT,TYPE) do { decl(MPI_##DT,sizeof(TYPE),typeid(TYPE)); } while(false)
 
     void MPI:: buildDTS()
     {
