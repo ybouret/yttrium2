@@ -83,8 +83,9 @@ namespace Yttrium
                 Asynchronous & self;
                 Meth           meth;
                 Type         & args;
-
             };
+
+            
 
             inline explicit Asynchronous(const Appliance &appliance) :
             app(appliance),
