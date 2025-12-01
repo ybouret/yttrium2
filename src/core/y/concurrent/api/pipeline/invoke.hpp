@@ -1,3 +1,4 @@
+//! \file
 
 #ifndef Y_Concurrent_Invoke_Included
 #define Y_Concurrent_Invoke_Included 1
