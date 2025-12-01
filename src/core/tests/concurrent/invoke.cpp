@@ -39,36 +39,42 @@ namespace Yttrium
 
             typedef CxxListOf<ENode> EList;
 
-
+            //! job on a persistent task
             template <typename T>
             class UnaryJob
             {
             public:
-                Y_Args_Declare(T,Type);
+                Y_Args_Expose(T,Type);
                 typedef void (ENGINE::*Meth)(Lockable &, Type &);
 
                 inline UnaryJob(Asynchronous &async,
-                           Meth const         which,
-                           ParamType          value) :
+                                Meth const    which,
+                                Type &        value) noexcept :
                 self(async),
                 meth(which),
                 args(value)
                 {
                 }
 
-                inline UnaryJob(const UnaryJob &job) :
+                inline ~UnaryJob() noexcept
+                {
+
+                }
+
+                inline UnaryJob(const UnaryJob &job) noexcept :
                 self(job.self),
                 meth(job.meth),
                 args(job.args)
                 {
                 }
 
-                inline ~UnaryJob() noexcept {}
-
+                //! Kernel behavior
                 inline void operator()(const Context &ctx)
                 {
-                    Y_Giant_Lock();
-                    (std::cerr << "job @" << ctx << ", args=" << args << std::endl).flush();
+                    {
+                        Y_Giant_Lock();
+                        (std::cerr << "job @" << ctx << ", args=" << args << std::endl).flush();
+                    }
                     assert(ctx.indx<=self.meta.size());
                     ENGINE &host = *self.meta[ctx.indx];
                     (host.*meth)(ctx.sync,args);
@@ -76,12 +82,9 @@ namespace Yttrium
 
                 Asynchronous & self;
                 Meth           meth;
-                Type           args;
+                Type         & args;
 
-            private:
-                Y_Disable_Assign(UnaryJob);
             };
-
 
             inline explicit Asynchronous(const Appliance &appliance) :
             app(appliance),
@@ -105,15 +108,7 @@ namespace Yttrium
             {
             }
 
-            template <typename T> inline
-            void invoke( void (ENGINE::*meth)(Lockable &, T &), const Readable<T> &data )
-            {
-                const size_t n = data.size();
-                for(size_t i=1;i<=n;++i)
-                {
-                    
-                }
-            }
+
 
 
         protected:
@@ -191,13 +186,16 @@ Y_UTEST(concurrent_invoke)
     Concurrent::Appliance            app = new Concurrent::Queue( Concurrent::Site::Default );
     Concurrent::Asynchronous<Engine> eng( app );
 
-    Concurrent::Asynchronous<Engine>::UnaryJob<int>    job1(eng, & Engine::call<int>,     2);
-    Concurrent::Asynchronous<Engine>::UnaryJob<String> job2(eng, & Engine::call<String>, "Hello");
+    int    iArg = 2;
+    String sArg = "Hello";
+    Concurrent::Asynchronous<Engine>::UnaryJob<int>    job1(eng, & Engine::call<int>,     iArg);
+    Concurrent::Asynchronous<Engine>::UnaryJob<String> job2(eng, & Engine::call<String>,  sArg);
     Concurrent::Kernel  ker1(job1);
     Concurrent::Kernel  ker2(job2);
 
     Concurrent::KernelTest::ST(ker1);
     Concurrent::KernelTest::MT(ker2);
+
 
 
 }
