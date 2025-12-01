@@ -72,8 +72,8 @@ namespace Yttrium
                 inline void operator()(const Context &ctx)
                 {
                     {
-                        Y_Giant_Lock();
-                        (std::cerr << "job @" << ctx << ", args=" << args << std::endl).flush();
+                        //Y_Giant_Lock();
+                        //(std::cerr << "job @" << ctx << ", args=" << args << std::endl).flush();
                     }
                     assert(ctx.indx<=self.meta.size());
                     ENGINE &host = *self.meta[ctx.indx];
@@ -134,11 +134,7 @@ namespace Yttrium
             {
                 invoke(method,taskIDs,seq.begin(),seq.size());
             }
-
-
-
-
-
+            
 
         protected:
             Appliance           app;
@@ -199,8 +195,11 @@ namespace
         template <typename T>
         inline void call(Lockable &sync, T & data)
         {
-            Y_Lock(sync);
-            (std::cerr << "processing (" << data << ")" << std::endl).flush();
+            {
+                //Y_Giant_Lock();
+                Y_Lock(sync);
+                (std::cerr << "processing (" << data << ")" << std::endl).flush();
+            }
         }
 
 
@@ -209,9 +208,12 @@ namespace
     };
 }
 
+#include "y/random/park-miller.hpp"
+
 Y_UTEST(concurrent_invoke)
 {
 
+    Random::ParkMiller               ran;
     Concurrent::Appliance            app = new Concurrent::Queue( Concurrent::Site::Default );
     Concurrent::Asynchronous<Engine> eng( app );
 
@@ -227,7 +229,13 @@ Y_UTEST(concurrent_invoke)
 
     Concurrent::TaskIDs taskIDs;
     {
-        Vector<int> iVec; iVec << 2 << 3 << 5;
+        Vector<int> iVec;
+        for(size_t i=ran.in<size_t>(10,20);i>0;--i)
+        {
+            iVec << ran.in<int>(1,100);
+        }
+        std::cerr << iVec << std::endl;
+
         eng.invoke( &Engine::call<int>, taskIDs, iVec);
         app->flush();
     }
