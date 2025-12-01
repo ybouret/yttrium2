@@ -12,37 +12,77 @@ namespace Yttrium
     {
         typedef ArcPtr<Pipeline> Appliance;
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Framework to invoke a method on a set of ENGINE linked to threads
+        //
+        //
+        //______________________________________________________________________
         template <typename ENGINE>
         class Invoke
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
 
-            // Node containing engine
+            //__________________________________________________________________
+            //
+            //
+            //! Node containing engine
+            //
+            //__________________________________________________________________
             class ENode : public Object
             {
             public:
+                //______________________________________________________________
+                //
+                // C++
+                //______________________________________________________________
                 template <typename ARG>
-                inline explicit ENode(ARG &arg) : Object(), engine(arg), next(0), prev(0) {}
-                inline explicit ENode()         : Object(), engine()   , next(0), prev(0) {}
-                inline virtual ~ENode() noexcept {}
+                inline explicit ENode(ARG &arg) : Object(), engine(arg), next(0), prev(0) {} //!< setup \param arg for constructor
+                inline explicit ENode()         : Object(), engine()   , next(0), prev(0) {} //!< setup with default constructor
+                inline virtual ~ENode() noexcept {} //!< cleanup
 
-                ENGINE  engine;
-                ENode * next;
-                ENode * prev;
+                //______________________________________________________________
+                //
+                // Memberds
+                //______________________________________________________________
+                ENGINE  engine; //!< instance of ENGINE
+                ENode * next;   //!< for list
+                ENode * prev;   //!< for list
             private:
-                Y_Disable_Copy_And_Assign(ENode);
+                Y_Disable_Copy_And_Assign(ENode); //!< discarding
             };
 
-            typedef CxxListOf<ENode> EList;
+            typedef CxxListOf<ENode> EList; //!< alias
 
-            //! job on a persistent task
+            //__________________________________________________________________
+            //
+            //
+            //! Job on a persistent argument
+            //
+            //__________________________________________________________________
             template <typename T>
             class UnaryJob
             {
             public:
+                //______________________________________________________________
+                //
+                // Definitions
+                //______________________________________________________________
                 Y_Args_Expose(T,Type);
                 typedef void (ENGINE::*Meth)(Lockable &, Type &);
 
+                //______________________________________________________________
+                //
+                // C++
+                //______________________________________________________________
                 inline UnaryJob(Invoke       &async,
                                 Meth const    which,
                                 Type &        value) noexcept :
@@ -64,7 +104,7 @@ namespace Yttrium
                 {
                 }
 
-                //! Kernel behavior
+                //! Kernel behavior \param ctx context of the calling thread
                 inline void operator()(const Context &ctx)
                 {
                     {
@@ -76,13 +116,24 @@ namespace Yttrium
                     (host.*meth)(ctx.sync,args);
                 }
 
-                Invoke & self;
-                Meth     meth;
-                Type &   args;
+                //______________________________________________________________
+                //
+                // Members
+                //______________________________________________________________
+                Invoke &   self; //!< engines to invoke
+                Meth const meth; //!< method
+                Type &     args; //!< argument for method
             };
 
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
 
+            //! setup \param appliance shared pipeline
             inline explicit Invoke(const Appliance &appliance) :
             app(appliance),
             list(),
@@ -91,6 +142,7 @@ namespace Yttrium
                 setup();
             }
 
+            //! setup \param appliance shared pipeline \param arg argument for ENGINE constructor
             template <typename ARG>
             inline explicit Invoke(const Appliance &appliance, ARG &arg) :
             app(appliance),
@@ -100,13 +152,19 @@ namespace Yttrium
                 setup(arg);
             }
 
-
+            //! cleanup
             inline virtual ~Invoke() noexcept
             {
                 app->flush();
             }
 
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
             template <typename T, typename ITERATOR> inline
             void operator()(void      (ENGINE::*method)(Lockable &, T &),
                             TaskIDs & taskIDs,
@@ -134,13 +192,14 @@ namespace Yttrium
 
 
         protected:
-            Appliance           app;
-            EList               list;
-            CxxArray<ENGINE *>  meta;
+            Appliance           app;  //!< shared pipeline
+            EList               list; //!< one engine per pipeline thread
+            CxxArray<ENGINE *>  meta; //!< addresses of engines
 
         private:
-            Y_Disable_Copy_And_Assign(Invoke);
+            Y_Disable_Copy_And_Assign(Invoke); //!< discarding
 
+            //! post-setup
             inline void post() noexcept
             {
                 assert(app->size() == list.size);
@@ -152,6 +211,7 @@ namespace Yttrium
                     meta[i] = & node->engine;
             }
 
+            //! setup default ENGINES()
             inline void setup()
             {
                 const size_t n = app->size();
@@ -159,6 +219,7 @@ namespace Yttrium
                 post();
             }
 
+            //! setup \param arg for ENGINES(arg)
             template <typename ARG>
             inline void setup(ARG &arg)
             {

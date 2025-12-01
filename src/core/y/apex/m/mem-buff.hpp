@@ -12,20 +12,47 @@ namespace Yttrium
 
     namespace Apex
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Memory Buffer for local operations
+        //
+        //
+        //______________________________________________________________________
         class MemBuff : public Memory::ReadWriteBuffer
         {
         public:
-            explicit MemBuff(const size_t minimalSize);
-            virtual ~MemBuff() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit MemBuff(const size_t minimalSize); //!< \param minimalSize minimal buffer size
+            virtual ~MemBuff() noexcept;                //!< cleanup
 
-            virtual size_t       length() const noexcept;  
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
+            virtual size_t       length() const noexcept;
             virtual const void * ro()     const noexcept;
 
         private:
-            Y_Disable_Copy_And_Assign(MemBuff);
-            const size_t   bytes;
-            const unsigned shift;
-            void * const   entry;
+            Y_Disable_Copy_And_Assign(MemBuff); //!< discarding
+
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const size_t   bytes; //!< allocated bytes
+            const unsigned shift; //!< bytes = 2^shift
+            void * const   entry; //!< memory entry
         };
     }
 

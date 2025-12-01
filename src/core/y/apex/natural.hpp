@@ -106,8 +106,8 @@ namespace Yttrium
                 //
                 // C++
                 //______________________________________________________________
-                explicit LockedBuffer(const Natural &) noexcept;
-                virtual ~LockedBuffer() noexcept;
+                explicit LockedBuffer(const Natural &) noexcept; //!< setup with persistent natural
+                virtual ~LockedBuffer() noexcept;                //!< cleanup
 
                 //______________________________________________________________
                 //
