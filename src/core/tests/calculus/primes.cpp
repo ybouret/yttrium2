@@ -3,6 +3,7 @@
 #include "y/utest/run.hpp"
 #include "y/container/sequence/vector.hpp"
 #include "y/stream/libc/output.hpp"
+#include "y/calculus/bits-for.hpp"
 
 using namespace Yttrium;
 
@@ -15,10 +16,25 @@ T Transform(const T &x)
 Y_UTEST(calculus_primes)
 {
 
-    for(unsigned i=0;i<=1000;++i)
+    uint32_t i = 3;
+    uint32_t n = 0;
+    while(true)
     {
-        if( Prime::Test(i) ) std::cerr << i << std::endl;
+        const uint32_t j = Prime::Next(i+1);
+        ++n;
+        //const uint32_t k = (i-1)>>1;
+        const uint32_t d = (j-i); Y_ASSERT( 0 == (d&1) );
+        const uint32_t delta = (d>>1) -1;
+        const unsigned dbits = BitsFor(delta);
+        std::cerr << j << " -> d/2-1 = " << delta << " #bits = " << dbits << " #" << n << std::endl;
+        //if(n>=65536) break;
+
+        i=j;
+
+        if(dbits>8) break;
     }
+
+
 
 #if 0
     {

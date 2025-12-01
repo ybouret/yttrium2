@@ -47,5 +47,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Calculus_BitsFor_Included
 
