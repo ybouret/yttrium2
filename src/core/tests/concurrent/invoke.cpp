@@ -26,8 +26,8 @@ namespace Yttrium
             {
             public:
                 template <typename ARG>
-                inline explicit ENode(ARG &arg) : Object(), engine(arg) {}
-                inline explicit ENode()         : Object(), engine()    {}
+                inline explicit ENode(ARG &arg) : Object(), engine(arg), next(0), prev(0) {}
+                inline explicit ENode()         : Object(), engine()   , next(0), prev(0) {}
                 inline virtual ~ENode() noexcept {}
 
                 ENGINE  engine;
@@ -106,7 +106,36 @@ namespace Yttrium
 
             inline virtual ~Asynchronous() noexcept
             {
+                app->flush();
             }
+
+
+            template <typename T, typename ITERATOR> inline
+            void invoke(void      (ENGINE::*method)(Lockable &, T &),
+                        TaskIDs & taskIDs,
+                        ITERATOR  i,
+                        size_t    n)
+            {
+                assert(method);
+                Kernels kernels;
+                while(n-- > 0 )
+                {
+                    const UnaryJob<T> job(*this,method,*(i++));
+                    const Kernel      krn(job);
+                    kernels << krn;
+                }
+                app->enqueue(taskIDs,kernels);
+            }
+
+            template <typename T, typename SEQUENCE> inline
+            void invoke(void      (ENGINE::*method)(Lockable &, T &),
+                        TaskIDs  & taskIDs,
+                        SEQUENCE & seq)
+            {
+                invoke(method,taskIDs,seq.begin(),seq.size());
+            }
+
+
 
 
 
@@ -195,6 +224,15 @@ Y_UTEST(concurrent_invoke)
 
     Concurrent::KernelTest::ST(ker1);
     Concurrent::KernelTest::MT(ker2);
+
+    Concurrent::TaskIDs taskIDs;
+    {
+        Vector<int> iVec; iVec << 2 << 3 << 5;
+        //eng.invoke(  & Engine::call<int>, taskIDs, iVec.begin(), iVec.size() );
+        eng.invoke( &Engine::call<int>, taskIDs, iVec);
+        app->flush();
+    }
+
 
 
 
