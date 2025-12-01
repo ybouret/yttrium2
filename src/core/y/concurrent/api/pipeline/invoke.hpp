@@ -76,8 +76,8 @@ namespace Yttrium
                 //
                 // Definitions
                 //______________________________________________________________
-                Y_Args_Expose(T,Type);
-                typedef void (ENGINE::*Meth)(Lockable &, Type &);
+                Y_Args_Expose(T,Type);                            //!< aliases
+                typedef void (ENGINE::*Meth)(Lockable &, Type &); //!< alias
 
                 //______________________________________________________________
                 //
@@ -92,11 +92,13 @@ namespace Yttrium
                 {
                 }
 
+                //! cleanup
                 inline ~UnaryJob() noexcept
                 {
 
                 }
 
+                //! duplicate \param job another job
                 inline UnaryJob(const UnaryJob &job) noexcept :
                 self(job.self),
                 meth(job.meth),
@@ -191,6 +193,12 @@ namespace Yttrium
             }
 
 
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
         protected:
             Appliance           app;  //!< shared pipeline
             EList               list; //!< one engine per pipeline thread
