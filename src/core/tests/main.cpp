@@ -48,6 +48,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(calculus_isqrt);
     Y_UTEST(calculus_iabs);
     Y_UTEST(calculus_bits_in);
+    Y_UTEST(calculus_primes);
 
 
 
