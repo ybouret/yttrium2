@@ -47,6 +47,8 @@ Y_UDONE()
 
 #include "y/concurrent/api/simd/crew.hpp"
 #include "y/concurrent/split/1d.hpp"
+#include "y/string/format.hpp"
+#include "y/stream/libc/output.hpp"
 
 namespace
 {
@@ -56,7 +58,7 @@ namespace
         static const uint64_t One   = 1;
         static const uint64_t Lower = 2;
         //static const uint64_t Upper = One << 32;
-        static const uint64_t Upper = 1023;
+        static const uint64_t Upper = 100;
         static const uint64_t Delta = Upper-Lower+One;
 
         explicit Computer() noexcept
@@ -73,7 +75,28 @@ namespace
         {
             Concurrent::Split::In1D       in1d(Delta);
             const Concurrent::Split::Zone zone = in1d(ctx,Lower);
-            { Y_Giant_Lock(); std::cerr << "@" << ctx << " : zone=" << zone << " -> "<< (zone.offset + zone.length - One) << std::endl; }
+            const uint64_t                last = (zone.offset + zone.length - One);
+            { Y_Giant_Lock(); std::cerr << "@" << ctx << " : zone=" << zone << " -> "<< last << std::endl; }
+
+            const String fn = Formatted::Get("primes%u.%u.txt", unsigned(ctx.indx), unsigned(ctx.size));
+            OutputFile::Overwrite(fn);
+
+            uint64_t i=Prime::Next(zone.offset);
+            while(i<=last)
+            {
+                //std::cerr << i << std::endl;
+                AppendFile fp(fn);
+                fp << Hexadecimal(i,Concise).c_str() << "\n";
+                i = Prime::Next(++i);
+            }
+            assert(i>last);
+            if(ctx.indx>=ctx.size)
+            {
+                AppendFile fp(fn);
+                fp << Hexadecimal(i,Concise).c_str() << "\n";
+            }
+
+
         }
 
 
