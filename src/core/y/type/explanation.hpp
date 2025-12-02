@@ -18,4 +18,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Type_Explanation_Included

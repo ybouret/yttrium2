@@ -41,32 +41,62 @@ Y_UTEST(calculus_primes)
     }
 
 
-#if 0
-    uint32_t dmax = 0;
+}
+Y_UDONE()
 
-    while(true)
+
+#include "y/concurrent/api/simd/crew.hpp"
+#include "y/concurrent/split/1d.hpp"
+
+namespace
+{
+    class Computer
     {
-        const uint32_t j = Prime::Next(i+1);
-        const uint32_t d = (j-i); Y_ASSERT( 0 == (d&1) );
-        const uint32_t delta = (d>>1) -1;
-        const unsigned dbits = BitsFor(delta);
-        if(dbits>8) break;
-        if(delta>dmax)
-            dmax = delta;
-        std::cerr << Hexadecimal(j) << " -> d/2-1 = " << std::setw(3) << delta << " #bits = " << std::setw(2) << dbits << " #" << std::setw(10) << n << " | " << j << std::endl;
-        if(j>=65536) break;
+    public:
+        static const uint64_t One   = 1;
+        static const uint64_t Lower = 2;
+        //static const uint64_t Upper = One << 32;
+        static const uint64_t Upper = 1023;
+        static const uint64_t Delta = Upper-Lower+One;
 
-        ++n;
-        if(n>=65536) break;
+        explicit Computer() noexcept
+        {
 
-        i=j;
+        }
 
+        virtual ~Computer() noexcept
+        {
+
+        }
+
+        inline void find(const Concurrent::Context &ctx)
+        {
+            Concurrent::Split::In1D       in1d(Delta);
+            const Concurrent::Split::Zone zone = in1d(ctx,Lower);
+            { Y_Giant_Lock(); std::cerr << "@" << ctx << " : zone=" << zone << " -> "<< (zone.offset + zone.length - One) << std::endl; }
+        }
+
+
+    private:
+        Y_Disable_Copy_And_Assign(Computer);
+    };
+
+    const uint64_t Computer::Lower;
+    const uint64_t Computer::Upper;
+
+}
+
+Y_UTEST(calculus_fprimes)
+{
+    Concurrent::Crew crew( Concurrent::Site::Default );
+    Computer         computer;
+    std::cerr << Hexadecimal(Computer::Lower) << " -> " << Hexadecimal( Computer::Upper ) << std::endl;
+    {
+        Concurrent::Kernel kernel( &computer, & Computer::find);
+        crew(kernel);
     }
-#endif
-
 
 
 
 }
 Y_UDONE()
-

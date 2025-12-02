@@ -47,8 +47,8 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const size_t offset; //!< cumulative offset
-                const size_t length; //!< dedicated  length from offset
+                const uint64_t offset; //!< cumulative offset
+                const uint64_t length; //!< dedicated  length from offset
             private:
                 Y_Disable_Assign(Zone); //!< discarding
             };
@@ -96,9 +96,9 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const T      offset; //!< offset
-                const size_t length; //!< length
-                const T      utmost; //!< utmost
+                const T        offset; //!< offset
+                const uint64_t length; //!< length
+                const T        utmost; //!< utmost
 
             private:
                 Y_Disable_Copy_And_Assign(Segment); //!< discarding
@@ -142,7 +142,7 @@ namespace Yttrium
                 //______________________________________________________________
 
                 //! setup \param ini initial offset \param num positive length
-                inline explicit HeavySegment(const T ini, const size_t num) noexcept :
+                inline explicit HeavySegment(const T ini, const uint64_t num) noexcept :
                 Segment<T>()
                 {
                     assert(num>0);
@@ -261,8 +261,8 @@ namespace Yttrium
                 // C++
                 //
                 //______________________________________________________________
-                In1D(const size_t) noexcept; //!< setup with burden
-                virtual ~In1D()    noexcept; //!< cleanup
+                In1D(const uint64_t) noexcept; //!< setup with burden
+                virtual ~In1D()      noexcept; //!< cleanup
 
                 //______________________________________________________________
                 //
@@ -276,14 +276,14 @@ namespace Yttrium
                  \param numProcessors target count of cpu
                  \param initialOffset to propagate
                  */
-                void boot(const size_t numProcessors,
-                          const size_t initialOffset) noexcept;
+                void boot(const size_t   numProcessors,
+                          const uint64_t initialOffset) noexcept;
 
                 //! \return true if a new zone was computed
                 bool next() noexcept;
 
                 //! \return matching zone with initial offset
-                Zone operator()(const Member &, const size_t) noexcept;
+                Zone operator()(const Member &, const uint64_t) noexcept;
 
                 //! compute \param segments parallel segments \param ini initial offset \return segments
                 template <typename T> inline
@@ -309,9 +309,9 @@ namespace Yttrium
 
             private:
                 size_t       divide; //!< internal divide
-                size_t       remain; //!< internal remain
+                uint64_t     remain; //!< internal remain
             public:
-                const size_t burden; //!< original burden
+                const uint64_t burden; //!< original burden
             private:
                 Y_Disable_Copy_And_Assign(In1D); //!< discarding
             };

@@ -38,15 +38,15 @@ namespace Yttrium
             {
             }
 
-            In1D:: In1D(const size_t count) noexcept :
+            In1D:: In1D(const uint64_t count) noexcept :
             divide(0),
             remain(0),
             burden(count)
             {
             }
 
-            void In1D:: boot(const size_t numProcessors,
-                             const size_t initialOffset) noexcept
+            void In1D:: boot(const size_t   numProcessors,
+                             const uint64_t initialOffset) noexcept
             {
                 assert(numProcessors>0);
                 divide = numProcessors;
@@ -65,7 +65,7 @@ namespace Yttrium
             }
 
 
-            Zone In1D:: operator()(const Member &m, const size_t initialOffset) noexcept
+            Zone In1D:: operator()(const Member &m, const uint64_t initialOffset) noexcept
             {
                 boot(m.size,initialOffset);
                 for(size_t i=m.indx;i>0;--i) (void) next();
