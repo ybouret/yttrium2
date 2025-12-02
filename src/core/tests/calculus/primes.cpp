@@ -78,7 +78,7 @@ namespace
             const uint64_t                last = (zone.offset + zone.length - One);
             { Y_Giant_Lock(); std::cerr << "@" << ctx << " : zone=" << zone << " -> "<< last << std::endl; }
 
-            const String fn = Formatted::Get("primes%02u.%02u.txt", unsigned(ctx.indx), unsigned(ctx.size));
+            const String fn = Formatted::Get("primes%02u.%02u.txt", unsigned(ctx.size), unsigned(ctx.indx));
             OutputFile   fp(fn);
 
             uint64_t i=Prime::Next(zone.offset);
