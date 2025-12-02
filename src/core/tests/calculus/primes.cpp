@@ -49,6 +49,7 @@ Y_UDONE()
 #include "y/concurrent/split/1d.hpp"
 #include "y/string/format.hpp"
 #include "y/stream/libc/output.hpp"
+#include "y/stream/libc/input.hpp"
 
 namespace
 {
@@ -58,7 +59,7 @@ namespace
         static const uint64_t One   = 1;
         static const uint64_t Lower = 2;
         //static const uint64_t Upper = One << 32;
-        static const uint64_t Upper = 100000000;
+        static const uint64_t Upper = 1000000000;
         static const uint64_t Delta = Upper-Lower+One;
 
         explicit Computer() noexcept
@@ -109,9 +110,11 @@ namespace
 
 #include "y/system/wall-time.hpp"
 #include "y/format/human-readable.hpp"
+#include "y/vfs/local/fs.hpp"
 
-Y_UTEST(calculus_fprimes)
+Y_UTEST(calculus_primes33)
 {
+    VFS &            fs = LocalFS::Instance();
     Concurrent::Crew crew( Concurrent::Site::Default );
     Computer         computer;
     std::cerr << Hexadecimal(Computer::Lower) << " -> " << Hexadecimal( Computer::Upper ) << std::endl;
@@ -124,7 +127,22 @@ Y_UTEST(calculus_fprimes)
     }
     const uint64_t ellapsed = chrono.Ticks() - mark;
     std::cerr << "Done in " << chrono(ellapsed) << " seconds" << std::endl;
+    std::cerr << "Wait while merging files..." << std::endl;
+    {
+        OutputFile fp("primes33.txt");
 
+        for(size_t indx=1;indx<=crew.size();++indx)
+        {
+            const String fn = Formatted::Get("primes%02u.%02u.txt", unsigned( crew.size() ), unsigned( indx ) );
+            std::cerr << "[+] " << fn << std::endl;
+            {
+                InputFile    inp(fn);
+                char C = 0;
+                while(inp.query(C)) fp.write(C);
+            }
+            fs.tryRemoveFile(fn);
+        }
+    }
 
 }
 Y_UDONE()
