@@ -58,7 +58,7 @@ namespace
         static const uint64_t One   = 1;
         static const uint64_t Lower = 2;
         //static const uint64_t Upper = One << 32;
-        static const uint64_t Upper = 100;
+        static const uint64_t Upper = 100000000;
         static const uint64_t Delta = Upper-Lower+One;
 
         explicit Computer() noexcept
@@ -78,24 +78,22 @@ namespace
             const uint64_t                last = (zone.offset + zone.length - One);
             { Y_Giant_Lock(); std::cerr << "@" << ctx << " : zone=" << zone << " -> "<< last << std::endl; }
 
-            const String fn = Formatted::Get("primes%u.%u.txt", unsigned(ctx.indx), unsigned(ctx.size));
-            OutputFile::Overwrite(fn);
+            const String fn = Formatted::Get("primes%02u.%02u.txt", unsigned(ctx.indx), unsigned(ctx.size));
+            OutputFile   fp(fn);
 
             uint64_t i=Prime::Next(zone.offset);
             while(i<=last)
             {
                 //std::cerr << i << std::endl;
-                AppendFile fp(fn);
                 fp << Hexadecimal(i,Concise).c_str() << "\n";
                 i = Prime::Next(++i);
             }
             assert(i>last);
             if(ctx.indx>=ctx.size)
             {
-                AppendFile fp(fn);
                 fp << Hexadecimal(i,Concise).c_str() << "\n";
             }
-
+            { Y_Giant_Lock(); std::cerr << "@" << ctx << " : done" << std::endl; }
 
         }
 
@@ -109,16 +107,23 @@ namespace
 
 }
 
+#include "y/system/wall-time.hpp"
+#include "y/format/human-readable.hpp"
+
 Y_UTEST(calculus_fprimes)
 {
     Concurrent::Crew crew( Concurrent::Site::Default );
     Computer         computer;
     std::cerr << Hexadecimal(Computer::Lower) << " -> " << Hexadecimal( Computer::Upper ) << std::endl;
+
+    System::WallTime chrono;
+    const uint64_t   mark = chrono.Ticks();
     {
         Concurrent::Kernel kernel( &computer, & Computer::find);
         crew(kernel);
     }
-
+    const uint64_t ellapsed = chrono.Ticks() - mark;
+    std::cerr << "Done in " << chrono(ellapsed) << " seconds" << std::endl;
 
 
 }
