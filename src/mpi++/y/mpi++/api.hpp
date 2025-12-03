@@ -387,13 +387,26 @@ namespace Yttrium
 
 
 
-        // for arithmetic types
+        //----------------------------------------------------------------------
+        //
+        //
+        //! for plain arithmetic types
+        //
+        //
+        //----------------------------------------------------------------------
         template <typename T> struct Plain
         {
-            static  const bool    Used = TypeTraits<T>::IsArithmetic;
-            typedef T             Type;
-            static const unsigned DIMS = 1;
+            static  const bool    Used = TypeTraits<T>::IsArithmetic; //!< applicable
+            typedef T             Type;                               //!< alias
+            static const unsigned DIMS = 1;                           //!< alias
 
+            //! send one type
+            /**
+             \param mpi    MPI
+             \param value  type value
+             \param target target
+             \param tag    tag
+             */
             static inline void Send(MPI        & mpi,
                                     const Type & value,
                                     const size_t target,
@@ -402,6 +415,13 @@ namespace Yttrium
                 mpi.send(&value,1,target,tag);
             }
 
+            //! receive one type
+            /**
+             \param mpi    MPI
+             \param source source
+             \param tag    tag
+             \return type value
+             */
             static inline Type Recv(MPI        & mpi,
                                     const size_t source,
                                     const int    tag)
@@ -413,14 +433,27 @@ namespace Yttrium
             }
         };
 
-        // for straight compact linear types
+        //----------------------------------------------------------------------
+        //
+        //
+        //! for straight compact linear aggregate of arithmetic types
+        //
+        //
+        //----------------------------------------------------------------------
         template <typename T, template <typename> class LINEAR> struct Plain< LINEAR<T> >
         {
-            typedef T             Type;
-            static const bool     Derived = Y_Is_SuperSubClass(Readable<T>,LINEAR<T>);
-            static const unsigned DIMS    = sizeof(LINEAR<T>)/sizeof(T);
-            static const bool     Used    = TypeTraits<T>::IsArithmetic && !Derived;
+            typedef T             Type;                                                 //!< alias
+            static const bool     Derived = Y_Is_SuperSubClass(Readable<T>,LINEAR<T>);  //!< alias
+            static const unsigned DIMS    = sizeof(LINEAR<T>)/sizeof(T);                //!< alias
+            static const bool     Used    = TypeTraits<T>::IsArithmetic && !Derived;    //!< alias
 
+            //! send one LINEAR<T>
+            /**
+             \param mpi    MPI
+             \param value  type value
+             \param target target
+             \param tag    tag
+             */
             static inline void Send(MPI &             mpi,
                                     const LINEAR<T> & value,
                                     const size_t      target,
@@ -429,7 +462,14 @@ namespace Yttrium
                 mpi.send( (T *) &value, DIMS, target, tag);
             }
 
-            static inline LINEAR<T>Recv(MPI        & mpi,
+            //! receive one LINEAR<T>
+            /**
+             \param mpi    MPI
+             \param source source
+             \param tag    tag
+             \return type value
+             */
+            static inline LINEAR<T> Recv(MPI        & mpi,
                                          const size_t source,
                                          const int    tag)
             {
@@ -441,19 +481,31 @@ namespace Yttrium
         };
 
 
+        //----------------------------------------------------------------------
+        //
+        //
         //! for specific types
+        //
+        //
+        //----------------------------------------------------------------------
         template <typename T> struct Codec
         {
-            static void Send(MPI &, const T &, const size_t, const int);
-            static T    Recv(MPI &, const size_t, const int);
+            static void Send(MPI &, const T &, const size_t, const int); //!< specific
+            static T    Recv(MPI &, const size_t, const int);            //!< specific \return type value
         };
 
-
+        //----------------------------------------------------------------------
+        //
+        //
+        //! I/O API selection
+        //
+        //
+        //----------------------------------------------------------------------
         template <typename T> struct IO
         {
         public:
-            static const bool UsePlain = Plain<T>::Used;
-            typedef typename Pick<UsePlain,Plain<T>,Codec<T>>::Type API;
+            static const bool UsePlain = Plain<T>::Used;                 //!< alias
+            typedef typename Pick<UsePlain,Plain<T>,Codec<T>>::Type API; //!< alias
 
             template <typename CONTIGUOUS> static inline
             void Send(MPI                   & mpi,
@@ -528,7 +580,12 @@ namespace Yttrium
         };
 
 
-
+        //! send one type
+        /**
+         \param arg type value
+         \param target target
+         \param tag    optional tag
+         */
         template <typename T> inline
         void send1(const T &    arg,
                    const size_t target,
@@ -537,6 +594,12 @@ namespace Yttrium
             IO<T>::API::Send(*this,arg,target,tag);
         }
 
+        //! recv one type
+        /**
+         \param source source
+         \param tag    optional tag
+         \return type value
+         */
         template <typename T> inline
         T recv1(const size_t source,
                 const int    tag = DefaultTag )
@@ -544,6 +607,12 @@ namespace Yttrium
             return IO<T>::API::Recv(*this,source,tag);
         }
 
+        //! load one type
+        /**
+         \param arg    type location
+         \param source source
+         \param tag    optional tag
+         */
         template <typename T> inline
         void load1(T &arg, const size_t source, const int tag = DefaultTag)
         {
@@ -560,7 +629,7 @@ namespace Yttrium
 
 
         template <typename CONTIGUOUS> inline
-        void recvN(  CONTIGUOUS &arr,
+        void recvN(CONTIGUOUS &  arr,
                    const size_t  source,
                    const int     tag = DefaultTag)
         {
@@ -595,9 +664,11 @@ namespace Yttrium
 /**/ if( MPI_SUCCESS != err ) throw MPI::Exception(err,"in '%s'",#CODE); \
 } while(false)
 
-#define Y_MPI_Mark() const uint64_t __mark__ = System::WallTime::Ticks()
-#define Y_MPI_Gain() (System::WallTime::Ticks() - __mark__)
+#define Y_MPI_Mark() const uint64_t __mark__ = System::WallTime::Ticks() //!< helper
+#define Y_MPI_Gain() (System::WallTime::Ticks() - __mark__)              //!< helper
 
+
+    //! in order CODE with mpi_ = THE_MPI
 #define  Y_MPI_ForEach(THE_MPI,CODE) do \
 /**/    { \
 /**/        MPI &mpi_ = (THE_MPI); \

@@ -9,6 +9,11 @@ namespace Yttrium
 {
     namespace Prime
     {
+        //! basic testing
+        /**
+         \param n unsigned value
+         \return true if n is prime
+         */
         template <typename T> inline
         bool Test(const T n) noexcept
         {
