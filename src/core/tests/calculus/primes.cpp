@@ -163,6 +163,6 @@ Y_UTEST(calculus_primes33)
         }
         std::cerr << "\t" << count << std::endl;
     }
-
+    
 }
 Y_UDONE()

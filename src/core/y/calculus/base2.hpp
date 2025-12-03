@@ -127,4 +127,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Calculus_Base2_Included

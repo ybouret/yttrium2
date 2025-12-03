@@ -42,6 +42,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(calculus_integer_log2);
     Y_UTEST(calculus_alignment);
     Y_UTEST(calculus_base2);
+    Y_UTEST(calculus_base10);
     Y_UTEST(calculus_gcd);
     Y_UTEST(calculus_bits_for);
     Y_UTEST(calculus_bytes_for);
