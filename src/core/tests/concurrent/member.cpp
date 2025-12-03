@@ -10,15 +10,18 @@ Y_UTEST(concurrent_member)
 {
     Random::ParkMiller ran;
 
+
     for(size_t size=1;size<=1024; size <<= 1)
     {
         std::cerr << std::endl;
         for(size_t i=0;i<10;++i)
         {
             const Concurrent::Member m(size, ran.lt<size_t>(size) );
-            std::cerr << m.name() << std::endl;
+            std::cerr << m << std::endl;
         }
     }
+    
+    Y_PRINTV(Concurrent::Member::MaxSize);
 
 }
 Y_UDONE()

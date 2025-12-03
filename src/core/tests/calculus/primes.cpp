@@ -50,6 +50,7 @@ Y_UDONE()
 #include "y/string/format.hpp"
 #include "y/stream/libc/output.hpp"
 #include "y/stream/libc/input.hpp"
+#include <cstring>
 
 namespace
 {
@@ -58,12 +59,12 @@ namespace
     public:
         static const uint64_t One   = 1;
         static const uint64_t Lower = 2;
-        //static const uint64_t Upper = One << 32;
+        static const uint64_t Upper = One << 32;
 
 
         explicit Computer(const uint64_t nmax) noexcept :
         lower(Lower),
-        upper(nmax),
+        upper(nmax<Lower ? Upper : nmax),
         delta(upper-lower+One)
         {
 
@@ -79,6 +80,8 @@ namespace
             fp << Hexadecimal(p,Concise).c_str() + 2<< "\n";
         }
 
+
+
         inline void find(const Concurrent::Context &ctx)
         {
             Concurrent::Split::In1D       in1d(delta);
@@ -86,9 +89,13 @@ namespace
             const uint64_t                last = (zone.offset + zone.length - One);
             { Y_Giant_Lock(); std::cerr << "@" << ctx << " : zone=" << zone << " -> "<< last << std::endl; }
 
-            ctx.sync.lock();
-            const String fn = "primes" + ctx.name() + ".txt";
-            ctx.sync.unlock();
+            char fn[256];
+            memset(fn,0,sizeof(fn));
+            strncat(fn,"primes",sizeof(fn)-1);
+            strncat(fn,ctx.c_str(),sizeof(fn)-1);
+            strncat(fn,".txt",sizeof(fn)-1);
+
+
             OutputFile   fp(fn);
 
             uint64_t i=Prime::Next(zone.offset);
@@ -122,12 +129,21 @@ namespace
 #include "y/format/human-readable.hpp"
 #include "y/vfs/local/fs.hpp"
 #include "y/stream/libc/file/copy.hpp"
+#include "y/string/env.hpp"
+#include "y/ascii/convert.hpp"
 
 Y_UTEST(calculus_primes33)
 {
     VFS &            fs = LocalFS::Instance();
     Concurrent::Crew crew( Concurrent::Site::Default );
-    Computer         computer(1000);
+    String           nstr;
+    uint64_t         nmax = 0;
+    if( Environment::Get(nstr,"NMAX") )
+    {
+        nmax = ASCII::Convert::To<uint64_t>(nstr,"nmax");
+    }
+    Computer         computer(nmax);
+
 
     std::cerr << Hexadecimal(computer.lower) << " -> " << Hexadecimal(computer.upper) << std::endl;
 
@@ -148,7 +164,7 @@ Y_UTEST(calculus_primes33)
         for(size_t rank=0;rank<crew.size();++rank)
         {
             const Concurrent::Member m(crew.size(),rank);
-            const String fn = "primes" + m.name() + ".txt";
+            const String fn = String("primes") + m.c_str() + ".txt";
             std::cerr << "[+] " << fn << std::endl;
             Libc::FileCopy::Merge(fp,fn);
             fs.tryRemoveFile(fn);
