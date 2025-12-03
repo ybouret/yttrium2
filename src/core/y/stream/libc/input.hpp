@@ -51,8 +51,7 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
-
-        Libc::InputFile & operator*() noexcept;
+        Libc::InputFile & operator*() noexcept; //!< \return low-level file
 
     private:
         Y_Disable_Copy_And_Assign(InputFile); //!< discarding

@@ -29,9 +29,9 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            static const unsigned TagSize = 16;
-            static const unsigned Digits  = (TagSize-2)/2;
-            static const size_t   MaxSize = Integer10ToThe<Digits>::Value - 1;
+            static const unsigned TagSize = 16;                                //!< alias
+            static const unsigned Digits  = (TagSize-2)/2;                     //!< alias
+            static const size_t   MaxSize = Integer10ToThe<Digits>::Value - 1; //!< alias
 
 
             //__________________________________________________________________
@@ -61,7 +61,7 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            void updateTag() noexcept;
+            void updateTag() noexcept; //!< make tag from current size and indx
 
             //__________________________________________________________________
             //
@@ -74,8 +74,8 @@ namespace Yttrium
             const size_t indx;      //!< local indx=rank+1
 
         private:
-            Y_Disable_Assign(Member); //!< disarding
-            const char   tag[16];
+            Y_Disable_Assign(Member);  //!< disarding
+            const char   tag[TagSize]; //!< store tag
 
         };
     }

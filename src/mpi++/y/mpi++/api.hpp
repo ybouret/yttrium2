@@ -84,7 +84,7 @@ namespace Yttrium
             //! setup
             /**
              \param dt MPI_Datatype
-             \param sh integer log2 of type size
+             \param sz type size
              \param ti system type id
              */
             explicit DataType(MPI_Datatype          dt,
@@ -373,6 +373,7 @@ namespace Yttrium
          \param source origin
          \param tag    tag
          \param varName optional variable name
+         \return integral count
          */
         size_t recvCount(const size_t       source,
                          const int          tag,

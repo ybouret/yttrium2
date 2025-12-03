@@ -11,7 +11,7 @@ namespace Yttrium
 {
     namespace Concurrent
     {
-        typedef ArcPtr<Pipeline> Appliance;
+        typedef ArcPtr<Pipeline> Appliance; //!< alias
 
         //______________________________________________________________________
         //

@@ -10,10 +10,20 @@
 namespace Yttrium
 {
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Base10 Operations
+    //
+    //
+    //__________________________________________________________________________
     template <typename T>
     struct Base10
     {
-        static const T Ten = 10;
+        static const T Ten = 10; //!< alias
+
+        //! \param x unsigned number \return digits to print x
         static unsigned DigitsFor(T x)
         {
             unsigned count = 1;
