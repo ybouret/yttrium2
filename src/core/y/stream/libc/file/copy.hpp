@@ -10,6 +10,8 @@
 
 namespace Yttrium
 {
+    namespace Hashing { class Function; }
+
     namespace Libc
     {
         //______________________________________________________________________
@@ -23,8 +25,8 @@ namespace Yttrium
         struct FileCopy
         {
 
-            static void Run(OutputFile &, InputFile &); //!< low-level copy
-            static void Run(Yttrium::OutputFile &, Yttrium::InputFile &); //!< high-level copy
+            static void Run(OutputFile &, InputFile &, Hashing::Function * const); //!< low-level copy
+            static void Run(Yttrium::OutputFile &, Yttrium::InputFile &, Hashing::Function * const); //!< high-level copy
 
             //! merge content
             /**
@@ -32,9 +34,9 @@ namespace Yttrium
              \param args   argument for InputFile constructor
              */
             template <typename ARGS> static inline
-            void Merge(Yttrium::OutputFile &output, const ARGS &args) {
+            void Merge(Yttrium::OutputFile &output, const ARGS &args, Hashing::Function * const H = 0) {
                 Yttrium::InputFile input(args);
-                Run(output,input);
+                Run(output,input,H);
             }
 
 

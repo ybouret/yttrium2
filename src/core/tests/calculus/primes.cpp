@@ -131,6 +131,8 @@ namespace
 #include "y/stream/libc/file/copy.hpp"
 #include "y/string/env.hpp"
 #include "y/ascii/convert.hpp"
+#include "y/hashing/sha1.hpp"
+#include "y/hashing/md.hpp"
 
 Y_UTEST(calculus_primes33)
 {
@@ -158,15 +160,17 @@ Y_UTEST(calculus_primes33)
     std::cerr << "Wait while merging files..." << std::endl;
 
     const String fileName = "primes33.txt";
-    {
-        OutputFile fp(fileName);
+    Hashing::SHA1 H;
+    H.set();
 
+    {
+        OutputFile  fp(fileName);
         for(size_t rank=0;rank<crew.size();++rank)
         {
             const Concurrent::Member m(crew.size(),rank);
             const String fn = String("primes") + m.c_str() + ".txt";
             std::cerr << "[+] " << fn << std::endl;
-            Libc::FileCopy::Merge(fp,fn);
+            Libc::FileCopy::Merge(fp,fn,&H);
             fs.tryRemoveFile(fn);
         }
     }
@@ -182,6 +186,8 @@ Y_UTEST(calculus_primes33)
         }
         std::cerr << "\t" << count << std::endl;
     }
-    
+    const Hashing::Digest D = Hashing::MD::Of(H);
+    std::cerr << "\t" << H.callSign() << " = " << D << std::endl;
+
 }
 Y_UDONE()
