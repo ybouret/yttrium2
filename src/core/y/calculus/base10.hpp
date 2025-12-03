@@ -13,10 +13,12 @@ namespace Yttrium
     template <typename T>
     struct Base10
     {
-        
-        static unsigned DigitsFor(const T x)
+        static const T Ten = 10;
+        static unsigned DigitsFor(T x)
         {
-
+            unsigned count = 1;
+            while(x>=Ten) { x/=Ten; ++count; }
+            return count;
         }
     };
 
