@@ -125,7 +125,8 @@ Y_UTEST(calculus_primes33)
 {
     VFS &            fs = LocalFS::Instance();
     Concurrent::Crew crew( Concurrent::Site::Default );
-    Computer         computer(1000);
+    Computer         computer(1000000000);
+
     std::cerr << Hexadecimal(computer.lower) << " -> " << Hexadecimal(computer.upper) << std::endl;
 
     System::WallTime chrono;
