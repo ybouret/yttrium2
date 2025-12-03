@@ -51,6 +51,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(calculus_bits_in);
     Y_UTEST(calculus_primes);
     Y_UTEST(calculus_primes33); // no ctest
+    Y_UTEST(calculus_gap33);    // no ctest
 
 
 

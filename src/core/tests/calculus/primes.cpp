@@ -191,3 +191,28 @@ Y_UTEST(calculus_primes33)
 
 }
 Y_UDONE()
+
+#include "y/stream/gzip/input.hpp"
+
+static inline
+uint64_t Decode(const String &line)
+{
+    return 0;
+}
+
+Y_UTEST(calculus_gap33)
+{
+    if(argc<1) return 0;
+
+    const String fn = argv[1];
+    GZip::Input  fp(fn);
+    {
+        String line;
+        while( fp.gets(line) )
+        {
+            //std::cerr << line << std::endl;
+        }
+    }
+
+}
+Y_UDONE()
