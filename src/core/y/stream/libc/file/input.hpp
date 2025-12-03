@@ -84,18 +84,18 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class StandarInputFile : public InputFile
+        class StandardInputFile : public InputFile
         {
         public:
-            explicit StandarInputFile();          //!< setup from stdin
-            virtual ~StandarInputFile() noexcept; //!< cleanup
+            explicit StandardInputFile();          //!< setup from stdin
+            virtual ~StandardInputFile() noexcept; //!< cleanup
 
         private:
-            Y_Disable_Copy_And_Assign(StandarInputFile); //!< discarding
+            Y_Disable_Copy_And_Assign(StandardInputFile); //!< discarding
         };
 
     }
 
 }
 
-#endif
+#endif // !Y_Libc_File_Input_Included

@@ -20,7 +20,7 @@ namespace Yttrium
             assert(0!=fileName);
 
             if( 0==strcmp(fileName,Y_STDIN) )
-                return new Libc::StandarInputFile();
+                return new Libc::StandardInputFile();
 
             Y_Giant_Lock();
             FILE * const fp = fopen(fileName, "rb");
@@ -45,7 +45,7 @@ namespace Yttrium
     }
 
 
-    InputFile:: InputFile(const StdIn_ &) : file( new Libc::StandarInputFile() )
+    InputFile:: InputFile(const StdIn_ &) : file( new Libc::StandardInputFile() )
     {
         
     }
@@ -66,6 +66,11 @@ namespace Yttrium
     void InputFile:: store(const char C)
     {
         file->store(C);
+    }
+
+    Libc::InputFile & InputFile:: operator*() noexcept
+    {
+        return *file;
     }
 
 }

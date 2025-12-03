@@ -22,7 +22,6 @@ namespace Yttrium
 
         bool InputFile:: query(char &C)
         {
-#if 1
             if (Q.size())
             {
                 C = char(Q.pullHead());
@@ -35,7 +34,6 @@ namespace Yttrium
                 return false;
             }
             return true;
-#endif
         }
 
         void InputFile:: store(const char C)
@@ -77,13 +75,13 @@ namespace Yttrium
             return stdin;
         }
 
-        StandarInputFile:: StandarInputFile() :
+        StandardInputFile:: StandardInputFile() :
         InputFile(GetStdIn(),false)
         {
 
         }
 
-        StandarInputFile:: ~StandarInputFile() noexcept
+        StandardInputFile:: ~StandardInputFile() noexcept
         {
         }
         

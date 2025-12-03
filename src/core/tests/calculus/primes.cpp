@@ -115,6 +115,7 @@ namespace
 #include "y/system/wall-time.hpp"
 #include "y/format/human-readable.hpp"
 #include "y/vfs/local/fs.hpp"
+#include "y/stream/libc/file/copy.hpp"
 
 Y_UTEST(calculus_primes33)
 {
@@ -139,11 +140,7 @@ Y_UTEST(calculus_primes33)
         {
             const String fn = Formatted::Get("primes%02u.%02u.txt", unsigned( crew.size() ), unsigned( indx ) );
             std::cerr << "[+] " << fn << std::endl;
-            {
-                InputFile    inp(fn);
-                char C = 0;
-                while(inp.query(C)) fp.write(C);
-            }
+            Libc::FileCopy::Merge(fp,fn);
             fs.tryRemoveFile(fn);
         }
     }

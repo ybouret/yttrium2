@@ -67,6 +67,8 @@ namespace Yttrium
         //! append \param filename destination \param fmt C-style format
         static void Echo(const Core::String<char> & filename, const char * const fmt,...) Y_Printf_Check(2,3);
 
+        Libc::OutputFile & operator*() noexcept;
+
     private:
         Y_Disable_Copy_And_Assign(OutputFile); //!< discarding
         Libc::OutputFile * const file;         //!< low-level file
@@ -93,4 +95,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Libc_OutputFile_Included

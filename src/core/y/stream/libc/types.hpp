@@ -19,5 +19,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Libc_Types_Included
 

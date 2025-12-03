@@ -85,6 +85,13 @@ namespace Yttrium
         file->flush();
     }
 
+
+    Libc::OutputFile & OutputFile:: operator*() noexcept
+    {
+        return *file;
+    }
+
+
     AppendFile:: AppendFile(const char * const fileName) :
     OutputFile(fileName,true)
     {

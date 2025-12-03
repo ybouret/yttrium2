@@ -44,7 +44,15 @@ namespace Yttrium
         //______________________________________________________________________
         virtual bool query(char &C);
         virtual void store(const char C);
-        
+
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
+
+        Libc::InputFile & operator*() noexcept;
 
     private:
         Y_Disable_Copy_And_Assign(InputFile); //!< discarding
@@ -53,4 +61,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Libc_InputFile_Included
