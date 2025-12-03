@@ -59,7 +59,7 @@ namespace
         static const uint64_t One   = 1;
         static const uint64_t Lower = 2;
         //static const uint64_t Upper = One << 32;
-        static const uint64_t Upper = 1000000000;
+        static const uint64_t Upper = 1000000;
         static const uint64_t Delta = Upper-Lower+One;
 
         explicit Computer() noexcept
@@ -70,6 +70,11 @@ namespace
         virtual ~Computer() noexcept
         {
 
+        }
+
+        static inline void Emit(OutputStream &fp, const uint64_t p)
+        {
+            fp << Hexadecimal(p,Concise).c_str() + 2<< "\n";
         }
 
         inline void find(const Concurrent::Context &ctx)
@@ -85,14 +90,13 @@ namespace
             uint64_t i=Prime::Next(zone.offset);
             while(i<=last)
             {
-                //std::cerr << i << std::endl;
-                fp << Hexadecimal(i,Concise).c_str() << "\n";
+                Emit(fp,i);
                 i = Prime::Next(++i);
             }
             assert(i>last);
             if(ctx.indx>=ctx.size)
             {
-                fp << Hexadecimal(i,Concise).c_str() << "\n";
+                Emit(fp,i);
             }
             { Y_Giant_Lock(); std::cerr << "@" << ctx << " : done" << std::endl; }
 
