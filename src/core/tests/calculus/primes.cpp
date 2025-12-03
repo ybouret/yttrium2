@@ -59,10 +59,12 @@ namespace
         static const uint64_t One   = 1;
         static const uint64_t Lower = 2;
         //static const uint64_t Upper = One << 32;
-        static const uint64_t Upper = 1000000;
-        static const uint64_t Delta = Upper-Lower+One;
 
-        explicit Computer() noexcept
+
+        explicit Computer(const uint64_t nmax) noexcept :
+        lower(Lower),
+        upper(nmax),
+        delta(upper-lower+One)
         {
 
         }
@@ -79,7 +81,7 @@ namespace
 
         inline void find(const Concurrent::Context &ctx)
         {
-            Concurrent::Split::In1D       in1d(Delta);
+            Concurrent::Split::In1D       in1d(delta);
             const Concurrent::Split::Zone zone = in1d(ctx,Lower);
             const uint64_t                last = (zone.offset + zone.length - One);
             { Y_Giant_Lock(); std::cerr << "@" << ctx << " : zone=" << zone << " -> "<< last << std::endl; }
@@ -102,13 +104,15 @@ namespace
 
         }
 
+        const uint64_t lower;
+        const uint64_t upper;
+        const uint64_t delta;
 
     private:
         Y_Disable_Copy_And_Assign(Computer);
     };
 
     const uint64_t Computer::Lower;
-    const uint64_t Computer::Upper;
 
 }
 
@@ -121,8 +125,8 @@ Y_UTEST(calculus_primes33)
 {
     VFS &            fs = LocalFS::Instance();
     Concurrent::Crew crew( Concurrent::Site::Default );
-    Computer         computer;
-    std::cerr << Hexadecimal(Computer::Lower) << " -> " << Hexadecimal( Computer::Upper ) << std::endl;
+    Computer         computer(1000);
+    std::cerr << Hexadecimal(computer.lower) << " -> " << Hexadecimal(computer.upper) << std::endl;
 
     System::WallTime chrono;
     const uint64_t   mark = chrono.Ticks();
@@ -133,8 +137,10 @@ Y_UTEST(calculus_primes33)
     const uint64_t ellapsed = chrono.Ticks() - mark;
     std::cerr << "Done in " << chrono(ellapsed) << " seconds" << std::endl;
     std::cerr << "Wait while merging files..." << std::endl;
+
+    const String fileName = "primes33.txt";
     {
-        OutputFile fp("primes33.txt");
+        OutputFile fp(fileName);
 
         for(size_t indx=1;indx<=crew.size();++indx)
         {
@@ -143,6 +149,18 @@ Y_UTEST(calculus_primes33)
             Libc::FileCopy::Merge(fp,fn);
             fs.tryRemoveFile(fn);
         }
+    }
+
+    std::cerr << "Counting Lines..." << std::endl;
+    {
+        size_t count = 0;
+        {
+            String line;
+            InputFile fp(fileName);
+            while( fp.gets(line) )
+                ++count;
+        }
+        std::cerr << "\t" << count << std::endl;
     }
 
 }
