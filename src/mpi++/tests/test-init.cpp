@@ -7,8 +7,7 @@ using namespace Yttrium;
 Y_UTEST(init)
 {
     MPI & mpi = MPI::Init(&argc,&argv);
-    mpi.display(std::cerr,0);
-
+    Y_MPI_ForEach(mpi,mpi.display(std::cerr,0) );
 }
 Y_UDONE()
 

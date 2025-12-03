@@ -60,7 +60,7 @@ namespace Yttrium
 
     void MPI:: display(std::ostream &os, size_t indent) const
     {
-        initProlog(os,indent) << Y_XML_Attr(size) << Y_XML_Attr(rank) << Y_XML_Attr(processorName);
+        initProlog(os,indent) << Y_XML_Attr(size) << Y_XML_Attr(rank) << Y_XML_Attr(processorName) << Y_XML_Attr(c_str());
         //initEpilog(os,true);
         initEpilog(os,false);
         for(DataType::Set::ConstIterator it=dts.begin();it!=dts.end();++it)
