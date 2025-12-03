@@ -1,8 +1,8 @@
 
 //! \file
 
-#ifndef Y_Memory_Dyadic_Included
-#define Y_Memory_Dyadic_Included 1
+#ifndef Y_Memory_Pooled_Included
+#define Y_Memory_Pooled_Included 1
 
 #include "y/memory/allocator.hpp"
 #include "y/singleton.hpp"
@@ -68,5 +68,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Memory_Pooled_Included
 

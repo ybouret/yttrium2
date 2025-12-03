@@ -96,5 +96,5 @@ namespace Yttrium
 }
 
 
-#endif
+#endif // !Y_Decimal_Included
 

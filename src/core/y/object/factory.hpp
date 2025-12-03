@@ -123,5 +123,5 @@ namespace Yttrium
     };
 }
 
-#endif
+#endif // !Y_Object_Factory_Included
 

@@ -4,8 +4,8 @@
 #ifndef Y_Concurrent_Member_Included
 #define Y_Concurrent_Member_Included 1
 
-#include "y/core/setup.hpp"
-#include "y/ostream-proto.hpp"
+#include "y/string.hpp"
+
 namespace Yttrium
 {
     namespace Concurrent
@@ -35,6 +35,21 @@ namespace Yttrium
             Member(const Member &) noexcept; //!< duplicate
             Y_OSTREAM_PROTO(Member);         //!< display
 
+
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            String name() const;
+
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
             const size_t size; //!< total number of threads
             const size_t rank; //!< local rank
             const size_t indx; //!< local indx=rank+1

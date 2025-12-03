@@ -86,7 +86,9 @@ namespace
             const uint64_t                last = (zone.offset + zone.length - One);
             { Y_Giant_Lock(); std::cerr << "@" << ctx << " : zone=" << zone << " -> "<< last << std::endl; }
 
-            const String fn = Formatted::Get("primes%02u.%02u.txt", unsigned(ctx.size), unsigned(ctx.indx));
+            ctx.sync.lock();
+            const String fn = "primes" + ctx.name() + ".txt";
+            ctx.sync.unlock();
             OutputFile   fp(fn);
 
             uint64_t i=Prime::Next(zone.offset);
@@ -125,7 +127,7 @@ Y_UTEST(calculus_primes33)
 {
     VFS &            fs = LocalFS::Instance();
     Concurrent::Crew crew( Concurrent::Site::Default );
-    Computer         computer(1000000000);
+    Computer         computer(1000);
 
     std::cerr << Hexadecimal(computer.lower) << " -> " << Hexadecimal(computer.upper) << std::endl;
 
@@ -143,9 +145,10 @@ Y_UTEST(calculus_primes33)
     {
         OutputFile fp(fileName);
 
-        for(size_t indx=1;indx<=crew.size();++indx)
+        for(size_t rank=0;rank<crew.size();++rank)
         {
-            const String fn = Formatted::Get("primes%02u.%02u.txt", unsigned( crew.size() ), unsigned( indx ) );
+            const Concurrent::Member m(crew.size(),rank);
+            const String fn = "primes" + m.name() + ".txt";
             std::cerr << "[+] " << fn << std::endl;
             Libc::FileCopy::Merge(fp,fn);
             fs.tryRemoveFile(fn);

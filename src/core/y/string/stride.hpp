@@ -184,5 +184,5 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_String_Stride_Included
 
