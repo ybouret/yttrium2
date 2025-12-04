@@ -197,20 +197,30 @@ Y_UDONE()
 static inline
 uint64_t Decode(const String &line)
 {
-    return 0;
+    uint64_t     p = 0;
+    const size_t n = line.size();
+    for(size_t i=1;i<=n;++i)
+    {
+        p <<= 4;
+        p |= Hexadecimal::ToDec(line[i]);
+    }
+    return p;
 }
 
 Y_UTEST(calculus_gap33)
 {
-    if(argc<1) return 0;
+    if(argc<=1) return 0;
 
     const String fn = argv[1];
     GZip::Input  fp(fn);
     {
         String line;
+        size_t count = 0;
         while( fp.gets(line) )
         {
-            //std::cerr << line << std::endl;
+            std::cerr << Decode(line) << std::endl;
+            ++count;
+            if(count>=5) break;
         }
     }
 
