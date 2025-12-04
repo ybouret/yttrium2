@@ -11,35 +11,40 @@ namespace Yttrium
         namespace Divide
         {
             template <typename T>
-            class Burden
+            class Cargo
             {
             public:
 
-                Burden(const T      total,
-                       const size_t size,
-                       const size_t indx) :
+                Cargo(T            load,
+                      const size_t size,
+                      const size_t indx) :
                 length(0),
                 travel(0)
                 {
-                    T remain = total;
                     {
                         size_t n = size;
                         for(size_t i=indx;i>0;--i)
                         {
                             Coerce(travel) += length;
-                            Coerce(length)  = remain / n--;
-                            remain -= length;
+                            Coerce(length)  = load / n--;
+                            load -= length;
                         }
                     }
                 }
 
-                virtual ~Burden() noexcept {}
+                virtual ~Cargo() noexcept {}
+
+                Cargo(const Cargo &cr) noexcept :
+                length(cr.length),
+                travel(cr.travel)
+                {
+                }
 
                 const T length;
                 const T travel;
 
             private:
-                Y_Disable_Copy_And_Assign(Burden);
+                Y_Disable_Assign(Cargo);
             };
         }
     }
@@ -58,11 +63,14 @@ Y_UTEST(concurrent_split1d)
     for(size_t nproc=1;nproc<=nmax;++nproc)
     {
         std::cerr << std::endl << "nproc=" << nproc << std::endl;
+        uint16_t sum = 0;
         for(size_t i=1;i<=nproc;++i)
         {
-            Concurrent::Divide::Burden<uint16_t> burden(length,nproc,i);
-            std::cerr << "\tlength=" << burden.length << ", travel=" << burden.travel << std::endl;
+            Concurrent::Divide::Cargo<uint16_t> cr(length,nproc,i);
+            std::cerr << "\t@travel=" << cr.travel << ": length=" << cr.length << std::endl;
+            sum += cr.length;
         }
+        Y_ASSERT(length == sum);
     }
 #if 0
     Concurrent::Split::In1D  in1d(length);
