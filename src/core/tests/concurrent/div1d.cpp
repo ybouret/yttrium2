@@ -8,7 +8,7 @@ using namespace Yttrium;
 
 
 
-Y_UTEST(concurrent_split1d)
+Y_UTEST(concurrent_div1d)
 {
     const uint16_t length = 8;
     const size_t   nmax   = 10;

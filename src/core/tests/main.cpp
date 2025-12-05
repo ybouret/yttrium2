@@ -65,7 +65,8 @@ Y_UTEST_DECL(256)
     Y_UTEST(concurrent_condition);
     Y_UTEST(concurrent_thread);
     Y_UTEST(concurrent_inventory);
-    Y_UTEST(concurrent_split1d);
+    Y_UTEST(concurrent_div1d);
+    Y_UTEST(concurrent_div2d);
     Y_UTEST(concurrent_split2d);
     Y_UTEST(concurrent_simd);
     Y_UTEST(concurrent_pipeline);
