@@ -31,7 +31,7 @@ namespace Yttrium
                 shift(),
                 count( Setup(Coerce(lower),Coerce(upper),Coerce(width),Coerce(shift)))
                 {
-                    std::cerr << lower << "-> " << upper << " w=" << width << ", s=" << shift << std::endl;
+                    std::cerr << lower << "-> " << upper << " w=" << width << ", s=" << shift << " #=" << count << std::endl;
                 }
 
                 inline ~Box() noexcept
@@ -48,11 +48,19 @@ namespace Yttrium
                     return true;
                 }
 
-                inline vertex_t at(const scalar_t indx) const noexcept
+                inline vertex_t at(scalar_t n) const noexcept
                 {
-                    assert(indx<count);
-
-                    return  vertex_t();
+                    assert(n<count);
+                    vertex_t  v;
+                    for(unsigned i=DIMENSIONS;i>1;--i)
+                    {
+                        const scalar_t d = shift[i];
+                        const scalar_t q = v[i] = n / d;
+                        n -= q * d;
+                    }
+                    v[1] = n;
+                    assert(includes(v+lower));
+                    return  v + lower;
                 }
 
                 const vertex_t lower;
@@ -72,18 +80,20 @@ namespace Yttrium
                                       vertex_t &sh) noexcept
                 {
                     static const scalar_t one(1);
+
+                    // update metrics and product
+                    scalar_t prod = 1;
                     for(unsigned i=1;i<=DIMENSIONS;++i)
                     {
                         if(lo[i]>up[i]) Swap(lo[i],up[i]);
-                        sz[i] = one + up[i] - lo[i];
+                        prod *= (sz[i] = one + up[i] - lo[i]);
                     }
 
-                    scalar_t prod = sh[1] = 1;
-                    prod *= sz[1];
+                    // compute shift
+                    sh[1] = 1;
                     for(unsigned i=2;i<=DIMENSIONS;++i)
-                    {
-                        sh[i] = sh[i-1] * sz[i];
-                    }
+                        sh[i] = sh[i-1] * sz[i-1];
+
                     return prod;
                 }
             };
