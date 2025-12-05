@@ -51,11 +51,37 @@ namespace Yttrium
             class Tile2D
             {
             public:
+                typedef V2D<T>        vertex_t;
+                typedef T             scalar_t;
+                typedef Box<vertex_t> BoxType;
 
+                inline explicit Tile2D(const size_t   size,
+                                       const size_t   indx,
+                                       const BoxType &box)
+                {
+                    setup(size,indx,box);
+                }
+
+                inline virtual ~Tile2D() noexcept
+                {
+                }
 
 
             private:
                 Y_Disable_Assign(Tile2D);
+
+                inline void setup(const size_t size,
+                                  const size_t indx,
+                                  const BoxType &box)
+                {
+                    static const scalar_t  one = 1;
+                    const Tile1D<scalar_t> tile1d(size,indx,box.count,0);
+                    if(tile1d.length<=0) return; // no data
+                    const vertex_t ini = box.at(tile1d.offset);
+                    const vertex_t end = box.at(tile1d.utmost);
+                    const scalar_t ns  = end.y-ini.y+one;
+                    std::cerr << ini << " -> " << end << std::endl;
+                }
             };
 
         }
