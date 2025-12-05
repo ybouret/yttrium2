@@ -63,6 +63,21 @@ namespace Yttrium
             //__________________________________________________________________
             void updateTag() noexcept; //!< make tag from current size and indx
 
+
+            template <typename T> inline
+            T part(T extent, T &travel) const noexcept
+            {
+                size_t divide = size;
+                T      length = 0;
+                for(size_t i=indx;i>0;--i)
+                {
+                    travel += length;
+                    length  = extent / divide--;
+                    extent -= length;
+                }
+                return length;
+            }
+
             //__________________________________________________________________
             //
             //

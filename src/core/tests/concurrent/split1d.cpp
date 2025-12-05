@@ -1,7 +1,7 @@
 #include "y/concurrent/split/1d.hpp"
 #include "y/container/cxx/series.hpp"
 #include "y/utest/run.hpp"
-
+#include "y/type/ints.hpp"
 
 
 namespace Yttrium
@@ -10,41 +10,45 @@ namespace Yttrium
     {
         namespace Divide
         {
+
             template <typename T>
-            class Cargo
+            class Segment
             {
             public:
+                static const T One = 1;
+                Y_Args_Expose(T,Type);
 
-                Cargo(T            load,
-                      const size_t size,
-                      const size_t indx) :
-                length(0),
-                travel(0)
+                inline Segment(const Member &member,
+                               const T       extent,
+                               const T       iFirst) noexcept :
+                offset(0),
+                length( member.part(extent, Coerce(offset) ) ),
+                utmost(0)
                 {
-                    {
-                        size_t n = size;
-                        for(size_t i=indx;i>0;--i)
-                        {
-                            Coerce(travel) += length;
-                            Coerce(length)  = load / n--;
-                            load -= length;
-                        }
-                    }
+                    Coerce(offset) += iFirst;
+                    Coerce(utmost)  = offset + length - One;
                 }
 
-                virtual ~Cargo() noexcept {}
-
-                Cargo(const Cargo &cr) noexcept :
-                length(cr.length),
-                travel(cr.travel)
+                inline Segment(const Segment &s) noexcept :
+                offset(s.offset),
+                length(s.length),
+                utmost(s.utmost)
                 {
                 }
 
+                inline virtual ~Segment() noexcept
+                {
+
+                }
+
+
+
+                const T offset;
                 const T length;
-                const T travel;
+                const T utmost;
 
             private:
-                Y_Disable_Assign(Cargo);
+                Y_Disable_Assign(Segment);
             };
         }
     }
@@ -66,9 +70,10 @@ Y_UTEST(concurrent_split1d)
         uint16_t sum = 0;
         for(size_t i=1;i<=nproc;++i)
         {
-            Concurrent::Divide::Cargo<uint16_t> cr(length,nproc,i);
-            std::cerr << "\t@travel=" << cr.travel << ": length=" << cr.length << std::endl;
-            sum += cr.length;
+            Concurrent::Member                    member(nproc,i-1);
+            Concurrent::Divide::Segment<uint16_t> segment(member,length,1);
+            std::cerr << "\t@" << member << ": " << segment.offset << " +" << segment.length << " -> " << segment.utmost << std::endl;
+            sum += segment.length;
         }
         Y_ASSERT(length == sum);
     }
