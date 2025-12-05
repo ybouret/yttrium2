@@ -50,6 +50,15 @@ namespace Yttrium
                 }
             }
 
+            //! no-throw exchange
+            inline void exchange( SchoolOf &school ) noexcept
+            {
+                CoerceSwap(maxBlocks,school.maxBlocks);
+                CoerceSwap(allocated,school.allocated);
+                CoerceSwap(entry,school.entry);
+                CoerceSwap(cxx,school.cxx);
+            }
+
             //__________________________________________________________________
             //
             //

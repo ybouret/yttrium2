@@ -8,6 +8,7 @@
 #include "y/concurrent/divide/1d.hpp"
 #include "y/concurrent/divide/box.hpp"
 #include "y/mkl/v2d.hpp"
+#include "y/object/school-of.hpp"
 
 namespace Yttrium
 {
@@ -48,17 +49,22 @@ namespace Yttrium
             };
 
             template <typename T>
-            class Tile2D
+            class Tile2D //: public CxxArray< HSegment<T> >
             {
             public:
-                typedef V2D<T>        vertex_t;
-                typedef T             scalar_t;
-                typedef Box<vertex_t> BoxType;
+                typedef V2D<T>                    vertex_t;
+                typedef T                         scalar_t;
+                typedef Box<vertex_t>             BoxType;
+                typedef HSegment<T>               SegType;
+                typedef Memory::SchoolOf<SegType> Segments;
 
                 inline explicit Tile2D(const size_t   size,
                                        const size_t   indx,
-                                       const BoxType &box)
+                                       const BoxType &box) :
+                height(0),
+                segments(0)
                 {
+                    assert(0==segments.cxx);
                     setup(size,indx,box);
                 }
 
@@ -66,9 +72,20 @@ namespace Yttrium
                 {
                 }
 
+                inline const SegType & operator[](const scalar_t j) const noexcept
+                {
+                    assert(j>0);
+                    assert(j<=height);
+                    return segments.cxx[j];
+                }
+
+                const scalar_t height;
+
+
 
             private:
                 Y_Disable_Assign(Tile2D);
+                Segments segments;
 
                 inline void setup(const size_t size,
                                   const size_t indx,
@@ -79,8 +96,15 @@ namespace Yttrium
                     if(tile1d.length<=0) return; // no data
                     const vertex_t ini = box.at(tile1d.offset);
                     const vertex_t end = box.at(tile1d.utmost);
-                    const scalar_t ns  = end.y-ini.y+one;
-                    std::cerr << ini << " -> " << end << std::endl;
+                    {
+                        const scalar_t nhs = end.y-ini.y+one;
+                        std::cerr << ini << " -> " << end << " #hseg=" << nhs << std::endl;
+                        {
+                            Segments tmp(nhs);
+                            segments.exchange(tmp);
+                        }
+                        Coerce(height) = nhs;
+                    }
                 }
             };
 
