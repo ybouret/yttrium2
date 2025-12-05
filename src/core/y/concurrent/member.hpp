@@ -6,6 +6,7 @@
 
 #include "y/calculus/integer-pow10.hpp"
 #include "y/ability/legacy-string.hpp"
+#include <cassert>
 
 namespace Yttrium
 {
@@ -64,18 +65,28 @@ namespace Yttrium
             void updateTag() noexcept; //!< make tag from current size and indx
 
 
-            template <typename T> inline
-            T part(T extent, T &travel) const noexcept
+            template <typename T> static inline
+            T Part(const size_t mySize,
+                   const size_t myIndx,
+                   T            extent,
+                   T          & travel) noexcept
             {
-                size_t divide = size;
+                assert(mySize>0); assert(myIndx>=1); assert(myIndx<=mySize);
+                size_t divide = mySize;
                 T      length = 0;
-                for(size_t i=indx;i>0;--i)
+                for(size_t i=myIndx;i>0;--i)
                 {
                     travel += length;
                     length  = extent / divide--;
                     extent -= length;
                 }
                 return length;
+            }
+
+            template <typename T> inline
+            T part(T extent, T &travel) const noexcept
+            {
+                return Part(size,indx,extent,travel);
             }
 
             //__________________________________________________________________

@@ -31,6 +31,7 @@ Y_CreateLibrary(y
     y/concurrent/thread
     y/concurrent/data
     y/concurrent/split
+    y/concurrent/divide
     y/concurrent/api
     y/concurrent/api/simd
     y/concurrent/api/pipeline
