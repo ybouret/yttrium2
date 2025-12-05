@@ -6,6 +6,7 @@
 #define Y_Concurrent_Divide2D_Included 1
 
 #include "y/concurrent/divide/1d.hpp"
+#include "y/concurrent/divide/box.hpp"
 #include "y/mkl/v2d.hpp"
 
 namespace Yttrium
@@ -15,60 +16,42 @@ namespace Yttrium
         namespace Divide
         {
 
-            template <typename VERTEX>
-            class Box
+          
+            template <typename T>
+            class HSegment
             {
             public:
-                typedef               VERTEX         vertex_t;
-                typedef typename      VERTEX::Type   scalar_t;
-                static const unsigned DIMENSIONS   = VERTEX::DIMENSIONS ;
+                typedef T      scalar_t;
+                typedef V2D<T> vertex_t;
 
-                inline Box(const vertex_t lo,
-                           const vertex_t up) :
-                lower(lo),
-                upper(up),
-                width(),
-                count()
+
+                inline HSegment(const vertex_t v, const scalar_t w) noexcept :
+                start(v),
+                width(w)
                 {
-
                 }
 
-                inline ~Box() noexcept
-                {
 
+                inline HSegment(const HSegment &hs) noexcept :
+                start(hs.start),
+                width(hs.width)
+                {
                 }
 
-                const vertex_t lower;
-                const vertex_t upper;
-                const vertex_t width;
-                const scalar_t count;
+                inline ~HSegment() noexcept {}
 
-
+                const vertex_t start;
+                const scalar_t width;
 
             private:
-                Y_Disable_Copy_And_Assign(Box);
-
-                static scalar_t Setup(vertex_t &lo,
-                                      vertex_t &up,
-                                      vertex_t &sz) noexcept
-                {
-                    static const scalar_t one(1);
-                    scalar_t prod = 1;
-                    for(unsigned i=1;i<=DIMENSIONS;++i)
-                    {
-                        if(lo[i]>up[i]) Swap(lo[i],up[i]);
-                        prod *= ( sz[i] = one + up[i] - lo[i]);
-                    }
-                    return prod;
-                }
+                Y_Disable_Assign(HSegment);
             };
-
-            
 
             template <typename T>
             class Tile2D
             {
             public:
+
 
 
             private:

@@ -25,7 +25,7 @@ namespace Yttrium
         //______________________________________________________________________
         struct ZeroCount
         {
-            //! \return fixed, pseudo zeroe coordinates
+            //! \return fixed, pseudo zeroed coordinates
             template <typename T> static inline
             const T & Value() noexcept {
                 assert( sizeof(T) <= Bytes() );
@@ -94,5 +94,5 @@ namespace Yttrium
     }
 
 }
-#endif
+#endif // !Y_Field_Layout_Scope_Included
 

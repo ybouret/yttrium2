@@ -69,5 +69,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Field_Layout_In2D_Included
 

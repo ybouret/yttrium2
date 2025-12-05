@@ -32,7 +32,7 @@ namespace Yttrium
             // Definition
             //
             //__________________________________________________________________
-            static const unsigned DIMENSION = sizeof(COORD)/sizeof(unit_t); //!< space dimension
+            static const unsigned DIMENSIONS = sizeof(COORD)/sizeof(unit_t); //!< space dimension
             typedef COORD CoordType;                                        //!< alias
 
             using LayoutScope<COUNT>::width;
@@ -57,7 +57,7 @@ namespace Yttrium
             //! setup \param lo lower coordinates \param up upper coordinates
             inline explicit Layout(COORD lo, COORD up) noexcept :
             LayoutScope<COUNT>(),
-            LayoutMetrics(DIMENSION, C2U(lo), C2U(up), C2S(width), C2S(shift)),
+            LayoutMetrics(DIMENSIONS, C2U(lo), C2U(up), C2S(width), C2S(shift)),
             lower(lo),
             upper(up)
             {
@@ -68,7 +68,7 @@ namespace Yttrium
             template <typename SUPER> inline
             explicit Layout(const SubLayout_ &_, const SUPER &super) noexcept :
             LayoutScope<COUNT>(_,super),
-            LayoutMetrics(DIMENSION, lastShift() ),
+            LayoutMetrics(DIMENSIONS, lastShift() ),
             lower( Memory::Stealth::Conv<const COORD,const typename SUPER::CoordType>(super.lower) ),
             upper( Memory::Stealth::Conv<const COORD,const typename SUPER::CoordType>(super.upper) )
             {
@@ -126,5 +126,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Field_Layout_Included
 
