@@ -49,7 +49,7 @@ namespace Yttrium
             };
 
             template <typename T>
-            class Tile2D //: public CxxArray< HSegment<T> >
+            class Tile2D : public Object
             {
             public:
                 typedef V2D<T>                    vertex_t;
@@ -61,12 +61,16 @@ namespace Yttrium
                 inline explicit Tile2D(const size_t   size,
                                        const size_t   indx,
                                        const BoxType &box) :
-                height(0),
-                segments(0)
-                {
-                    assert(0==segments.cxx);
+                Object(), height(0), segments(0) {
                     setup(size,indx,box);
                 }
+
+                inline explicit Tile2D(const Member &member,
+                                       const BoxType &box) :
+                Object(), height(0), segments(0) {
+                    setup(member.size,member.indx,box);
+                }
+
 
                 inline virtual ~Tile2D() noexcept
                 {
@@ -80,7 +84,6 @@ namespace Yttrium
                 }
 
                 const scalar_t height;
-
 
 
             private:
