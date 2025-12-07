@@ -95,8 +95,11 @@ namespace Yttrium
                                   const BoxType &box)
                 {
                     static const scalar_t  one = 1;
+                    // find items
                     const Tile1D<scalar_t> tile1d(size,indx,box.count,0);
                     if(tile1d.length<=0) return; // no data
+
+                    // convert to vertices
                     const vertex_t ini = box.at(tile1d.offset);
                     const vertex_t end = box.at(tile1d.utmost);
                     {
@@ -107,6 +110,13 @@ namespace Yttrium
                             segments.exchange(tmp);
                         }
                         Coerce(height) = nhs;
+                    }
+
+                    for(scalar_t h=0;h<height;++h)
+                    {
+                        vertex_t org(box.lower.x,ini.y+h);
+                        vertex_t end(box.upper.x,org.y);
+                        //new (segments.entry+h) SegType(
                     }
                 }
             };
