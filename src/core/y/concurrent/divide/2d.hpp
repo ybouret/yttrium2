@@ -114,13 +114,14 @@ namespace Yttrium
                     {
                         const scalar_t required = end.y-ini.y+one;
                         const size_t   nhs      = (size_t)required;
-                        std::cerr << ini << " -> " << end << " #hseg=" << nhs << std::endl;
                         if(nhs>segments->maxBlocks)
                         {
                             Segments tmp( new SegsMem(nhs) );
                             segments.xch(tmp);
                         }
                         Coerce(height) = required;
+                        std::cerr << ini << " -> " << end << " #hseg=" << nhs << ", allocated=" << segments->allocated << std::endl;
+
                     }
 
                     // convert to horizontal segments
