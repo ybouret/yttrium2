@@ -25,7 +25,6 @@ namespace Yttrium
                 typedef T      scalar_t;
                 typedef V2D<T> vertex_t;
 
-
                 inline HSegment(const vertex_t v, const scalar_t w) noexcept :
                 start(v),
                 width(w)
@@ -40,6 +39,12 @@ namespace Yttrium
                 }
 
                 inline ~HSegment() noexcept {}
+
+                inline friend std::ostream & operator<<(std::ostream &os, const HSegment &self)
+                {
+                    vertex_t end = self.start; end.x += self.width; --end.x;
+                    return os << "#" << self.width << ": " << self.start << "->" << end;
+                }
 
                 const vertex_t start;
                 const scalar_t width;
@@ -125,6 +130,7 @@ namespace Yttrium
                         if(h>=htop) rhs.x = end.x;
                         assert(lhs.y==rhs.y);
                         assert(rhs.x>=lhs.x);
+                        new (segments.entry+h) SegType(lhs,one+rhs.x-lhs.x);
                     }
                 }
             };

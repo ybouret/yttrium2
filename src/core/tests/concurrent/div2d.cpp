@@ -20,6 +20,10 @@ Y_UTEST(concurrent_div2d)
         for(size_t i=1;i<=nproc;++i)
         {
             Concurrent::Divide::Tile2D<int> tile(nproc,i,box);
+            for(int j=1;j<=tile.height;++j)
+            {
+                std::cerr << "\t" << tile[j] << std::endl;
+            }
         }
     }
 
