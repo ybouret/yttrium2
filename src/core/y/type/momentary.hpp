@@ -41,4 +41,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Type_Momentary_Included

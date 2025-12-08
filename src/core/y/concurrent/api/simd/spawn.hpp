@@ -5,6 +5,7 @@
 
 #include "y/concurrent/api/simd.hpp"
 #include "y/pointer/arc.hpp"
+#include "y/type/temporary.hpp"
 
 namespace Yttrium
 {
@@ -18,10 +19,14 @@ namespace Yttrium
         public:
             typedef TILES    Tiles;
             typedef typename Tiles::Parameter Parameter;
+            typedef typename Tiles::Tile      Tile;
+            typedef void (*Routine)(Lockable & , const Tile & , void * const);
 
             inline explicit Spawn(const Processor &proc,
                                   Parameter        data) :
             Tiles(proc->size(),data),
+            call(0),
+            args(0),
             processor(proc),
             kernel(this, & Spawn::compute)
             {
@@ -33,22 +38,45 @@ namespace Yttrium
 
             }
 
-            void run()
+
+            template <typename CODE> inline
+            void run(CODE &code)
             {
+                assert(0==call);
+                assert(0==args);
+                Temporary<Routine> tempCall(call,Stub<CODE>);
+                Temporary<void*>   tempArgs(args, (void*)&code );
                 (*processor)(kernel);
             }
 
 
+            
+
         private:
             Y_Disable_Copy_And_Assign(Spawn);
+            Routine   call;
+            void *    args;
             Processor processor;
             Kernel    kernel;
 
             //! executed in a thread
             void compute(const Context &context) noexcept
             {
-                { Y_Giant_Lock(); (std::cerr << "in " << context << std::endl).flush(); };
+                const Tile   tile  = (*this)[context.indx];
+                { Y_Giant_Lock(); (std::cerr << "in " << context << ", tile=" << tile << std::endl).flush(); };
+                assert(0!=call);
+                assert(0!=args);
+                call(context.sync,tile,args);
             }
+
+            template <typename CODE> static inline
+            void Stub(Lockable &sync, const Tile &tile, void * const args)
+            {
+                assert(0!=args);
+                CODE & code = *(CODE*)(args);
+                code(sync,tile);
+            }
+
 
         };
 

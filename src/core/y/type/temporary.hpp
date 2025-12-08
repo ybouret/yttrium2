@@ -40,4 +40,4 @@ namespace Yttrium
 
 
 
-#endif
+#endif // !Y_Type_Temporary_Included
