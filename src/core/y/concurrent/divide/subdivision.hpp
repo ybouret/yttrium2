@@ -11,6 +11,14 @@ namespace Yttrium
     namespace Concurrent
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Generic subdivision interface
+        //
+        //
+        //______________________________________________________________________
         class Subdivision
         {
         public:
@@ -18,14 +26,14 @@ namespace Yttrium
 
 
         protected:
-            explicit Subdivision() noexcept;
+            explicit Subdivision() noexcept; //!< setup
 
         public:
-            virtual ~Subdivision() noexcept;
+            virtual ~Subdivision() noexcept; //!< cleanup
 
 
         private:
-            Y_Disable_Copy_And_Assign(Subdivision);
+            Y_Disable_Copy_And_Assign(Subdivision); //!< discarding
         };
     }
 

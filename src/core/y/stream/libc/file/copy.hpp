@@ -32,6 +32,7 @@ namespace Yttrium
             /**
              \param output opened file
              \param args   argument for InputFile constructor
+             \param H      optional hashing function for on-the-fly update
              */
             template <typename ARGS> static inline
             void Merge(Yttrium::OutputFile &output, const ARGS &args, Hashing::Function * const H = 0) {

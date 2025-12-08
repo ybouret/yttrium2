@@ -15,14 +15,36 @@ namespace Yttrium
     {
         namespace Divide
         {
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Box[2|3|4]D
+            //
+            //
+            //__________________________________________________________________
             template <typename VERTEX>
             class Box
             {
             public:
-                typedef               VERTEX         vertex_t;
-                typedef typename      VERTEX::Type   scalar_t;
-                static const unsigned DIMENSIONS   = VERTEX::DIMENSIONS ;
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                typedef               VERTEX         vertex_t;           //!< alias
+                typedef typename      VERTEX::Type   scalar_t;           //!< alias
+                static const unsigned DIMENSIONS   = VERTEX::DIMENSIONS; //!< alias
 
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! setup \param lo lower coordinate \param up upper coordinate
                 inline Box(const vertex_t lo,
                            const vertex_t up) :
                 lower(lo),
@@ -31,19 +53,27 @@ namespace Yttrium
                 shift(),
                 count( Setup(Coerce(lower),Coerce(upper),Coerce(width),Coerce(shift)))
                 {
-                    //std::cerr << lower << "-> " << upper << " w=" << width << ", s=" << shift << " #=" << count << std::endl;
                 }
 
+                //! cleanup
                 inline ~Box() noexcept
                 {
-
                 }
 
+                //! display
                 inline friend std::ostream & operator<< (std::ostream &os, const Box &box)
                 {
                     return os << "|" << box.lower << "->" << box.upper << "; w=" << box.width << "; s=" << box.shift << " |=" << box.count;
                 }
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+
+                //! \param v vertex \return true if vertex is in box
                 inline bool includes(const vertex_t &v) const noexcept
                 {
                     for(unsigned i=1;i<=DIMENSIONS;++i)
@@ -53,6 +83,7 @@ namespace Yttrium
                     return true;
                 }
 
+                //! \param n 0<=n<count \return n-th vertex
                 inline vertex_t at(scalar_t n) const noexcept
                 {
                     assert(n<count);
@@ -68,17 +99,31 @@ namespace Yttrium
                     return  v + lower;
                 }
 
-                const vertex_t lower;
-                const vertex_t upper;
-                const vertex_t width;
-                const vertex_t shift;
-                const scalar_t count;
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                const vertex_t lower; //!< lower coordinate
+                const vertex_t upper; //!< upper coordinate
+                const vertex_t width; //!< width
+                const vertex_t shift; //!< shift per dimension
+                const scalar_t count; //!< total items
 
 
 
             private:
-                Y_Disable_Copy_And_Assign(Box);
+                Y_Disable_Copy_And_Assign(Box); //!< discarding
 
+                //! full setup
+                /**
+                 \param lo lower
+                 \param up upper
+                 \param sz width
+                 \param sh shift
+                 \return count
+                 */
                 static scalar_t Setup(vertex_t &lo,
                                       vertex_t &up,
                                       vertex_t &sz,

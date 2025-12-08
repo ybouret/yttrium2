@@ -64,7 +64,14 @@ namespace Yttrium
             //__________________________________________________________________
             void updateTag() noexcept; //!< make tag from current size and indx
 
-
+            //! partition algorithm
+            /**
+             \param mySize mySize>0
+             \param myIndx 1<=myIndx<=mySize
+             \param extent total extent
+             \param travel cumulative extent so far, updated
+             \return length
+             */
             template <typename T> static inline
             T Part(const size_t mySize,
                    const size_t myIndx,
@@ -83,6 +90,12 @@ namespace Yttrium
                 return length;
             }
 
+            //! partition algorithm for this member
+            /**
+             \param extent total extent
+             \param travel cumulative extent so far, updated
+             \return length
+             */
             template <typename T> inline
             T part(T extent, T &travel) const noexcept
             {
