@@ -26,7 +26,7 @@ Y_UTEST(calculus_primes)
         const uint32_t j   = Prime::Next(i+1);
         const uint32_t g   = j-i;    Y_ASSERT( 0 == (g&1)  );
         const uint32_t d   = (g>>1); Y_ASSERT(d<256);
-        gap << d;
+        gap << (uint8_t)d;
         i = j;
         if( j >= IntegerFor<uint16_t>::Maximum )
             break;

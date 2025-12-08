@@ -42,6 +42,9 @@ namespace Yttrium
             const char * const ids = id.c_str();
             const size_t       idl = strlen( ids ); assert(idl<=sdl);
 
+#if defined(_MSC_VER)
+#pragma warning ( disable : 4996 )
+#endif
             strncat(buff,sds,TagSize-1);
             strncat(buff,dot,TagSize-1);
             for(size_t i=sdl-idl;i>0;--i) strncat(buff,nul,TagSize-1);

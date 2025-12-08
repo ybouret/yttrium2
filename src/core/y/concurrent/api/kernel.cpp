@@ -17,6 +17,9 @@ namespace Yttrium
 
         namespace
         {
+#if defined(_MSC_VER)
+#pragma warning ( disable : 4355 )
+#endif
             class MTExec
             {
             public:
