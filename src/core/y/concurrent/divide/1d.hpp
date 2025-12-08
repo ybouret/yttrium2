@@ -16,20 +16,50 @@ namespace Yttrium
         namespace Divide
         {
 
+            //! helper
 #define Y_Concurrent_Divide_Tile1D_Utmost (offset + length - One)
 
+            //! helper
 #define Y_Concurrent_Divide_Tile1D(CTOR) \
 offset(iFirst), \
 length( CTOR ), \
 utmost( Y_Concurrent_Divide_Tile1D_Utmost )
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Tile in 1D
+            //
+            //
+            //__________________________________________________________________'
             template <typename T>
             class Tile1D : public Subdivision
             {
             public:
-                static const T One = 1;
-                Y_Args_Expose(T,Type);
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                Y_Args_Expose(T,Type);    //!< alias
+                static ConstType One = 1; //!< alias
 
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________'
+
+                //! setup from coordinates
+                /**
+                 \param mySize mySize > 0
+                 \param myIndx 1 <= myIndx <= mySize
+                 \param extent total burden
+                 \param iFirst first index
+                 */
                 inline Tile1D(const size_t  mySize,
                               const size_t  myIndx,
                               ConstType     extent,
@@ -39,6 +69,12 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
 
                 }
 
+                //! setup from Member
+                /**
+                 \param member given member
+                 \param extent total burden
+                 \param iFirst first index
+                 */
                 inline Tile1D(const Member & member,
                               ConstType      extent,
                               ConstType      iFirst) noexcept :
@@ -47,19 +83,19 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
 
                 }
 
-
-                inline Tile1D(const Tile1D &s) noexcept :
-                offset(s.offset),
-                length(s.length),
-                utmost(s.utmost)
+                //! duplicate \param t another tile
+                inline Tile1D(const Tile1D &t) noexcept :
+                offset(t.offset),
+                length(t.length),
+                utmost(t.utmost)
                 {
                 }
 
-                inline virtual ~Tile1D() noexcept
-                {
+                //! cleanup
+                inline virtual ~Tile1D() noexcept {}
 
-                }
 
+                //! display
                 inline friend std::ostream & operator<<(std::ostream &os, const Tile1D &t)
                 {
                     if(t.length<=0)
@@ -68,29 +104,69 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                         return os << "|[" << t.offset << ":" << t.utmost << "]|=" << t.length;
                 }
 
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________'
 
+                //! \param lhs first tile \param rhs second tile \return equality
                 inline friend bool operator==(const Tile1D &lhs, const Tile1D &rhs) noexcept
                 {
                     return lhs.offset == rhs.offset && lhs.length == rhs.length;
                 }
 
-              ConstType offset; //!< user's offset
-              ConstType length; //!< 0 : empty
-              ConstType utmost; //!< utmost = offset + length - 1
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________'
+                ConstType offset; //!< user's offset
+                ConstType length; //!< 0 : empty
+                ConstType utmost; //!< utmost = offset + length - 1
 
             private:
-                Y_Disable_Assign(Tile1D);
+                Y_Disable_Assign(Tile1D); //!< discarding
             };
 
 
-            template <typename T>
+
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Tile1D partition
+            //
+            //
+            //__________________________________________________________________'            template <typename T>
             class Tiles1D : public Readable< Tile1D<T> >
             {
             public:
-                Y_Args_Expose(T,Type);
-                typedef Tile1D<T> Tile;
-                typedef ConstType Parameter;
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________'
+                Y_Args_Expose(T,Type);       //!< alias
+                typedef Tile1D<T> Tile;      //!< alias
+                typedef ConstType Parameter; //!< alias
 
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________'
+
+                //! setup
+                /**
+                 \param n      partition size
+                 \param extent total burden
+                 \param iFirst first index
+                 */
                 inline explicit Tiles1D(const size_t n,
                                         ConstType    extent,
                                         ConstType    iFirst) :
@@ -100,19 +176,26 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                         tiles.push(n,i,extent,iFirst);
                 }
 
+                //! cleanup
                 inline virtual ~Tiles1D() {}
 
+                //! duplicate \param t another tile
                 inline Tiles1D(const Tiles1D &t) : tiles(t) { }
 
-
-
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________'
                 inline virtual size_t size() const noexcept { return tiles.size(); }
-                
+
 
 
             private:
-                Y_Disable_Assign(Tiles1D);
-                CxxSeries<const Tile> tiles;
+                Y_Disable_Assign(Tiles1D);   //!< dicarding
+                CxxSeries<const Tile> tiles; //!< built tiles
+
                 inline virtual const Tile & getItemAt(const size_t indx) const noexcept
                 {
                     return tiles[indx];

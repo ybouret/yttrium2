@@ -1,5 +1,3 @@
-
-
 //! \file
 
 
@@ -24,7 +22,8 @@ namespace Yttrium
 
         public:
             virtual ~Subdivision() noexcept;
-            
+
+
         private:
             Y_Disable_Copy_And_Assign(Subdivision);
         };

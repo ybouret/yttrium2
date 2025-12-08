@@ -11,17 +11,46 @@ namespace Yttrium
 {
     namespace Concurrent
     {
-        typedef ArcPtr<SIMD> Processor;
+        typedef ArcPtr<SIMD> Processor; //!< alias
 
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! call procedures over tiles
+        //
+        //
+        //______________________________________________________________________
         template <typename TILES>
         class Spawn : public TILES
         {
         public:
-            typedef TILES    Tiles;
-            typedef typename Tiles::Parameter Parameter;
-            typedef typename Tiles::Tile      Tile;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef TILES    Tiles;                      //!< alias
+            typedef typename Tiles::Parameter Parameter; //!< alias
+            typedef typename Tiles::Tile      Tile;      //!< alias
+
+            //! generic routine prototype
             typedef void (*Routine)(Lockable & , const Tile & , void * const);
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup one tile per processor context
+            /**
+             \param proc shared processor
+             \param data tiles parameter
+             */
             inline explicit Spawn(const Processor &proc,
                                   Parameter        data) :
             Tiles(proc->size(),data),
@@ -33,11 +62,11 @@ namespace Yttrium
 
             }
 
-            inline virtual ~Spawn() noexcept {
+            //! cleanup
+            inline virtual ~Spawn() noexcept {}
 
-            }
 
-
+            //! \param code code(context.sync, self[context.indx]) over each tile
             template <typename CODE> inline
             void operator()(CODE &code)
             {
@@ -48,6 +77,11 @@ namespace Yttrium
                 (*processor)(kernel);
             }
 
+            //! host.meth(context.sync, self[context.indx]) over each tile
+            /**
+             \param host object
+             \param meth method
+             */
             template <typename HOST, typename METH> inline
             void operator()(HOST &host, METH meth)
             {
@@ -60,13 +94,13 @@ namespace Yttrium
             
 
         private:
-            Y_Disable_Copy_And_Assign(Spawn);
-            Routine   call;
-            void *    args;
-            Processor processor;
-            Kernel    kernel;
+            Y_Disable_Copy_And_Assign(Spawn); //!< discarding
+            Routine   call;                   //!< routine
+            void *    args;                   //!< arguments for routine
+            Processor processor;              //!< shared processor
+            Kernel    kernel;                 //!< call compute(...)
 
-            //! executed in a thread
+            //! executed in a thread \param context processor context
             void compute(const Context &context) noexcept
             {
                 assert(0!=call);
@@ -75,8 +109,12 @@ namespace Yttrium
                 call(context.sync,tile,args);
             }
 
-
-
+            //! decode call to CODE as code(sync,tile)
+            /**
+             \param sync for calls synchronization
+             \param tile working tile
+             \param args address of CODE
+             */
             template <typename CODE> static inline
             void Stub(Lockable &sync, const Tile &tile, void * const args)
             {
@@ -85,11 +123,14 @@ namespace Yttrium
                 code(sync,tile);
             }
 
+            //! alias to wrap host+method call
             template <typename HOST, typename METH>
             struct Wrapper
             {
-                HOST & host;
-                METH   meth;
+                HOST & host; //!< persistent host
+                METH   meth; //!< host's method
+
+                //! \param sync from context \param tile one of the tile 
                 inline void operator()(Lockable &sync, const Tile &tile )
                 {
                     (host.*meth)(sync,tile);

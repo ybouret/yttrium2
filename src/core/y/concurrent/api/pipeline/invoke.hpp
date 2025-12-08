@@ -171,6 +171,14 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
+
+            //! invoke same method on different engines
+            /**
+             \param method  method to invoke
+             \param taskIDs populated task identifiers
+             \param i       iterator over PERSISTENT arguments
+             \param n       number of iterator to scan
+             */
             template <typename T, typename ITERATOR> inline
             void operator()(void      (ENGINE::*method)(Lockable &, T &),
                             TaskIDs & taskIDs,
@@ -188,6 +196,13 @@ namespace Yttrium
                 app->enqueue(taskIDs,kernels);
             }
 
+
+            //! invoke same method
+            /**
+             \param method  method to invoke
+             \param taskIDs populated task identifiers
+             \param seq     sequence of PERSISTENT arguments
+             */
             template <typename T, typename SEQUENCE> inline
             void operator()(void      (ENGINE::*method)(Lockable &, T &),
                             TaskIDs  & taskIDs,
