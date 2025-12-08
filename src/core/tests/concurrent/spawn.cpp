@@ -37,6 +37,34 @@ namespace
             }
         }
     };
+
+
+    class Apply
+    {
+    public:
+
+        Apply() noexcept
+        {
+        }
+
+        inline ~Apply() noexcept
+        {
+
+        }
+
+        void call1D(Lockable &sync, const T1D &t)
+        {
+            {
+                Y_Lock(sync);
+                Y_Giant_Lock();
+                (std::cerr << "Apply::call1D  " << t << std::endl).flush();
+            }
+        }
+
+    private:
+        Y_Disable_Copy_And_Assign(Apply);
+    };
+
 }
 
 
@@ -49,11 +77,14 @@ Y_UTEST(concurrent_spawn)
 
     T1D::ConstType  value = 100;
     CallSomeone     stuff = {};
+    Apply           apply;
 
     {
         Concurrent::Spawn<In1D> spawn(st,value);
         spawn(DoSomething);
         spawn(stuff);
+        spawn(apply, & Apply::call1D );
+
     }
 
     std::cerr << std::endl;
@@ -62,6 +93,7 @@ Y_UTEST(concurrent_spawn)
         Concurrent::Spawn<In1D> spawn(mt,value);
         spawn(DoSomething);
         spawn(stuff);
+        spawn(apply, & Apply::call1D );
     }
 
 

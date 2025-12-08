@@ -33,8 +33,7 @@ namespace Yttrium
 
             }
 
-            inline virtual ~Spawn() noexcept
-            {
+            inline virtual ~Spawn() noexcept {
 
             }
 
@@ -48,6 +47,14 @@ namespace Yttrium
                 const Temporary<void*>   tempArgs(args, (void*)&code );
                 (*processor)(kernel);
             }
+
+            template <typename HOST, typename METH> inline
+            void operator()(HOST &host, METH meth)
+            {
+                Wrapper<HOST,METH> wrapper = { host, meth };
+                (*this)(wrapper);
+            }
+
 
 
             
@@ -68,6 +75,8 @@ namespace Yttrium
                 call(context.sync,tile,args);
             }
 
+
+
             template <typename CODE> static inline
             void Stub(Lockable &sync, const Tile &tile, void * const args)
             {
@@ -75,6 +84,19 @@ namespace Yttrium
                 CODE & code = *(CODE*)(args);
                 code(sync,tile);
             }
+
+            template <typename HOST, typename METH>
+            struct Wrapper
+            {
+                HOST & host;
+                METH   meth;
+                inline void operator()(Lockable &sync, const Tile &tile )
+                {
+                    (host.*meth)(sync,tile);
+                }
+            };
+
+
 
 
         };
