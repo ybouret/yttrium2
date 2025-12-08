@@ -40,12 +40,12 @@ namespace Yttrium
 
 
             template <typename CODE> inline
-            void run(CODE &code)
+            void operator()(CODE &code)
             {
                 assert(0==call);
                 assert(0==args);
-                Temporary<Routine> tempCall(call,Stub<CODE>);
-                Temporary<void*>   tempArgs(args, (void*)&code );
+                const Temporary<Routine> tempCall(call, Stub<CODE>   );
+                const Temporary<void*>   tempArgs(args, (void*)&code );
                 (*processor)(kernel);
             }
 
@@ -62,10 +62,9 @@ namespace Yttrium
             //! executed in a thread
             void compute(const Context &context) noexcept
             {
-                const Tile   tile  = (*this)[context.indx];
-                { Y_Giant_Lock(); (std::cerr << "in " << context << ", tile=" << tile << std::endl).flush(); };
                 assert(0!=call);
                 assert(0!=args);
+                const Tile   tile  = (*this)[context.indx];
                 call(context.sync,tile,args);
             }
 

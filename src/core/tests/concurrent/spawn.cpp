@@ -24,8 +24,19 @@ namespace
             Y_Giant_Lock();
             (std::cerr << "DoSomething at " << t << std::endl).flush();
         }
-
     }
+
+    struct CallSomeone
+    {
+        inline void operator()(Lockable &sync, const T1D &t)
+        {
+            {
+                Y_Lock(sync);
+                Y_Giant_Lock();
+                (std::cerr << "CallSomeone at " << t << std::endl).flush();
+            }
+        }
+    };
 }
 
 
@@ -37,14 +48,20 @@ Y_UTEST(concurrent_spawn)
     Concurrent::Processor mt = new Concurrent::Crew(Concurrent::Site::Default);
 
     T1D::ConstType  value = 100;
+    CallSomeone     stuff = {};
+
     {
         Concurrent::Spawn<In1D> spawn(st,value);
-        spawn.run(DoSomething);
+        spawn(DoSomething);
+        spawn(stuff);
     }
+
+    std::cerr << std::endl;
 
     {
         Concurrent::Spawn<In1D> spawn(mt,value);
-        spawn.run(DoSomething);
+        spawn(DoSomething);
+        spawn(stuff);
     }
 
 
