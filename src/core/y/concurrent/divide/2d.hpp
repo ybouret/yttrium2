@@ -10,6 +10,7 @@
 #include "y/mkl/v2d.hpp"
 #include "y/object/school-of.hpp"
 #include "y/pointer/arc.hpp"
+#include "y/memory/stealth.hpp"
 
 namespace Yttrium
 {
@@ -18,7 +19,7 @@ namespace Yttrium
         namespace Divide
         {
 
-          
+
             template <typename T>
             class HSegment
             {
@@ -54,8 +55,10 @@ namespace Yttrium
                 Y_Disable_Assign(HSegment);
             };
 
+#define Y_Tile2D_Ctor()   h(0), segments( new SegsMem(1) )
+
             template <typename T>
-            class Tile2D : public Object
+            class Tile2D
             {
             public:
                 typedef V2D<T>                    vertex_t;
@@ -68,29 +71,34 @@ namespace Yttrium
                 inline explicit Tile2D(const size_t   size,
                                        const size_t   indx,
                                        const BoxType &box) :
-                Object(), height(0), segments( new SegsMem(1) ) {
+                Y_Tile2D_Ctor() {
                     setup(size,indx,box);
                 }
 
                 inline explicit Tile2D(const Member &member,
                                        const BoxType &box) :
-                Object(), height(0), segments(0) {
+                Y_Tile2D_Ctor() {
                     setup(member.size,member.indx,box);
                 }
 
-
-                inline virtual ~Tile2D() noexcept
+                inline Tile2D(const Tile2D &t) noexcept :
+                h(t.h), segments(t.segments)
                 {
+
+                }
+
+
+                inline virtual ~Tile2D() noexcept {
+                    Memory::Stealth::Zero(segments->entry,segments->allocated);
                 }
 
                 inline const SegType & operator[](const scalar_t j) const noexcept
                 {
-                    assert(j>0);
-                    assert(j<=height);
+                    assert(j>0); assert(j<=h);
                     return segments->cxx[j];
                 }
 
-                const scalar_t height;
+                const scalar_t h;
 
 
             private:
@@ -102,8 +110,9 @@ namespace Yttrium
                                   const BoxType &box)
                 {
                     static const scalar_t  one = 1;
+                    static const scalar_t  id0 = 0;
                     // find indices
-                    const Tile1D<scalar_t> tile1d(size,indx,box.count,0);
+                    const Tile1D<scalar_t> tile1d(size,indx,box.count,id0);
                     if(tile1d.length<=0) return; // no data
 
                     // convert to vertices
@@ -119,23 +128,25 @@ namespace Yttrium
                             Segments tmp( new SegsMem(nhs) );
                             segments.xch(tmp);
                         }
-                        Coerce(height) = required;
-                        std::cerr << ini << " -> " << end << " #hseg=" << nhs << ", allocated=" << segments->allocated << std::endl;
-
+                        Coerce(h) = required;
                     }
 
                     // convert to horizontal segments
-                    const scalar_t htop = height-1;
-                    for(scalar_t h=0;h<height;++h)
+                    const scalar_t htop = h-one;
+                    for(scalar_t y=0;y<h;++y)
                     {
-
-                        vertex_t lhs(box.lower.x,ini.y+h);
+                        // lhs/rhs vertices from box
+                        vertex_t lhs(box.lower.x,ini.y+y);
                         vertex_t rhs(box.upper.x,lhs.y);
-                        if(h<=0)    lhs.x = ini.x;
-                        if(h>=htop) rhs.x = end.x;
+
+                        // cut if necessary
+                        if(y<=0)    lhs.x = ini.x;
+                        if(y>=htop) rhs.x = end.x;
                         assert(lhs.y==rhs.y);
                         assert(rhs.x>=lhs.x);
-                        new (segments->entry+h) SegType(lhs,one+rhs.x-lhs.x);
+
+                        // record
+                        new (segments->entry+y) SegType(lhs,one+rhs.x-lhs.x);
                     }
                 }
             };
