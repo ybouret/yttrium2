@@ -158,13 +158,11 @@ namespace Yttrium
             public:
                 typedef Tile2D<T>              Tile;
                 typedef typename Tile::BoxType BoxType;
+                typedef const BoxType &        Parameter;
 
                 inline explicit Tiles2D(const size_t   n,
-                                        const BoxType &box) :
-                tiles(n)
-                {
-                    for(size_t i=1;i<=n;++i)
-                        tiles.push(n,i,box);
+                                        const BoxType &box) : tiles(n) {
+                    for(size_t i=1;i<=n;++i) tiles.push(n,i,box);
                 }
 
                 inline virtual ~Tiles2D() noexcept {}

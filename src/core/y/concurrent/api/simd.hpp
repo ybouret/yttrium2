@@ -6,6 +6,7 @@
 
 #include "y/concurrent/api/parallel.hpp"
 #include "y/concurrent/api/kernel.hpp"
+#include "y/object/counted.hpp"
 
 namespace Yttrium
 {
@@ -20,7 +21,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class SIMD : public Parallel
+        class SIMD : public CountedObject, public Parallel
         {
         public:
             

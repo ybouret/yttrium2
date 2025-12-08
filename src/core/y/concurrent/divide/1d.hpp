@@ -88,6 +88,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
             public:
                 Y_Args_Expose(T,Type);
                 typedef Tile1D<T> Tile;
+                typedef ConstType Parameter;
 
                 inline explicit Tiles1D(const size_t n,
                                         ConstType    extent,
@@ -116,6 +117,34 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                     return tiles[indx];
                 }
             };
+
+            template <typename T>
+            class CxxTiles1D : public Tiles1D<T>
+            {
+            public:
+                Y_Args_Expose(T,Type);
+                static ConstType Offset1 = 1;
+
+                inline explicit CxxTiles1D(const size_t n,
+                                           ConstType    extent) :
+                Tiles1D<T>(n,extent,Offset1)
+                {
+                }
+
+                inline virtual ~CxxTiles1D() noexcept
+                {
+                }
+
+            private:
+                Y_Disable_Copy_And_Assign(CxxTiles1D);
+            };
+
+
+            
+
+
+
+
         }
     }
 
