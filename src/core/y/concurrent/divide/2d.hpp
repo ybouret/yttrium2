@@ -96,7 +96,7 @@ namespace Yttrium
             };
 
             //! helper
-#define Y_Tile2D_Ctor()   h(0), n(0), segments( new SegsMem(1) )
+#define Y_Tile2D_Ctor()   Subdivision(), h(0), n(0), segments( new SegsMem(1) )
 
             //__________________________________________________________________
             //

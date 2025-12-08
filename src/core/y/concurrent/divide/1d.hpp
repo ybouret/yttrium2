@@ -151,9 +151,10 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 // Definitions
                 //
                 //______________________________________________________________
-                Y_Args_Expose(T,Type);       //!< alias
-                typedef Tile1D<T> Tile;      //!< alias
-                typedef ConstType Parameter; //!< alias
+                Y_Args_Expose(T,Type);               //!< alias
+                typedef Tile1D<T>      Tile;         //!< alias
+                typedef ConstType      Parameter;    //!< alias
+                typedef Readable<Tile> ReadableType; //!< alias
 
                 //______________________________________________________________
                 //
@@ -171,6 +172,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 inline explicit Tiles1D(const size_t n,
                                         ConstType    extent,
                                         ConstType    iFirst) :
+                ReadableType(),
                 tiles(n)
                 {
                     for(size_t i=1;i<=n;++i)
@@ -181,7 +183,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 inline virtual ~Tiles1D() {}
 
                 //! duplicate \param t another tile
-                inline Tiles1D(const Tiles1D &t) : tiles(t) { }
+                inline Tiles1D(const Tiles1D &t) : ReadableType(), tiles(t) { }
 
                 //______________________________________________________________
                 //

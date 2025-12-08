@@ -105,7 +105,7 @@ namespace Yttrium
             {
                 assert(0!=call);
                 assert(0!=args);
-                const Tile   tile  = (*this)[context.indx];
+                const Tile & tile  = (*this)[context.indx];
                 call(context.sync,tile,args);
             }
 
