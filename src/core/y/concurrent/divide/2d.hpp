@@ -95,13 +95,15 @@ namespace Yttrium
                                   const BoxType &box)
                 {
                     static const scalar_t  one = 1;
-                    // find items
+                    // find indices
                     const Tile1D<scalar_t> tile1d(size,indx,box.count,0);
                     if(tile1d.length<=0) return; // no data
 
                     // convert to vertices
                     const vertex_t ini = box.at(tile1d.offset);
                     const vertex_t end = box.at(tile1d.utmost);
+
+                    // compute and allocate number of segments
                     {
                         const scalar_t nhs = end.y-ini.y+one;
                         std::cerr << ini << " -> " << end << " #hseg=" << nhs << std::endl;
@@ -112,11 +114,17 @@ namespace Yttrium
                         Coerce(height) = nhs;
                     }
 
+                    // convert to horizontal segments
+                    const scalar_t htop = height-1;
                     for(scalar_t h=0;h<height;++h)
                     {
-                        vertex_t org(box.lower.x,ini.y+h);
-                        vertex_t end(box.upper.x,org.y);
-                        //new (segments.entry+h) SegType(
+
+                        vertex_t lhs(box.lower.x,ini.y+h);
+                        vertex_t rhs(box.upper.x,lhs.y);
+                        if(h<=0)    lhs.x = ini.x;
+                        if(h>=htop) rhs.x = end.x;
+                        assert(lhs.y==rhs.y);
+                        assert(rhs.x>=lhs.x);
                     }
                 }
             };
