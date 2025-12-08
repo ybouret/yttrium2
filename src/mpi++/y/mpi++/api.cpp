@@ -99,7 +99,7 @@ namespace Yttrium
             Y_MPI_Call( MPI_Comm_rank(MPI_COMM_WORLD, &rk) );
             Coerce(rank) = (size_t) rk;
             Coerce(indx) = rank+1;
-            updateTag();
+            updateLogo();
         }
 
         

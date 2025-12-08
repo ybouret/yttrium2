@@ -20,21 +20,21 @@ namespace Yttrium
         size(sz),
         rank(rk),
         indx(rank+1),
-        tag()
+        logo()
         {
             assert(size>0);
             assert(rank<size);
             assert(size<=MaxSize);
-            updateTag();
+            updateLogo();
         }
 
 
-        void Member:: updateTag() noexcept
+        void Member:: updateLogo() noexcept
         {
             static const char  dot[] = ".";
             static const char  nul[] = "0";
             
-            char * const       buff = (char *) memset( (void *)tag,0, TagSize );
+            char * const       buff = (char *) memset( (void *)logo,0, TagSize );
             const Decimal      sd(size);
             const char * const sds = sd.c_str();
             const size_t       sdl = strlen( sds ); assert(sdl<=(size_t)Digits);
@@ -51,7 +51,7 @@ namespace Yttrium
 
         const char * Member:: c_str() const noexcept
         {
-            return tag;
+            return logo;
         }
 
 

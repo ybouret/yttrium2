@@ -62,7 +62,7 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            void updateTag() noexcept; //!< make tag from current size and indx
+            void updateLogo() noexcept; //!< make logo from current size and indx
 
             //! partition algorithm
             /**
@@ -114,7 +114,7 @@ namespace Yttrium
 
         private:
             Y_Disable_Assign(Member);  //!< disarding
-            const char   tag[TagSize]; //!< store tag
+            const char   logo[TagSize]; //!< store tag
 
         };
     }
