@@ -9,6 +9,7 @@
 #include "y/concurrent/divide/box.hpp"
 #include "y/mkl/v2d.hpp"
 #include "y/object/school-of.hpp"
+#include "y/pointer/arc.hpp"
 
 namespace Yttrium
 {
@@ -61,13 +62,13 @@ namespace Yttrium
                 typedef T                         scalar_t;
                 typedef Box<vertex_t>             BoxType;
                 typedef HSegment<T>               SegType;
-
-                typedef Memory::SchoolOf<SegType> Segments;
+                typedef Memory::SchoolOf<SegType> SegsMem;
+                typedef ArcPtr<SegsMem>           Segments;
 
                 inline explicit Tile2D(const size_t   size,
                                        const size_t   indx,
                                        const BoxType &box) :
-                Object(), height(0), segments(0) {
+                Object(), height(0), segments( new SegsMem(1) ) {
                     setup(size,indx,box);
                 }
 
@@ -86,7 +87,7 @@ namespace Yttrium
                 {
                     assert(j>0);
                     assert(j<=height);
-                    return segments.cxx[j];
+                    return segments->cxx[j];
                 }
 
                 const scalar_t height;
@@ -111,13 +112,15 @@ namespace Yttrium
 
                     // compute and allocate number of segments
                     {
-                        const scalar_t nhs = end.y-ini.y+one;
+                        const scalar_t required = end.y-ini.y+one;
+                        const size_t   nhs      = (size_t)required;
                         std::cerr << ini << " -> " << end << " #hseg=" << nhs << std::endl;
+                        if(nhs>segments->maxBlocks)
                         {
-                            Segments tmp(nhs);
-                            segments.exchange(tmp);
+                            Segments tmp( new SegsMem(nhs) );
+                            segments.xch(tmp);
                         }
-                        Coerce(height) = nhs;
+                        Coerce(height) = required;
                     }
 
                     // convert to horizontal segments
@@ -131,7 +134,7 @@ namespace Yttrium
                         if(h>=htop) rhs.x = end.x;
                         assert(lhs.y==rhs.y);
                         assert(rhs.x>=lhs.x);
-                        new (segments.entry+h) SegType(lhs,one+rhs.x-lhs.x);
+                        new (segments->entry+h) SegType(lhs,one+rhs.x-lhs.x);
                     }
                 }
             };
