@@ -65,7 +65,6 @@ namespace Yttrium
             // Members
             //
             //__________________________________________________________________
-
             const size_t maxBlocks; //!< maximum numbers of objects to fit in
             const size_t allocated; //!< enough bytes to hold count objects
             T * const    entry;     //!< base address
