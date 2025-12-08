@@ -48,17 +48,19 @@ namespace Yttrium
                     return os << "#" << self.width << ": " << self.start << "->" << end;
                 }
 
-                const vertex_t start;
-                const scalar_t width;
+                inline vertex_t right() const noexcept { vertex_t _(start.x+width,start.y); --_.x; return _; }
+
+                const vertex_t  start;
+                const scalar_t  width;
 
             private:
                 Y_Disable_Assign(HSegment);
             };
 
-#define Y_Tile2D_Ctor()   h(0), segments( new SegsMem(1) )
+#define Y_Tile2D_Ctor()   h(0), n(0), segments( new SegsMem(1) )
 
             template <typename T>
-            class Tile2D
+            class Tile2D : public Subdivision
             {
             public:
                 typedef V2D<T>                    vertex_t;
@@ -82,14 +84,33 @@ namespace Yttrium
                 }
 
                 inline Tile2D(const Tile2D &t) noexcept :
-                h(t.h), segments(t.segments)
+                h(t.h), n(t.n), segments(t.segments)
                 {
 
                 }
 
-
                 inline virtual ~Tile2D() noexcept {
                     Memory::Stealth::Zero(segments->entry,segments->allocated);
+                }
+
+                inline friend std::ostream & operator<<(std::ostream &os, const Tile2D &t)
+                {
+                    if(t.h<=0)
+                        os << Empty;
+                    else
+                        os << "|" << t.origin() << "->" << t.finish() << "|=" << t.n << "/#" << t.h;
+                    return os;
+                }
+
+
+                inline vertex_t finish() const noexcept
+                {
+                    return (h>0) ? segments->cxx[h].right() : vertex_t();
+                }
+
+                inline vertex_t origin() const noexcept
+                {
+                    return h>0 ? segments->entry[0].start : vertex_t();
                 }
 
                 inline const SegType & operator[](const scalar_t j) const noexcept
@@ -99,7 +120,7 @@ namespace Yttrium
                 }
 
                 const scalar_t h;
-
+                const uint64_t n;
 
             private:
                 Y_Disable_Assign(Tile2D);
@@ -144,9 +165,11 @@ namespace Yttrium
                         if(y>=htop) rhs.x = end.x;
                         assert(lhs.y==rhs.y);
                         assert(rhs.x>=lhs.x);
+                        const scalar_t w = one+rhs.x-lhs.x;
 
                         // record
-                        new (segments->entry+y) SegType(lhs,one+rhs.x-lhs.x);
+                        new (segments->entry+y) SegType(lhs,w);
+                        Coerce(n) += (uint64_t)w;
                     }
                 }
             };

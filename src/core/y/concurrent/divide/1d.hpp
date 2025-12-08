@@ -7,6 +7,7 @@
 #include "y/concurrent/member.hpp"
 #include "y/type/args.hpp"
 #include "y/container/cxx/series.hpp"
+#include "y/concurrent/divide/subdivision.hpp"
 
 namespace Yttrium
 {
@@ -23,7 +24,7 @@ length( CTOR ), \
 utmost( Y_Concurrent_Divide_Tile1D_Utmost )
 
             template <typename T>
-            class Tile1D
+            class Tile1D : public Subdivision
             {
             public:
                 static const T One = 1;
@@ -62,7 +63,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 inline friend std::ostream & operator<<(std::ostream &os, const Tile1D &t)
                 {
                     if(t.length<=0)
-                        return os << "|empty|";
+                        return os << Empty;
                     else
                         return os << "|[" << t.offset << ":" << t.utmost << "]|=" << t.length;
                 }
@@ -140,7 +141,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
             };
 
 
-            
+
 
 
 

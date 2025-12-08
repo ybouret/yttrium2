@@ -31,12 +31,17 @@ namespace Yttrium
                 shift(),
                 count( Setup(Coerce(lower),Coerce(upper),Coerce(width),Coerce(shift)))
                 {
-                    std::cerr << lower << "-> " << upper << " w=" << width << ", s=" << shift << " #=" << count << std::endl;
+                    //std::cerr << lower << "-> " << upper << " w=" << width << ", s=" << shift << " #=" << count << std::endl;
                 }
 
                 inline ~Box() noexcept
                 {
 
+                }
+
+                inline friend std::ostream & operator<< (std::ostream &os, const Box &box)
+                {
+                    return os << "|" << box.lower << "->" << box.upper << "; w=" << box.width << "; s=" << box.shift << " |=" << box.count;
                 }
 
                 inline bool includes(const vertex_t &v) const noexcept
