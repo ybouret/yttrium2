@@ -140,7 +140,8 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
             //! Tile1D partition
             //
             //
-            //__________________________________________________________________'            template <typename T>
+            //__________________________________________________________________
+            template <typename T>
             class Tiles1D : public Readable< Tile1D<T> >
             {
             public:
@@ -149,7 +150,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 //
                 // Definitions
                 //
-                //______________________________________________________________'
+                //______________________________________________________________
                 Y_Args_Expose(T,Type);       //!< alias
                 typedef Tile1D<T> Tile;      //!< alias
                 typedef ConstType Parameter; //!< alias
@@ -159,7 +160,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 //
                 // C++
                 //
-                //______________________________________________________________'
+                //______________________________________________________________
 
                 //! setup
                 /**
@@ -202,25 +203,48 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 }
             };
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Tiles1D with first index=1
+            //
+            //
+            //__________________________________________________________________
             template <typename T>
             class CxxTiles1D : public Tiles1D<T>
             {
             public:
-                Y_Args_Expose(T,Type);
-                static ConstType Offset1 = 1;
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________'
+                Y_Args_Expose(T,Type);         //!< alias
+                static ConstType Offset1 = 1;  //!< alias
 
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________'
+
+                //! setup \param n parition size \param extent total burden
                 inline explicit CxxTiles1D(const size_t n,
                                            ConstType    extent) :
                 Tiles1D<T>(n,extent,Offset1)
                 {
                 }
 
+                //! cleanup
                 inline virtual ~CxxTiles1D() noexcept
                 {
                 }
 
             private:
-                Y_Disable_Copy_And_Assign(CxxTiles1D);
+                Y_Disable_Copy_And_Assign(CxxTiles1D); //!< discardind
             };
 
 
