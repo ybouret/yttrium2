@@ -151,6 +151,35 @@ namespace Yttrium
                 }
             };
 
+
+            template <typename T>
+            class Tiles2D : public Readable< Tile2D<T> >
+            {
+            public:
+                typedef Tile2D<T>              Tile;
+                typedef typename Tile::BoxType BoxType;
+
+                inline explicit Tiles2D(const size_t   n,
+                                        const BoxType &box) :
+                tiles(n)
+                {
+                    for(size_t i=1;i<=n;++i)
+                        tiles.push(n,i,box);
+                }
+
+                inline virtual ~Tiles2D() noexcept {}
+
+                inline virtual size_t size() const noexcept { return tiles.size(); }
+
+            private:
+                Y_Disable_Copy_And_Assign(Tiles2D);
+                CxxSeries<Tile> tiles;
+
+                inline virtual const Tile & getItemAt(const size_t indx) const noexcept
+                {
+                    return tiles[indx];
+                }
+            };
         }
 
     }

@@ -20,7 +20,7 @@ Y_UTEST(concurrent_div1d)
         for(size_t i=1;i<=nproc;++i)
         {
             Concurrent::Divide::Tile1D<uint16_t> segment(nproc,i,length,1);
-            std::cerr << "\t" << segment.offset << " +" << segment.length << " -> [" << segment.offset << ":" << segment.utmost << "]" << std::endl;
+            std::cerr << "\t" << segment << std::endl;
             sum += segment.length;
             {
                 const Concurrent::Member                   member(nproc,i-1);
@@ -30,6 +30,11 @@ Y_UTEST(concurrent_div1d)
             }
         }
         Y_ASSERT(length == sum);
+
+        {
+            Concurrent::Divide::Tiles1D<uint32_t> tiles(nproc,length,1);
+            std::cerr << "tiles=" << tiles << std::endl;
+        }
     }
 
 

@@ -6,6 +6,7 @@
 
 #include "y/concurrent/member.hpp"
 #include "y/type/args.hpp"
+#include "y/container/cxx/series.hpp"
 
 namespace Yttrium
 {
@@ -58,6 +59,14 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
 
                 }
 
+                inline friend std::ostream & operator<<(std::ostream &os, const Tile1D &t)
+                {
+                    if(t.length<=0)
+                        return os << "|empty|";
+                    else
+                        return os << "|[" << t.offset << ":" << t.utmost << "]|=" << t.length;
+                }
+
 
                 inline friend bool operator==(const Tile1D &lhs, const Tile1D &rhs) noexcept
                 {
@@ -70,6 +79,42 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
 
             private:
                 Y_Disable_Assign(Tile1D);
+            };
+
+
+            template <typename T>
+            class Tiles1D : public Readable< Tile1D<T> >
+            {
+            public:
+                Y_Args_Expose(T,Type);
+                typedef Tile1D<T> Tile;
+
+                inline explicit Tiles1D(const size_t n,
+                                        ConstType    extent,
+                                        ConstType    iFirst) :
+                tiles(n)
+                {
+                    for(size_t i=1;i<=n;++i)
+                        tiles.push(n,i,extent,iFirst);
+                }
+
+                inline virtual ~Tiles1D() {}
+
+                inline Tiles1D(const Tiles1D &t) : tiles(t) { }
+
+
+
+                inline virtual size_t size() const noexcept { return tiles.size(); }
+                
+
+
+            private:
+                Y_Disable_Assign(Tiles1D);
+                CxxSeries<const Tile> tiles;
+                inline virtual const Tile & getItemAt(const size_t indx) const noexcept
+                {
+                    return tiles[indx];
+                }
             };
         }
     }
