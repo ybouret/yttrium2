@@ -198,7 +198,7 @@ namespace Yttrium
         //! memory+pqueue
         //
         //______________________________________________________________________
-        class Code : public Object, public SchoolType, public PQueueType
+        class Code :  public SchoolType, public PQueueType
         {
         public:
             using SchoolType::entry;
@@ -207,7 +207,6 @@ namespace Yttrium
 
             //! setup \param minimalCapacity desired capacity
             inline Code(const size_t minimalCapacity) :
-            Object(),
             SchoolType(minimalCapacity),
             PQueueType(entry,maxBlocks)
             {
@@ -215,7 +214,6 @@ namespace Yttrium
 
             //! copy using object copy constructor \param other another code
             inline Code(const Code &other) :
-            Object(),
             SchoolType(other.size),
             PQueueType(entry,maxBlocks)
             {

@@ -317,12 +317,12 @@ built(0)
         //
         //! managing memory
         //______________________________________________________________________
-        class Code : public Object, public SchoolType
+        class Code :  public SchoolType
         {
         public:
             //! get memory \param minimalCapacity passed to allocator
             explicit Code(size_t minimalCapacity) :
-            Object(), SchoolType(minimalCapacity)
+            SchoolType(minimalCapacity)
             {
             }
 

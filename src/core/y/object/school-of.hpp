@@ -4,7 +4,7 @@
 #ifndef Y_Object_School_Of_Included
 #define Y_Object_School_Of_Included
 
-#include "y/object.hpp"
+#include "y/object/counted.hpp"
 #include "y/memory/allocator.hpp"
 
 namespace Yttrium
@@ -21,7 +21,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename T>
-        class SchoolOf
+        class SchoolOf : public CountedObject
         {
         public:
             //__________________________________________________________________

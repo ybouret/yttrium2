@@ -9,10 +9,10 @@ using namespace Yttrium;
 
 namespace
 {
-    class MyChars : public Object, public Memory::SchoolOf<char>
+    class MyChars :  public Memory::SchoolOf<char>
     {
     public:
-        inline explicit MyChars(const size_t n) : Object(), Memory::SchoolOf<char>(n)
+        inline explicit MyChars(const size_t n) : Memory::SchoolOf<char>(n)
         {
         }
 
@@ -33,35 +33,7 @@ Y_UTEST(memory_school_of)
         Memory::Operating<int> op(data.entry,data.maxBlocks);
     }
 
-
-#if 0
-    MyChars *code  = 0;
-    size_t   built = 0;
-    for(size_t i=1;i<=1000;++i)
-    {
-        if(!code)
-        {
-            code = new MyChars(8);
-        }
-        else
-        {
-            Y_ASSERT(code);
-            if(built>=code->count)
-            {
-                MyChars * temp = new MyChars( Expandable::NextCapacity(built) );
-                memcpy(temp->entry,code->entry,built);
-                delete code;
-                code = temp;
-            }
-        }
-        Y_ASSERT(0==code->entry[built]);
-        code->entry[built++] = 'a';
-    }
-
-
-    if(code) Destroy(code);
-
-#endif
+    
     for(size_t i=1;i<=992;++i)
     {
         std::cerr << "@" << i << std::endl;

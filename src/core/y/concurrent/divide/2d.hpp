@@ -61,6 +61,7 @@ namespace Yttrium
                 typedef T                         scalar_t;
                 typedef Box<vertex_t>             BoxType;
                 typedef HSegment<T>               SegType;
+
                 typedef Memory::SchoolOf<SegType> Segments;
 
                 inline explicit Tile2D(const size_t   size,

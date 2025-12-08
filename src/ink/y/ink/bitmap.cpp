@@ -129,13 +129,12 @@ namespace Yttrium
 
       
 
-        class Bitmap:: Rows : public CountedObject, public BitmapRows
+        class Bitmap:: Rows : public BitmapRows
         {
         public:
 
             inline explicit Rows(const Bitmap & bmp,
                                  uint8_t *      ptr) :
-            CountedObject(),
             BitmapRows(bmp.h),
             z(bmp.w)
             {

@@ -12,13 +12,11 @@ namespace Yttrium
     namespace Information
     {
 
-        class BWT_Transformer :: Code : public Object,
-        public Memory::SchoolOf<size_t>
+        class BWT_Transformer :: Code : public Memory::SchoolOf<size_t>
         {
         public:
 
             inline explicit Code(const size_t n) :
-            Object(),
             Memory::SchoolOf<size_t>(Max<size_t>(n,8))
             {
             }

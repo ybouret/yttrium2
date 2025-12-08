@@ -23,12 +23,11 @@ namespace Yttrium
         return np.cast<Cardinality>(Permutation::CallSign);
     }
 
-    class Permutation:: Code : public Object, public Memory::SchoolOf<size_t>
+    class Permutation:: Code : public Memory::SchoolOf<size_t>
     {
     public:
 
         inline explicit Code(const size_t n) :
-        Object(),
         Memory::SchoolOf<size_t>(n),
         perm()
         {

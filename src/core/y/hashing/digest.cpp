@@ -16,11 +16,10 @@ namespace Yttrium
     namespace Hashing
     {
 
-        class Digest::Code : public Object, public Memory::SchoolOf<uint8_t>
+        class Digest::Code :   public Memory::SchoolOf<uint8_t>
         {
         public:
             inline explicit Code(const size_t n) :
-            Object(),
             Memory::SchoolOf<uint8_t>(n),
             width(n)
             {
@@ -28,7 +27,6 @@ namespace Yttrium
             }
 
             inline explicit Code(const Code &other) :
-            Object(),
             Memory::SchoolOf<uint8_t>(other.width),
             width(other.width)
             {
@@ -69,22 +67,7 @@ namespace Yttrium
                     *(p++) = static_cast<uint8_t>(lo + (hi<<4) );
                 }
 
-
-#if 0
-                uint8_t *p   = code->entry;
-                size_t   rem = n;
-                hex += n;
-                while(rem>0)
-                {
-                    const int lo = GetHex( *(--hex) ); --rem;
-                    int       hi = 0;
-                    if(rem>0)
-                    {
-                        hi = GetHex( *(--hex) ); --rem;
-                    }
-                    *(p++) = static_cast<uint8_t>(lo + (hi<<4) );
-                }
-#endif
+                
                 return code.yield();
             }
 

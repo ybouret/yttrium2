@@ -12,14 +12,12 @@ namespace Yttrium
     const char * const HTable:: CallSign = "HTable";
 
     class HTable:: Code :
-    public Object,
     public Memory::SchoolOf<Slot>,
     public Memory::Operating<Slot>
     {
     public:
 
         explicit Code(const size_t n) :
-        Object(),
         Memory::SchoolOf<Slot>(n),
         Memory::Operating<Slot>(entry,n),
         mask(n-1)

@@ -93,12 +93,11 @@ namespace Yttrium
     }
 
 
-    class Partition:: Code : public Object, public Memory::SchoolOf<size_t>
+    class Partition:: Code : public Memory::SchoolOf<size_t>
     {
     public:
 
         inline explicit Code(const size_t n) :
-        Object(),
         Memory::SchoolOf<size_t>(n),
         part()
         {

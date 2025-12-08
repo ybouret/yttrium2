@@ -430,7 +430,7 @@ namespace Yttrium
         //! hold constructed objects
         //
         //______________________________________________________________________
-        class Code : public Object, public Memory::SchoolOf<T>, public Memory::Operating<T>
+        class Code : public Memory::SchoolOf<T>, public Memory::Operating<T>
         {
         public:
             using Memory::SchoolOf<T>::entry;
@@ -438,7 +438,6 @@ namespace Yttrium
 
             //! setup \param metrics matrix metrics
             inline Code(const MatrixMetrics &metrics) :
-            Object(),
             Memory::SchoolOf<T>(metrics.items),
             Memory::Operating<T>(entry,metrics.items)
             {
@@ -447,7 +446,6 @@ namespace Yttrium
             //! duplicate \param m another matrix
             template <typename U>
             inline Code(const Matrix<U> &m) :
-            Object(),
             Memory::SchoolOf<T>(m.items),
             Memory::Operating<T>(entry,m(),m.items)
             {
@@ -481,7 +479,7 @@ namespace Yttrium
         //! hold rows
         //
         //______________________________________________________________________
-        class Rows : public Object, public Memory::SchoolOf<Row>
+        class Rows : public Memory::SchoolOf<Row>
         {
         public:
             using Memory::SchoolOf<Row>::entry;

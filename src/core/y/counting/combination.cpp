@@ -31,13 +31,12 @@ namespace Yttrium
         return np.cast<Cardinality>(Combination::CallSign);
     }
 
-    class Combination:: Code : public Object, public Memory::SchoolOf<size_t>
+    class Combination:: Code : public Memory::SchoolOf<size_t>
     {
     public:
 
         inline explicit Code(const size_t n,
                              const size_t k) :
-        Object(),
         Memory::SchoolOf<size_t>(k),
         comb()
         {

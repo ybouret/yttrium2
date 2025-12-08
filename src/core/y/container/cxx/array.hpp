@@ -115,7 +115,7 @@ namespace Yttrium
         //! inline implementation
         //
         //______________________________________________________________________
-        class Code : public Object, public Memory::SchoolOf<MutableType>, public Memory::Operating<MutableType>
+        class Code :  public Memory::SchoolOf<MutableType>, public Memory::Operating<MutableType>
         {
         public:
             typedef  Memory::SchoolOf<MutableType>  ScType; //!< alias
@@ -124,7 +124,6 @@ namespace Yttrium
 
             //! setup \param count default objects
             inline Code(const size_t count) :
-            Object(),
             ScType(count),
             OpType(entry,count)
             {
@@ -137,7 +136,6 @@ namespace Yttrium
              \param arg from constructor
              */
             inline Code(const size_t num, ConstType &arg) :
-            Object(),
             ScType(num),
             OpType(CopyOf,arg,entry,num)
             {
@@ -148,7 +146,6 @@ namespace Yttrium
 
             //! duplicate \param other another code
             inline Code(const Code &other) :
-            Object(),
             ScType(other.numBlocks),
             OpType(entry,other.entry,other.numBlocks)
             {
@@ -160,7 +157,6 @@ namespace Yttrium
              */
             template <typename ARRAY>
             inline Code(const CopyOf_ &, ARRAY &arr) :
-            Object(),
             ScType(arr.size()),
             OpType(Procedural,Proc<ARRAY>,arr,entry,arr.size())
             {
