@@ -31,7 +31,8 @@ namespace Yttrium
         public:
             virtual ~Subdivision() noexcept; //!< cleanup
 
-
+            virtual bool isEmpty() const noexcept = 0;
+            
         private:
             Y_Disable_Copy_And_Assign(Subdivision); //!< discarding
         };

@@ -107,9 +107,17 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 //______________________________________________________________
                 //
                 //
-                // C++
+                // Interface
                 //
-                //______________________________________________________________'
+                //______________________________________________________________
+                virtual bool isEmpty() const noexcept { return length<=0; }
+
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
 
                 //! \param lhs first tile \param rhs second tile \return equality
                 inline friend bool operator==(const Tile1D &lhs, const Tile1D &rhs) noexcept
@@ -122,7 +130,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 //
                 // Members
                 //
-                //______________________________________________________________'
+                //______________________________________________________________
                 ConstType offset; //!< user's offset
                 ConstType length; //!< 0 : empty
                 ConstType utmost; //!< utmost = offset + length - 1
