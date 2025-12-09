@@ -91,6 +91,7 @@ Y_CreateLibrary(y
     y/protean/coop/heavy
     y/string
     y/string/stride
+    y/string/env
     y/apex
     y/apex/m
     y/apex/k

@@ -248,5 +248,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_ASCII_Convert_Included
 

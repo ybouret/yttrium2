@@ -170,6 +170,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(string_stride);
     Y_UTEST(string);
     Y_UTEST(string_env);
+    Y_UTEST(string_env_conv);
     Y_UTEST(string_percent);
     
     Y_UTEST(apex_parcel);
