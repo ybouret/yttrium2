@@ -104,8 +104,8 @@ Y_UTEST(p2p)
     {
         idx = 7;
         str = "Hello, World!";
-        cpx.re = 1.2;
-        cpx.im = -0.3;
+        cpx.re = 1.2f;
+        cpx.im = -0.3f;
         nnn    = 101;
         zzz    = -42;
         qqq    = Fraction { 2, 3 };

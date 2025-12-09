@@ -84,7 +84,7 @@ namespace Yttrium
                 for(size_t i=myIndx;i>0;--i)
                 {
                     travel += length;
-                    length  = extent / divide--;
+                    length  = (T)(extent / divide--);
                     extent -= length;
                 }
                 return length;

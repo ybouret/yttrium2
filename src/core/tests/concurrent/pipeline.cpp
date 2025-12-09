@@ -27,7 +27,7 @@ namespace
         void operator()(const Concurrent::Context &ctx)
         {
             {
-                Y_Lock(ctx.sync);
+                Y_Giant_Lock();
                 (std::cerr << value << " @" << ctx << std::endl).flush();
             }
             volatile double sum = 0;
@@ -37,6 +37,10 @@ namespace
                 sum += c * c;
             }
 
+            {
+                Y_Giant_Lock();
+                (std::cerr << value << " @" << ctx << ": sum="<< sum << std::endl).flush();
+            }
             if(track)
             {
                 ++(*track)[ctx.indx];

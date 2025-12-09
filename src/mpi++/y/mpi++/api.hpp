@@ -3,6 +3,10 @@
 #ifndef Y_MPI_Included
 #define Y_MPI_Included 1
 
+#if defined(_MSC_VER)
+#pragma warning ( disable : 5220 )
+#endif
+
 #include "y/singleton.hpp"
 #include "y/concurrent/life-time.hpp"
 #include "y/exception.hpp"

@@ -26,7 +26,8 @@ one(1)
     std::cerr << "pmin=" << pmin << "; pmax=" << pmax << " =>" << ffmt << std::endl;
     for(int i=pmin+1;i<=pmax;++i)
     {
-        const fcpu_t l = std::pow(ten,i);
+        const fcpu_t j = (fcpu_t)i;
+        const fcpu_t l = std::pow(ten,j);
         Coerce(lambda[i]) = l;
     }
 }

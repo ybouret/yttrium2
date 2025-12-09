@@ -82,6 +82,10 @@ namespace
 
 
 
+#if defined(_MSC_VER)
+#pragma warning ( disable : 4996 )
+#endif
+
         inline void find(const Concurrent::Context &ctx)
         {
             Concurrent::Split::In1D       in1d(delta);
