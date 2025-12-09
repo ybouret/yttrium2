@@ -11,6 +11,7 @@ using namespace Yttrium;
 Y_UTEST(concurrent_div1d)
 {
     const uint16_t length = 8;
+    const uint16_t offset = 1;
     const size_t   nmax   = 10;
 
     for(size_t nproc=1;nproc<=nmax;++nproc)
@@ -19,7 +20,7 @@ Y_UTEST(concurrent_div1d)
         uint16_t sum = 0;
         for(size_t i=1;i<=nproc;++i)
         {
-            Concurrent::Divide::Tile1D<uint16_t> segment(nproc,i,length,1);
+            Concurrent::Divide::Tile1D<uint16_t> segment(nproc,i,length,offset);
             std::cerr << "\t" << segment << std::endl;
             sum += segment.length;
             {
