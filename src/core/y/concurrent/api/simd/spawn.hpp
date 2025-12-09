@@ -57,7 +57,7 @@ namespace Yttrium
             call(0),
             args(0),
             processor(proc),
-            kernel(this, & Spawn::compute)
+            kernel( me(), &Spawn::compute)
             {
 
             }
@@ -113,6 +113,8 @@ namespace Yttrium
             void *    args;                   //!< arguments for routine
             Processor processor;              //!< shared processor
             Kernel    kernel;                 //!< call compute(...)
+                
+            inline Spawn* me() noexcept { return this;  }
 
             //! executed in a thread \param context processor context
             void compute(const Context &context) noexcept
