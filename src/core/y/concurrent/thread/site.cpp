@@ -88,8 +88,8 @@ namespace Yttrium
 
         void Site:: parse(const String &info)
         {
-            std::cerr << "parsing '" << info << "'" << std::endl;
-         
+            //std::cerr << "parsing '" << info << "'" << std::endl;
+
             const char * const str = info.c_str();
             if( strchr(str,COLON) )
             {
@@ -118,9 +118,12 @@ namespace Yttrium
 
         void Site:: parseLinear(const String &info)
         {
+            /*
             std::cerr << "parseLinear('" << info << "')" << std::endl;
             for (size_t i = 1; i <= info.size(); ++i)
                 std::cerr << "[+] " << info[i] << std::endl;
+             */
+            
             Vector<String> words(WithAtLeast,3);
             Tokenizer::AppendTo(words,info,COLON);
 
