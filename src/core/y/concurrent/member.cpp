@@ -65,7 +65,7 @@ namespace Yttrium
         indx(m.indx),
         logo()
         {
-            memcpy( (void*)logo, m.logo, sizeof(logo) );
+            (void) memcpy( (void*)logo, m.logo, sizeof(logo) );
         }
 
 
