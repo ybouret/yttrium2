@@ -17,6 +17,7 @@ namespace Yttrium
 
         Member:: Member(const size_t sz,
                         const size_t rk) noexcept:
+        LegacyString(),
         size(sz),
         rank(rk),
         indx(rank+1),
@@ -58,6 +59,7 @@ namespace Yttrium
         }
 
         Member:: Member(const Member &m) noexcept :
+        LegacyString(),
         size(m.size),
         rank(m.rank),
         indx(m.indx),
