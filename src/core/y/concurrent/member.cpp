@@ -33,7 +33,7 @@ namespace Yttrium
         {
             static const char  dot[] = ".";
             static const char  nul[] = "0";
-            
+
             char * const       buff = (char *) memset( (void *)logo,0, TagSize );
             const Decimal      sd(size);
             const char * const sds = sd.c_str();
@@ -57,6 +57,14 @@ namespace Yttrium
             return logo;
         }
 
+        Member:: Member(const Member &m) noexcept :
+        size(m.size),
+        rank(m.rank),
+        indx(m.indx),
+        logo()
+        {
+            memcpy( (void*)logo, m.logo, sizeof(logo) );
+        }
 
 
     }
