@@ -548,6 +548,13 @@ namespace Yttrium
             static const bool UsePlain = Plain<T>::Used;                 //!< alias
             typedef typename Pick<UsePlain,Plain<T>,Codec<T>>::Type API; //!< alias
 
+            //! send contigous array w.r.t type
+            /**
+             \param mpi    instance
+             \param arr    array
+             \param target send target
+             \param tag    send tag
+             */
             template <typename CONTIGUOUS> static inline
             void Send(MPI                   & mpi,
                       const CONTIGUOUS      & arr,
@@ -558,6 +565,13 @@ namespace Yttrium
                 Send(way,mpi,arr,target,tag);
             }
 
+            //! recv contigous array w.r.t type
+            /**
+             \param mpi    instance
+             \param arr    array
+             \param source recv source
+             \param tag    recv tag
+             */
             template <typename CONTIGUOUS> static inline
             void Recv(MPI                   & mpi,
                       CONTIGUOUS            & arr,
@@ -569,6 +583,14 @@ namespace Yttrium
             }
 
         private:
+
+            //! send contigous array of Plain types
+            /**
+             \param mpi    instance
+             \param arr    array
+             \param target send target
+             \param tag    send tag
+             */
             template <typename CONTIGUOUS>
             static inline void Send(const IntToType<true> &,
                                     MPI                   & mpi,
@@ -581,6 +603,13 @@ namespace Yttrium
                     mpi.send( (const typename Plain<T>::Type *)&arr[1],sz*Plain<T>::DIMS,target,tag);
             }
 
+            //! recv contigous array of Plain types
+            /**
+             \param mpi    instance
+             \param arr    array
+             \param source recv source
+             \param tag    recv tag
+             */
             template <typename CONTIGUOUS>
             static inline void Recv(const IntToType<true> &,
                                     MPI                   & mpi,
@@ -594,6 +623,13 @@ namespace Yttrium
                     mpi.recv( (typename Plain<T>::Type *)&arr[1],sz*Plain<T>::DIMS,source,tag);
             }
 
+            //! send contigous array of Codec types
+            /**
+             \param mpi    instance
+             \param arr    array
+             \param target send target
+             \param tag    send tag
+             */
             template <typename CONTIGUOUS>
             static inline void Send(const IntToType<false> &,
                                     MPI                   & mpi,
@@ -605,7 +641,13 @@ namespace Yttrium
                     Codec<T>::Send(mpi,arr[i],target,tag);
             }
 
-
+            //! recv contigous array of Codec types
+            /**
+             \param mpi    instance
+             \param arr    array
+             \param source recv source
+             \param tag    recv tag
+             */
             template <typename CONTIGUOUS>
             static inline void Recv(const IntToType<false> &,
                                     MPI                   & mpi,
