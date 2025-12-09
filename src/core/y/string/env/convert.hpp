@@ -10,8 +10,23 @@
 namespace Yttrium
 {
 
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! Direct conversion from environment strings
+    //
+    //
+    //__________________________________________________________________________
     struct EnvironmentConvert
     {
+
+        //! environment string to value
+        /**
+         \param name         variable name
+         \param defaultValue default value
+         \return parsed name if found, defaultValue otherwise
+         */
         template <typename T> static inline
         T To(const String &name, typename TypeTraits<T>::ParamType defaultValue)
         {
@@ -24,6 +39,12 @@ namespace Yttrium
                 return defaultValue;
         }
 
+        //! environment string to value
+        /**
+         \param name         variable name
+         \param defaultValue default value
+         \return parsed name if found, defaultValue otherwise
+         */
         template <typename T> static inline
         T To(const char * const name, typename TypeTraits<T>::ParamType defaultValue)
         {

@@ -4,7 +4,7 @@
 #ifndef Y_Concurrent_Subdivision_Included
 #define Y_Concurrent_Subdivision_Included 1
 
-#include "y/core/setup.hpp"
+#include "y/concurrent/member.hpp"
 
 namespace Yttrium
 {
@@ -19,22 +19,26 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Subdivision
+        class Subdivision : public Member
         {
         public:
             static const char * const Empty; //!< "|empty|";
 
 
         protected:
-            explicit Subdivision() noexcept; //!< setup
-
+            explicit Subdivision(const size_t, const size_t) noexcept; //!< setup size.rank
+            explicit Subdivision(const Member &)             noexcept; //!< setup
+            Subdivision(const Subdivision &)                 noexcept; //!< duplicate
         public:
+
             virtual ~Subdivision() noexcept; //!< cleanup
 
+            //! \return true if empty subdivision
             virtual bool isEmpty() const noexcept = 0;
+
             
         private:
-            Y_Disable_Copy_And_Assign(Subdivision); //!< discarding
+            Y_Disable_Assign(Subdivision); //!< discarding
         };
     }
 

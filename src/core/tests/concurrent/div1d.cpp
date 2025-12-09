@@ -20,7 +20,7 @@ Y_UTEST(concurrent_div1d)
         uint16_t sum = 0;
         for(size_t i=1;i<=nproc;++i)
         {
-            Concurrent::Divide::Tile1D<uint16_t> segment(nproc,i,length,offset);
+            Concurrent::Divide::Tile1D<uint16_t> segment(nproc,i-1,length,offset);
             std::cerr << "\t" << segment << std::endl;
             sum += segment.length;
             {

@@ -8,9 +8,21 @@ namespace Yttrium
         const char * const Subdivision:: Empty = "|empty|";
 
 
-        Subdivision:: Subdivision() noexcept
+        Subdivision:: Subdivision(const size_t sz, const size_t rk) noexcept :
+        Member(sz,rk)
         {
         }
+
+        Subdivision:: Subdivision(const Member &m) noexcept :
+        Member(m)
+        {
+        }
+
+        Subdivision:: Subdivision(const Subdivision &sub) noexcept :
+        Member(sub)
+        {
+        }
+
 
         Subdivision:: ~Subdivision() noexcept
         {

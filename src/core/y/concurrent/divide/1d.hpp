@@ -20,9 +20,9 @@ namespace Yttrium
 #define Y_Concurrent_Divide_Tile1D_Utmost (ConstType)(offset + length - One)
 
             //! helper
-#define Y_Concurrent_Divide_Tile1D(CTOR) \
+#define Y_Concurrent_Divide_Tile1D() \
 offset(iFirst), \
-length( CTOR ), \
+length( part<MutableType>( extent, Coerce(offset) ) ), \
 utmost( Y_Concurrent_Divide_Tile1D_Utmost )
 
             //__________________________________________________________________
@@ -56,15 +56,15 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 //! setup from coordinates
                 /**
                  \param mySize mySize > 0
-                 \param myIndx 1 <= myIndx <= mySize
+                 \param myRank myRank < mySize
                  \param extent total burden
                  \param iFirst first index
                  */
                 inline Tile1D(const size_t  mySize,
-                              const size_t  myIndx,
+                              const size_t  myRank,
                               ConstType     extent,
                               ConstType     iFirst) noexcept :
-                Y_Concurrent_Divide_Tile1D( Member::Part<MutableType>(mySize,myIndx, extent, Coerce(offset) ) )
+                Subdivision(mySize,myRank), Y_Concurrent_Divide_Tile1D()
                 {
 
                 }
@@ -78,13 +78,14 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 inline Tile1D(const Member & member,
                               ConstType      extent,
                               ConstType      iFirst) noexcept :
-                Y_Concurrent_Divide_Tile1D( member.part<MutableType>( extent, Coerce(offset) ) )
+                Subdivision(member), Y_Concurrent_Divide_Tile1D()
                 {
 
                 }
 
                 //! duplicate \param t another tile
                 inline Tile1D(const Tile1D &t) noexcept :
+                Subdivision(t),
                 offset(t.offset),
                 length(t.length),
                 utmost(t.utmost)
@@ -183,7 +184,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 ReadableType(),
                 tiles(n)
                 {
-                    for(size_t i=1;i<=n;++i)
+                    for(size_t i=0;i<n;++i)
                         tiles.push(n,i,extent,iFirst);
                 }
 

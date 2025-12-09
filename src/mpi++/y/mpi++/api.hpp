@@ -253,6 +253,21 @@ namespace Yttrium
                   const int          tag);
 
 
+        //! sendrecv data, low-level
+        /**
+         \param sendEntry    send data entry
+         \param sendCount    send data count of items
+         \param sendDatatype send data type
+         \param sendBytes    send bytes for stats
+         \param sendTarget   send target
+         \param sendTag      send tag
+         \param recvEntry    recv data entry
+         \param recvCount    recv data count of items
+         \param recvDatatype recv data type
+         \param recvBytes    recv bytes for stats
+         \param recvSource   recv source
+         \param recvTag      recv tag
+         */
         void sendrecv(const void * const sendEntry,
                       const size_t       sendCount,
                       const MPI_Datatype sendDatatype,
@@ -303,6 +318,17 @@ namespace Yttrium
             recv(entry,count,datatype,dt.bytesFor(count),source,tag);
         }
 
+        //! sendrecv generic data, low-level
+        /**
+         \param sendEntry    send data entry
+         \param sendCount    send data count of items
+         \param sendTarget   send target
+         \param sendTag      send tag
+         \param recvEntry    recv data entry
+         \param recvCount    recv data count of items
+         \param recvSource   recv source
+         \param recvTag      recv tag
+         */
         template <typename T, typename U> inline
         void sendrecv(const T * const sendEntry,
                       const size_t    sendCount,
@@ -323,6 +349,17 @@ namespace Yttrium
 
         }
 
+
+        //! sendrecv generic SAME data type, low-level
+        /**
+         \param sendEntry    send data entry
+         \param sendCount    send data count of items
+         \param sendTarget   send target
+         \param recvEntry    recv data entry
+         \param recvCount    recv data count of items
+         \param recvSource   recv source
+         \param tag          common tag
+         */
         template <typename T> inline
         void sendrecv(const T * const sendEntry,
                       const size_t    sendCount,
@@ -330,7 +367,7 @@ namespace Yttrium
                       T * const       recvEntry,
                       const size_t    recvCount,
                       const size_t    recvSource,
-                      const int       tag =  DefaultTag)
+                      const int       tag)
         {
             sendrecv<T,T>(sendEntry,sendCount,sendTarget,tag,
                           recvEntry,recvCount,recvSource,tag);

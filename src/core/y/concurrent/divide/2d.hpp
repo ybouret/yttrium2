@@ -96,7 +96,7 @@ namespace Yttrium
             };
 
             //! helper
-#define Y_Tile2D_Ctor()   Subdivision(), h(0), n(0), segments( new SegsMem(1) )
+#define Y_Tile2D_Ctor() h(0), n(0), segments( new SegsMem(1) )
 
             //__________________________________________________________________
             //
@@ -132,15 +132,16 @@ namespace Yttrium
 
                 //! setup
                 /**
-                 \param size size>0
-                 \param indx 1<=indx<=size
-                 \param box  total area
+                 \param sz  sz>0
+                 \param rk  rk<sz
+                 \param box total area
                  */
-                inline explicit Tile2D(const size_t   size,
-                                       const size_t   indx,
+                inline explicit Tile2D(const size_t   sz,
+                                       const size_t   rk,
                                        const BoxType &box) :
+                Subdivision(sz,rk),
                 Y_Tile2D_Ctor() {
-                    setup(size,indx,box);
+                    setup(box);
                 }
 
                 //! setup
@@ -150,13 +151,16 @@ namespace Yttrium
                  */
                 inline explicit Tile2D(const Member &member,
                                        const BoxType &box) :
+                Subdivision(member),
                 Y_Tile2D_Ctor() {
-                    setup(member.size,member.indx,box);
+                    setup(box);
                 }
 
                 //! duplicate with shared segments \param t another tile
                 inline Tile2D(const Tile2D &t) noexcept :
-                h(t.h), n(t.n), segments(t.segments)
+                Subdivision(t),
+                h(t.h), n(t.n),
+                segments(t.segments)
                 {
 
                 }
@@ -226,13 +230,9 @@ namespace Yttrium
 
                 //! setup algorithm
                 /**
-                 \param size member size
-                 \param indx member index
                  \param box  total working box
                  */
-                inline void setup(const size_t size,
-                                  const size_t indx,
-                                  const BoxType &box)
+                inline void setup(const BoxType &box)
                 {
                     static const scalar_t  one = 1;
                     static const scalar_t  id0 = 0;
@@ -240,8 +240,8 @@ namespace Yttrium
                     //----------------------------------------------------------
                     // find indices
                     //----------------------------------------------------------
-                    const Tile1D<scalar_t> tile1d(size,indx,box.count,id0);
-                    if(tile1d.length<=0) return; // no data
+                    const Tile1D<scalar_t> tile1d(size,rank,box.count,id0);
+                    if(tile1d.isEmpty()) return; // no data
 
                     //----------------------------------------------------------
                     // convert to vertices
@@ -324,7 +324,7 @@ namespace Yttrium
                  */
                 inline explicit Tiles2D(const size_t   n,
                                         const BoxType &box) : tiles(n) {
-                    for(size_t i=1;i<=n;++i) tiles.push(n,i,box);
+                    for(size_t i=0;i<n;++i) tiles.push(n,i,box);
                 }
 
                 //! cleanup

@@ -19,7 +19,7 @@ Y_UTEST(concurrent_div2d)
         std::cerr << std::endl << "nproc=" << nproc << std::endl;
         for(size_t i=1;i<=nproc;++i)
         {
-            Concurrent::Divide::Tile2D<int> tile(nproc,i,box);
+            Concurrent::Divide::Tile2D<int> tile(nproc,i-1,box);
             std::cerr << "\t| tile[" << i << "] | = " << tile.h << std::endl;
             for(int j=1;j<=tile.h;++j)
             {

@@ -109,12 +109,26 @@ namespace Yttrium
              \param meth method
              \param arg1 first argument
              \param arg2 second argument
-
              */
             template <typename HOST, typename METH, typename ARG1, typename ARG2> inline
             void operator()(HOST &host, METH meth, ARG1 &arg1, ARG2 &arg2)
             {
                 Wrapper2<HOST,METH,ARG1,ARG2> wrapper = { host, meth, arg1, arg2 };
+                (*this)(wrapper);
+            }
+
+            //! host.meth(context.sync, self[context.indx],arg1,arg2,arg3) over each tile
+            /**
+             \param host object
+             \param meth method
+             \param arg1 first  argument
+             \param arg2 second argument
+             \param arg3 third  argument
+             */
+            template <typename HOST, typename METH, typename ARG1, typename ARG2, typename ARG3> inline
+            void operator()(HOST &host, METH meth, ARG1 &arg1, ARG2 &arg2, ARG3 &arg3)
+            {
+                Wrapper2<HOST,METH,ARG1,ARG2> wrapper = { host, meth, arg1, arg2, arg3 };
                 (*this)(wrapper);
             }
 
@@ -128,7 +142,8 @@ namespace Yttrium
             void *    args;                   //!< arguments for routine
             Processor processor;              //!< shared processor
             Kernel    kernel;                 //!< call compute(...)
-                
+
+            //! \return this, helper for MSC
             inline Spawn* me() noexcept { return this;  }
 
             //! executed in a thread \param context processor context
@@ -198,6 +213,23 @@ namespace Yttrium
                 inline void operator()(Lockable &sync, const Tile &tile )
                 {
                     (host.*meth)(sync,tile,arg1,arg2);
+                }
+            };
+
+            //! alias to wrap host+method call with three args
+            template <typename HOST, typename METH, typename ARG1, typename ARG2, typename ARG3>
+            struct Wrapper3
+            {
+                HOST & host; //!< persistent host
+                METH   meth; //!< host's method
+                ARG1 & arg1; //!< method extra argument
+                ARG2 & arg2; //!< method extra argument
+                ARG3 & arg3; //!< method extra argument
+
+                //! \param sync from context \param tile one of the tile
+                inline void operator()(Lockable &sync, const Tile &tile )
+                {
+                    (host.*meth)(sync,tile,arg1,arg2,arg3);
                 }
             };
 
