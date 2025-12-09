@@ -82,7 +82,7 @@ namespace Yttrium
             //! \return current plan
             template <typename T> inline Parcel<T> & get() noexcept
             {
-                assert( IntegerLog2For<T>::Value == plan );
+                assert( (int) IntegerLog2For<T>::Value == (int) plan );
                 return parcel<T>();
             }
 
@@ -90,7 +90,7 @@ namespace Yttrium
             template <typename T> inline
             const Parcel<T> & get() const noexcept
             {
-                assert( IntegerLog2For<T>::Value == plan );
+                assert( (int) IntegerLog2For<T>::Value == (int) plan );
                 return parcel<T>();
             }
 

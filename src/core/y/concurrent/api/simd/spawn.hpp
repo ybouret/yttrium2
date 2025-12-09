@@ -103,6 +103,21 @@ namespace Yttrium
                 (*this)(wrapper);
             }
 
+            //! host.meth(context.sync, self[context.indx],arg1,arg2) over each tile
+            /**
+             \param host object
+             \param meth method
+             \param arg1 first argument
+             \param arg2 second argument
+
+             */
+            template <typename HOST, typename METH, typename ARG1, typename ARG2> inline
+            void operator()(HOST &host, METH meth, ARG1 &arg1, ARG2 &arg2)
+            {
+                Wrapper2<HOST,METH,ARG1,ARG2> wrapper = { host, meth, arg1, arg2 };
+                (*this)(wrapper);
+            }
+
 
 
             
@@ -154,7 +169,7 @@ namespace Yttrium
             };
 
 
-            //! alias to wrap host+method call
+            //! alias to wrap host+method call with one arg
             template <typename HOST, typename METH, typename ARG1>
             struct Wrapper1
             {
@@ -166,6 +181,23 @@ namespace Yttrium
                 inline void operator()(Lockable &sync, const Tile &tile )
                 {
                     (host.*meth)(sync,tile,arg1);
+                }
+            };
+
+
+            //! alias to wrap host+method call with two args
+            template <typename HOST, typename METH, typename ARG1, typename ARG2>
+            struct Wrapper2
+            {
+                HOST & host; //!< persistent host
+                METH   meth; //!< host's method
+                ARG1 & arg1; //!< method extra argument
+                ARG2 & arg2; //!< method extra argument
+
+                //! \param sync from context \param tile one of the tile
+                inline void operator()(Lockable &sync, const Tile &tile )
+                {
+                    (host.*meth)(sync,tile,arg1,arg2);
                 }
             };
 
