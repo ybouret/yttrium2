@@ -17,7 +17,7 @@ namespace Yttrium
         {
 
             //! helper
-#define Y_Concurrent_Divide_Tile1D_Utmost (offset + length - One)
+#define Y_Concurrent_Divide_Tile1D_Utmost (ConstType)(offset + length - One)
 
             //! helper
 #define Y_Concurrent_Divide_Tile1D(CTOR) \
@@ -64,7 +64,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                               const size_t  myIndx,
                               ConstType     extent,
                               ConstType     iFirst) noexcept :
-                Y_Concurrent_Divide_Tile1D( Member::Part(mySize,myIndx, extent, Coerce(offset) ) )
+                Y_Concurrent_Divide_Tile1D( Member::Part<MutableType>(mySize,myIndx, extent, Coerce(offset) ) )
                 {
 
                 }
@@ -78,7 +78,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 inline Tile1D(const Member & member,
                               ConstType      extent,
                               ConstType      iFirst) noexcept :
-                Y_Concurrent_Divide_Tile1D( member.part( extent, Coerce(offset) ) )
+                Y_Concurrent_Divide_Tile1D( member.part<MutableType>( extent, Coerce(offset) ) )
                 {
 
                 }
