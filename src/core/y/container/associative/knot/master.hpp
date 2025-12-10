@@ -81,21 +81,21 @@ namespace Yttrium
             }
 
             template <typename COMPARE_KEYS>
+            struct CompareKeysProxy
+            {
+                COMPARE_KEYS &comparison;
+                inline SignType operator()(const KNOT * const lhs, const KNOT * const rhs)
+                {
+                    assert(lhs); assert(rhs);
+                    return comparison(lhs->key,rhs->key);
+                }
+            };
+
+            template <typename COMPARE_KEYS>
             void sortKeysWith(COMPARE_KEYS &compareKeys)
             {
-                struct proxy
-                {
-                    COMPARE_KEYS &comparison;
-                    inline SignType operator()(const KNOT * const lhs, const KNOT * const rhs)
-                    {
-                        assert(lhs); assert(rhs);
-                        return comparison(lhs->key,rhs->key);
-                        //return __Zero__;
-                    }
-                };
-
-                proxy compareNodes = { compareKeys };
-                list.sort(compareNodes);
+                CompareKeysProxy<COMPARE_KEYS> compareNodesByKey = { compareKeys };
+                list.sort(compareNodesByKey);
             }
 
             //! reverse inner list order
