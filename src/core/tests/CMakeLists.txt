@@ -32,6 +32,7 @@ vfs
 counting
 field
 rtld
+color
 )
 
 
@@ -298,5 +299,8 @@ Y_UTEST(field:4d)
 
 #rtld
 Y_UTEST(rtld)
+
+#colors
+Y_UTEST(colors)
 
 
