@@ -1,5 +1,4 @@
-#include "y/color/rgb.hpp"
-#include "y/color/rgba.hpp"
+#include "y/color/conv.hpp"
 #include "y/color/gray.hpp"
 
 #include "y/utest/run.hpp"
@@ -79,7 +78,7 @@ Y_UTEST(colors)
             {
                 for(unsigned b=0;b<256;++b)
                 {
-                    const uint8_t level = Color::Gray::Get( (uint8_t)r, (uint8_t)g, (uint8_t)b );
+                    const uint8_t level = Color::Gray::ToByte( (uint8_t)r, (uint8_t)g, (uint8_t)b );
                     if(level>lmax) lmax=level;
                 }
             }

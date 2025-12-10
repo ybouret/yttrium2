@@ -13,7 +13,7 @@ namespace Yttrium
 #define Y_F(X) X##.0f
 
         template <>
-        const float Gray::ByteTo<float>::Table[256] =
+        const float Gray::ByteTo<float>::Unit[256] =
         {
 #include "gray.hxx"
         };
@@ -23,7 +23,7 @@ namespace Yttrium
 #define Y_F(X) X##.0
 
         template <>
-        const double Gray::ByteTo<double>::Table[256] =
+        const double Gray::ByteTo<double>::Unit[256] =
         {
 #include "gray.hxx"
         };
@@ -33,7 +33,7 @@ namespace Yttrium
 #define Y_F(X) X##.0L
 
         template <>
-        const long double Gray::ByteTo<long double>::Table[256] =
+        const long double Gray::ByteTo<long double>::Unit[256] =
         {
 #include "gray.hxx"
         };
@@ -44,10 +44,7 @@ namespace Yttrium
         };
 
 
-        uint8_t Gray:: Get(const uint8_t r, const uint8_t g, const uint8_t b)
-        {
-            return Table[unsigned(r) + unsigned(g) + unsigned(b)];
-        }
+        
     }
 
 }

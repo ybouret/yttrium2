@@ -12,6 +12,8 @@ namespace Yttrium
     namespace Color
     {
 
+        template <typename> class RGB;
+
         template <typename T>
         class RGBA
         {
@@ -38,6 +40,9 @@ namespace Yttrium
                 Print(os,c.a)        << ')';
                 return os;
             }
+
+            RGBA(const RGB<T> &c, const T A = Opaque<T>::Value) noexcept;
+
 
             T r;
             T g;
