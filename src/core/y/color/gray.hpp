@@ -11,6 +11,14 @@ namespace Yttrium
     namespace Color
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! color/gray operations
+        //
+        //
+        //______________________________________________________________________
         struct Gray
         {
             //! table of unit floating points
@@ -21,15 +29,17 @@ namespace Yttrium
 
 
 
-            static const size_t  Count = 1 + 3*255;
-            static const uint8_t Table[Count];
+            static const size_t  Count = 1 + 3*255; //!< r+g+b possilities
+            static const uint8_t Table[Count];      //!< grey levels
 
+            //! \param r r \param g g \param b b \return grey level
             static inline
             uint8_t ToByte(const uint8_t r, const uint8_t g, const uint8_t b) noexcept
             {
                 return Table[unsigned(r) + unsigned(g) + unsigned(b)];
             }
 
+            //! \param r r \param g g \param b b \return floating point grey level
             template <typename T> static inline
             T ToFP(const uint8_t r, const uint8_t g, const uint8_t b) noexcept
             {

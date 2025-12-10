@@ -207,6 +207,7 @@ namespace Yttrium
         inline Type *      operator()(void)       noexcept { return (Type*)head_(); }
 
 
+        //! \param i index of move item to tail
         inline void moveAtTail(const size_t i) noexcept
         {
             assert(i>=1); assert(i<=this->size());

@@ -16,6 +16,7 @@ namespace Yttrium
         {
             template <typename T, const bool OneByte> struct Print;
 
+#if !defined(DOXYGEN_SHOULD_SKIP_THIS)
             template <typename T> struct Print<T,false>
             {
                 static inline std::ostream & To( std::ostream &os, const T value)
@@ -31,6 +32,7 @@ namespace Yttrium
                     return os << (int)value;
                 }
             };
+#endif  
 
         }
 

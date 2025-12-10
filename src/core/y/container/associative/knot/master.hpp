@@ -80,17 +80,8 @@ namespace Yttrium
                 list.sortWith(compareData);
             }
 
-            template <typename COMPARE_KEYS>
-            struct CompareKeysProxy
-            {
-                COMPARE_KEYS &comparison;
-                inline SignType operator()(const KNOT * const lhs, const KNOT * const rhs)
-                {
-                    assert(lhs); assert(rhs);
-                    return comparison(lhs->key,rhs->key);
-                }
-            };
 
+            //! sort list of knots by keys \param compareKeys called on knot->key
             template <typename COMPARE_KEYS>
             void sortKeysWith(COMPARE_KEYS &compareKeys)
             {
@@ -151,6 +142,20 @@ namespace Yttrium
             {
                 while(list.size) pool.remove(list.popTail());
             }
+
+            //! proxy to compare keys
+            template <typename COMPARE_KEYS>
+            struct CompareKeysProxy
+            {
+                COMPARE_KEYS &comparison; //!< comparison
+
+                //! \param lhs lhs \param rhs rhs \return keys comparison
+                inline SignType operator()(const KNOT * const lhs, const KNOT * const rhs)
+                {
+                    assert(lhs); assert(rhs);
+                    return comparison(lhs->key,rhs->key);
+                }
+            };
 
             //__________________________________________________________________
             //

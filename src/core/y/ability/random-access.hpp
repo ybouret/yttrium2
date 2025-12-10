@@ -27,9 +27,9 @@ namespace Yttrium
         //
         //______________________________________________________________________
     protected:
-        explicit RandomAccess() noexcept;
+        explicit RandomAccess() noexcept; //!< setup
     public:
-        virtual ~RandomAccess() noexcept;
+        virtual ~RandomAccess() noexcept; //!< cleanup
 
         //______________________________________________________________________
         //
@@ -37,10 +37,10 @@ namespace Yttrium
         // Interface
         //
         //______________________________________________________________________
-        virtual void remove(const size_t) noexcept = 0;
+        virtual void remove(const size_t) noexcept = 0; //!< remove item at given index
 
     private:
-        Y_Disable_Copy_And_Assign(RandomAccess);
+        Y_Disable_Copy_And_Assign(RandomAccess); //!< discarding
     };
 
 

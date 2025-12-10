@@ -13,34 +13,44 @@ namespace Yttrium
     {
         namespace Privy
         {
+            //! Floating Point Opaque value
             template <typename T>
             struct OpaqueFP
             {
-                static const T Value;
+                static const T Value; //!< 1
             };
 
             template <typename T>
-            const T OpaqueFP<T>::Value = T(1);
+            const T OpaqueFP<T>::Value = T(1); //!< instance
 
+            //! Integral Point Opaque Value
             template <typename T>
             struct OpaqueIP
             {
-                static const T Value = IntegerFor<T>::Maximum;
+                static const T Value = IntegerFor<T>::Maximum; //!< maximum
             };
-            
 
         }
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! opaque value
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         struct Opaque
         {
-            static const bool UseFP = TypeTraits<T>::IsIsoFloatingPoint;
-            typedef typename Pick<UseFP, Privy::OpaqueFP<T>, Privy::OpaqueIP<T> >::Type API;
-            static const T Value;
+            static const bool UseFP = TypeTraits<T>::IsIsoFloatingPoint;                     //!< alias
+            typedef typename Pick<UseFP, Privy::OpaqueFP<T>, Privy::OpaqueIP<T> >::Type API; //!< alias
+
+            static const T Value; //!< value for floating point or integral
         };
 
         template <typename T>
-        const T Opaque<T>:: Value = Opaque<T>::API::Value;
+        const T Opaque<T>:: Value = Opaque<T>::API::Value; //!< instance
 
 
     }

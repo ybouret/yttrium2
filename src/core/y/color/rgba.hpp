@@ -15,15 +15,40 @@ namespace Yttrium
 
         template <typename> class RGB;
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! RGBA scheme
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class RGBA
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
             static const size_t DIMENSIONS = 4; //!< alias
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup black, transparent
             inline RGBA() noexcept : r(0), g(0), b(0), a(0) {}
+
+            //! setup opaque \param R r \param G g \param B b \param A a
             inline RGBA(const T R, const T G, const T B, const T A = Opaque<T>::Value) noexcept : r(R), g(G), b(B), a(A) {}
 
+            //! assign \param c another rgba \return *this
             inline RGBA & operator=(const RGBA &c) noexcept {
                 r = c.r;
                 g = c.g;
@@ -31,14 +56,18 @@ namespace Yttrium
                 a = c.a;
                 return *this;
             }
+
+            //! duplicate \param c another rgba
             inline  RGBA(const RGBA &c) noexcept : r(c.r), g(c.g), b(c.b), a(c.a) {}
+
+            //! cleanup
             inline ~RGBA() noexcept {}
 
-            inline T &       operator[](const size_t i)       noexcept { assert(i>=1); assert(i<=4);  return *((&r)+i-1); } //!< \param i index \return access[1..2]
-            inline const T & operator[](const size_t i) const noexcept { assert(i>=1); assert(i<=4);  return *((&r)+i-1); } //!< \param i index \return access[1..2]
+            RGBA(const RGB<T> &c, const T A = Opaque<T>::Value) noexcept; //!< setup \param c rgb \param A a
+            RGBA & operator=(const RGB<T> &c)                   noexcept; //!< assign, keep alpha \param c rgb \return *this
 
-            
 
+            //! display \param os stream \param c color \return os
             inline friend std::ostream & operator<<(std::ostream &os, const RGBA &c)
             {
                 Print(os << '(',c.r) << ',';
@@ -48,14 +77,27 @@ namespace Yttrium
                 return os;
             }
 
-            RGBA(const RGB<T> &, const T = Opaque<T>::Value) noexcept; //!< setup from rgb
-            RGBA & operator=(const RGB<T> &)                 noexcept; //!< assign r,g,b
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+
+            inline T &       operator[](const size_t i)       noexcept { assert(i>=1); assert(i<=4);  return *((&r)+i-1); } //!< \param i index \return access[1..2]
+            inline const T & operator[](const size_t i) const noexcept { assert(i>=1); assert(i<=4);  return *((&r)+i-1); } //!< \param i index \return access[1..2]
 
 
-            T r;
-            T g;
-            T b;
-            T a;
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            T r; //!< red
+            T g; //!< blue
+            T b; //!< green
+            T a; //!< alpha
         };
     }
 }

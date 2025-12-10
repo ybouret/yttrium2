@@ -11,15 +11,23 @@ namespace Yttrium
 {
     namespace Color
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! named X11 color
+        //
+        //
+        //______________________________________________________________________
         struct X11Color
         {
-            const char * name;
-            uint8_t      r;
-            uint8_t      g;
-            uint8_t      b;
+            const char * name; //!< name
+            uint8_t      r;    //!< r
+            uint8_t      g;    //!< g
+            uint8_t      b;    //!< b
 
-            static const X11Color Table[];
-            static const size_t   Count;
+            static const X11Color Table[]; //!< database
+            static const size_t   Count;   //!< num colors
         };
     }
 }
