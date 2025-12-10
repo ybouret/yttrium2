@@ -11,6 +11,7 @@ endmacro()
 
 Y_CLI(y_trunc)
 Y_CLI(y_embed)
+Y_CLI(y_rgb)
 if(APPLE)
 	Y_CLI(y_mp_missing)
 	#target_link_libraries(y_mp_missing y-jive)

@@ -9,6 +9,7 @@
 #include "y/type/conversion.hpp"
 #include "y/type/alternative.hpp"
 #include "y/check/static.hpp"
+#include "y/memory/stealth.hpp"
 
 namespace Yttrium
 {
@@ -206,24 +207,36 @@ namespace Yttrium
         inline Type *      operator()(void)       noexcept { return (Type*)head_(); }
 
 
+        inline void moveAtTail(const size_t i) noexcept
+        {
+            assert(i>=1); assert(i<=this->size());
+            char                t[ sizeof(Type) ];
+            const size_t        n = this->size();
+            MutableType * const p = (MutableType *) & (*this)[i];
+            MutableType * const q = (MutableType *) & (*this)[n];
+            Memory::Stealth::Move(t,p,sizeof(Type));
+            Memory::Stealth::Move(p,p+1,(n-i)*sizeof(Type));
+            Memory::Stealth::Move(q,t,sizeof(Type));
+            //this->popTail();
+        }
+
         //______________________________________________________________________
         //
         //
         // Methods
         //
         //______________________________________________________________________
-        inline Iterator      begin()       noexcept { return (MutableType *)head_(); } //!< \return first valid   Iterator
-        inline Iterator      end()         noexcept { return (MutableType *)last_(); } //!< \return first invalid Iterator
+        inline Iterator             begin()       noexcept { return (MutableType *)head_(); } //!< \return first valid   Iterator
+        inline Iterator             end()         noexcept { return (MutableType *)last_(); } //!< \return first invalid Iterator
 
-        inline ReverseIterator rbegin()       noexcept { return (MutableType *)tail_(); } //!< \return first valid   ReverseIterator
-        inline ReverseIterator rend()         noexcept { return (MutableType *)fore_(); } //!< \return first invalid ReverseIterator
+        inline ReverseIterator      rbegin()       noexcept { return (MutableType *)tail_(); } //!< \return first valid   ReverseIterator
+        inline ReverseIterator      rend()         noexcept { return (MutableType *)fore_(); } //!< \return first invalid ReverseIterator
 
-        inline ConstIterator begin() const noexcept { return head_(); } //!< \return first valid   ConstIterator
-        inline ConstIterator end()   const noexcept { return last_(); } //!< \return first invalid ConstIterator
+        inline ConstIterator        begin()  const noexcept { return head_(); }                //!< \return first valid   ConstIterator
+        inline ConstIterator        end()    const noexcept { return last_(); }                //!< \return first invalid ConstIterator
 
-
-        inline ConstReverseIterator rbegin() const noexcept { return tail_(); } //!< \return first valid   ConstReverseIterator
-        inline ConstReverseIterator rend()   const noexcept { return fore_(); } //!< \return first invalid ConstReverseIterator
+        inline ConstReverseIterator rbegin() const noexcept { return tail_(); }                //!< \return first valid   ConstReverseIterator
+        inline ConstReverseIterator rend()   const noexcept { return fore_(); }                //!< \return first invalid ConstReverseIterator
 
 
     private:
