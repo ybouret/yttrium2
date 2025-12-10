@@ -167,7 +167,7 @@ void testFit(const Fit::Parameters &params)
     XMLog xml(std::cerr,verbose);
 
     std::cerr << std::endl;
-    fit.run_(xml,S1,getF<T>,getG<T>,aorg,used,aerr);
+    fit(xml,S1,getF<T>,getG<T>,aorg,used,aerr);
     S1.save(S1.name + ".dat");
 
     //return;
@@ -176,7 +176,7 @@ void testFit(const Fit::Parameters &params)
     t0 = t0_ini;
     D1 = D1_ini;
     D2 = D2_ini;
-    fit.run_(xml,S2,getF<T>,getG<T>,aorg,used,aerr);
+    fit(xml,S2,getF<T>,getG<T>,aorg,used,aerr);
     S2.save(S2.name + ".dat");
 
     //return;
@@ -186,7 +186,7 @@ void testFit(const Fit::Parameters &params)
     t0 = t0_ini;
     D1 = D1_ini;
     D2 = D2_ini;
-    fit.run_(xml,samples,getF<T>,getG<T>,aorg,used,aerr);
+    fit(xml,samples,getF<T>,getG<T>,aorg,used,aerr);
 
     S1.save(S1.name + "-all.dat");
     S2.save(S2.name + "-all.dat");

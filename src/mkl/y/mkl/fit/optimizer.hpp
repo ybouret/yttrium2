@@ -149,7 +149,7 @@ namespace Yttrium
             //
             //
             //
-            //! Optimizer 
+            //! Optimizer
             //
             //
             //__________________________________________________________________
@@ -271,7 +271,7 @@ namespace Yttrium
                     //
                     //----------------------------------------------------------
                     setScan(aorg,S);
-                    
+
                     const ORDINATE D2_end = S.computeD2(F,aend);
                     Y_XMLog(xml,"D2_end = " << D2_end);
                     S.display(xml,aend,"_end");
@@ -349,13 +349,13 @@ namespace Yttrium
                  \return something
                  */
                 template <typename ABSCISSA, typename FUNC, typename GRAD> inline
-                bool run_(XMLog                         & xml,
-                          Adjustable<ABSCISSA,ORDINATE> & S,
-                          FUNC                          & F,
-                          GRAD                          & G,
-                          Writable<ORDINATE>            & aorg,
-                          const Readable<bool>          & used,
-                          Writable<ORDINATE>            & aerr)
+                bool operator()(XMLog                         & xml,
+                                Adjustable<ABSCISSA,ORDINATE> & S,
+                                FUNC                          & F,
+                                GRAD                          & G,
+                                Writable<ORDINATE>            & aorg,
+                                const Readable<bool>          & used,
+                                Writable<ORDINATE>            & aerr)
                 {
                     FWrapper<FUNC,ABSCISSA,ORDINATE> f(F);
                     GWrapper<GRAD,ABSCISSA,ORDINATE> g(G);
