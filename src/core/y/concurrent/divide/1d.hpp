@@ -189,7 +189,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 }
 
                 //! cleanup
-                inline virtual ~Tiles1D() {}
+                inline virtual ~Tiles1D() noexcept {}
 
                 //! duplicate \param t another tile
                 inline Tiles1D(const Tiles1D &t) : ReadableType(), tiles(t) { }
