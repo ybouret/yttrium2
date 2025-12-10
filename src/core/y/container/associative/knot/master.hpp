@@ -85,11 +85,11 @@ namespace Yttrium
             {
                 struct proxy
                 {
-                    COMPARE_KEYS &proc;
+                    COMPARE_KEYS &comparison;
                     inline SignType operator()(const KNOT * const lhs, const KNOT * const rhs)
                     {
                         assert(lhs); assert(rhs);
-                        return proc(lhs->key,rhs->key);
+                        return comparison(lhs->key,rhs->key);
                         //return __Zero__;
                     }
                 };
