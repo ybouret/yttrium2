@@ -31,6 +31,7 @@ namespace Yttrium
 Container(),                    \
 Sequence<T,VectorContainer>(),  \
 Contiguous< Writable<T> >(),    \
+RandomAccess(),                 \
 ThreadingPolicy(),              \
 built(0)
 
