@@ -2,19 +2,41 @@
 #include "y/color/rgba.hpp"
 
 #include "y/utest/run.hpp"
-#include "y/format/hexadecimal.hpp"
+#include "y/stream/libc/output.hpp"
 
 using namespace Yttrium;
 
+template <typename T> static inline
+void ShowOpaque(const char * const name)
+{
+    Color::Print<T>(std::cerr << "Opaque<" << name << "> = ",Color::Opaque<T>::Value) << std::endl;
+}
+
+#define SHOW_OPAQUE(TYPE) ShowOpaque<TYPE>( #TYPE )
+
 Y_UTEST(colors)
 {
-    std::cerr << Color::Privy::OpaqueFP<float>       ::Value << std::endl;
-    std::cerr << Color::Privy::OpaqueFP<double>      ::Value << std::endl;
-    std::cerr << Color::Privy::OpaqueFP<long double> ::Value << std::endl;
+    SHOW_OPAQUE(float);
+    SHOW_OPAQUE(double);
+    SHOW_OPAQUE(long double);
+    SHOW_OPAQUE(uint8_t);
+    SHOW_OPAQUE(uint16_t);
+    SHOW_OPAQUE(uint32_t);
+    SHOW_OPAQUE(uint64_t);
 
-    std::cerr << (unsigned)Color::Privy::OpaqueIP<uint8_t> ::Value<< std::endl;
-    std::cerr << Color::Privy::OpaqueIP<uint16_t> ::Value << std::endl;
-    std::cerr << Color::Privy::OpaqueIP<uint32_t> ::Value << std::endl;
+    if(false)
+    {
+        OutputFile fp("gray.hxx");
+
+        for(unsigned i=0;i<256;++i)
+        {
+            fp("Y_U(%u)",i);
+            if(i<255) fp << ',';
+            fp << '\n';
+        }
+
+    }
+
 }
 Y_UDONE()
 

@@ -3,7 +3,7 @@
 #ifndef Y_Color_RGB_Included
 #define Y_Color_RGB_Included
 
-#include "y/color/opaque.hpp"
+#include "y/color/print.hpp"
 
 namespace Yttrium
 {
@@ -17,7 +17,7 @@ namespace Yttrium
 
             inline RGB() noexcept : r(0), g(0), b(0) {}
             inline RGB(const T R, const T G, const T B) noexcept : r(R), g(G), b(B) {}
-            
+
             inline RGB & operator=(const RGB &c) noexcept {
                 r = c.r;
                 g = c.g;

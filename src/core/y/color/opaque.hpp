@@ -5,6 +5,7 @@
 
 #include "y/type/traits.hpp"
 #include "y/type/ints.hpp"
+#include "y/type/pick.hpp"
 
 namespace Yttrium
 {
@@ -26,8 +27,22 @@ namespace Yttrium
             {
                 static const T Value = IntegerFor<T>::Maximum;
             };
+            
+
         }
-        
+
+        template <typename T>
+        struct Opaque
+        {
+            static const bool UseFP = TypeTraits<T>::IsIsoFloatingPoint;
+            typedef typename Pick<UseFP, Privy::OpaqueFP<T>, Privy::OpaqueIP<T> >::Type API;
+            static const T Value;
+        };
+
+        template <typename T>
+        const T Opaque<T>:: Value = Opaque<T>::API::Value;
+
+
     }
 
 }
