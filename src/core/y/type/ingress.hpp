@@ -83,5 +83,5 @@ CLASS::ConstInterface  & CLASS :: locus() const noexcept { return LOCUS; }
 
 }
 
-#endif
+#endif // !Y_Type_Ingress_Included
 

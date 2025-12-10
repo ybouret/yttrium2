@@ -36,6 +36,7 @@ Y_UTEST_DECL(128)
     
     Y_UTEST(fit_1d);
     Y_UTEST(fit_2d);
+    Y_UTEST(fit_poly);
 
     Y_UTEST(statistics_average);
     Y_UTEST(statistics_descriptive);

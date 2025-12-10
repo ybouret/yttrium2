@@ -44,6 +44,7 @@ Y_UTEST(ode:expl)
 
 Y_UTEST(fit:1d)
 Y_UTEST(fit:2d)
+Y_UTEST(fit:poly)
 
 Y_UTEST(statistics:average)
 Y_UTEST(statistics:descriptive)
