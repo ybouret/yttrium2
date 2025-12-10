@@ -72,7 +72,6 @@ Y_UTEST(colors)
     }
 
     {
-        unsigned i = 0;
         uint8_t  lmax = 0;
         for(unsigned r=0;r<256;++r)
         {
