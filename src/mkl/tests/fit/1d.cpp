@@ -179,7 +179,7 @@ void testFit(const Fit::Parameters &params)
     fit.run_(xml,S2,getF<T>,getG<T>,aorg,used,aerr);
     S2.save(S2.name + ".dat");
 
-    return;
+    //return;
 
 
     std::cerr << std::endl;

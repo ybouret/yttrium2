@@ -28,7 +28,7 @@ namespace Yttrium
             };
 
 
-
+            
             static const size_t  Count = 1 + 3*255; //!< r+g+b possilities
             static const uint8_t Table[Count];      //!< grey levels
 
