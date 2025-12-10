@@ -15,6 +15,7 @@
 #include "y/container/expandable.hpp"
 #include "y/type/with-at-least.hpp"
 #include "y/memory/buffer/ro.hpp"
+#include "y/ability/random-access.hpp"
 
 namespace Yttrium
 {
@@ -57,6 +58,7 @@ namespace Yttrium
         public Contiguous< Writable<T> >,
         public Sequence<T,Expandable>,
         public Serializable,
+        public RandomAccess,
         public Memory::ReadOnlyBuffer
         {
         public:
@@ -124,6 +126,7 @@ namespace Yttrium
             virtual void         reserve(const size_t n);
             virtual const void * ro()     const noexcept;
             virtual size_t       length() const noexcept;
+            virtual void         remove(const size_t) noexcept;
 
             //__________________________________________________________________
             //

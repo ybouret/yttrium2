@@ -536,3 +536,11 @@ size_t String<CH>:: length() const noexcept { assert(code); return code->size; }
 
 template <>
 const String<CH> & String<CH>:: key() const noexcept { return *this; }
+
+
+template <>
+void String<CH>:: remove(const size_t i) noexcept
+{
+    this->moveAtTail(i);
+    this->popTail();
+}

@@ -9,6 +9,28 @@
 
 namespace Yttrium
 {
+
+    namespace Color
+    {
+
+        template <typename T>
+        RGB<T>:: RGB(const RGBA<T> &c) noexcept :
+        r(c.r), g(c.g), b(c.b)
+        {
+
+        }
+
+        template <typename T>
+        RGB<T> & RGB<T>:: operator=(const RGBA<T> &c) noexcept
+        {
+            r = c.r;
+            g = c.g;
+            b = c.b;
+            return this;
+        }
+
+    }
+
     namespace Color
     {
 
@@ -17,6 +39,15 @@ namespace Yttrium
         r(c.r), g(c.g), b(c.b), a(A)
         {
             
+        }
+
+        template <typename T>
+        RGBA<T> & RGBA<T>:: operator=(const RGB<T> &c) noexcept
+        {
+            r = c.r;
+            g = c.g;
+            b = c.b;
+            return this;
         }
 
     }

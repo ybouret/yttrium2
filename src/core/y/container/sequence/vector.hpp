@@ -14,6 +14,7 @@
 #include "y/type/destroy.hpp"
 #include "y/type/destruct.hpp"
 #include "y/calculus/safe-add.hpp"
+#include "y/ability/random-access.hpp"
 
 namespace Yttrium
 {
@@ -45,6 +46,7 @@ built(0)
     class Vector :
     public Sequence<T,VectorContainer>,
     public Contiguous< Writable<T> >,
+    public RandomAccess,
     public ThreadingPolicy
     {
     public:
@@ -299,6 +301,13 @@ built(0)
 
         virtual void free()    noexcept { free_();    } //!< [Recyclable] free content, keep memory
         virtual void release() noexcept { release_(); } //!< [Releasable] release all memory
+
+        virtual void remove(const size_t i) noexcept
+        {
+            this->moveAtTail(i);
+            this->popTail();
+        }
+
 
         //! exchange contents \param other another vector
         inline void swapFor(Vector &other) noexcept

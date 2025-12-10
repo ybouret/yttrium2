@@ -1,5 +1,6 @@
 #include "y/color/conv.hpp"
 #include "y/color/gray.hpp"
+#include "y/color/x11.hpp"
 
 #include "y/utest/run.hpp"
 #include "y/stream/libc/output.hpp"
@@ -85,6 +86,8 @@ Y_UTEST(colors)
         }
         std::cerr << "lmax=" << Hexadecimal(lmax) << std::endl;
     }
+
+    std::cerr << "#X11 = " << Color::X11Color::Count << std::endl;
 
 
 }

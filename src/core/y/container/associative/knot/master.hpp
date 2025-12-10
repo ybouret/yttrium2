@@ -75,9 +75,27 @@ namespace Yttrium
 
             //! sort list of knots by data \param compareData called on **knots
             template <typename COMPARE_DATA>
-            void sort(COMPARE_DATA &compareData)
+            void sortDataWith(COMPARE_DATA &compareData)
             {
                 list.sortWith(compareData);
+            }
+
+            template <typename COMPARE_KEYS>
+            void sortKeysWith(COMPARE_KEYS &compareKeys)
+            {
+                struct proxy
+                {
+                    COMPARE_KEYS &proc;
+                    inline SignType operator()(const KNOT * const lhs, const KNOT * const rhs)
+                    {
+                        assert(lhs); assert(rhs);
+                        return proc(lhs->key,rhs->key);
+                        //return __Zero__;
+                    }
+                };
+
+                proxy compareNodes = { compareKeys };
+                list.sort(compareNodes);
             }
 
             //! reverse inner list order

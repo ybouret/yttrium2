@@ -125,6 +125,7 @@ Y_CreateLibrary(y
     y/rtld
     y/rtld/spyndle
     y/color
+    y/color/x11
 )
 
 add_subdirectory(tests)
