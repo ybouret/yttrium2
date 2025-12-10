@@ -1,5 +1,6 @@
 
 #include "y/color/gray.hpp"
+#include <cassert>
 
 namespace Yttrium
 {
@@ -30,17 +31,23 @@ namespace Yttrium
 
 #undef  Y_F
 #define Y_F(X) X##.0L
-        
+
         template <>
         const long double Gray::ByteTo<long double>::Table[256] =
         {
 #include "gray.hxx"
         };
 
+        const uint8_t Gray:: Table[ Count ] =
+        {
+#include "gtab.hxx"
+        };
 
 
-
-
+        uint8_t Gray:: Get(const uint8_t r, const uint8_t g, const uint8_t b)
+        {
+            return Table[unsigned(r) + unsigned(g) + unsigned(b)];
+        }
     }
 
 }

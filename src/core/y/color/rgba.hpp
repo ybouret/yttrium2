@@ -30,6 +30,15 @@ namespace Yttrium
             inline  RGBA(const RGBA &c) noexcept : r(c.r), g(c.g), b(c.b), a(c.a) {}
             inline ~RGBA() noexcept {}
 
+            inline friend std::ostream & operator<<(std::ostream &os, const RGBA &c)
+            {
+                Print(os << '(',c.r) << ',';
+                Print(os,c.g)        << ',';
+                Print(os,c.b)        << ',';
+                Print(os,c.a)        << ')';
+                return os;
+            }
+
             T r;
             T g;
             T b;

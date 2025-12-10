@@ -14,11 +14,15 @@ namespace Yttrium
         struct Gray
         {
             template <typename T>
-            struct ByteTo
-            {
+            struct ByteTo {
                 static const T Table[256];
             };
 
+            static const size_t  Count = 1 + 3*255;
+            static const uint8_t Table[Count];
+
+            static uint8_t Get(const uint8_t r, const uint8_t g, const uint8_t b);
+            
         };
 
     }

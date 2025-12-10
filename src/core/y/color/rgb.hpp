@@ -27,6 +27,14 @@ namespace Yttrium
             inline  RGB(const RGB &c) noexcept : r(c.r), g(c.g), b(c.b) {}
             inline ~RGB() noexcept {}
 
+            inline friend std::ostream & operator<<(std::ostream &os, const RGB &c)
+            {
+                Print(os << '(',c.r) << ',';
+                Print(os,c.g)        << ',';
+                Print(os,c.b)        << ')';
+                return os;
+            }
+
             T r;
             T g;
             T b;
