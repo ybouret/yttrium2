@@ -45,6 +45,8 @@ namespace Yttrium
                 //______________________________________________________________
                 explicit Parameters();           //!< setup
                 virtual ~Parameters() noexcept;  //!< cleanup
+                explicit Parameters(const String &);  //!< setup with list
+                explicit Parameters(const char * const); //!< setup with list
 
                 //______________________________________________________________
                 //
@@ -73,7 +75,9 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(Parameters); //!< discaring
                 Y_Ingress_Decl();                      //!< helper
                 Parameters & grow(const Parameter::Pointer &); //!< \return *this*
-                
+
+                void setup(const String &plist);
+
                 //______________________________________________________________
                 //
                 //

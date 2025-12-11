@@ -1,6 +1,12 @@
 #include "y/mkl/fit/parameters.hpp"
 #include "y/exception.hpp"
 
+#include "y/string/tokenizer.hpp"
+#include "y/container/sequence/vector.hpp"
+#include "y/container/algorithm/crop.hpp"
+#include <cctype>
+
+
 namespace Yttrium
 {
     namespace MKL
@@ -16,6 +22,18 @@ namespace Yttrium
             {
             }
 
+            Parameters:: Parameters(const String &plist) : Ingress<const ParameterDB>(), db()
+            {
+                setup(plist);
+            }
+
+            Parameters:: Parameters(const char * const plist) : Ingress<const ParameterDB>(), db()
+            {
+                const String _(plist);
+                setup(_);
+            }
+
+
             Y_Ingress_Impl(Parameters,db)
 
 
@@ -28,6 +46,16 @@ namespace Yttrium
                 admit(*p);
                 return *this;
             }
+
+            void Parameters:: setup(const String &plist)
+            {
+                Vector<String>      uid;
+                Tokenizer::AppendTo(uid,plist,' ');
+                for(size_t i=1;i<=uid.size();++i)
+                    (*this) <<Algo::Crop(uid[i],isspace);
+                
+            }
+
 
             const Parameter & Parameters:: operator[](const String &uid) const
             {
