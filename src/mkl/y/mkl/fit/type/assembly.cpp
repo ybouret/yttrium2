@@ -12,6 +12,10 @@ namespace Yttrium
             {
             }
 
+            Assembly:: Assembly(const Assembly &a) noexcept : maxNameSize(a.maxNameSize)
+            {
+            }
+
             Assembly:: ~Assembly() noexcept
             {
 

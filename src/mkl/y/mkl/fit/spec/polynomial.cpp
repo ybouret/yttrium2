@@ -28,6 +28,16 @@ namespace Yttrium
                 return *this;
             }
 
+
+            Polynomial::Coefficients:: Coefficients(const Coefficients &coef) :
+            Ingress<const Parameters>(),
+            root(coef.root),
+            parameters(coef.parameters)
+            {
+
+            }
+
+
         }
     }
 }

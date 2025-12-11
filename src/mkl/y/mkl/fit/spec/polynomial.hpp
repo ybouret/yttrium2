@@ -26,6 +26,7 @@ namespace Yttrium
                     {
                     }
 
+                    Coefficients(const Coefficients &);
                     virtual ~Coefficients() noexcept;
 
                     Coefficients & operator<<(const size_t degree);
@@ -34,11 +35,22 @@ namespace Yttrium
                     const String root;
 
                 private:
-                    Y_Disable_Copy_And_Assign(Coefficients);
+                    Y_Disable_Assign(Coefficients);
                     Y_Ingress_Decl();
                     Parameters parameters;
                 };
 
+
+                template <typename T>
+                class Session
+                {
+                public:
+
+                    inline virtual ~Session() noexcept {}
+                    
+                private:
+                    Y_Disable_Copy_And_Assign(Session);
+                };
             };
 
         };

@@ -30,8 +30,8 @@ namespace Yttrium
                 //
                 //______________________________________________________________
             protected:
-                explicit Assembly() noexcept; //!< setup
-
+                explicit Assembly()        noexcept; //!< setup
+                Assembly(const Assembly &) noexcept; //!< duplicate
             public:
                 virtual ~Assembly() noexcept; //!< cleanup
 
@@ -54,7 +54,7 @@ namespace Yttrium
                 const size_t maxNameSize; //!< max name size
 
             private:
-                Y_Disable_Copy_And_Assign(Assembly); //!< discarding
+                Y_Disable_Assign(Assembly); //!< discarding
             };
 
         }

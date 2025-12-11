@@ -18,9 +18,20 @@ namespace Yttrium
             {
             }
 
-            Parameters:: Parameters() : Ingress<const ParameterDB>(), db()
+            Parameters:: Parameters() :
+            Ingress<const ParameterDB>(),
+            Assembly(),
+            db()
             {
             }
+
+            Parameters:: Parameters(const Parameters &p) :
+            Ingress<const ParameterDB>(),
+            Assembly(p),
+            db(p.db)
+            {
+            }
+            
 
             Parameters:: Parameters(const String &plist) : Ingress<const ParameterDB>(), db()
             {

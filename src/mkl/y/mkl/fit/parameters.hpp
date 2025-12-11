@@ -43,10 +43,11 @@ namespace Yttrium
                 // C++
                 //
                 //______________________________________________________________
-                explicit Parameters();           //!< setup
-                virtual ~Parameters() noexcept;  //!< cleanup
-                explicit Parameters(const String &);  //!< setup with list
+                explicit Parameters();                   //!< setup
+                virtual ~Parameters() noexcept;          //!< cleanup
+                explicit Parameters(const String &);     //!< setup with list
                 explicit Parameters(const char * const); //!< setup with list
+                Parameters(const Parameters &);
 
                 //______________________________________________________________
                 //
@@ -72,7 +73,7 @@ namespace Yttrium
                 void  queryEnv(Writable<bool> &used) const;
 
             private:
-                Y_Disable_Copy_And_Assign(Parameters); //!< discaring
+                Y_Disable_Assign(Parameters); //!< discaring
                 Y_Ingress_Decl();                      //!< helper
                 Parameters & grow(const Parameter::Pointer &); //!< \return *this*
 
