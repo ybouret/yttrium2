@@ -26,7 +26,6 @@ namespace Yttrium
         class Broker : public Box, public Tiling
         {
         public:
-
             //! setup
             /**
              \param proc shared processor

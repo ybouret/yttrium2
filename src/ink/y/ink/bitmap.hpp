@@ -113,5 +113,5 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Ink_Bitmap_Included
 
