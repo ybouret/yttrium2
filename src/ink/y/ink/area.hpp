@@ -60,5 +60,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Ink_Area_Included
 

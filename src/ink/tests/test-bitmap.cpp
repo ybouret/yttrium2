@@ -5,7 +5,44 @@
 #include "y/random/park-miller.hpp"
 #include <cstring>
 
+#include "y/concurrent/divide/2d.hpp"
+#include "y/concurrent/api/simd/spawn.hpp"
+
+namespace Yttrium
+{
+    namespace Ink
+    {
+
+        typedef Concurrent::Divide::Tiles2D<unit_t> Tiles;
+        typedef Tiles::BoxType                      Box;
+        typedef Concurrent::Spawn<Tiles>            Tiling;
+
+        class Dispatch : public Box, public Tiling
+        {
+        public:
+            explicit Dispatch(const Concurrent::Processor &sharedProc,
+                              const Area                  &area) :
+            Box(area.lower,area.upper),
+            Tiling(sharedProc,bbox())
+            {
+            }
+
+            virtual ~Dispatch() noexcept
+            {
+            }
+
+        private:
+            Y_Disable_Copy_And_Assign(Dispatch);
+            const Box & bbox() const noexcept { return *this; }
+        };
+
+
+    }
+}
+
 using namespace Yttrium;
+
+
 
 namespace
 {
@@ -45,7 +82,6 @@ Y_UTEST(bitmap)
     Ink::Bitmap        bmp(100,34,sizeof(uint32_t),ctor,dtor);
 
 
-#if 1
 
     for(unit_t j=0;j<bmp.upper.y;++j)
     {
@@ -57,7 +93,6 @@ Y_UTEST(bitmap)
         }
 
     }
-#endif
-
+    
 }
 Y_UDONE()

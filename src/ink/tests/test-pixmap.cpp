@@ -8,6 +8,17 @@
 #endif
 #include "../../core/tests/main.hpp"
 
+
+namespace Yttrium
+{
+    namespace Ink
+    {
+
+        
+
+    }
+}
+
 using namespace Yttrium;
 using namespace Ink;
 

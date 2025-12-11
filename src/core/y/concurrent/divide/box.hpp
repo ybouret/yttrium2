@@ -55,8 +55,18 @@ namespace Yttrium
                 {
                 }
 
+                //! duplicate \param b another box
+                inline Box(const Box &b) noexcept :
+                lower(b.lower),
+                upper(b.upper),
+                width(b.width),
+                shift(b.shift),
+                count(b.count)
+                {
+                }
+
                 //! cleanup
-                inline ~Box() noexcept
+                inline virtual ~Box() noexcept
                 {
                 }
 
@@ -114,7 +124,7 @@ namespace Yttrium
 
 
             private:
-                Y_Disable_Copy_And_Assign(Box); //!< discarding
+                Y_Disable_Assign(Box); //!< discarding
 
                 //! full setup
                 /**

@@ -18,7 +18,7 @@ namespace Yttrium
         //
         //
         //
-        //! call procedures over tiles
+        //! call procedures over computed tiles
         //
         //
         //______________________________________________________________________
