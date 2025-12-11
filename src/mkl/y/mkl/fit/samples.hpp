@@ -265,7 +265,7 @@ namespace Yttrium
                                 for(Variables::ConstIterator jter=vars->begin();jter!=vend;++jter)
                                 {
                                     const Variable &jv = **jter;
-                                    const size_t    jG = jv.global.indx; if( !used[jG] ) continue;
+                                    const size_t    jG = jv.global->indx; if( !used[jG] ) continue;
                                     const size_t    j0 = jv.indx;
                                     assert(xBeta[jG]!=0);assert(xAlpha[jG][jG]!=0);
                                     *xBeta[jG]      << w * beta0[j0];
@@ -274,7 +274,7 @@ namespace Yttrium
                                     for(++kter;kter!=vend;++kter)
                                     {
                                         const Variable &kv = **kter;
-                                        const size_t    kG = kv.global.indx; if( !used[kG] ) continue;
+                                        const size_t    kG = kv.global->indx; if( !used[kG] ) continue;
                                         const size_t    k0 = kv.indx;
                                         assert(xAlpha[jG][kG]!=0);
                                         *xAlpha[jG][kG] << w * alpha0[j0][k0];

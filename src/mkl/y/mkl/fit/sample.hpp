@@ -93,7 +93,7 @@ namespace Yttrium
                     for(Variables::ConstIterator it=vars->begin();it!=vars->end();++it)
                     {
                         const Variable &v = **it;
-                        a_global[v.global.indx] = a_local[v.indx];
+                        a_global[v.global->indx] = a_local[v.indx];
                     }
 
 
@@ -164,7 +164,7 @@ namespace Yttrium
                                 XAddition               *node = cadd.head;
                                 for(size_t j=nvar;j>0;--j,++jter)
                                 {
-                                    const Variable &var  = **jter; if( !used[var.global.indx] ) continue;
+                                    const Variable &var  = **jter; if( !used[var.global->indx] ) continue;
                                     const size_t    J    = var.indx;
                                     const ORDINATE  dF_j = dFda[J];
 
@@ -179,7 +179,7 @@ namespace Yttrium
                                         ++kter; // skip diagonal
                                         for(size_t k=j-1;k>0;--k,++kter)
                                         {
-                                            const Variable &sub  = **kter; if( !used[sub.global.indx] ) continue;
+                                            const Variable &sub  = **kter; if( !used[sub.global->indx] ) continue;
                                             Y_Fit_Sample_Store(dF_j * dFda[sub.indx] );
                                         }
                                     }
@@ -200,7 +200,7 @@ namespace Yttrium
                         XAddition               *node = cadd.head;
                         for(size_t j=nvar;j>0;--j,++jter)
                         {
-                            const Variable &var = **jter; if( !used[var.global.indx] ) continue;
+                            const Variable &var = **jter; if( !used[var.global->indx] ) continue;
                             const size_t    J    = var.indx;
                             Y_Fit_Sample_Query(beta[J]);
 
@@ -214,7 +214,7 @@ namespace Yttrium
                                 // extra-diagonal
                                 for(size_t k=j-1;k>0;--k,++kter)
                                 {
-                                    const Variable &sub  = **kter; if( !used[sub.global.indx] ) continue;
+                                    const Variable &sub  = **kter; if( !used[sub.global->indx] ) continue;
                                     Y_Fit_Sample_Query(alpha[J][sub.indx]);
                                 }
                             }
@@ -241,7 +241,7 @@ namespace Yttrium
                     size_t res = 0;
                     for(Variables::ConstIterator iv=vars->begin();iv!=vars->end();++iv)
                     {
-                        if( used[ (**iv).global.indx] ) ++res;
+                        if( used[ (**iv).global->indx] ) ++res;
                     }
                     return res;
                 }
@@ -253,7 +253,7 @@ namespace Yttrium
                     for(Variables::ConstIterator iv=vars->begin();iv!=vars->end();++iv)
                     {
                         const Variable &v = **iv;
-                        if( globalUsed[ v.global.indx] ) continue;
+                        if( globalUsed[ v.global->indx] ) continue;
                         const size_t i = v.indx;
                         localMatrix[i][i] = zero;
                     }
@@ -262,7 +262,7 @@ namespace Yttrium
                 //! quick save to file
                 /**
                  \param fileName file name
-                 \param append optional append flag
+                 \param append   optional append flag
                  */
                 template <typename FILENAME> inline
                 void save(const FILENAME &fileName, const bool append=false) const

@@ -32,8 +32,8 @@ T getF(const V2D<T> &X, const Fit::Variables &vars, const Readable<T> &aorg)
     const Fit::Variable &_x = vars["x"];
     const Fit::Variable &_y = vars["y"];
 
-    const T      radius = aorg[_r.global.indx];
-    const V2D<T> center( aorg[_x.global.indx], aorg[_y.global.indx] );
+    const T      radius = aorg[_r.global->indx];
+    const V2D<T> center( aorg[_x.global->indx], aorg[_y.global->indx] );
     return getZ<T>(X,radius,center);
 }
 

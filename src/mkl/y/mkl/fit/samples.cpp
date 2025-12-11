@@ -48,7 +48,7 @@ namespace Yttrium
             {
                 size_t w = 0;
                 for(VNode *vn=vlist->head;vn;vn=vn->next)
-                    InSituMax(w, (**vn).global.name.size() );
+                    InSituMax(w, (**vn).global->name.size() );
                 return w;
             }
 

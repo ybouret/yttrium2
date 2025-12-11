@@ -51,8 +51,9 @@ namespace Yttrium
                                   const size_t     idx,
                                   const Parameter &prm) :
                 Parameter(uid,idx),
-                global(prm)
+                global( & Coerce(prm) )
                 {
+                    assert(global->quantity()>=2);
                 }
 
                 //! cleanup
@@ -72,14 +73,14 @@ namespace Yttrium
                 template <typename T> inline
                 T & operator[](Writable<T> &arr) const noexcept
                 {
-                    return arr[global.indx];
+                    return arr[global->indx];
                 }
 
                 //! \param arr array \return arr[global.indx]
                 template <typename T> inline
                 const T & operator[](const Readable<T> &arr) const noexcept
                 {
-                    return arr[global.indx];
+                    return arr[global->indx];
                 }
 
                 //! \param arr array \return arr[indx]
@@ -115,7 +116,7 @@ namespace Yttrium
                              const size_t        width) const
                 {
                     if(!sfx) sfx = "";
-                    Y_XMLog(xml,"\t" << Justify(global.name,width,Justify::Right) << sfx << " = " << arr[global.indx]);
+                    Y_XMLog(xml,"\t" << Justify(global->name,width,Justify::Right) << sfx << " = " << arr[global->indx]);
                 }
 
                 
@@ -127,7 +128,7 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const Parameter &global; //!< global parameter
+                const Parameter::Pointer global; //!< global parameter
 
             private:
                 Y_Disable_Copy_And_Assign(Variable); //!< discarding

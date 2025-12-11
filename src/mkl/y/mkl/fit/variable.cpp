@@ -20,7 +20,7 @@ namespace Yttrium
 
             bool operator==(const Variable &lhs, const Variable &rhs) noexcept
             {
-                return (lhs.name == rhs.name) && (lhs.global.name==rhs.global.name);
+                return (lhs.name == rhs.name) && (lhs.global->name==rhs.global->name);
             }
 
         }
