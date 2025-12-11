@@ -49,7 +49,7 @@ namespace Yttrium
              \param H height
              \param D depth
              \param ctor ctor(addr,NULL) to construct
-             \param dtor dtor(addr) to desctruct
+             \param dtor dtor(addr)      to destruct
              */
             explicit Bitmap(const size_t W,
                             const size_t H,
@@ -62,8 +62,8 @@ namespace Yttrium
 
             //! copy
             /**
-             \param bmp original bitmap
-             \param D   this depth
+             \param bmp  original bitmap
+             \param D    this depth
              \param cpy  cpy(bmp.item,item) with possible different types
              */
             explicit Bitmap(const CopyOf_ &,

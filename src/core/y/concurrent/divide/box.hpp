@@ -51,7 +51,7 @@ namespace Yttrium
                 upper(up),
                 width(),
                 shift(),
-                count( Setup(Coerce(lower),Coerce(upper),Coerce(width),Coerce(shift)))
+                count( Setup(Coerce(lower),Coerce(upper),Coerce(width),Coerce(shift)) )
                 {
                 }
 

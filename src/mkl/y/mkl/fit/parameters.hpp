@@ -47,7 +47,7 @@ namespace Yttrium
                 virtual ~Parameters() noexcept;          //!< cleanup
                 explicit Parameters(const String &);     //!< setup with list
                 explicit Parameters(const char * const); //!< setup with list
-                Parameters(const Parameters &);
+                Parameters(const Parameters &);          //!< duplicate
 
                 //______________________________________________________________
                 //
@@ -77,6 +77,10 @@ namespace Yttrium
                 Y_Ingress_Decl();                      //!< helper
                 Parameters & grow(const Parameter::Pointer &); //!< \return *this*
 
+                //! setup with a list of paramters
+                /**
+                 \param plist list of parameters separated with ':'
+                 */
                 void setup(const String &plist);
 
                 //______________________________________________________________
