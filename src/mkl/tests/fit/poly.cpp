@@ -13,6 +13,8 @@ Y_UTEST(fit_poly)
     coef << 0 << 1;
 
     std::cerr << coef << std::endl;
+
+    
 }
 Y_UDONE()
 

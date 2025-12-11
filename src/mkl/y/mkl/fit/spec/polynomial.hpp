@@ -56,7 +56,18 @@ namespace Yttrium
 
                     inline virtual ~Session() noexcept {}
 
-                    
+                    inline void run(Optimizer<T> &fit ,
+                                    Sample<T,T>  &sample)
+                    {
+                        // create primary variables from named parameters
+                        Variables &vars = sample.vars;
+                        vars.free();
+                        for(Parameters::ConstIterator it=(*coef)->begin();it != (*coef)->end();++it)
+                        {
+                            vars << **it;
+                        }
+                    }
+
 
 
                     const Coefficients coef;

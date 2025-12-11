@@ -70,7 +70,7 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
-            class Variables : public Ingress<const VariableDB>, public Assembly
+            class Variables : public Ingress<const VariableDB>, public Assembly, public Recyclable
             {
             public:
                 //______________________________________________________________
@@ -97,7 +97,16 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
+                virtual void free() noexcept;
 
+
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+                
                 //! \return primary variable
                 Variables & operator<<(const Parameter &);
 

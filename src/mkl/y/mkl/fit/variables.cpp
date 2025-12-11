@@ -70,7 +70,11 @@ namespace Yttrium
                 const String _(id); return get(_);
             }
 
-            
+            void Variables:: free() noexcept
+            {
+                Coerce(maxNameSize) = 0;
+                db.free();
+            }
 
         }
 
