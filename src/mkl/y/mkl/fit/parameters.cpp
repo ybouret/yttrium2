@@ -72,6 +72,7 @@ namespace Yttrium
             {
                 const Parameter::Pointer *pp = db.search(uid);
                 if(!pp) throw Specific::Exception(CallSign,"missing parameter '%s'", uid.c_str());
+                assert((*pp)->quantity()>=1);
                 return **pp;
             }
 

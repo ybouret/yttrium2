@@ -61,6 +61,7 @@ namespace Yttrium
                 Parameters & operator<<(const UID &uid)
                 {
                     const Parameter::Pointer p = new Parameter(uid,db.size()+1);
+                    assert(p->quantity()>=1);
                     return grow(p);
                 }
 

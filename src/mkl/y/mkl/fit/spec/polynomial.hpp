@@ -45,9 +45,27 @@ namespace Yttrium
                 class Session
                 {
                 public:
+                    inline explicit Session(const Coefficients &cf) :
+                    coef(cf),
+                    zero(0),
+                    aorg( (*coef)->size(), zero),
+                    aerr( (*coef)->size(), zero),
+                    used( (*coef)->size(), zero)
+                    {
+                    }
 
                     inline virtual ~Session() noexcept {}
+
                     
+
+
+                    const Coefficients coef;
+                    const T            zero;
+                    CxxArray<T>        aorg;
+                    CxxArray<T>        aerr;
+                    CxxArray<bool>     used;
+
+
                 private:
                     Y_Disable_Copy_And_Assign(Session);
                 };
