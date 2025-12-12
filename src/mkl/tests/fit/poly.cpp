@@ -10,7 +10,7 @@ using namespace MKL;
 Y_UTEST(fit_poly)
 {
 
-    Random::ParkMiller ran;
+    Random::ParkMiller            ran;
     Fit::Polynomial::Coefficients coef("a");
 
     coef << 0 << 1;

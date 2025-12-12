@@ -46,9 +46,9 @@ namespace Yttrium
                 class Session
                 {
                 public:
-                    typedef Sample<T,T>                   SampleType;
-                    //typedef typename SampleType::Function Function;
-                    typedef Functor<T,TL3(T,Variables,Readable<T>)> FuncType;
+                    typedef Sample<T,T>                        SampleType;
+                    typedef typename SampleType::UsualFunction FuncType;
+                    typedef Functor<T,TL5(Writable<T> &,T,Variables &,Readable<T> &,Readable<bool>)> GradType;
 
                     inline explicit Session(const Coefficients &cf) :
                     coef(cf),
@@ -56,7 +56,8 @@ namespace Yttrium
                     aorg( (*coef)->size(), zero),
                     aerr( (*coef)->size(), zero),
                     used( (*coef)->size(), zero),
-                    F( this, & Session<T>::getF)
+                    F( this, & Session<T>::getF),
+                    G( this, & Session<T>::getG)
                     {
                     }
 
@@ -87,6 +88,8 @@ namespace Yttrium
                     Y_Disable_Copy_And_Assign(Session);
                     Cameo::Addition<T> xadd;
                     FuncType           F;
+                    GradType           G;
+
                     inline void setup(SampleType &sample)
                     {
                         sample.vars.free();
@@ -103,6 +106,27 @@ namespace Yttrium
                             const Variable &v = **it;
                             const size_t    d = coef.degreeOf(**it);
                             xadd << ipower(x,d) * a[v.indx];
+                        }
+                        return xadd.sum();
+                    }
+
+                    inline T getG(Writable<T>          &dFda,
+                                  const T               x,
+                                  const Fit::Variables &vars,
+                                  const Readable<T   > &a,
+                                  const Readable<bool> &u)
+                    {
+                        xadd.ldz();
+                        for(Variables::ConstIterator it=vars->begin(); it!=vars->end();++it)
+                        {
+                            const Variable &v = **it;
+                            const size_t    d = coef.degreeOf(**it);
+                            const size_t    i = v.indx;
+                            xadd << ipower(x,d) * a[i];
+                            if(u[i])
+                            {
+
+                            }
                         }
                         return xadd.sum();
                     }
