@@ -30,7 +30,11 @@ Y_UTEST(fit_poly)
         Yf << 0.0;
     }
 
-    Fit::Sample<double,double> data("poly-data",X,Y,Yf);
+    X.hsort( Sign::Increasing<double>, Y );
+
+
+    Fit::Sample<double,double> data("poly.fit",X,Y,Yf);
+    data.save(data.name);
 
     Fit::Polynomial::Session<double> poly(coef);
 
