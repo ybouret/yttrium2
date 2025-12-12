@@ -10,6 +10,7 @@
 #include "y/type/alternative.hpp"
 #include "y/check/static.hpp"
 #include "y/memory/stealth.hpp"
+#include "y/sorting/heap.hpp"
 
 namespace Yttrium
 {
@@ -25,7 +26,7 @@ namespace Yttrium
     template <typename CONTAINER>
     class ContiguousCommon : public CONTAINER
     {
-    protected:
+    public:
         //______________________________________________________________________
         //
         //
@@ -37,6 +38,7 @@ namespace Yttrium
 
         using CONTAINER::size;
 
+    protected:
         //______________________________________________________________________
         //
         //
@@ -218,7 +220,29 @@ namespace Yttrium
             Memory::Stealth::Move(t,p,sizeof(Type));
             Memory::Stealth::Move(p,p+1,(n-i)*sizeof(Type));
             Memory::Stealth::Move(q,t,sizeof(Type));
-            //this->popTail();
+        }
+
+        //! sorting \param compare binary comparator for Heap::Sort
+        template <typename COMPARE> inline
+        void hsort(COMPARE &compare) noexcept
+        {
+            const size_t n = this->size();
+            if(n>1) Sorting::Heap::Sort((MutableType *) & (*this)[1],n,compare);
+        }
+
+        //! co-sorting \param compare for Heap::Sort \param peer same sized contiguous
+        template <typename COMPARE, typename PEER> inline
+        void hsort(COMPARE &compare, WritableContiguous<PEER> &peer)
+        {
+            assert(this->size()==peer.size());
+            const size_t n = this->size();
+            if(n>1)
+            {
+                MutableType *               arr = (MutableType *) & (*this)[1];
+                typename PEER::MutableType *brr = (typename PEER::MutableType *) &peer[1];
+                Sorting::Heap::Sort(arr,brr,n,compare);
+            }
+
         }
 
         //______________________________________________________________________

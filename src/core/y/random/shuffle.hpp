@@ -1,8 +1,8 @@
 
 //! \file
 
-#ifndef Y_Random_Shufflel_Included
-#define Y_Random_Shufflel_Included 1
+#ifndef Y_Random_Shuffle_Included
+#define Y_Random_Shuffle_Included 1
 
 #include "y/random/bits.hpp"
 #include "y/memory/stealth.hpp"
@@ -50,4 +50,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Random_Shuffle_Included

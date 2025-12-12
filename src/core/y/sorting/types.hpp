@@ -37,5 +37,5 @@ namespace Yttrium{
 
 }
 
-#endif
+#endif // !Y_Sorting_Types_Included
 

@@ -123,5 +123,5 @@ namespace Yttrium{
 
 }
 
-#endif
+#endif // !Y_Sorting_Heap_Included
 
