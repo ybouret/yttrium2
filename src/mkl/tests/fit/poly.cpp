@@ -7,15 +7,22 @@
 using namespace Yttrium;
 using namespace MKL;
 
+static void testFitPoly(XMLog &xml,
+                        Fit::Optimizer<double> &fit,
+                        Fit::Sample<double,double> &data,
+                        const Fit::Polynomial::Coefficients &coef,
+                        const char * const                   info)
+{
+    Fit::Polynomial::Session<double> poly(coef);
+    (void)poly(xml,fit,data);
+    data.save(data.name + "-" + info + ".dat");
+}
+
 Y_UTEST(fit_poly)
 {
 
     Random::ParkMiller            ran;
-    Fit::Polynomial::Coefficients coef("a");
 
-    coef << 0 << 1;
-
-    std::cerr << coef << std::endl;
 
 
     Vector<double> X;
@@ -24,23 +31,45 @@ Y_UTEST(fit_poly)
 
     for(size_t i=10+ran.leq<unsigned>(20); i>0; --i)
     {
-        const double x = ran.to<double>() * 2.0;
+        const double x = ran.to<double>() * 1.6;
         X  << x;
         Y  << sin(x) + 0.01*ran.symm<double>();
         Yf << 0.0;
     }
+    
 
     X.hsort( Sign::Increasing<double>, Y );
 
-
+    bool  verbose = true;
+    XMLog xml(std::cerr,verbose);
+    Fit::Optimizer<double> fit;
     Fit::Sample<double,double> data("poly.fit",X,Y,Yf);
 
-    Fit::Polynomial::Session<double> poly(coef);
-
-    poly.aorg[1] = 0.32;
-    (void)poly.D2(data);
     data.save(data.name);
 
+    {
+        Fit::Polynomial::Coefficients constant("a");
+        constant << 0;
+        testFitPoly(xml,fit,data,constant, "constant");
+    }
+
+    {
+        Fit::Polynomial::Coefficients linear("a");
+        linear << 1;;
+        testFitPoly(xml,fit,data,linear,"linear");
+    }
+
+    {
+        Fit::Polynomial::Coefficients affine("a");
+        affine << 0 << 1;
+        testFitPoly(xml,fit,data,affine,"affine");
+    }
+
+    {
+        Fit::Polynomial::Coefficients quad("a");
+        quad << 0 << 1 << 2;
+        testFitPoly(xml,fit,data,quad,"quad");
+    }
 
 
 

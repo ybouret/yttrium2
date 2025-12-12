@@ -37,6 +37,8 @@
 #define Y_Fit_Usual_Fcn_Args TL3(ABSCISSA,Variables,Readable<ORDINATE>)
 #define Y_Fit_Usual_Function Functor<Y_Fit_Ret_Type,Y_Fit_Usual_Fcn_Args>
 
+#define Y_Fit_Usual_Grd_Args TL5(Writable<ORDINATE> &,ABSCISSA,Variables,Readable<ORDINATE>,Readable<bool>)
+#define Y_Fit_Usual_Gradient Functor<Y_Fit_Ret_Type,Y_Fit_Usual_Grd_Args>
 
 
 #endif // !Y_Fit_Defs_Included

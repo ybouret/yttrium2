@@ -48,14 +48,14 @@ namespace Yttrium
                 public:
                     typedef Sample<T,T>                        SampleType;
                     typedef typename SampleType::UsualFunction FuncType;
-                    typedef Functor<T,TL5(Writable<T> &,T,Variables &,Readable<T> &,Readable<bool>)> GradType;
+                    typedef typename SampleType::UsualGradient GradType;
 
                     inline explicit Session(const Coefficients &cf) :
                     coef(cf),
                     zero(0),
                     aorg( (*coef)->size(), zero),
                     aerr( (*coef)->size(), zero),
-                    used( (*coef)->size(), zero),
+                    used( (*coef)->size(), true),
                     F( this, & Session<T>::getF),
                     G( this, & Session<T>::getG)
                     {
@@ -63,11 +63,12 @@ namespace Yttrium
 
                     inline virtual ~Session() noexcept {}
 
-                    inline void run(Optimizer<T> & fit,
-                                    SampleType   & sample)
+                    inline bool operator()(XMLog        & xml,
+                                           Optimizer<T> & fit,
+                                           SampleType   & sample)
                     {
-                        // create primary variables from named parameters
                         setup(sample);
+                        return fit(xml,sample,F,G,aorg,used,aerr);
                     }
 
                     inline T D2(SampleType &sample) {
@@ -122,10 +123,11 @@ namespace Yttrium
                             const Variable &v = **it;
                             const size_t    d = coef.degreeOf(**it);
                             const size_t    i = v.indx;
-                            xadd << ipower(x,d) * a[i];
+                            const T         xd = ipower(x,d);
+                            xadd << xd * a[i];
                             if(u[i])
                             {
-
+                                dFda[i] = xd;
                             }
                         }
                         return xadd.sum();

@@ -34,10 +34,11 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
-                typedef Y_Fit_Function             Function;  //!< alias
-                typedef Y_Fit_Gradient             Gradient;  //!< alias
+                typedef Y_Fit_Function             Function;      //!< alias
+                typedef Y_Fit_Gradient             Gradient;      //!< alias
                 typedef Y_Fit_Usual_Function       UsualFunction; //!< alias
-                typedef AdjustableEngine<ORDINATE> Engine;    //!< alias
+                typedef Y_Fit_Usual_Gradient       UsualGradient; //!< alias
+                typedef AdjustableEngine<ORDINATE> Engine;        //!< alias
 
                 //______________________________________________________________
                 //
