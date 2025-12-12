@@ -116,7 +116,7 @@ namespace Yttrium
                              const size_t        width) const
                 {
                     if(!sfx) sfx = "";
-                    Y_XMLog(xml,"\t" << Justify(global->name,width,Justify::Right) << sfx << " = " << arr[global->indx]);
+                    Y_XMLog(xml,"\t" << Justify(global->name,width,Justify::Right) << sfx << " = " << std::setw(15) << arr[global->indx]);
                 }
 
                 

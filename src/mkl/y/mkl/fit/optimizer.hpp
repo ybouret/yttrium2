@@ -310,7 +310,7 @@ namespace Yttrium
                         const ORDINATE gamma = xadd.sum();
                         Y_XMLog(xml,"sigma=" << sigma);
                         Y_XMLog(xml,"gamma=" << gamma);
-                        std::cerr << "\t\t\t" << D2_ini << " -(" << sigma << ")*x+(" << gamma << ")*x*x" << std::endl;
+                        //std::cerr << "\t\t\t" << D2_ini << " -(" << sigma << ")*x+(" << gamma << ")*x*x" << std::endl;
                     }
 
                     // update and test convergence
