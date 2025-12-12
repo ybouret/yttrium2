@@ -2,6 +2,9 @@
 #include "y/mkl/fit/spec/polynomial.hpp"
 #include "y/format/decimal.hpp"
 
+#include "y/exception.hpp"
+#include "y/ascii/convert.hpp"
+
 namespace Yttrium
 {
     namespace MKL
@@ -34,6 +37,19 @@ namespace Yttrium
             root(coef.root),
             parameters(coef.parameters)
             {
+
+            }
+
+
+            static const char * const CallSign = "Polynomial::Coefficients";
+            
+            size_t  Polynomial::Coefficients:: degreeOf(const Parameter &p) const
+            {
+                const String &     name = p.name;
+                const char * const uuid = name.c_str();
+                if(name.size()<=root.size()) throw Specific::Exception(CallSign,"invalid name '%s'", uuid);
+                const char * const data = uuid + root.size();
+                return ASCII::Convert::To<size_t>(data,uuid);
 
             }
 

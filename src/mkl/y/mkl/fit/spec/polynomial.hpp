@@ -6,6 +6,7 @@
 #include "y/mkl/fit/optimizer.hpp"
 #include "y/mkl/fit/sample.hpp"
 #include "y/container/cxx/array.hpp"
+#include "y/calculus/ipower.hpp"
 
 namespace Yttrium
 {
@@ -45,27 +46,32 @@ namespace Yttrium
                 class Session
                 {
                 public:
+                    typedef Sample<T,T>                   SampleType;
+                    //typedef typename SampleType::Function Function;
+                    typedef Functor<T,TL3(T,Variables,Readable<T>)> FuncType;
+
                     inline explicit Session(const Coefficients &cf) :
                     coef(cf),
                     zero(0),
                     aorg( (*coef)->size(), zero),
                     aerr( (*coef)->size(), zero),
-                    used( (*coef)->size(), zero)
+                    used( (*coef)->size(), zero),
+                    F( this, & Session<T>::getF)
                     {
                     }
 
                     inline virtual ~Session() noexcept {}
 
-                    inline void run(Optimizer<T> &fit ,
-                                    Sample<T,T>  &sample)
+                    inline void run(Optimizer<T> & fit,
+                                    SampleType   & sample)
                     {
                         // create primary variables from named parameters
-                        Variables &vars = sample.vars;
-                        vars.free();
-                        for(Parameters::ConstIterator it=(*coef)->begin();it != (*coef)->end();++it)
-                        {
-                            vars << **it;
-                        }
+                        setup(sample);
+                    }
+
+                    inline T D2(SampleType &sample) {
+                        setup(sample);
+                        return sample.computeD2_(F,aorg);
                     }
 
 
@@ -79,6 +85,27 @@ namespace Yttrium
 
                 private:
                     Y_Disable_Copy_And_Assign(Session);
+                    Cameo::Addition<T> xadd;
+                    FuncType           F;
+                    inline void setup(SampleType &sample)
+                    {
+                        sample.vars.free();
+                        for(Parameters::ConstIterator it=(*coef)->begin();it != (*coef)->end();++it)
+                            sample.vars << **it;
+                        std::cerr << "vars=" << sample.vars << std::endl;
+                    }
+
+                    inline T getF(const T x, const Variables &vars, const Readable<T> &a)
+                    {
+                        xadd.ldz();
+                        for(Variables::ConstIterator it=vars->begin(); it!=vars->end();++it)
+                        {
+                            const Variable &v = **it;
+                            const size_t    d = coef.degreeOf(**it);
+                            xadd << ipower(x,d) * a[v.indx];
+                        }
+                        return xadd.sum();
+                    }
                 };
             };
 

@@ -103,6 +103,8 @@ namespace Yttrium
                                            const Readable<ORDINATE> & aorg)
                 {
 
+                    assert(X.size() == Y.size());
+                    assert(X.size() == Yf.size());
                     xadd.ldz();
                     const size_t n = X.size();
                     for(size_t i=1;i<=n;++i)

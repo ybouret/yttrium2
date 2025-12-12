@@ -34,9 +34,14 @@ Y_UTEST(fit_poly)
 
 
     Fit::Sample<double,double> data("poly.fit",X,Y,Yf);
-    data.save(data.name);
 
     Fit::Polynomial::Session<double> poly(coef);
+
+    poly.aorg[1] = 0.32;
+    (void)poly.D2(data);
+    data.save(data.name);
+
+
 
 
 }
