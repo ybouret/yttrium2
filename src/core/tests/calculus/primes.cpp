@@ -46,7 +46,8 @@ Y_UDONE()
 
 
 #include "y/concurrent/api/simd/crew.hpp"
-#include "y/concurrent/split/1d.hpp"
+#include "y/concurrent/divide/1d.hpp"
+
 #include "y/string/format.hpp"
 #include "y/stream/libc/output.hpp"
 #include "y/stream/libc/input.hpp"
@@ -88,10 +89,16 @@ namespace
 
         inline void find(const Concurrent::Context &ctx)
         {
+            const Concurrent::Divide::Tile1D<uint64_t> tile(ctx,delta,Lower);
+
+#if 0
             Concurrent::Split::In1D       in1d(delta);
             const Concurrent::Split::Zone zone = in1d(ctx,Lower);
             const uint64_t                last = (zone.offset + zone.length - One);
-            { Y_Giant_Lock(); std::cerr << "@" << ctx << " : zone=" << zone << " -> "<< last << std::endl; }
+#endif
+
+            const uint64_t last = tile.utmost;
+            { Y_Giant_Lock(); std::cerr << "@" << ctx << " : zone=" << tile << " -> "<< last << std::endl; }
 
             char fn[256];
             memset(fn,0,sizeof(fn));
@@ -102,7 +109,7 @@ namespace
 
             OutputFile   fp(fn);
 
-            uint64_t i=Prime::Next(zone.offset);
+            uint64_t i=Prime::Next(tile.offset);
             while(i<=last)
             {
                 Emit(fp,i);
@@ -133,7 +140,7 @@ namespace
 #include "y/format/human-readable.hpp"
 #include "y/vfs/local/fs.hpp"
 #include "y/stream/libc/file/copy.hpp"
-#include "y/string/env.hpp"
+#include "y/string/env/convert.hpp"
 #include "y/ascii/convert.hpp"
 #include "y/hashing/sha1.hpp"
 #include "y/hashing/md.hpp"
@@ -142,12 +149,7 @@ Y_UTEST(calculus_primes33)
 {
     VFS &            fs = LocalFS::Instance();
     Concurrent::Crew crew( Concurrent::Site::Default );
-    String           nstr;
-    uint64_t         nmax = 0;
-    if( Environment::Get(nstr,"NMAX") )
-    {
-        nmax = ASCII::Convert::To<uint64_t>(nstr,"nmax");
-    }
+    const uint64_t   nmax = EnvironmentConvert::To<uint64_t>("NMAX",0);
     Computer         computer(nmax);
 
 
