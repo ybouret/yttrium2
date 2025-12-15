@@ -123,8 +123,8 @@ namespace Yttrium
                     aerr( (*coef)->size(), zero),
                     used( (*coef)->size(), true),
                     xadd(),
-                    F( this, & Session<T>::getF),
-                    G( this, & Session<T>::getG)
+                    F( my(), & Session<T>::getF),
+                    G( my(), & Session<T>::getG)
                     {
                     }
 
@@ -182,6 +182,8 @@ namespace Yttrium
                     Cameo::Addition<T> xadd;            //!< inner sums
                     FuncType           F;               //!< usual function
                     GradType           G;               //!< usual gradient
+
+                    Session * my() noexcept { return this; }
 
                     //! setup variables of sample \param sample target sample
                     inline void setup(SampleType &sample)
