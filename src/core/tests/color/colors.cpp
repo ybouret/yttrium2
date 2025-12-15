@@ -56,7 +56,7 @@ Y_UTEST(colors)
                     const unsigned sum = r + g + b; Y_ASSERT(sum<size);
                     unsigned val = sum/3;     Y_ASSERT(val<=255);
                     if( (val <= 0) && (r||g||b) ) val = 1;
-                    gtab[sum] = val;
+                    gtab[sum] = (uint8_t) val;
                 }
             }
         }

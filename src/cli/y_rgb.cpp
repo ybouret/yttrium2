@@ -37,7 +37,7 @@ String MakeName(String &name)
     Algo::Crop(name,isBad);
     const size_t n = name.size();
     if(name.size()<=0) throw Exception("empty name");
-    String res = toupper(name[1]);
+    String res = (char)toupper(name[1]);
     for(size_t i=2;i<n;++i)
     {
         const char c = name[i];
@@ -45,7 +45,7 @@ String MakeName(String &name)
             res += name[i];
         else
         {
-            res += toupper(name[++i]);
+            res += (char)toupper(name[++i]);
         }
     }
     res += name[n];
