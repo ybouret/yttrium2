@@ -4,7 +4,8 @@
 #include "y/ascii/convert.hpp"
 #include "y/string/env.hpp"
 #include "y/container/cxx/array.hpp"
-#include "y/concurrent/split/1d.hpp"
+//#include "y/concurrent/split/1d.hpp"
+#include "y/concurrent/divide/1d.hpp"
 #include "y/system/wall-time.hpp"
 #include "y/apex/rational.hpp"
 #include <cmath>
@@ -30,10 +31,8 @@ namespace
 
         inline void Run(const Concurrent::Context &ctx)
         {
-            static const size_t           Offset = 1;
-            Concurrent::Split::In1D       in1d(nmax);
-            const Concurrent::Split::Zone zone = in1d(ctx,Offset);
-
+            static const size_t Offset = 1;
+            const Concurrent::Divide::Tile1D<size_t> zone(ctx,nmax,Offset);
             double &sum = part[ctx.indx];
 
             for(size_t compute=1;compute<=10;++compute)
