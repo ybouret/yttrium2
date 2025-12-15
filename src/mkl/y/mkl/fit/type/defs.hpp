@@ -34,10 +34,17 @@
 // usual function/gradient
 //
 //------------------------------------------------------------------------------
+
+//! arguments for usual function
 #define Y_Fit_Usual_Fcn_Args TL3(ABSCISSA,Variables,Readable<ORDINATE>)
+
+//! prototype for usual function
 #define Y_Fit_Usual_Function Functor<Y_Fit_Ret_Type,Y_Fit_Usual_Fcn_Args>
 
+//! arguments for usual gradient
 #define Y_Fit_Usual_Grd_Args TL5(Writable<ORDINATE> &,ABSCISSA,Variables,Readable<ORDINATE>,Readable<bool>)
+
+//! prototype for usual gradient
 #define Y_Fit_Usual_Gradient Functor<Y_Fit_Ret_Type,Y_Fit_Usual_Grd_Args>
 
 

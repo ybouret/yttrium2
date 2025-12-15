@@ -63,7 +63,13 @@ namespace Yttrium
                     //__________________________________________________________
 
                     //! create a new coefficient "root+degree"
+                    /**
+                     \param degree degree to create
+                     \return *this
+                     */
                     Coefficients & operator<<(const size_t degree);
+
+                    //! \return degree from named parameter
                     size_t degreeOf(const Parameter &) const;
 
                     //__________________________________________________________
@@ -72,12 +78,12 @@ namespace Yttrium
                     // Members
                     //
                     //__________________________________________________________
-                    const String root;
+                    const String root; //!< base name for coefficients
 
                 private:
-                    Y_Disable_Assign(Coefficients);
-                    Y_Ingress_Decl();
-                    Parameters parameters;
+                    Y_Disable_Assign(Coefficients); //!< discarding
+                    Y_Ingress_Decl();               //!< helper
+                    Parameters parameters;          //!< specific parameters
                 };
 
                 //______________________________________________________________
@@ -92,23 +98,53 @@ namespace Yttrium
                 class Session
                 {
                 public:
-                    typedef Sample<T,T>                        SampleType;
-                    typedef typename SampleType::UsualFunction FuncType;
-                    typedef typename SampleType::UsualGradient GradType;
+                    //__________________________________________________________
+                    //
+                    //
+                    // Definitions
+                    //
+                    //__________________________________________________________
+                    typedef Sample<T,T>                        SampleType; //!< alias
+                    typedef typename SampleType::UsualFunction FuncType;   //!< alias
+                    typedef typename SampleType::UsualGradient GradType;   //!< alias
 
+                    //__________________________________________________________
+                    //
+                    //
+                    // C++
+                    //
+                    //__________________________________________________________
+
+                    //! setup \param cf duplicated coefficients
                     inline explicit Session(const Coefficients &cf) :
                     coef(cf),
                     zero(0),
                     aorg( (*coef)->size(), zero),
                     aerr( (*coef)->size(), zero),
                     used( (*coef)->size(), true),
+                    xadd(),
                     F( this, & Session<T>::getF),
                     G( this, & Session<T>::getG)
                     {
                     }
 
+                    //! cleanup
                     inline virtual ~Session() noexcept {}
 
+                    //__________________________________________________________
+                    //
+                    //
+                    // Methods
+                    //
+                    //__________________________________________________________
+
+                    //! perform fit session
+                    /**
+                     \param  xml    for output
+                     \param  fit    optimizer
+                     \param  sample sample to fit
+                     \return fit success
+                     */
                     inline bool operator()(XMLog        & xml,
                                            Optimizer<T> & fit,
                                            SampleType   & sample)
@@ -117,34 +153,51 @@ namespace Yttrium
                         return fit(xml,sample,F,G,aorg,used,aerr);
                     }
 
+                    //! intialize sample fit value
+                    /**
+                     \param sample sample to evaluate
+                     \return D2
+                     */
                     inline T D2(SampleType &sample) {
                         setup(sample);
                         return sample.computeD2_(F,aorg);
                     }
 
 
-
-                    const Coefficients coef;
-                    const T            zero;
-                    CxxArray<T>        aorg;
-                    CxxArray<T>        aerr;
-                    CxxArray<bool>     used;
+                    //__________________________________________________________
+                    //
+                    //
+                    // Members
+                    //
+                    //__________________________________________________________
+                    const Coefficients coef; //!< named coefficients
+                    const T            zero; //!< scalar value
+                    CxxArray<T>        aorg; //!< coefficient values
+                    CxxArray<T>        aerr; //!< coefficient errors
+                    CxxArray<bool>     used; //!< tunable use
 
 
                 private:
-                    Y_Disable_Copy_And_Assign(Session);
-                    Cameo::Addition<T> xadd;
-                    FuncType           F;
-                    GradType           G;
+                    Y_Disable_Copy_And_Assign(Session); //!< discading
+                    Cameo::Addition<T> xadd;            //!< inner sums
+                    FuncType           F;               //!< usual function
+                    GradType           G;               //!< usual gradient
 
+                    //! setup variables of sample \param sample target sample
                     inline void setup(SampleType &sample)
                     {
                         sample.vars.free();
                         for(Parameters::ConstIterator it=(*coef)->begin();it != (*coef)->end();++it)
                             sample.vars << **it;
-                        std::cerr << "vars=" << sample.vars << std::endl;
                     }
 
+                    //! usual function
+                    /**
+                     \param x    abscissa
+                     \param vars coeffs
+                     \param a    values
+                     \return polynomial at x
+                     */
                     inline T getF(const T x, const Variables &vars, const Readable<T> &a)
                     {
                         xadd.ldz();
@@ -157,6 +210,15 @@ namespace Yttrium
                         return xadd.sum();
                     }
 
+                    //! usual gradient
+                    /**
+                     \param dFda gradient to fill
+                     \param x    abscissa
+                     \param vars coeffs
+                     \param a    values
+                     \param u    used values
+                     \return polynomial at x
+                     */
                     inline T getG(Writable<T>          &dFda,
                                   const T               x,
                                   const Fit::Variables &vars,

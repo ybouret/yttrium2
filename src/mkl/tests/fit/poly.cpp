@@ -47,7 +47,7 @@ Y_UTEST(fit_poly)
 
     data.save(data.name);
 
-#if 0
+#if 1
     {
         Fit::Polynomial::Coefficients constant("a");
         constant << 0;

@@ -702,6 +702,12 @@ namespace Yttrium
             arg = recv1<T>(source,tag);
         }
 
+        //! send  types
+        /**
+         \param arr    array of types
+         \param target target
+         \param tag    optional tag
+         */
         template <typename CONTIGUOUS> inline
         void sendN(const CONTIGUOUS &arr,
                    const size_t      target,
@@ -711,6 +717,12 @@ namespace Yttrium
         }
 
 
+        //! recieve types
+        /**
+         \param arr    array of types
+         \param source source
+         \param tag    optional tag
+         */
         template <typename CONTIGUOUS> inline
         void recvN(CONTIGUOUS &  arr,
                    const size_t  source,
