@@ -17,15 +17,12 @@ Y_UTEST(mkl_leap)
     {
         Leap<float> l(0.0f, 1.0f), m(l);
         std::cerr << l << " / " << m << std::endl;
-        l.lower = -1.0f;
-        m = l;
-        std::cerr << l << " / " << m << std::endl;
+
     }
 
     {
         Leap<const double> l(0,1), m(l);
         std::cerr << l << " / " << m << std::endl;
-
     }
 
 

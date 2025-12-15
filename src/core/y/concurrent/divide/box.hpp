@@ -6,7 +6,7 @@
 #ifndef Y_Concurrent_Divide_Box_Included
 #define Y_Concurrent_Divide_Box_Included 1
 
-#include "y/core/setup.hpp"
+#include "y/mkl/leap.hpp"
 #include <iostream>
 
 namespace Yttrium
@@ -24,7 +24,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             template <typename VERTEX>
-            class Box
+            class Box : public Leap<VERTEX>
             {
             public:
                 //______________________________________________________________
@@ -33,9 +33,13 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
+                typedef Leap<VERTEX>                 LeapType;           //!< alias
                 typedef               VERTEX         vertex_t;           //!< alias
                 typedef typename      VERTEX::Type   scalar_t;           //!< alias
                 static const unsigned DIMENSIONS   = VERTEX::DIMENSIONS; //!< alias
+
+                using LeapType::lower;
+                using LeapType::upper;
 
                 //______________________________________________________________
                 //
@@ -47,18 +51,16 @@ namespace Yttrium
                 //! setup \param lo lower coordinate \param up upper coordinate
                 inline Box(const vertex_t lo,
                            const vertex_t up) :
-                lower(lo),
-                upper(up),
+                LeapType(lo,up),
                 width(),
                 shift(),
-                count( Setup(Coerce(lower),Coerce(upper),Coerce(width),Coerce(shift)) )
+                count(Setup(Coerce(lower),Coerce(upper),Coerce(width),Coerce(shift)))
                 {
                 }
 
                 //! duplicate \param b another box
                 inline Box(const Box &b) noexcept :
-                lower(b.lower),
-                upper(b.upper),
+                LeapType(b),
                 width(b.width),
                 shift(b.shift),
                 count(b.count)
@@ -115,12 +117,9 @@ namespace Yttrium
                 // Members
                 //
                 //______________________________________________________________
-                const vertex_t lower; //!< lower coordinate
-                const vertex_t upper; //!< upper coordinate
                 const vertex_t width; //!< width
                 const vertex_t shift; //!< shift per dimension
                 const scalar_t count; //!< total items
-
 
 
             private:

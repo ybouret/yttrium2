@@ -13,8 +13,7 @@ namespace Yttrium
         }
 
         Area:: Area(const Coord lo, const Coord up) noexcept :
-        lower(lo),
-        upper(up),
+        Leap<Coord>(lo,up),
         width( udiff(lower.x,upper.x), udiff(lower.y,upper.y) ),
         items(width.x*width.y)
         {
@@ -24,8 +23,7 @@ namespace Yttrium
 
 
         Area:: Area(const Area &area) noexcept  :
-        lower(area.lower),
-        upper(area.upper),
+        Leap<Coord>(area),
         width(area.width),
         items(area.items)
         {
@@ -64,16 +62,7 @@ namespace Yttrium
         {
             return contains(a.lower) && contains(a.upper);
         }
-
-        bool operator==(const Area &lhs, const Area &rhs) noexcept
-        {
-            return (lhs.lower == rhs.lower) && (lhs.upper == rhs.upper);
-        }
-
-        bool operator!=(const Area &lhs, const Area &rhs) noexcept
-        {
-            return (lhs.lower != rhs.lower) || (lhs.upper != rhs.upper);
-        }
+        
     }
 
 }

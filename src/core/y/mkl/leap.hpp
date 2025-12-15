@@ -14,7 +14,7 @@ namespace Yttrium
     //
     //
     //
-    //! 2D Vertex
+    //! Low-level leap from lower to upper
     //
     //
     //__________________________________________________________________________
@@ -38,21 +38,27 @@ namespace Yttrium
 
         }
 
-        inline Leap & operator=(const Leap &leap) noexcept
-        {
-            lower = leap.lower;
-            upper = leap.upper;
-            return *this;
-        }
-
         inline friend std::ostream & operator<<(std::ostream &os, const Leap &leap)
         {
             return os << leap.lower << "->" << leap.upper;
         }
 
 
-        T lower;
-        T upper;
+        inline friend bool operator==(const Leap &lhs, const Leap &rhs) noexcept
+        {
+            return (lhs.lower == rhs.lower) && (lhs.upper==rhs.upper);
+        }
+
+        inline friend bool operator!=(const Leap &lhs, const Leap &rhs) noexcept
+        {
+            return (lhs.lower != rhs.lower) || (lhs.upper!=rhs.upper);
+        }
+
+        const T lower;
+        const T upper;
+
+    private:
+        Y_Disable_Assign(Leap);
 
     };
 

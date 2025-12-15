@@ -1,6 +1,7 @@
 #ifndef Y_Ink_Area_Included
 #define Y_Ink_Area_Included 1
 
+#include "y/mkl/leap.hpp"
 #include "y/mkl/v2d.hpp"
 
 namespace Yttrium
@@ -19,7 +20,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Area
+        class Area : public Leap<Coord>
         {
         public:
             //__________________________________________________________________
@@ -44,18 +45,13 @@ namespace Yttrium
             bool contains(const Coord)          const noexcept; //!< \return true if point in area
             bool contains(const Area &)         const noexcept; //!< \return true if sub-area in area
 
-            friend bool operator==(const Area &, const Area &) noexcept; //!< \return equality
-            friend bool operator!=(const Area &, const Area &) noexcept; //!< \return difference
-
-
+            
             //__________________________________________________________________
             //
             //
             // members
             //
             //__________________________________________________________________
-            const Coord  lower; //!< lower coordinate
-            const Coord  upper; //!< lower coordinate
             const Range  width; //!< width
             const size_t items; //!< items
 
