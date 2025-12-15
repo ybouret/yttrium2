@@ -6,8 +6,7 @@
 #include "y/field/layout/metrics.hpp"
 #include "y/field/layout/scope.hpp"
 #include "y/object/counted.hpp"
-
-#include <iostream>
+#include "y/mkl/leap.hpp"
 
 namespace Yttrium
 {
@@ -23,7 +22,11 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename COORD,typename COUNT>
-        class Layout : public CountedObject, public LayoutScope<COUNT>, public LayoutMetrics
+        class Layout :
+        public CountedObject,
+        public LayoutScope<COUNT>,
+        public LayoutMetrics,
+        public Leap<COORD>
         {
         public:
             //__________________________________________________________________
@@ -33,8 +36,8 @@ namespace Yttrium
             //
             //__________________________________________________________________
             static const unsigned DIMENSIONS = sizeof(COORD)/sizeof(unit_t); //!< space dimension
-            typedef COORD CoordType;                                        //!< alias
-
+            typedef COORD       CoordType;                                   //!< alias
+            typedef Leap<COORD> LeapType;                                    //!< alias
             using LayoutScope<COUNT>::width;
             using LayoutScope<COUNT>::shift;
             using LayoutScope<COUNT>::lastShift;
@@ -49,8 +52,7 @@ namespace Yttrium
             //! cleanup
             inline virtual ~Layout() noexcept
             {
-                Y_Memory_VZero(Coerce(lower));
-                Y_Memory_VZero(Coerce(upper));
+
             }
             
 
@@ -58,8 +60,7 @@ namespace Yttrium
             inline explicit Layout(COORD lo, COORD up) noexcept :
             LayoutScope<COUNT>(),
             LayoutMetrics(DIMENSIONS, C2U(lo), C2U(up), C2S(width), C2S(shift)),
-            lower(lo),
-            upper(up)
+            LeapType(lo,up)
             {
             }
             
@@ -69,26 +70,13 @@ namespace Yttrium
             explicit Layout(const SubLayout_ &_, const SUPER &super) noexcept :
             LayoutScope<COUNT>(_,super),
             LayoutMetrics(DIMENSIONS, lastShift() ),
-            lower( Memory::Stealth::Conv<const COORD,const typename SUPER::CoordType>(super.lower) ),
-            upper( Memory::Stealth::Conv<const COORD,const typename SUPER::CoordType>(super.upper) )
+            LeapType(Memory::Stealth::Conv<const COORD,const typename SUPER::CoordType>(super.lower),
+                     Memory::Stealth::Conv<const COORD,const typename SUPER::CoordType>(super.upper) )
             {
 
             }
 
-            //! \return test equality \param lhs lhs \param rhs rhs
-            inline friend bool operator==(const Layout &lhs,
-                                          const Layout &rhs) noexcept
-            {
-                if(lhs.lower==rhs.lower && lhs.upper==rhs.upper)
-                {
-                    assert(lhs.width==rhs.width);
-                    assert(lhs.shift==rhs.shift);
-                    assert(lhs.items==rhs.items);
-                    return true;
-                }
-                else
-                    return false;
-            }
+
 
             //! display metrics
             inline friend std::ostream & operator<<(std::ostream &os, const Layout &l)
@@ -97,14 +85,7 @@ namespace Yttrium
                 return os;
             }
 
-            //__________________________________________________________________
-            //
-            //
-            // Members
-            //
-            //__________________________________________________________________
-            const COORD lower; //!< lower coordinate
-            const COORD upper; //!< upper coordinate
+
 
         private:
             Y_Disable_Copy_And_Assign(Layout); //!< discarding
