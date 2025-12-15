@@ -65,7 +65,15 @@ namespace Yttrium
             return contains(a.lower) && contains(a.upper);
         }
 
+        bool operator==(const Area &lhs, const Area &rhs) noexcept
+        {
+            return (lhs.lower == rhs.lower) && (lhs.upper == rhs.upper);
+        }
 
+        bool operator!=(const Area &lhs, const Area &rhs) noexcept
+        {
+            return (lhs.lower != rhs.lower) || (lhs.upper != rhs.upper);
+        }
     }
 
 }

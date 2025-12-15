@@ -44,6 +44,10 @@ namespace Yttrium
             bool contains(const Coord)          const noexcept; //!< \return true if point in area
             bool contains(const Area &)         const noexcept; //!< \return true if sub-area in area
 
+            friend bool operator==(const Area &, const Area &) noexcept; //!< \return equality
+            friend bool operator!=(const Area &, const Area &) noexcept; //!< \return difference
+
+
             //__________________________________________________________________
             //
             //
