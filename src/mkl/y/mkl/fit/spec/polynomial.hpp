@@ -14,12 +14,34 @@ namespace Yttrium
     {
         namespace Fit
         {
-
+            //__________________________________________________________________
+            //
+            //
+            //! Flexible Polynomial Fit
+            //
+            //__________________________________________________________________
             struct Polynomial
             {
+
+                //______________________________________________________________
+                //
+                //
+                //
+                //! fixed coefficients as "root[0..degree]"
+                //
+                //
+                //______________________________________________________________
                 class Coefficients : public Ingress< const Parameters >
                 {
                 public:
+                    //__________________________________________________________
+                    //
+                    //
+                    // C++
+                    //
+                    //__________________________________________________________
+
+                    //! setup \param name root name for coefficients
                     template <typename NAME> inline
                     explicit Coefficients(const NAME &name) :
                     Ingress<const Parameters>(),
@@ -27,12 +49,29 @@ namespace Yttrium
                     {
                     }
 
+                    //! duplicate
                     Coefficients(const Coefficients &);
+
+                    //! cleanup
                     virtual ~Coefficients() noexcept;
 
+                    //__________________________________________________________
+                    //
+                    //
+                    // Methods
+                    //
+                    //__________________________________________________________
+
+                    //! create a new coefficient "root+degree"
                     Coefficients & operator<<(const size_t degree);
                     size_t degreeOf(const Parameter &) const;
 
+                    //__________________________________________________________
+                    //
+                    //
+                    // Members
+                    //
+                    //__________________________________________________________
                     const String root;
 
                 private:
@@ -41,7 +80,14 @@ namespace Yttrium
                     Parameters parameters;
                 };
 
-
+                //______________________________________________________________
+                //
+                //
+                //
+                //! fit session for a given set of coefficients
+                //
+                //
+                //______________________________________________________________
                 template <typename T>
                 class Session
                 {

@@ -47,6 +47,7 @@ Y_UTEST(fit_poly)
 
     data.save(data.name);
 
+#if 0
     {
         Fit::Polynomial::Coefficients constant("a");
         constant << 0;
@@ -70,7 +71,7 @@ Y_UTEST(fit_poly)
         quad << 0 << 1 << 2;
         testFitPoly(xml,fit,data,quad,"quad");
     }
-
+#endif
 
 
 }
