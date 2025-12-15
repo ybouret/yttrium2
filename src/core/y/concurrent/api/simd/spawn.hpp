@@ -4,6 +4,7 @@
 #define Y_Concurrent_Spawn_Included 1
 
 #include "y/concurrent/api/simd.hpp"
+#include "y/concurrent/divide/resources.hpp"
 #include "y/pointer/arc.hpp"
 #include "y/type/temporary.hpp"
 
@@ -23,7 +24,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename TILES>
-        class Spawn : public TILES
+        class Spawn : public TILES, public Resources
         {
         public:
             //__________________________________________________________________
@@ -132,9 +133,12 @@ namespace Yttrium
                 (*this)(wrapper);
             }
 
+            inline void ensureLocalMemory(const size_t bytes)
+            {
+                giveEachTileOf(*this,bytes);
+            }
 
 
-            
 
         private:
             Y_Disable_Copy_And_Assign(Spawn); //!< discarding

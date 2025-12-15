@@ -105,6 +105,7 @@ Y_UTEST(concurrent_spawn)
 
     {
         Concurrent::Spawn<In1D> spawn(mt,value);
+        spawn.ensureLocalMemory(100);
         spawn(DoSomething);
         spawn(stuff);
         spawn(apply, & Apply::call1D );

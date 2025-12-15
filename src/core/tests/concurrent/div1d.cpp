@@ -34,7 +34,9 @@ Y_UTEST(concurrent_div1d)
 
         {
             Concurrent::Divide::Tiles1D<uint32_t> tiles(nproc,length,1);
+
             std::cerr << "tiles=" << tiles << std::endl;
+            
         }
     }
 
