@@ -253,6 +253,7 @@ Y_UTEST(mkl:almost_equal)
 Y_UTEST(mkl:xreal)
 Y_UTEST(mkl:mod2)
 Y_UTEST(mkl:fcpu)
+Y_UTEST(mkl:leap)
 
 #cameo
 Y_UTEST(cameo:add)

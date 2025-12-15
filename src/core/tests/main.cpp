@@ -209,6 +209,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(mkl_almost_equal);
     Y_UTEST(mkl_mod2);
     Y_UTEST(mkl_fcpu);
+    Y_UTEST(mkl_leap);
 
     Y_UTEST(cameo_add);
     Y_UTEST(cameo_mul);
