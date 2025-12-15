@@ -3,7 +3,7 @@
 #ifndef Y_MPI_Included
 #define Y_MPI_Included 1
 
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) && (_MSC_VER>1916)
 #pragma warning ( disable : 5220 )
 #endif
 
