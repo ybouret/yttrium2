@@ -183,7 +183,7 @@ namespace Yttrium
                     FuncType           F;               //!< usual function
                     GradType           G;               //!< usual gradient
 
-                    Session * my() noexcept { return this; }
+                    inline Session * my() noexcept { return this; } //!< \return this
 
                     //! setup variables of sample \param sample target sample
                     inline void setup(SampleType &sample)
