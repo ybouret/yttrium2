@@ -1,6 +1,7 @@
 
 #include "y/concurrent/divide/resources.hpp"
 #include "y/object/factory.hpp"
+#include "y/memory/allocator/dyadic.hpp"
 #include <cstring>
 
 namespace Yttrium
@@ -18,21 +19,21 @@ namespace Yttrium
 
 
         static inline
-        void * acquireResources( const size_t blockSize )
+        void * acquireResources( size_t &blockSize )
         {
-            static Object::Factory &factory = Object::Factory::Instance();
-            return factory.query(blockSize);
+            static Memory::Allocator &mgr = Memory::Dyadic::Instance();
+            return mgr.acquire(blockSize);
         }
 
         void Resources:: release() noexcept
         {
             if(blockSize>0)
             {
-                static Object::Factory &factory = Object::Factory::Location();
+                static Memory::Allocator &mgr = Memory::Dyadic::Location();
                 assert(0!=blockAddr);
-                factory.store(memset(blockAddr,0,blockSize),blockSize);
-                Coerce(blockAddr) = 0;
-                Coerce(blockSize) = 0;
+                mgr.release(Coerce(blockAddr),Coerce(blockSize));
+                assert(0==blockAddr);
+                assert(0==blockSize);
             }
             else
             {
@@ -43,7 +44,7 @@ namespace Yttrium
 
 
 
-        void Resources:: ensure(const size_t capacity)
+        void Resources:: ensure(size_t capacity)
         {
             if(blockSize<capacity)
             {
@@ -51,6 +52,10 @@ namespace Yttrium
                 release();
                 Coerce(blockSize) = capacity;
                 Coerce(blockAddr) = tmp;
+            }
+            else
+            {
+                memset(blockAddr,0,blockSize);
             }
         }
 

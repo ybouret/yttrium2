@@ -25,7 +25,7 @@ namespace
         {
             Y_Lock(sync);
             Y_Giant_Lock();
-            (std::cerr << "DoSomething at " << t << std::endl).flush();
+            (std::cerr << "DoSomething at " << t <<  " with #bytes=" << t.bytes << std::endl).flush();
         }
     }
 
@@ -36,7 +36,7 @@ namespace
             {
                 Y_Lock(sync);
                 Y_Giant_Lock();
-                (std::cerr << "CallSomeone at " << t << std::endl).flush();
+                (std::cerr << "CallSomeone at " << t << " with #bytes=" << t.bytes << std::endl).flush();
             }
         }
     };
@@ -60,7 +60,7 @@ namespace
             {
                 Y_Lock(sync);
                 Y_Giant_Lock();
-                (std::cerr << "Apply::call1D  " << t << std::endl).flush();
+                (std::cerr << "Apply::call1D  " << t << " with #byte=" << t.bytes << std::endl).flush();
             }
         }
 
@@ -69,7 +69,7 @@ namespace
             {
                 Y_Lock(sync);
                 Y_Giant_Lock();
-                (std::cerr << "Apply::call2D  " << t << std::endl).flush();
+                (std::cerr << "Apply::call2D  " << t << " with #bytes=" << t.bytes << std::endl).flush();
             }
         }
 

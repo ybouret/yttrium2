@@ -41,7 +41,7 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(Resources);
             void release() noexcept;
-            void ensure(const size_t capacity);
+            void ensure(size_t capacity);
         };
     }
 }
