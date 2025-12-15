@@ -36,6 +36,8 @@ namespace Yttrium
             //! \return true if empty subdivision
             virtual bool isEmpty() const noexcept = 0;
 
+            void * const entry;
+            const size_t bytes;
             
         private:
             Y_Disable_Assign(Subdivision); //!< discarding
