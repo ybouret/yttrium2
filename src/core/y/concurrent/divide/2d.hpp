@@ -351,6 +351,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
+                //! \return readable interface
                 inline const Readable< Tile2D<T> > & content() const noexcept
                 {
                     return *this;

@@ -15,12 +15,34 @@ namespace Yttrium
 {
     namespace MKL
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! indexed data column
+        //
+        //
+        //______________________________________________________________________
         class DataColumn : public CountedObject
         {
         public:
-            typedef Keyed< size_t,ArcPtr<DataColumn> > Pointer;
-            typedef void (*Grow)(void * const, const String &, const char * const);
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef Keyed< size_t,ArcPtr<DataColumn> > Pointer; //!< alias
+            typedef void (*Grow)(void * const, const String &, const char * const); //!< push converted string
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup \param idx column index \param col PERSISTENT column
             template <typename T, typename CONTAINER>
             explicit DataColumn(const size_t           idx,
                                 Sequence<T,CONTAINER> & col) :
@@ -32,24 +54,43 @@ namespace Yttrium
                 format();
             }
 
+            //! cleanup
             virtual ~DataColumn() noexcept;
 
-            const size_t & key() const noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            const size_t & key() const noexcept; //!< \return indx
+            void append(const String &data);     //!< \param data converted and pushed into column
 
-            void append(const String &data);
 
-
-
-            const size_t indx;
-            void * const addr;
-            Grow   const grow;
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const size_t indx;     //!< column index
+        private:
+            void * const addr;     //!< column address
+            Grow   const grow;     //!< dedicated grow
+        public:
             const char   name[32]; //!< variable name
 
         private:
-            Y_Disable_Copy_And_Assign(DataColumn);
+            Y_Disable_Copy_And_Assign(DataColumn); //!< discarding
 
-            void format();
+            void format(); //!< format name
 
+            //! grow function
+            /**
+             \param pcol    pointer to column
+             \param data    data as string
+             \param varName variable name for Convert
+             */
             template <typename T, typename CONTAINER> static inline
             void Grow_(void * const       pcol,
                        const String &     data,
@@ -63,16 +104,49 @@ namespace Yttrium
 
         };
 
-        typedef HashSet<size_t,DataColumn::Pointer> DataColumns;
+        typedef HashSet<size_t,DataColumn::Pointer> DataColumns; //!< alias
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Database of indexed columns
+        //
+        //
+        //______________________________________________________________________
         class DataSet : public DataColumns
         {
         public:
-            static const char * const CallSign;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const char * const CallSign; //!< "MKL::DataSet"
 
-            explicit DataSet();
-            virtual ~DataSet() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit DataSet();          //!< setup
+            virtual ~DataSet() noexcept; //!< cleanup
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! helper to insert new column
+            /**
+             \param idx column index
+             \param col persistent column
+             \return *this
+             */
             template <typename T, typename CONTAINER> inline
             DataSet & add(const size_t            idx,
                           Sequence<T,CONTAINER> & col)
@@ -80,12 +154,13 @@ namespace Yttrium
                 return add( new DataColumn(idx,col) );
             }
 
-            void load(InputStream &fp);
+            //! fill columns
+            void load(InputStream &);
 
 
         private:
-            Y_Disable_Copy_And_Assign(DataSet);
-            DataSet & add(DataColumn * const);
+            Y_Disable_Copy_And_Assign(DataSet); //!< discarding
+            DataSet & add(DataColumn * const);  //!< helper \return *this
         };
     }
 }
