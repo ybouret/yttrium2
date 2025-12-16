@@ -32,11 +32,13 @@ Y_UTEST(concurrent_div1d)
         }
         Y_ASSERT(length == sum);
 
-        {
-            Concurrent::Divide::Tiles1D<uint32_t> tiles(nproc,length,1);
 
+
+        {
+            Concurrent::Divide::CxxTiles1D<uint32_t> tiles(nproc,length);
             std::cerr << "tiles=" << tiles << std::endl;
-            
+            tiles.remap(100);
+            std::cerr << "tiles=" << tiles << std::endl;
         }
     }
 
