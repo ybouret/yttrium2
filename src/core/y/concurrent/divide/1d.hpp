@@ -267,7 +267,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 // Method
                 //
                 //______________________________________________________________
-                inline void remap(ConstType extent)
+                inline void remap(ConstType extent) noexcept
                 {
                     for(size_t i=this->tiles.size();i>0;--i)
                         Coerce(this->tiles[i]).remap(extent,Offset1);
