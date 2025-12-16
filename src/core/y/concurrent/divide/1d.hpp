@@ -126,6 +126,12 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                     return lhs.offset == rhs.offset && lhs.length == rhs.length;
                 }
 
+                inline void remap(ConstType extent, ConstType iFirst) noexcept
+                {
+                    Coerce(length) = part<MutableType>( extent, Coerce(offset) = iFirst );
+                    Coerce(utmost) = (ConstType)(offset + length - One);
+                }
+
                 //______________________________________________________________
                 //
                 //
@@ -203,10 +209,11 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 inline virtual size_t size() const noexcept { return tiles.size(); }
 
 
+            protected:
+                CxxSeries<const Tile> tiles; //!< built tiles
 
             private:
                 Y_Disable_Assign(Tiles1D);   //!< dicarding
-                CxxSeries<const Tile> tiles; //!< built tiles
 
                 inline virtual const Tile & getItemAt(const size_t indx) const noexcept
                 {
@@ -231,7 +238,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 //
                 // Definitions
                 //
-                //______________________________________________________________'
+                //______________________________________________________________
                 Y_Args_Expose(T,Type);         //!< alias
                 static ConstType Offset1 = 1;  //!< alias
 
@@ -240,7 +247,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 //
                 // C++
                 //
-                //______________________________________________________________'
+                //______________________________________________________________
 
                 //! setup \param n parition size \param extent total burden
                 inline explicit CxxTiles1D(const size_t n,
@@ -252,6 +259,18 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 //! cleanup
                 inline virtual ~CxxTiles1D() noexcept
                 {
+                }
+
+                //______________________________________________________________
+                //
+                //
+                // Method
+                //
+                //______________________________________________________________
+                inline void remap(ConstType extent)
+                {
+                    for(size_t i=this->tiles.size();i>0;--i)
+                        Coerce(this->tiles[i]).remap(extent,Offset1);
                 }
 
             private:
