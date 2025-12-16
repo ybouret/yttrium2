@@ -133,11 +133,17 @@ namespace Yttrium
                 (*this)(wrapper);
             }
 
-            inline void ensureLocalMemory(const size_t bytes)
+
+
+            inline void acquireLocalMemory(const size_t bytes)
             {
-                giveEachTileOf(*this,bytes);
+                acquireEachTileOf(*this,bytes);
             }
 
+            inline void releaseLocalMemory() noexcept
+            {
+                releaseEachTileOf(*this);
+            }
 
 
         private:

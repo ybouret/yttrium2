@@ -17,8 +17,14 @@ namespace Yttrium
             virtual ~Resources() noexcept;
 
         protected:
+
+            //! ensure each tile has enough ZEROED bytes
+            /**
+             \param tiles        array of tile
+             \param bytesPerTile bytes
+             */
             template <typename TILES> inline
-            void giveEachTileOf(TILES &tiles, const size_t bytesPerTile)
+            void acquireEachTileOf(TILES &tiles, const size_t bytesPerTile)
             {
                 const size_t numTiles = tiles.size();
                 const size_t aligned  = Alignment::SystemMemory::Ceil(bytesPerTile);
@@ -31,6 +37,17 @@ namespace Yttrium
                     Coerce(tiles[i].entry) = addr;
                     Coerce(tiles[i].bytes) = aligned;
                 }
+            }
+
+            template <typename TILES> inline
+            void releaseEachTileOf(TILES &tiles) noexcept
+            {
+                for(size_t i=tiles.size();i>0;--i)
+                {
+                    Coerce(tiles[i].entry) = 0;
+                    Coerce(tiles[i].bytes) = 0;
+                }
+                release();
             }
 
 
