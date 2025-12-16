@@ -8,6 +8,7 @@ drvs
 ode
 fit
 statistics
+io
 )
 Y_LinkLibraries(test-mkl y-mkl)
 
@@ -49,4 +50,5 @@ Y_UTEST(fit:poly)
 Y_UTEST(statistics:average)
 Y_UTEST(statistics:descriptive)
 
+Y_UTEST(io:data-set)
 

@@ -41,5 +41,6 @@ Y_UTEST_DECL(128)
     Y_UTEST(statistics_average);
     Y_UTEST(statistics_descriptive);
     
+    Y_UTEST(io_data_set);    
 }
 Y_UTEST_EXEC()

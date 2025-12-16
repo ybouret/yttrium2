@@ -16,6 +16,7 @@ y/mkl/fit/type
 y/mkl/fit/adjustable
 y/mkl/fit/spec
 y/mkl/statistics
+y/mkl/io
 )
 
 add_subdirectory(tests)

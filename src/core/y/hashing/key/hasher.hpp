@@ -37,4 +37,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_HASHING_TO_HASH_KEY_INCLUDED
