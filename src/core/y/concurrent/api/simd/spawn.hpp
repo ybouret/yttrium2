@@ -145,6 +145,12 @@ namespace Yttrium
                 releaseEachTileOf(*this);
             }
 
+            template <typename T> inline
+            void acquireLocalMemoryFor()
+            {
+                acquireLocalMemory( sizeof(T) );
+            }
+
 
         private:
             Y_Disable_Copy_And_Assign(Spawn); //!< discarding
