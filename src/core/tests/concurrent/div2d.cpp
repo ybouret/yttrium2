@@ -14,7 +14,7 @@ Y_UTEST(concurrent_div2d)
     typedef V2D<int> v2d;
     Concurrent::Divide::Box<v2d> box( v2d(1,1), v2d(8,5) );
 
-    for(size_t nproc=1;nproc<=4;++nproc)
+    for(size_t nproc=1;nproc<=8;++nproc)
     {
         std::cerr << std::endl << "nproc=" << nproc << std::endl;
         for(size_t i=1;i<=nproc;++i)
@@ -25,6 +25,16 @@ Y_UTEST(concurrent_div2d)
             {
                 std::cerr << "\t\t" << tile[j] << std::endl;
             }
+        }
+
+        {
+            Concurrent::Divide::Tiles2D<int> tiles(nproc,box);
+            std::cerr << "tiles=" << tiles.content() << std::endl;
+
+            Concurrent::Divide::Box<v2d> box2( v2d(1,1), v2d(2,3) );
+            tiles.remap(box2);
+            std::cerr << "tiles=" << tiles.content() << std::endl;
+
         }
     }
 

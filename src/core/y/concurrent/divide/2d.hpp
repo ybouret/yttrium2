@@ -351,7 +351,12 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-                //! rempa if necessary \param box new bounding box
+                inline const Readable< Tile2D<T> > & content() const noexcept
+                {
+                    return *this;
+                }
+
+                //! remap if necessary \param box new bounding box
                 inline void remap(const BoxType &box)
                 {
                     // check same bounding box
