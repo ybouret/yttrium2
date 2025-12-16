@@ -134,17 +134,21 @@ namespace Yttrium
             }
 
 
-
+            //! acquire local memory for each tile \param bytes minimal bytes
+            /** memory is always zeroed */
             inline void acquireLocalMemory(const size_t bytes)
             {
                 acquireEachTileOf(*this,bytes);
             }
 
+            //! release all local memory
             inline void releaseLocalMemory() noexcept
             {
                 releaseEachTileOf(*this);
             }
 
+
+            //! acquire local memory for a given type
             template <typename T> inline
             void acquireLocalMemoryFor()
             {

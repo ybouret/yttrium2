@@ -22,23 +22,47 @@ namespace Yttrium
         class Subdivision : public Member
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
             static const char * const Empty; //!< "|empty|";
 
 
         protected:
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
             explicit Subdivision(const size_t, const size_t) noexcept; //!< setup size.rank
             explicit Subdivision(const Member &)             noexcept; //!< setup
             Subdivision(const Subdivision &)                 noexcept; //!< duplicate
         public:
-
             virtual ~Subdivision() noexcept; //!< cleanup
+
+            //__________________________________________________________________
+            //
+            //
+            // interface
+            //
+            //__________________________________________________________________
 
             //! \return true if empty subdivision
             virtual bool isEmpty() const noexcept = 0;
 
-            void * const entry;
-            const size_t bytes;
-            
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            void * const entry; //!< local memory
+            const size_t bytes; //!< local bytes
+
         private:
             Y_Disable_Assign(Subdivision); //!< discarding
         };

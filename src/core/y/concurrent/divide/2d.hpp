@@ -297,7 +297,9 @@ namespace Yttrium
             //
             //__________________________________________________________________
             template <typename T>
-            class Tiles2D : public Readable< Tile2D<T> >
+            class Tiles2D :
+            public Readable< Tile2D<T> >,
+            public Leap< V2D<T> >
             {
             public:
                 //______________________________________________________________
@@ -323,7 +325,11 @@ namespace Yttrium
                  \param box total area
                  */
                 inline explicit Tiles2D(const size_t   n,
-                                        const BoxType &box) : tiles(n) {
+                                        const BoxType &box) :
+                Readable<Tile2D<T>>(),
+                Leap<V2D<T>>(box),
+                tiles(n)
+                {
                     for(size_t i=0;i<n;++i) tiles.push(n,i,box);
                 }
 
@@ -337,6 +343,32 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 inline virtual size_t size() const noexcept { return tiles.size(); }
+
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+
+                //! rempa if necessary \param box new bounding box
+                inline void remap(const BoxType &box)
+                {
+                    // check same bounding box
+                    {
+                        const Leap< V2D<T> > &rhs = *this;
+                        if( box == rhs ) return;
+                    }
+
+                    // create/exchange
+                    {
+                        Tiles2D t(tiles.size(),box);
+                        tiles.xch(t.tiles);
+                        Coerce(this->lower) = box.lower;
+                        Coerce(this->upper) = box.upper;
+                    }
+                }
+
 
             private:
                 Y_Disable_Copy_And_Assign(Tiles2D); //!< discarding

@@ -37,9 +37,8 @@ namespace Yttrium
                 typedef               VERTEX         vertex_t;           //!< alias
                 typedef typename      VERTEX::Type   scalar_t;           //!< alias
                 static const unsigned DIMENSIONS   = VERTEX::DIMENSIONS; //!< alias
-
-                using LeapType::lower;
-                using LeapType::upper;
+                using Leap<VERTEX> ::lower; 
+                using Leap<VERTEX> ::upper; 
 
                 //______________________________________________________________
                 //

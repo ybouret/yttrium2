@@ -22,15 +22,24 @@ namespace Yttrium
     class Leap
     {
     public:
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
 
+        //! setup unchecked \param lo lower bound \param up upper bound
         inline explicit Leap(const T lo, const T up) noexcept :
         lower(lo),
         upper(up)
         {
         }
 
+        //! cleanup
         inline virtual ~Leap() noexcept {}
 
+        //! duplicate \param leap another leap
         inline Leap(const Leap &leap) noexcept :
         lower(leap.lower),
         upper(leap.upper)
@@ -38,27 +47,42 @@ namespace Yttrium
 
         }
 
+        //! display
         inline friend std::ostream & operator<<(std::ostream &os, const Leap &leap)
         {
             return os << leap.lower << "->" << leap.upper;
         }
 
+        //______________________________________________________________________
+        //
+        //
+        // Methods
+        //
+        //______________________________________________________________________
 
+        //! \param lhs lhs \param rhs rhs \return equality
         inline friend bool operator==(const Leap &lhs, const Leap &rhs) noexcept
         {
             return (lhs.lower == rhs.lower) && (lhs.upper==rhs.upper);
         }
 
+        //! \param lhs lhs \param rhs rhs \return difference
         inline friend bool operator!=(const Leap &lhs, const Leap &rhs) noexcept
         {
             return (lhs.lower != rhs.lower) || (lhs.upper!=rhs.upper);
         }
 
-        const T lower;
-        const T upper;
+        //______________________________________________________________________
+        //
+        //
+        // Members
+        //
+        //______________________________________________________________________
+        const T lower; //!< lower bound
+        const T upper; //!< upper bound
 
     private:
-        Y_Disable_Assign(Leap);
+        Y_Disable_Assign(Leap); //!< discarding
 
     };
 

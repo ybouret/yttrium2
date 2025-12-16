@@ -126,6 +126,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                     return lhs.offset == rhs.offset && lhs.length == rhs.length;
                 }
 
+                //! remap \param extent new extent \param iFirst new first index
                 inline void remap(ConstType extent, ConstType iFirst) noexcept
                 {
                     Coerce(length) = part<MutableType>( extent, Coerce(offset) = iFirst );
@@ -267,6 +268,8 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 // Method
                 //
                 //______________________________________________________________
+
+                //! remap \param extent new extent
                 inline void remap(ConstType extent) noexcept
                 {
                     for(size_t i=this->tiles.size();i>0;--i)

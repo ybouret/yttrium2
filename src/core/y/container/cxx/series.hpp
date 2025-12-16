@@ -7,9 +7,16 @@
 #include "y/object/school-of.hpp"
 #include "y/memory/stealth.hpp"
 #include "y/container/gradual.hpp"
+#include "y/pointer/arc.hpp"
 
 namespace Yttrium
 {
+
+    //! base class helper
+#define Y_CxxSeries_Ctor()   \
+Container(),                 \
+Contiguous< Writable<T> >(), \
+Gradual()
 
     //__________________________________________________________________________
     //
@@ -29,7 +36,9 @@ namespace Yttrium
         // Definitions
         //
         //______________________________________________________________________
-        Y_Args_Declare(T,Type); //!< aliases
+        Y_Args_Declare(T,Type);                           //!< aliases
+        typedef Memory::SchoolOf<MutableType> SchoolType; //!< alias
+        typedef ArcPtr<SchoolType>            SchoolPtr;  //!< alias
 
         //______________________________________________________________________
         //
@@ -39,14 +48,20 @@ namespace Yttrium
         //______________________________________________________________________
 
         //! setup \param capa capacity
-        inline CxxSeries(const size_t capa) : built(0),  data(capa) {}
+        inline CxxSeries(const size_t capa) :
+        Y_CxxSeries_Ctor(),
+        built(0),
+        data( new SchoolType(capa) ) {}
 
         //! duplicate \param arr another series
-        inline CxxSeries(const CxxSeries &arr) : built(0), data(arr.built)
+        inline CxxSeries(const CxxSeries &arr) :
+        Y_CxxSeries_Ctor(),
+        built(0),
+        data( new SchoolType(arr.built) )
         {
             try {
                 while(built<arr.built) {
-                    new (data.entry+built) Type(arr.data.entry[built]);
+                    new (data->entry+built) Type(arr.data->entry[built]);
                     ++built;
                 }
             }
@@ -66,7 +81,7 @@ namespace Yttrium
         //! append \param args argument \return *this
         CxxSeries & operator<<(ParamType args) {
             assert(size()<capacity());
-            new (data.entry+built) Type(args);
+            new (data->entry+built) Type(args);
             ++built;
             return *this;
         }
@@ -81,7 +96,7 @@ namespace Yttrium
         CxxSeries & push(U &u, V &v)
         {
             assert(size()<capacity());
-            new (data.entry+built) Type(u,v);
+            new (data->entry+built) Type(u,v);
             ++built;
             return *this;
         }
@@ -98,7 +113,7 @@ namespace Yttrium
         CxxSeries & push(U &u, V &v, W &w)
         {
             assert(size()<capacity());
-            new (data.entry+built) Type(u,v,w);
+            new (data->entry+built) Type(u,v,w);
             ++built;
             return *this;
         }
@@ -115,7 +130,7 @@ namespace Yttrium
         CxxSeries & push(U &u, V &v, W &w, X &x)
         {
             assert(size()<capacity());
-            new (data.entry+built) Type(u,v,w,x);
+            new (data->entry+built) Type(u,v,w,x);
             ++built;
             return *this;
         }
@@ -134,7 +149,7 @@ namespace Yttrium
         CxxSeries & push(U &u, V &v, W &w, X &x, Y &y)
         {
             assert(size()<capacity());
-            new (data.entry+built) Type(u,v,w,x,y);
+            new (data->entry+built) Type(u,v,w,x,y);
             ++built;
             return *this;
         }
@@ -149,25 +164,39 @@ namespace Yttrium
         //______________________________________________________________________
         inline virtual size_t size()      const noexcept { return built; }
         inline virtual void   free()            noexcept { free_(); }
-        inline virtual size_t capacity()  const noexcept { return data.maxBlocks; }
-        inline virtual size_t available() const noexcept { return data.maxBlocks - built; }
+        inline virtual size_t capacity()  const noexcept { return data->maxBlocks; }
+        inline virtual size_t available() const noexcept { return data->maxBlocks - built; }
+
+        //______________________________________________________________________
+        //
+        //
+        // Method
+        //
+        //______________________________________________________________________
+
+        //! no-throw exchange \param other another series
+        void xch(CxxSeries &other) noexcept
+        {
+            Swap(built,other.built);
+            data.xch(other.data);
+        }
 
     private:
         Y_Disable_Assign(CxxSeries);         //!< discarding
-        size_t                        built; //!< built object
-        Memory::SchoolOf<MutableType> data;  //!< memory
+        size_t    built; //!< built object
+        SchoolPtr data;  //!< memory
 
         //! free all objects
         inline void free_() noexcept {
-            while(built) Memory::Stealth::DestructedAndZeroed( &data.entry[--built] );
+            while(built) Memory::Stealth::DestructedAndZeroed( &data->entry[--built] );
         }
 
         //! \param indx \return (*this)[indx]
         inline virtual ConstType & getItemAt(const size_t indx) const noexcept
         {
             assert(indx>0);
-            assert(indx<=data.maxBlocks);
-            return data.cxx[indx];
+            assert(indx<=data->maxBlocks);
+            return data->cxx[indx];
         }
     };
 

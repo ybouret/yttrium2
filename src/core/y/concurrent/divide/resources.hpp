@@ -10,12 +10,33 @@ namespace Yttrium
 {
     namespace Concurrent
     {
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! handle resources for tiles
+        //
+        //
+        //______________________________________________________________________
         class Resources
         {
         public:
-            explicit Resources() noexcept;
-            virtual ~Resources() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit Resources() noexcept; //!< setup
+            virtual ~Resources() noexcept; //!< cleanup
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
         protected:
 
             //! ensure each tile has enough ZEROED bytes
@@ -39,6 +60,7 @@ namespace Yttrium
                 }
             }
 
+            //! release all memory \param tiles updated tiles
             template <typename TILES> inline
             void releaseEachTileOf(TILES &tiles) noexcept
             {
@@ -52,13 +74,13 @@ namespace Yttrium
 
 
         public:
-            const size_t blockSize;
-            void * const blockAddr;
+            const size_t blockSize; //!< total allocated bytes
+            void * const blockAddr; //!< memory
 
         private:
-            Y_Disable_Copy_And_Assign(Resources);
-            void release() noexcept;
-            void ensure(size_t capacity);
+            Y_Disable_Copy_And_Assign(Resources); //!< discarding
+            void release() noexcept;              //!< release total memory
+            void ensure(size_t capacity);         //!< \param capacity minimal, zeroed bytes
         };
     }
 }

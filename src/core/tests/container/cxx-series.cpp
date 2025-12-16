@@ -19,6 +19,22 @@ Y_UTEST(container_cxx_series)
             arr << ran.in<int>(-10,10);
         }
         std::cerr << arr << std::endl;
+
+        {
+            CxxSeries<int> brr(arr);
+            std::cerr << brr << std::endl;
+        }
+
+        CxxSeries<int> brr(20);
+        for(size_t i=1;i<=brr.capacity();++i)
+        {
+            brr << ran.in<int>(-10,10);
+        }
+        std::cerr << brr << std::endl;
+        brr.xch(arr);
+        std::cerr << arr << std::endl;
+        std::cerr << brr << std::endl;
+
     }
 
     {
