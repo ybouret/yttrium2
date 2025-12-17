@@ -57,8 +57,8 @@ namespace Yttrium
     namespace Color
     {
         struct Conv
-        {
-            
+        { 
+
         };
     }
 
