@@ -146,10 +146,23 @@ namespace Yttrium
 
                 //! setup
                 /**
+                 \param sz  sz>0
+                 \param rk  rk<sz
+                 */
+                inline explicit Tile2D(const size_t   sz,
+                                       const size_t   rk) :
+                Subdivision(sz,rk),
+                Y_Tile2D_Ctor() {
+                    assert( isEmpty() );
+                }
+
+
+                //! setup
+                /**
                  \param member member
                  \param box    total area
                  */
-                inline explicit Tile2D(const Member &member,
+                inline explicit Tile2D(const Member  &member,
                                        const BoxType &box) :
                 Subdivision(member),
                 Y_Tile2D_Ctor() {
@@ -331,6 +344,18 @@ namespace Yttrium
                 tiles(n)
                 {
                     for(size_t i=0;i<n;++i) tiles.push(n,i,box);
+                }
+
+                //! setup empty, with abnormal leap
+                /**
+                 \param n   partition size
+                 */
+                inline explicit Tiles2D(const size_t n) :
+                Readable<Tile2D<T>>(),
+                Leap<V2D<T>>( V2D<T>(1,1), V2D<T>(0,0) ),
+                tiles(n)
+                {
+                    for(size_t i=0;i<n;++i) tiles.push(n,i);
                 }
 
                 //! cleanup
