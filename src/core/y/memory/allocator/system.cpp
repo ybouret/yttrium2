@@ -64,6 +64,7 @@ namespace Yttrium
         void System:: releaseBlock(void *const blockAddr, const size_t blockSize) noexcept
         {
             Y_Lock( access );
+            
             assert( 0 != blockAddr );
             assert( blockSize > 0  );
             assert( (blockSize <= allocated) || Die("corrupted allocation") );

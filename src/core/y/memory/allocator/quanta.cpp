@@ -43,7 +43,6 @@ namespace Yttrium
                 Quanta::Manager(blockShift),
                 Small::Guild(bytes)
                 {
-                    //std::cerr << "[+] " << bytes << std::endl;
                 }
 
                 inline virtual ~SmallManager() noexcept
@@ -90,7 +89,6 @@ namespace Yttrium
                 Quanta::Manager(blockShift),
                 ledger( Small::Ledger::Instance() )
                 {
-                    //std::cerr << "[+] " << bytes << std::endl;
                 }
 
                 inline virtual ~LargeManager() noexcept {}
@@ -202,6 +200,7 @@ namespace Yttrium
 
         void * Quanta:: acquireDyadic(const unsigned int blockShift)
         {
+            Y_Lock( access );
             assert(blockShift<=MaxLedgerShift);
             assert(blockShift==code->manager[blockShift]->shift);
             return code->manager[blockShift]->acquire();
@@ -209,6 +208,7 @@ namespace Yttrium
 
         void Quanta:: releaseDyadic(const unsigned int blockShift, void *const blockAddr) noexcept
         {
+            Y_Lock( access );
             assert(0!=blockAddr);
             assert(blockShift<=MaxLedgerShift);
             assert(blockShift==code->manager[blockShift]->shift);
@@ -225,6 +225,7 @@ namespace Yttrium
 
             unsigned blockShift = 0;
             blockSize = NextPowerOfTwo(blockSize,blockShift);
+            Y_Lock( access );
             return code->manager[blockShift]->acquire();
         }
 
@@ -233,6 +234,7 @@ namespace Yttrium
         {
             assert(0!=blockAddr);
             assert(IsPowerOfTwo(blockSize));
+            Y_Lock( access );
             code->manager[ ExactLog2(blockSize) ]->release(blockAddr);
         }
 
