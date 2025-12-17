@@ -4,6 +4,7 @@
 #include "y/utest/run.hpp"
 
 #include "y/random/park-miller.hpp"
+#include "y/pointer/auto.hpp"
 
 using namespace Yttrium;
 
@@ -41,6 +42,12 @@ namespace
                 void * blk = mgr.query(i);
                 mgr.store(blk,i);
             }
+
+            AutoPtr<String> ps = new String("Hello, World!");
+            *ps += " from ";
+            *ps += ctx.c_str();
+
+            { Y_Giant_Lock(); (std::cerr << ps << std::endl).flush(); }
 
         }
     };
