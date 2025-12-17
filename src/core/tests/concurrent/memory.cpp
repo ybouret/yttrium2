@@ -56,9 +56,7 @@ namespace
 Y_UTEST(concurrent_memory)
 {
     ParaMem mem;
-
-    Y_PRINTV(Memory::Small::Metrics::LimitObjectBytes);
-    Y_PRINTV(Memory::Small::Metrics::MediumLimitBytes);
+    
 
 
     Concurrent::Crew crew( Concurrent::Site::Default );
