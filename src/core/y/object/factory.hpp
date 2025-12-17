@@ -58,8 +58,7 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
-
-
+        
         void * acquireSingle(const size_t);                        //!< \return memory from blocks
         void   releaseSingle(void * const, const size_t) noexcept; //!< release memory from blocks
 
@@ -114,11 +113,10 @@ namespace Yttrium
         //
         //______________________________________________________________________
         const size_t * const    condensation; //!< [1..LimitObjectBytes]
-
+        Memory::Small::Blocks &  blocks;      //!< used for small
     public:
-        Memory::Small::Blocks &  blocks; //!< used for small
         Memory::Pooled &         pooled; //!< used for medium
-        Memory::Quanta &         quanta; //!< used for larger  
+        Memory::Quanta &         quanta; //!< used for larger
         Memory::System &         sysmem; //!< system memory when needed
     };
 }

@@ -1,5 +1,9 @@
 #include "y/concurrent/api/simd/crew.hpp"
+#include "y/object/factory.hpp"
+#include "y/memory/small/metrics.hpp"
 #include "y/utest/run.hpp"
+
+#include "y/random/park-miller.hpp"
 
 using namespace Yttrium;
 
@@ -30,6 +34,14 @@ namespace
         {
             { Y_Giant_Lock(); ( std::cerr << "in " << ctx << std::endl).flush() ; }
 
+            Random::ParkMiller ran;
+            Object::Factory   &mgr = Object::Factory::Instance();
+            for(size_t i=0;i<=10000;  i += ran.in<size_t>(1,10) )
+            {
+                void * blk = mgr.query(i);
+                mgr.store(blk,i);
+            }
+
         }
     };
 }
@@ -37,6 +49,10 @@ namespace
 Y_UTEST(concurrent_memory)
 {
     ParaMem mem;
+
+    Y_PRINTV(Memory::Small::Metrics::LimitObjectBytes);
+    Y_PRINTV(Memory::Small::Metrics::MediumLimitBytes);
+
 
     Concurrent::Crew crew( Concurrent::Site::Default );
     crew( *mem );
