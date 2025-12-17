@@ -198,7 +198,7 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
-                virtual bool isEmpty() const noexcept { return h<=0; }
+                inline virtual bool isEmpty() const noexcept { return h<=0; }
 
                 //______________________________________________________________
                 //
