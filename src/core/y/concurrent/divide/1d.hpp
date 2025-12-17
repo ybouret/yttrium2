@@ -5,9 +5,8 @@
 #define Y_Concurrent_Divide1D_Included 1
 
 #include "y/concurrent/member.hpp"
-#include "y/type/args.hpp"
 #include "y/container/cxx/series.hpp"
-#include "y/concurrent/divide/subdivision.hpp"
+#include "y/concurrent/type/subdivision.hpp"
 
 namespace Yttrium
 {
@@ -242,6 +241,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 //______________________________________________________________
                 Y_Args_Expose(T,Type);         //!< alias
                 static ConstType Offset1 = 1;  //!< alias
+                static ConstType Extent0 = 0;  //!< alias
 
                 //______________________________________________________________
                 //
@@ -250,12 +250,20 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 //
                 //______________________________________________________________
 
+                //! setup empty \param n partition size
+                inline explicit CxxTiles1D(const size_t n) :
+                Tiles1D<T>(n,Extent0,Offset1)
+                {
+                }
+
                 //! setup \param n parition size \param extent total burden
                 inline explicit CxxTiles1D(const size_t n,
                                            ConstType    extent) :
                 Tiles1D<T>(n,extent,Offset1)
                 {
                 }
+
+
 
                 //! cleanup
                 inline virtual ~CxxTiles1D() noexcept

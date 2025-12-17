@@ -1,5 +1,5 @@
 
-#include "y/concurrent/divide/resources.hpp"
+#include "y/concurrent/type/resources.hpp"
 #include "y/object/factory.hpp"
 #include "y/memory/allocator/dyadic.hpp"
 #include <cstring>

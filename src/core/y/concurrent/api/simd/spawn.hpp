@@ -4,7 +4,7 @@
 #define Y_Concurrent_Spawn_Included 1
 
 #include "y/concurrent/api/simd.hpp"
-#include "y/concurrent/divide/resources.hpp"
+#include "y/concurrent/type/resources.hpp"
 #include "y/pointer/arc.hpp"
 #include "y/type/temporary.hpp"
 

@@ -1,5 +1,5 @@
 
-#include "y/concurrent/divide/subdivision.hpp"
+#include "y/concurrent/type/subdivision.hpp"
 
 namespace Yttrium
 {
