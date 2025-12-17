@@ -50,5 +50,5 @@ Y_UTEST(fit:poly)
 Y_UTEST(statistics:average)
 Y_UTEST(statistics:descriptive)
 
-Y_UTEST(io:data-set)
+Y_UTEST(io:data_set)
 

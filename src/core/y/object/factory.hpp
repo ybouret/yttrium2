@@ -39,7 +39,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         static const char * const CallSign;                                                  //!< "Object::Factory"
-        static const Longevity    LifeTime = LifeTimeOf::ObjectFactory;                      //!< life time
+        static const Longevity    LifeTime          = LifeTimeOf::ObjectFactory;             //!< life time
         static const size_t       CondensationBytes = 4;                                     //!< decrease complexity
         static const unsigned     CondensationShift = IntegerLog2<CondensationBytes>::Value; //!< ensure power of two
 
@@ -104,7 +104,7 @@ namespace Yttrium
         // Interface
         //
         //______________________________________________________________________
-        virtual void * acquireBlock(size_t &); //!< [Allocator] \return heuristic block
+        virtual void * acquireBlock(size_t &);                           //!< [Allocator] \return heuristic block
         virtual void   releaseBlock(void * const,const size_t) noexcept; //!< [Allocator]
 
         //______________________________________________________________________
@@ -118,7 +118,7 @@ namespace Yttrium
     public:
         Memory::Small::Blocks &  blocks; //!< used for small
         Memory::Pooled &         pooled; //!< used for medium
-        Memory::Quanta &         quanta; //!< used for larger and special medium
+        Memory::Quanta &         quanta; //!< used for larger  
         Memory::System &         sysmem; //!< system memory when needed
     };
 }
