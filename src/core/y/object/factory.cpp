@@ -52,12 +52,14 @@ namespace Yttrium
 
     void * Object:: Factory:: acquireSingle(const size_t blockSize)
     {
+        Y_Lock(access);
         assert(blockSize>0);
         return blocks.acquire(blockSize);
     }
 
     void Object:: Factory:: releaseSingle(void * const blockAddr, const size_t blockSize) noexcept
     {
+        Y_Lock(access);
         assert(blockSize>0);
         assert(0!=blockAddr);
         blocks.release(blockAddr,blockSize);
