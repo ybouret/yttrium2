@@ -1,6 +1,3 @@
-
-
-
 #include "y/cameo/caddy.hpp"
 #include "y/utest/run.hpp"
 #include "y/system/rtti.hpp"

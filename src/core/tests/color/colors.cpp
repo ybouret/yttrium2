@@ -1,5 +1,4 @@
 #include "y/color/conv.hpp"
-#include "y/color/gray.hpp"
 #include "y/color/x11.hpp"
 
 #include "y/utest/run.hpp"

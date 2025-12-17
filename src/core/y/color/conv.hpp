@@ -6,6 +6,7 @@
 
 #include "y/color/rgb.hpp"
 #include "y/color/rgba.hpp"
+#include "y/color/gray.hpp"
 
 namespace Yttrium
 {
@@ -50,6 +51,15 @@ namespace Yttrium
             return this;
         }
 
+    }
+
+
+    namespace Color
+    {
+        struct Conv
+        {
+            
+        };
     }
 
 }

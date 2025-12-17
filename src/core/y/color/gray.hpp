@@ -5,6 +5,7 @@
 #define Y_Color_Gray_Included
 
 #include "y/core/setup.hpp"
+#include <cmath>
 
 namespace Yttrium
 {
@@ -27,12 +28,28 @@ namespace Yttrium
                 static const T Unit[256]; //!< precomputed
             };
 
+            static inline uint8_t UnitToByte(const float &x) noexcept
+            {
+                return (uint8_t) floorf(x*256.0f + 0.5f);;
+            }
 
-            
+            static inline uint8_t UnitToByte(const double &x) noexcept
+            {
+                return (uint8_t) floor(x*256.0 + 0.5);
+            }
+
+            static inline uint8_t UnitToByte(const long double &x) noexcept
+            {
+                return (uint8_t) floorl(x*256.0L + 0.5L);
+            }
+
+
+
+
             static const size_t  Count = 1 + 3*255; //!< r+g+b possilities
             static const uint8_t Table[Count];      //!< grey levels
 
-            //! \param r r \param g g \param b b \return grey level
+            //! \param r r \param g g \param b b \return 8-bits grey level
             static inline
             uint8_t ToByte(const uint8_t r, const uint8_t g, const uint8_t b) noexcept
             {
