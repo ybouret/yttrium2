@@ -106,6 +106,7 @@ Y_UTEST(concurrent:pipeline)
 Y_UTEST(concurrent:site)
 Y_UTEST(concurrent:invoke)
 Y_UTEST(concurrent:spawn)
+Y_UTEST(concurrent:memory)
 
 #memory
 Y_UTEST(memory:gc)

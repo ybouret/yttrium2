@@ -73,6 +73,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(concurrent_site);
     Y_UTEST(concurrent_invoke);
     Y_UTEST(concurrent_spawn);
+    Y_UTEST(concurrent_memory);
 
 
 
