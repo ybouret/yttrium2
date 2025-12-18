@@ -90,7 +90,9 @@ Y_UTEST(colors)
 
     for(size_t i=0;i<Color::X11::Count;++i)
     {
-        //const uint8_t u = Color::Conv::GrayScale( Color::X11Color::Table[i] );
+        const uint8_t u = Color::Conv::GrayScale<uint8_t>::From( Color::X11::Table[i] );
+        const float   f = Color::Conv::GrayScale<float>::From( Color::X11::Table[i] );
+        std::cerr << (int)u << "," << f << std::endl;
     }
 
 }
