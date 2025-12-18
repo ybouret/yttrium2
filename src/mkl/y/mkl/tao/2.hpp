@@ -5,6 +5,9 @@
 #define Y_MKL_Tao2_Included 1
 
 #include "y/mkl/tao/1.hpp"
+#include "y/concurrent/divide/1d.hpp"
+#include "y/concurrent/api/simd/spawn.hpp"
+#include "y/cameo/caddy.hpp"
 
 namespace Yttrium
 {
@@ -14,6 +17,12 @@ namespace Yttrium
 
         namespace Tao
         {
+
+            typedef Concurrent::Divide::Tile1D<size_t> Tile1D;
+            typedef Concurrent::Spawn<Tile1D>          Spawn1D;
+            
+
+
 
             //! matrix vector multiplication
             /**
@@ -37,9 +46,7 @@ namespace Yttrium
                     const typename MAT::Row &a_i = a[i];
                     xadd.ldz();
                     for(size_t j=nc;j>0;--j)
-                    {
                         xadd.addProd(a_i[j], rhs[j]);
-                    }
                     lhs[i] = xadd.sum();
                 }
             }
@@ -50,5 +57,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_MKL_Tao2_Included
 

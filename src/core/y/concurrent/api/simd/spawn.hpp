@@ -63,6 +63,20 @@ namespace Yttrium
 
             }
 
+            //! setup one (empty) tile per processor context
+            /**
+             \param proc shared processor
+             */
+            inline explicit Spawn(const Processor &proc) :
+            Tiles(proc->size()),
+            call(0),
+            args(0),
+            processor(proc),
+            kernel( me(), &Spawn::compute)
+            {
+
+            }
+
             //! cleanup
             inline virtual ~Spawn() noexcept {}
 
