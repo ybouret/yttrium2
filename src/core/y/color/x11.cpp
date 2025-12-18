@@ -5,12 +5,12 @@ namespace Yttrium
 {
     namespace Color
     {
-        const X11Color X11Color::Table[] =
+        const X11  X11::Table[] =
         {
 #include "x11/incl.hxx"
         };
 
-        const size_t X11Color:: Count = sizeof(X11Color::Table)/sizeof(X11Color::Table[0]);
+        const size_t X11 :: Count = sizeof(Table)/sizeof(Table[0]);
     }
 }
 

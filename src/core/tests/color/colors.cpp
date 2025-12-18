@@ -86,11 +86,11 @@ Y_UTEST(colors)
         std::cerr << "lmax=" << Hexadecimal(lmax) << std::endl;
     }
 
-    std::cerr << "#X11 = " << Color::X11Color::Count << std::endl;
+    std::cerr << "#X11 = " << Color::X11::Count << std::endl;
 
-    for(size_t i=0;i<Color::X11Color::Count;++i)
+    for(size_t i=0;i<Color::X11::Count;++i)
     {
-        
+        //const uint8_t u = Color::Conv::GrayScale( Color::X11Color::Table[i] );
     }
 
 }
