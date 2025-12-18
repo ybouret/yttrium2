@@ -88,6 +88,10 @@ Y_UTEST(colors)
 
     std::cerr << "#X11 = " << Color::X11Color::Count << std::endl;
 
+    for(size_t i=0;i<Color::X11Color::Count;++i)
+    {
+        
+    }
 
 }
 Y_UDONE()

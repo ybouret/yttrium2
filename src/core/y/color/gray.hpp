@@ -61,9 +61,23 @@ namespace Yttrium
                 return ByteTo<T>::Unit[ ToByte(r,g,b) ];
             }
 
+            template <typename T> struct To
+            {
+                static inline T Get(const uint8_t r, const uint8_t g, const uint8_t b) noexcept
+                {
+                    return ToUnit<T>(r,g,b);
+                }
+            };
 
         };
 
+        template <> struct Gray::To<uint8_t>
+        {
+            static inline uint8_t Get(const uint8_t r, const uint8_t g, const uint8_t b) noexcept
+            {
+                return ToByte(r,g,b);
+            }
+        };
     }
 }
 

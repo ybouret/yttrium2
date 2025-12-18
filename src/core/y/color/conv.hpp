@@ -58,7 +58,17 @@ namespace Yttrium
     {
         struct Conv
         { 
+            template <typename T> static inline
+            T GrayScale(const uint8_t r, const uint8_t g, const uint8_t b) noexcept
+            {
+                return Gray::To<T>::Get(r,g,b);
+            }
 
+            template <typename T, typename COLOR> static inline
+            T GrayScale(const COLOR &c) noexcept
+            {
+                return Gray::To<T>::Get(c.r,c.g,c.b);
+            }
         };
     }
 
