@@ -95,6 +95,9 @@ namespace Yttrium
                 (*processor)(kernel);
             }
 
+            
+
+
             //! host.meth(context.sync, self[context.indx]) over each tile
             /**
              \param host object
@@ -103,7 +106,7 @@ namespace Yttrium
             template <typename HOST, typename METH> inline
             void operator()(HOST &host, METH meth)
             {
-                Wrapper0<HOST,METH> wrapper = { host, meth };
+                CxxWrapper0<HOST,METH> wrapper = { host, meth };
                 (*this)(wrapper);
             }
 
@@ -117,7 +120,7 @@ namespace Yttrium
             template <typename HOST, typename METH, typename ARG1> inline
             void operator()(HOST &host, METH meth, ARG1 &arg1)
             {
-                Wrapper1<HOST,METH,ARG1> wrapper = { host, meth, arg1 };
+                CxxWrapper1<HOST,METH,ARG1> wrapper = { host, meth, arg1 };
                 (*this)(wrapper);
             }
 
@@ -131,7 +134,7 @@ namespace Yttrium
             template <typename HOST, typename METH, typename ARG1, typename ARG2> inline
             void operator()(HOST &host, METH meth, ARG1 &arg1, ARG2 &arg2)
             {
-                Wrapper2<HOST,METH,ARG1,ARG2> wrapper = { host, meth, arg1, arg2 };
+                CxxWrapper2<HOST,METH,ARG1,ARG2> wrapper = { host, meth, arg1, arg2 };
                 (*this)(wrapper);
             }
 
@@ -146,7 +149,7 @@ namespace Yttrium
             template <typename HOST, typename METH, typename ARG1, typename ARG2, typename ARG3> inline
             void operator()(HOST &host, METH meth, ARG1 &arg1, ARG2 &arg2, ARG3 &arg3)
             {
-                Wrapper2<HOST,METH,ARG1,ARG2> wrapper = { host, meth, arg1, arg2, arg3 };
+                CxxWrapper3<HOST,METH,ARG1,ARG2,ARG3> wrapper = { host, meth, arg1, arg2, arg3 };
                 (*this)(wrapper);
             }
 
@@ -170,6 +173,24 @@ namespace Yttrium
             void acquireLocalMemoryFor()
             {
                 acquireLocalMemory( sizeof(T) );
+            }
+
+            //! link a node to each tile
+            /**
+             \param node first node
+             */
+            template <typename NODE> inline
+            void link(NODE *node) noexcept
+            {
+                assert(node);
+                acquireLocalMemory( sizeof(NODE*) );
+                const size_t n = this->size();
+                for(size_t i=1;i<=n;++i,node=node->next)
+                {
+                    assert(node);
+                    (*this)[i].template as<NODE *>() = node;
+                }
+
             }
 
 
@@ -208,7 +229,7 @@ namespace Yttrium
 
             //! alias to wrap host+method call
             template <typename HOST, typename METH>
-            struct Wrapper0
+            struct CxxWrapper0
             {
                 HOST & host; //!< persistent host
                 METH   meth; //!< host's method
@@ -223,7 +244,7 @@ namespace Yttrium
 
             //! alias to wrap host+method call with one arg
             template <typename HOST, typename METH, typename ARG1>
-            struct Wrapper1
+            struct CxxWrapper1
             {
                 HOST & host; //!< persistent host
                 METH   meth; //!< host's method
@@ -239,7 +260,7 @@ namespace Yttrium
 
             //! alias to wrap host+method call with two args
             template <typename HOST, typename METH, typename ARG1, typename ARG2>
-            struct Wrapper2
+            struct CxxWrapper2
             {
                 HOST & host; //!< persistent host
                 METH   meth; //!< host's method
@@ -255,7 +276,7 @@ namespace Yttrium
 
             //! alias to wrap host+method call with three args
             template <typename HOST, typename METH, typename ARG1, typename ARG2, typename ARG3>
-            struct Wrapper3
+            struct CxxWrapper3
             {
                 HOST & host; //!< persistent host
                 METH   meth; //!< host's method

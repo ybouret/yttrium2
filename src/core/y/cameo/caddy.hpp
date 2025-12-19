@@ -65,11 +65,12 @@ namespace Yttrium
                 for(AddType *node=head;node;node=node->next) node->ldz();
             }
 
-            //! prepare list \param n target
-            inline void adjust(const size_t n)
+            //! prepare list \param n target \return *this
+            inline Caddy & adjust(const size_t n)
             {
                 while(size>n) pool.store( popTail() )->ldz();
                 while(size<n) pushTail( query() );
+                return *this;
             }
 
             //__________________________________________________________________

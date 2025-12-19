@@ -37,6 +37,8 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
+
+
         protected:
 
             //! ensure each tile has enough ZEROED bytes
@@ -71,6 +73,8 @@ namespace Yttrium
                 }
                 release();
             }
+
+            
 
 
         public:
