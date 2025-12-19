@@ -28,23 +28,40 @@ namespace Yttrium
             {
             public:
                 typedef Cameo::Addition<T> XAddition;
+                typedef XAddition *        XAddPtr;
 
-                inline explicit LinearBroker(const LinearEngine &lp) :
-                engine(lp),
+                inline explicit LinearBroker(const LinearEngine &m) :
+                engine(m),
                 caddy()
                 {
-                    caddy.adjust(engine->size());
-                    engine->acquireLocalMemory(sizeof(void*));
-                    XAddition *node = caddy.head;
-                    
+                    setup();
+
                 }
 
-                virtual ~LinearBroker() noexcept;
+                inline virtual ~LinearBroker() noexcept {}
+
+                inline XAddition & xadd() noexcept
+                {
+                    assert(caddy.size>0);
+                    return *caddy.head;
+                }
 
             private:
                 Y_Disable_Copy_And_Assign(LinearBroker);
                 LinearEngine    engine;
                 Cameo::Caddy<T> caddy;
+
+                inline void setup()
+                {
+                    const size_t n = engine->size();
+                    caddy.adjust(n);
+                    engine->acquireLocalMemory(sizeof(void*));
+                    XAddition *node = caddy.head;
+                    for(size_t i=1;i<=n;++i,node=node->next)
+                    {
+                        (*engine)[i].template as<XAddPtr>() = node;
+                    }
+                }
             };
             
 

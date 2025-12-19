@@ -311,7 +311,7 @@ namespace Yttrium
             //__________________________________________________________________
             template <typename T>
             class Tiles2D :
-            public Readable< Tile2D<T> >,
+            public Writable< Tile2D<T> >,
             public Leap< V2D<T> >
             {
             public:
@@ -324,6 +324,8 @@ namespace Yttrium
                 typedef Tile2D<T>              Tile;      //!< alias
                 typedef typename Tile::BoxType BoxType;   //!< alias
                 typedef const BoxType &        Parameter; //!< alias
+                typedef Writable<Tile2D<T>>    BaseType;  //!< alias
+
 
                 //______________________________________________________________
                 //
@@ -339,7 +341,7 @@ namespace Yttrium
                  */
                 inline explicit Tiles2D(const size_t   n,
                                         const BoxType &box) :
-                Readable<Tile2D<T>>(),
+                BaseType(),
                 Leap<V2D<T>>(box),
                 tiles(n)
                 {
@@ -351,7 +353,7 @@ namespace Yttrium
                  \param n   partition size
                  */
                 inline explicit Tiles2D(const size_t n) :
-                Readable<Tile2D<T>>(),
+                BaseType(),
                 Leap<V2D<T>>( V2D<T>(1,1), V2D<T>(0,0) ),
                 tiles(n)
                 {

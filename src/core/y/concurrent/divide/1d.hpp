@@ -157,7 +157,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
             //
             //__________________________________________________________________
             template <typename T>
-            class Tiles1D : public Readable< Tile1D<T> >
+            class Tiles1D : public Writable< Tile1D<T> >
             {
             public:
                 //______________________________________________________________
@@ -169,7 +169,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 Y_Args_Expose(T,Type);               //!< alias
                 typedef Tile1D<T>      Tile;         //!< alias
                 typedef ConstType      Parameter;    //!< alias
-                typedef Readable<Tile> ReadableType; //!< alias
+                typedef Writable<Tile> BaseType;    //!< alias
 
                 //______________________________________________________________
                 //
@@ -187,7 +187,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 inline explicit Tiles1D(const size_t n,
                                         ConstType    extent,
                                         ConstType    iFirst) :
-                ReadableType(),
+                BaseType(),
                 tiles(n)
                 {
                     for(size_t i=0;i<n;++i)
@@ -198,7 +198,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 inline virtual ~Tiles1D() noexcept {}
 
                 //! duplicate \param t another tile
-                inline Tiles1D(const Tiles1D &t) : ReadableType(), tiles(t) { }
+                inline Tiles1D(const Tiles1D &t) : BaseType(), tiles(t) { }
 
                 //______________________________________________________________
                 //
