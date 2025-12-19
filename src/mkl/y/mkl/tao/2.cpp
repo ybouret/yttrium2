@@ -9,16 +9,17 @@ namespace Yttrium
         namespace Tao
         {
 
-            LinearBroker:: LinearBroker(const LinearEngine &lp) :
-            engine(lp)
-            {
-                engine->acquireLocalMemory( sizeof(void*) );
-            }
+            /*
+             LinearBroker:: LinearBroker(const LinearEngine &lp) :
+             engine(lp)
+             {
+             engine->acquireLocalMemory( sizeof(void*) );
+             }
 
-            LinearBroker:: ~LinearBroker() noexcept
-            {
-            }
-
+             LinearBroker:: ~LinearBroker() noexcept
+             {
+             }
+             */
 
         }
     }

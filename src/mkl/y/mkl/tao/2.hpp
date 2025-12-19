@@ -23,19 +23,29 @@ namespace Yttrium
             typedef Concurrent::Spawn<Tiles1D>             LinearSpawn;
             typedef LinearSpawn::Pointer                   LinearEngine;
 
+            template <typename T>
             class LinearBroker
             {
             public:
-                explicit LinearBroker(const LinearEngine &);
-                virtual ~LinearBroker() noexcept;
+                typedef Cameo::Addition<T> XAddition;
 
-            protected:
-                LinearEngine engine;
+                inline explicit LinearBroker(const LinearEngine &lp) :
+                engine(lp),
+                caddy()
+                {
+                    caddy.adjust(engine->size());
+                    engine->acquireLocalMemory(sizeof(void*));
+                    XAddition *node = caddy.head;
+                    
+                }
+
+                virtual ~LinearBroker() noexcept;
 
             private:
                 Y_Disable_Copy_And_Assign(LinearBroker);
+                LinearEngine    engine;
+                Cameo::Caddy<T> caddy;
             };
-
             
 
 

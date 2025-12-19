@@ -63,6 +63,8 @@ namespace Yttrium
             void * const entry; //!< local memory
             const size_t bytes; //!< local bytes
 
+            
+
         private:
             Y_Disable_Assign(Subdivision); //!< discarding
         };

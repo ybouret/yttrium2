@@ -23,6 +23,7 @@ Y_UTEST(root:zfind)
 Y_UTEST(root:profile)
 
 Y_UTEST(tao:1)
+Y_UTEST(tao:2)
 
 Y_UTEST(opt:parabolic)
 Y_UTEST(opt:minimize)
