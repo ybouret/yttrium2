@@ -7,6 +7,7 @@
 #include "y/cameo/addition.hpp"
 #include "y/core/linked/list/cxx.hpp"
 #include "y/core/linked/pool/cxx.hpp"
+#include "y/pointer/arc.hpp"
 
 namespace Yttrium
 {
@@ -22,7 +23,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename T>
-        class Caddy : public CxxListOf< Addition<T> >
+        class Caddy : public CountedObject, public CxxListOf< Addition<T> >
         {
         public:
             //__________________________________________________________________
@@ -34,6 +35,8 @@ namespace Yttrium
             typedef Addition<T>        AddType;  //!< alias
             typedef CxxListOf<AddType> ListType; //!< alias
             typedef CxxPoolOf<AddType> PoolType; //!< alias
+            typedef ArcPtr< Caddy<T> > Pointer;  //!< alias
+
             using ListType::size;
             using ListType::head;
             using ListType::popTail;
@@ -47,7 +50,7 @@ namespace Yttrium
             //__________________________________________________________________
 
             //! setup empty
-            inline explicit Caddy() noexcept : ListType(), pool() {}
+            inline explicit Caddy() noexcept : CountedObject(), ListType(), pool() {}
 
             //! cleanup
             inline virtual ~Caddy() noexcept {}

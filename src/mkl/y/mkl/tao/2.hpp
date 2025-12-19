@@ -18,9 +18,26 @@ namespace Yttrium
         namespace Tao
         {
 
-            typedef Concurrent::Divide::Tile1D<size_t> Tile1D;
-            typedef Concurrent::Spawn<Tile1D>          Spawn1D;
+            typedef Concurrent::Divide::Tile1D<size_t>     Tile1D;
+            typedef Concurrent::Divide::CxxTiles1D<size_t> Tiles1D;
+            typedef Concurrent::Spawn<Tiles1D>             LinearSpawn;
+            typedef LinearSpawn::Pointer                   LinearEngine;
+
+            class LinearBroker
+            {
+            public:
+                explicit LinearBroker(const LinearEngine &);
+                virtual ~LinearBroker() noexcept;
+
+            protected:
+                LinearEngine engine;
+
+            private:
+                Y_Disable_Copy_And_Assign(LinearBroker);
+            };
+
             
+
 
 
 

@@ -36,6 +36,7 @@ namespace Yttrium
             typedef TILES    Tiles;                      //!< alias
             typedef typename Tiles::Parameter Parameter; //!< alias
             typedef typename Tiles::Tile      Tile;      //!< alias
+            typedef ArcPtr< Spawn<TILES> >    Pointer;   //!< alias
 
             //! generic routine prototype
             typedef void (*Routine)(Lockable & , const Tile & , void * const);
