@@ -95,7 +95,30 @@ namespace Yttrium
                 (*processor)(kernel);
             }
 
-            
+
+
+            template <typename CODE, typename ARG1> inline
+            void run(CODE &code, ARG1 &arg1)
+            {
+                Stub1<CODE,ARG1> instr = { code, arg1 };
+                (*this)(instr);
+            }
+
+            template <typename CODE, typename ARG1, typename ARG2> inline
+            void run(CODE &code, ARG1 &arg1, ARG2 &arg2)
+            {
+                Stub2<CODE,ARG1,ARG2> instr = { code, arg1, arg2 };
+                (*this)(instr);
+            }
+
+            template <typename CODE, typename ARG1, typename ARG2, typename ARG3> inline
+            void run(CODE &code, ARG1 &arg1, ARG2 &arg2, ARG3 &arg3)
+            {
+                Stub3<CODE,ARG1,ARG2,ARG3> instr = { code, arg1, arg2, arg3 };
+                (*this)(instr);
+            }
+
+
 
 
             //! host.meth(context.sync, self[context.indx]) over each tile
@@ -226,6 +249,41 @@ namespace Yttrium
                 CODE & code = *(CODE*)(args);
                 code(sync,tile);
             }
+
+            template <typename CODE, typename ARG1>
+            struct Stub1
+            {
+                CODE &code;
+                ARG1 &arg1;
+                inline void operator()(Lockable &sync, const Tile &tile) {
+                    code(sync,tile,arg1);
+                }
+            };
+
+            template <typename CODE, typename ARG1, typename ARG2>
+            struct Stub2
+            {
+                CODE &code;
+                ARG1 &arg1;
+                ARG2 &arg2;
+
+                inline void operator()(Lockable &sync, const Tile &tile) {
+                    code(sync,tile,arg1,arg2);
+                }
+            };
+
+            template <typename CODE, typename ARG1, typename ARG2, typename ARG3>
+            struct Stub3
+            {
+                CODE &code;
+                ARG1 &arg1;
+                ARG2 &arg2;
+                ARG3 &arg3;
+
+                inline void operator()(Lockable &sync, const Tile &tile) {
+                    code(sync,tile,arg1,arg2,arg3);
+                }
+            };
 
             //! alias to wrap host+method call
             template <typename HOST, typename METH>

@@ -50,10 +50,6 @@ namespace Yttrium
             };
             
 
-            namespace Hub
-            {
-                
-            }
 
 
             //! matrix vector multiplication
@@ -82,6 +78,39 @@ namespace Yttrium
                     lhs[i] = xadd.sum();
                 }
             }
+
+            namespace Hub
+            {
+                template <
+                typename T,
+                typename LHS,
+                typename MAT,
+                typename RHS
+                >
+                inline void Mul(Lockable  &,
+                                Tile1D    &tile,
+                                LHS       &lhs,
+                                const MAT &a,
+                                RHS       &rhs)
+                {
+                    assert(0!=tile.entry);
+
+                }
+            }
+
+            template <
+            typename T,
+            typename LHS,
+            typename MAT,
+            typename RHS
+            > inline
+            void Mul(LinearBroker<T> &broker, LHS &lhs, const MAT &a, RHS &rhs)
+            {
+                
+            }
+
+
+
 
         }
 
