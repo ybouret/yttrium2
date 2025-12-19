@@ -24,7 +24,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename TILES>
-        class Spawn : public TILES, public Resources
+        class Spawn : public CountedObject, public TILES, public Resources
         {
         public:
             //__________________________________________________________________
@@ -54,6 +54,7 @@ namespace Yttrium
              */
             inline explicit Spawn(const Processor &proc,
                                   Parameter        data) :
+            CountedObject(),
             Tiles(proc->size(),data),
             call(0),
             args(0),
@@ -68,6 +69,7 @@ namespace Yttrium
              \param proc shared processor
              */
             inline explicit Spawn(const Processor &proc) :
+            CountedObject(),
             Tiles(proc->size()),
             call(0),
             args(0),
