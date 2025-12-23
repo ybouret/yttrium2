@@ -234,6 +234,7 @@ namespace Yttrium
                 }
             }
 
+            //! unlink previously linked nodes
             inline void unlink() noexcept
             {
                 const size_t n = this->size();
