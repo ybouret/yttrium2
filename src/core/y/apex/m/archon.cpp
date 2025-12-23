@@ -57,8 +57,10 @@ namespace Yttrium
 
         void * Archon:: query(const unsigned shift)
         {
+            if(shift<MinShift||shift>MaxShift)
+                throw Specific::Exception(CallSign,"invalid shift=%u",shift);
+
             Y_Lock(access);
-            if(shift<MinShift||shift>MaxShift) throw Specific::Exception(CallSign,"invalid shift=%u",shift);
             Slot &slot = slots[shift];
             if( slot.size>0 )
             {
@@ -87,15 +89,13 @@ namespace Yttrium
 
 
         const char * const Archon:: CallSign = "Apex::Archon";
-        const unsigned Archon::MinShift;
-        const unsigned Archon::MaxShift;
+        const unsigned     Archon:: MinShift;
+        const unsigned     Archon:: MaxShift;
 
         namespace
         {
             static const size_t ArchonBytes_ = sizeof(Archon::Slot) * Archon::NumShifts;
             void *              ArchonSlots_[ Alignment::WordsGEQ<ArchonBytes_>::Count ];
-
-            
         }
 
         Archon:: Archon() :

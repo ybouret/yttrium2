@@ -55,7 +55,7 @@ namespace Yttrium
             Rational(const Fraction &);                //!< setup
             Rational(const Integer &,const Natural &); //!< setup
             Rational(const integer_t);                 //!< setup
-            Rational(Random::Bits &,const size_t, const size_t); //!< random
+            Rational(Random::Bits &,const size_t, const size_t); //!< random numer bits/denom bits
             Rational(const SignType, const Natural &, const Natural &); //!< numer(s,n), denom(d)
 
             Rational & operator=(const Natural &); //!< \return *this

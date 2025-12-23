@@ -5,6 +5,8 @@
 
 #include "y/random/park-miller.hpp"
 #include "y/pointer/auto.hpp"
+#include "y/apex/rational.hpp"
+#include "y/container/sequence/vector.hpp"
 
 using namespace Yttrium;
 
@@ -43,11 +45,22 @@ namespace
                 mgr.store(blk,i);
             }
 
-            AutoPtr<String> ps = new String("Hello, World!");
-            *ps += " from ";
-            *ps += ctx.c_str();
+            {
+                AutoPtr<String> ps = new String("Hello, World!");
+                *ps += " from ";
+                *ps += ctx.c_str();
 
-            { Y_Giant_Lock(); (std::cerr << ps << std::endl).flush(); }
+                { Y_Giant_Lock(); (std::cerr << ps << std::endl).flush(); }
+
+            }
+
+            Vector<apq> qvec;
+            for(size_t i=5+ran.leq(5);i>0;--i)
+            {
+                qvec << apq(ran,ran.in<size_t>(1,10),ran.in<size_t>(1,10));
+            }
+            { Y_Giant_Lock(); (std::cerr << ctx << " : " << qvec << std::endl).flush(); }
+
 
         }
     };
