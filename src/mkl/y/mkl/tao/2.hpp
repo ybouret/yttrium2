@@ -24,7 +24,7 @@ namespace Yttrium
             typedef LinearSpawn::Pointer                   LinearEngine;
 
             template <typename T>
-            class LinearBroker
+            class LinearBroker : public Ingress< LinearSpawn >
             {
             public:
                 typedef Cameo::Addition<T> XAddition;
@@ -39,17 +39,53 @@ namespace Yttrium
 
                 inline virtual ~LinearBroker() noexcept {}
 
+                inline void relink() noexcept
+                {
+                    engine->link( caddy.head );
+                }
 
+                XAddition & xadd() noexcept
+                {
+                    assert( caddy.head );
+                    return *caddy.head;
+                }
 
 
             private:
                 Y_Disable_Copy_And_Assign(LinearBroker);
+                ConstInterface & locus() const noexcept { return *engine; }
                 LinearEngine    engine;
                 Cameo::Caddy<T> caddy;
 
             };
             
 
+            namespace Hub
+            {
+                template <
+                typename T,
+                typename LHS,
+                typename MAT,
+                typename RHS
+                > inline
+                void MulProc(Cameo::Addition<T> & xadd,
+                             LHS                & lhs,
+                             const MAT          & a,
+                             RHS                & rhs,
+                             const size_t         rlo,
+                             const size_t         rhi)
+                {
+                    const size_t nc = a.cols; assert(rhs.size()==nc);
+                    for(size_t i=rhi;i>=rlo;--i)
+                    {
+                        const typename MAT::Row &a_i = a[i];
+                        xadd.ldz();
+                        for(size_t j=nc;j>0;--j)
+                            xadd.addProd(a_i[j], rhs[j]);
+                        lhs[i] = xadd.sum();
+                    }
+                }
+            }
 
 
             //! matrix vector multiplication
@@ -67,16 +103,9 @@ namespace Yttrium
             > inline
             void Mul(Cameo::Addition<T> &xadd, LHS &lhs, const MAT &a, RHS &rhs)
             {
-                const size_t nr = a.rows; assert(lhs.size()==nr);
-                const size_t nc = a.cols; assert(rhs.size()==nc);
-                for(size_t i=nr;i>0;--i)
-                {
-                    const typename MAT::Row &a_i = a[i];
-                    xadd.ldz();
-                    for(size_t j=nc;j>0;--j)
-                        xadd.addProd(a_i[j], rhs[j]);
-                    lhs[i] = xadd.sum();
-                }
+                assert(a.rows==lhs.size());
+                assert(a.cols==rhs.size());
+                Hub::MulProc(xadd, lhs, a, rhs, 1, a.rows);
             }
 
             namespace Hub
@@ -94,7 +123,10 @@ namespace Yttrium
                                 RHS       &rhs)
                 {
                     assert(0!=tile.entry);
-
+                    assert(tile.offset>0);
+                    { Y_Giant_Lock(); std::cerr << "Mul in " << tile << std::endl; }
+                    Cameo::Addition<T> & xadd = *tile.as< Cameo::Addition<T> * >();
+                    Hub::MulProc(xadd, lhs, a, rhs, tile.offset, tile.utmost );
                 }
             }
 
@@ -106,7 +138,8 @@ namespace Yttrium
             > inline
             void Mul(LinearBroker<T> &broker, LHS &lhs, const MAT &a, RHS &rhs)
             {
-                
+                broker->remap(a.rows);
+                broker->run(Hub::Mul<T,LHS,MAT,RHS>,lhs,a,rhs);
             }
 
 

@@ -39,7 +39,7 @@ namespace Yttrium
             typedef ArcPtr< Spawn<TILES> >    Pointer;   //!< alias
 
             //! generic routine prototype
-            typedef void (*Routine)(Lockable & , const Tile & , void * const);
+            typedef void (*Routine)(Lockable & , Tile & , void * const);
 
             //__________________________________________________________________
             //
@@ -176,6 +176,7 @@ namespace Yttrium
                 (*this)(wrapper);
             }
 
+        protected:
 
             //! acquire local memory for each tile \param bytes minimal bytes
             /** memory is always zeroed */
@@ -198,6 +199,7 @@ namespace Yttrium
                 acquireLocalMemory( sizeof(T) );
             }
 
+        public:
             //! link a node to each tile
             /**
              \param node first node
@@ -213,8 +215,17 @@ namespace Yttrium
                     assert(node);
                     (*this)[i].template as<NODE *>() = node;
                 }
-
             }
+
+            inline void unlink() noexcept
+            {
+                const size_t n = this->size();
+                for(size_t i=1;i<=n;++i)
+                {
+                    (*this)[i].template as<void *>() = 0;
+                }
+            }
+
 
 
         private:
@@ -232,7 +243,7 @@ namespace Yttrium
             {
                 assert(0!=call);
                 assert(0!=args);
-                const Tile & tile  = (*this)[context.indx];
+                Tile & tile  = (*this)[context.indx];
                 call(context.sync,tile,args);
             }
 
@@ -243,7 +254,7 @@ namespace Yttrium
              \param args address of CODE
              */
             template <typename CODE> static inline
-            void Stub(Lockable &sync, const Tile &tile, void * const args)
+            void Stub(Lockable &sync, Tile &tile, void * const args)
             {
                 assert(0!=args);
                 CODE & code = *(CODE*)(args);
@@ -255,7 +266,7 @@ namespace Yttrium
             {
                 CODE &code;
                 ARG1 &arg1;
-                inline void operator()(Lockable &sync, const Tile &tile) {
+                inline void operator()(Lockable &sync, Tile &tile) {
                     code(sync,tile,arg1);
                 }
             };
@@ -267,7 +278,7 @@ namespace Yttrium
                 ARG1 &arg1;
                 ARG2 &arg2;
 
-                inline void operator()(Lockable &sync, const Tile &tile) {
+                inline void operator()(Lockable &sync, Tile &tile) {
                     code(sync,tile,arg1,arg2);
                 }
             };
@@ -280,7 +291,7 @@ namespace Yttrium
                 ARG2 &arg2;
                 ARG3 &arg3;
 
-                inline void operator()(Lockable &sync, const Tile &tile) {
+                inline void operator()(Lockable &sync, Tile &tile) {
                     code(sync,tile,arg1,arg2,arg3);
                 }
             };
@@ -293,7 +304,7 @@ namespace Yttrium
                 METH   meth; //!< host's method
 
                 //! \param sync from context \param tile one of the tile 
-                inline void operator()(Lockable &sync, const Tile &tile )
+                inline void operator()(Lockable &sync, Tile &tile )
                 {
                     (host.*meth)(sync,tile);
                 }
@@ -309,7 +320,7 @@ namespace Yttrium
                 ARG1 & arg1; //!< method extra argument
 
                 //! \param sync from context \param tile one of the tile
-                inline void operator()(Lockable &sync, const Tile &tile )
+                inline void operator()(Lockable &sync, Tile &tile )
                 {
                     (host.*meth)(sync,tile,arg1);
                 }
@@ -326,7 +337,7 @@ namespace Yttrium
                 ARG2 & arg2; //!< method extra argument
 
                 //! \param sync from context \param tile one of the tile
-                inline void operator()(Lockable &sync, const Tile &tile )
+                inline void operator()(Lockable &sync, Tile &tile )
                 {
                     (host.*meth)(sync,tile,arg1,arg2);
                 }
@@ -343,7 +354,7 @@ namespace Yttrium
                 ARG3 & arg3; //!< method extra argument
 
                 //! \param sync from context \param tile one of the tile
-                inline void operator()(Lockable &sync, const Tile &tile )
+                inline void operator()(Lockable &sync, Tile &tile )
                 {
                     (host.*meth)(sync,tile,arg1,arg2,arg3);
                 }

@@ -79,7 +79,30 @@ namespace
         Y_Disable_Copy_And_Assign(Apply);
     };
 
+
+    class MySpawn : public Concurrent::Spawn<In1D>
+    {
+    public:
+        inline explicit MySpawn(const Concurrent::Processor &p, const size_t extent) :
+        Concurrent::Spawn<In1D>(p,extent)
+        {
+        }
+
+        inline virtual ~MySpawn() noexcept
+        {
+        }
+
+        void create(const size_t bytes)
+        {
+            acquireLocalMemory(bytes);
+        }
+
+    private:
+        Y_Disable_Copy_And_Assign(MySpawn);
+    };
 }
+
+
 
 
 Y_UTEST(concurrent_spawn)
@@ -95,7 +118,7 @@ Y_UTEST(concurrent_spawn)
 
 
     {
-        Concurrent::Spawn<In1D> spawn(st,value);
+        MySpawn spawn(st,value);
         spawn(DoSomething);
         spawn(stuff);
         spawn(apply, & Apply::call1D );
@@ -104,8 +127,8 @@ Y_UTEST(concurrent_spawn)
     std::cerr << std::endl;
 
     {
-        Concurrent::Spawn<In1D> spawn(mt,value);
-        spawn.acquireLocalMemory(100);
+        MySpawn spawn(mt,value);
+        spawn.create(100);
         spawn(DoSomething);
         spawn(stuff);
         spawn(apply, & Apply::call1D );
