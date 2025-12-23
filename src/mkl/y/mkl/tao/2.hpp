@@ -41,8 +41,7 @@ namespace Yttrium
                 // definitions
                 //
                 //______________________________________________________________
-                typedef Cameo::Addition<T> XAddition;
-                typedef XAddition *        XAddPtr;
+                typedef Cameo::Addition<T> XAddition; //!< alias
 
 
                 //______________________________________________________________
@@ -51,13 +50,16 @@ namespace Yttrium
                 // C++
                 //
                 //______________________________________________________________
-                inline explicit LinearBroker(const LinearEngine &m) :
-                engine(m),
+
+                //! setup from shared linear spawn \param eng shared engine
+                inline explicit LinearBroker(const LinearEngine &eng) :
+                engine(eng),
                 caddy()
                 {
                     engine->link( caddy.adjust(engine->size()).head );
                 }
 
+                //! cleanup
                 inline virtual ~LinearBroker() noexcept {}
 
                 //______________________________________________________________
@@ -74,7 +76,8 @@ namespace Yttrium
                  }
                  */
 
-                XAddition & xadd() noexcept
+                //! \return first XAddition
+                inline XAddition & xadd() noexcept
                 {
                     assert( caddy.head );
                     return *caddy.head;
@@ -82,16 +85,32 @@ namespace Yttrium
 
 
             private:
-                Y_Disable_Copy_And_Assign(LinearBroker);
-                ConstInterface & locus() const noexcept { return *engine; }
+                Y_Disable_Copy_And_Assign(LinearBroker); //!< disable
 
-                LinearEngine     engine;
-                Cameo::Caddy<T>  caddy;
+                inline virtual ConstInterface & locus() const noexcept { return *engine; }
+
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                LinearEngine     engine; //!< shared engine
+                Cameo::Caddy<T>  caddy;  //!< xadditions
             };
 
 
             namespace Hub
             {
+                //! partial operations
+                /**
+                 \param xadd perform additions
+                 \param lhs  target vector
+                 \param a    matrix
+                 \param rhs  source vector
+                 \param rlo  lower row index
+                 \param rup  upper row index
+                 */
                 template <
                 typename T,
                 typename LHS,
@@ -103,10 +122,10 @@ namespace Yttrium
                              const MAT          & a,
                              RHS                & rhs,
                              const size_t         rlo,
-                             const size_t         rhi)
+                             const size_t         rup)
                 {
                     const size_t nc = a.cols; assert(rhs.size()==nc);
-                    for(size_t i=rhi;i>=rlo;--i)
+                    for(size_t i=rup;i>=rlo;--i)
                     {
                         const typename MAT::Row &a_i = a[i];
                         xadd.ldz();
@@ -118,7 +137,7 @@ namespace Yttrium
             }
 
 
-            //! matrix vector multiplication
+            //! sequential matrix/vector operations
             /**
              \param xadd perform additions
              \param lhs  target vector
@@ -140,6 +159,13 @@ namespace Yttrium
 
             namespace Hub
             {
+                //! parallel matrix/vector operations
+                /**
+                 \param tile   operating tile
+                 \param lhs    target vector
+                 \param a      matrix
+                 \param rhs    source vector
+                 */
                 template <
                 typename T,
                 typename LHS,
@@ -160,6 +186,13 @@ namespace Yttrium
                 }
             }
 
+            //! parallel matrix vector operations
+            /**
+             \param broker perform additions
+             \param lhs    target vector
+             \param a      matrix
+             \param rhs    source vector
+             */
             template <
             typename T,
             typename LHS,

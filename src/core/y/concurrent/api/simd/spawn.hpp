@@ -96,7 +96,11 @@ namespace Yttrium
             }
 
 
-
+            //! run 1-argument code
+            /**
+             \param code code(context.sync, self[context.indx], arg1)
+             \param arg1 persistent argument
+             */
             template <typename CODE, typename ARG1> inline
             void run(CODE &code, ARG1 &arg1)
             {
@@ -104,6 +108,12 @@ namespace Yttrium
                 (*this)(instr);
             }
 
+            //! run 2-arguments code
+            /**
+             \param code code(context.sync, self[context.indx], arg1, arg2)
+             \param arg1 persistent argument
+             \param arg2 persistent argument
+             */
             template <typename CODE, typename ARG1, typename ARG2> inline
             void run(CODE &code, ARG1 &arg1, ARG2 &arg2)
             {
@@ -111,6 +121,13 @@ namespace Yttrium
                 (*this)(instr);
             }
 
+            //! run 3-arguments code
+            /**
+             \param code code(context.sync, self[context.indx], arg1, arg2, arg3)
+             \param arg1 persistent argument
+             \param arg2 persistent argument
+             \param arg3 persistent argument
+             */
             template <typename CODE, typename ARG1, typename ARG2, typename ARG3> inline
             void run(CODE &code, ARG1 &arg1, ARG2 &arg2, ARG3 &arg3)
             {

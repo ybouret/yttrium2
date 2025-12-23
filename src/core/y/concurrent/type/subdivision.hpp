@@ -57,12 +57,11 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //
-            // Members
+            // Methods
             //
             //__________________________________________________________________
-            void * const entry; //!< local memory
-            const size_t bytes; //!< local bytes
 
+            //! aliasing helper \return cast to user's type
             template <typename T> inline
             T & as() noexcept
             {
@@ -70,6 +69,17 @@ namespace Yttrium
                 assert(entry);
                 return *static_cast<T *>(entry);
             }
+
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            void * const entry; //!< local memory
+            const size_t bytes; //!< local bytes
+
+            
 
 
         private:
