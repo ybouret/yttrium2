@@ -59,7 +59,8 @@ namespace
             {
                 qvec << apq(ran,ran.in<size_t>(1,10),ran.in<size_t>(1,10));
             }
-            { Y_Giant_Lock(); (std::cerr << ctx << " : " << qvec << std::endl).flush(); }
+
+            //{ Y_Giant_Lock(); (std::cerr << ctx << " : " << qvec << std::endl).flush(); }
 
 
         }
@@ -68,10 +69,7 @@ namespace
 
 Y_UTEST(concurrent_memory)
 {
-    ParaMem mem;
-    
-
-
+    ParaMem          mem;
     Concurrent::Crew crew( Concurrent::Site::Default );
     crew( *mem );
 
