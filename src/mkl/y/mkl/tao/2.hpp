@@ -18,18 +18,39 @@ namespace Yttrium
         namespace Tao
         {
 
-            typedef Concurrent::Divide::Tile1D<size_t>     Tile1D;
-            typedef Concurrent::Divide::CxxTiles1D<size_t> Tiles1D;
-            typedef Concurrent::Spawn<Tiles1D>             LinearSpawn;
-            typedef LinearSpawn::Pointer                   LinearEngine;
+            typedef Concurrent::Divide::Tile1D<size_t>     Tile1D;       //!< alias
+            typedef Concurrent::Divide::CxxTiles1D<size_t> Tiles1D;      //!< alias
+            typedef Concurrent::Spawn<Tiles1D>             LinearSpawn;  //!< alias
+            typedef LinearSpawn::Pointer                   LinearEngine; //!< alias
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! will split operations on matrix rows/cols
+            //
+            //
+            //__________________________________________________________________
             template <typename T>
             class LinearBroker : public Ingress< LinearSpawn >
             {
             public:
+                //______________________________________________________________
+                //
+                //
+                // definitions
+                //
+                //______________________________________________________________
                 typedef Cameo::Addition<T> XAddition;
                 typedef XAddition *        XAddPtr;
 
+
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
                 inline explicit LinearBroker(const LinearEngine &m) :
                 engine(m),
                 caddy()
@@ -39,10 +60,19 @@ namespace Yttrium
 
                 inline virtual ~LinearBroker() noexcept {}
 
-                inline void relink() noexcept
-                {
-                    engine->link( caddy.head );
-                }
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+
+                /*
+                 inline void relink() noexcept
+                 {
+                 engine->link( caddy.head );
+                 }
+                 */
 
                 XAddition & xadd() noexcept
                 {
@@ -54,11 +84,11 @@ namespace Yttrium
             private:
                 Y_Disable_Copy_And_Assign(LinearBroker);
                 ConstInterface & locus() const noexcept { return *engine; }
-                LinearEngine    engine;
-                Cameo::Caddy<T> caddy;
 
+                LinearEngine     engine;
+                Cameo::Caddy<T>  caddy;
             };
-            
+
 
             namespace Hub
             {
