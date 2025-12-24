@@ -22,9 +22,9 @@ namespace Yttrium
             {
 
                 template <typename T,typename ROW, typename RHS> inline
-                T MulCollect(Cameo::Addition<T> & xadd,
-                             const ROW          & row,
-                             RHS &                rhs)
+                T MulCore(Cameo::Addition<T> & xadd,
+                          const ROW          & row,
+                          RHS &                rhs)
                 {
                     xadd.ldz(); assert( row.size() == rhs.size() );
                     for(size_t j=rhs.size();j>0;--j)
@@ -55,7 +55,7 @@ namespace Yttrium
                                const size_t         rup)
                 {
                     for(size_t i=rup;i>=rlo;--i)
-                        lhs[i] = MulCollect(xadd,a[i],rhs);
+                        lhs[i] = MulCore(xadd,a[i],rhs);
                 }
 
                 //! partial, sequential  operations
@@ -81,7 +81,7 @@ namespace Yttrium
                                const size_t         rup)
                 {
                     for(size_t i=rup;i>=rlo;--i)
-                        lhs[i] += MulCollect(xadd,a[i],rhs);
+                        lhs[i] += MulCore(xadd,a[i],rhs);
                 }
 
 
