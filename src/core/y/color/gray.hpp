@@ -12,6 +12,18 @@ namespace Yttrium
     namespace Color
     {
 
+        //! table of unit floating points
+        template <typename T>
+        struct ByteTo {
+            static const T Unit[256]; //!< precomputed unit floating points
+        };
+
+
+        template <> struct ByteTo<float>       { static const float       Unit[256]; };
+        template <> struct ByteTo<double>      { static const double      Unit[256]; };
+        template <> struct ByteTo<long double> { static const long double Unit[256]; };
+
+
         //______________________________________________________________________
         //
         //
@@ -22,11 +34,9 @@ namespace Yttrium
         //______________________________________________________________________
         struct Gray
         {
-            //! table of unit floating points
-            template <typename T>
-            struct ByteTo {
-                static const T Unit[256]; //!< precomputed unit floating points
-            };
+
+
+
 
             //! \param x unit floating point \return closest byte
             static inline uint8_t UnitToByte(const float &x) noexcept

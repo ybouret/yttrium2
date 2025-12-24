@@ -12,8 +12,8 @@ namespace Yttrium
 
 #define Y_F(X) X##.0f
 
-        template <>
-        const float Gray::ByteTo<float>::Unit[256] =
+        //template <>
+        const float ByteTo<float>::Unit[256] =
         {
 #include "gray.hxx"
         };
@@ -22,8 +22,8 @@ namespace Yttrium
 #undef  Y_F
 #define Y_F(X) X##.0
 
-        template <>
-        const double Gray::ByteTo<double>::Unit[256] =
+        //template <>
+        const double ByteTo<double>::Unit[256] =
         {
 #include "gray.hxx"
         };
@@ -32,8 +32,8 @@ namespace Yttrium
 #undef  Y_F
 #define Y_F(X) X##.0L
 
-        template <>
-        const long double Gray::ByteTo<long double>::Unit[256] =
+        //template <>
+        const long double ByteTo<long double>::Unit[256] =
         {
 #include "gray.hxx"
         };
