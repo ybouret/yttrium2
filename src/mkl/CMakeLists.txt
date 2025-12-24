@@ -5,6 +5,7 @@ y/mkl
 y/mkl/root
 y/mkl/opt
 y/mkl/tao
+y/mkl/tao/broker
 y/mkl/algebra
 y/mkl/algebra/eigen
 y/mkl/interpolation

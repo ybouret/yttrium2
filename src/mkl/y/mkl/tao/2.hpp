@@ -5,9 +5,7 @@
 #define Y_MKL_Tao2_Included 1
 
 #include "y/mkl/tao/1.hpp"
-#include "y/concurrent/divide/1d.hpp"
-#include "y/concurrent/api/simd/spawn.hpp"
-#include "y/cameo/caddy.hpp"
+#include "y/mkl/tao/broker/linear.hpp"
 
 namespace Yttrium
 {
@@ -18,91 +16,23 @@ namespace Yttrium
         namespace Tao
         {
 
-            typedef Concurrent::Divide::Tile1D<size_t>     Tile1D;       //!< alias
-            typedef Concurrent::Divide::CxxTiles1D<size_t> Tiles1D;      //!< alias
-            typedef Concurrent::Spawn<Tiles1D>             LinearSpawn;  //!< alias
-            typedef LinearSpawn::Pointer                   LinearEngine; //!< alias
-
-            //__________________________________________________________________
-            //
-            //
-            //
-            //! will split operations on matrix rows/cols
-            //
-            //
-            //__________________________________________________________________
-            template <typename T>
-            class LinearBroker : public Ingress< LinearSpawn >
-            {
-            public:
-                //______________________________________________________________
-                //
-                //
-                // definitions
-                //
-                //______________________________________________________________
-                typedef Cameo::Addition<T> XAddition; //!< alias
-
-
-                //______________________________________________________________
-                //
-                //
-                // C++
-                //
-                //______________________________________________________________
-
-                //! setup from shared linear spawn \param eng shared engine
-                inline explicit LinearBroker(const LinearEngine &eng) :
-                engine(eng),
-                caddy()
-                {
-                    engine->link( caddy.adjust(engine->size()).head );
-                }
-
-                //! cleanup
-                inline virtual ~LinearBroker() noexcept {}
-
-                //______________________________________________________________
-                //
-                //
-                // Methods
-                //
-                //______________________________________________________________
-
-                /*
-                 inline void relink() noexcept
-                 {
-                 engine->link( caddy.head );
-                 }
-                 */
-
-                //! \return first XAddition
-                inline XAddition & xadd() noexcept
-                {
-                    assert( caddy.head );
-                    return *caddy.head;
-                }
-
-
-            private:
-                Y_Disable_Copy_And_Assign(LinearBroker); //!< disable
-
-                inline virtual ConstInterface & locus() const noexcept { return *engine; }
-
-                //______________________________________________________________
-                //
-                //
-                // Members
-                //
-                //______________________________________________________________
-                LinearEngine     engine; //!< shared engine
-                Cameo::Caddy<T>  caddy;  //!< xadditions
-            };
 
 
             namespace Hub
             {
-                //! partial operations
+
+                template <typename T,typename ROW, typename RHS> inline
+                T MulCollect(Cameo::Addition<T> & xadd,
+                             const ROW          & row,
+                             RHS &                rhs)
+                {
+                    xadd.ldz(); assert( row.size() == rhs.size() );
+                    for(size_t j=rhs.size();j>0;--j)
+                        xadd.addProd(row[j], rhs[j]);
+                    return xadd.sum();
+                }
+
+                //! partial, sequential set
                 /**
                  \param xadd perform additions
                  \param lhs  target vector
@@ -117,27 +47,48 @@ namespace Yttrium
                 typename MAT,
                 typename RHS
                 > inline
-                void MulProc(Cameo::Addition<T> & xadd,
-                             LHS                & lhs,
-                             const MAT          & a,
-                             RHS                & rhs,
-                             const size_t         rlo,
-                             const size_t         rup)
+                void MulSetSeq(Cameo::Addition<T> & xadd,
+                               LHS                & lhs,
+                               const MAT          & a,
+                               RHS                & rhs,
+                               const size_t         rlo,
+                               const size_t         rup)
                 {
-                    const size_t nc = a.cols; assert(rhs.size()==nc);
                     for(size_t i=rup;i>=rlo;--i)
-                    {
-                        const typename MAT::Row &a_i = a[i];
-                        xadd.ldz();
-                        for(size_t j=nc;j>0;--j)
-                            xadd.addProd(a_i[j], rhs[j]);
-                        lhs[i] = xadd.sum();
-                    }
+                        lhs[i] = MulCollect(xadd,a[i],rhs);
                 }
+
+                //! partial, sequential  operations
+                /**
+                 \param xadd perform additions
+                 \param lhs  target vector
+                 \param a    matrix
+                 \param rhs  source vector
+                 \param rlo  lower row index
+                 \param rup  upper row index
+                 */
+                template <
+                typename T,
+                typename LHS,
+                typename MAT,
+                typename RHS
+                > inline
+                void MulAddSeq(Cameo::Addition<T> & xadd,
+                               LHS                & lhs,
+                               const MAT          & a,
+                               RHS                & rhs,
+                               const size_t         rlo,
+                               const size_t         rup)
+                {
+                    for(size_t i=rup;i>=rlo;--i)
+                        lhs[i] += MulCollect(xadd,a[i],rhs);
+                }
+
+
             }
 
 
-            //! sequential matrix/vector operations
+            //! sequential matrix/vector mul-set
             /**
              \param xadd perform additions
              \param lhs  target vector
@@ -154,12 +105,33 @@ namespace Yttrium
             {
                 assert(a.rows==lhs.size());
                 assert(a.cols==rhs.size());
-                Hub::MulProc(xadd, lhs, a, rhs, 1, a.rows);
+                Hub::MulSetSeq(xadd, lhs, a, rhs, 1, a.rows);
             }
+
+            //! sequential matrix/vector operations
+            /**
+             \param xadd perform additions
+             \param lhs  target vector
+             \param a    matrix
+             \param rhs  source vector
+             */
+            template <
+            typename T,
+            typename LHS,
+            typename MAT,
+            typename RHS
+            > inline
+            void MulAdd(Cameo::Addition<T> &xadd, LHS &lhs, const MAT &a, RHS &rhs)
+            {
+                assert(a.rows==lhs.size());
+                assert(a.cols==rhs.size());
+                Hub::MulAddSeq(xadd, lhs, a, rhs, 1, a.rows);
+            }
+
 
             namespace Hub
             {
-                //! parallel matrix/vector operations
+                //! parallel matrix/vector mul-set
                 /**
                  \param tile   operating tile
                  \param lhs    target vector
@@ -172,21 +144,46 @@ namespace Yttrium
                 typename MAT,
                 typename RHS
                 >
-                inline void Mul(Lockable  &,
-                                Tile1D    &tile,
-                                LHS       &lhs,
-                                const MAT &a,
-                                RHS       &rhs)
+                inline void MulSetPar(Lockable  &,
+                                      Tile1D    &tile,
+                                      LHS       &lhs,
+                                      const MAT &a,
+                                      RHS       &rhs)
                 {
                     assert(0!=tile.entry);
                     assert(tile.offset>0);
                     { Y_Giant_Lock(); std::cerr << "Mul in " << tile << std::endl; }
-                    Cameo::Addition<T> & xadd = *tile.as< Cameo::Addition<T> * >();
-                    Hub::MulProc(xadd, lhs, a, rhs, tile.offset, tile.utmost );
+                    Hub::MulSetSeq( *tile.as< Cameo::Addition<T> * >(), lhs, a, rhs, tile.offset, tile.utmost );
                 }
+
+                //! parallel matrix/vector mul-set
+                /**
+                 \param tile   operating tile
+                 \param lhs    target vector
+                 \param a      matrix
+                 \param rhs    source vector
+                 */
+                template <
+                typename T,
+                typename LHS,
+                typename MAT,
+                typename RHS
+                >
+                inline void MulAddPar(Lockable  &,
+                                      Tile1D    &tile,
+                                      LHS       &lhs,
+                                      const MAT &a,
+                                      RHS       &rhs)
+                {
+                    assert(0!=tile.entry);
+                    assert(tile.offset>0);
+                    Hub::MulAddSeq( *tile.as< Cameo::Addition<T> * >(), lhs, a, rhs, tile.offset, tile.utmost );
+                }
+
+
             }
 
-            //! parallel matrix vector operations
+            //! parallel matrix vector mul-set
             /**
              \param broker perform additions
              \param lhs    target vector
@@ -202,7 +199,26 @@ namespace Yttrium
             void Mul(LinearBroker<T> &broker, LHS &lhs, const MAT &a, RHS &rhs)
             {
                 broker->remap(a.rows);
-                broker->run(Hub::Mul<T,LHS,MAT,RHS>,lhs,a,rhs);
+                broker->run(Hub::MulSetPar<T,LHS,MAT,RHS>,lhs,a,rhs);
+            }
+
+            //! parallel matrix vector mul-addr
+            /**
+             \param broker perform additions
+             \param lhs    target vector
+             \param a      matrix
+             \param rhs    source vector
+             */
+            template <
+            typename T,
+            typename LHS,
+            typename MAT,
+            typename RHS
+            > inline
+            void MulAdd(LinearBroker<T> &broker, LHS &lhs, const MAT &a, RHS &rhs)
+            {
+                broker->remap(a.rows);
+                broker->run(Hub::MulAddPar<T,LHS,MAT,RHS>,lhs,a,rhs);
             }
 
 
