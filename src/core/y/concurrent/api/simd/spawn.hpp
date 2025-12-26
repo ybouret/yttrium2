@@ -279,11 +279,13 @@ namespace Yttrium
                 code(sync,tile);
             }
 
+#if !defined(DOXYGEN_SHOULD_SKIP_THIS)
             template <typename CODE, typename ARG1>
             struct Stub1
             {
                 CODE &code;
                 ARG1 &arg1;
+
                 inline void operator()(Lockable &sync, Tile &tile) {
                     code(sync,tile,arg1);
                 }
@@ -313,6 +315,7 @@ namespace Yttrium
                     code(sync,tile,arg1,arg2,arg3);
                 }
             };
+#endif // !defined(DOXYGEN_SHOULD_SKIP_THIS)
 
             //! alias to wrap host+method call
             template <typename HOST, typename METH>

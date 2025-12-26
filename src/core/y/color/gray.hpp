@@ -14,9 +14,7 @@ namespace Yttrium
 
         //! table of unit floating points
         template <typename T>
-        struct ByteTo {
-            static const T Unit[256]; //!< precomputed unit floating points
-        };
+        struct ByteTo;
 
 
         template <> struct ByteTo<float>       { static const float       Unit[256]; };
