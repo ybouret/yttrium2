@@ -17,9 +17,17 @@ namespace Yttrium
         struct ByteTo;
 
 
-        template <> struct ByteTo<float>       { static const float       Unit[256]; };
-        template <> struct ByteTo<double>      { static const double      Unit[256]; };
-        template <> struct ByteTo<long double> { static const long double Unit[256]; };
+        //! table for float
+        template <> struct ByteTo<float>
+        { static const float       Unit[256]; /*!< data */ };
+
+        //! table for double
+        template <> struct ByteTo<double>
+        { static const double      Unit[256]; /*!< data */};
+
+        //! table for long double
+        template <> struct ByteTo<long double>
+        { static const long double Unit[256]; /*!< data */ };
 
 
         //______________________________________________________________________
@@ -32,9 +40,6 @@ namespace Yttrium
         //______________________________________________________________________
         struct Gray
         {
-
-
-
 
             //! \param x unit floating point \return closest byte
             static inline uint8_t UnitToByte(const float &x) noexcept
