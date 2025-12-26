@@ -45,7 +45,7 @@ namespace Yttrium
                     Hub::MulSetSeq( *tile.as< Cameo::Addition<T> * >(), lhs, a, rhs, tile.offset, tile.utmost );
                 }
 
-                //! parallel matrix/vector mul-set
+                //! parallel matrix/vector mul-add
                 /**
                  \param tile   operating tile
                  \param lhs    target vector
@@ -67,6 +67,30 @@ namespace Yttrium
                     assert(0!=tile.entry);
                     assert(tile.offset>0);
                     Hub::MulAddSeq( *tile.as< Cameo::Addition<T> * >(), lhs, a, rhs, tile.offset, tile.utmost );
+                }
+
+                //! parallel matrix/vector mul-sub
+                /**
+                 \param tile   operating tile
+                 \param lhs    target vector
+                 \param a      matrix
+                 \param rhs    source vector
+                 */
+                template <
+                typename T,
+                typename LHS,
+                typename MAT,
+                typename RHS
+                >
+                inline void MulSubPar(Lockable  &,
+                                      Tile1D    &tile,
+                                      LHS       &lhs,
+                                      const MAT &a,
+                                      RHS       &rhs)
+                {
+                    assert(0!=tile.entry);
+                    assert(tile.offset>0);
+                    Hub::MulSubSeq( *tile.as< Cameo::Addition<T> * >(), lhs, a, rhs, tile.offset, tile.utmost );
                 }
 
 
@@ -91,7 +115,7 @@ namespace Yttrium
                 broker->run(Hub::MulSetPar<T,LHS,MAT,RHS>,lhs,a,rhs);
             }
 
-            //! parallel matrix vector mul-addr
+            //! parallel matrix vector mul-add
             /**
              \param broker perform additions
              \param lhs    target vector
@@ -108,6 +132,25 @@ namespace Yttrium
             {
                 broker->remap(a.rows);
                 broker->run(Hub::MulAddPar<T,LHS,MAT,RHS>,lhs,a,rhs);
+            }
+
+            //! parallel matrix vector mul-sub
+            /**
+             \param broker perform additions
+             \param lhs    target vector
+             \param a      matrix
+             \param rhs    source vector
+             */
+            template <
+            typename T,
+            typename LHS,
+            typename MAT,
+            typename RHS
+            > inline
+            void MulSub(LinearBroker<T> &broker, LHS &lhs, const MAT &a, RHS &rhs)
+            {
+                broker->remap(a.rows);
+                broker->run(Hub::MulSubPar<T,LHS,MAT,RHS>,lhs,a,rhs);
             }
 
 

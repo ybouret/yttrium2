@@ -61,7 +61,7 @@ namespace Yttrium
                         lhs[i] = MulCore(xadd,a[i],rhs);
                 }
 
-                //! partial, SEQUENTIAL  add
+                //! partial, SEQUENTIAL  mul-add
                 /**
                  \param xadd perform additions
                  \param lhs  target vector
@@ -85,6 +85,32 @@ namespace Yttrium
                 {
                     for(size_t i=rup;i>=rlo;--i)
                         lhs[i] += MulCore(xadd,a[i],rhs);
+                }
+
+                //! partial, SEQUENTIAL  mul-sub
+                /**
+                 \param xadd perform additions
+                 \param lhs  target vector
+                 \param a    matrix
+                 \param rhs  source vector
+                 \param rlo  lower row index
+                 \param rup  upper row index
+                 */
+                template <
+                typename T,
+                typename LHS,
+                typename MAT,
+                typename RHS
+                > inline
+                void MulSubSeq(Cameo::Addition<T> & xadd,
+                               LHS                & lhs,
+                               const MAT          & a,
+                               RHS                & rhs,
+                               const size_t         rlo,
+                               const size_t         rup)
+                {
+                    for(size_t i=rup;i>=rlo;--i)
+                        lhs[i] -= MulCore(xadd,a[i],rhs);
                 }
 
 
@@ -129,6 +155,26 @@ namespace Yttrium
                 assert(a.rows==lhs.size());
                 assert(a.cols==rhs.size());
                 Hub::MulAddSeq(xadd, lhs, a, rhs, 1, a.rows);
+            }
+
+            //! SEQUENTIAL matrix/vector mul-sub
+            /**
+             \param xadd perform additions
+             \param lhs  target vector
+             \param a    matrix
+             \param rhs  source vector
+             */
+            template <
+            typename T,
+            typename LHS,
+            typename MAT,
+            typename RHS
+            > inline
+            void MulSub(Cameo::Addition<T> &xadd, LHS &lhs, const MAT &a, RHS &rhs)
+            {
+                assert(a.rows==lhs.size());
+                assert(a.cols==rhs.size());
+                Hub::MulSubSeq(xadd, lhs, a, rhs, 1, a.rows);
             }
 
         }
