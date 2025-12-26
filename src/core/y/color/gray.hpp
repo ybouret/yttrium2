@@ -65,20 +65,25 @@ namespace Yttrium
             static const size_t  Count = 1 + 3*255; //!< r+g+b possilities
             static const uint8_t Table[Count];      //!< gray level from r+g+b
 
+            //! \param r r \param g g \param b b \return 8-bits gray level
             static inline
             uint8_t ToByte(const uint8_t r, const uint8_t g, const uint8_t b) noexcept
             {
                 return Table[ unsigned(r) + unsigned(g) + unsigned(b) ];
             }
 
+            //! \param r r \param g g \param b b \return floating point gray level
             template <typename T> static inline
             T ToUnit(const uint8_t r, const uint8_t g, const uint8_t b) noexcept
             {
                 return ByteTo<T>::Unit[ ToByte(r,g,b) ];
             }
 
+            //! default color to gray conversion (floating point)
             template <typename T> struct To
             {
+
+                //! \param r r \param g g \param b b \return floating point gray level
                 static inline T Get(const uint8_t r, const uint8_t g, const uint8_t b) noexcept
                 {
                     return ToUnit<T>(r,g,b);
@@ -87,8 +92,10 @@ namespace Yttrium
 
         };
 
+        //! specialized color to 8-bits gray conversion
         template <> struct Gray::To<uint8_t>
         {
+            //! \param r r \param g g \param b b \return 8-bits gray level
             static inline uint8_t Get(const uint8_t r, const uint8_t g, const uint8_t b) noexcept
             {
                 return ToByte(r,g,b);
