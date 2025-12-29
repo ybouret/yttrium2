@@ -1,3 +1,4 @@
+#include "y/apex/lock.hpp"
 #include "y/concurrent/api/simd/crew.hpp"
 #include "y/object/factory.hpp"
 #include "y/memory/small/metrics.hpp"
