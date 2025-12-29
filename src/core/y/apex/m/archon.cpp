@@ -11,6 +11,7 @@ namespace Yttrium
     {
 
 
+
         typedef Core::PoolOf<Memory::Page> SlotType;
 
         class Archon:: Slot : public SlotType
@@ -136,6 +137,12 @@ namespace Yttrium
         }
 
 
+    }
+
+    Lockable & ApexGiantLock()
+    {
+        static Lockable & _ = Apex::Archon::Instance().access;
+        return _;
     }
 
 }

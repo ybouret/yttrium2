@@ -23,10 +23,33 @@ namespace Yttrium
 {
     namespace Random { class Bits; }
 
+    extern Lockable & ApexGiantLock(); //!< \return memory access
+
+    //! lock memory access
+#define Y_Apex_Giant_Lock()
+
     namespace Apex
     {
 
         Y_Shallow_Decl(Hook); //!< alias
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        // Helper to display
+        //
+        //
+        //______________________________________________________________________
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        // Helper to display
+        //
+        //
+        //______________________________________________________________________
 
         template <typename T> struct RealDigits;
 
