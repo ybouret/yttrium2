@@ -26,9 +26,7 @@ namespace Yttrium
             {
                 assert(source.size()>=target.size());
                 for(size_t i=target.size();i>0;--i)
-                {
                     target[i] = source[i];
-                }
             }
 
             //! \return lhs*rhs
@@ -179,9 +177,7 @@ namespace Yttrium
                 {
                     assert(target.size()==source.size());
                     for(size_t i=target.size();i>0;--i)
-                    {
                         op(target[i],source[i]);
-                    }
                 }
 
             }

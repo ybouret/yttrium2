@@ -5,6 +5,8 @@
 #define Y_MKL_Tao3_Included 1
 
 #include "y/mkl/tao/2.hpp"
+#include "y/mkl/tao/seq/3.hpp"
+#include "y/mkl/tao/broker/matrix.hpp"
 
 namespace Yttrium
 {
@@ -15,6 +17,58 @@ namespace Yttrium
         namespace Tao
         {
 
+            namespace Hub
+            {
+                //! parallel matrix/vector mul-sub
+                /**
+                 \param tile   operating tile
+                 \param lhs    target vector
+                 \param a      matrix
+                 \param rhs    source vector
+                 */
+                template <
+                typename T,
+                typename MAT,
+                typename LHS,
+                typename RHS
+                >
+                inline void  toto(Lockable  &,
+                                  Tile2D    &tile,
+                                  MAT       &a,
+                                  LHS       &lhs,
+                                  RHS       &rhs)
+                {
+                    assert(0!=tile.entry);
+                    //Hub::MulSubSeq( *tile.as< Cameo::Addition<T> * >(), lhs, a, rhs, tile.offset, tile.utmost );
+
+                }
+            }
+
+            //! matrix/matrix multiplication
+            /**
+             \param xadd perform additions
+             \param mat  target matrix
+             \param lhs  lhs matrix
+             \param rhs  rhs matrix
+             */
+            template <typename T,
+            typename MAT,
+            typename LHS,
+            typename RHS
+            > inline
+            void MMul( MatrixBroker<T> &broker, MAT &mat, LHS &lhs, RHS &rhs)
+            {
+                const size_t nr = mat.rows;
+                const size_t nc = mat.cols;
+                assert(lhs.rows == mat.rows);
+                assert(lhs.cols == rhs.rows);
+                assert(rhs.cols == mat.cols);
+                broker->remap();
+                
+            }
+
+
+#if 0
             //! matrix/matrix multiplication
             /**
              \param xadd perform additions
@@ -47,6 +101,7 @@ namespace Yttrium
                     }
                 }
             }
+#endif
 
             //! Gram's matrix
             /**
