@@ -40,11 +40,15 @@ namespace Yttrium
                 {
                     assert(0!=tile.entry);
                     Cameo::Addition<T> & xadd = *tile.as< Cameo::Addition<T> * >();
-                    //Hub::MulSubSeq( *tile.as< Cameo::Addition<T> * >(), lhs, a, rhs, tile.offset, tile.utmost );
-                    for(size_t y=tile.h;y>0;--y)
+                    for(size_t h=tile.h;h>0;--h)
                     {
-                        const MatrixSegment &seg = tile[y];
-                    }
+                        const MatrixSegment &seg = tile[h];
+                        typename MAT::Row   &a_i = a[seg.start.y];
+                        for(size_t j=seg.start.x,n=seg.width;n>0;--n,++j)
+                        {
+                            a_i[j] = 0;
+                        }
+                     }
                 }
             }
 

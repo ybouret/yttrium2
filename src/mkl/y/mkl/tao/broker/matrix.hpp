@@ -47,7 +47,7 @@ namespace Yttrium
                 typedef BrokerProto<T,MatrixSpawn> Prototype;
                 using Prototype::engine;
                 using Prototype::caddy;
-                
+
                 //______________________________________________________________
                 //
                 //
@@ -65,13 +65,19 @@ namespace Yttrium
                 {
                 }
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
                 inline void prep(const MatrixMetrics &a)
                 {
                     const MatrixVertex lo(1,1);
-                    const MatrixVertex up(a.rows,a.cols);
+                    const MatrixVertex up(a.cols,a.rows);
                     const MatrixBox    box(lo,up);
-                    engine->remap(box);
-                    engine->link(caddy.head);
+                    if(engine->remap(box))
+                        engine->link(caddy.head);
                 }
 
 

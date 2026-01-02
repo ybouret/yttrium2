@@ -384,13 +384,13 @@ namespace Yttrium
                     return *this;
                 }
 
-                //! remap if necessary \param box new bounding box
-                inline void remap(const BoxType &box)
+                //! remap if necessary \param box new bounding box \return true if changed
+                inline bool remap(const BoxType &box)
                 {
                     // check same bounding box
                     {
                         const Leap< V2D<T> > &rhs = *this;
-                        if( box == rhs ) return;
+                        if( box == rhs ) return false;;
                     }
 
                     // create/exchange
@@ -400,6 +400,8 @@ namespace Yttrium
                         Coerce(this->lower) = box.lower;
                         Coerce(this->upper) = box.upper;
                     }
+
+                    return true;
                 }
 
 
