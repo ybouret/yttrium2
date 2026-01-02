@@ -1,0 +1,19 @@
+\documentclass[aps,12pt]{revtex4}
+\usepackage[a4paper]{geometry}
+\usepackage{graphicx}
+\usepackage{amssymb,amsfonts,amsmath,amsthm}
+\usepackage{bm}
+\usepackage{pslatex}
+
+\begin{document}
+
+We have a $n \times n$ matrix, and we want to index the upper diagonal with $$i \in [1:n],\; j \in [i:n]$$
+leading to $\dfrac{n(n+1)}{2}$ terms.
+
+The last index for each $i$ is:
+\begin{equation}
+K_i = \sum_{l=1}^i (n+1-i) = i(n+1) - i(i+1)/2 
+\end{equation}
+
+
+\end{document}
