@@ -268,6 +268,7 @@ namespace Yttrium
 #include "y/mkl/xreal.hpp"
 #include "y/mkl/v4d.hpp"
 #include "y/mkl/complex.hpp"
+#include "y/apex/rational.hpp"
 
 namespace Yttrium
 {
@@ -321,6 +322,11 @@ namespace Yttrium
 
             Y_RTTI(Complex<float>);
             Y_RTTI(Complex<double>);
+
+            Y_RTTI(apn);
+            Y_RTTI(apz);
+            Y_RTTI(apq);
+
         }
     }
 

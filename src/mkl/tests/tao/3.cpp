@@ -49,13 +49,15 @@ namespace   {
         std::cerr << "Testing <" << System::RTTI::Name<T>() << ">" << std::endl;
         Tao::MatrixBroker<T>  broker(eng);
         Cameo::Addition<T>  & xadd = broker.xadd();
-        for(size_t nr=1;nr<=3;++nr)
+        for(size_t nr=1;nr<=10;++nr)
         {
-            for(size_t nc=1;nc<=3;++nc)
+            std::cerr << "rows = " << std::setw(3) << nr << std::endl;
+            for(size_t nc=1;nc<=10;++nc)
             {
+                std::cerr << "\tcols = " << std::setw(3) << nc << std::endl;
                 Matrix<T> a(nr,nc);
                 Matrix<T> b(nr,nc);
-                for(size_t k=1;k<=4;++k)
+                for(size_t k=1;k<=20;++k)
                 {
                     Matrix<T> lhs(nr,k);
                     Matrix<T> rhs(k,nc);
@@ -63,7 +65,6 @@ namespace   {
                     FillWith<T>::Mat(ran,rhs);
                     Tao::MMul(xadd,  a,lhs,rhs);
                     Tao::MMul(broker,b,lhs,rhs);
-                    //std::cerr << a << "/" << b << std::endl;
                     Y_ASSERT( delta(a,b) );
                 }
             }
@@ -81,6 +82,9 @@ Y_UTEST(tao_3)
 
     doTest<float>(ran,eng);
     doTest<double>(ran,eng);
+    doTest< Complex<float> >(ran,eng);
+
+    //doTest<apq>(ran,eng);
 
 
 }
