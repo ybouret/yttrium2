@@ -40,6 +40,12 @@ namespace Yttrium
                 return T( Compute<U>( U(s), Converted) );
             }
 
+            typedef uint16_t       TableType;
+            static const size_t    TableBytes = 65536;
+            static const size_t    TableSize  = TableBytes/sizeof(TableType);
+            static const TableType TableLast  = TableSize-1;
+            static const TableType Table[TableSize];
+
         };
 
 
@@ -55,6 +61,6 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Calculus_IntegerSqrt_Included
 
 
