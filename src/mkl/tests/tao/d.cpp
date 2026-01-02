@@ -13,6 +13,27 @@
 using namespace Yttrium;
 using namespace MKL;
 
+namespace
+{
+    static inline
+    size_t GetI(const size_t n, const size_t k)
+    {
+        assert(k>0);
+        assert(k<=n*(n+1)/2);
+        const size_t B     = 1+n*2;
+        const size_t Delta = B*B - k*8;
+        const size_t twice = (B - IntegerSquareRoot(Delta));
+        const size_t align = Alignment::On<2>::Ceil(twice);
+        return align/2;
+    }
+
+    static inline
+    size_t GetK(const size_t n, const size_t i)
+    {
+        return i * n - ((i+1)*i)/2;
+    }
+}
+
 Y_UTEST(tao_d)
 {
 
@@ -36,12 +57,11 @@ Y_UTEST(tao_d)
     for(size_t k=1;k<=m;++k)
     {
         std::cerr << "k=" << std::setw(3) << k;
-        const size_t B     = 1+n*2;
-        const size_t Delta = B*B - k*8;
-        const size_t twice = (B - IntegerSquareRoot(Delta));
-        const size_t align = Alignment::On<2>::Ceil(twice);
-        const size_t i     = align/2;
-        std::cerr << ' ' << twice << " -> " << align << " -> " << i;
+        const size_t i = GetI(n,k);
+        std::cerr << "-> i=" << std::setw(3) << i;
+        const size_t j = k - GetK(n,i-1);
+        std::cerr << "-> j=" << std::setw(3) << j;
+
         std::cerr << std::endl;
     }
 }
