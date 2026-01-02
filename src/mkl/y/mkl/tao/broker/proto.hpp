@@ -47,7 +47,7 @@ namespace Yttrium
                 //______________________________________________________________
 
                 //! setup \param eng shared concurrent engine
-                inline explicit BrokerProto(const EngineType eng) :
+                inline explicit BrokerProto(const EngineType &eng) :
                 BrokerType(eng->size()),
                 IngressType(),
                 engine(eng)
@@ -58,12 +58,20 @@ namespace Yttrium
                 //! cleanup
                 inline virtual ~BrokerProto() noexcept {}
 
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+            protected:
+                EngineType engine; //!< shared engine/spawn
 
             private:
                 Y_Disable_Copy_And_Assign(BrokerProto); //!< discarding
                 inline virtual ConstInterface & locus() const noexcept { return *engine; }
 
-                EngineType engine; //!< shared engine/spawn
+
             };
         }
 

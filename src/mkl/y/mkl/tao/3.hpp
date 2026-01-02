@@ -32,15 +32,19 @@ namespace Yttrium
                 typename LHS,
                 typename RHS
                 >
-                inline void  toto(Lockable  &,
-                                  Tile2D    &tile,
-                                  MAT       &a,
-                                  LHS       &lhs,
-                                  RHS       &rhs)
+                inline void  MMulPar(Lockable  &,
+                                     Tile2D    &tile,
+                                     MAT       &a,
+                                     LHS       &lhs,
+                                     RHS       &rhs)
                 {
                     assert(0!=tile.entry);
+                    Cameo::Addition<T> & xadd = *tile.as< Cameo::Addition<T> * >();
                     //Hub::MulSubSeq( *tile.as< Cameo::Addition<T> * >(), lhs, a, rhs, tile.offset, tile.utmost );
-
+                    for(size_t y=tile.h;y>0;--y)
+                    {
+                        const MatrixSegment &seg = tile[y];
+                    }
                 }
             }
 
@@ -58,13 +62,11 @@ namespace Yttrium
             > inline
             void MMul( MatrixBroker<T> &broker, MAT &mat, LHS &lhs, RHS &rhs)
             {
-                const size_t nr = mat.rows;
-                const size_t nc = mat.cols;
                 assert(lhs.rows == mat.rows);
                 assert(lhs.cols == rhs.rows);
                 assert(rhs.cols == mat.cols);
-                //broker->remap();
-                
+                broker.prep(mat);
+                broker->run( Hub::MMulPar<T,MAT,LHS,RHS>, mat, lhs, rhs );
             }
 
 
