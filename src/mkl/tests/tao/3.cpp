@@ -3,13 +3,13 @@
 
 #include "y/mkl/tao/broker/matrix.hpp"
 #include "y/utest/run.hpp"
-//#include "y/random/mt19937.hpp"
 #include "../../../core/tests/main.hpp"
-//#include "y/container/sequence/vector.hpp"
 #include "y/concurrent/api/simd/crew.hpp"
 #include "y/container/matrix.hpp"
 #include "y/mkl/api/fabs.hpp"
 #include "y/system/rtti.hpp"
+#include "y/system/wall-time.hpp"
+#include "y/string/format.hpp"
 
 using namespace Yttrium;
 using namespace MKL;
@@ -37,7 +37,6 @@ namespace   {
 
         const S sum = sadd.sum();
         const S _0  = 0;
-        //std::cerr << "|delta|=" << sum << std::endl;
         return sum <= _0;
 
     }
@@ -47,14 +46,16 @@ namespace   {
                 Tao::MatrixEngine & eng)
     {
         std::cerr << "Testing <" << System::RTTI::Name<T>() << ">" << std::endl;
+        System::WallTime      chrono;
         Tao::MatrixBroker<T>  broker(eng);
         Cameo::Addition<T>  & xadd = broker.xadd();
+
         for(size_t nr=1;nr<=10;++nr)
         {
             std::cerr << "rows = " << std::setw(3) << nr << std::endl;
             for(size_t nc=1;nc<=10;++nc)
             {
-                std::cerr << "\tcols = " << std::setw(3) << nc << std::endl;
+                std::cerr << "\tcols = " << std::setw(3) << nc << ":";
                 Matrix<T> a(nr,nc);
                 Matrix<T> b(nr,nc);
                 for(size_t k=1;k<=20;++k)
@@ -63,10 +64,18 @@ namespace   {
                     Matrix<T> rhs(k,nc);
                     FillWith<T>::Mat(ran,lhs);
                     FillWith<T>::Mat(ran,rhs);
-                    Tao::MMul(xadd,  a,lhs,rhs);
-                    Tao::MMul(broker,b,lhs,rhs);
+                    uint64_t seq = 0;
+                    uint64_t par = 0;
+                    Y_WallTime_Update(seq, Tao::MMul(xadd,  a,lhs,rhs));
+                    Y_WallTime_Update(par, Tao::MMul(broker,b,lhs,rhs));
                     Y_ASSERT( delta(a,b) );
+                    const apn    num = seq;
+                    const apn    den = par;
+                    const double r   = apn::Ratio<double>(num,den);
+                    const String s   = Formatted::Get("%5.2lf",r);
+                    std::cerr << " " << s;
                 }
+                std::cerr << std::endl;
             }
         }
 
