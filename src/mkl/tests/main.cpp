@@ -12,6 +12,7 @@ Y_UTEST_DECL(128)
     Y_UTEST(tao_1);
     Y_UTEST(tao_2);
     Y_UTEST(tao_3);
+    Y_UTEST(tao_d);
 
     Y_UTEST(opt_parabolic);
     Y_UTEST(opt_minimize);
