@@ -43,12 +43,11 @@ namespace Yttrium
                     for(size_t h=tile.h;h>0;--h)
                     {
                         const MatrixSegment &seg = tile[h];
-                        typename MAT::Row   &a_i = a[seg.start.y];
+                        const size_t           i = seg.start.y;
+                        typename MAT::Row   &a_i = a[i];
                         for(size_t j=seg.start.x,n=seg.width;n>0;--n,++j)
-                        {
-                            a_i[j] = 0;
-                        }
-                     }
+                            a_i[j] = MMulCore(xadd,i,j,lhs,rhs);
+                    }
                 }
             }
 
