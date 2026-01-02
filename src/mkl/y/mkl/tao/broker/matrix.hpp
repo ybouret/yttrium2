@@ -44,7 +44,7 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
-                typedef BrokerProto<T,MatrixSpawn> Prototype;
+                typedef BrokerProto<T,MatrixSpawn> Prototype; //!< alias
                 using Prototype::engine;
                 using Prototype::caddy;
 
@@ -55,12 +55,13 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
+                //! setup \param eng shared engine
                 inline explicit MatrixBroker(const MatrixEngine &eng) :
                 Prototype(eng)
                 {
                 }
 
-
+                //! cleanup
                 inline virtual ~MatrixBroker() noexcept
                 {
                 }
@@ -71,6 +72,8 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
+
+                //! prepare tiles \param a using (1,1) -> (a.cols,a.rows)
                 inline void prep(const MatrixMetrics &a)
                 {
                     const MatrixVertex lo(1,1);

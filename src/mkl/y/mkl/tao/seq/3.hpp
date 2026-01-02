@@ -19,6 +19,15 @@ namespace Yttrium
             namespace Hub
             {
 
+                //! compute product element
+                /**
+                 \param xadd for additions
+                 \param i    row index
+                 \param j    col index
+                 \param lhs  lhs matrix
+                 \param rhs  rhs matrix
+                 \return sum_k(lhs[i][k],rhs[k][j])
+                 */
                 template <typename T, typename LHS, typename RHS> inline
                 T MMulCore(Cameo::Addition<T> &xadd,
                            const size_t         i,
