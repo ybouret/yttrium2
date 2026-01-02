@@ -6,7 +6,7 @@
 
 #include "y/concurrent/divide/1d.hpp"
 #include "y/concurrent/api/simd/spawn.hpp"
-#include "y/cameo/caddy.hpp"
+#include "y/mkl/tao/broker/proto.hpp"
 
 namespace Yttrium
 {
@@ -30,6 +30,24 @@ namespace Yttrium
             //
             //
             //__________________________________________________________________
+            template <typename T>
+            class LinearBroker : public BrokerProto<T,LinearSpawn>
+            {
+            public:
+                typedef BrokerProto<T,LinearSpawn> Prototype;
+
+                inline explicit LinearBroker(const LinearEngine &eng) :
+                Prototype(eng)
+                {
+                }
+
+                inline virtual ~LinearBroker() noexcept {}
+
+            private:
+                Y_Disable_Copy_And_Assign(LinearBroker);
+            };
+
+#if 0
             template <typename T>
             class LinearBroker : public Ingress< LinearSpawn >
             {
@@ -97,6 +115,7 @@ namespace Yttrium
                 LinearEngine     engine; //!< shared engine
                 Cameo::Caddy<T>  caddy;  //!< xadditions
             };
+#endif
 
         }
 

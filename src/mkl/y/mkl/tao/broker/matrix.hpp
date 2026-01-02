@@ -22,7 +22,9 @@ namespace Yttrium
             typedef Concurrent::Divide::Tiles2D<size_t>    Tiles2D;      //!< alias
             typedef Concurrent::Spawn<Tiles2D>             MatrixSpawn;  //!< alias
             typedef MatrixSpawn::Pointer                   MatrixEngine; //!< alias
-
+            typedef V2D<size_t>                            MatrixVertex;
+            typedef Concurrent::Divide::Box<MatrixVertex>  MatrixBox;
+            
             //__________________________________________________________________
             //
             //
@@ -69,12 +71,6 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-                /*
-                 inline void relink() noexcept
-                 {
-                 engine->link( caddy.head );
-                 }
-                 */
 
                 //! \return first XAddition
                 inline XAddition & xadd() noexcept
@@ -83,6 +79,7 @@ namespace Yttrium
                     return *caddy.head;
                 }
 
+                
 
             private:
                 Y_Disable_Copy_And_Assign(MatrixBroker); //!< disable

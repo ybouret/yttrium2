@@ -19,8 +19,8 @@ namespace   {
                 Tao::MatrixEngine & eng)
     {
 
-        Tao::MatrixBroker<T> broker(eng);
-        Cameo::Addition<T>  &xadd = broker.xadd();
+        Tao::MatrixBroker<T>  broker(eng);
+        Cameo::Addition<T>  & xadd = broker.xadd();
         for(size_t nr=1;nr<=3;++nr)
         {
             for(size_t nc=1;nc<=3;++nc)
@@ -33,6 +33,8 @@ namespace   {
                     FillWith<T>::Mat(ran,lhs);
                     FillWith<T>::Mat(ran,rhs);
                     Tao::MMul(xadd,a,lhs,rhs);
+                    Tao::MMul(broker,a,lhs,rhs);
+
                 }
             }
         }

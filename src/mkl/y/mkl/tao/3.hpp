@@ -63,7 +63,7 @@ namespace Yttrium
                 assert(lhs.rows == mat.rows);
                 assert(lhs.cols == rhs.rows);
                 assert(rhs.cols == mat.cols);
-                broker->remap();
+                //broker->remap();
                 
             }
 
