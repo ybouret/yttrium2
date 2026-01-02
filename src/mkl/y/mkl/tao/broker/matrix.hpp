@@ -22,9 +22,9 @@ namespace Yttrium
             typedef Concurrent::Divide::Tiles2D<size_t>    Tiles2D;      //!< alias
             typedef Concurrent::Spawn<Tiles2D>             MatrixSpawn;  //!< alias
             typedef MatrixSpawn::Pointer                   MatrixEngine; //!< alias
-            typedef V2D<size_t>                            MatrixVertex;
-            typedef Concurrent::Divide::Box<MatrixVertex>  MatrixBox;
-            
+            typedef V2D<size_t>                            MatrixVertex; //!< alias
+            typedef Concurrent::Divide::Box<MatrixVertex>  MatrixBox;    //!< alias
+
             //__________________________________________________________________
             //
             //

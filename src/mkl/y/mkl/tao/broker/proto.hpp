@@ -15,16 +15,38 @@ namespace Yttrium
 
         namespace Tao
         {
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! manage Concurrent Spawn and Cameo additions
+            //
+            //
+            //__________________________________________________________________
             template <typename T, typename SPAWN>
             class BrokerProto : public BrokerBasis<T>, public Ingress<SPAWN>
             {
             public:
-                typedef BrokerBasis<T>                       BrokerType;
-                typedef typename SPAWN::Pointer              EngineType;
-                typedef Ingress<SPAWN>                       IngressType;
-                typedef typename IngressType::ConstInterface ConstInterface;
+                //______________________________________________________________
+                //
+                //
+                // definitions
+                //
+                //______________________________________________________________
+                typedef BrokerBasis<T>                       BrokerType;      //!< alias
+                typedef typename SPAWN::Pointer              EngineType;      //!< alias
+                typedef Ingress<SPAWN>                       IngressType;     //!< alias
+                typedef typename IngressType::ConstInterface ConstInterface;  //!< alias
                 using BrokerType::caddy;
 
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! setup \param eng shared concurrent engine
                 inline explicit BrokerProto(const EngineType eng) :
                 BrokerType(eng->size()),
                 IngressType(),
@@ -33,14 +55,15 @@ namespace Yttrium
                     engine->link(caddy.head);
                 }
 
+                //! cleanup
                 inline virtual ~BrokerProto() noexcept {}
 
 
             private:
-                Y_Disable_Copy_And_Assign(BrokerProto);
+                Y_Disable_Copy_And_Assign(BrokerProto); //!< discarding
                 inline virtual ConstInterface & locus() const noexcept { return *engine; }
 
-                EngineType engine;
+                EngineType engine; //!< shared engine/spawn
             };
         }
 

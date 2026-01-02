@@ -46,10 +46,10 @@ namespace Yttrium
 
             //! matrix/matrix multiplication
             /**
-             \param xadd perform additions
-             \param mat  target matrix
-             \param lhs  lhs matrix
-             \param rhs  rhs matrix
+             \param broker dispatch additions
+             \param mat    target matrix
+             \param lhs    lhs matrix
+             \param rhs    rhs matrix
              */
             template <typename T,
             typename MAT,

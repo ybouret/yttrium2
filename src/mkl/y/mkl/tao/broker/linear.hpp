@@ -34,32 +34,13 @@ namespace Yttrium
             class LinearBroker : public BrokerProto<T,LinearSpawn>
             {
             public:
-                typedef BrokerProto<T,LinearSpawn> Prototype;
-
-                inline explicit LinearBroker(const LinearEngine &eng) :
-                Prototype(eng)
-                {
-                }
-
-                inline virtual ~LinearBroker() noexcept {}
-
-            private:
-                Y_Disable_Copy_And_Assign(LinearBroker);
-            };
-
-#if 0
-            template <typename T>
-            class LinearBroker : public Ingress< LinearSpawn >
-            {
-            public:
                 //______________________________________________________________
                 //
                 //
-                // definitions
+                // Definitions
                 //
                 //______________________________________________________________
-                typedef Cameo::Addition<T> XAddition; //!< alias
-
+                typedef BrokerProto<T,LinearSpawn> Prototype; //!< alias
 
                 //______________________________________________________________
                 //
@@ -68,54 +49,19 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-                //! setup from shared linear spawn \param eng shared engine
+                //! setup \param eng shared engine
                 inline explicit LinearBroker(const LinearEngine &eng) :
-                engine(eng),
-                caddy()
+                Prototype(eng)
                 {
-                    engine->link( caddy.adjust(engine->size()).head );
                 }
 
                 //! cleanup
                 inline virtual ~LinearBroker() noexcept {}
 
-                //______________________________________________________________
-                //
-                //
-                // Methods
-                //
-                //______________________________________________________________
-
-                /*
-                 inline void relink() noexcept
-                 {
-                 engine->link( caddy.head );
-                 }
-                 */
-
-                //! \return first XAddition
-                inline XAddition & xadd() noexcept
-                {
-                    assert( caddy.head );
-                    return *caddy.head;
-                }
-
-
             private:
-                Y_Disable_Copy_And_Assign(LinearBroker); //!< disable
-
-                inline virtual ConstInterface & locus() const noexcept { return *engine; }
-
-                //______________________________________________________________
-                //
-                //
-                // Members
-                //
-                //______________________________________________________________
-                LinearEngine     engine; //!< shared engine
-                Cameo::Caddy<T>  caddy;  //!< xadditions
+                Y_Disable_Copy_And_Assign(LinearBroker); //!< discarding
             };
-#endif
+
 
         }
 
