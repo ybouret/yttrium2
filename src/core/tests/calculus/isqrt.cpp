@@ -16,9 +16,16 @@ Y_UTEST(calculus_isqrt)
         Y_ASSERT((s+1)*(s+1)>i);
     }
 
-    Y_PRINTV(Calculus::IntegerSquareRoot::TableBytes);
+    for(uint64_t u=0;u<=Calculus::IntegerSquareRoot::TableSize*2;++u)
+    {
+        Y_ASSERT( Calculus::IntegerSquareRoot::ComputeRegular(u) == Calculus::IntegerSquareRoot::ComputeByTable(u) );
+    }
+
+
+
     Y_PRINTV(Calculus::IntegerSquareRoot::TableSize);
 
+    if(false)
     {
         OutputFile fp("isqrt.hxx");
         for(unsigned i=0;i<Calculus::IntegerSquareRoot::TableSize;++i)
@@ -30,7 +37,6 @@ Y_UTEST(calculus_isqrt)
             fp << '\n';
         }
     }
-
 
 
 }

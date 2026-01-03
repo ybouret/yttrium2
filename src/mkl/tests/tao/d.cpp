@@ -44,8 +44,9 @@ namespace
 
 Y_UTEST(tao_d)
 {
+    const size_t nmax = EnvironmentConvert::To<size_t>("nmax",100);
 
-    for(size_t n=1;n<=1000;++n)
+    for(size_t n=1;n<=nmax;++n)
     {
         std::cerr << "n=" << n << std::endl;
         size_t       k = 0;

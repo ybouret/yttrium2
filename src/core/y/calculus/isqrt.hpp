@@ -5,6 +5,7 @@
 
 #include "y/type/ints.hpp"
 #include "y/type/is-signed.hpp"
+#include <cassert>
 
 namespace Yttrium
 {
@@ -14,13 +15,21 @@ namespace Yttrium
         //! integer square root algorithm
         struct IntegerSquareRoot
         {
+
+            static const uint8_t  MaxResult = 255;
+            static const uint16_t MaxValue_ = MaxResult;
+            static const uint16_t MaxSquare = MaxValue_ * MaxValue_;
+            static const uint64_t TableLast = MaxSquare;
+            static const uint64_t TableSize = TableLast + 1;
+            static const uint8_t  Table[TableSize];
+
             static void throwNegativeArg(); //!< error on negative input
 
-            //! unsigned \param s argument \return isqrt
+        private:
             template <typename T> static inline
-            T Compute(const T s, const IntToType<false> &) noexcept
+            T ComputeAbove2_(const T s) noexcept
             {
-                if(s<=1) return s;
+                assert(s>=2);
                 T x0 = s >> 1 ;
                 while(true) {
                     const T x1 = (x0+s/x0)>>1;
@@ -29,8 +38,34 @@ namespace Yttrium
                 }
                 return x0;
             }
+        public:
 
-            //! signed \param s argument \return isqrt
+            //! full unsigned algorithm \param s argument \return isqrt(s)
+            template <typename T> static inline
+            T ComputeRegular(const T s) noexcept
+            {
+                return s<=1 ? s : ComputeAbove2_<T>(s);
+            }
+
+            //! table unsigned algorithm \param s argument \return isqrt(s)
+            template <typename T> static inline
+            T ComputeByTable(const T s) noexcept
+            {
+                const uint64_t s64 = s;
+                return s64 <= TableLast ? Table[s64] : ComputeAbove2_<T>(s);
+
+            }
+
+
+
+            //! unsigned prototype \param s argument \return isqrt
+            template <typename T> static inline
+            T Compute(const T s, const IntToType<false> &) noexcept
+            {
+                return ComputeByTable(s);
+            }
+
+            //! signed prototype \param s argument \return isqrt
             template <typename T> static inline
             T Compute(const T s, const IntToType<true> &) noexcept
             {
@@ -39,12 +74,6 @@ namespace Yttrium
                 typedef typename UnsignedIntFor<T>::Result::Type U;
                 return T( Compute<U>( U(s), Converted) );
             }
-
-            typedef uint16_t       TableType;
-            static const size_t    TableBytes = 65536;
-            static const size_t    TableSize  = TableBytes/sizeof(TableType);
-            static const TableType TableLast  = TableSize-1;
-            static const TableType Table[TableSize];
 
         };
 

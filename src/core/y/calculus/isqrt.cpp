@@ -12,7 +12,7 @@ namespace Yttrium
             throw Libc::Exception(EDOM,"negative integer square root argument");
         }
 
-        const IntegerSquareRoot::TableType IntegerSquareRoot::Table[TableSize] =
+        const uint8_t IntegerSquareRoot::Table[TableSize] =
         {
 #include "isqrt.hxx"
         };
