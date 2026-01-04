@@ -53,11 +53,8 @@ namespace Yttrium
             {
                 const uint64_t s64 = s;
                 return s64 <= TableLast ? Table[s64] : ComputeAbove2_<T>(s);
-
             }
-
-
-
+            
             //! unsigned prototype \param s argument \return isqrt
             template <typename T> static inline
             T Compute(const T s, const IntToType<false> &) noexcept
