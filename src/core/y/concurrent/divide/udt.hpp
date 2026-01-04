@@ -32,6 +32,7 @@ namespace Yttrium
                 virtual ~UpperDiagonalTile() noexcept;
 
                 const size_t n;        //!< n x n array
+                const size_t B;        //!< 1 + 2*n*
                 const size_t kNumber;  //!< n*(n+1)/2
                 const size_t kOffset;  //!< initial k
                 const size_t kLength;  //!< number of indices

@@ -17,6 +17,7 @@ namespace Yttrium
                                                   const size_t  extent) :
             Subdivision(mySize,myRank),
             n(extent),
+            B(1+(n<<1)),
             kNumber( (n *(n+1)) >> 1),
             kOffset(1),
             kLength( part<size_t>(kNumber, Coerce(kOffset) ) ),
