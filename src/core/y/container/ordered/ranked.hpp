@@ -12,6 +12,7 @@
 #include "y/core/display.hpp"
 #include "y/type/sign.hpp"
 #include "y/sorting/test.hpp"
+#include "y/type/destruct.hpp"
 
 namespace Yttrium
 {
@@ -53,7 +54,8 @@ namespace Yttrium
         inline explicit Ranked(MutableType * const workspace,
                                const size_t        numBlocks) noexcept :
         Queue(numBlocks),
-        tree( workspace )
+        tree( workspace ),
+        most(0)
         {
             assert(Good(workspace,numBlocks));
             assert(Memory::Stealth::Are0(workspace,numBlocks*sizeof(T)));
@@ -92,9 +94,15 @@ namespace Yttrium
             assert(size<capacity);
             assert( Memory::Stealth::Are0(tree+size,sizeof(T)));
 
+            // append new type
             MutableType * curr = tree+size;
             new (curr) Type(value);
+
+            // update structure
+            most = curr;
             ++Coerce(size);
+
+            // in place sorting
             for(MutableType *prev=curr-1;prev>=tree;--prev,--curr)
             {
                 switch( compare(*prev,*curr) )
@@ -108,10 +116,28 @@ namespace Yttrium
                         return;
                 }
             }
-
         }
 
 
+        //! \return top object reference
+        inline ConstType &peek() const noexcept
+        {
+            assert(size>0);
+            assert(0!=tree);
+            assert(tree+size=most+1);
+            return *most;
+        }
+
+        //! \return copy of removed top object
+        inline Type pop() noexcept
+        {
+            assert(size>0);
+            assert(0!=tree);
+            assert(tree+size=most+1);
+            ConstType result = *most;
+            (void) Memory::Stealth::DestructedAndZeroed(most);
+            if( --Coerce(size) <= 0 ) most = 0; else --most;
+        }
 
 
         //! cleanup with zeroed memory
@@ -120,10 +146,12 @@ namespace Yttrium
             assert( Good(tree,size) );
             while(size>0)
                 Memory::Stealth::DestructedAndZeroed( &tree[--Coerce(size)] );
+            most = 0;
         }
 
     protected:
         MutableType * const tree;
+        MutableType *       most;
 
     private:
         Y_Disable_Copy_And_Assign(Ranked);

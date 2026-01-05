@@ -214,5 +214,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Memory_Stealth_Included
 

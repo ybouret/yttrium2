@@ -157,6 +157,7 @@ namespace Yttrium
             {
                 MutableType * const target = tree;
                 ConstType           result = *target;
+                Destruct(target);
                 {
                     MutableType * const source =  &tree[--Coerce(size)];
                     Memory::Stealth::Move(target,source,sizeof(T));
