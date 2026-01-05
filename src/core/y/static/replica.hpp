@@ -161,5 +161,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Static_Replica_Included
 

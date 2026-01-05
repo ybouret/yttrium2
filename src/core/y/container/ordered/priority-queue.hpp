@@ -234,4 +234,4 @@ namespace Yttrium
 }
 
 
-#endif
+#endif // !Y_PriorityQueue_Included

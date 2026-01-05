@@ -113,8 +113,8 @@ namespace Yttrium
         }
 
         //! balance and update size after push \param compare comparison function
-        template <typename COMPARE>
-        inline void balance(COMPARE &compare)
+        template <typename COMPARE> inline
+        void balance(COMPARE &compare)
         {
             try
             {
@@ -133,6 +133,8 @@ namespace Yttrium
                 throw;
             }
         }
+        
+
 
         //! \return top object
         inline ConstType peek() const noexcept
