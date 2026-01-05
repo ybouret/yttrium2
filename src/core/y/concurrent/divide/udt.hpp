@@ -31,11 +31,17 @@ namespace Yttrium
 
                 virtual ~UpperDiagonalTile() noexcept;
 
-                size_t getI(const size_t k) const noexcept;
+                virtual bool isEmpty() const noexcept;
+
+                size_t getI(const size_t k) const noexcept;                 //!< \param k valid index \return row index from k
+                size_t getK(const size_t i) const noexcept;                 //!< \param i row index   \return max k for i-th row
+                size_t getJ(const size_t k, const size_t i) const noexcept; //!< \param k valid indx \param i matching row index \return column index
                 
+
 
                 const size_t n;        //!< n x n array
                 const size_t B;        //!< 1 + 2*n*
+                const size_t B2;       //!< B & B
                 const size_t kNumber;  //!< n*(n+1)/2
                 const size_t kOffset;  //!< initial k
                 const size_t kLength;  //!< number of indices

@@ -20,6 +20,7 @@ namespace Yttrium
             Subdivision(mySize,myRank),
             n(extent),
             B(1+(n<<1)),
+            B2(B*B),
             kNumber( (n *(n+1)) >> 1),
             kOffset(1),
             kLength( part<size_t>(kNumber, Coerce(kOffset) ) ),
@@ -28,16 +29,33 @@ namespace Yttrium
                 
             }
 
+            bool UpperDiagonalTile:: isEmpty() const noexcept
+            {
+                return kLength <= 0;
+            }
 
             size_t UpperDiagonalTile:: getI(const size_t k) const noexcept
             {
                 assert(k>=1);
                 assert(k<=kNumber);
-                const size_t Delta = B*B - (k<<3);
+                const size_t Delta = B2 - (k<<3);
                 const size_t twice = (B - IntegerSquareRoot(Delta));
                 const size_t align = Alignment::On<2>::Ceil(twice);
                 return align>>1;
             }
+
+            size_t UpperDiagonalTile:: getK(const size_t i) const noexcept
+            {
+                return i * n - (((i-1)*i)>>1);
+            }
+
+            size_t UpperDiagonalTile:: getJ(const size_t k, const size_t i) const noexcept
+            {
+                const size_t im1 = i-1;
+                return im1 + k-getK(im1);
+            }
+
+
 
         }
     }

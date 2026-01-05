@@ -68,6 +68,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(concurrent_box);
     Y_UTEST(concurrent_div1d);
     Y_UTEST(concurrent_div2d);
+    Y_UTEST(concurrent_diag);
     Y_UTEST(concurrent_simd);
     Y_UTEST(concurrent_pipeline);
     Y_UTEST(concurrent_site);
