@@ -29,7 +29,7 @@ namespace Yttrium
 
         //! helper \param pos current index \return parent index
         static inline size_t Parent(size_t pos) noexcept {
-            return --pos >> 1;
+            return (--pos) >> 1;
         }
 
         const size_t        size;       //!< stored objects
@@ -41,4 +41,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_PQueue_Included
