@@ -62,8 +62,7 @@ namespace Yttrium
         virtual ~PrioQueue() noexcept
         {
             assert(Good(tree,size));
-            while(size>0)
-                Destruct( &tree[--Coerce(size)] );
+            free();
             Coerce(tree)     = 0;
             Coerce(capacity) = 0;
         }

@@ -183,6 +183,7 @@ Y_UTEST(sequence:vector)
 Y_UTEST(ordered:pqueue)
 Y_UTEST(ordered:static_pqueue)
 Y_UTEST(ordered:data:book)
+Y_UTEST(ordered:echelon)
 
 #ptr
 Y_UTEST(ptr:auto)

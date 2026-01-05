@@ -147,6 +147,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(ordered_pqueue);
     Y_UTEST(ordered_static_pqueue);
     Y_UTEST(ordered_data_book);
+    Y_UTEST(ordered_echelon);
 
     Y_UTEST(ptr_auto);
     Y_UTEST(ptr_arc);
