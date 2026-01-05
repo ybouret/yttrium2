@@ -171,55 +171,26 @@ namespace Yttrium
             from.most = 0;
         }
 
+
+
         //! update \param curr changed value \param compare comparison
         template <typename COMPARE>
-        void update(MutableType *curr, COMPARE &compare)
+        bool updated(MutableType * const curr, COMPARE &compare)
         {
             assert(curr>=tree);
             assert(curr<=most);
-
+            try
             {
-                bool moved = false;
-                for(MutableType *prev=curr-1;prev>=tree;--prev,--curr)
-                {
-                    switch( compare(*prev,*curr) )
-                    {
-                        case Positive:
-                            Memory::Stealth::Swap(prev,curr,sizeof(T));
-                            moved = true;
-                            continue;
-
-                        case __Zero__:
-                        case Negative:
-                            if(!moved)
-                                goto NEXT;
-                            else
-                            {
-                                assert( sanity(compare) );
-                                return;
-                            }
-                    }
-                }
+                if( updatedByPrev(curr,compare) ) return true;
+                if( updatedByNext(curr,compare) ) return true;
+                assert( sanity(compare) );
             }
-
-            
-        NEXT:
-            for(MutableType *next=curr+1;next<=most;++next,++curr)
+            catch(...)
             {
-                switch( compare(*curr,*next) )
-                {
-                    case Positive:
-                        Memory::Stealth::Swap(next,curr,sizeof(T));
-                        continue;
-
-                    case __Zero__:
-                    case Negative:
-                        assert( sanity(compare) );
-                        return;
-                }
+                free();
+                throw;
             }
-
-            assert( sanity(compare) );
+            return false;
 
         }
 
@@ -239,6 +210,51 @@ namespace Yttrium
         template <typename COMPARE>
         inline bool sanity(COMPARE &compare) const noexcept {
             return Sorting::Test::AccordingTo(compare,tree,size) ;
+        }
+
+        template <typename COMPARE> inline
+        bool updatedByPrev(MutableType *curr, COMPARE &compare)
+        {
+            bool moved = false;
+            for(MutableType *prev=curr-1;prev>=tree;--prev,--curr)
+            {
+                switch( compare(*prev,*curr) )
+                {
+                    case Positive:
+                        Memory::Stealth::Swap(prev,curr,sizeof(T));
+                        moved = true;
+                        continue;
+
+                    case __Zero__:
+                    case Negative:
+                        goto DONE;
+                }
+            }
+
+        DONE:
+            return moved;
+        }
+
+        template <typename COMPARE> inline
+        bool updatedByNext(MutableType *curr, COMPARE &compare)
+        {
+            bool moved = false;
+            for(MutableType *next=curr+1;next<=most;++next,++curr)
+            {
+                switch( compare(*curr,*next) )
+                {
+                    case Positive:
+                        Memory::Stealth::Swap(next,curr,sizeof(T));
+                        moved = true;
+                        continue;
+
+                    case __Zero__:
+                    case Negative:
+                        goto DONE;
+                }
+            }
+        DONE:
+            return moved;
         }
 
 

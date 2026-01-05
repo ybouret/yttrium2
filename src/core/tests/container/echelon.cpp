@@ -49,15 +49,16 @@ Y_UTEST(ordered_echelon)
 
     for(size_t i=0;i<num;++i)
     {
+        Y_ASSERT( !stk.updated(stk.tree+i, Sign::Increasing<int>) );
         for(size_t j=0;j<4;++j)
-        {
-            const int newValue =ran.to<uint8_t>();
-            stk.update( & (stk.tree[i] = newValue), Sign::Increasing<int> );
-            std::cerr
-            << "@" << std::setw(4) << i  << ":"
-            << std::setw(4) << newValue
-            << " -> " << stk << std::endl;
-        }
+            {
+                const int  newValue   = ran.to<uint8_t>();
+                const bool wasUpdated = stk.updated( & (stk.tree[i] = newValue), Sign::Increasing<int> );
+                std::cerr
+                << "@" << std::setw(4) << i  << ":"
+                << std::setw(4) << newValue
+                << " -> " << stk << (wasUpdated ? "(*)" : "" ) << std::endl;
+            }
     }
 
 
