@@ -7,9 +7,11 @@
 
 #include "y/concurrent/member.hpp"
 #include "y/concurrent/type/subdivision.hpp"
+#include "y/container/matrix/coord.hpp"
 
 namespace Yttrium
 {
+    
     namespace Concurrent
     {
         namespace Divide
@@ -36,7 +38,8 @@ namespace Yttrium
                 size_t getI(const size_t k) const noexcept;                 //!< \param k valid index \return row index from k
                 size_t getK(const size_t i) const noexcept;                 //!< \param i row index   \return max k for i-th row
                 size_t getJ(const size_t k, const size_t i) const noexcept; //!< \param k valid indx \param i matching row index \return column index
-                
+
+                MatrixCoord operator()(const size_t k) const noexcept;
 
 
                 const size_t n;        //!< n x n array

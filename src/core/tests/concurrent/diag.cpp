@@ -4,6 +4,8 @@
 #include "y/utest/run.hpp"
 #include "y/string/env/convert.hpp"
 
+#include "y/calculus/alignment.hpp"
+#include "y/format/hexadecimal.hpp"
 
 using namespace Yttrium;
 
@@ -13,11 +15,28 @@ using namespace Yttrium;
 Y_UTEST(concurrent_diag)
 {
 
-    const size_t n = EnvironmentConvert::To<size_t>("n",10);
+    const size_t nmin = EnvironmentConvert::To<size_t>("nmin",1);
+    const size_t nmax = EnvironmentConvert::To<size_t>("nmax",10);
 
-    Concurrent::Divide::UpperDiagonalTile udt(1,1,n);
 
+    for(size_t n=nmin;n<=nmax;++n)
+    {
+        std::cerr << "n=" << n << std::endl;
+        Concurrent::Divide::UpperDiagonalTile udt(1,0,n);
+        size_t k = 0;
+        for(size_t i=1;i<=n;++i)
+        {
+            for(size_t j=i;j<=n;++j)
+            {
+                ++k; Y_ASSERT(k<=udt.kNumber);
+                const MatrixCoord p = udt(k);
+                Y_ASSERT(p.r == i);
+                Y_ASSERT(p.c == j);
+            }
+        }
+    }
 
+    
 
 }
 Y_UDONE()

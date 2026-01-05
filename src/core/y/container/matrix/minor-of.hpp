@@ -11,5 +11,5 @@ namespace Yttrium
     Y_Shallow_Decl(MinorOf); //!< alias
 }
 
-#endif
+#endif // !Y_Matrix_Minor_Included
 

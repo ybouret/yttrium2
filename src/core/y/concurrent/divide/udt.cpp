@@ -3,6 +3,7 @@
 #include "y/calculus/isqrt.hpp"
 #include "y/calculus/alignment.hpp"
 
+
 namespace Yttrium
 {
     namespace Concurrent
@@ -26,7 +27,8 @@ namespace Yttrium
             kLength( part<size_t>(kNumber, Coerce(kOffset) ) ),
             kUtmost( kOffset + kLength - 1 )
             {
-                
+
+
             }
 
             bool UpperDiagonalTile:: isEmpty() const noexcept
@@ -55,6 +57,11 @@ namespace Yttrium
                 return im1 + k-getK(im1);
             }
 
+            MatrixCoord UpperDiagonalTile:: operator()(const size_t k) const noexcept
+            {
+                const size_t i = getI(k);
+                return MatrixCoord(i,getJ(k,i));
+            }
 
 
         }
