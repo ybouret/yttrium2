@@ -55,10 +55,10 @@ namespace Yttrium
                 const size_t B;        //!< 1 + 2*n*
                 const size_t B2;       //!< B & B
                 const size_t kNumber;  //!< n*(n+1)/2
-                const size_t kOffset;  //!< initial k
-                const size_t kLength;  //!< number of indices
-                const size_t kUtmost;  //!< utmost  k
-                
+                const size_t kOffset;  //!< initial valid k
+                const size_t kLength;  //!< number of indices, 0 meanms empty
+                const size_t kUtmost;  //!< utmost  valid k
+
             private:
                 Y_Disable_Copy_And_Assign(UpperDiagonalTile); //!< discarding
             };
