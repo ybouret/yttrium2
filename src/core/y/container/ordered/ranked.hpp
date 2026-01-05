@@ -11,6 +11,7 @@
 #include "y/type/args.hpp"
 #include "y/core/display.hpp"
 #include "y/type/sign.hpp"
+#include "y/sorting/test.hpp"
 
 namespace Yttrium
 {
@@ -103,6 +104,7 @@ namespace Yttrium
                         continue;
                     case __Zero__:
                     case Negative:
+                        assert( Sorting::Test::AccordingTo(compare,tree,size) );
                         return;
                 }
             }
