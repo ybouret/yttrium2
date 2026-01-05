@@ -32,6 +32,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             Y_Args_Declare_Spec(bool,Type); //!< aliases
+            typedef bool ReturnType;        //!< alias
             static const System::AtExit::Longevity                    LifeTime = LifeTimeOf::IOBits; //!< lifetime
             static const char * const                                 CallSign;                      //!< "Information::Bit"
             typedef Protean::WarpedCacheOf<IOBit,MultiThreadedHandle> Cache;                         //!< alias
