@@ -183,13 +183,13 @@ namespace Yttrium
             {
                 if( updatedByPrev(curr,compare) ) return true;
                 if( updatedByNext(curr,compare) ) return true;
-                assert( sanity(compare) );
             }
             catch(...)
             {
                 free();
                 throw;
             }
+            assert( sanity(compare) );
             return false;
 
         }

@@ -220,14 +220,13 @@ Y_UTEST(calculus_gap33)
     {
         const String fn = argv[1];
         GZip::Input  inp(fn);
-        OutputFile   out("hgap33.txt");
+        OutputFile   out("hgaps33.txt");
         {
             String line;
             size_t count = 0;
             while( inp.gets(line) )
             {
                 const uint64_t curr = Decode(line);
-                //std::cerr << curr << std::endl;
                 ++count;
                 switch(count)
                 {
@@ -258,6 +257,7 @@ Y_UTEST(calculus_gap33)
 
                 last = curr;
             }
+            std::cerr << "count=" << count << std::endl;
         }
     }
 
