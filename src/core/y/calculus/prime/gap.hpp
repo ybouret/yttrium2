@@ -10,11 +10,10 @@ namespace Yttrium
 {
     namespace Prime
     {
-
+        //! Gap between consecutive Prime Numbers
         struct Gap
         {
-            static const uint32_t Lower = 3;
-
+            static const uint32_t Lower = 3; //!< lower odd value
         };
     }
 

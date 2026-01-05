@@ -9,14 +9,34 @@
 
 namespace Yttrium
 {
+    //__________________________________________________________________________
+    //
+    //
+    //
+    //! helper to store row/colum indices
+    //
+    //
+    //__________________________________________________________________________
     class MatrixCoord
     {
     public:
-        MatrixCoord(const size_t i, const size_t j)  noexcept; //!<
-        ~MatrixCoord()                               noexcept; //!<
-        MatrixCoord(const MatrixCoord &)             noexcept; //!<
-        MatrixCoord & operator=(const MatrixCoord &) noexcept; //!<
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
+        MatrixCoord(const size_t i, const size_t j)  noexcept; //!< setup \param i row \param j column
+        ~MatrixCoord()                               noexcept; //!< cleanup
+        MatrixCoord(const MatrixCoord &)             noexcept; //!< duplicate
+        MatrixCoord & operator=(const MatrixCoord &) noexcept; //!< assign \return *this
 
+        //______________________________________________________________________
+        //
+        //
+        // Members
+        //
+        //______________________________________________________________________
         size_t r; //!< row index
         size_t c; //!< column index
     };

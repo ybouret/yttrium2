@@ -17,6 +17,14 @@ namespace Yttrium
         namespace Divide
         {
 
+            //_________________________________________________________________
+            //
+            //
+            //
+            //! tile of an upper diagonal matrix
+            //
+            //
+            //__________________________________________________________________
             class UpperDiagonalTile : public Subdivision
             {
             public:
@@ -25,7 +33,7 @@ namespace Yttrium
                 /**
                  \param mySize size of the group
                  \param myRank rank in the group
-                 \param extent extent
+                 \param extent extent is the size of the matrix
                  */
                 explicit UpperDiagonalTile(const size_t  mySize,
                                            const size_t  myRank,
@@ -39,6 +47,7 @@ namespace Yttrium
                 size_t getK(const size_t i) const noexcept;                 //!< \param i row index   \return max k for i-th row
                 size_t getJ(const size_t k, const size_t i) const noexcept; //!< \param k valid indx \param i matching row index \return column index
 
+                //! \param k valid index \return associated matrix coordinates
                 MatrixCoord operator()(const size_t k) const noexcept;
 
 
@@ -51,7 +60,7 @@ namespace Yttrium
                 const size_t kUtmost;  //!< utmost  k
                 
             private:
-                Y_Disable_Copy_And_Assign(UpperDiagonalTile);
+                Y_Disable_Copy_And_Assign(UpperDiagonalTile); //!< discarding
             };
 
         }
