@@ -35,6 +35,7 @@ namespace Yttrium
             Y_LifeTime(ObjectFactory)       /*!< for Object::Factory         */,
             Y_LifeTime(RTTI)                /*!< for System::RTTI            */,
             Y_LifeTime(IOChars)             /*!< for IO::Char                */,
+            Y_LifeTime(IOBits)              /*!< for IOBits                  */,
             Y_LifeTime(ApexMemory)          /*!< for Apex::Archon            */,
             Y_LifeTime(LocalFS)             /*!< for  LocalFS                */,
             Y_LifeTime(JiveChars)           /*!< for Jive::Char              */,
@@ -45,5 +46,5 @@ namespace Yttrium
     };
 }
 
-#endif
+#endif // !Y_Concurrent_Life_Time_Included
 

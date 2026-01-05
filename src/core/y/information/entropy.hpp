@@ -49,7 +49,7 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            void        ldz() noexcept; //!< reset
+            void        ldz()                  noexcept; //!< reset
             long double operator()(void) const noexcept; //!< \return current entropy
 
         private:
@@ -60,4 +60,4 @@ namespace Yttrium
 }
 
 
-#endif
+#endif // !Y_Information_Entropy_Included

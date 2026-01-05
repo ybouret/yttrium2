@@ -58,6 +58,5 @@ namespace Yttrium
 }
 
 
-#endif
-
+#endif // !Y_Stream_IO_Chars_Included
 

@@ -1,9 +1,9 @@
+
 //! \file
 
-#ifndef Y_Stream_IO_Char_Included
-#define Y_Stream_IO_Char_Included 1
+#ifndef Y_Information_IOBit_Included
+#define Y_Information_IOBit_Included 1
 
-#include "y/core/setup.hpp"
 #include "y/type/args.hpp"
 #include "y/concurrent/life-time.hpp"
 #include "y/protean/cache/warped.hpp"
@@ -12,17 +12,17 @@
 namespace Yttrium
 {
 
-    namespace IO
+    namespace Information
     {
         //______________________________________________________________________
         //
         //
         //
-        //! node for Chars, managed by Inventory
+        //!
         //
         //
         //______________________________________________________________________
-        class Char
+        class IOBit
         {
         public:
             //__________________________________________________________________
@@ -31,11 +31,10 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            Y_Args_Declare_Spec(uint8_t,Type); //!< aliases
-            typedef uint8_t ReturnType;        //!< alias
-            static const System::AtExit::Longevity                   LifeTime = LifeTimeOf::IOChars; //!< lifetime
-            static const char * const                                CallSign;                       //!< "IO::Char"
-            typedef Protean::WarpedCacheOf<Char,MultiThreadedHandle> Cache;                          //!< alias
+            Y_Args_Declare_Spec(bool,Type); //!< aliases
+            static const System::AtExit::Longevity                    LifeTime = LifeTimeOf::IOBits; //!< lifetime
+            static const char * const                                 CallSign;                      //!< "Information::Bit"
+            typedef Protean::WarpedCacheOf<IOBit,MultiThreadedHandle> Cache;                         //!< alias
 
             //__________________________________________________________________
             //
@@ -43,10 +42,10 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            Char(ParamType)    noexcept;             //!< setup
-            Char(const Char &) noexcept;             //!< duplicate
-            ~Char() noexcept;                        //!< cleanup
-            Char & operator=(const Char &) noexcept; //!< assign \return *this
+            IOBit(ParamType)                 noexcept; //!< setup
+            IOBit(const IOBit &)             noexcept; //!< duplicate
+            ~IOBit()                         noexcept; //!< cleanup
+            IOBit & operator=(const IOBit &) noexcept; //!< assign \return *this
 
             //__________________________________________________________________
             //
@@ -64,14 +63,14 @@ namespace Yttrium
             // Members
             //
             //__________________________________________________________________
-            Char *      next; //!< for list
-            Char *      prev; //!< for list
+            IOBit *  next; //!< for list
+            IOBit *  prev; //!< for list
         private:
-            MutableType code; //!< content
+            bool     code; //!< content
         };
     }
 
 }
 
-#endif // !Y_Stream_IO_Char_Included
+#endif // !Y_Information_IOBit_Included
 

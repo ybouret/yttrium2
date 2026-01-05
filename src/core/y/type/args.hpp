@@ -48,5 +48,5 @@ typedef typename TypeTraits<T>::ParamType Param##TYPE
 Y_Args_Expose_Spec(T,TYPE);                  \
 typedef TypeTraits<T>::ParamType Param##TYPE
 
-#endif
+#endif // !Y_Type_Args_Included
 
