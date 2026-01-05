@@ -59,6 +59,7 @@ const uint64_t Y_WallTime_Mark64 = (Y_WallTime_DoMark ? Yttrium::System::WallTim
 #define Y_WallTime_Gain(U64PTR) \
 do { if(Y_WallTime_DoMark) (*U64PTR) += Yttrium::System::WallTime::Ticks() - Y_WallTime_Mark64; } while(false)
 
+//! update VAR by ticks of CODE
 #define Y_WallTime_Update(VAR,CODE) \
 /**/    do { \
 /**/        const uint64_t __mark__ = Yttrium::System::WallTime::Ticks(); \

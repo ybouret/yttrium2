@@ -16,16 +16,17 @@ namespace Yttrium
         struct IntegerSquareRoot
         {
 
-            static const uint8_t  MaxResult = 255;
-            static const uint16_t MaxValue_ = MaxResult;
-            static const uint16_t MaxSquare = MaxValue_ * MaxValue_;
-            static const uint64_t TableLast = MaxSquare;
-            static const uint64_t TableSize = TableLast + 1;
-            static const uint8_t  Table[TableSize];
+            static const uint8_t  MaxResult = 255;                   //!< precomputed MaxResult^2
+            static const uint16_t MaxValue_ = MaxResult;             //!< alias to 16-bits
+            static const uint16_t MaxSquare = MaxValue_ * MaxValue_; //!< alias
+            static const uint64_t TableLast = MaxSquare;             //!< alias to 64-bits
+            static const uint64_t TableSize = TableLast + 1;         //!< table size
+            static const uint8_t  Table[TableSize];                  //!< precomputed values
 
             static void throwNegativeArg(); //!< error on negative input
 
         private:
+            //! unsigned generic algorithm \param s s>=2 \return isqrt(s)
             template <typename T> static inline
             T ComputeAbove2_(const T s) noexcept
             {
@@ -44,7 +45,7 @@ namespace Yttrium
             template <typename T> static inline
             T ComputeRegular(const T s) noexcept
             {
-                return s<=1 ? s : ComputeAbove2_<T>(s);
+                return (s<=1) ? s : ComputeAbove2_<T>(s);
             }
 
             //! table unsigned algorithm \param s argument \return isqrt(s)
@@ -52,7 +53,7 @@ namespace Yttrium
             T ComputeByTable(const T s) noexcept
             {
                 const uint64_t s64 = s;
-                return s64 <= TableLast ? Table[s64] : ComputeAbove2_<T>(s);
+                return (s64 <= TableLast) ? Table[s64] : ComputeAbove2_<T>(s);
             }
             
             //! unsigned prototype \param s argument \return isqrt
