@@ -213,20 +213,43 @@ uint64_t Decode(const String &line)
     return p;
 }
 
+#include "y/calculus/prime/gap.hpp"
+
 Y_UTEST(calculus_gap33)
 {
     if(argc<=1) return 0;
 
-    const String fn = argv[1];
-    GZip::Input  fp(fn);
+    uint64_t last = 0;
     {
-        String line;
-        size_t count = 0;
-        while( fp.gets(line) )
+        const String fn = argv[1];
+        GZip::Input  fp(fn);
         {
-            std::cerr << Decode(line) << std::endl;
-            ++count;
-            if(count>=5) break;
+            String line;
+            size_t count = 0;
+            while( fp.gets(line) )
+            {
+                const uint64_t curr = Decode(line);
+                std::cerr << curr << std::endl;
+                ++count;
+                switch(count)
+                {
+                    case 1:
+                        Y_ASSERT(0==last);
+                        Y_ASSERT(Prime::Gap::Lower == curr);
+                        last = curr;
+                        continue;
+
+                    default:
+                        Y_ASSERT(curr>last);
+                        break;
+                }
+                const uint64_t g = curr - last;
+                std::cerr << "\tg=" << g << " (" << last << " -> " << curr << ")" << std::endl;
+                Y_ASSERT( 0 == (g&1) );
+
+                if(count>=500) break;
+                last = curr;
+            }
         }
     }
 
