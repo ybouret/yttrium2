@@ -31,7 +31,8 @@ namespace Yttrium
 
                 virtual ~UpperDiagonalTile() noexcept;
 
-                size_t getI(const size_t k);
+                size_t getI(const size_t k) const noexcept;
+                
 
                 const size_t n;        //!< n x n array
                 const size_t B;        //!< 1 + 2*n*
@@ -39,7 +40,7 @@ namespace Yttrium
                 const size_t kOffset;  //!< initial k
                 const size_t kLength;  //!< number of indices
                 const size_t kUtmost;  //!< utmost  k
-
+                
             private:
                 Y_Disable_Copy_And_Assign(UpperDiagonalTile);
             };

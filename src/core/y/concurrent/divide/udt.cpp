@@ -1,5 +1,7 @@
 
 #include "y/concurrent/divide/udt.hpp"
+#include "y/calculus/isqrt.hpp"
+#include "y/calculus/alignment.hpp"
 
 namespace Yttrium
 {
@@ -26,6 +28,16 @@ namespace Yttrium
                 
             }
 
+
+            size_t UpperDiagonalTile:: getI(const size_t k) const noexcept
+            {
+                assert(k>=1);
+                assert(k<=kNumber);
+                const size_t Delta = B*B - (k<<3);
+                const size_t twice = (B - IntegerSquareRoot(Delta));
+                const size_t align = Alignment::On<2>::Ceil(twice);
+                return align>>1;
+            }
 
         }
     }
