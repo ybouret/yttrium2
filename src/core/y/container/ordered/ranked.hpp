@@ -62,7 +62,7 @@ namespace Yttrium
         }
 
 
-
+        //! cleanup
         inline virtual ~Ranked() noexcept
         {
             free();
@@ -88,6 +88,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
 
+        //! push a new item \param value new value \param compare comparison
         template <typename COMPARE>
         inline void push(ParamType value, COMPARE & compare)
         {
@@ -158,6 +159,7 @@ namespace Yttrium
             Coerce(most) = 0;
         }
 
+        //! steal content \param from another
         inline void steal(Ranked &from) noexcept
         {
             assert(0==size); assert(0==most);
@@ -169,6 +171,7 @@ namespace Yttrium
             from.most = 0;
         }
 
+        //! update \param curr changed value \param compare comparison
         template <typename COMPARE>
         void update(MutableType *curr, COMPARE &compare)
         {
@@ -220,15 +223,19 @@ namespace Yttrium
 
         }
 
-
-
-
-        MutableType * const tree;
-        MutableType * const most;
+        //______________________________________________________________________
+        //
+        //
+        // Members
+        //
+        //______________________________________________________________________
+        MutableType * const tree; //!< head item
+        MutableType * const most; //!< tail item (0 if size==0)
 
     private:
-        Y_Disable_Copy_And_Assign(Ranked);
+        Y_Disable_Copy_And_Assign(Ranked); //!< discarding
 
+        //! mostly to debug \param compare comparison \return sanity check
         template <typename COMPARE>
         inline bool sanity(COMPARE &compare) const noexcept {
             return Sorting::Test::AccordingTo(compare,tree,size) ;
