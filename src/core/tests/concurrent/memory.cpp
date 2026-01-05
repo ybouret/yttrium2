@@ -56,7 +56,7 @@ namespace
             }
 
             Vector<apq> qvec;
-            for(size_t i=5+ran.leq(5);i>0;--i)
+            for(size_t i=5+ran.leq<size_t>(5);i>0;--i)
             {
                 qvec << apq(ran,ran.in<size_t>(1,10),ran.in<size_t>(1,10));
             }
