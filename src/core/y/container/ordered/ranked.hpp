@@ -89,7 +89,7 @@ namespace Yttrium
         //______________________________________________________________________
 
         template <typename COMPARE>
-        inline void push(ParamType value, COMPARE &compare)
+        inline void push(ParamType value, COMPARE & compare)
         {
             assert(size<capacity);
             assert( Memory::Stealth::Are0(tree+size,sizeof(T)));
@@ -99,22 +99,30 @@ namespace Yttrium
             new (curr) Type(value);
 
             // update structure
-            most = curr;
+            Coerce(most) = curr;
             ++Coerce(size);
 
-            // in place sorting
-            for(MutableType *prev=curr-1;prev>=tree;--prev,--curr)
+            try
             {
-                switch( compare(*prev,*curr) )
+                // in place sorting
+                for(MutableType *prev=curr-1;prev>=tree;--prev,--curr)
                 {
-                    case Positive:
-                        Memory::Stealth::Swap(prev,curr,sizeof(T));
-                        continue;
-                    case __Zero__:
-                    case Negative:
-                        assert( Sorting::Test::AccordingTo(compare,tree,size) );
-                        return;
+                    switch( compare(*prev,*curr) )
+                    {
+                        case Positive:
+                            Memory::Stealth::Swap(prev,curr,sizeof(T));
+                            continue;
+                        case __Zero__:
+                        case Negative:
+                            assert( sanity(compare) );
+                            return;
+                    }
                 }
+            }
+            catch(...)
+            {
+                free();
+                throw;
             }
         }
 
@@ -124,19 +132,20 @@ namespace Yttrium
         {
             assert(size>0);
             assert(0!=tree);
-            assert(tree+size=most+1);
+            assert(tree+size==most+1);
             return *most;
         }
 
         //! \return copy of removed top object
-        inline Type pop() noexcept
+        inline Type pop()
         {
             assert(size>0);
             assert(0!=tree);
-            assert(tree+size=most+1);
+            assert(tree+size==most+1);
             ConstType result = *most;
             (void) Memory::Stealth::DestructedAndZeroed(most);
-            if( --Coerce(size) <= 0 ) most = 0; else --most;
+            if( --Coerce(size) <= 0 ) Coerce(most) = 0; else --Coerce(most);
+            return result;
         }
 
 
@@ -146,15 +155,85 @@ namespace Yttrium
             assert( Good(tree,size) );
             while(size>0)
                 Memory::Stealth::DestructedAndZeroed( &tree[--Coerce(size)] );
-            most = 0;
+            Coerce(most) = 0;
         }
 
-    protected:
+        inline void steal(Ranked &from) noexcept
+        {
+            assert(0==size); assert(0==most);
+            assert(capacity>=from.size);
+            Memory::Stealth::Copy(tree,from.tree, (Coerce(size)=from.size) * sizeof(T));
+            most = tree + size;
+            Coerce(from.size) = 0;
+            --Coerce(most);
+            from.most = 0;
+        }
+
+        template <typename COMPARE>
+        void update(MutableType *curr, COMPARE &compare)
+        {
+            assert(curr>=tree);
+            assert(curr<=most);
+
+            {
+                bool moved = false;
+                for(MutableType *prev=curr-1;prev>=tree;--prev,--curr)
+                {
+                    switch( compare(*prev,*curr) )
+                    {
+                        case Positive:
+                            Memory::Stealth::Swap(prev,curr,sizeof(T));
+                            moved = true;
+                            continue;
+
+                        case __Zero__:
+                        case Negative:
+                            if(!moved)
+                                goto NEXT;
+                            else
+                            {
+                                assert( sanity(compare) );
+                                return;
+                            }
+                    }
+                }
+            }
+
+            
+        NEXT:
+            for(MutableType *next=curr+1;next<=most;++next,++curr)
+            {
+                switch( compare(*curr,*next) )
+                {
+                    case Positive:
+                        Memory::Stealth::Swap(next,curr,sizeof(T));
+                        continue;
+
+                    case __Zero__:
+                    case Negative:
+                        assert( sanity(compare) );
+                        return;
+                }
+            }
+
+            assert( sanity(compare) );
+
+        }
+
+
+
+
         MutableType * const tree;
-        MutableType *       most;
+        MutableType * const most;
 
     private:
         Y_Disable_Copy_And_Assign(Ranked);
+
+        template <typename COMPARE>
+        inline bool sanity(COMPARE &compare) const noexcept {
+            return Sorting::Test::AccordingTo(compare,tree,size) ;
+        }
+
 
     };
 
