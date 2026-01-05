@@ -213,6 +213,9 @@ Y_UTEST(calculus_gap33)
 {
     if(argc<=1) return 0;
 
+    System::WallTime chrono;
+    uint64_t         old64 = chrono.Ticks();
+
     uint64_t last = 0;
     {
         const String fn = argv[1];
@@ -224,7 +227,7 @@ Y_UTEST(calculus_gap33)
             while( inp.gets(line) )
             {
                 const uint64_t curr = Decode(line);
-                std::cerr << curr << std::endl;
+                //std::cerr << curr << std::endl;
                 ++count;
                 switch(count)
                 {
@@ -239,12 +242,20 @@ Y_UTEST(calculus_gap33)
                         break;
                 }
                 const uint64_t g = curr - last;
-                std::cerr << "\tg=" << g << " (" << last << " -> " << curr << ")" << std::endl;
+                //std::cerr << "\tg=" << g << " (" << last << " -> " << curr << ")" << std::endl;
                 Y_ASSERT( 0 == (g&1) );
                 const uint64_t d = g>>1;
-                out << Hexadecimal(d,Concise).c_str() + 2<< "\n";
+                out << Hexadecimal(d,Concise).c_str() + 2 << '\n';
 
-                if(count>=500) break;
+                {
+                    const uint64_t now64 = chrono.Ticks();
+                    if( chrono( now64-old64) >= 1.0L )
+                    {
+                        old64 = now64;
+                        (std::cerr << '.').flush();
+                    }
+                }
+
                 last = curr;
             }
         }
