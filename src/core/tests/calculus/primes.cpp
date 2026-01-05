@@ -91,12 +91,6 @@ namespace
         {
             const Concurrent::Divide::Tile1D<uint64_t> tile(ctx,delta,Lower);
 
-#if 0
-            Concurrent::Split::In1D       in1d(delta);
-            const Concurrent::Split::Zone zone = in1d(ctx,Lower);
-            const uint64_t                last = (zone.offset + zone.length - One);
-#endif
-
             const uint64_t last = tile.utmost;
             { Y_Giant_Lock(); std::cerr << "@" << ctx << " : zone=" << tile << " -> "<< last << std::endl; }
 
@@ -222,11 +216,12 @@ Y_UTEST(calculus_gap33)
     uint64_t last = 0;
     {
         const String fn = argv[1];
-        GZip::Input  fp(fn);
+        GZip::Input  inp(fn);
+        OutputFile   out("hgap33.txt");
         {
             String line;
             size_t count = 0;
-            while( fp.gets(line) )
+            while( inp.gets(line) )
             {
                 const uint64_t curr = Decode(line);
                 std::cerr << curr << std::endl;
@@ -246,6 +241,8 @@ Y_UTEST(calculus_gap33)
                 const uint64_t g = curr - last;
                 std::cerr << "\tg=" << g << " (" << last << " -> " << curr << ")" << std::endl;
                 Y_ASSERT( 0 == (g&1) );
+                const uint64_t d = g>>1;
+                out << Hexadecimal(d,Concise).c_str() + 2<< "\n";
 
                 if(count>=500) break;
                 last = curr;
