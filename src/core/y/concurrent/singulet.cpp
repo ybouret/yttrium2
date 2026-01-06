@@ -24,7 +24,7 @@ namespace Yttrium
         {
             try
             {
-                if(prefix) std::cerr << prefix;
+                if(prefix) std::cerr << '[' << prefix << ']';
                 std::cerr << '[' << std::setw(24) << identifier << ' ' << '@' << std::setw(5) <<  longevity << ' ' << ']';
                 std::cerr << std::endl;
             }

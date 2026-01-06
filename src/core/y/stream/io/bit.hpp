@@ -1,8 +1,8 @@
 
 //! \file
 
-#ifndef Y_Information_IOBit_Included
-#define Y_Information_IOBit_Included 1
+#ifndef Y_IO_Bit_Included
+#define Y_IO_Bit_Included 1
 
 #include "y/type/args.hpp"
 #include "y/concurrent/life-time.hpp"
@@ -12,7 +12,7 @@
 namespace Yttrium
 {
 
-    namespace Information
+    namespace IO
     {
         //______________________________________________________________________
         //
@@ -22,7 +22,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class IOBit
+        class Bit
         {
         public:
             //__________________________________________________________________
@@ -33,9 +33,9 @@ namespace Yttrium
             //__________________________________________________________________
             Y_Args_Declare_Spec(bool,Type); //!< aliases
             typedef bool ReturnType;        //!< alias
-            static const System::AtExit::Longevity                    LifeTime = LifeTimeOf::IOBits; //!< lifetime
-            static const char * const                                 CallSign;                      //!< "Information::Bit"
-            typedef Protean::WarpedCacheOf<IOBit,MultiThreadedHandle> Cache;                         //!< alias
+            static const System::AtExit::Longevity                  LifeTime = LifeTimeOf::IOBits; //!< lifetime
+            static const char * const                               CallSign;                      //!< "IO::Bits"
+            typedef Protean::WarpedCacheOf<Bit,MultiThreadedHandle> Cache;                         //!< alias
 
             //__________________________________________________________________
             //
@@ -43,10 +43,10 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            IOBit(ParamType)                 noexcept; //!< setup
-            IOBit(const IOBit &)             noexcept; //!< duplicate
-            ~IOBit()                         noexcept; //!< cleanup
-            IOBit & operator=(const IOBit &) noexcept; //!< assign \return *this
+            Bit(ParamType)               noexcept; //!< setup
+            Bit(const Bit &)             noexcept; //!< duplicate
+            ~Bit()                       noexcept; //!< cleanup
+            Bit & operator=(const Bit &) noexcept; //!< assign \return *this
 
             //__________________________________________________________________
             //
@@ -64,14 +64,14 @@ namespace Yttrium
             // Members
             //
             //__________________________________________________________________
-            IOBit *  next; //!< for list
-            IOBit *  prev; //!< for list
+            Bit *  next; //!< for list
+            Bit *  prev; //!< for list
         private:
-            bool     code; //!< content
+            bool   code; //!< content
         };
     }
 
 }
 
-#endif // !Y_Information_IOBit_Included
+#endif // !Y_IO_Bit_Included
 

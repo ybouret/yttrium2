@@ -136,6 +136,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(stream_gzip_read);
     Y_UTEST(stream_gzip_write);
     Y_UTEST(stream_misc);
+    Y_UTEST(stream_io_bits);
 
 
     Y_UTEST(sorting_heap);

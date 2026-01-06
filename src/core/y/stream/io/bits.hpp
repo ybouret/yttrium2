@@ -2,10 +2,10 @@
 
 //! \file
 
-#ifndef Y_Information_IOBits_Included
-#define Y_Information_IOBits_Included 1
+#ifndef Y_IO_Bits_Included
+#define Y_IO_Bits_Included 1
 
-#include "y/information/iobit.hpp"
+#include "y/stream/io/bit.hpp"
 #include "y/protean/proto/list.hpp"
 #include "y/container.hpp"
 #include "y/threading/multi-threaded-object.hpp"
@@ -13,7 +13,7 @@
 
 namespace Yttrium
 {
-    namespace Information
+    namespace IO
     {
 
         //______________________________________________________________________
@@ -22,7 +22,7 @@ namespace Yttrium
         //! prototype
         //
         //______________________________________________________________________
-        typedef Protean::ListProto<IOBit,IOBit::Cache &,Container,MultiThreadedObject> IOBitsProto;
+        typedef Protean::ListProto<Bit,Bit::Cache &,Container,MultiThreadedObject> BitsProto;
 
 
         //______________________________________________________________________
@@ -33,7 +33,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class IOBits : public IOBitsProto, public Recyclable
+        class Bits : public BitsProto, public Recyclable
         {
         public:
             //__________________________________________________________________
@@ -42,10 +42,10 @@ namespace Yttrium
             // C++
             //
             //______________________________________________________________________
-            explicit IOBits();                   //!< setup
-            virtual ~IOBits() noexcept;          //!< cleanup
-            IOBits(const IOBits & );             //!< duplicate
-            IOBits & operator=(const IOBits & ); //!< assign \return *this
+            explicit Bits();                   //!< setup
+            virtual ~Bits() noexcept;          //!< cleanup
+            Bits(const Bits & );             //!< duplicate
+            Bits & operator=(const Bits & ); //!< assign \return *this
 
             //__________________________________________________________________
             //
@@ -59,5 +59,5 @@ namespace Yttrium
 }
 
 
-#endif // !Y_Information_IOBits_Included
+#endif // !Y_IO_Bits_Included
 

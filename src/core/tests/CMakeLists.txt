@@ -170,6 +170,8 @@ Y_UTEST(stream:xmlog)
 Y_UTEST(stream:gzip:read)
 Y_UTEST(stream:gzip:write)
 Y_UTEST(stream:misc)
+Y_UTEST(stream:io:bits)
+
 
 #sort
 Y_UTEST(sorting:heap)
