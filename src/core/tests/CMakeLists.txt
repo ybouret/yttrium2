@@ -198,6 +198,7 @@ Y_UTEST(info:stream)
 Y_UTEST(info:arc4)
 Y_UTEST(info:bwt_mtf)
 Y_UTEST(info:entropy)
+Y_UTEST(info:alphabet)
 
 #utf8
 Y_UTEST(utf8:api)
