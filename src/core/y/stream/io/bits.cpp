@@ -27,6 +27,23 @@ namespace Yttrium
         }
 
         void Bits:: free() noexcept { freeList_(); }
+
+        std::ostream & operator<<(std::ostream &os, const Bits &bits)
+        {
+            os << '[';
+            for(const Bit *b=bits->head;b;b=b->next)
+            {
+                os << ( (**b) ? '1' : '0' );
+            }
+            return os << ']';
+        }
+
+        void Bits:: to(Bits &pool) noexcept
+        {
+            pool->mergeTail( **this );
+        }
+
+
     }
 
 }
