@@ -43,7 +43,12 @@ namespace Yttrium
             pool->mergeTail( **this );
         }
 
-
+        Bits & Bits:: skip(size_t nbit, Bits &pool) noexcept
+        {
+            assert(list.size>=nbit);
+            while(nbit-- > 0) pool->pushTail( list.popHead() );
+            return *this;
+        }
     }
 
 }

@@ -66,6 +66,9 @@ namespace Yttrium
             //__________________________________________________________________
             void to(Bits &pool) noexcept;
 
+            Bits & skip(size_t nbit, Bits &pool) noexcept;
+
+
 
             template <typename T> inline
             Bits & push(T word, size_t nbit, Bits &pool)
@@ -90,18 +93,37 @@ namespace Yttrium
             template <typename T> inline
             T pop(const size_t nbit, Bits &pool) noexcept
             {
+                assert(nbit>0);
+                assert(nbit<=sizeof(T)*8);
+                assert(list.size>=nbit);
+
                 static const T one = 0x1;
-                assert(nbit>0); assert(nbit<=sizeof(T)*8);
-                Bits & self = *this; assert(self->size>=nbit);
-                T      res  = 0;
+                T              res = 0;
                 for(size_t i=0;i<nbit;++i)
                 {
-                    if( **(pool->pushTail( self->popHead() )) )
+                    if( **(pool->pushTail( list.popHead() )) )
                         res |= (one<<i);
                 }
                 return res;
             }
 
+            template <typename T> inline
+            T peek(const size_t nbit) const noexcept
+            {
+                assert(nbit>0);
+                assert(nbit<=sizeof(T)*8);
+                assert(list.size>=nbit);
+                static const T one = 0x1;
+                T              res = 0;
+                const Bit     *bit = list.head;
+                for(size_t i=0;i<nbit;++i,bit=bit->next)
+                {
+                    assert(bit);
+                    if(**bit)
+                        res |= (one<<i);
+                }
+                return res;
+            }
 
 
         };
