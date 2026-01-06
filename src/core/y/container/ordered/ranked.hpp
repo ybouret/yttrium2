@@ -173,7 +173,7 @@ namespace Yttrium
 
 
 
-        //! update \param curr changed value \param compare comparison
+        //! update \param curr changed value \param compare comparison \return true iff updated
         template <typename COMPARE>
         bool updated(MutableType * const curr, COMPARE &compare)
         {
@@ -212,6 +212,12 @@ namespace Yttrium
             return Sorting::Test::AccordingTo(compare,tree,size) ;
         }
 
+        //! update by looking at prev side
+        /**
+         \param curr current position
+         \param compare comparison
+         \return true iff updated
+         */
         template <typename COMPARE> inline
         bool updatedByPrev(MutableType *curr, COMPARE &compare)
         {
@@ -235,6 +241,12 @@ namespace Yttrium
             return moved;
         }
 
+        //! update by looking at next side
+        /**
+         \param curr current position
+         \param compare comparison
+         \return true iff updated
+         */
         template <typename COMPARE> inline
         bool updatedByNext(MutableType *curr, COMPARE &compare)
         {
@@ -247,7 +259,7 @@ namespace Yttrium
                         Memory::Stealth::Swap(next,curr,sizeof(T));
                         moved = true;
                         continue;
-
+                        
                     case __Zero__:
                     case Negative:
                         goto DONE;

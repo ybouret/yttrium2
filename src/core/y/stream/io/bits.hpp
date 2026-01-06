@@ -43,11 +43,11 @@ namespace Yttrium
             // C++
             //
             //______________________________________________________________________
-            explicit Bits();                   //!< setup
-            virtual ~Bits() noexcept;          //!< cleanup
+            explicit Bits();                 //!< setup
+            virtual ~Bits() noexcept;        //!< cleanup
             Bits(const Bits & );             //!< duplicate
             Bits & operator=(const Bits & ); //!< assign \return *this
-            Y_OSTREAM_PROTO(Bits);
+            Y_OSTREAM_PROTO(Bits);           //!< display
 
 
 
@@ -89,6 +89,13 @@ namespace Yttrium
             Bits & send(OutputStream &output, Bits &pool);
 
 
+            //! push a partial word
+            /**
+             \param word word to push
+             \param nbit 1<=nbit<=sizeof(word)*8
+             \param pool pool
+             \return *this
+             */
             template <typename T> inline
             Bits & push(T word, size_t nbit, Bits &pool)
             {
@@ -106,9 +113,21 @@ namespace Yttrium
                 return  self;
             }
 
+            //! push a  full word
+            /**
+             \param word word to push
+             \param pool pool
+             \return *this
+             */
             template <typename T> inline
             Bits & push(const T word, Bits &pool) { return push(word,sizeof(T)*8,pool); }
 
+            //! pop a partial word
+            /**
+             \param nbit 1<=nbit<=sizeof(T)*8
+             \param pool pool
+             \return result
+             */
             template <typename T> inline
             T pop(const size_t nbit, Bits &pool) noexcept
             {
@@ -126,12 +145,22 @@ namespace Yttrium
                 return res;
             }
 
+            //! pop a full word
+            /**
+             \param pool pool
+             \return result
+             */
             template <typename T> inline
-            T pop( Bits &pool) noexcept {
+            T pop(Bits &pool) noexcept {
                 return pop<T>( sizeof(T) * 8, pool);
             }
 
 
+            //! peek a partial word
+            /**
+             \param nbit 1<=nbit<=sizeof(T)*8
+             \return result
+             */
             template <typename T> inline
             T peek(const size_t nbit) const noexcept
             {
@@ -150,6 +179,7 @@ namespace Yttrium
                 return res;
             }
 
+            //! \return full word
             template <typename T> inline
             T peek() const noexcept
             {
