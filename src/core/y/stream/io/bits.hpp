@@ -10,6 +10,7 @@
 #include "y/container.hpp"
 #include "y/threading/multi-threaded-object.hpp"
 #include "y/ability/recyclable.hpp"
+#include "y/stream/output.hpp"
 
 namespace Yttrium
 {
@@ -64,10 +65,28 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            void to(Bits &pool) noexcept;
+            //! drop content into pool
+            /**
+             \param pool pool
+             \return emptied
+             */
+            Bits & to(Bits &pool)                noexcept;
 
+            //! skip bits
+            /**
+             \param nbit bits to skip
+             \param pool pool
+             \return skipped
+             */
             Bits & skip(size_t nbit, Bits &pool) noexcept;
 
+            //! send as many bytes as possible into output
+            /**
+             \param output output stream
+             \param pool   pool
+             \return *this
+             */
+            Bits & send(OutputStream &output, Bits &pool);
 
 
             template <typename T> inline
@@ -108,6 +127,12 @@ namespace Yttrium
             }
 
             template <typename T> inline
+            T pop( Bits &pool) noexcept {
+                return pop<T>( sizeof(T) * 8, pool);
+            }
+
+
+            template <typename T> inline
             T peek(const size_t nbit) const noexcept
             {
                 assert(nbit>0);
@@ -124,6 +149,13 @@ namespace Yttrium
                 }
                 return res;
             }
+
+            template <typename T> inline
+            T peek() const noexcept
+            {
+                return peek<T>( sizeof(T) * 8 );
+            }
+
 
 
         };

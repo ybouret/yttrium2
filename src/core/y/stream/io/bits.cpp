@@ -38,9 +38,10 @@ namespace Yttrium
             return os << ']';
         }
 
-        void Bits:: to(Bits &pool) noexcept
+        Bits & Bits:: to(Bits &pool) noexcept
         {
             pool->mergeTail( **this );
+            return *this;
         }
 
         Bits & Bits:: skip(size_t nbit, Bits &pool) noexcept
@@ -49,6 +50,18 @@ namespace Yttrium
             while(nbit-- > 0) pool->pushTail( list.popHead() );
             return *this;
         }
+
+        Bits & Bits:: send(OutputStream &fp, Bits &pool)
+        {
+            while(list.size>=8)
+                fp.write( (char) pop<uint8_t>(pool) );
+            
+
+            return *this;
+        }
+
+
+
     }
 
 }

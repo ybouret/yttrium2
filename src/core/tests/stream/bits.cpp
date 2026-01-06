@@ -1,6 +1,9 @@
 #include "y/stream/io/bits.hpp"
 #include "y/utest/run.hpp"
 #include "y/format/hexadecimal.hpp"
+#include "y/string.hpp"
+
+#include "y/stream/libc/output.hpp"
 
 using namespace Yttrium;
 
@@ -23,6 +26,23 @@ Y_UTEST(stream_io_bits)
         const uint16_t x = bits.peek<uint16_t>(i);
         std::cerr << Hexadecimal(x,Concise) << std::endl;
     }
+
+    bits.to(pool);
+    std::cerr << "#pool = " << pool->size << std::endl;
+
+    const String s = "Hello, World!";
+    for(size_t i=1;i<=s.size();++i)
+    {
+        bits.push<uint8_t>( s[i], pool);
+    }
+    std::cerr << bits << std::endl;
+    {
+        OutputFile fp("bits.dat");
+        bits.send(fp,pool);
+    }
+    std::cerr << "#pool = " << pool->size << std::endl;
+
+
 
 }
 Y_UDONE()
