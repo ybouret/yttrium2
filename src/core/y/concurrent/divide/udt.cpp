@@ -80,10 +80,11 @@ namespace Yttrium
             {
                 static Memory::Allocator & mgr = Object::AllocatorInstance();
                 if(kLength<=0) return;
-                const MatrixCoord ini = (*this)(kOffset);
-                const MatrixCoord end = (*this)(kUtmost);
-                Coerce(h) = end.r - ini.r + 1;
-                std::cerr << "\tini=" << ini << ", end=" << end << "=> h=" << h << ", #item=" << kLength << std::endl;
+                {
+                    const MatrixCoord ini = (*this)(kOffset);
+                    const MatrixCoord end = (*this)(kUtmost);
+                    Coerce(h) = end.r - ini.r + 1;
+                }
                 hseg = static_cast<UpperDiagonalSegment *>(wksp= mgr.acquire(wlen = h * sizeof(UpperDiagonalSegment)));
                 --hseg;
                 size_t                i=0; // segment index
@@ -95,7 +96,6 @@ namespace Yttrium
                     if(R!=r)
                     {
                         // change row
-                        if(s) { std::cerr << "\t\t" << *s << std::endl; }
                         r = R;
                         s = hseg + ++i; assert(i<=h);
                         Coerce(s->start.y) = r;
@@ -109,7 +109,6 @@ namespace Yttrium
                         ++Coerce(s->width);
                     }
                 }
-                assert(s); std::cerr << "\t\t" << *s << std::endl;
             }
 
             UpperDiagonalSegment & UpperDiagonalTile:: operator[](const size_t j) const noexcept

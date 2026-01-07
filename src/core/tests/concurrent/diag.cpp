@@ -1,6 +1,6 @@
 
 
-#include "y/concurrent/divide/udt.hpp"
+#include "y/concurrent/divide/udts.hpp"
 #include "y/utest/run.hpp"
 #include "y/string/env/convert.hpp"
 
@@ -42,11 +42,8 @@ Y_UTEST(concurrent_diag)
         for(size_t cpu=1;cpu<=cpus;++cpu)
         {
             std::cerr << "#cpu = " << cpu << std::endl;
-            for(size_t rank=0;rank<cpu;++rank)
-            {
-                Concurrent::Divide::UpperDiagonalTile udt(cpu,rank,n);
-                
-            }
+            Concurrent::Divide::UpperDiagonalTiles udts(cpu,n);
+
         }
 
     }
