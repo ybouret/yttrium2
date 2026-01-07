@@ -78,6 +78,14 @@ namespace
             }
         }
 
+        void callUDT(Lockable &sync, UDT &t)
+        {
+            {
+                Y_Lock(sync);
+                Y_Giant_Lock();
+                (std::cerr << "Apply::callUDT  " << t << " with #bytes=" << t.bytes << std::endl).flush();
+            }
+        }
 
 
 
@@ -156,8 +164,10 @@ Y_UTEST(concurrent_spawn)
         spawn(apply, & Apply::call2D );
     }
 
+    std::cerr << std::endl;
     {
-        Concurrent::Spawn<UDTS> spawn(st,10);
+        Concurrent::Spawn<UDTS> spawn(mt,10);
+        spawn(apply, & Apply::callUDT );
     }
 
 
