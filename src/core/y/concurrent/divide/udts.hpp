@@ -20,6 +20,15 @@ namespace Yttrium
                 //______________________________________________________________
                 //
                 //
+                // Definitions
+                //
+                //______________________________________________________________
+                typedef UpperDiagonalTile Tile;       //!< alias
+                typedef size_t            Parameter;  //!< alias for Spawn
+
+                //______________________________________________________________
+                //
+                //
                 // C++
                 //
                 //______________________________________________________________
@@ -50,9 +59,22 @@ namespace Yttrium
 
             private:
                 virtual const UpperDiagonalTile & getItemAt(const size_t) const noexcept;
-                void buildFor(const size_t threads);
                 Y_Disable_Copy_And_Assign(UpperDiagonalTiles); //!< discarding
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+                void buildFor(const size_t threads); //!< setup \param threads number of tiles sharing realm
+
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
                 CxxSeries<UpperDiagonalTile> tiles; //!< series of tiles
                 const size_t                 realm; //!< currently mapped
             };

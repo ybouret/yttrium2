@@ -2,6 +2,8 @@
 
 #include "y/concurrent/api/simd/spawn.hpp"
 #include "y/concurrent/divide/2d.hpp"
+#include "y/concurrent/divide/udts.hpp"
+
 #include "y/concurrent/api/simd/sole.hpp"
 #include "y/concurrent/api/simd/crew.hpp"
 #include "y/utest/run.hpp"
@@ -19,6 +21,9 @@ namespace
 
     typedef Concurrent::Divide::Tiles2D<unit_t> In2D;
     typedef In2D::Tile T2D;
+
+    typedef Concurrent::Divide::UpperDiagonalTiles UDTS;
+    typedef UDTS::Tile                             UDT;
 
     void DoSomething(Lockable &sync, const T1D &t)
     {
@@ -72,6 +77,7 @@ namespace
                 (std::cerr << "Apply::call2D  " << t << " with #bytes=" << t.bytes << std::endl).flush();
             }
         }
+
 
 
 
@@ -142,11 +148,16 @@ Y_UTEST(concurrent_spawn)
         Concurrent::Spawn<In2D> spawn(st,box);
         spawn(apply, & Apply::call2D );
     }
+    
     std::cerr << std::endl;
 
     {
         Concurrent::Spawn<In2D> spawn(mt,box);
         spawn(apply, & Apply::call2D );
+    }
+
+    {
+        Concurrent::Spawn<UDTS> spawn(st,10);
     }
 
 
