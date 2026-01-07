@@ -62,5 +62,5 @@ namespace Yttrium
     };
 }
 
-#endif
+#endif // !Y_Binary_Included
 

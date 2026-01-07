@@ -139,4 +139,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Hexadecimal_Included

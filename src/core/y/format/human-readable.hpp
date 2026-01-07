@@ -57,5 +57,5 @@ namespace Yttrium
     };
 }
 
-#endif
+#endif // !Y_Human_Readable_Included
 
