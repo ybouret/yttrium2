@@ -52,6 +52,14 @@ namespace Yttrium
                 //______________________________________________________________
                 //
                 //
+                // Methods
+                //
+                //______________________________________________________________
+                void remap(const size_t metrics);
+
+                //______________________________________________________________
+                //
+                //
                 // Interface
                 //
                 //______________________________________________________________
@@ -61,12 +69,7 @@ namespace Yttrium
                 virtual const UpperDiagonalTile & getItemAt(const size_t) const noexcept;
                 Y_Disable_Copy_And_Assign(UpperDiagonalTiles); //!< discarding
 
-                //______________________________________________________________
-                //
-                //
-                // Methods
-                //
-                //______________________________________________________________
+
                 void buildFor(const size_t threads); //!< setup \param threads number of tiles sharing realm
 
                 //______________________________________________________________

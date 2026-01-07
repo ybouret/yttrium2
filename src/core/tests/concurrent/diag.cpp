@@ -50,6 +50,14 @@ Y_UTEST(concurrent_diag)
 
 
 
+    {
+        Concurrent::Divide::UpperDiagonalTiles udts(8,10);
+        std::cerr << udts << std::endl;
+
+        udts.remap(4);
+
+    }
+
     
 
 }
