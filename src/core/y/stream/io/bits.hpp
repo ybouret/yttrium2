@@ -91,8 +91,8 @@ namespace Yttrium
 
             //! push a partial word
             /**
-             \param word word to push
-             \param nbit 1<=nbit<=sizeof(word)*8
+             \param word      word to push
+             \param nbit      1<=nbit<=sizeof(word)*8
              \param reservoir pool
              \return *this
              */
@@ -115,7 +115,7 @@ namespace Yttrium
 
             //! push a  full word
             /**
-             \param word word to push
+             \param word      word to push
              \param reservoir reservoir
              \return *this
              */
@@ -124,7 +124,7 @@ namespace Yttrium
 
             //! pop a partial word
             /**
-             \param nbit 1<=nbit<=sizeof(T)*8
+             \param nbit      1<=nbit<=sizeof(T)*8
              \param reservoir reservoir
              \return result
              */
