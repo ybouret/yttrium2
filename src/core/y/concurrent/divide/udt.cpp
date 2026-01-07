@@ -2,7 +2,8 @@
 #include "y/concurrent/divide/udt.hpp"
 #include "y/calculus/isqrt.hpp"
 #include "y/calculus/alignment.hpp"
-
+#include "y/object.hpp"
+#include "y/memory/allocator.hpp"
 
 namespace Yttrium
 {
@@ -11,9 +12,6 @@ namespace Yttrium
         namespace Divide
         {
 
-            UpperDiagonalTile:: ~UpperDiagonalTile() noexcept
-            {
-            }
 
             UpperDiagonalTile:: UpperDiagonalTile(const size_t  mySize,
                                                   const size_t  myRank,
@@ -25,9 +23,25 @@ namespace Yttrium
             kNumber( (n *(n+1)) >> 1),
             kOffset(1),
             kLength( part<size_t>(kNumber, Coerce(kOffset) ) ),
-            kUtmost( kOffset + kLength - 1 )
+            kUtmost( kOffset + kLength - 1 ),
+            h(0),
+            hseg(0),
+            wlen(0),
+            wksp(0)
             {
                 setup();
+            }
+
+
+            UpperDiagonalTile:: ~UpperDiagonalTile() noexcept
+            {
+                if(hseg)
+                {
+                    static Memory::Allocator &mgr = Object::AllocatorLocation();
+                    mgr.release(wksp,wlen);
+                    hseg = 0;
+                    Coerce(h) = 0;
+                }
             }
 
             bool UpperDiagonalTile:: isEmpty() const noexcept
@@ -64,10 +78,14 @@ namespace Yttrium
 
             void UpperDiagonalTile:: setup()
             {
+                static Memory::Allocator & mgr = Object::AllocatorInstance();
                 if(kLength<=0) return;
                 const MatrixCoord ini = (*this)(kOffset);
                 const MatrixCoord end = (*this)(kUtmost);
-                std::cerr << "ini=" << ini << ", end=" << end << std::endl;
+                Coerce(h) = end.r - ini.r + 1;
+                std::cerr << "ini=" << ini << ", end=" << end << "=> h=" << h << ", #item=" << kLength << std::endl;
+                hseg = static_cast<UpperDiagonalSegment *>(wksp= mgr.acquire(wlen = h * sizeof(UpperDiagonalSegment)));
+                --hseg;
             }
         }
     }

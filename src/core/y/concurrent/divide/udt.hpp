@@ -18,6 +18,8 @@ namespace Yttrium
         namespace Divide
         {
 
+            typedef HSegment<size_t> UpperDiagonalSegment;
+
             //_________________________________________________________________
             //
             //
@@ -59,8 +61,12 @@ namespace Yttrium
                 const size_t kOffset;  //!< initial valid k
                 const size_t kLength;  //!< number of indices, 0 meanms empty
                 const size_t kUtmost;  //!< utmost  valid k
+                const size_t h;        //!< height
 
             private:
+                UpperDiagonalSegment * hseg;
+                size_t                 wlen;
+                void *                 wksp;
                 Y_Disable_Copy_And_Assign(UpperDiagonalTile); //!< discarding
                 void setup();
             };
