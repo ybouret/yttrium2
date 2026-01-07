@@ -8,6 +8,7 @@
 #include "y/concurrent/member.hpp"
 #include "y/concurrent/type/subdivision.hpp"
 #include "y/container/matrix/coord.hpp"
+#include "y/concurrent/divide/hsegment.hpp"
 
 namespace Yttrium
 {
@@ -53,7 +54,7 @@ namespace Yttrium
 
                 const size_t n;        //!< n x n array
                 const size_t B;        //!< 1 + 2*n*
-                const size_t B2;       //!< B & B
+                const size_t B2;       //!< B^2
                 const size_t kNumber;  //!< n*(n+1)/2
                 const size_t kOffset;  //!< initial valid k
                 const size_t kLength;  //!< number of indices, 0 meanms empty
