@@ -67,45 +67,45 @@ namespace Yttrium
             //__________________________________________________________________
             //! drop content into pool
             /**
-             \param pool pool
+             \param reservoir reservoir
              \return emptied
              */
-            Bits & to(Bits &pool)                noexcept;
+            Bits & to(Bits &reservoir)                noexcept;
 
             //! skip bits
             /**
-             \param nbit bits to skip
-             \param pool pool
+             \param nbit      bits to skip
+             \param reservoir reservoir
              \return skipped
              */
-            Bits & skip(size_t nbit, Bits &pool) noexcept;
+            Bits & skip(size_t nbit, Bits &reservoir) noexcept;
 
             //! send as many bytes as possible into output
             /**
-             \param output output stream
-             \param pool   pool
+             \param output    output stream
+             \param reservoir reservoir
              \return *this
              */
-            Bits & send(OutputStream &output, Bits &pool);
+            Bits & send(OutputStream &output, Bits &reservoir);
 
 
             //! push a partial word
             /**
              \param word word to push
              \param nbit 1<=nbit<=sizeof(word)*8
-             \param pool pool
+             \param reservoir pool
              \return *this
              */
             template <typename T> inline
-            Bits & push(T word, size_t nbit, Bits &pool)
+            Bits & push(T word, size_t nbit, Bits &reservoir)
             {
                 assert(nbit>0); assert(nbit<=sizeof(T)*8);
                 static const T one  = 0x1;
                 Bits &         self = *this;
                 while(nbit-- > 0) {
                     const bool flag = (one&word);
-                    if(pool->size)
-                        **(self->pushTail( pool->popTail() )) = flag;
+                    if(reservoir->size)
+                        **(self->pushTail(reservoir->popTail() )) = flag;
                     else
                         self << flag;
                     word >>= 1;
@@ -116,20 +116,20 @@ namespace Yttrium
             //! push a  full word
             /**
              \param word word to push
-             \param pool pool
+             \param reservoir reservoir
              \return *this
              */
             template <typename T> inline
-            Bits & push(const T word, Bits &pool) { return push(word,sizeof(T)*8,pool); }
+            Bits & push(const T word, Bits &reservoir) { return push(word,sizeof(T)*8, reservoir); }
 
             //! pop a partial word
             /**
              \param nbit 1<=nbit<=sizeof(T)*8
-             \param pool pool
+             \param reservoir reservoir
              \return result
              */
             template <typename T> inline
-            T pop(const size_t nbit, Bits &pool) noexcept
+            T pop(const size_t nbit, Bits &reservoir) noexcept
             {
                 assert(nbit>0);
                 assert(nbit<=sizeof(T)*8);
@@ -139,7 +139,7 @@ namespace Yttrium
                 T              res = 0;
                 for(size_t i=0;i<nbit;++i)
                 {
-                    if( **(pool->pushTail( list.popHead() )) )
+                    if( **(reservoir->pushTail( list.popHead() )) )
                         res |= (one<<i);
                 }
                 return res;
@@ -147,12 +147,12 @@ namespace Yttrium
 
             //! pop a full word
             /**
-             \param pool pool
+             \param reservoir reservoir
              \return result
              */
             template <typename T> inline
-            T pop(Bits &pool) noexcept {
-                return pop<T>( sizeof(T) * 8, pool);
+            T pop(Bits &reservoir) noexcept {
+                return pop<T>( sizeof(T) * 8, reservoir);
             }
 
 

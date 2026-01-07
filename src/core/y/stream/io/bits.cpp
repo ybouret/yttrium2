@@ -38,23 +38,23 @@ namespace Yttrium
             return os << ']';
         }
 
-        Bits & Bits:: to(Bits &pool) noexcept
+        Bits & Bits:: to(Bits &reservoir) noexcept
         {
-            pool->mergeTail( **this );
+			reservoir->mergeTail( **this );
             return *this;
         }
 
-        Bits & Bits:: skip(size_t nbit, Bits &pool) noexcept
+        Bits & Bits:: skip(size_t nbit, Bits &reservoir) noexcept
         {
             assert(list.size>=nbit);
-            while(nbit-- > 0) pool->pushTail( list.popHead() );
+            while(nbit-- > 0) reservoir->pushTail( list.popHead() );
             return *this;
         }
 
-        Bits & Bits:: send(OutputStream &fp, Bits &pool)
+        Bits & Bits:: send(OutputStream &fp, Bits &reservoir)
         {
             while(list.size>=8)
-                fp.write( (char) pop<uint8_t>(pool) );
+                fp.write( (char) pop<uint8_t>(reservoir) );
             
 
             return *this;

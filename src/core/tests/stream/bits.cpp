@@ -33,7 +33,7 @@ Y_UTEST(stream_io_bits)
     const String s = "Hello, World!";
     for(size_t i=1;i<=s.size();++i)
     {
-        bits.push<uint8_t>( s[i], pool);
+        bits.push<uint8_t>( (uint8_t)s[i], pool);
     }
     std::cerr << bits << std::endl;
     {
