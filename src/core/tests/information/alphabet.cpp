@@ -12,9 +12,7 @@ namespace Yttrium
 {
     namespace  Information
     {
-
-
-
+        
         class Character
         {
         public:
