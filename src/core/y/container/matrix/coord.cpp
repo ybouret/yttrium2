@@ -1,5 +1,6 @@
 
 #include "y/container/matrix/coord.hpp"
+#include <iostream>
 
 namespace Yttrium
 {
@@ -28,6 +29,11 @@ namespace Yttrium
         return *this;
     }
 
+    std::ostream & operator<<(std::ostream &os, const MatrixCoord &p)
+    {
+        os << '[' << p.r << ';' << p.c << ']';
+        return os;
+    }
 
 }
 

@@ -27,8 +27,7 @@ namespace Yttrium
             kLength( part<size_t>(kNumber, Coerce(kOffset) ) ),
             kUtmost( kOffset + kLength - 1 )
             {
-
-
+                setup();
             }
 
             bool UpperDiagonalTile:: isEmpty() const noexcept
@@ -63,7 +62,13 @@ namespace Yttrium
                 return MatrixCoord(i,getJ(k,i));
             }
 
-
+            void UpperDiagonalTile:: setup()
+            {
+                if(kLength<=0) return;
+                const MatrixCoord ini = (*this)(kOffset);
+                const MatrixCoord end = (*this)(kUtmost);
+                std::cerr << "ini=" << ini << ", end=" << end << std::endl;
+            }
         }
     }
 }

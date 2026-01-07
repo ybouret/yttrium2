@@ -62,6 +62,7 @@ namespace Yttrium
 
             private:
                 Y_Disable_Copy_And_Assign(UpperDiagonalTile); //!< discarding
+                void setup();
             };
 
         }

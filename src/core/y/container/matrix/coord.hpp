@@ -6,6 +6,7 @@
 #define Y_Matrix_Coord_Included 1
 
 #include "y/core/setup.hpp"
+#include "y/ostream-proto.hpp"
 
 namespace Yttrium
 {
@@ -30,6 +31,7 @@ namespace Yttrium
         ~MatrixCoord()                               noexcept; //!< cleanup
         MatrixCoord(const MatrixCoord &)             noexcept; //!< duplicate
         MatrixCoord & operator=(const MatrixCoord &) noexcept; //!< assign \return *this
+        Y_OSTREAM_PROTO(MatrixCoord);
 
         //______________________________________________________________________
         //
