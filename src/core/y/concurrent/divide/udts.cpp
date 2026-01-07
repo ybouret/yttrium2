@@ -46,11 +46,13 @@ namespace Yttrium
 
             void UpperDiagonalTiles:: remap(const size_t metrics)
             {
-                UpperDiagonalTiles udts(tiles.size(),metrics); assert( size() == udts.size() );
-
-                tiles.xch(udts.tiles);
-                CoerceSwap(realm,udts.realm);
-                
+                if(metrics!=realm)
+                {
+                    UpperDiagonalTiles udts(tiles.size(),metrics); assert( size() == udts.size() );
+                    tiles.xch(udts.tiles);
+                    CoerceSwap(realm,udts.realm);
+                    assert(metrics==realm);
+                }
             }
 
         }
