@@ -17,6 +17,7 @@ Y_UTEST_DECL(256)
 
     Y_UTEST(format_hexadecimal);
     Y_UTEST(format_decimal);
+    Y_UTEST(format_binary);
     Y_UTEST(format_human_readable);
     Y_UTEST(format_justify);
 

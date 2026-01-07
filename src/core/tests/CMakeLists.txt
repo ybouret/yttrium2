@@ -51,6 +51,7 @@ Y_UTEST(functor)
 #format
 Y_UTEST(format:hexadecimal)
 Y_UTEST(format:decimal)
+Y_UTEST(format:binary)
 Y_UTEST(format:human_readable)
 Y_UTEST(format:justify)
 

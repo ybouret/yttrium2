@@ -8,6 +8,7 @@
 #include "y/type/ints.hpp"
 #include "y/core/display.hpp"
 #include "y/check/usual.hpp"
+#include "y/core/utils.hpp"
 
 namespace Yttrium
 {
@@ -23,11 +24,17 @@ namespace Yttrium
     class Binary : public LegacyString
     {
     public:
+        //______________________________________________________________________
+        //
+        //
+        // C++
+        //
+        //______________________________________________________________________
         //! setup \param x integral value setting the bit count
         template <typename T>
-        inline Binary(const T &x) noexcept :
+        inline Binary(const T &x, const size_t maxCount = sizeof(T) * 8 ) noexcept :
         LegacyString(),
-        count(sizeof(T)*8),
+        count( Clamp<size_t>(1,maxCount,sizeof(T)*8) ),
         array()
         {
             ldz();
@@ -50,6 +57,12 @@ namespace Yttrium
         virtual ~Binary() noexcept;      //!< cleanup
         Binary(const Binary &) noexcept; //!< duplicate
 
+        //______________________________________________________________________
+        //
+        //
+        // Interface
+        //
+        //______________________________________________________________________
         virtual const char * c_str() const noexcept;
 
     private:
