@@ -17,6 +17,12 @@ namespace Yttrium
             class UpperDiagonalTiles : public Writable< UpperDiagonalTile >
             {
             public:
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
                 //! prepare tiles
                 /**
                  \param threads given number of threads
@@ -34,14 +40,21 @@ namespace Yttrium
                 //! cleanup
                 virtual ~UpperDiagonalTiles() noexcept;
 
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
                 virtual size_t size() const noexcept;
 
             private:
-                CxxSeries<UpperDiagonalTile> tiles;
-                Y_Disable_Copy_And_Assign(UpperDiagonalTiles);
-
                 virtual const UpperDiagonalTile & getItemAt(const size_t) const noexcept;
-                
+                void buildFor(const size_t threads);
+                Y_Disable_Copy_And_Assign(UpperDiagonalTiles); //!< discarding
+
+                CxxSeries<UpperDiagonalTile> tiles; //!< series of tiles
+                const size_t                 realm; //!< currently mapped
             };
 
         }

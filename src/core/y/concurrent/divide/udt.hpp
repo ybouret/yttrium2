@@ -19,7 +19,7 @@ namespace Yttrium
         {
 
 
-            typedef HSegment<size_t> UpperDiagonalSegment;
+            typedef HSegment<size_t> UpperDiagonalSegment; //!< alias
 
             //_________________________________________________________________
             //
@@ -32,8 +32,13 @@ namespace Yttrium
             class UpperDiagonalTile : public Subdivision
             {
             public:
-
-                //! UpperDiagonal of a extent x extent matrix
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+                //! UpperDiagonal of a (extent x extent) matrix
                 /**
                  \param mySize size of the group
                  \param myRank rank in the group
@@ -45,8 +50,20 @@ namespace Yttrium
 
                 virtual ~UpperDiagonalTile() noexcept;
 
+                //______________________________________________________________
+                //
+                //
+                // Interface
+                //
+                //______________________________________________________________
                 virtual bool isEmpty() const noexcept;
 
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
                 size_t getRow(const size_t k) const noexcept;                      //!< \param k valid index \return row index from k
                 size_t getK(const size_t i) const noexcept;                      //!< \param i row index   \return max k for i-th row
                 size_t getColumn(const size_t k, const size_t i) const noexcept; //!< \param k valid indx \param i matching row index \return column index
@@ -61,7 +78,12 @@ namespace Yttrium
                  */
                 UpperDiagonalSegment & operator[](const size_t j) const noexcept;
 
-
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
                 const size_t n;        //!< n x n array
                 const size_t B;        //!< 1 + 2*n*
                 const size_t B2;       //!< B^2
@@ -72,11 +94,12 @@ namespace Yttrium
                 const size_t h;        //!< height
 
             private:
-                UpperDiagonalSegment * hseg;
-                size_t                 wlen;
-                void *                 wksp;
+                UpperDiagonalSegment * hseg; //!< segments
+                size_t                 wlen; //!< allocated bytes
+                void *                 wksp; //!< allocated memory
+
                 Y_Disable_Copy_And_Assign(UpperDiagonalTile); //!< discarding
-                void setup();
+                void setup(); //!< setup
             };
 
         }

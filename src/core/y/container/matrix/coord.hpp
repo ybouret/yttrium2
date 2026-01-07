@@ -5,7 +5,7 @@
 #ifndef Y_Matrix_Coord_Included
 #define Y_Matrix_Coord_Included 1
 
-#include "y/core/setup.hpp"
+#include "y/mkl/v2d.hpp"
 #include "y/ostream-proto.hpp"
 
 namespace Yttrium
@@ -31,7 +31,12 @@ namespace Yttrium
         ~MatrixCoord()                               noexcept; //!< cleanup
         MatrixCoord(const MatrixCoord &)             noexcept; //!< duplicate
         MatrixCoord & operator=(const MatrixCoord &) noexcept; //!< assign \return *this
-        Y_OSTREAM_PROTO(MatrixCoord);
+        Y_OSTREAM_PROTO(MatrixCoord);                          //!< displau
+
+        //! helper for tiles \param v computed from Tile2D/UpperDiagonalTile
+        template <typename T> inline
+        MatrixCoord( const V2D<T> v ) noexcept : r(v.y), c(v.x) {}
+
 
         //______________________________________________________________________
         //

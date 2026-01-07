@@ -13,20 +13,26 @@ namespace Yttrium
                 
             }
 
+            void UpperDiagonalTiles:: buildFor(const size_t threads)
+            {
+                for(size_t i=0;i<threads;++i) tiles.push(threads,i,realm);
+            }
+
             UpperDiagonalTiles:: UpperDiagonalTiles(const size_t threads,
                                                     const size_t metrics) :
             Writable<UpperDiagonalTile>(),
-            tiles(threads)
+            tiles(threads),
+            realm(metrics)
             {
-                for(size_t i=0;i<threads;++i) tiles.push(threads,i,metrics);
+                buildFor(threads);
             }
 
             UpperDiagonalTiles:: UpperDiagonalTiles(const size_t threads) :
             Writable<UpperDiagonalTile>(),
-            tiles(threads)
+            tiles(threads),
+            realm(0)
             {
-                const size_t n = 0;
-                for(size_t i=0;i<threads;++i) tiles.push(threads,i,n);
+                buildFor(threads);
             }
 
             size_t UpperDiagonalTiles:: size() const noexcept { return tiles.size(); }
