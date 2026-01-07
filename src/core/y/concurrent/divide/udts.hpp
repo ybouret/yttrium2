@@ -13,7 +13,14 @@ namespace Yttrium
     {
         namespace Divide
         {
-
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Upper Diagonal Tiles
+            //
+            //
+            //__________________________________________________________________
             class UpperDiagonalTiles : public Writable< UpperDiagonalTile >
             {
             public:
@@ -55,7 +62,7 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
-                void remap(const size_t metrics);
+                void remap(const size_t metrics); //!< remap if necessary \param metrics required metrics
 
                 //______________________________________________________________
                 //
