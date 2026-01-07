@@ -18,6 +18,7 @@ namespace Yttrium
         namespace Divide
         {
 
+
             typedef HSegment<size_t> UpperDiagonalSegment;
 
             //_________________________________________________________________
@@ -46,12 +47,19 @@ namespace Yttrium
 
                 virtual bool isEmpty() const noexcept;
 
-                size_t getI(const size_t k) const noexcept;                 //!< \param k valid index \return row index from k
-                size_t getK(const size_t i) const noexcept;                 //!< \param i row index   \return max k for i-th row
-                size_t getJ(const size_t k, const size_t i) const noexcept; //!< \param k valid indx \param i matching row index \return column index
+                size_t getRow(const size_t k) const noexcept;                      //!< \param k valid index \return row index from k
+                size_t getK(const size_t i) const noexcept;                      //!< \param i row index   \return max k for i-th row
+                size_t getColumn(const size_t k, const size_t i) const noexcept; //!< \param k valid indx \param i matching row index \return column index
 
                 //! \param k valid index \return associated matrix coordinates
                 MatrixCoord operator()(const size_t k) const noexcept;
+
+                //! return precomputed segment
+                /**
+                 \param  j 1<=j<=h
+                 \return hseg[j]
+                 */
+                UpperDiagonalSegment & operator[](const size_t j) const noexcept;
 
 
                 const size_t n;        //!< n x n array
