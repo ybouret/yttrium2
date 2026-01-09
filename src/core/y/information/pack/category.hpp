@@ -1,0 +1,28 @@
+
+//! \file
+
+#ifndef Y_Information_Pack_Category_Included
+#define Y_Information_Pack_Category_Included 1
+
+#include "y/core/setup.hpp"
+
+namespace Yttrium
+{
+
+    namespace Information
+    {
+        namespace Pack
+        {
+            enum Category
+            {
+                Streaming=1, //!< +NYT, -EOS
+                Messaging=2  //!< +NYT, +EOS
+            };
+        }
+        
+    }
+
+}
+
+#endif // !Y_Information_Pack_Category_Included
+
