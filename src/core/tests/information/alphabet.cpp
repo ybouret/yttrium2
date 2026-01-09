@@ -8,6 +8,8 @@
 #include "y/format/hexadecimal.hpp"
 #include "y/format/binary.hpp"
 
+#include "y/container/ordered/priority-queue.hpp"
+
 using namespace Yttrium;
 
 namespace Yttrium
@@ -24,8 +26,10 @@ namespace Yttrium
             class Huffman
             {
             public:
-                typedef Character::CodeType CodeType;
+                typedef Alphabet::CodeType  CodeType;
                 typedef Alphabet::DataType  DataType;
+                typedef Alphabet::FreqType  FreqType;
+
                 static const DataType MaxChars = Alphabet::EOS;
                 static const DataType MaxNodes = 2*MaxChars;
 
@@ -33,25 +37,65 @@ namespace Yttrium
                 class Node
                 {
                 public:
-                    Node(const Character * const);
+                    typedef Node *Pointer;
 
-                    Character * const leaf;
-                    CodeType          code;
-                    unsigned          bits;
-                    Node *            left;
-                    Node *            right;
+                    class Comparator
+                    {
+                    public:
+                        Comparator()  noexcept {}
+                        ~Comparator() noexcept {}
+
+                        SignType operator()(const Node::Pointer lhs, const Node::Pointer rhs) noexcept
+                        {
+                            assert(lhs);
+                            assert(rhs);
+                            return Sign::Of(lhs->freq,rhs->freq);
+                        }
+
+                    };
+
+                    typedef PriorityQueue<Pointer,Comparator> PQ;
+
+
+                    Character * leaf;
+                    FreqType    freq;
+                    CodeType    code;
+                    unsigned    bits;
+                    Node *      left;
+                    Node *      right;
 
                 private:
                     Y_Disable_Copy_And_Assign(Node);
+                    Node() noexcept;
                     ~Node() noexcept;
                 };
 
-                Huffman();
-                virtual ~Huffman() noexcept;
+
+
+
+
+                Huffman() :
+                pq(WithAtLeast,MaxChars),
+                root(0),
+                count(MaxNodes),
+                bytes(0),
+                nodes( Object::AllocatorInstance().acquireAs<Node>(count,bytes) )
+                {
+                }
+
+                virtual ~Huffman() noexcept
+                {
+
+                }
 
 
             private:
                 Y_Disable_Copy_And_Assign(Huffman);
+                Node::PQ pq;
+                Node *   root;
+                size_t   count;
+                size_t   bytes;
+                Node *   nodes;
             };
 
 
