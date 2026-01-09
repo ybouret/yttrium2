@@ -115,7 +115,7 @@ namespace Yttrium
                     totality += ch->reduce();
             }
 
-            void Alphabet:: update(const uint8_t i) noexcept
+            Alphabet & Alphabet:: operator<<(const uint8_t i) noexcept
             {
                 {
                     Character * const ch = database+i;
@@ -128,6 +128,7 @@ namespace Yttrium
                 if(totality>=MaxFreq) {
                     reduce();
                 }
+                return *this;
             }
         }
 

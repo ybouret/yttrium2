@@ -33,8 +33,8 @@ namespace Yttrium
                 explicit Alphabet(const Category);
                 virtual ~Alphabet() noexcept;
 
+                Alphabet & operator<<(const uint8_t) noexcept;
 
-                void update(const uint8_t i) noexcept;
                 void display(std::ostream &) const;
                 void reduce() noexcept;
 

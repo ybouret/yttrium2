@@ -161,6 +161,7 @@ Y_UTEST_DECL(256)
     Y_UTEST(info_bwt_mtf);
     Y_UTEST(info_entropy);
     Y_UTEST(info_alphabet);
+    Y_UTEST(info_huffman);
 
     Y_UTEST(utf8_api);
 

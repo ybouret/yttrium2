@@ -200,6 +200,7 @@ Y_UTEST(info:arc4)
 Y_UTEST(info:bwt_mtf)
 Y_UTEST(info:entropy)
 Y_UTEST(info:alphabet)
+Y_UTEST(info:huffman)
 
 #utf8
 Y_UTEST(utf8:api)
