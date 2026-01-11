@@ -31,7 +31,8 @@ namespace Yttrium
                 root  = 0;
                 inode = 0;
 
-                // initialize queue
+                // initialize queue, with at least NYT if no detected char
+                assert(alpha.encoding.size>0);
                 for(Character *ch=alpha.encoding.head;ch;ch=ch->next)
                 {
                     Node::Pointer const node = Memory::Stealth::CastZeroed<Node>(nodes + inode++);
@@ -42,7 +43,7 @@ namespace Yttrium
                     pq.push(node);
                 }
 
-                assert(pq.size()>=1);
+                assert(pq.size()>0);
                 
 
 
