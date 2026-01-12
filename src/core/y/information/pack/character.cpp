@@ -8,11 +8,11 @@ namespace Yttrium
     {
         namespace Pack
         {
-            void Character:: reset(const unsigned n, const FreqType f) noexcept
+            void Character:: reset(const unsigned n) noexcept
             {
                 code = data;
                 bits = n;
-                freq = f;
+                freq = 0;
                 next = 0;
                 prev = 0;
             }
@@ -20,8 +20,7 @@ namespace Yttrium
             Character::FreqType Character:: reduce() noexcept
             {
                 static const FreqType one = 1;
-                assert(freq>0);
-                return ( (freq >>= 1) |= one );
+                return freq <= 0 ? 0 :( (freq >>= 1) |= one );
             }
 
         }

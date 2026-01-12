@@ -31,7 +31,7 @@ namespace Yttrium
                 Character *    next;
                 Character *    prev;
 
-                void     reset(const unsigned n, const FreqType f) noexcept;
+                void     reset(const unsigned n) noexcept;
                 FreqType reduce() noexcept;
 
             private:

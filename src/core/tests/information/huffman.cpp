@@ -14,6 +14,8 @@ Y_UTEST(info_huffman)
     Information::Pack::Alphabet messaging( Information::Pack::Messaging );
     Information::Pack::Huffman  huff;
 
+    streaming.display(std::cerr);
+    
     if(argc>1)
     {
         InputFile fp( argv[1] );
@@ -27,9 +29,9 @@ Y_UTEST(info_huffman)
 
             huff.build(streaming);
         }
-
-
     }
+
+    streaming.display(std::cerr);
 
 
 

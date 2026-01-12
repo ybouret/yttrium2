@@ -26,8 +26,8 @@ namespace Yttrium
                 typedef RawListOf<Character> CharList;
 
                 static const DataType Chars = 256;
-                static const DataType NYT   = Chars;
-                static const DataType EOS   = NYT+1;
+                static const DataType NYT   = Chars; //!< with 0 freq
+                static const DataType EOS   = NYT+1; //!< with 0 freq
                 static const FreqType MaxFreq = IntegerFor<FreqType>::Maximum;
 
                 explicit Alphabet(const Category);

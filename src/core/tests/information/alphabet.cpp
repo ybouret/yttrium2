@@ -26,7 +26,7 @@ Y_UTEST(info_alphabet)
     for(unsigned i=0;i<256;++i)
         streaming <<  (uint8_t)i;
     streaming.display(std::cerr);
-
+    
 
 }
 Y_UDONE()

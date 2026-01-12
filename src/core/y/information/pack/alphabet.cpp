@@ -74,7 +74,6 @@ namespace Yttrium
                     Coerce(ch.data) = i;
                     ch.code = i;
                     ch.bits = 9;
-                    ch.freq = 1;
                 }
 
                 cntrl();
@@ -85,8 +84,8 @@ namespace Yttrium
                 encoding.reset();
                 totality = category;
                 detected = 0;
-                for(DataType i=0;i<Chars;++i)          database[i].reset(8,0);
-                for(DataType i=Chars;i<universe;++i)   database[i].reset(9,1);
+                for(DataType i=0;i<Chars;++i)          database[i].reset(8);
+                for(DataType i=Chars;i<universe;++i)   database[i].reset(9);
                 cntrl();
             }
 
@@ -125,9 +124,13 @@ namespace Yttrium
                     }
                     ++ch->freq;
                 }
+
+                
                 if(totality>=MaxFreq) {
                     reduce();
                 }
+                else
+                    ++totality;
                 return *this;
             }
         }
