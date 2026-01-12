@@ -102,7 +102,6 @@ namespace Yttrium
                         for(size_t j=seg.start.x,n=seg.width;n>0;--n,++j)
                             G[i][j] = G[j][i] = GramCore(xadd,i,j,M);
                     }
-
                 }
             }
 

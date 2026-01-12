@@ -3,11 +3,10 @@
 #pragma warning ( disable : 4464 )
 #endif
 
-#include "y/mkl/tao/broker/upper-diagonal.hpp"
+#include "y/mkl/tao/3.hpp"
 #include "y/utest/run.hpp"
 #include "../../../core/tests/main.hpp"
 #include "y/concurrent/api/simd/crew.hpp"
-#include "y/container/matrix.hpp"
 
 
 using namespace Yttrium;
@@ -21,18 +20,25 @@ namespace
                const Tao::UpperDiagonalEngine &eng)
     {
         Tao::UpperDiagonalBroker<T> broker(eng);
+        Cameo::Addition<T>        &xadd = broker.xadd();
 
         std::cerr << "broker->size = " << broker->size() << std::endl;
 
         for(size_t r=1;r<=3;++r)
         {
-            Matrix<T> G(r,r);
-            broker.prep(G);
+            Matrix<T> Gseq(r,r);
+            Matrix<T> Gpar(r,r);
+            broker.prep(Gseq);
             for(size_t c=1;c<=5;++c)
             {
                 Matrix<T> A(r,c);
                 FillWith<T>::Mat(ran,A);
-                std::cerr << "A=" << A << std::endl;
+                //std::cerr << "A=" << A << std::endl;
+                Tao::Gram(xadd,Gseq,A);
+                Tao::Gram(broker,Gpar,A);
+                Tao::MSub(Gpar,Gseq);
+                std::cerr << Gpar << std::endl;
+
             }
         }
 
