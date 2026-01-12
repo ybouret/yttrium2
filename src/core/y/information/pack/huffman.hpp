@@ -6,7 +6,7 @@
 
 #include "y/information/pack/alphabet.hpp"
 #include "y/container/ordered/priority-queue.hpp"
-#include "y/stream/output.hpp"
+#include "y/graphviz/vizible.hpp"
 
 namespace Yttrium
 {
@@ -27,7 +27,7 @@ namespace Yttrium
                 static const DataType MaxNodes = 2*MaxChars;
 
 
-                class Node
+                class Node : public Vizible
                 {
                 public:
                     typedef Node *Pointer;
@@ -46,7 +46,9 @@ namespace Yttrium
 
                     typedef PriorityQueue<Pointer,Comparator> PQ;
 
-                    void viz(OutputStream &) const;
+                    OutputStream &viz(OutputStream &) const;
+                    void          propagate()         noexcept;
+
 
                     Node *      parent;
                     Node *      left;
@@ -61,7 +63,7 @@ namespace Yttrium
                 private:
                     Y_Disable_Copy_And_Assign(Node);
                     Node() noexcept;
-                    ~Node() noexcept;
+                    virtual ~Node() noexcept;
                 };
 
 
@@ -71,7 +73,6 @@ namespace Yttrium
                 Huffman() :
                 pq(WithAtLeast,MaxNodes),
                 root(0),
-                inode(0),
                 count(MaxNodes),
                 bytes(0),
                 nodes( Object::AllocatorInstance().acquireAs<Node>(count,bytes) )
@@ -82,14 +83,11 @@ namespace Yttrium
 
                 void build(Alphabet &alpha);
 
-
-                const Node::PQ & queue() const noexcept { return pq; }
+                Node::PQ     pq;
+                Node *       root;
 
             private:
                 Y_Disable_Copy_And_Assign(Huffman);
-                Node::PQ pq;
-                Node *   root;
-                size_t   inode;
                 size_t   count;
                 size_t   bytes;
                 Node *   nodes;

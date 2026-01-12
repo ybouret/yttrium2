@@ -12,6 +12,26 @@ namespace Yttrium
             Huffman:: Node:: Comparator::  Comparator() noexcept {}
             Huffman:: Node:: Comparator:: ~Comparator() noexcept {}
 
+            void Huffman:: Node:: propagate() noexcept
+            {
+                static const CodeType one       = 1 ;
+                const CodeType        childCode = code << 1;
+                const unsigned        childBits = bits+1;
+                if(left)
+                {
+                    left->code = childCode;
+                    left->bits = childBits;
+                    left->propagate();
+                }
+
+                if(right)
+                {
+                    right->code = childCode;
+                    right->bits = childBits;
+                    right->code |= one;
+                    right->propagate();
+                }
+            }
 
 
 
@@ -20,7 +40,7 @@ namespace Yttrium
             {
                 assert(lhs);
                 assert(rhs);
-                return Sign::Of(lhs->freq,rhs->freq);
+                return Sign::Of(rhs->freq,lhs->freq);
             }
 
             Huffman:: ~Huffman() noexcept
@@ -30,47 +50,60 @@ namespace Yttrium
 
             void Huffman:: build(Alphabet &alpha)
             {
-                root  = 0;
-                inode = 0;
-
-                // initialize queue, with at least NYT if no detected char
-                assert(alpha.encoding.size>=2);
-                pq.free();
-
-                for(Character *ch=alpha.encoding.head;ch;ch=ch->next)
-                //for(Character *ch=alpha.encoding.tail;ch;ch=ch->prev)
+                root         = 0;
                 {
-                    assert(inode<MaxNodes);
-                    Node::Pointer const node = Memory::Stealth::CastZeroed<Node>(nodes + inode++);
-                    node->leaf = ch;
-                    node->freq = ch->freq;
-                    assert(0==node->code);
-                    assert(0==node->bits);
-                    pq.push(node);
+                    size_t inode = 0;
+
+                    // initialize queue, with at least NYT if no detected char
+                    assert(alpha.encoding.size>=2);
+                    pq.free();
+
+                    //for(Character *ch=alpha.encoding.head;ch;ch=ch->next)
+                    for(Character *ch=alpha.encoding.tail;ch;ch=ch->prev)
+                    {
+                        assert(inode<MaxNodes);
+                        Node::Pointer const node = Memory::Stealth::CastZeroed<Node>(nodes + inode++);
+                        node->leaf = ch;
+                        node->freq = ch->freq;
+                        assert(0==node->code);
+                        assert(0==node->bits);
+                        pq.push(node);
+                    }
+
+                    assert(pq.size()>=2);
+
+
+
+                    // build tree
+                    while(pq.size()>1)
+                    {
+                        assert(inode<MaxNodes);
+                        Node * const        left  = pq.pop();
+                        Node * const        right = pq.pop();
+                        Node::Pointer const node  = Memory::Stealth::CastZeroed<Node>(nodes + inode++);
+                        assert(left->freq<=right->freq);
+                        left->parent  = node;
+                        right->parent = node;
+                        node->left    = left;
+                        node->right   = right;
+                        node->freq    = left->freq + right->freq;
+                        pq.push(node);
+                    }
+
+                    assert(1==pq.size());
                 }
+                (root = pq.pop())->propagate();
 
-                assert(pq.size()>=2);
-
-                // build tree
-                while(pq.size()>1)
                 {
-                    assert(inode<MaxNodes);
-                    Node * const        left  = pq.pop();
-                    Node * const        right = pq.pop();
-                    Node::Pointer const node  = Memory::Stealth::CastZeroed<Node>(nodes + inode++);
-                    left->parent = node;
-                    left->parent = node;
-                    node->left   = left;
-                    node->right  = right;
-                    node->freq   = left->freq + right->freq;
-                    pq.push(node);
+                    const Node * node = nodes;
+                    for(Character *ch=alpha.encoding.tail;ch;ch=ch->prev,++node)
+                    {
+                        assert(node->leaf==ch);
+                        ch->bits = node->bits;
+                        ch->code = node->code;
+                    }
+
                 }
-
-                assert(1==pq.size());
-                root = pq.pop();
-
-
-
             }
 
 
@@ -81,6 +114,9 @@ namespace Yttrium
 }
 
 #include "y/graphviz/vizible.hpp"
+#include "y/string/format.hpp"
+#include "y/stream/output.hpp"
+#include "y/format/binary.hpp"
 
 namespace Yttrium
 {
@@ -88,9 +124,46 @@ namespace Yttrium
     {
         namespace Pack
         {
-            void Huffman:: Node:: viz(OutputStream &fp) const
+
+
+            OutputStream & Huffman:: Node:: viz(OutputStream &fp) const
             {
-                
+
+                if(left)  left->viz(fp);
+                if(right) right->viz(fp);
+
+                nodeName(fp) << '[';
+                String name = Formatted::Get("[%lu]",  (unsigned long) freq );
+                if(leaf)
+                {
+                    name += "@";
+                    const  uint16_t b = leaf->data;
+                    if(b<256)
+                    {
+                        name += "'";
+                        name += (char) leaf->data;
+                        name += "'";
+                    }
+                    else
+                    {
+                        if(b==Alphabet::NYT) name += "NYT";
+                        if(b==Alphabet::EOS) name += "EOS";
+                    }
+                }
+                //name += Formatted::Get(" #%u",bits);
+                if(bits)
+                {
+                    name += '<';
+                    name += Binary(code,bits).c_str();
+                    name += '>';
+                }
+                Label(fp,name);
+                Endl(fp << ']');
+
+                if(left)  { Endl(to(left,fp)  << "[label=\"0\"]"); }
+                if(right) { Endl(to(right,fp) << "[label=\"1\"]"); }
+
+                return fp;
             }
         }
 

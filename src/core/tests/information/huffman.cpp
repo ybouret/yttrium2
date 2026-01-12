@@ -32,9 +32,9 @@ Y_UTEST(info_huffman)
     }
 
     streaming.display(std::cerr);
-    std::cerr << "swaps=" << huff.queue().nswp() << std::endl;
+    std::cerr << "swaps=" << huff.pq.nswp() << std::endl;
 
-
+    Vizible::Render("huff.dot", *huff.root);
 
 
 }
