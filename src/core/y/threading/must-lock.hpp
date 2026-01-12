@@ -8,4 +8,4 @@
 #define Y_Must_Lock() volatile Lock guard(*this)
 
 
-#endif
+#endif // !Y_Threading_Must_Lock_Included
