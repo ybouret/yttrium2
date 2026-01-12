@@ -108,6 +108,7 @@ namespace Yttrium
             template <typename T> inline
             Bits & push(T word, size_t nbit, Bits &reservoir)
             {
+                volatile Lock _(*this), __(reservoir);
                 assert(nbit>0); assert(nbit<=sizeof(T)*8);
                 static const T one  = 0x1;
                 while(nbit-- > 0) {
@@ -135,6 +136,7 @@ namespace Yttrium
             template <typename T> inline
             T pop(const size_t nbit, Bits &reservoir) noexcept
             {
+                volatile Lock _(*this), __(reservoir);
                 assert(nbit>0);
                 assert(nbit<=sizeof(T)*8);
                 assert(list.size>=nbit);

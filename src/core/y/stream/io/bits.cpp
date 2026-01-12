@@ -41,12 +41,14 @@ namespace Yttrium
 
         Bits & Bits:: to(Bits &reservoir) noexcept
         {
+            volatile Lock _(*this), __(reservoir);
             reservoir->mergeTail( **this );
             return *this;
         }
 
         Bits & Bits:: skip(size_t nbit, Bits &reservoir) noexcept
         {
+            volatile Lock _(*this), __(reservoir);
             assert(list.size>=nbit);
             while(nbit-- > 0) reservoir->pushTail( list.popHead() );
             return *this;
@@ -60,11 +62,12 @@ namespace Yttrium
                 fp.write( (char) pop<uint8_t>(reservoir) );
                 ++count;
             }
-            return count;;
+            return count;
         }
 
         size_t Bits:: flush(OutputStream &output, Bits &reservoir)
         {
+            volatile Lock _(*this), __(reservoir);
             size_t pad  = Alignment::On<8>::Ceil(list.size) - list.size;
             while(pad-- > 0)
                 list.pushTail( reservoir.query(false) );
