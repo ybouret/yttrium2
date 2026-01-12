@@ -399,16 +399,31 @@ namespace Yttrium
             //! move one of my node towards head
             /**
              \param node one of my node
-             \return node moved towards head if possible
+             \return node moved towards head
              */
             inline NODE * towardsHead(NODE * const node) noexcept
             {
                 assert(0!=node);
                 assert(owns(node));
+                assert(node->prev);
                 NODE * const prev = node->prev;
-                if(0!=prev) insertBefore(prev,pop(node));
-                return node;
+                return insertBefore(prev,pop(node));
             }
+
+            //! move one of my node towards tail
+            /**
+             \param node one of my node
+             \return node moved towards tail
+             */
+            inline NODE * towardsTail(NODE * const node) noexcept
+            {
+                assert(0!=node);
+                assert(owns(node));
+                assert(node->next);
+                NODE * const next = node->next;
+                return insertAfter(next,pop(node));
+            }
+
 
 
             //! insertion in a previously ordered list

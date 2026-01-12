@@ -11,7 +11,7 @@ namespace Yttrium
     extern Lockable & ApexGiantLock(); //!< \return memory access lock
 
     //! lock memory access, mostly to display within threads
-#define Y_Apex_Giant_Lock()
+#define Y_Apex_Giant_Lock() Y_Lock( ApexGiantLock() )
 
 
 }

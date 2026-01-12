@@ -8,6 +8,9 @@
 #include "y/pointer/auto.hpp"
 #include "y/apex/rational.hpp"
 #include "y/container/sequence/vector.hpp"
+#include "y/memory/allocator/quanta.hpp"
+#include "y/memory/allocator/pooled.hpp"
+#include "y/memory/allocator/dyadic.hpp"
 
 using namespace Yttrium;
 
@@ -60,11 +63,16 @@ namespace
             {
                 qvec << apq(ran,ran.in<size_t>(1,10),ran.in<size_t>(1,10));
             }
+            { Y_Giant_Lock(); ( std::cerr << "ok " << ctx << std::endl).flush() ; }
 
             {
-                Y_Giant_Lock();
                 Y_Apex_Giant_Lock();
-                (std::cerr << ctx << " : " << qvec << std::endl).flush();
+                Y_Giant_Lock();
+                Y_Lock( Memory::Quanta::Instance().access );
+                Y_Lock( Memory::Pooled::Instance().access );
+                Y_Lock( Memory::Dyadic::Instance().access );
+                Y_Lock( Object::Factory::Instance().access );
+                //(std::cerr << ctx << " : " << qvec << std::endl).flush();
             }
 
 

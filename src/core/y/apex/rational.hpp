@@ -103,7 +103,7 @@ namespace Yttrium
             Y_APQ_Proto_Decl(static Rational,Div);
             Y_APQ_Operator_Impl(/,Div)
 
- #endif
+#endif // !defined(DOXYGEN_SHOULD_SKIP_THIS)
 
             //__________________________________________________________________
             //
@@ -173,5 +173,5 @@ namespace Yttrium
     typedef Apex::Rational apq; //!< alias
 }
 
-#endif
+#endif // !Y_Apex_Rational_Included
 

@@ -40,7 +40,7 @@ namespace Yttrium
             category(c),
             universe(Chars+category),
             detected(0),
-            totality(category),
+            totality(0),
             encoding(),
             ch_count(universe),
             ch_bytes(0),
@@ -82,7 +82,7 @@ namespace Yttrium
             void Alphabet:: reset() noexcept
             {
                 encoding.reset();
-                totality = category;
+                totality = 0;
                 detected = 0;
                 for(DataType i=0;i<Chars;++i)          database[i].reset(8);
                 for(DataType i=Chars;i<universe;++i)   database[i].reset(9);
@@ -97,11 +97,18 @@ namespace Yttrium
 
             void Alphabet:: display(std::ostream &os) const
             {
+#if 0
                 for(DataType i=0;i<universe;++i)
                 {
                     const Character &ch = database[i];
                     if(ch.freq>0)
                         os << ch << std::endl;
+                }
+#endif
+
+                for(const Character *ch=encoding.head;ch;ch=ch->next)
+                {
+                    os << *ch << std::endl;
                 }
                 std::cerr << "encoding=" << encoding.size << std::endl;
                 std::cerr << "totality=" << totality      << std::endl;
@@ -114,18 +121,34 @@ namespace Yttrium
                     totality += ch->reduce();
             }
 
+#if !defined(NDEBUG)
+            static inline SignType ByDecreasingFreq(const Character * const lhs,
+                                                    const Character * const rhs) noexcept
+            {
+                assert(lhs); assert(rhs);
+                return Sign::Of(rhs->freq,lhs->freq);
+            }
+#endif // !defined(NDEBUG)
+
             Alphabet & Alphabet:: operator<<(const uint8_t i) noexcept
             {
                 {
                     Character * const ch = database+i;
                     if(ch->freq<=0) {
-                        if(++detected>=Chars) (void)encoding.pop(nyt);
+                        if(++detected>=Chars)
+                            (void)encoding.pop(nyt);
                         encoding.pushTail(ch);
                     }
                     ++ch->freq;
+                    while(ch->prev && ch->prev->freq < ch->freq)
+                        encoding.towardsHead(ch);
+                    while(ch->next && ch->freq < ch->next->freq)
+                        encoding.towardsTail(ch);
+                    assert(encoding.isOrderedBy(ByDecreasingFreq, Sign::LooselyIncreasing ));
+
                 }
 
-                
+
                 if(totality>=MaxFreq) {
                     reduce();
                 }

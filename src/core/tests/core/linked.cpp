@@ -263,9 +263,28 @@ Y_UTEST(core_linked)
             }
             Y_ASSERT(n==list.size);
             std::cerr << list << std::endl;
-            for(size_t i=1;i<=n;++i)
+            for(size_t i=2;i<n;++i)
             {
                 list.towardsHead( list[i] );
+                std::cerr << "\t" << list << std::endl;
+            }
+        }
+    }
+
+    {
+        std::cerr << "Towards Tail" << std::endl;
+        for(size_t n=1;n<=10;++n)
+        {
+            CxxListOf<Node> list;
+            for(size_t i=n;i>0;--i)
+            {
+                list.pushTail( new Node() );
+            }
+            Y_ASSERT(n==list.size);
+            std::cerr << list << std::endl;
+            for(size_t i=2;i<n;++i)
+            {
+                list.towardsTail( list[i] );
                 std::cerr << "\t" << list << std::endl;
             }
         }

@@ -103,7 +103,7 @@ space( parcel<uint8_t>().maxi )
             const Parcel<uint8_t> &p = make<uint8_t>();
             if(p.size<=0)
             {
-                return '0';
+                return String('0');
             }
             else
             {
