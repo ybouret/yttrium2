@@ -3,6 +3,7 @@
 #include "y/information/pack/huffman.hpp"
 
 #include "y/stream/libc/input.hpp"
+#include "y/stream/io/bits.hpp"
 
 using namespace Yttrium;
 
@@ -13,6 +14,7 @@ Y_UTEST(info_huffman)
     Information::Pack::Alphabet streaming( Information::Pack::Streaming );
     Information::Pack::Alphabet messaging( Information::Pack::Messaging );
     Information::Pack::Huffman  huff;
+    IO::Bits                    bits,pool;
 
     streaming.display(std::cerr);
 
@@ -24,9 +26,10 @@ Y_UTEST(info_huffman)
         while( fp.query(c) )
         {
             const uint8_t b = c;
+            bits.push(streaming.database[b].code,streaming.database[b].bits,pool);
+            std::cerr << bits << std::endl;
             streaming << b;
             messaging << b;
-
             huff.build(streaming);
         }
     }
