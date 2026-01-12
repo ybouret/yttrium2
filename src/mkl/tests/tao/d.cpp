@@ -7,7 +7,9 @@
 #include "y/utest/run.hpp"
 #include "../../../core/tests/main.hpp"
 #include "y/concurrent/api/simd/crew.hpp"
-
+#include "y/system/wall-time.hpp"
+#include "y/apex/rational.hpp"
+#include "y/string/format.hpp"
 
 using namespace Yttrium;
 using namespace MKL;
@@ -47,23 +49,35 @@ namespace
     {
         Tao::UpperDiagonalBroker<T> broker(eng);
         Cameo::Addition<T>        &xadd = broker.xadd();
+        System::WallTime           chrono;
 
-
-        for(size_t r=1;r<=10;++r)
+        for(size_t r=1;r<=20;++r)
         {
-            std::cerr << "rows=" << r << std::endl;
+            (std::cerr << "rows=" << std::setw(3) << r << " [").flush();
             Matrix<T> Gseq(r,r);
             Matrix<T> Gpar(r,r);
             broker.prep(Gseq);
-            for(size_t c=1;c<=10;++c)
+            for(size_t c=1;c<=20;++c)
             {
                 Matrix<T> A(r,c);
-                FillWith<T>::Mat(ran,A);
-                //std::cerr << "A=" << A << std::endl;
-                Tao::Gram(xadd,Gseq,A);
-                Tao::Gram(broker,Gpar,A);
+                uint64_t tseq=0, tpar=0;
+
+                do
+                {
+                    FillWith<T>::Mat(ran,A);
+                    Y_WallTime_Update(tseq, Tao::Gram(xadd,Gseq,A)   );
+                    Y_WallTime_Update(tpar, Tao::Gram(broker,Gpar,A) );
+                } while( chrono(tseq) <= 0.01L );
+
+                const apn    numer = tseq;
+                const apn    denom = tpar;
+                const float ratio  = apn::Ratio<float>(numer,denom);
+                const String s     = Formatted::Get("%5.2f",ratio);
+                std::cerr << " " << s;
+
                 Y_ASSERT( delta(Gseq,Gpar) );
             }
+            std::cerr << "]" << std::endl;
         }
 
 
@@ -79,6 +93,7 @@ Y_UTEST(tao_d)
 
 
     doUDT<float>(ran,eng);
+    doUDT<double>(ran,eng);
 
 
 }
