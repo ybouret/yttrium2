@@ -38,7 +38,7 @@ Y_UTEST(stream_io_bits)
     std::cerr << bits << std::endl;
     {
         OutputFile fp("bits.dat");
-        bits.send(fp,pool);
+        bits.write(fp,pool);
     }
     std::cerr << "#pool = " << pool->size << std::endl;
 

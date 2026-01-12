@@ -30,7 +30,11 @@ namespace Yttrium
         // C++
         //
         //______________________________________________________________________
-        //! setup \param x integral value setting the bit count
+        //! setup
+        /**
+         \param x integral value setting the bit count
+         \param maxCount default maxCount as all the bits
+         */
         template <typename T>
         inline Binary(const T &x, const size_t maxCount = sizeof(T) * 8 ) noexcept :
         LegacyString(),

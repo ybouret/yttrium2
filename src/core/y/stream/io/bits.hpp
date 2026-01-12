@@ -30,7 +30,7 @@ namespace Yttrium
         //
         //
         //
-        //! List of IOBits with unique shared cache
+        //! List of IOBits with unique shared cache TODO check locking...
         //
         //
         //______________________________________________________________________
@@ -80,13 +80,22 @@ namespace Yttrium
              */
             Bits & skip(size_t nbit, Bits &reservoir) noexcept;
 
-            //! send as many bytes as possible into output
+            //! write as many bytes as possible into output
             /**
              \param output    output stream
              \param reservoir reservoir
-             \return *this
+             \return written bytes
              */
-            Bits & send(OutputStream &output, Bits &reservoir);
+            size_t write(OutputStream &output, Bits &reservoir);
+
+
+            //! write and emit padded
+            /**
+             \param output    output stream
+             \param reservoir reservoir
+             \return written bytes
+             */
+            size_t flush(OutputStream &output, Bits &reservoir);
 
 
             //! push a partial word
@@ -101,16 +110,11 @@ namespace Yttrium
             {
                 assert(nbit>0); assert(nbit<=sizeof(T)*8);
                 static const T one  = 0x1;
-                Bits &         self = *this;
                 while(nbit-- > 0) {
-                    const bool flag = (one&word);
-                    if(reservoir->size)
-                        **(self->pushTail(reservoir->popTail() )) = flag;
-                    else
-                        self << flag;
+                    list.pushTail(reservoir.query(one&word));
                     word >>= 1;
                 }
-                return  self;
+                return  *this;
             }
 
             //! push a  full word

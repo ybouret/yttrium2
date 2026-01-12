@@ -1,6 +1,7 @@
 
 
 #include "y/stream/io/bits.hpp"
+#include "y/calculus/alignment.hpp"
 
 namespace Yttrium
 {
@@ -40,7 +41,7 @@ namespace Yttrium
 
         Bits & Bits:: to(Bits &reservoir) noexcept
         {
-			reservoir->mergeTail( **this );
+            reservoir->mergeTail( **this );
             return *this;
         }
 
@@ -51,14 +52,25 @@ namespace Yttrium
             return *this;
         }
 
-        Bits & Bits:: send(OutputStream &fp, Bits &reservoir)
+        size_t Bits:: write(OutputStream &fp, Bits &reservoir)
         {
+            size_t count = 0;
             while(list.size>=8)
+            {
                 fp.write( (char) pop<uint8_t>(reservoir) );
-            
-
-            return *this;
+                ++count;
+            }
+            return count;;
         }
+
+        size_t Bits:: flush(OutputStream &output, Bits &reservoir)
+        {
+            size_t pad  = Alignment::On<8>::Ceil(list.size) - list.size;
+            while(pad-- > 0)
+                list.pushTail( reservoir.query(false) );
+            return write(output,reservoir);
+        }
+
 
 
 

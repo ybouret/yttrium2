@@ -177,6 +177,8 @@ namespace Yttrium
         // methods
         //
         //______________________________________________________________________
+
+        //! \return number of swaps during insertion
         inline size_t nswp() const noexcept
         {
             return code ? code->nswp : 0;

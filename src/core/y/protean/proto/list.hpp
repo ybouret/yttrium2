@@ -83,6 +83,21 @@ namespace Yttrium
                 list.pushHead( pool.summon(args) );
             }
 
+            //! \param args argument \return new/existing tail node set to args
+            inline NODE * query(ParamType args)
+            {
+                Y_Must_Lock();
+                if(list.size) {
+                    **list.tail = args;
+                    return list.popTail();
+                }
+                else
+                {
+                    return pool.summon(args);
+                }
+            }
+
+
             //! push tail item with two args constructor
             /**
              \param u first arg
