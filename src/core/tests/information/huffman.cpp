@@ -15,7 +15,7 @@ Y_UTEST(info_huffman)
     Information::Pack::Huffman  huff;
 
     streaming.display(std::cerr);
-    
+
     if(argc>1)
     {
         InputFile fp( argv[1] );
@@ -32,7 +32,7 @@ Y_UTEST(info_huffman)
     }
 
     streaming.display(std::cerr);
-
+    std::cerr << "swaps=" << huff.queue().nswp() << std::endl;
 
 
 

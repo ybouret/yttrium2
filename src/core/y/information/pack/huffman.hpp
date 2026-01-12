@@ -45,13 +45,15 @@ namespace Yttrium
 
                     typedef PriorityQueue<Pointer,Comparator> PQ;
 
-
-                    Character * leaf;
+                    Node *      parent;
+                    Node *      left;
+                    Node *      right;
                     FreqType    freq;
                     CodeType    code;
                     unsigned    bits;
-                    Node *      left;
-                    Node *      right;
+                    Character * leaf;
+
+                    
 
                 private:
                     Y_Disable_Copy_And_Assign(Node);
@@ -64,7 +66,7 @@ namespace Yttrium
 
 
                 Huffman() :
-                pq(WithAtLeast,MaxChars),
+                pq(WithAtLeast,MaxNodes),
                 root(0),
                 inode(0),
                 count(MaxNodes),
@@ -77,6 +79,8 @@ namespace Yttrium
 
                 void build(Alphabet &alpha);
 
+
+                const Node::PQ & queue() const noexcept { return pq; }
 
             private:
                 Y_Disable_Copy_And_Assign(Huffman);

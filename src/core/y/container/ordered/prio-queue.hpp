@@ -16,6 +16,7 @@
 namespace Yttrium
 {
 
+
     //__________________________________________________________________________
     //
     //
@@ -52,7 +53,8 @@ namespace Yttrium
         inline explicit PrioQueue(T * const    workspace,
                                   const size_t numBlocks) noexcept :
         PQueue(numBlocks),
-        tree( workspace )
+        tree( workspace ),
+        nswp(0)
         {
             assert(Good(workspace,numBlocks));
             assert(Memory::Stealth::Are0(workspace,numBlocks*sizeof(T)));
@@ -124,6 +126,7 @@ namespace Yttrium
                     Memory::Stealth::Swap(tree[ppos],tree[ipos]);
                     ipos = ppos;
                     ppos = Parent(ipos);
+                    ++nswp;
                 }
             }
             catch(...)
@@ -200,6 +203,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         MutableType * const tree; //!< internal tree
+        size_t              nswp; //!< number of swaps upon balance
 
     private:
         Y_Disable_Copy_And_Assign(PrioQueue); //!< discarding
@@ -207,5 +211,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_PrioQ_Included
 

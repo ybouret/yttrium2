@@ -32,9 +32,13 @@ namespace Yttrium
                 inode = 0;
 
                 // initialize queue, with at least NYT if no detected char
-                assert(alpha.encoding.size>0);
+                assert(alpha.encoding.size>=2);
+                pq.free();
+
                 for(Character *ch=alpha.encoding.head;ch;ch=ch->next)
+                //for(Character *ch=alpha.encoding.tail;ch;ch=ch->prev)
                 {
+                    assert(inode<MaxNodes);
                     Node::Pointer const node = Memory::Stealth::CastZeroed<Node>(nodes + inode++);
                     node->leaf = ch;
                     node->freq = ch->freq;
@@ -43,8 +47,24 @@ namespace Yttrium
                     pq.push(node);
                 }
 
-                assert(pq.size()>0);
-                
+                assert(pq.size()>=2);
+
+                while(pq.size()>1)
+                {
+                    assert(inode<MaxNodes);
+                    Node * const        left  = pq.pop();
+                    Node * const        right = pq.pop();
+                    Node::Pointer const node  = Memory::Stealth::CastZeroed<Node>(nodes + inode++);
+                    left->parent = node;
+                    left->parent = node;
+                    node->left   = left;
+                    node->right  = right;
+                    node->freq   = left->freq + right->freq;
+                    pq.push(node);
+                }
+
+                assert(1==pq.size());
+                root = pq.pop();
 
 
             }
