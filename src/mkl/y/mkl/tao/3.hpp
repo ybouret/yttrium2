@@ -7,6 +7,7 @@
 #include "y/mkl/tao/2.hpp"
 #include "y/mkl/tao/seq/3.hpp"
 #include "y/mkl/tao/broker/matrix.hpp"
+#include "y/mkl/tao/broker/upper-diagonal.hpp"
 
 namespace Yttrium
 {
@@ -74,6 +75,37 @@ namespace Yttrium
 
 
 
+            namespace Hub
+            {
+                //! parallel matrix/vector mul-sub
+                /**
+                 \param tile   operating tile
+                 \param lhs    target vector
+                 \param a      matrix
+                 \param rhs    source vector
+                 */
+                template <
+                typename T,
+                typename TARGET,
+                typename SOURCE>
+                inline void  GramPar(Lockable          &,
+                                     UpperDiagonalTile & tile,
+                                     TARGET            & G,
+                                     const SOURCE      & M)
+                {
+                    assert(0!=tile.entry);
+                    Cameo::Addition<T> & xadd = *tile.as< Cameo::Addition<T> * >();
+                    for(size_t h=tile.h;h>0;--h)
+                    {
+                        const UpperDiagonalSegment &seg = tile[h];
+                        const size_t           i = seg.start.y;
+                        for(size_t j=seg.start.x,n=seg.width;n>0;--n,++j)
+                            G[i][j] = G[j][i] = GramCore(xadd,i,j,M);
+                    }
+
+                }
+            }
+
             //! Gram's matrix
             /**
              \param xadd perform additions
@@ -83,18 +115,15 @@ namespace Yttrium
             template <typename T,
             typename TARGET,
             typename SOURCE> inline
-            void Gram( Cameo::Addition<T> &xadd, TARGET &G, SOURCE &M)
+            void Gram(UpperDiagonalBroker<T> &broker,TARGET &G, SOURCE &M)
             {
-                assert(G.rows==M.rows);
-                assert(G.cols==M.rows);
-                for(size_t i=M.rows;i>0;--i)
-                {
-                    const typename SOURCE::Row &M_i = M[i];
-                    G[i][i] = Dot(xadd,M_i,M_i);
-                    for(size_t j=i-1;j>0;--j)
-                        G[i][j] = G[j][i] = Dot(xadd,M_i,M[j]);
-                }
+                assert(G.rows == M.rows);
+                assert(G.rows == G.cols);
+                broker.prep(G);
+                broker->run( Hub::GramPar<T,TARGET,SOURCE>, G, M);
             }
+
+
 
             //! left multiplication of a diagonal matrix as a vector
             /**

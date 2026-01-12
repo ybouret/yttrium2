@@ -10,6 +10,7 @@
 #include "y/concurrent/divide/udts.hpp"
 #include "y/concurrent/api/simd/spawn.hpp"
 #include "y/cameo/caddy.hpp"
+#include "y/container/matrix/metrics.hpp"
 
 namespace Yttrium
 {
@@ -20,13 +21,11 @@ namespace Yttrium
         namespace Tao
         {
 
-            typedef Concurrent::Divide::UpperDiagonalTile  UpperDiagonalTile;        //!< alias
-            typedef Concurrent::Divide::UpperDiagonalTiles UpperDiagonalTiles;       //!< alias
-            typedef Concurrent::Spawn<UpperDiagonalTiles>  UpperDiagonalSpawn;   //!< alias
-            typedef UpperDiagonalSpawn::Pointer            UpperDiagonalEngine;  //!< alias
-            //typedef V2D<size_t>                            MatrixVertex;  //!< alias
-            //typedef Concurrent::Divide::Box<MatrixVertex>  MatrixBox;     //!< alias
-            //typedef Concurrent::Divide::HSegment<size_t>   MatrixSegment; //!< alias
+            typedef Concurrent::Divide::UpperDiagonalTile    UpperDiagonalTile;    //!< alias
+            typedef Concurrent::Divide::UpperDiagonalTiles   UpperDiagonalTiles;   //!< alias
+            typedef Concurrent::Spawn<UpperDiagonalTiles>    UpperDiagonalSpawn;   //!< alias
+            typedef UpperDiagonalSpawn::Pointer              UpperDiagonalEngine;  //!< alias
+            typedef Concurrent::Divide::UpperDiagonalSegment UpperDiagonalSegment; //!< alias
 
             //__________________________________________________________________
             //
@@ -75,17 +74,14 @@ namespace Yttrium
                 //
                 //______________________________________________________________
 
-#if 0
                 //! prepare tiles \param a using (1,1) -> (a.cols,a.rows)
                 inline void prep(const MatrixMetrics &a)
                 {
-                    const MatrixVertex lo(1,1);
-                    const MatrixVertex up(a.cols,a.rows);
-                    const MatrixBox    box(lo,up);
-                    if(engine->remap(box))
+                    assert(a.isSquare());
+                    const size_t n = a.rows;
+                    if(engine->remap(n))
                         engine->link(caddy.head);
                 }
-#endif
 
 
             private:

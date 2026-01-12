@@ -44,7 +44,7 @@ namespace Yttrium
             }
 
 
-            void UpperDiagonalTiles:: remap(const size_t metrics)
+            bool UpperDiagonalTiles:: remap(const size_t metrics)
             {
                 if(metrics!=realm)
                 {
@@ -52,6 +52,11 @@ namespace Yttrium
                     tiles.xch(udts.tiles);
                     CoerceSwap(realm,udts.realm);
                     assert(metrics==realm);
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
 

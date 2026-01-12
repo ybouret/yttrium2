@@ -62,7 +62,7 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
-                void remap(const size_t metrics); //!< remap if necessary \param metrics required metrics
+                bool remap(const size_t metrics); //!< remap if necessary \param metrics required metrics
 
                 //______________________________________________________________
                 //

@@ -71,6 +71,43 @@ namespace Yttrium
 
             }
 
+
+            namespace Hub
+            {
+                template <typename T, typename MATRIX> inline
+                T GramCore(Cameo::Addition<T> &xadd,
+                           const size_t         i,
+                           const size_t         j,
+                           const MATRIX &       M)
+                {
+                    return Dot(xadd,M[i],M[j]);
+                }
+            }
+
+
+            //! Gram's matrix
+            /**
+             \param xadd perform additions
+             \param G    destination matrix = M*M'
+             \param M    source matrix
+             */
+            template <typename T,
+            typename TARGET,
+            typename SOURCE> inline
+            void Gram( Cameo::Addition<T> &xadd, TARGET &G, SOURCE &M)
+            {
+                assert(G.rows==M.rows);
+                assert(G.cols==M.rows);
+                for(size_t i=M.rows;i>0;--i)
+                {
+                    const typename SOURCE::Row &M_i = M[i];
+                    G[i][i] = Dot(xadd,M_i,M_i);
+                    for(size_t j=i-1;j>0;--j)
+                        G[i][j] = G[j][i] = Hub::GramCore(xadd,i,j,M);
+                }
+            }
+
+
         }
 
     }
