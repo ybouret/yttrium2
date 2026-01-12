@@ -4,7 +4,6 @@
 
 namespace Yttrium
 {
-
     namespace Information
     {
         namespace Pack
@@ -12,6 +11,9 @@ namespace Yttrium
 
             Huffman:: Node:: Comparator::  Comparator() noexcept {}
             Huffman:: Node:: Comparator:: ~Comparator() noexcept {}
+
+
+
 
 
             SignType  Huffman:: Node:: Comparator:: operator()(const Node::Pointer lhs, const Node::Pointer rhs) noexcept
@@ -49,6 +51,7 @@ namespace Yttrium
 
                 assert(pq.size()>=2);
 
+                // build tree
                 while(pq.size()>1)
                 {
                     assert(inode<MaxNodes);
@@ -67,9 +70,28 @@ namespace Yttrium
                 root = pq.pop();
 
 
+
             }
 
 
+        }
+
+    }
+
+}
+
+#include "y/graphviz/vizible.hpp"
+
+namespace Yttrium
+{
+    namespace Information
+    {
+        namespace Pack
+        {
+            void Huffman:: Node:: viz(OutputStream &fp) const
+            {
+                
+            }
         }
 
     }

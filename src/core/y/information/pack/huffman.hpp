@@ -6,6 +6,7 @@
 
 #include "y/information/pack/alphabet.hpp"
 #include "y/container/ordered/priority-queue.hpp"
+#include "y/stream/output.hpp"
 
 namespace Yttrium
 {
@@ -44,6 +45,8 @@ namespace Yttrium
                     };
 
                     typedef PriorityQueue<Pointer,Comparator> PQ;
+
+                    void viz(OutputStream &) const;
 
                     Node *      parent;
                     Node *      left;
