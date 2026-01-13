@@ -42,7 +42,7 @@ namespace Yttrium
                         Y_Disable_Copy_And_Assign(Comparator);
                     };
 
-                    typedef StaticPriorityQueue<Pointer,MaxChars,Comparator> PQ;
+                    typedef StaticPriorityQueue<Pointer,MaxChars,Comparator> PrioQ;
 
 
 
@@ -82,7 +82,7 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(Huffman);
                 Node *   const nodes;
             public:
-                Node::PQ       pq;
+                Node::PrioQ    Q;
             private:
                 void *         wksp[ InnerWords ];
             };

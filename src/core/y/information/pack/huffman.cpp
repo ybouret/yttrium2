@@ -46,7 +46,7 @@ namespace Yttrium
             Huffman:: Huffman() noexcept:
             root(0),
             nodes(0),
-            pq(),
+            Q(),
             wksp()
             {
                 Coerce(nodes) = static_cast<Node *>( Y_Memory_BZero(wksp) );
@@ -64,7 +64,7 @@ namespace Yttrium
 
                     // initialize queue, with at least NYT if no detected char
                     assert(alpha.encoding.size>=2);
-                    pq.free();
+                    Q.free();
 
                     //for(Character *ch=alpha.encoding.head;ch;ch=ch->next)
                     for(Character *ch=alpha.encoding.tail;ch;ch=ch->prev)
@@ -75,20 +75,19 @@ namespace Yttrium
                         node->freq = ch->freq;
                         assert(0==node->code);
                         assert(0==node->bits);
-                        //pq.push(node);
-                        pq << node;
+                        Q << node;
                     }
 
-                    assert(pq->size>=2);
+                    assert(Q->size>=2);
 
 
 
                     // build tree
-                    while(pq->size>1)
+                    while(Q->size>1)
                     {
                         assert(inode<InnerNodes);
-                        Node * const        left  = pq.pop();
-                        Node * const        right = pq.pop();
+                        Node * const        left  = Q.pop();
+                        Node * const        right = Q.pop();
                         Node::Pointer const node  = Memory::Stealth::CastZeroed<Node>(nodes + inode++);
                         assert(left->freq<=right->freq);
                         left->parent  = node;
@@ -96,13 +95,13 @@ namespace Yttrium
                         node->left    = left;
                         node->right   = right;
                         node->freq    = left->freq + right->freq;
-                        pq << node;
+                        Q << node;
                     }
 
                     std::cerr << "#nodes=" << inode << "/ " << InnerNodes << std::endl;
-                    assert(1==pq->size);
+                    assert(1==Q->size);
                 }
-                (root = pq.pop())->propagate();
+                (root = Q.pop())->propagate();
 
                 {
                     const Node * node = nodes;

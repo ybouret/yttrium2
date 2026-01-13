@@ -69,7 +69,7 @@ Y_UTEST(info_huffman)
     numOut += bits.flush(out,pool);
 
     streaming.display(std::cerr);
-    std::cerr << "swaps=" << huff.pq->nswp << std::endl;
+    std::cerr << "swaps=" << huff.Q->nswp << std::endl;
 
     if(huff.root)
         Vizible::Render("huff.dot", *huff.root);
@@ -82,8 +82,7 @@ Y_UTEST(info_huffman)
     Y_PRINTV(Information::Pack::Huffman::InnerBytes);
     Y_PRINTV(Information::Pack::Huffman::InnerWords);
     Y_SIZEOF(Information::Pack::Huffman);
-    Y_SIZEOF(Information::Pack::Huffman::Node::PQ);
-
+    
 
 }
 Y_UDONE()
