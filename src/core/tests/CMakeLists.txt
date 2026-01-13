@@ -201,6 +201,7 @@ Y_UTEST(info:bwt_mtf)
 Y_UTEST(info:entropy)
 Y_UTEST(info:alphabet)
 Y_UTEST(info:huffman)
+Y_UTEST(info:huffenc)
 
 #utf8
 Y_UTEST(utf8:api)

@@ -59,5 +59,5 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Information_Stream_Cipher_Included
 

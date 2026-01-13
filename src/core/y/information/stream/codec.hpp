@@ -15,5 +15,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Information_Stream_Codec_Included
 

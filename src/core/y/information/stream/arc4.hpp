@@ -59,4 +59,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Information_ARC4_Included

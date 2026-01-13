@@ -13,6 +13,7 @@
 
 namespace Yttrium
 {
+    namespace IO { class Bits; }
 
     namespace Information
     {
@@ -43,6 +44,8 @@ namespace Yttrium
                 void display(std::ostream &) const;
                 void reduce() noexcept;
                 void reset()  noexcept; //!< reset all
+
+                void emit(IO::Bits &bits, const uint8_t byte, IO::Bits &pool) const;
 
 
                 const Category    category;

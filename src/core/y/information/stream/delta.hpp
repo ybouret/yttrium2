@@ -95,4 +95,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Information_Delta_Included

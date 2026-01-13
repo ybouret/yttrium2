@@ -57,8 +57,7 @@ Y_UTEST(info_huffman)
         {
             ++numInp;
             const uint8_t b = (uint8_t)c;
-            bits.push(streaming.database[b].code,streaming.database[b].bits,pool);
-            //std::cerr << bits << std::endl;
+            streaming.emit(bits,b,pool);
             streaming << b;
             messaging << b;
             huff.build(streaming);

@@ -81,4 +81,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Information_Move_To_Front_Included

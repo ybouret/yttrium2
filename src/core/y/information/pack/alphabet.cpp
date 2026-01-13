@@ -183,3 +183,24 @@ namespace Yttrium
 	}
 
 }
+
+#include "y/stream/io/bits.hpp"
+
+namespace Yttrium
+{
+
+    namespace Information
+    {
+        namespace Pack
+        {
+            void Alphabet:: emit(IO::Bits &bits, const uint8_t byte, IO::Bits &pool) const
+            {
+                const Character &ch = database[byte];
+                (void) bits.push<CodeType>(ch.code,ch.bits,pool);
+            }
+
+        }
+
+    }
+
+}
