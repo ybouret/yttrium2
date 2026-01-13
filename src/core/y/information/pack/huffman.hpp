@@ -23,8 +23,8 @@ namespace Yttrium
                 typedef Alphabet::DataType  DataType;
                 typedef Alphabet::FreqType  FreqType;
 
-                static const DataType MaxChars = Alphabet::EOS;
-                static const DataType MaxNodes = 2*MaxChars;
+                static const DataType MaxChars = Alphabet::InnerChars-1;
+                static const DataType MaxNodes = 2*MaxChars-1;
 
 
                 class Node : public Vizible

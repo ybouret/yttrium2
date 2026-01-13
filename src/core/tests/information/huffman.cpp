@@ -77,9 +77,9 @@ Y_UTEST(info_huffman)
 
     TestHuffFull();
 
-    Y_PRINTV(Information::Pack::Alphabet::SizeOfChar);
-    Y_PRINTV(Information::Pack::Alphabet::InnerBytes);
-    Y_PRINTV(Information::Pack::Alphabet::InnerWords);
+    Y_SIZEOF(Information::Pack::Huffman::Node);
+    Y_PRINTV(Information::Pack::Huffman::MaxNodes);
+
     
 
 }

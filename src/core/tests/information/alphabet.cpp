@@ -27,6 +27,9 @@ Y_UTEST(info_alphabet)
         streaming <<  (uint8_t)i;
     streaming.display(std::cerr);
     
+    Y_PRINTV(Information::Pack::Alphabet::SizeOfChar);
+    Y_PRINTV(Information::Pack::Alphabet::InnerBytes);
+    Y_PRINTV(Information::Pack::Alphabet::InnerWords);
 
 }
 Y_UDONE()
