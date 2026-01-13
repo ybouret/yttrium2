@@ -30,7 +30,7 @@ static inline void TestHuffFull()
 
     std::cerr << "build streaming" << std::endl;
     huff.build(streaming);
-    std::cerr << "build messagin" << std::endl;
+    std::cerr << "build messaging" << std::endl;
     huff.build(messaging);
 
 
@@ -58,7 +58,7 @@ Y_UTEST(info_huffman)
             ++numInp;
             const uint8_t b = c;
             bits.push(streaming.database[b].code,streaming.database[b].bits,pool);
-            std::cerr << bits << std::endl;
+            //std::cerr << bits << std::endl;
             streaming << b;
             messaging << b;
             huff.build(streaming);

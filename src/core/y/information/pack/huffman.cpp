@@ -12,16 +12,19 @@ namespace Yttrium
             Huffman:: Node:: Comparator::  Comparator() noexcept {}
             Huffman:: Node:: Comparator:: ~Comparator() noexcept {}
 
-            void Huffman:: Node:: propagate() noexcept
+            bool Huffman:: Node:: propagate(const size_t maxBits) noexcept
             {
                 static const CodeType one       = 1 ;
                 const CodeType        childCode = code << 1;
                 const unsigned        childBits = bits+1;
+
+                if(childBits>maxBits) return false;
+
                 if(left)
                 {
                     left->code = childCode;
                     left->bits = childBits;
-                    left->propagate();
+                    if(!left->propagate(maxBits)) return false;
                 }
 
                 if(right)
@@ -29,8 +32,10 @@ namespace Yttrium
                     right->code = childCode;
                     right->bits = childBits;
                     right->code |= one;
-                    right->propagate();
+                    if(!right->propagate(maxBits)) return false;
                 }
+
+                return true;
             }
 
 
@@ -58,13 +63,17 @@ namespace Yttrium
 
             void Huffman:: build(Alphabet &alpha)
             {
+            BUILD:
                 root         = 0;
                 {
-                    size_t inode = 0;
-
-                    // initialize queue, with at least NYT if no detected char
+                    //----------------------------------------------------------
+                    //
+                    // initialize queue, with at least NYT + one char
+                    //
+                    //----------------------------------------------------------
                     assert(alpha.encoding.size>=2);
                     Q.free();
+                    size_t inode = 0;
 
                     //for(Character *ch=alpha.encoding.head;ch;ch=ch->next)
                     for(Character *ch=alpha.encoding.tail;ch;ch=ch->prev)
@@ -81,8 +90,11 @@ namespace Yttrium
                     assert(Q->size>=2);
 
 
-
+                    //----------------------------------------------------------
+                    //
                     // build tree
+                    //
+                    //----------------------------------------------------------
                     while(Q->size>1)
                     {
                         assert(inode<InnerNodes);
@@ -98,12 +110,24 @@ namespace Yttrium
                         Q << node;
                     }
 
-                    std::cerr << "#nodes=" << inode << "/ " << InnerNodes << std::endl;
+                    //std::cerr << "#nodes=" << inode << "/ " << InnerNodes << std::endl;
                     assert(1==Q->size);
                 }
-                (root = Q.pop())->propagate();
-
+                if( ! (root = Q.pop())->propagate(16) )
                 {
+                    std::cerr << "maxBits exceeded!!" << std::endl;
+                    alpha.reduce();
+                    goto BUILD;
+                }
+
+
+                
+                {
+                    //----------------------------------------------------------
+                    //
+                    // transfer encoding
+                    //
+                    //----------------------------------------------------------
                     const Node * node = nodes;
                     for(Character *ch=alpha.encoding.tail;ch;ch=ch->prev,++node)
                     {

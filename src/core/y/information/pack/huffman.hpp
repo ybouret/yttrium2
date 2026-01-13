@@ -47,7 +47,7 @@ namespace Yttrium
 
 
                     OutputStream &viz(OutputStream &) const;
-                    void          propagate()         noexcept;
+                    bool          propagate(const size_t maxBits=16) noexcept;
 
 
                     Node *      parent;
