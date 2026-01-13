@@ -46,10 +46,10 @@ namespace Yttrium
                 void reset()  noexcept; //!< reset all
 
                 void emit(IO::Bits &bits, const uint8_t byte, IO::Bits &pool) const;
-
-
+                
                 const Category    category;
                 const DataType    universe;
+                bool              writeNYT;   //!< monitoring need for NYT
                 DataType          detected;   //!< up to Codes to remove NYT
                 FreqType          totality;   //!< current sum of frequencies
                 CharList          encoding;   //!< encoding chars + control
@@ -63,6 +63,7 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(Alphabet);
                 void * wksp[InnerWords];
 
+                void emit(IO::Bits &bits, const Character &ch, IO::Bits &pool) const;
 
                 void setup() noexcept; //!< initial setup on a clean workspace
                 void cntrl() noexcept; //!< register controls in encoding

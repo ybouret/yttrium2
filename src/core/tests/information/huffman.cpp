@@ -48,6 +48,11 @@ Y_UTEST(info_huffman)
     size_t numInp = 0;
     size_t numOut = 0;
 
+    Y_ASSERT(0==streaming.totality);
+    Y_ASSERT(0==messaging.totality);
+    huff.build(messaging);
+
+
     if(argc>1)
     {
         InputFile inp( argv[1] );
