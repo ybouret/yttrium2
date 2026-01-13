@@ -61,4 +61,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Memory_StaticBuffer_Included
