@@ -23,8 +23,6 @@ namespace Yttrium
                 typedef Alphabet::DataType  DataType;
                 typedef Alphabet::FreqType  FreqType;
 
-                static const DataType MaxChars = Alphabet::InnerChars-1;
-                static const DataType MaxNodes = 2*MaxChars-1;
 
 
                 class Node : public Vizible
@@ -46,6 +44,8 @@ namespace Yttrium
 
                     typedef PriorityQueue<Pointer,Comparator> PQ;
 
+
+
                     OutputStream &viz(OutputStream &) const;
                     void          propagate()         noexcept;
 
@@ -66,14 +66,17 @@ namespace Yttrium
                     virtual ~Node() noexcept;
                 };
 
+                static const DataType MaxChars   = Alphabet::InnerChars-1;
+                static const DataType InnerNodes = 2*MaxChars-1;
+                static const size_t   SizeOfNode = sizeof(Node);
 
 
 
 
                 Huffman() :
-                pq(WithAtLeast,MaxNodes),
+                pq(WithAtLeast,InnerNodes),
                 root(0),
-                count(MaxNodes),
+                count(InnerNodes),
                 bytes(0),
                 nodes( Object::AllocatorInstance().acquireAs<Node>(count,bytes) )
                 {

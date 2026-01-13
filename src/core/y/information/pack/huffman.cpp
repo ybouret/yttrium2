@@ -61,7 +61,7 @@ namespace Yttrium
                     //for(Character *ch=alpha.encoding.head;ch;ch=ch->next)
                     for(Character *ch=alpha.encoding.tail;ch;ch=ch->prev)
                     {
-                        assert(inode<MaxNodes);
+                        assert(inode<InnerNodes);
                         Node::Pointer const node = Memory::Stealth::CastZeroed<Node>(nodes + inode++);
                         node->leaf = ch;
                         node->freq = ch->freq;
@@ -77,7 +77,7 @@ namespace Yttrium
                     // build tree
                     while(pq.size()>1)
                     {
-                        assert(inode<MaxNodes);
+                        assert(inode<InnerNodes);
                         Node * const        left  = pq.pop();
                         Node * const        right = pq.pop();
                         Node::Pointer const node  = Memory::Stealth::CastZeroed<Node>(nodes + inode++);
@@ -90,7 +90,7 @@ namespace Yttrium
                         pq.push(node);
                     }
 
-                    std::cerr << "#nodes=" << inode << "/ " << MaxNodes << std::endl;
+                    std::cerr << "#nodes=" << inode << "/ " << InnerNodes << std::endl;
                     assert(1==pq.size());
                 }
                 (root = pq.pop())->propagate();

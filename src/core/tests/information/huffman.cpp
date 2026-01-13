@@ -78,7 +78,7 @@ Y_UTEST(info_huffman)
     TestHuffFull();
 
     Y_SIZEOF(Information::Pack::Huffman::Node);
-    Y_PRINTV(Information::Pack::Huffman::MaxNodes);
+    Y_PRINTV(Information::Pack::Huffman::InnerNodes);
 
     
 
