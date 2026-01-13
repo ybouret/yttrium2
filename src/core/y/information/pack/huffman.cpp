@@ -113,6 +113,12 @@ namespace Yttrium
                     //std::cerr << "#nodes=" << inode << "/ " << InnerNodes << std::endl;
                     assert(1==Q->size);
                 }
+
+                //----------------------------------------------------------
+                //
+                // build codes
+                //
+                //----------------------------------------------------------
                 if( ! (root = Q.pop())->propagate(16) )
                 {
                     std::cerr << "maxBits exceeded!!" << std::endl;
@@ -125,7 +131,7 @@ namespace Yttrium
                 {
                     //----------------------------------------------------------
                     //
-                    // transfer encoding
+                    // transfer codes
                     //
                     //----------------------------------------------------------
                     const Node * node = nodes;
@@ -183,7 +189,6 @@ namespace Yttrium
                         if(b==Alphabet::EOS) name += "EOS";
                     }
                 }
-                //name += Formatted::Get(" #%u",bits);
                 if(bits)
                 {
                     name += '<';
