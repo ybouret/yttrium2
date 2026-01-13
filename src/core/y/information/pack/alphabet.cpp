@@ -3,8 +3,7 @@
 #include "y/format/binary.hpp"
 #include "y/format/hexadecimal.hpp"
 #include <iomanip>
-#include "y/object.hpp"
-#include "y/memory/allocator.hpp"
+#include "y/memory/stealth.hpp"
 
 namespace Yttrium
 {
@@ -42,18 +41,25 @@ namespace Yttrium
             detected(0),
             totality(0),
             encoding(),
-            ch_count(universe),
-            ch_bytes(0),
-            database(Object::AllocatorInstance().acquireAs<Character>(ch_count,ch_bytes)),
-            nyt(database+NYT),
-            eos( (Messaging==category) ? database + EOS : 0)
+            database(0),
+            nyt(0),
+            eos(0),
+            wksp()
             {
+                Coerce(database) = static_cast<Character *>( Y_Memory_BZero(wksp) );
+                assert( Memory::Stealth::Are0(wksp,     sizeof(wksp) ) );
+                assert( Memory::Stealth::Are0(database, InnerBytes ) );
+
+                switch(category)
+                {
+                    case Messaging: Coerce(eos) = database + EOS; // FALLTHRU
+                    case Streaming: Coerce(nyt) = database + NYT; break;
+                }
                 setup();
             }
 
             Alphabet:: ~Alphabet() noexcept
             {
-                Object::AllocatorLocation().releaseAs(Coerce(database),ch_count,ch_bytes);
             }
 
 
@@ -91,7 +97,12 @@ namespace Yttrium
 
             void Alphabet:: cntrl() noexcept
             {
-                for(DataType i=Chars;i<universe;++i) encoding.pushTail(database+i);
+                for(DataType i=Chars;i<universe;++i)
+                {
+                    assert( 0 == database[i].next );
+                    assert( 0 == database[i].prev );
+                    encoding.pushTail(database+i);
+                }
             }
 
 

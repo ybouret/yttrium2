@@ -26,12 +26,13 @@ namespace Yttrium
                 typedef Character::CodeType  CodeType;
                 typedef RawListOf<Character> CharList;
 
-                static const DataType Chars = 256;
-                static const DataType NYT   = Chars; //!< with 0 freq
-                static const DataType EOS   = NYT+1; //!< with 0 freq
-                static const FreqType MaxFreq = IntegerFor<FreqType>::Maximum;
+                static const DataType Chars      = 256;
+                static const DataType NYT        = Chars; //!< with 0 freq
+                static const DataType EOS        = NYT+1; //!< with 0 freq
+                static const FreqType MaxFreq    = IntegerFor<FreqType>::Maximum;
                 static const size_t   SizeOfChar = sizeof(Character);
-                static const size_t   InnerBytes = ((size_t)EOS) * SizeOfChar;
+                static const size_t   InnerChars = 1 + EOS;
+                static const size_t   InnerBytes = InnerChars * SizeOfChar;
                 static const size_t   InnerWords = Alignment::WordsGEQ<InnerBytes>::Count;
 
                 explicit Alphabet(const Category);
@@ -49,9 +50,7 @@ namespace Yttrium
                 DataType          detected;   //!< up to Codes to remove NYT
                 FreqType          totality;   //!< current sum of frequencies
                 CharList          encoding;   //!< encoding chars + control
-            private:
-                size_t            ch_count;
-                size_t            ch_bytes;
+                
             public:
                 Character * const database;   //!< database
                 Character * const nyt;

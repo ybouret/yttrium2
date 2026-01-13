@@ -90,7 +90,7 @@ namespace Yttrium
                         pq.push(node);
                     }
 
-                    std::cerr << "#nodes=" << inode << "/ " << MaxNodes << std::endl;
+                    //std::cerr << "#nodes=" << inode << "/ " << MaxNodes << std::endl;
                     assert(1==pq.size());
                 }
                 (root = pq.pop())->propagate();
