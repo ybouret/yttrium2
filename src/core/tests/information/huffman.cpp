@@ -56,7 +56,7 @@ Y_UTEST(info_huffman)
         while( inp.query(c) )
         {
             ++numInp;
-            const uint8_t b = c;
+            const uint8_t b = (uint8_t)c;
             bits.push(streaming.database[b].code,streaming.database[b].bits,pool);
             //std::cerr << bits << std::endl;
             streaming << b;

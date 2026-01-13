@@ -15,8 +15,8 @@ namespace Yttrium
         {
             enum Category
             {
-                Streaming=1, //!< +NYT, -EOS
-                Messaging=2  //!< +NYT, +EOS
+                Streaming=0x1, //!< +NYT, -EOS
+                Messaging=0x2  //!< +NYT, +EOS
             };
         }
         
