@@ -61,7 +61,7 @@ namespace Yttrium
             //__________________________________________________________________
             inline virtual size_t       length() const noexcept { return N;    }
             inline virtual const void * ro()     const noexcept { return wksp; }
-
+            
         private:
             Y_Disable_Copy_And_Assign(StaticBuffer); //!< discarding
             void * wksp[StackWords];                 //!< local memory

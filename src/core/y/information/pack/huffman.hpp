@@ -58,7 +58,7 @@ namespace Yttrium
                     unsigned    bits;
                     Character * leaf;
 
-                    
+
                 private:
                     Y_Disable_Copy_And_Assign(Node);
                     Node() noexcept;
@@ -72,7 +72,7 @@ namespace Yttrium
 
 
 
-                explicit Huffman();
+                explicit Huffman() noexcept;
                 virtual ~Huffman() noexcept;
 
                 void build(Alphabet &alpha);

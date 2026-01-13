@@ -43,7 +43,7 @@ namespace Yttrium
                 return Sign::Of(rhs->freq,lhs->freq);
             }
 
-            Huffman:: Huffman() :
+            Huffman:: Huffman() noexcept:
             root(0),
             nodes(0),
             pq(),
