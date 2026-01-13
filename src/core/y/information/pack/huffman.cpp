@@ -43,9 +43,17 @@ namespace Yttrium
                 return Sign::Of(rhs->freq,lhs->freq);
             }
 
+            Huffman:: Huffman() :
+            pq(WithAtLeast,InnerNodes),
+            root(0),
+            nodes(0),
+            wksp()
+            {
+                Coerce(nodes) = static_cast<Node *>( Y_Memory_BZero(wksp) );
+            }
+
             Huffman:: ~Huffman() noexcept
             {
-                Object::AllocatorLocation().releaseAs(nodes,count,bytes);
             }
 
             void Huffman:: build(Alphabet &alpha)

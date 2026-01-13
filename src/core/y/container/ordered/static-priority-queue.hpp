@@ -21,9 +21,9 @@ namespace Yttrium
     //
     //__________________________________________________________________________
     template <
-    typename T,
+    typename     T,
     const size_t N,
-    typename Comparator = Sign::Comparator<T>
+    typename     Comparator = Sign::Comparator<T>
     >
     class StaticPriorityQueue : public Ingress< const PrioQueue<T> >
     {
@@ -85,5 +85,5 @@ namespace Yttrium
     };
 }
 
-#endif
+#endif // !Y_StaticPriorityQueue_Included
 

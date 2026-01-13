@@ -79,6 +79,8 @@ Y_UTEST(info_huffman)
 
     Y_SIZEOF(Information::Pack::Huffman::Node);
     Y_PRINTV(Information::Pack::Huffman::InnerNodes);
+    Y_PRINTV(Information::Pack::Huffman::InnerBytes);
+    Y_PRINTV(Information::Pack::Huffman::InnerWords);
 
     
 

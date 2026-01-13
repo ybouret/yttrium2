@@ -23,8 +23,6 @@ namespace Yttrium
                 typedef Alphabet::DataType  DataType;
                 typedef Alphabet::FreqType  FreqType;
 
-
-
                 class Node : public Vizible
                 {
                 public:
@@ -69,19 +67,12 @@ namespace Yttrium
                 static const DataType MaxChars   = Alphabet::InnerChars-1;
                 static const DataType InnerNodes = 2*MaxChars-1;
                 static const size_t   SizeOfNode = sizeof(Node);
+                static const size_t   InnerBytes = SizeOfNode * InnerNodes;
+                static const size_t   InnerWords = Alignment::WordsGEQ<InnerBytes>::Count;
 
 
 
-
-                Huffman() :
-                pq(WithAtLeast,InnerNodes),
-                root(0),
-                count(InnerNodes),
-                bytes(0),
-                nodes( Object::AllocatorInstance().acquireAs<Node>(count,bytes) )
-                {
-                }
-
+                explicit Huffman();
                 virtual ~Huffman() noexcept;
 
                 void build(Alphabet &alpha);
@@ -91,9 +82,8 @@ namespace Yttrium
 
             private:
                 Y_Disable_Copy_And_Assign(Huffman);
-                size_t   count;
-                size_t   bytes;
-                Node *   nodes;
+                Node *   const nodes;
+                void *         wksp[ InnerWords ];
             };
 
         }
