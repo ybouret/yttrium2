@@ -76,6 +76,12 @@ Y_UTEST(info_huffman)
     std::cerr << "data: " << numInp << " => " << numOut << std::endl;
 
     TestHuffFull();
+
+    Y_PRINTV(Information::Pack::Alphabet::SizeOfChar);
+    Y_PRINTV(Information::Pack::Alphabet::InnerBytes);
+    Y_PRINTV(Information::Pack::Alphabet::InnerWords);
+    
+
 }
 Y_UDONE()
 

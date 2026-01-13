@@ -9,6 +9,7 @@
 #include "y/information/pack/character.hpp"
 #include "y/core/linked/list/raw.hpp"
 #include "y/type/ints.hpp"
+#include "y/calculus/alignment.hpp"
 
 namespace Yttrium
 {
@@ -29,6 +30,9 @@ namespace Yttrium
                 static const DataType NYT   = Chars; //!< with 0 freq
                 static const DataType EOS   = NYT+1; //!< with 0 freq
                 static const FreqType MaxFreq = IntegerFor<FreqType>::Maximum;
+                static const size_t   SizeOfChar = sizeof(Character);
+                static const size_t   InnerBytes = ((size_t)EOS) * SizeOfChar;
+                static const size_t   InnerWords = Alignment::WordsGEQ<InnerBytes>::Count;
 
                 explicit Alphabet(const Category);
                 virtual ~Alphabet() noexcept;
@@ -55,9 +59,7 @@ namespace Yttrium
 
             private:
                 Y_Disable_Copy_And_Assign(Alphabet);
-
-                
-
+                void * wksp[InnerWords];
 
 
                 void setup() noexcept; //!< initial setup on a clean workspace
