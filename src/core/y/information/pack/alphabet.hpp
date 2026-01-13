@@ -37,6 +37,7 @@ namespace Yttrium
 
                 void display(std::ostream &) const;
                 void reduce() noexcept;
+                void reset()  noexcept; //!< reset all
 
 
                 const Category    category;
@@ -60,7 +61,6 @@ namespace Yttrium
 
 
                 void setup() noexcept; //!< initial setup on a clean workspace
-                void reset() noexcept; //!< reset all
                 void cntrl() noexcept; //!< register controls in encoding
 
             };

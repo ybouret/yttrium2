@@ -6,9 +6,35 @@
 #include "y/stream/libc/output.hpp"
 #include "y/stream/io/bits.hpp"
 
+#include "y/random/park-miller.hpp"
+
 using namespace Yttrium;
 
+static inline void TestHuffFull()
+{
+    Random::ParkMiller ran;
+    Information::Pack::Alphabet streaming( Information::Pack::Streaming );
+    Information::Pack::Alphabet messaging( Information::Pack::Messaging );
+    Information::Pack::Huffman  huff;
 
+    streaming.reset();
+    messaging.reset();
+    for(unsigned i=0;i<256;++i)
+    {
+        const uint8_t b = (uint8_t)i;
+        for(size_t j = ran.in<size_t>(1,8);j>0;--j)
+            streaming << b;
+        for(size_t j = ran.in<size_t>(1,8);j>0;--j)
+            messaging << b;
+    }
+
+    std::cerr << "build streaming" << std::endl;
+    huff.build(streaming);
+    std::cerr << "build messagin" << std::endl;
+    huff.build(messaging);
+
+
+}
 
 Y_UTEST(info_huffman)
 {
@@ -45,9 +71,11 @@ Y_UTEST(info_huffman)
     streaming.display(std::cerr);
     std::cerr << "swaps=" << huff.pq.nswp() << std::endl;
 
-    Vizible::Render("huff.dot", *huff.root);
+    if(huff.root)
+        Vizible::Render("huff.dot", *huff.root);
     std::cerr << "data: " << numInp << " => " << numOut << std::endl;
 
+    TestHuffFull();
 }
 Y_UDONE()
 
