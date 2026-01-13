@@ -6,6 +6,7 @@
 
 #include "y/information/pack/alphabet.hpp"
 #include "y/container/ordered/priority-queue.hpp"
+#include "y/container/ordered/static-priority-queue.hpp"
 #include "y/graphviz/vizible.hpp"
 
 namespace Yttrium
@@ -22,6 +23,7 @@ namespace Yttrium
                 typedef Alphabet::CodeType  CodeType;
                 typedef Alphabet::DataType  DataType;
                 typedef Alphabet::FreqType  FreqType;
+                static const DataType       MaxChars = Alphabet::InnerChars-1;
 
                 class Node : public Vizible
                 {
@@ -40,7 +42,7 @@ namespace Yttrium
                         Y_Disable_Copy_And_Assign(Comparator);
                     };
 
-                    typedef PriorityQueue<Pointer,Comparator> PQ;
+                    typedef StaticPriorityQueue<Pointer,MaxChars,Comparator> PQ;
 
 
 
@@ -57,14 +59,12 @@ namespace Yttrium
                     Character * leaf;
 
                     
-
                 private:
                     Y_Disable_Copy_And_Assign(Node);
                     Node() noexcept;
                     virtual ~Node() noexcept;
                 };
 
-                static const DataType MaxChars   = Alphabet::InnerChars-1;
                 static const DataType InnerNodes = 2*MaxChars-1;
                 static const size_t   SizeOfNode = sizeof(Node);
                 static const size_t   InnerBytes = SizeOfNode * InnerNodes;
@@ -77,12 +77,13 @@ namespace Yttrium
 
                 void build(Alphabet &alpha);
 
-                Node::PQ     pq;
-                Node *       root;
-
+                Node *         root;
             private:
                 Y_Disable_Copy_And_Assign(Huffman);
                 Node *   const nodes;
+            public:
+                Node::PQ       pq;
+            private:
                 void *         wksp[ InnerWords ];
             };
 

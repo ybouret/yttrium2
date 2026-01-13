@@ -28,6 +28,15 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const size_t StackBytes = N;
+            static const size_t StackWords = Alignment::WordsGEQ<N>::Count;
+
+            //__________________________________________________________________
+            //
+            //
             // C++
             //
             //__________________________________________________________________
@@ -54,8 +63,8 @@ namespace Yttrium
             inline virtual const void * ro()     const noexcept { return wksp; }
 
         private:
-            Y_Disable_Copy_And_Assign(StaticBuffer);      //!< discarding
-            void * wksp[ Alignment::WordsGEQ<N>::Count ]; //!< local memory
+            Y_Disable_Copy_And_Assign(StaticBuffer); //!< discarding
+            void * wksp[StackWords];                 //!< local memory
         };
     }
 

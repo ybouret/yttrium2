@@ -44,9 +44,9 @@ namespace Yttrium
             }
 
             Huffman:: Huffman() :
-            pq(WithAtLeast,InnerNodes),
             root(0),
             nodes(0),
+            pq(),
             wksp()
             {
                 Coerce(nodes) = static_cast<Node *>( Y_Memory_BZero(wksp) );
@@ -75,15 +75,16 @@ namespace Yttrium
                         node->freq = ch->freq;
                         assert(0==node->code);
                         assert(0==node->bits);
-                        pq.push(node);
+                        //pq.push(node);
+                        pq << node;
                     }
 
-                    assert(pq.size()>=2);
+                    assert(pq->size>=2);
 
 
 
                     // build tree
-                    while(pq.size()>1)
+                    while(pq->size>1)
                     {
                         assert(inode<InnerNodes);
                         Node * const        left  = pq.pop();
@@ -95,11 +96,11 @@ namespace Yttrium
                         node->left    = left;
                         node->right   = right;
                         node->freq    = left->freq + right->freq;
-                        pq.push(node);
+                        pq << node;
                     }
 
                     std::cerr << "#nodes=" << inode << "/ " << InnerNodes << std::endl;
-                    assert(1==pq.size());
+                    assert(1==pq->size);
                 }
                 (root = pq.pop())->propagate();
 
