@@ -31,8 +31,8 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            static const size_t StackBytes = N;
-            static const size_t StackWords = Alignment::WordsGEQ<N>::Count;
+            static const size_t StackBytes = N;                             //!< available bytes
+            static const size_t StackWords = Alignment::WordsGEQ<N>::Count; //!< internal words
 
             //__________________________________________________________________
             //

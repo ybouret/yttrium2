@@ -22,13 +22,13 @@ namespace Yttrium
         class File
         {
         public:
-            static const char * const CallSign;
-            static const char * ErrorText(const int err) noexcept;
-            
-            virtual ~File() noexcept;
+            static const char * const CallSign; //!< "BZip2"
+            static const char * ErrorText(const int) noexcept; //!< \return named error vode
+
+            virtual ~File() noexcept; //!< cleanup
 
         protected:
-            explicit File() noexcept;
+            explicit File() noexcept; //!< setup
 
         private:
             Y_Disable_Copy_And_Assign(File); //!< discarding

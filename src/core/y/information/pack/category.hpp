@@ -13,6 +13,7 @@ namespace Yttrium
     {
         namespace Pack
         {
+            //! type of usage
             enum Category
             {
                 Streaming=0x1, //!< +NYT, -EOS
