@@ -1,14 +1,14 @@
 
+
 //! \file
-#ifndef Y_GZIP_File_Included
-#define Y_GZIP_File_Included 1
+#ifndef Y_BZip2_File_Included
+#define Y_BZip2_File_Included 1
 
 #include "y/core/setup.hpp"
-#include "y/type/copy-of.hpp"
 
 namespace Yttrium
 {
-    namespace GZip
+    namespace BZip2
     {
 
         //______________________________________________________________________
@@ -22,16 +22,12 @@ namespace Yttrium
         class File
         {
         public:
-            //! generic gzFile creation
-            /**
-             \param fileName compatible fileName
-             \param mode     desired mode
-             */
-            explicit File(const char * const fileName, const char * const mode);
+
+            explicit File();
             virtual ~File() noexcept;
 
         protected:
-            void * const gz; //!< handle
+            void * const bz2; //!< handle
 
         private:
             Y_Disable_Copy_And_Assign(File); //!< discarding
@@ -40,5 +36,5 @@ namespace Yttrium
     }
 }
 
-#endif // !Y_GZIP_File_Included
+#endif // !Y_BZip2_File_Included
 
