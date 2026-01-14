@@ -54,9 +54,17 @@ namespace Yttrium
             bool query(char &C);      //!< \param C char to get \return true iff success
             void store(const char C); //!< use internal Q to store \param C read character
 
+
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            IO::Chars Q; //!< local queue for caching
+
         private:
             Y_Disable_Copy_And_Assign(InputFile); //!< discarding
-            IO::Chars Q; //!< local queue for caching
         };
 
         //______________________________________________________________________
