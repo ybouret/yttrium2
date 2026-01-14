@@ -27,6 +27,42 @@ namespace Yttrium
             BZ2_bzReadClose(&err, (BZFILE *)bzf );
         }
 
+        bool InputFile:: query(char &C)
+        {
+            IO::Chars &Q = (**cfp).Q;
+
+            if (Q.size())
+            {
+                C = char(Q.pullHead());
+                return true;
+            }
+            else
+            {
+                Y_Giant_Lock();
+                const int len = BZ2_bzRead( &err, (BZFILE*)bzf, &C, 1);
+                if(1!=len)
+                {
+                    switch(err)
+                    {
+                        case BZ_OK:
+                        case BZ_STREAM_END:
+                            break;
+                        default:
+                            throw Specific::Exception(CallSign,"BZ2_bzRead: %s", ErrorText(err));
+                    }
+                    return false;
+                }
+                return true;
+            }
+
+
+        }
+
+        void InputFile:: store(const char C)
+        {
+            (**cfp).Q >> uint8_t(C);
+        }
+
     }
 
 }

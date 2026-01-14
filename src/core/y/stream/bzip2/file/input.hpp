@@ -22,7 +22,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class InputFile : public File
+        class InputFile : public File, public InputStream
         {
         public:
             template <typename PARAM>
@@ -36,6 +36,8 @@ namespace Yttrium
 
             virtual ~InputFile() noexcept;
 
+            virtual bool query(char &);
+            virtual void store(const char);
 
         private:
             Y_Disable_Copy_And_Assign(InputFile); //!< discarding
