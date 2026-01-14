@@ -29,7 +29,8 @@ namespace Yttrium
 
         bool InputFile:: query(char &C)
         {
-            IO::Chars &Q = (**cfp).Q;
+            Libc::InputFile &f = **cfp;
+            IO::Chars       &Q = f.Q;
 
             if (Q.size())
             {
@@ -48,6 +49,7 @@ namespace Yttrium
                         case BZ_STREAM_END:
                             break;
                         default:
+                            if( f.atEOF() ) return false;
                             throw Specific::Exception(CallSign,"BZ2_bzRead: %s", ErrorText(err));
                     }
                     return false;

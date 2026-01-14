@@ -42,6 +42,12 @@ namespace Yttrium
         }
 
 
+        bool InputFile:: atEOF() noexcept
+        {
+            assert(0!=handle);
+            return 0 != feof(handle);
+        }
+
     }
 
 }
