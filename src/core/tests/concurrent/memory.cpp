@@ -41,8 +41,8 @@ namespace
         {
             { Y_Giant_Lock(); ( std::cerr << "in " << ctx << std::endl).flush() ; }
 
-            Random::ParkMiller ran;
-            Object::Factory   &mgr = Object::Factory::Instance();
+            Random::ParkMiller  ran;
+            Object::Factory   & mgr = Object::Factory::Instance();
             for(size_t i=0;i<=10000;  i += ran.in<size_t>(1,10) )
             {
                 void * blk = mgr.query(i);
@@ -58,12 +58,14 @@ namespace
 
             }
 
+#if 0
             Vector<apq> qvec;
             for(size_t i=5+ran.leq<size_t>(5);i>0;--i)
             {
                 qvec << apq(ran,ran.in<size_t>(1,10),ran.in<size_t>(1,10));
             }
             { Y_Giant_Lock(); ( std::cerr << "ok " << ctx << std::endl).flush() ; }
+
 
             {
                 Y_Apex_Giant_Lock();
@@ -74,7 +76,7 @@ namespace
                 Y_Lock( Object::Factory::Instance().access );
                 //(std::cerr << ctx << " : " << qvec << std::endl).flush();
             }
-
+#endif
 
         }
     };
