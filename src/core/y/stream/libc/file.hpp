@@ -3,7 +3,7 @@
 #ifndef Y_Libc_File_Included
 #define Y_Libc_File_Included 1
 
-#include "y/object.hpp"
+#include "y/object/counted.hpp"
 #include <cstdio>
 
 namespace Yttrium
@@ -19,7 +19,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class File
+        class File : public CountedObject
         {
         public:
             //__________________________________________________________________

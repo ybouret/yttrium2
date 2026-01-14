@@ -17,5 +17,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_String_Fwd_Included
 

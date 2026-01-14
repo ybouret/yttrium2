@@ -40,7 +40,7 @@ namespace Yttrium
             //
             // C++
             //
-            //______________________________________________________________________
+            //__________________________________________________________________
             explicit Chars();                  //!< setup
             virtual ~Chars() noexcept;         //!< cleanup
             Chars(const Chars & );             //!< duplicate

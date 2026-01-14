@@ -280,6 +280,7 @@ function(Y_LinkLibraries THE_EXE)
 	list(APPEND THE_LIBS ${ARGN} )
 	list(APPEND THE_LIBS "y")
 	list(APPEND THE_LIBS "y-z")
+	list(APPEND THE_LIBS "y-bz2")
 
 	if(Y_Linux OR Y_FreeBSD)
 		list( APPEND THE_LIBS "pthread" )

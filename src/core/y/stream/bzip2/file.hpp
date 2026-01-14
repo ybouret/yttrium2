@@ -15,19 +15,20 @@ namespace Yttrium
         //
         //
         //
-        //! gzFile management
+        //! BZFILE
         //
         //
         //______________________________________________________________________
         class File
         {
         public:
-
-            explicit File();
+            static const char * const CallSign;
+            static const char * ErrorText(const int err) noexcept;
+            
             virtual ~File() noexcept;
 
         protected:
-            void * const bz2; //!< handle
+            explicit File() noexcept;
 
         private:
             Y_Disable_Copy_And_Assign(File); //!< discarding
