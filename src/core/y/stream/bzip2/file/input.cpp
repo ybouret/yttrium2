@@ -56,8 +56,6 @@ namespace Yttrium
                 }
                 return true;
             }
-
-
         }
 
         void InputFile:: store(const char C)
