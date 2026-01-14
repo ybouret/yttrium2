@@ -8,6 +8,7 @@
 #include "y/type/ints.hpp"
 #include "y/string/fwd.hpp"
 #include "y/check/printf.hpp"
+#include "y/object/counted.hpp"
 
 namespace Yttrium
 {
@@ -19,7 +20,7 @@ namespace Yttrium
     //
     //
     //__________________________________________________________________________
-    class OutputStream
+    class OutputStream : public CountedObject
     {
     protected:
         //______________________________________________________________________
