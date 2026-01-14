@@ -70,7 +70,6 @@ Y_CreateLibrary(y
     y/stream/gzip
     y/stream/gzip/file
     y/stream/bzip2
-    y/stream/bzip2/file
     y/stream/misc
     y/sorting
     y/threading

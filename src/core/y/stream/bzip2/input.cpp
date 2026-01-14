@@ -2,9 +2,9 @@
 #pragma warning ( disable : 4464 )
 #endif
 
-#include "y/stream/bzip2/file/input.hpp"
+#include "y/stream/bzip2/input.hpp"
 #include "y/stream/libc/file/input.hpp"
-#include "../../../../../y/bzip2/bzlib.h"
+#include "../../../../y/bzip2/bzlib.h"
 #include "y/exception.hpp"
 #include <cassert>
 

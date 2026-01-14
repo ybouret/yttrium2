@@ -1,4 +1,4 @@
-#include "y/stream/bzip2/file/input.hpp"
+#include "y/stream/bzip2/input.hpp"
 #include "y/utest/run.hpp"
 #include "y/string.hpp"
 
