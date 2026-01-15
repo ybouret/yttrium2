@@ -44,6 +44,9 @@ namespace Yttrium
             //! cleanup
             virtual ~Broker() noexcept;
 
+            void     prep(const Area &);
+            
+
         private:
             Y_Disable_Copy_And_Assign(Broker); //!< discarding
         };

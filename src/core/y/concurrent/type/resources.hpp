@@ -76,7 +76,6 @@ namespace Yttrium
 
             
 
-
         public:
             const size_t blockSize; //!< total allocated bytes
             void * const blockAddr; //!< memory

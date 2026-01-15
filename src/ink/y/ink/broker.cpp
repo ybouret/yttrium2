@@ -21,6 +21,14 @@ namespace Yttrium
         Tiling(proc)
         { }
 
+        void Broker:: prep(const Area &area)
+        {
+            const BoxType box(area.lower,area.upper);
+            if( remap(box) )
+            {
+                
+            }
+        }
 
 
     }
