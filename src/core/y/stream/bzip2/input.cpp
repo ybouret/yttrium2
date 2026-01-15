@@ -16,6 +16,7 @@ namespace Yttrium
 
         void * InputFile:: setup(const bool small)
         {
+            Y_Giant_Lock();
             BZFILE * const h = BZ2_bzReadOpen(& (err=BZ_OK), (**cfp).handle, 0, small ? 1 : 0, 0, 0);
             if(BZ_OK != err)
                 throw Specific::Exception(CallSign,"BZ2_bzReadOpen: %s", ErrorText(err) );
@@ -24,6 +25,7 @@ namespace Yttrium
 
         InputFile:: ~InputFile() noexcept
         {
+            Y_Giant_Lock();
             BZ2_bzReadClose(&err, (BZFILE *)bzf );
         }
 

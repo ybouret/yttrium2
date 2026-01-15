@@ -18,6 +18,7 @@ namespace Yttrium
         void * OutputFile:: setup(const int blockSize100k,
                                   const int workFactor)
         {
+            Y_Giant_Lock();
             BZFILE * const h = BZ2_bzWriteOpen(& (err=BZ_OK), (**cfp).handle, blockSize100k, 0, workFactor);;
             if(BZ_OK != err)
                 throw Specific::Exception(CallSign,"BZ2_bzWriteOpen: %s", ErrorText(err) );
@@ -26,12 +27,14 @@ namespace Yttrium
 
         OutputFile:: ~OutputFile() noexcept
         {
+            Y_Giant_Lock();
             BZ2_bzWriteClose(&err, (BZFILE *)bzf, 0, 0, 0);
         }
 
 
         void OutputFile:: write(const char c)
         {
+            Y_Giant_Lock();
             BZ2_bzWrite(&(err=BZ_OK), (BZFILE *)bzf, (void*)&c,1);
             if(BZ_OK != err )
             {
@@ -41,6 +44,7 @@ namespace Yttrium
 
         void OutputFile:: flush()
         {
+            Y_Giant_Lock();
             if( BZ_OK != (err = BZ2_bzflush( (BZFILE*)bzf) ))
                 throw Specific::Exception(CallSign,"BZ2_bzflush: %s", ErrorText(err) );
 
