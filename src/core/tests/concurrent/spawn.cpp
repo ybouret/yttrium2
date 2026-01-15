@@ -106,10 +106,7 @@ namespace
         {
         }
 
-        void create(const size_t bytes)
-        {
-            acquireLocalMemory(bytes);
-        }
+        
 
     private:
         Y_Disable_Copy_And_Assign(MySpawn);
@@ -142,7 +139,7 @@ Y_UTEST(concurrent_spawn)
 
     {
         MySpawn spawn(mt,value);
-        spawn.create(100);
+        spawn.acquireLocalMemory(100);
         spawn(DoSomething);
         spawn(stuff);
         spawn(apply, & Apply::call1D );

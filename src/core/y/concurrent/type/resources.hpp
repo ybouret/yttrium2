@@ -37,7 +37,7 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-
+            
 
         protected:
 
@@ -49,7 +49,7 @@ namespace Yttrium
             template <typename TILES> inline
             void acquireEachTileOf(TILES &tiles, const size_t bytesPerTile)
             {
-                const size_t numTiles = tiles.size();
+                const size_t numTiles = tiles.size(); assert(numTiles>0);
                 const size_t aligned  = Alignment::SystemMemory::Ceil(bytesPerTile);
                 const size_t capacity = numTiles * aligned;
                 ensure(capacity);
@@ -66,12 +66,27 @@ namespace Yttrium
             template <typename TILES> inline
             void releaseEachTileOf(TILES &tiles) noexcept
             {
-                for(size_t i=tiles.size();i>0;--i)
-                {
-                    Coerce(tiles[i].entry) = 0;
-                    Coerce(tiles[i].bytes) = 0;
-                }
+                clearEachTileOf(tiles);
                 release();
+            }
+
+            //! assign each tile current memory part
+            template <typename TILES> inline
+            void deliverEachTileOf(TILES &tiles)
+            {
+                const size_t numTiles     = tiles.size(); assert(numTiles>0);
+                const size_t bytesPerTile = blockSize / numTiles;
+                if(bytesPerTile>0)
+                {
+                    uint8_t * entryPerTile = static_cast<uint8_t *>(blockAddr);
+                    for(size_t i=1;i<=numTiles;++i, entryPerTile += bytesPerTile)
+                    {
+                        Coerce(tiles[i].entry) = entryPerTile;
+                        Coerce(tiles[i].bytes) = bytesPerTile;
+                    }
+                }
+                else
+                    clearEachTileOf(tiles);
             }
 
             
@@ -84,6 +99,16 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Resources); //!< discarding
             void release() noexcept;              //!< release total memory
             void ensure(size_t capacity);         //!< \param capacity minimal, zeroed bytes
+
+            template <typename TILES> inline
+            void clearEachTileOf(TILES &tiles) noexcept
+            {
+                for(size_t i=tiles.size();i>0;--i)
+                {
+                    Coerce(tiles[i].entry) = 0;
+                    Coerce(tiles[i].bytes) = 0;
+                }
+            }
         };
     }
 }

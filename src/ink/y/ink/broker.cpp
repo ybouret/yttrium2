@@ -25,9 +25,8 @@ namespace Yttrium
         {
             const BoxType box(area.lower,area.upper);
             if( remap(box) )
-            {
-                
-            }
+                deliverLocalMemory();
+
         }
 
 

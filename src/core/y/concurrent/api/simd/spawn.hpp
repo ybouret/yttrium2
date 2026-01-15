@@ -193,7 +193,6 @@ namespace Yttrium
                 (*this)(wrapper);
             }
 
-        protected:
 
             //! acquire local memory for each tile \param bytes minimal bytes
             /** memory is always zeroed */
@@ -202,6 +201,7 @@ namespace Yttrium
                 acquireEachTileOf(*this,bytes);
             }
 
+            
             //! release all local memory
             inline void releaseLocalMemory() noexcept
             {
@@ -216,7 +216,12 @@ namespace Yttrium
                 acquireLocalMemory( sizeof(T) );
             }
 
-        public:
+            //! deliver equal parts of memory to each tile
+            inline void deliverLocalMemory() noexcept
+            {
+                deliverEachTileOf(*this);
+            }
+
             //! link a node to each tile
             /**
              \param node first node

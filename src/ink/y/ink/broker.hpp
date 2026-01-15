@@ -10,8 +10,9 @@ namespace Yttrium
 {
     namespace Ink
     {
-        
+
         typedef Concurrent::Divide::Tiles2D<unit_t> Tiles;  //!< alias
+        typedef Tiles::Tile                         Tile;   //!< alias
         typedef Tiles::BoxType                      Box;    //!< alias
         typedef Concurrent::Spawn<Tiles>            Tiling; //!< alias
 
@@ -45,7 +46,7 @@ namespace Yttrium
             virtual ~Broker() noexcept;
 
             void     prep(const Area &);
-            
+
 
         private:
             Y_Disable_Copy_And_Assign(Broker); //!< discarding

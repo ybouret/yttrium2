@@ -52,6 +52,7 @@ namespace Yttrium
                 release();
                 Coerce(blockSize) = capacity;
                 Coerce(blockAddr) = tmp;
+                
             }
             else
             {
