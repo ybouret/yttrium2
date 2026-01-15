@@ -17,6 +17,12 @@ Y_UTEST(broker)
         const Ink::Tile &tile = broker[i];
         Y_ASSERT(tile.bytes>=100);
     }
+    broker.prep(area);
+    for(size_t i=1;i<=broker.size();++i)
+    {
+        const Ink::Tile &tile = broker[i];
+        Y_ASSERT(tile.bytes>=100);
+    }
 
 
 }

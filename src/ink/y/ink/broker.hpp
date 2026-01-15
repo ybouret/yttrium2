@@ -27,6 +27,13 @@ namespace Yttrium
         class Broker : public Tiling
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
             //! setup for specific
             /**
              \param proc shared processor
@@ -45,6 +52,15 @@ namespace Yttrium
             //! cleanup
             virtual ~Broker() noexcept;
 
+
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! prepare for area with local memory conservation
             void     prep(const Area &);
 
 
