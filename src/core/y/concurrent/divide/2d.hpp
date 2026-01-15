@@ -264,7 +264,7 @@ namespace Yttrium
                  \param box total area
                  */
                 inline explicit Tiles2D(const size_t   n,
-                                        const BoxType &box) :
+                                        const BoxType  box) :
                 BaseType(),
                 Leap<V2D<T>>(box),
                 tiles(n)

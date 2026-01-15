@@ -1,23 +1,11 @@
-
-
-#include "y/ink/pixmap.hpp"
-#include "y/utest/run.hpp"
-
 #if defined(_MSC_VER)
 #pragma warning (disable:4464)
 #endif
+
+#include "y/ink/pixmap.hpp"
+#include "y/utest/run.hpp"
 #include "../../core/tests/main.hpp"
 
-
-namespace Yttrium
-{
-    namespace Ink
-    {
-
-        
-
-    }
-}
 
 using namespace Yttrium;
 using namespace Ink;

@@ -47,7 +47,6 @@ namespace Yttrium
             Y_Giant_Lock();
             if( BZ_OK != (err = BZ2_bzflush( (BZFILE*)bzf) ))
                 throw Specific::Exception(CallSign,"BZ2_bzflush: %s", ErrorText(err) );
-
         }
     }
 

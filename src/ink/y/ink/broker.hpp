@@ -23,10 +23,10 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Broker : public Box, public Tiling
+        class Broker : public Tiling
         {
         public:
-            //! setup
+            //! setup for specific
             /**
              \param proc shared processor
              \param area fixed user's area
@@ -34,12 +34,18 @@ namespace Yttrium
             explicit Broker(const Concurrent::Processor &proc,
                             const Area                  &area);
 
+            //! setup with empty tiles
+            /**
+             \param proc shared processor
+             */
+            explicit Broker(const Concurrent::Processor &proc);
+
+
             //! cleanup
             virtual ~Broker() noexcept;
 
         private:
             Y_Disable_Copy_And_Assign(Broker); //!< discarding
-            const Box & bbox() const noexcept; //!< helper for MSC \return *this
         };
 
 

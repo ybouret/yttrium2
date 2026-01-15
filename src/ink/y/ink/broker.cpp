@@ -10,15 +10,18 @@ namespace Yttrium
         {
         }
 
-        const Box &  Broker:: bbox() const noexcept { return *this; }
-
-
+        
         Broker:: Broker(const Concurrent::Processor &proc,
                         const Area                  &area) :
-        Box(area.lower,area.upper),
-        Tiling(proc,bbox())
+        Tiling(proc,BoxType(area.lower,area.upper))
         {
         }
+
+        Broker:: Broker(const Concurrent::Processor &proc) :
+        Tiling(proc)
+        { }
+
+
 
     }
 
