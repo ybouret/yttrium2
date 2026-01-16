@@ -170,4 +170,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Ink_Pixmap_Included
