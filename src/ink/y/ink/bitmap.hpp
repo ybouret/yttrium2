@@ -57,7 +57,7 @@ namespace Yttrium
                             CTor         ctor,
                             DTor         dtor);
 
-            //! noexcept shared copy
+            //! noexcept SHARED copy
             explicit Bitmap(const Bitmap &) noexcept;
 
             //! copy

@@ -81,7 +81,6 @@ namespace Yttrium
 
             
 
-
         private:
             Y_Disable_Assign(Subdivision); //!< discarding
         };
