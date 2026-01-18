@@ -81,7 +81,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 {
 
                 }
-
+                
                 //! duplicate \param t another tile
                 inline Tile1D(const Tile1D &t) noexcept :
                 Subdivision(t),

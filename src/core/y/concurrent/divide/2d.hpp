@@ -68,6 +68,7 @@ namespace Yttrium
                     setup(box);
                 }
 
+
                 //! setup
                 /**
                  \param sz  sz>0
@@ -80,18 +81,7 @@ namespace Yttrium
                     assert( isEmpty() );
                 }
 
-
-                //! setup
-                /**
-                 \param member member
-                 \param box    total area
-                 */
-                inline explicit Tile2D(const Member  &member,
-                                       const BoxType &box) :
-                Subdivision(member),
-                Y_Tile2D_Ctor() {
-                    setup(box);
-                }
+                
 
                 //! duplicate with shared segments \param t another tile
                 inline Tile2D(const Tile2D &t) noexcept :
