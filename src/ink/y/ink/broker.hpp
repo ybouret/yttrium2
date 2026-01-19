@@ -11,10 +11,11 @@ namespace Yttrium
     namespace Ink
     {
 
-        typedef Concurrent::Divide::Tiles2D<unit_t> Tiles;  //!< alias
-        typedef Tiles::Tile                         Tile;   //!< alias
-        typedef Tiles::BoxType                      Box;    //!< alias
-        typedef Concurrent::Spawn<Tiles>            Tiling; //!< alias
+        typedef Concurrent::Divide::Tiles2D<unit_t> Tiles;   //!< alias
+        typedef Concurrent::Divide::In1D<unit_t>    Section; //!< alias
+        typedef Tiles::Tile                         Tile;    //!< alias
+        typedef Tiles::BoxType                      Box;     //!< alias
+        typedef Concurrent::Spawn<Tiles>            Tiling;  //!< alias
 
         //______________________________________________________________________
         //
