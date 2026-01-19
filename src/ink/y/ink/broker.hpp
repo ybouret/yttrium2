@@ -14,6 +14,7 @@ namespace Yttrium
         typedef Concurrent::Divide::Tiles2D<unit_t> Tiles;   //!< alias
         typedef Concurrent::Divide::In1D<unit_t>    Section; //!< alias
         typedef Tiles::Tile                         Tile;    //!< alias
+        typedef Tile::SegType                       Segment; //!< alias
         typedef Tiles::BoxType                      Box;     //!< alias
         typedef Concurrent::Spawn<Tiles>            Tiling;  //!< alias
 

@@ -133,6 +133,8 @@ namespace Yttrium
                 return (Row &)row_[j];
             }
 
+
+
         private:
             Y_Disable_Assign(Pixmap); //!< discarding
 

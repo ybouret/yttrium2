@@ -24,7 +24,17 @@ namespace Yttrium
                 broker.run(proc,pixmap);
             }
 
-            
+
+            template <
+            typename PIXMAP,
+            typename PROC,
+            typename ARG1> static inline
+            void Apply( Broker &broker, PROC &proc, PIXMAP &pixmap, ARG1 &arg1 ) noexcept
+            {
+                broker.prep(pixmap);
+                broker.run(proc,pixmap,arg1);
+            }
+
         };
 
     }
