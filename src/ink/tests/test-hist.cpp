@@ -25,15 +25,15 @@ Y_UTEST(hist)
     Ink::Pixmap<uint8_t>  pxm8(100,200);
     for(size_t j=0;j<pxm8.h;++j)
     {
-        for(size_t i=0;i<pxm8.w;++j)
+        for(size_t i=0;i<pxm8.w;++i)
         {
-            
+            pxm8[j][i] = ran.to<uint8_t>();
         }
     }
     Ink::Histogram Hseq, Hpar;
 
     Hseq.add(seq,pxm8,ByteToByte);
-
+    Hpar.add(par,pxm8,ByteToByte);
 
 
 
