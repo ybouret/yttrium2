@@ -76,8 +76,8 @@ namespace Yttrium
             // Members
             //
             //__________________________________________________________________
-            void * const entry; //!< local memory
-            const size_t bytes; //!< local bytes
+            void * const entry; //!< local memory, handled by Resources/Spawn
+            const size_t bytes; //!< local bytes, handled by Resources/Spawn
 
             
 

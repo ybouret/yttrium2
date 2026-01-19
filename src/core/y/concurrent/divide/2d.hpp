@@ -17,7 +17,27 @@ namespace Yttrium
         namespace Divide
         {
 
-           
+            template <typename T>
+            class In1D : public Tile1D<T>
+            {
+            public:
+                static  const T Zero = 0;
+                inline explicit In1D(const size_t   sz,
+                                     const size_t   rk,
+                                     const T        count) noexcept :
+                Tile1D<T>(sz,rk,count,Zero)
+                {
+                }
+
+                inline explicit In1D(const In1D &t) noexcept :
+                Tile1D<T>(t)
+                {
+                }
+
+                inline virtual ~In1D() noexcept {}
+            private:
+                Y_Disable_Assign(In1D);
+            };
 
             //! helper
 #define Y_Tile2D_Ctor() h(0), n(0), segments( new SegsMem(1) )
@@ -31,7 +51,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
             template <typename T>
-            class Tile2D : public Subdivision
+            class Tile2D : public In1D<T>
             {
             public:
                 //______________________________________________________________
@@ -63,7 +83,7 @@ namespace Yttrium
                 inline explicit Tile2D(const size_t   sz,
                                        const size_t   rk,
                                        const BoxType &box) :
-                Subdivision(sz,rk),
+                In1D<T>(sz,rk,box.count),
                 Y_Tile2D_Ctor() {
                     setup(box);
                 }
@@ -76,16 +96,16 @@ namespace Yttrium
                  */
                 inline explicit Tile2D(const size_t   sz,
                                        const size_t   rk) :
-                Subdivision(sz,rk),
+                In1D<T>(sz,rk,In1D<T>::Zero),
                 Y_Tile2D_Ctor() {
-                    assert( isEmpty() );
+                    assert( this->isEmpty() );
                 }
 
                 
 
                 //! duplicate with shared segments \param t another tile
                 inline Tile2D(const Tile2D &t) noexcept :
-                Subdivision(t),
+                Tile1D<T>(t),
                 h(t.h), n(t.n),
                 segments(t.segments)
                 {
@@ -100,7 +120,7 @@ namespace Yttrium
                 inline friend std::ostream & operator<<(std::ostream &os, const Tile2D &t)
                 {
                     if(t.h<=0)
-                        os << Empty;
+                        os << Subdivision::Empty;
                     else
                         os << "|" << t.origin() << "->" << t.finish() << "|=" << t.n << "/#" << t.h;
                     return os;
@@ -112,7 +132,7 @@ namespace Yttrium
                 // Interface
                 //
                 //______________________________________________________________
-                inline virtual bool isEmpty() const noexcept { return h<=0; }
+                //inline virtual bool isEmpty() const noexcept { return h<=0; }
 
                 //______________________________________________________________
                 //
@@ -155,6 +175,7 @@ namespace Yttrium
                 Y_Disable_Assign(Tile2D); //!< discarding
                 Segments segments;        //!< memory for segment
 
+
                 //! setup algorithm
                 /**
                  \param box  total working box
@@ -162,13 +183,13 @@ namespace Yttrium
                 inline void setup(const BoxType &box)
                 {
                     static const scalar_t  one = 1;
-                    static const scalar_t  id0 = 0;
-
+                    
                     //----------------------------------------------------------
                     // find indices
                     //----------------------------------------------------------
-                    const Tile1D<scalar_t> tile1d(size,rank,box.count,id0);
-                    if(tile1d.isEmpty()) return; // no data
+                    const Tile1D<scalar_t> & tile1d = *this;
+                    if( tile1d.isEmpty() ) return;
+
 
                     //----------------------------------------------------------
                     // convert to vertices
@@ -212,6 +233,7 @@ namespace Yttrium
                         Coerce(n) += (uint64_t)w;
                     }
                 }
+
             };
 
 
