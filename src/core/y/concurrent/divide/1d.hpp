@@ -82,15 +82,6 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
 
                 }
                 
-                //! duplicate \param t another tile
-                inline Tile1D(const Tile1D &t) noexcept :
-                Subdivision(t),
-                offset(t.offset),
-                length(t.length),
-                utmost(t.utmost)
-                {
-                }
-
                 //! cleanup
                 inline virtual ~Tile1D() noexcept {}
 
@@ -143,7 +134,7 @@ utmost( Y_Concurrent_Divide_Tile1D_Utmost )
                 ConstType utmost; //!< utmost = offset + length - 1
 
             private:
-                Y_Disable_Assign(Tile1D); //!< discarding
+                Y_Disable_Copy_And_Assign(Tile1D); //!< discarding
             };
 
 

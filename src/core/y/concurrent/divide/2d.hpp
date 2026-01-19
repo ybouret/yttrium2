@@ -17,26 +17,62 @@ namespace Yttrium
         namespace Divide
         {
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! Specific 1D Tile for 2D computation
+            //
+            //
+            //__________________________________________________________________
             template <typename T>
             class In1D : public Tile1D<T>
             {
             public:
-                static  const T Zero = 0;
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
+                static  const T Zero = 0; //!< alias
+
+                //______________________________________________________________
+                //
+                //
+                // C++
+                //
+                //______________________________________________________________
+
+                //! setup with zero indexing
+                /**
+                 \param sz size
+                 \param rk rank
+                 \param count number of items
+                 */
                 inline explicit In1D(const size_t   sz,
                                      const size_t   rk,
                                      const T        count) noexcept :
-                Tile1D<T>(sz,rk,count,Zero)
+                Tile1D<T>(sz,rk,count,Zero),
+                cxxOffset(this->offset+1),
+                cxxUtmost(this->utmost+1)
                 {
                 }
 
-                inline explicit In1D(const In1D &t) noexcept :
-                Tile1D<T>(t)
-                {
-                }
-
+                //! cleanup
                 inline virtual ~In1D() noexcept {}
+
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                const T cxxOffset; //!< offset+1
+                const T cxxUtmost; //!< utmost+1
+
             private:
-                Y_Disable_Assign(In1D);
+                Y_Disable_Copy_And_Assign(In1D); //!< discarding
             };
 
             //! helper
@@ -101,16 +137,6 @@ namespace Yttrium
                     assert( this->isEmpty() );
                 }
 
-                
-
-                //! duplicate with shared segments \param t another tile
-                inline Tile2D(const Tile2D &t) noexcept :
-                Tile1D<T>(t),
-                h(t.h), n(t.n),
-                segments(t.segments)
-                {
-
-                }
 
                 //! cleanup
                 inline virtual ~Tile2D() noexcept {
@@ -125,14 +151,7 @@ namespace Yttrium
                         os << "|" << t.origin() << "->" << t.finish() << "|=" << t.n << "/#" << t.h;
                     return os;
                 }
-
-                //______________________________________________________________
-                //
-                //
-                // Interface
-                //
-                //______________________________________________________________
-                //inline virtual bool isEmpty() const noexcept { return h<=0; }
+                
 
                 //______________________________________________________________
                 //
@@ -172,8 +191,8 @@ namespace Yttrium
                 const uint64_t n; //!< items
 
             private:
-                Y_Disable_Assign(Tile2D); //!< discarding
-                Segments segments;        //!< memory for segment
+                Y_Disable_Copy_And_Assign(Tile2D); //!< discarding
+                Segments segments;                 //!< memory for segments
 
 
                 //! setup algorithm
@@ -183,7 +202,7 @@ namespace Yttrium
                 inline void setup(const BoxType &box)
                 {
                     static const scalar_t  one = 1;
-                    
+
                     //----------------------------------------------------------
                     // find indices
                     //----------------------------------------------------------
