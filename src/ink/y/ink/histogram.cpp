@@ -42,6 +42,17 @@ namespace Yttrium
         }
 
 
+        Histogram & Histogram:: operator+= (const Histogram &H) noexcept
+        {
+            return (*this) += H.bin;
+        }
+
+        bool operator==(const Histogram &lhs, const Histogram &rhs) noexcept
+        {
+            return (&lhs == &rhs) || 0 == memcmp(lhs.bin, rhs.bin, Histogram::LocalMemory );
+        }
+
+
     }
 
 }

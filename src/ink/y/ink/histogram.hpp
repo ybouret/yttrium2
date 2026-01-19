@@ -24,7 +24,10 @@ namespace Yttrium
             Type &       operator[](const uint8_t) noexcept;
             const Type & operator[](const uint8_t) const noexcept;
 
-            Histogram & operator+= (const Type * const arr) noexcept;
+            Histogram & operator+= (const Type * const) noexcept;
+            Histogram & operator+= (const Histogram &)  noexcept;
+
+            friend bool operator==(const Histogram &, const Histogram &) noexcept;
 
             template <typename PIXMAP, typename PIXEL_TO_BYTE> inline
             void add(Broker &broker, const PIXMAP &pxm, PIXEL_TO_BYTE &proc)
