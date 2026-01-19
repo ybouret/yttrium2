@@ -42,5 +42,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Ink_Bitrow_Included
 

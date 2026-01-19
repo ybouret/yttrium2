@@ -55,5 +55,5 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Ink_ZeroFlux_Included
 
