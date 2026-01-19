@@ -5,7 +5,7 @@
 #define Y_Ink_Histogram_Included 1
 
 #include "y/ink/ops.hpp"
-
+#include "y/memory/stealth.hpp"
 namespace Yttrium
 {
     namespace Ink
@@ -15,6 +15,7 @@ namespace Yttrium
         public:
             typedef uint32_t    Type;
             static const size_t Bins = 256;
+            static const size_t LocalMemory = Bins * sizeof(Type);
 
             explicit Histogram() noexcept;
             virtual ~Histogram() noexcept;
@@ -25,10 +26,27 @@ namespace Yttrium
 
             Histogram & operator+= (const Type * const arr) noexcept;
 
+            template <typename PIXMAP, typename PIXEL_TO_BYTE> inline
+            void add(Broker &broker, const PIXMAP &pxm, PIXEL_TO_BYTE &proc)
+            {
+                broker.acquireLocalMemory( LocalMemory );
+                broker.run(CallAdd<PIXMAP,PIXEL_TO_BYTE>,pxm,proc);
+            }
 
         private:
             Y_Disable_Copy_And_Assign(Histogram);
             Type bin[Bins];
+
+            template <typename PIXMAP, typename PIXEL_TO_BYTE> static
+            inline void CallAdd(Lockable      &,
+                                const Tile    & tile,
+                                const PIXMAP  & pxm,
+                                PIXEL_TO_BYTE & proc)
+            {
+                assert( tile.entry );
+                assert( tile.bytes >= LocalMemory );
+                assert( Memory::Stealth::Are0(tile.entry,tile.bytes) );
+            }
         };
     }
 
