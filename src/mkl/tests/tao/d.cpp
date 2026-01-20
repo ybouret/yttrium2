@@ -61,13 +61,13 @@ namespace
             {
                 Matrix<T> A(r,c);
                 uint64_t tseq=0, tpar=0;
-
+                const uint64_t loop = System::WallTime::Ticks();
                 do
                 {
                     FillWith<T>::Mat(ran,A);
                     Y_WallTime_Update(tseq, Tao::Gram(xadd,Gseq,A)   );
                     Y_WallTime_Update(tpar, Tao::Gram(broker,Gpar,A) );
-                } while( chrono(tseq) <= 0.01L );
+                } while( chrono(System::WallTime::Ticks()-loop) <= 0.01L );
 
                 const apn    numer = tseq;
                 const apn    denom = tpar;
