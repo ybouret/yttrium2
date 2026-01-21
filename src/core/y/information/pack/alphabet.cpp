@@ -121,15 +121,6 @@ namespace Yttrium
 
             void Alphabet::display(std::ostream& os) const
             {
-#if 0
-                for (DataType i = 0; i < universe; ++i)
-                {
-                    const Character& ch = database[i];
-                    if (ch.freq > 0)
-                        os << ch << std::endl;
-                }
-#endif
-
                 for (const Character* ch = encoding.head; ch; ch = ch->next)
                 {
                     os << *ch << std::endl;
@@ -219,7 +210,7 @@ namespace Yttrium
                 (void) bits.push<CodeType>(ch.code,ch.bits,pool);
             }
 
-            
+
 
         }
 

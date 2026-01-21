@@ -73,6 +73,12 @@ namespace Yttrium
                 void reduce()             noexcept; //!< reduce entropy
                 void reset()              noexcept; //!< reset all
 
+                //! emit byte from current state
+                /**
+                 \param bits destination
+                 \param byte byte to encode
+                 \param pool reservoir for bits
+                 */
                 void emit(IO::Bits &bits, const uint8_t byte, IO::Bits &pool) const;
 
                 //______________________________________________________________
@@ -97,6 +103,12 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(Alphabet); //!< discarding
                 void * wksp[InnerWords];             //!< inner memory
 
+                //! emit character from current state
+                /**
+                 \param bits destination
+                 \param ch   using (ch.code,ch.bits)
+                 \param pool reservoir for bits
+                 */
                 void emit(IO::Bits &bits, const Character &ch, IO::Bits &pool) const;
                 void setup() noexcept; //!< initial setup on a clean workspace
                 void cntrl() noexcept; //!< register controls in encoding
