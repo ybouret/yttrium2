@@ -60,16 +60,16 @@ namespace Yttrium
             //! noexcept SHARED copy
             explicit Bitmap(const Bitmap &) noexcept;
 
-            //! copy
+            //! hard copy
             /**
              \param bmp  original bitmap
-             \param D    this depth
+             \param D    this (new) depth
              \param cpy  cpy(bmp.item,item) with possible different types
              */
             explicit Bitmap(const CopyOf_ &,
                             const Bitmap  & bmp,
                             const size_t    D,
-                            CTor            cpy); //!< hard copy
+                            CTor            cpy);
 
             //! cleanup
             virtual ~Bitmap() noexcept;
