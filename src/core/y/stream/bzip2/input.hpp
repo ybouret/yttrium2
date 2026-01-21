@@ -18,13 +18,24 @@ namespace Yttrium
         //
         //
         //
-        //!
+        //! BZIP2 Input File
         //
         //
         //______________________________________________________________________
         class InputFile : public File, public InputStream
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            //! setup
+            /**
+             \param param file name
+             \param small optionanl small parameter for bzip2
+             */
             template <typename PARAM>
             explicit InputFile(const PARAM & param,
                                const bool small = false) :
@@ -34,17 +45,25 @@ namespace Yttrium
             {
             }
 
+            //! cleanup
             virtual ~InputFile() noexcept;
 
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             virtual bool query(char &);
             virtual void store(const char);
 
         private:
             Y_Disable_Copy_And_Assign(InputFile); //!< discarding
-            ArcPtr<Yttrium::InputFile> cfp;
-            int                        err;
-            void * const               bzf;
+            ArcPtr<Yttrium::InputFile> cfp;       //!< Libc file pointer
+            int                        err;       //!< error code for operations
+            void * const               bzf;       //!< BZIP2 handle
 
+            //! setup \param small for bzip2 \return BZIP2 file
             void * setup(const bool small);
         };
 

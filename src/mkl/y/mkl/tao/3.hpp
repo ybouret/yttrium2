@@ -77,12 +77,11 @@ namespace Yttrium
 
             namespace Hub
             {
-                //! parallel matrix/vector mul-sub
+                //! parallel Gram computation over a tile
                 /**
                  \param tile   operating tile
-                 \param lhs    target vector
-                 \param a      matrix
-                 \param rhs    source vector
+                 \param G      target matrix
+                 \param M      source matrix
                  */
                 template <
                 typename T,
@@ -107,7 +106,7 @@ namespace Yttrium
 
             //! Gram's matrix
             /**
-             \param xadd perform additions
+             \param broker par/seq broker
              \param G    destination matrix = M*M'
              \param M    source matrix
              */

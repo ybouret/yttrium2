@@ -74,6 +74,14 @@ namespace Yttrium
 
             namespace Hub
             {
+                //! element dot-product
+                /**
+                 \param xadd addition
+                 \param i row index
+                 \param j column index
+                 \param M matrix
+                 \return M[i] . M[j]
+                 */
                 template <typename T, typename MATRIX> inline
                 T GramCore(Cameo::Addition<T> &xadd,
                            const size_t         i,

@@ -15,29 +15,55 @@ namespace Yttrium
     {
         namespace Pack
         {
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! embedded character statistics
+            //
+            //
+            //__________________________________________________________________
             class Character
             {
             public:
+                //______________________________________________________________
+                //
+                //
+                // Definitions
+                //
+                //______________________________________________________________
                 typedef uint16_t DataType; //!< alias for bytes + control
                 typedef uint32_t FreqType; //!< alias
                 typedef uint64_t CodeType; //!< alias
 
-                Y_OSTREAM_PROTO(Character);
 
-                const DataType data;
-                CodeType       code;
-                unsigned       bits;
-                FreqType       freq;
-                Character *    next;
-                Character *    prev;
+                //______________________________________________________________
+                //
+                //
+                // Members
+                //
+                //______________________________________________________________
+                const DataType data; //!< original data
+                CodeType       code; //!< current code
+                unsigned       bits; //!< current bits
+                FreqType       freq; //!< current frequency
+                Character *    next; //!< for list
+                Character *    prev; //!< for list
 
-                void     reset(const unsigned n) noexcept;
-                FreqType reduce() noexcept;
+                //______________________________________________________________
+                //
+                //
+                // Methods
+                //
+                //______________________________________________________________
+                Y_OSTREAM_PROTO(Character);              //!< display
+                void     reset(const unsigned) noexcept; //!< reset with nbits
+                FreqType reduce()              noexcept; //!< reduce frequency \return new frequency
 
             private:
-                Y_Disable_Copy_And_Assign(Character);
-                Character();
-                ~Character() noexcept;
+                Y_Disable_Copy_And_Assign(Character); //!< discarding
+                Character();           //!< discarding
+                ~Character() noexcept; //!< discarding
             };
 
 

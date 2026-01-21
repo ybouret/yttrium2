@@ -53,7 +53,7 @@ namespace Yttrium
             //__________________________________________________________________
             bool query(char &C);      //!< \param C char to get \return true iff success
             void store(const char C); //!< use internal Q to store \param C read character
-            bool atEOF() noexcept;    //!< return true if EOF
+            bool atEOF() noexcept;    //!< \return true if EOF
 
             //__________________________________________________________________
             //

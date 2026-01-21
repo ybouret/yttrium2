@@ -12,9 +12,15 @@ namespace Yttrium
     namespace Ink
     {
 
+        //! Seq/Par operations wrapper
         struct Ops
         {
-
+            //! apply unary operation to each pixel of pixmap
+            /**
+             \param broker par/seq broker
+             \param proc   proc(pixel)
+             \param pixmap source/taget pixmap
+             */
             template <
             typename PIXMAP,
             typename PROC> static inline
@@ -25,6 +31,13 @@ namespace Yttrium
             }
 
 
+            //! apply binary operation on each pixel of pixmap
+            /**
+             \param broker par/seq broker
+             \param proc   proc(pixel,arg1)
+             \param pixmap source/taget pixmap
+             \param arg1   argument for proc
+             */
             template <
             typename PIXMAP,
             typename PROC,
@@ -35,6 +48,14 @@ namespace Yttrium
                 broker.run(proc,pixmap,arg1);
             }
 
+            //! apply ternary operation on each pixel of pixmap
+            /**
+             \param broker par/seq broker
+             \param proc   proc(pixel,arg1,arg2)
+             \param pixmap source/target pixmap
+             \param arg1   argument for proc
+             \param arg2   argument for proc
+             */
             template <
             typename PIXMAP,
             typename PROC,

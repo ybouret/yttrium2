@@ -70,7 +70,7 @@ namespace Yttrium
                 release();
             }
 
-            //! assign each tile current memory part
+            //! assign each tile current memory part \param tiles each tile receive blockSize/numTiles
             template <typename TILES> inline
             void deliverEachTileOf(TILES &tiles)
             {
@@ -100,6 +100,7 @@ namespace Yttrium
             void release() noexcept;              //!< release total memory
             void ensure(size_t capacity);         //!< \param capacity minimal, zeroed bytes
 
+            //! mark each tile as free \param tiles collection of tiles
             template <typename TILES> inline
             void clearEachTileOf(TILES &tiles) noexcept
             {

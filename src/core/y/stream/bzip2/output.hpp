@@ -19,13 +19,26 @@ namespace Yttrium
         //
         //
         //
-        //!
+        //! BZIP2 Output File
         //
         //
         //______________________________________________________________________
         class OutputFile : public File, public OutputStream
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup
+            /**
+             \param param file name
+             \param blockSize100k for bzip2
+             \param workFactor    for bzip2
+             */
             template <typename PARAM>
             explicit OutputFile(const PARAM & param,
                                 const int blockSize100k = 9,
@@ -38,16 +51,28 @@ namespace Yttrium
 
             virtual ~OutputFile() noexcept;
 
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
             virtual void write(const char);
             virtual void flush();
 
 
         private:
             Y_Disable_Copy_And_Assign(OutputFile); //!< discarding
-            ArcPtr<Yttrium::OutputFile> cfp;
-            int                         err;
-            void * const                bzf;
+            ArcPtr<Yttrium::OutputFile> cfp; //!< Libc output file
+            int                         err; //!< error code for operations
+            void * const                bzf; //!< BZIP2 handle
 
+            //! setup
+            /**
+             \param blockSize100k for bzip2
+             \param workFactor    for bzip2
+             \return BZIP2 handle
+             */
             void * setup(const int blockSize100k,
                          const int workFactor);
         };

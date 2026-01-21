@@ -10,25 +10,58 @@ namespace Yttrium
 {
     namespace Ink
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Histogram of pixels
+        //
+        //
+        //______________________________________________________________________
         class Histogram
         {
         public:
-            typedef uint32_t    Type;
-            static const size_t Bins = 256;
-            static const size_t LocalMemory = Bins * sizeof(Type);
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef uint32_t    Type;                               //!< alias
+            static const size_t Bins = 256;                         //!< number of bins
+            static const size_t LocalMemory = Bins * sizeof(Type); //!< local memory
 
-            explicit Histogram() noexcept;
-            virtual ~Histogram() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit Histogram() noexcept; //!< setup
+            virtual ~Histogram() noexcept; //!< cleanup
 
-            Histogram & ldz() noexcept;
-            Type &       operator[](const uint8_t) noexcept;
-            const Type & operator[](const uint8_t) const noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            Histogram & ldz()                            noexcept; //!< \return cleared histogram
+            Type &       operator[](const uint8_t)       noexcept; //!< \return access
+            const Type & operator[](const uint8_t) const noexcept; //!< \return const access
 
-            Histogram & operator+= (const Type * const) noexcept;
-            Histogram & operator+= (const Histogram &)  noexcept;
+            Histogram & operator+= (const Type * const) noexcept; //!< \return cumulative histogram
+            Histogram & operator+= (const Histogram &)  noexcept; //!< \return cumulative histogram
 
+            //! \return bin-wise equality
             friend bool operator==(const Histogram &, const Histogram &) noexcept;
 
+            //! process all pixmap
+            /**
+             \param broker par/seq broker
+             \param pxm pixmap
+             \param proc convert each pixel to yte
+             */
             template <typename PIXMAP, typename PIXEL_TO_BYTE> inline
             void add(Broker &broker, const PIXMAP &pxm, PIXEL_TO_BYTE &proc)
             {
@@ -37,9 +70,15 @@ namespace Yttrium
             }
 
         private:
-            Y_Disable_Copy_And_Assign(Histogram);
-            Type bin[Bins];
+            Y_Disable_Copy_And_Assign(Histogram); //!< discarding
+            Type bin[Bins];                       //!< current data
 
+            //! process pixmap per tile
+            /**
+             \param tile tile to process
+             \param pxm  pixmap to process
+             \param proc convert pixel to byte
+             */
             template <typename PIXMAP, typename PIXEL_TO_BYTE> static
             inline void CallAdd(Lockable      &,
                                 const Tile    & tile,
