@@ -61,7 +61,7 @@ namespace Yttrium
             {
             }
 
-            void Huffman:: build(Alphabet &alpha)
+            void Huffman:: build(Alphabet &alpha) noexcept
             {
             BUILD:
                 root         = 0;

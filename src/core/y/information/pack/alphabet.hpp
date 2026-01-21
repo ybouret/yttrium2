@@ -23,7 +23,7 @@ namespace Yttrium
             //
             //
             //
-            //! incremental alphabet
+            //! Incremental 256 bytes lphabet
             //
             //
             //__________________________________________________________________
