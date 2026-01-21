@@ -74,7 +74,7 @@ namespace Yttrium
 
 
             //! shared copy \param pxm source pixmap
-            inline explicit Pixmap(const Pixmap &pxm) noexcept :
+            inline Pixmap(const Pixmap &pxm) noexcept :
             Bitmap(pxm)
             {
             }

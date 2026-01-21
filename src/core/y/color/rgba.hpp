@@ -42,8 +42,8 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            //! setup black, transparent
-            inline RGBA() noexcept : r(0), g(0), b(0), a(0) {}
+            //! setup black, opaque
+            inline RGBA() noexcept : r(0), g(0), b(0), a(Opaque<T>::Value) {}
 
             //! setup opaque \param R r \param G g \param B b \param A a
             inline RGBA(const T R, const T G, const T B, const T A = Opaque<T>::Value) noexcept : r(R), g(G), b(B), a(A) {}
