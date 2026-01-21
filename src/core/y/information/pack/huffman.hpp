@@ -120,7 +120,9 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
-                void build(Alphabet &alpha) noexcept;
+
+                //! build tree from alphabet with at least two nodes
+                void build(Alphabet &) noexcept;
 
                 //______________________________________________________________
                 //
