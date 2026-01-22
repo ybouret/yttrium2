@@ -16,6 +16,13 @@ namespace Yttrium
             return Jive::RegExp::Compile(((rx >> '(') << ')' << '&'));
         }
 
+        void Format:: renderExtension() const
+        {
+            const String dotFile = name + ".dot";
+            Vizible::Render(dotFile,*extension.motif);
+        }
+
+
     }
 
 }

@@ -33,8 +33,8 @@ Y_UTEST(io)
 #endif
 
     Ink::FormatBMP  bmp;
-
-
+    bmp.renderExtension();
+    
 }
 Y_UDONE()
 

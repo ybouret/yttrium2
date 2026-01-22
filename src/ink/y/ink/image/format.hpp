@@ -25,6 +25,8 @@ namespace Yttrium
 
             virtual ~Format() noexcept;
 
+            void renderExtension() const;
+
             Jive::Matching extension;
 
         private:
