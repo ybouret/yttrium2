@@ -1,4 +1,4 @@
-
+//! \file
 
 #ifndef Y_Ink_Colors_Included
 #define Y_Ink_Colors_Included 1
