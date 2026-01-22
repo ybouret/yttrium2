@@ -10,8 +10,8 @@ namespace Yttrium
 {
     namespace Ink
     {
-        typedef Color::RGBA<uint8_t> RGBA;
-        typedef Color::RGB<uint8_t>  RGB;
+        typedef Color::RGBA<uint8_t> RGBA; //!< alias
+        typedef Color::RGB<uint8_t>  RGB;  //!< alias
 
     }
 
