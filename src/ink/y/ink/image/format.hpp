@@ -18,7 +18,7 @@ namespace Yttrium
             template <typename UID, typename EXT> inline
             explicit Format(const UID &uid, const EXT &ext) :
             Codec(uid),
-            extension(ext)
+            extension(ExtToPattern(ext))
             {
 
             }
@@ -29,6 +29,15 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(Format);
+            template <typename EXT> static inline
+            Jive::Pattern * ExtToPattern(const EXT &ext)
+            {
+                String rx = ext;
+                return MakePattern(rx);
+            }
+
+            static Jive::Pattern * MakePattern(String &rx);
+
         };
 
     }

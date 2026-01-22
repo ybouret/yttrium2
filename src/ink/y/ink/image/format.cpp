@@ -1,5 +1,6 @@
 
 #include "y/ink/image/format.hpp"
+#include "y/jive/regexp.hpp"
 
 namespace Yttrium
 {
@@ -10,7 +11,11 @@ namespace Yttrium
         {
         }
 
-        
+        Jive::Pattern * Format:: MakePattern(String &rx)
+        {
+            return Jive::RegExp::Compile(((rx >> '(') << ')' << '&'));
+        }
+
     }
 
 }
