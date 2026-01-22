@@ -128,5 +128,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Jive_Pattern_Matching_Included
 

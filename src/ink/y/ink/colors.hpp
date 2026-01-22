@@ -12,7 +12,6 @@ namespace Yttrium
     {
         typedef Color::RGBA<uint8_t> RGBA; //!< alias
         typedef Color::RGB<uint8_t>  RGB;  //!< alias
-
     }
 
 }
