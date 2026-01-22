@@ -1,6 +1,8 @@
 
 
 #include "y/ink/pixmap.hpp"
+#include "y/ink/colors.hpp"
+
 #include "y/color/rgba.hpp"
 #include "y/utest/run.hpp"
 #include "y/concurrent/api/simd/crew.hpp"
@@ -13,7 +15,6 @@ namespace Yttrium
 {
     namespace Ink
     {
-        typedef Color::RGBA<uint8_t> RGBA;
 
         static inline
         Pixmap<RGBA> GetSurface()
