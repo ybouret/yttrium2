@@ -5,19 +5,30 @@
 
 #include "y/string.hpp"
 #include "y/container/associative/suffix/map.hpp"
+#include "y/pointer/arc.hpp"
 
 namespace Yttrium
 {
     namespace Ink
     {
-        typedef SuffixMap<String,String> OptionDB;
+        typedef ArcPtr<String>           Option;
+        typedef SuffixMap<String,Option> OptionDB;
 
         class Options : public OptionDB
         {
         public:
+            static const char * const CallSign; //!< "Ink::Options"
+
+
             Options();
             Options(const Options &);
             virtual ~Options() noexcept;
+
+            String & operator[](const String &);
+            String & operator[](const char * const);
+
+            const String & operator[](const String &)     const;
+            const String & operator[](const char * const) const;
 
             
 

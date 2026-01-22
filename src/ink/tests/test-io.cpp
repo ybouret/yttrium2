@@ -1,7 +1,6 @@
 
 
-#include "y/ink/pixmap.hpp"
-#include "y/ink/colors.hpp"
+#include "y/ink/image/format/bmp.hpp"
 
 #include "y/color/rgba.hpp"
 #include "y/utest/run.hpp"
@@ -33,9 +32,8 @@ Y_UTEST(io)
     Ink::Broker           seq(cpu1);
 #endif
 
-    Ink::Pixmap<Ink::RGBA> surface = Ink::GetSurface();
+    Ink::FormatBMP  bmp;
 
-    std::cerr << surface << std::endl;
 
 }
 Y_UDONE()
