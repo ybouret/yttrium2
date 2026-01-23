@@ -37,7 +37,10 @@ Y_UTEST(io)
     }
 
     bmp.save(pxm,"image.bmp",0);
-    
+    {
+        Ink::Image reloaded = bmp.load("image.bmp",0);
+        Y_ASSERT(reloaded.width==pxm.width);
+    }
 
 
 
