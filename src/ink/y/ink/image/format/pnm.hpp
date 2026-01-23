@@ -43,7 +43,14 @@ namespace Yttrium
                 P5, //!< todo
                 P6  //!< todo
             };
-            static Kind GetKind(const String &lowerCaseExt, const bool binary); //!< guess Kind
+
+            //! deduce kind from request
+            /**
+             \param lowerCaseExt desired extension
+             \param binary       if desired binary representation
+             \return matching kind
+             */
+            static Kind GetKind(const String &lowerCaseExt, const bool binary);
             
             //__________________________________________________________________
             //
@@ -63,6 +70,9 @@ namespace Yttrium
 
             //! saving
             /**
+             \param image image
+             \param fileName output file name
+             \param options  possible options
              options are:
              - 'binary=[on|off]'
              - 'zoom=x[,y]'
@@ -71,12 +81,11 @@ namespace Yttrium
                                const String  &       fileName,
                                const Options * const options) const;
 
-            //! loading
-            virtual Image load(const String  &fileName,
-                               const Options *options) const;
+
+            virtual Image load(const String &, const Options *) const;
 
         private:
-            Y_Disable_Copy_And_Assign(FormatPNM);
+            Y_Disable_Copy_And_Assign(FormatPNM); //!< discarding
         };
     }
 

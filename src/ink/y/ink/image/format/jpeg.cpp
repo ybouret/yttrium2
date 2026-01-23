@@ -102,8 +102,8 @@ namespace Yttrium
         {
             static const char quality_info[] = "quality";
 
-            int           quality = 75;
-            const String *ps = Options::Query(opt,quality_info);
+            int                  quality = 75;
+            const String * const ps = Options::Query(opt,quality_info);
             if(ps)
             {
                 quality = Clamp<int>(10,ASCII::Convert::To<int>( *ps,quality_info),100);
@@ -112,9 +112,9 @@ namespace Yttrium
             return quality;
         }
 
-        void FormatJPEG:: save(const Image  &img,
-                               const String &fileName,
-                               const Options *options) const
+        void FormatJPEG:: save(const Image   &       img,
+                               const String  &       fileName,
+                               const Options * const options) const
         {
 
 
@@ -272,7 +272,6 @@ namespace Yttrium
             stride(depth*width),
             items(stride),
             bytes(0),
-            //samples( memory_allocator::instance().allocate<JSAMPLE>(items,bytes) ),
             samples( acquire(items,bytes) ),
             buffer(),
             jsbuff(buffer)

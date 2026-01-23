@@ -47,16 +47,18 @@ namespace Yttrium
             //__________________________________________________________________
 
             //! saving
-            virtual void  save(const Image   &image,
-                               const String  &fileName,
-                               const Options *options) const;
+            /**
+             \param options alpha=[true|false], level=[0..9]
+             */
+            virtual void  save(const Image   &,
+                               const String  &,
+                               const Options * const options) const;
 
-            //! loading
-            virtual Image load(const String  &fileName,
-                               const Options *options) const;
+            virtual Image load(const String  &,
+                               const Options *) const;
 
         private:
-            Y_Disable_Copy_And_Assign(FormatPNG);
+            Y_Disable_Copy_And_Assign(FormatPNG); //!< discarding
         };
     }
 
