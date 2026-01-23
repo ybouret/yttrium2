@@ -3,6 +3,7 @@
 #include "y/ink/image/format/bmp.hpp"
 #include "y/ink/image/format/pnm.hpp"
 #include "y/ink/image/format/jpeg.hpp"
+#include "y/ink/image/format/png.hpp"
 
 #include "y/color/rgba.hpp"
 #include "y/utest/run.hpp"
@@ -29,6 +30,7 @@ Y_UTEST(io)
     Ink::FormatBMP   bmp; bmp.renderExtension();
     Ink::FormatPNM   pnm; pnm.renderExtension();
     Ink::FormatJPEG  jpg; jpg.renderExtension();
+    Ink::FormatPNG   png; png.renderExtension();
 
 
     Ink::Image      pxm(80,60);
@@ -52,7 +54,8 @@ Y_UTEST(io)
     pnm.save(pxm,"image.pgm",0);
     pnm.save(pxm,"image.ppm",0);
     jpg.save(pxm,"image.jpg",0);
-    
+    png.save(pxm,"image.png",0);
+
 
 
 

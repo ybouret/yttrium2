@@ -1,5 +1,5 @@
 Y_CreateTest(test-ink)
-Y_LinkLibraries(test-ink y-ink y-jive y-jpeg)
+Y_LinkLibraries(test-ink y-ink y-jive y-jpeg png_static)
 
 enable_testing()
 
