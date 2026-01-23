@@ -30,8 +30,9 @@ namespace Yttrium
             const String & operator[](const String &)     const;
             const String & operator[](const char * const) const;
 
+            static const String * Query(const Options * const, const String &) noexcept;
+            static const String * Query(const Options * const, const char * const);
             
-
         private:
             Y_Disable_Assign(Options);
         };

@@ -25,7 +25,8 @@ namespace Yttrium
 
             virtual ~Format() noexcept;
 
-            void renderExtension() const;
+            void          renderExtension() const;
+            static String LowerCaseExt(const String &path);
 
             Jive::Matching extension;
 
