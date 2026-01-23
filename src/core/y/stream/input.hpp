@@ -56,11 +56,9 @@ namespace Yttrium
         // Methods
         //
         //______________________________________________________________________
-        bool alive(); //!< try to query/store \return true iff available char
-
-
-
-
+        bool   alive();                            //!< try to query/store \return true iff available char
+        size_t fetch(void * const , const size_t); //!< query block of memory \return read bytes
+        
         //! codec64 decoding, throw exception on error, with optional variable name
         void decode64(uint64_t &, const char * const  = 0);
 
@@ -97,6 +95,8 @@ namespace Yttrium
             if(n<sizeof(T)) throwMissing(varName,varPart);
             return res;
         }
+
+        
 
 
         //! read Variable Bit Rate variable

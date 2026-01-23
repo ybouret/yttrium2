@@ -14,25 +14,59 @@ namespace Yttrium
     namespace Ink
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! I/O interface for Image
+        //
+        //
+        //______________________________________________________________________
         class Codec : public CountedObject
         {
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
         protected:
+            //! \setup \param uid name
             template <typename UID> inline
             explicit Codec(const UID &uid) : CountedObject(), name(uid) {}
 
         public:
-            virtual ~Codec() noexcept;
+            virtual ~Codec() noexcept; //!< cleanup
 
-            virtual void save(const Image &, const String &) = 0;
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
+            virtual void  save(const Image  &, const String &, const Options * const) const = 0;
+            virtual Image load(const String &, const Options * const)                 const = 0;
 
-            const String & key() const noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            const String & key() const noexcept; //!< \return name
 
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const String name; //!< identifier
 
-            const String name;
-            
         private:
-            Y_Disable_Copy_And_Assign(Codec);
+            Y_Disable_Copy_And_Assign(Codec); //!< discarding
         };
+
     }
 
 }

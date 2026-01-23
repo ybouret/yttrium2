@@ -150,6 +150,24 @@ namespace Yttrium
         return 8;
     }
 
+
+    size_t InputStream:: fetch(void * const addr, const size_t size)
+    {
+        assert( Good(addr,size) );
+        size_t num = 0;
+        {
+            char * p = static_cast<char *>(addr);
+            while(num<size) {
+                if(query(*(p++))) { ++num; continue; }
+                break;
+            }
+        }
+        return num;
+    }
+
+  
+
+
 }
 
 #include "y/string.hpp"

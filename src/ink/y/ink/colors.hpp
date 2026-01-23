@@ -12,6 +12,16 @@ namespace Yttrium
     {
         typedef Color::RGBA<uint8_t> RGBA; //!< alias
         typedef Color::RGB<uint8_t>  RGB;  //!< alias
+
+        struct Channel
+        {
+            static const char * const Red;
+            static const char * const Green;
+            static const char * const Blue;
+            static const char * const Alpha;
+            static const char * const Name[4];
+        };
+
     }
 
 }

@@ -21,8 +21,10 @@ namespace Yttrium
             virtual ~FormatBMP() noexcept;
 
 
-            virtual void save(const Image &, const String &);
-            
+            virtual void  save(const Image &, const String &, const Options * const) const;
+            virtual Image load(const String &, const Options * const)                const;
+
+
         private:
             Y_Disable_Copy_And_Assign(FormatBMP);
         };

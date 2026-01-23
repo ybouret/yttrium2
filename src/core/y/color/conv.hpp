@@ -27,7 +27,7 @@ namespace Yttrium
             r = c.r;
             g = c.g;
             b = c.b;
-            return this;
+            return *this;
         }
 
     }
@@ -48,7 +48,7 @@ namespace Yttrium
             r = c.r;
             g = c.g;
             b = c.b;
-            return this;
+            return *this;
         }
 
     }
