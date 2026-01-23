@@ -15,6 +15,7 @@ add_subdirectory(lua)
 add_subdirectory(jbig)
 add_subdirectory(jpeg)
 add_subdirectory(png)
+add_subdirectory(tiff)
 add_subdirectory(sqlite3)
 
 #cmake_print_variables(third_party_list)
