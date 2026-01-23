@@ -56,7 +56,15 @@ Y_UTEST(io)
     jpg.save(pxm,"image.jpg",0);
     png.save(pxm,"image.png",0);
 
+    {
+        Ink::Image reloaded = jpg.load("image.jpg",0);
+        Y_ASSERT(reloaded.width==pxm.width);
+    }
 
+    {
+        Ink::Image reloaded = png.load("image.png",0);
+        Y_ASSERT(reloaded.width==pxm.width);
+    }
 
 
 
