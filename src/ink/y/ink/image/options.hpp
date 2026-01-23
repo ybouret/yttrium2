@@ -11,30 +11,51 @@ namespace Yttrium
 {
     namespace Ink
     {
-        typedef ArcPtr<String>           Option;
-        typedef SuffixMap<String,Option> OptionDB;
+        typedef ArcPtr<String>           Option;   //!< alias
+        typedef SuffixMap<String,Option> OptionDB; //!< alias
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! named options for Formats
+        //
+        //
+        //______________________________________________________________________
         class Options : public OptionDB
         {
         public:
             static const char * const CallSign; //!< "Ink::Options"
 
 
-            Options();
-            Options(const Options &);
-            virtual ~Options() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            Options();                   //!< setup
+            Options(const Options &);    //!< duplicate
+            virtual ~Options() noexcept; //!< cleanup
 
-            String & operator[](const String &);
-            String & operator[](const char * const);
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+            String & operator[](const String &);     //!< \return on the fly/created option string
+            String & operator[](const char * const); //!< \return on the fly/created option string
 
-            const String & operator[](const String &)     const;
-            const String & operator[](const char * const) const;
+            const String & operator[](const String &)     const; //!< \return existing option string
+            const String & operator[](const char * const) const; //!< \return existing option string
 
-            static const String * Query(const Options * const, const String &) noexcept;
-            static const String * Query(const Options * const, const char * const);
-            
+
+            static const String * Query(const Options * const, const String &) noexcept; //!< \return pointer to existing string, NULL othersize
+            static const String * Query(const Options * const, const char * const);      //!< \return pointer to existing string, NULL othersize
+
         private:
-            Y_Disable_Assign(Options);
+            Y_Disable_Assign(Options); //!< discarding
         };
 
     }

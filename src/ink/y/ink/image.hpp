@@ -12,7 +12,7 @@ namespace Yttrium
 {
     namespace Ink
     {
-        typedef Pixmap<RGBA>   Image;
+        typedef Pixmap<RGBA>   Image; //!< alias
     }
 
 }

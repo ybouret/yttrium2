@@ -11,22 +11,47 @@ namespace Yttrium
     namespace Ink
     {
 
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! default BITMAP format
+        //
+        //
+        //______________________________________________________________________
         class FormatBMP : public Format
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
             static const char * const CallSign;  //!< "BMP"
             static const char * const Extension; //!< "bmp"
 
-            explicit FormatBMP();
-            virtual ~FormatBMP() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit FormatBMP();          //!< setup
+            virtual ~FormatBMP() noexcept; //!< cleanup
 
-
+            //__________________________________________________________________
+            //
+            //
+            // Inteface
+            //
+            //__________________________________________________________________
             virtual void  save(const Image &, const String &, const Options * const) const;
             virtual Image load(const String &, const Options * const)                const;
 
 
         private:
-            Y_Disable_Copy_And_Assign(FormatBMP);
+            Y_Disable_Copy_And_Assign(FormatBMP); //!< discarding
         };
 
     }

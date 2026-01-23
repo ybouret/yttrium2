@@ -31,7 +31,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
         protected:
-            //! \setup \param uid name
+            //! setup \param uid name
             template <typename UID> inline
             explicit Codec(const UID &uid) : CountedObject(), name(uid) {}
 
@@ -44,7 +44,11 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
+
+            //! save image into file with optional options
             virtual void  save(const Image  &, const String &, const Options * const) const = 0;
+
+            //! \return image from file with optional options
             virtual Image load(const String &, const Options * const)                 const = 0;
 
             //__________________________________________________________________
