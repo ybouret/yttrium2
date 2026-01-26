@@ -75,8 +75,11 @@ namespace Yttrium
                 Y_Disable_Copy_And_Assign(In1D); //!< discarding
             };
 
+
+
+
             //! helper
-#define Y_Tile2D_Ctor() h(0), segments( new SegsMem(1) )
+#define Y_Tile2D_Ctor() h(0), segments( new SegsMem(1) ), wksp()
 
             //__________________________________________________________________
             //
@@ -102,6 +105,12 @@ namespace Yttrium
                 typedef HSegment<T>               SegType;  //!< alias
                 typedef Memory::SchoolOf<SegType> SegsMem;  //!< alias
                 typedef ArcPtr<SegsMem>           Segments; //!< alias
+
+                typedef HSegment<T> Segment;
+                typedef Segment (Tile2D:: *GetSegment)(const size_t);
+                static const size_t MaxSegments = 3;
+                static const size_t InnerBytes  = MaxSegments * sizeof(Segment);
+                static const size_t InnerWords  = Alignment::WordsGEQ<InnerBytes>::Count;
 
                 //______________________________________________________________
                 //
@@ -169,7 +178,7 @@ namespace Yttrium
                 //! \return origin coordinate
                 inline vertex_t origin() const noexcept
                 {
-                    return h>0 ? segments->entry[0].start : vertex_t();
+                    return (h>0) ? segments->entry[0].start : vertex_t();
                 }
 
 
@@ -191,7 +200,9 @@ namespace Yttrium
                 
             private:
                 Y_Disable_Copy_And_Assign(Tile2D); //!< discarding
-                Segments segments;                 //!< memory for segments
+                Segments   segments;                 //!< memory for segments
+                GetSegment proc;
+                void *     wksp[ InnerWords ];
 
 
                 //! setup algorithm
