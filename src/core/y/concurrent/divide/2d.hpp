@@ -76,7 +76,7 @@ namespace Yttrium
             };
 
             //! helper
-#define Y_Tile2D_Ctor() h(0), n(0), segments( new SegsMem(1) )
+#define Y_Tile2D_Ctor() h(0), segments( new SegsMem(1) )
 
             //__________________________________________________________________
             //
@@ -148,7 +148,7 @@ namespace Yttrium
                     if(t.h<=0)
                         os << Subdivision::Empty;
                     else
-                        os << "|" << t.origin() << "->" << t.finish() << "|=" << t.n << "/#" << t.h;
+                        os << "|" << t.origin() << "->" << t.finish() << "|=" << t.length << "/#" << t.h;
                     return os;
                 }
                 
@@ -188,7 +188,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 const scalar_t h; //!< height
-                const uint64_t n; //!< items
+                //const uint64_t n; //!< items
 
             private:
                 Y_Disable_Copy_And_Assign(Tile2D); //!< discarding
@@ -249,7 +249,7 @@ namespace Yttrium
 
                         // record
                         new (segments->entry+y) SegType(lhs,w);
-                        Coerce(n) += (uint64_t)w;
+                        //Coerce(n) += (uint64_t)w;
                     }
                 }
 
