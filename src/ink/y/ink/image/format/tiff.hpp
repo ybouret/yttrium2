@@ -30,7 +30,8 @@ namespace Yttrium
             //
             //__________________________________________________________________
             static const char * const CallSign; //!< "TIFF"
-
+            static const char * const Extension; //!< "tif|tiff"
+            
             //__________________________________________________________________
             //
             //

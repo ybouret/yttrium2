@@ -6,11 +6,13 @@ namespace Yttrium
 {
     namespace Ink
     {
-        FormatTIFF::  FormatTIFF() : Format(CallSign,"(tiff|tif)&") {}
+
+
+        const char * const FormatTIFF:: CallSign  = "TIFF";
+        const char * const FormatTIFF:: Extension = "tif|tiff";
+
+        FormatTIFF::  FormatTIFF() : Format(CallSign,Extension) {}
         FormatTIFF:: ~FormatTIFF() noexcept {}
-
-        const char * const FormatTIFF:: CallSign = "TIFF";
-
 
     }
 }

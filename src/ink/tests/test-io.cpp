@@ -57,6 +57,7 @@ Y_UTEST(io)
     pnm.save(pxm,"image.ppm",0);
     jpg.save(pxm,"image.jpg",0);
     png.save(pxm,"image.png",0);
+    tif.save(pxm,"image.tif",0);
 
     {
         Ink::Image reloaded = jpg.load("image.jpg",0);
@@ -65,6 +66,11 @@ Y_UTEST(io)
 
     {
         Ink::Image reloaded = png.load("image.png",0);
+        Y_ASSERT(reloaded.width==pxm.width);
+    }
+
+    {
+        Ink::Image reloaded = tif.load("image.tif",0);
         Y_ASSERT(reloaded.width==pxm.width);
     }
 
