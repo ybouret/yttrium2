@@ -1,8 +1,4 @@
-
-
 //! \file
-
-
 
 #ifndef Y_MKL_ZRid_Included
 #define Y_MKL_ZRid_Included 1
@@ -63,5 +59,5 @@ namespace Yttrium
 
 
 
-#endif
+#endif // !Y_MKL_ZRid_Included
 

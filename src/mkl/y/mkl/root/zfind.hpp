@@ -44,8 +44,8 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            inline explicit ZFind() noexcept {} //!< setup
-            inline virtual ~ZFind() noexcept {} //!< cleanup
+            explicit ZFind() noexcept; //!< setup
+            virtual ~ZFind() noexcept; //!< cleanup
 
             //__________________________________________________________________
             //
