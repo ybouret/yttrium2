@@ -43,7 +43,7 @@ namespace Yttrium
                     Cameo::Addition<T> & xadd = *tile.as< Cameo::Addition<T> * >();
                     for(size_t h=tile.h;h>0;--h)
                     {
-                        const MatrixSegment &seg = tile[h];
+                        const MatrixSegment  seg = tile[h];
                         const size_t           i = seg.start.y;
                         typename MAT::Row   &a_i = a[i];
                         for(size_t j=seg.start.x,n=seg.width;n>0;--n,++j)

@@ -17,7 +17,7 @@ namespace
 
         for(size_t k=tile.h;k>0;--k)
         {
-            const Ink::Segment   &s   = tile[k];
+            const Ink::Segment    s   = tile[k];
             typename PIXMAP::Row &row = pxm[s.start.y];
             for(unit_t i=s.width,x=s.start.x;i>0;--i,++x)
             {

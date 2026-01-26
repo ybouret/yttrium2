@@ -173,8 +173,8 @@ namespace Yttrium
                 }
 
 
-                //! \param j 1<=j<=h \return computed segment
-                inline const SegType & operator[](const scalar_t j) const noexcept
+                //! \param j 1<=j<=h \return matching segment
+                inline const SegType operator[](const scalar_t j) const noexcept
                 {
                     assert(j>0); assert(j<=h);
                     return segments->cxx[j];
@@ -188,8 +188,7 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 const scalar_t h; //!< height
-                //const uint64_t n; //!< items
-
+                
             private:
                 Y_Disable_Copy_And_Assign(Tile2D); //!< discarding
                 Segments segments;                 //!< memory for segments
