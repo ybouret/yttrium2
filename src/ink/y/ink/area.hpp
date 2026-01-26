@@ -1,3 +1,5 @@
+//! \file
+
 #ifndef Y_Ink_Area_Included
 #define Y_Ink_Area_Included 1
 

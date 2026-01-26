@@ -11,6 +11,7 @@ y/ink
 y/ink/image
 y/ink/image/format
 y/ink/image/format/pnm
+y/ink/ops
 )
 
 add_dependencies(y-ink y-jpeg png_static tiff)
