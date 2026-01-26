@@ -24,11 +24,16 @@ namespace Yttrium
             virtual ~tiffxx() noexcept; //!< cleanup
 
         protected:
-            explicit tiffxx(const String &, const char *mode); //!< TIFFOpen
+            //! TIFFopen
+            /**
+             \param fileName file anme
+             \param mode  TIFF mode
+             */
+            explicit tiffxx(const String &fileName, const char * const mode);
             void * const handle; //!< TIFF
 
         private:
-            Y_Disable_Copy_And_Assign(tiffxx);
+            Y_Disable_Copy_And_Assign(tiffxx); //!< dicarding
         };
 
         //__________________________________________________________________
@@ -40,26 +45,26 @@ namespace Yttrium
         class itiff: public tiffxx
         {
         public:
-            explicit itiff(const String &filename); //!< setup
-            virtual ~itiff() noexcept;               //!< cleanup
+            explicit itiff(const String &fileName); //!< setup \param fileName file name
+            virtual ~itiff() noexcept;              //!< cleanup
 
-            unit_t width();                       //!< image width
-            unit_t height();                      //!< image height
-            size_t count_directories();           //!< count directories
-            bool   load(Pixmap<RGBA> &img);       //!< img.w = width, img.h = height
-            void   set_directory(const size_t n); //!< set directory
+            unit_t width();                       //!< \return image width
+            unit_t height();                      //!< \return image height
+            size_t count_directories();           //!< \return count directories
+            bool   load(Pixmap<RGBA> &img);       //!< \param img image to loade img.w = width, img.h = height \return success
+            void   set_directory(const size_t n); //!< set directory \param n image index
 
 
-            static unit_t width_of(const String &filename);        //!< helper to get width
-            static unit_t height_of(const String &filename);       //!< helper to get height
-            static size_t directories_of(const String &filename);  //!< helper to get directories
+            static unit_t width_of(const String &);        //!< \return helper to get width
+            static unit_t height_of(const String &);       //!< \return helper to get height
+            static size_t directories_of(const String &);  //!< \return helper to get directories
 
-            static unit_t width_of(const char *filename);        //!< wrapper
-            static unit_t height_of(const char *filename);       //!< wrapper
-            static size_t directories_of(const char *filename);  //!< wrapper
+            static unit_t width_of(const char * const );        //!< \return wrapper
+            static unit_t height_of(const char * const );       //!< \return wrapper
+            static size_t directories_of(const char * const);   //!< \return wrapper
 
         private:
-            Y_Disable_Copy_And_Assign(itiff);
+            Y_Disable_Copy_And_Assign(itiff); //!< discarding
         };
 
         //__________________________________________________________________
@@ -71,12 +76,12 @@ namespace Yttrium
         class otiff: public tiffxx
         {
         public:
-            explicit otiff(const String &filename); //!< setup
-            virtual ~otiff() noexcept;               //!< cleanup
+            explicit otiff(const String &); //!< setup
+            virtual ~otiff() noexcept;      //!< cleanup
 
 
         private:
-            Y_Disable_Copy_And_Assign(otiff);
+            Y_Disable_Copy_And_Assign(otiff); //!< discarding
         };
 
         

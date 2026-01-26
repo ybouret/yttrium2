@@ -4,6 +4,7 @@
 #include "y/ink/image/format/pnm.hpp"
 #include "y/ink/image/format/jpeg.hpp"
 #include "y/ink/image/format/png.hpp"
+#include "y/ink/image/format/tiff.hpp"
 
 #include "y/color/rgba.hpp"
 #include "y/utest/run.hpp"
@@ -31,6 +32,7 @@ Y_UTEST(io)
     Ink::FormatPNM   pnm; pnm.renderExtension();
     Ink::FormatJPEG  jpg; jpg.renderExtension();
     Ink::FormatPNG   png; png.renderExtension();
+    Ink::FormatTIFF  tif; tif.renderExtension();
 
 
     Ink::Image      pxm(80,60);

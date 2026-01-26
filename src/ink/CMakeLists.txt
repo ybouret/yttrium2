@@ -13,7 +13,7 @@ y/ink/image/format
 y/ink/image/format/pnm
 )
 
-add_dependencies(y-ink y-jpeg png_static)
+add_dependencies(y-ink y-jpeg png_static tiff)
 
 add_subdirectory(tests)
 Y_Regression(ink)

@@ -47,20 +47,22 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            //! saving
-            virtual void  save(const Image   &image,
-                               const String  &fileName,
-                               const Options *options) const;
+            virtual void  save(const Image   &       image,
+                               const String  &       fileName,
+                               const Options * const options) const;
 
-            //! loading
-            virtual Image load(const String  &fileName,
-                               const Options *options) const;
+            virtual Image load(const String  &       fileName,
+                               const Options * const options) const;
 
             //! TIFF count_directories
-            static size_t CountDirectories(const String &filename);
+            /**
+             \param fileName file name
+             \return number of directories
+             */
+            static size_t CountDirectories(const String &fileName);
 
         private:
-            Y_Disable_Copy_And_Assign(FormatTIFF);
+            Y_Disable_Copy_And_Assign(FormatTIFF); //!< discarding
         };
     }
 
