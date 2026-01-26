@@ -18,7 +18,7 @@ add_subdirectory(png)
 add_subdirectory(tiff)
 add_subdirectory(sqlite3)
 
-#cmake_print_variables(third_party_list)
+cmake_print_variables(third_party_list)
 
 add_custom_target(third_party
 DEPENDS ${third_party_list})

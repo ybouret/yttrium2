@@ -248,3 +248,5 @@ message(STATUS "")
 # message(STATUS "  X Athena Widgets support:           ${HAVE_XAW}")
 message(STATUS "  OpenGL support:                     Requested:${tiff-opengl} Availability:${HAVE_OPENGL} Support:${OPENGL_SUPPORT}")
 message(STATUS "")
+
+Y_ThirdParty(tiff)
