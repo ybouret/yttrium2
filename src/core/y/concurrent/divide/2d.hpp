@@ -79,7 +79,11 @@ namespace Yttrium
 
 
             //! helper
-#define Y_Tile2D_Ctor() h(0), segments( new SegsMem(1) ), wksp()
+#define Y_Tile2D_Ctor() \
+h(0),\
+segments( new SegsMem(1) ),\
+proc(0),\
+wksp()
 
             //__________________________________________________________________
             //
@@ -144,6 +148,7 @@ namespace Yttrium
                 In1D<T>(sz,rk,In1D<T>::Zero),
                 Y_Tile2D_Ctor() {
                     assert( this->isEmpty() );
+                    Y_Memory_BZero(wksp);
                 }
 
 
@@ -203,6 +208,25 @@ namespace Yttrium
                 Segments   segments;                 //!< memory for segments
                 GetSegment proc;
                 void *     wksp[ InnerWords ];
+
+
+
+                inline void initialize(const BoxType &box) noexcept
+                {
+                    //----------------------------------------------------------
+                    // consider 1D indices
+                    //----------------------------------------------------------
+                    const Tile1D<scalar_t> & tile1d = *this;
+                    if( tile1d.isEmpty() ) {
+                        assert(0==h);
+                    } return;
+
+                    //----------------------------------------------------------
+                    // convert to vertices
+                    //----------------------------------------------------------
+                    const vertex_t ini = box.at(tile1d.offset);
+                    const vertex_t end = box.at(tile1d.utmost);
+                }
 
 
                 //! setup algorithm
