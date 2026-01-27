@@ -206,19 +206,22 @@ wksp()
             private:
                 Y_Disable_Copy_And_Assign(Tile2D); //!< discarding
                 Segments   segments;                 //!< memory for segments
-                GetSegment proc;
+                GetSegment const proc;
                 void *     wksp[ InnerWords ];
 
 
 
                 inline void initialize(const BoxType &box) noexcept
                 {
+                    static const scalar_t  one = 1;
+
                     //----------------------------------------------------------
                     // consider 1D indices
                     //----------------------------------------------------------
                     const Tile1D<scalar_t> & tile1d = *this;
                     if( tile1d.isEmpty() ) {
                         assert(0==h);
+                        assert(!proc);
                     } return;
 
                     //----------------------------------------------------------
@@ -226,6 +229,19 @@ wksp()
                     //----------------------------------------------------------
                     const vertex_t ini = box.at(tile1d.offset);
                     const vertex_t end = box.at(tile1d.utmost);
+                    Coerce(h)          = one + end.y - ini.y; assert(h>0);
+
+                    switch(h)
+                    {
+                        case 1:
+                            return;
+
+                        case 2:
+                            return;
+
+                        default:
+                            assert(h>=3);
+                    }
                 }
 
 
