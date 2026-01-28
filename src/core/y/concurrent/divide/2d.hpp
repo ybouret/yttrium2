@@ -83,6 +83,7 @@ namespace Yttrium
 h(0),\
 segments( new SegsMem(1) ),\
 proc(0),\
+head(0), bulk(0), tail(0), \
 wksp()
 
             //__________________________________________________________________
@@ -111,7 +112,7 @@ wksp()
                 typedef ArcPtr<SegsMem>           Segments; //!< alias
 
                 typedef HSegment<T> Segment;
-                typedef Segment (Tile2D:: *GetSegment)(const size_t);
+                typedef Segment (Tile2D:: *GetSegment)(const size_t) const;
                 static const size_t MaxSegments = 3;
                 static const size_t InnerBytes  = MaxSegments * sizeof(Segment);
                 static const size_t InnerWords  = Alignment::WordsGEQ<InnerBytes>::Count;
@@ -135,6 +136,7 @@ wksp()
                 In1D<T>(sz,rk,box.count),
                 Y_Tile2D_Ctor() {
                     setup(box);
+                    initialize(box);
                 }
 
 
@@ -205,9 +207,37 @@ wksp()
                 
             private:
                 Y_Disable_Copy_And_Assign(Tile2D); //!< discarding
-                Segments   segments;                 //!< memory for segments
-                GetSegment const proc;
+                Segments   segments;               //!< memory for segments
+                GetSegment const      proc;
+                const Segment * const head;
+                const Segment * const bulk;
+                const Segment * const tail;
                 void *     wksp[ InnerWords ];
+
+                inline Segment * base() noexcept
+                {
+                    return static_cast<Segment *>( Y_Memory_BZero(wksp) );
+                }
+
+                Segment Get1(const size_t) const noexcept
+                {
+                    assert(1==h);
+                    assert(0==bulk);
+                    assert(head==tail);
+                    return *head;
+                }
+
+                Segment Get2(const size_t j) const noexcept
+                {
+                    assert(2==h);
+                    assert(j>=1); assert(j<=2);
+                    assert(head);
+                    assert(tail);
+                    assert(bulk);
+                    assert(tail+1==head);
+                    assert(head-1==bulk);
+                    return bulk[j];
+                }
 
 
 
@@ -227,17 +257,41 @@ wksp()
                     //----------------------------------------------------------
                     // convert to vertices
                     //----------------------------------------------------------
-                    const vertex_t ini = box.at(tile1d.offset);
-                    const vertex_t end = box.at(tile1d.utmost);
-                    Coerce(h)          = one + end.y - ini.y; assert(h>0);
+                    const vertex_t  ini = box.at(tile1d.offset);
+                    const vertex_t  end = box.at(tile1d.utmost);
+                    Segment *       seg = base();
+                    Coerce(h) = one + end.y - ini.y; assert(h>0);
 
                     switch(h)
                     {
-                        case 1:
-                            return;
+                        case 1: {
+                            Coerce(head) = Coerce(tail) = seg;
+                            Coerce(proc) = & Tile2D:: Get1;
+                            const vertex_t start = ini;
+                            const scalar_t width = one + end.x - ini.x;
+                            new (seg) Segment(start,width);
+                         } return;
 
-                        case 2:
-                            return;
+                        case 2: {
+                            Coerce(head) = seg;
+                            Coerce(tail) = head+1;
+                            Coerce(bulk) = head-1;
+                            Coerce(proc) = & Tile2D:: Get2;
+
+                            {   // first segment
+                                const vertex_t start = ini;
+                                const scalar_t width = one + box.upper.x - ini.x;
+                                new (seg++) Segment(start,width);
+                            }
+
+                            {   // second segment
+                                const vertex_t start(box.lower.x,end.y);
+                                const scalar_t width = one + end.x - box.lower.x;
+                                new (seg) Segment(start,width);
+                            }
+
+
+                        } return;
 
                         default:
                             assert(h>=3);
