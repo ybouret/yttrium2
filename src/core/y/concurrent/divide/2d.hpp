@@ -112,7 +112,7 @@ wksp()
                 typedef ArcPtr<SegsMem>           Segments; //!< alias
 
                 typedef HSegment<T> Segment;
-                typedef Segment (Tile2D:: *GetSegment)(const size_t) const;
+                typedef Segment (Tile2D:: *GetSegment)(const scalar_t) const;
                 static const size_t MaxSegments = 3;
                 static const size_t InnerBytes  = MaxSegments * sizeof(Segment);
                 static const size_t InnerWords  = Alignment::WordsGEQ<InnerBytes>::Count;
@@ -219,7 +219,7 @@ wksp()
                     return static_cast<Segment *>( Y_Memory_BZero(wksp) );
                 }
 
-                Segment Get1(const size_t) const noexcept
+                inline Segment Get1(const scalar_t) const noexcept
                 {
                     assert(1==h);
                     assert(0==bulk);
@@ -227,7 +227,7 @@ wksp()
                     return *head;
                 }
 
-                Segment Get2(const size_t j) const noexcept
+                inline Segment Get2(const scalar_t j) const noexcept
                 {
                     assert(2==h);
                     assert(j>=1); assert(j<=2);
@@ -237,6 +237,18 @@ wksp()
                     assert(tail+1==head);
                     assert(head-1==bulk);
                     return bulk[j];
+                }
+
+                inline Segment GetH(const scalar_t j) const noexcept
+                {
+                    assert(h>=3);
+                    assert(j>=1); assert(j<=h);
+                    assert(head);
+                    assert(tail);
+                    assert(bulk);
+                    Segment s = *bulk;
+                    Coerce(s.start.y) += j;
+                    return s;
                 }
 
 
@@ -264,6 +276,7 @@ wksp()
 
                     switch(h)
                     {
+                            // same head and tail, no bulk
                         case 1: {
                             Coerce(head) = Coerce(tail) = seg;
                             Coerce(proc) = & Tile2D:: Get1;
@@ -272,6 +285,7 @@ wksp()
                             new (seg) Segment(start,width);
                          } return;
 
+                            // head and tail, bulk set to head-1 for access h=1,2
                         case 2: {
                             Coerce(head) = seg;
                             Coerce(tail) = head+1;
@@ -293,8 +307,36 @@ wksp()
 
                         } return;
 
+                            // head, tail, and first bulk
                         default:
+                        {
                             assert(h>=3);
+                            Coerce(proc) = & Tile2D:: GetH;
+
+                            // fist segment
+                            {
+                                const vertex_t start = ini;
+                                const scalar_t width = one + box.upper.x - ini.x;
+                                Coerce(head) = seg;
+                                new (seg++) Segment(start,width);
+                            }
+
+                            // last segment
+                            {
+                                const vertex_t start(box.lower.x,end.y);
+                                const scalar_t width = one + end.x - box.lower.x;
+                                Coerce(tail) = seg;
+                                new (seg++) Segment(start,width);
+                            }
+
+                            // bulk
+                            {
+                                const vertex_t start(box.lower.x,ini.y); // TODO y
+                                const scalar_t width = box.width.x;
+                                Coerce(bulk) = seg;
+                                new (seg) Segment(start,width);
+                            }
+                        }
                     }
                 }
 
