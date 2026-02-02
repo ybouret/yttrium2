@@ -137,8 +137,8 @@ wksp()
                 Y_Tile2D_Ctor() {
                     setup(box);
                     initialize(box);
+                    if( this->isEmpty() ) return;
                     assert(h>0);
-                    std::cerr << "h=" << h << std::endl;
                     assert(proc);
                     for(scalar_t j=1;j<=h;++j)
                     {
@@ -149,7 +149,6 @@ wksp()
                         {
                             std::cerr << "bad segments " << j << "/" << h << std::endl;
                         }
-
                     }
                 }
 
@@ -286,7 +285,8 @@ wksp()
                     if( tile1d.isEmpty() ) {
                         assert(0==h);
                         assert(!proc);
-                    } return;
+                        return;
+                    }
 
                     //----------------------------------------------------------
                     // convert to vertices
@@ -296,7 +296,6 @@ wksp()
                     Segment *       seg = base();
                     Coerce(h) = one + end.y - ini.y; assert(h>0);
 
-                    std::cerr << "h=" << h <<  " to init" << std::endl;
 
                     switch(h)
                     {
