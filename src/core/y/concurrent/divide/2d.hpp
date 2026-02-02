@@ -143,11 +143,10 @@ wksp()
                     for(scalar_t j=1;j<=h;++j)
                     {
                         const Segment lhs = segments->cxx[j];
-                        continue;
                         const Segment rhs = (*this.*proc)(j);
                         if( lhs!=rhs )
                         {
-                            std::cerr << "bad segments " << j << "/" << h << std::endl;
+                            std::cerr << "bad segments " << j << "/" << h << " old=" << lhs << " | new=" << rhs << std::endl;
                         }
                     }
                 }
@@ -163,7 +162,7 @@ wksp()
                 In1D<T>(sz,rk,In1D<T>::Zero),
                 Y_Tile2D_Ctor() {
                     assert( this->isEmpty() );
-                    (void) Y_Memory_BZero(wksp);
+                    (void) base();
                 }
 
 
@@ -192,13 +191,15 @@ wksp()
                 //! \return finish coordinate
                 inline vertex_t finish() const noexcept
                 {
-                    return (h>0) ? segments->cxx[h].right() : vertex_t();
+                    assert(h>0); return tail->right();
+                    //return (h>0) ? segments->cxx[h].right() : vertex_t();
                 }
 
                 //! \return origin coordinate
                 inline vertex_t origin() const noexcept
                 {
-                    return (h>0) ? segments->entry[0].start : vertex_t();
+                    assert(h>0); return head->start;
+                    //return (h>0) ? segments->entry[0].start : vertex_t();
                 }
 
 
@@ -250,7 +251,7 @@ wksp()
                     assert(head);
                     assert(tail);
                     assert(bulk);
-                    assert(tail+1==head);
+                    assert(head+1==tail);
                     assert(head-1==bulk);
                     return bulk[j];
                 }
@@ -526,7 +527,7 @@ wksp()
                     // check same bounding box
                     {
                         const Leap< V2D<T> > &rhs = *this;
-                        if( box == rhs ) return false;;
+                        if( box == rhs ) return false;
                     }
 
                     // create/exchange
