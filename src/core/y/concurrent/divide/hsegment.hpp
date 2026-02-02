@@ -78,6 +78,20 @@ namespace Yttrium
                 //! \return rightmost coordinate
                 inline vertex_t right() const noexcept { vertex_t _(start.x+width,start.y); --_.x; return _; }
 
+                //! \param lhs first segment \param rhs second segment \return equality
+                inline friend
+                bool operator==(const HSegment &lhs, const HSegment &rhs) noexcept
+                {
+                    return (lhs.start == rhs.start) && (lhs.width == rhs.width);
+                }
+
+                //! \param lhs first segment \param rhs second segment \return difference
+                inline friend
+                bool operator!=(const HSegment &lhs, const HSegment &rhs) noexcept
+                {
+                    return (lhs.start != rhs.start) || (lhs.width != rhs.width);
+                }
+
                 //______________________________________________________________
                 //
                 //

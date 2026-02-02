@@ -137,6 +137,20 @@ wksp()
                 Y_Tile2D_Ctor() {
                     setup(box);
                     initialize(box);
+                    assert(h>0);
+                    std::cerr << "h=" << h << std::endl;
+                    assert(proc);
+                    for(scalar_t j=1;j<=h;++j)
+                    {
+                        const Segment lhs = segments->cxx[j];
+                        continue;
+                        const Segment rhs = (*this.*proc)(j);
+                        if( lhs!=rhs )
+                        {
+                            std::cerr << "bad segments " << j << "/" << h << std::endl;
+                        }
+
+                    }
                 }
 
 
@@ -282,6 +296,8 @@ wksp()
                     Segment *       seg = base();
                     Coerce(h) = one + end.y - ini.y; assert(h>0);
 
+                    std::cerr << "h=" << h <<  " to init" << std::endl;
+
                     switch(h)
                     {
                             //--------------------------------------------------
@@ -356,7 +372,7 @@ wksp()
                                 Coerce(bulk) = seg;
                                 new (seg) Segment(start,width);
                             }
-                        }
+                        } return;
                     }
                 }
 
