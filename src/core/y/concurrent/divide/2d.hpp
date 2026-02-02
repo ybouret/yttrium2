@@ -276,16 +276,24 @@ wksp()
 
                     switch(h)
                     {
+                            //--------------------------------------------------
+                            //
                             // same head and tail, no bulk
+                            //
+                            //--------------------------------------------------
                         case 1: {
                             Coerce(head) = Coerce(tail) = seg;
                             Coerce(proc) = & Tile2D:: Get1;
                             const vertex_t start = ini;
                             const scalar_t width = one + end.x - ini.x;
                             new (seg) Segment(start,width);
-                         } return;
+                        } return;
 
+                            //--------------------------------------------------
+                            //
                             // head and tail, bulk set to head-1 for access h=1,2
+                            //
+                            //--------------------------------------------------
                         case 2: {
                             Coerce(head) = seg;
                             Coerce(tail) = head+1;
@@ -307,7 +315,11 @@ wksp()
 
                         } return;
 
+                            //--------------------------------------------------
+                            //
                             // head, tail, and first bulk
+                            //
+                            //--------------------------------------------------
                         default:
                         {
                             assert(h>=3);
@@ -331,7 +343,7 @@ wksp()
 
                             // bulk
                             {
-                                const vertex_t start(box.lower.x,ini.y); // TODO y
+                                const vertex_t start(box.lower.x,ini.y);  
                                 const scalar_t width = box.width.x;
                                 Coerce(bulk) = seg;
                                 new (seg) Segment(start,width);
