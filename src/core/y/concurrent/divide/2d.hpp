@@ -150,7 +150,7 @@ wksp()
                 In1D<T>(sz,rk,In1D<T>::Zero),
                 Y_Tile2D_Ctor() {
                     assert( this->isEmpty() );
-                    Y_Memory_BZero(wksp);
+                    (void) Y_Memory_BZero(wksp);
                 }
 
 
@@ -208,17 +208,19 @@ wksp()
             private:
                 Y_Disable_Copy_And_Assign(Tile2D); //!< discarding
                 Segments   segments;               //!< memory for segments
-                GetSegment const      proc;
-                const Segment * const head;
-                const Segment * const bulk;
-                const Segment * const tail;
-                void *     wksp[ InnerWords ];
+                GetSegment const      proc;        //!< access function depending on h
+                const Segment * const head;        //!< first segment
+                const Segment * const bulk;        //!< bulk/helper segment
+                const Segment * const tail;        //!< last segment
+                void *     wksp[ InnerWords ];     //!< memory for segments
 
+                //! \return inner memory
                 inline Segment * base() noexcept
                 {
                     return static_cast<Segment *>( Y_Memory_BZero(wksp) );
                 }
 
+                //! \return head=tail segment, h=1
                 inline Segment Get1(const scalar_t) const noexcept
                 {
                     assert(1==h);
@@ -227,6 +229,7 @@ wksp()
                     return *head;
                 }
 
+                //! \return bulk[1..2], precomputed
                 inline Segment Get2(const scalar_t j) const noexcept
                 {
                     assert(2==h);
@@ -239,6 +242,7 @@ wksp()
                     return bulk[j];
                 }
 
+                //! \param j 1<=j<=h \return j=1:head; j=h:tail; bulk shifted by j
                 inline Segment GetH(const scalar_t j) const noexcept
                 {
                     assert(h>=3);
@@ -246,9 +250,13 @@ wksp()
                     assert(head);
                     assert(tail);
                     assert(bulk);
-                    Segment s = *bulk;
-                    Coerce(s.start.y) += j;
-                    return s;
+                    if(j<=1) return *head;
+                    if(j<h) {
+                        Segment s = *bulk;
+                        Coerce(s.start.y) += j;
+                        return s;
+                    }
+                    return *tail;
                 }
 
 
@@ -343,7 +351,7 @@ wksp()
 
                             // bulk
                             {
-                                const vertex_t start(box.lower.x,ini.y);  
+                                const vertex_t start(box.lower.x,ini.y);
                                 const scalar_t width = box.width.x;
                                 Coerce(bulk) = seg;
                                 new (seg) Segment(start,width);
