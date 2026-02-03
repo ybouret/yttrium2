@@ -140,15 +140,19 @@ wksp()
                     if( this->isEmpty() ) return;
                     assert(h>0);
                     assert(proc);
+                    bool bad = false;
                     for(scalar_t j=1;j<=h;++j)
                     {
                         const Segment lhs = segments->cxx[j];
                         const Segment rhs = (*this.*proc)(j);
                         if( lhs!=rhs )
                         {
+                            bad = true;
                             std::cerr << "bad segments " << j << "/" << h << " old=" << lhs << " | new=" << rhs << std::endl;
                         }
                     }
+                    std::cerr << ( bad ? "bad" : "ok" ) << " " << *this << std::endl;
+                    if(bad) exit(0);
                 }
 
 
