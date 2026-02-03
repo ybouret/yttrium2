@@ -6,12 +6,15 @@ set(SOURCE ${HERE}/ionocell/diffusion-coefficients.js)
 cmake_print_variables(SOURCE)
 cmake_print_variables(TARGET)
 
+if(FALSE)
 add_custom_command(OUTPUT ${TARGET}
     DEPENDS ${SOURCE}
     COMMAND y_embed ${SOURCE} ${TARGET}
+    BYPRODUCTS ${TARGET}
     COMMENT "Embedding Diffusion Coefficients"
     VERBATIM
 )
+endif()
 
 Y_CreateLibrary(y-chemical
 y/chemical
@@ -27,6 +30,7 @@ y/chemical/plexus/conservation
 y/chemical/plexus/solver
 )
 
+#add_dependencies(y-chemical ${TARGET})
 
 
 
