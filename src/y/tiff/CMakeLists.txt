@@ -26,6 +26,11 @@
 
 cmake_minimum_required(VERSION 3.10)
 
+Y_Message("Building lua")
+if(Y_MSC)
+        string( APPEND CMAKE_CXX_FLAGS " -wd4820 -wd4710 -wd5039")
+endif()
+
 # Default policy is from 3.10
 cmake_policy(VERSION 3.10)
 
