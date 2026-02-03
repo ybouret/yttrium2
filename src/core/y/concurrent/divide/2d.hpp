@@ -211,7 +211,8 @@ wksp()
                 inline const SegType operator[](const scalar_t j) const noexcept
                 {
                     assert(j>0); assert(j<=h);
-                    return segments->cxx[j];
+                    return (*this.*proc)(j);
+                    //return segments->cxx[j];
                 }
 
 
@@ -435,7 +436,6 @@ wksp()
 
                         // record
                         new (segments->entry+y) SegType(lhs,w);
-                        //Coerce(n) += (uint64_t)w;
                     }
                 }
 
