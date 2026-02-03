@@ -58,6 +58,9 @@ namespace Yttrium
          * Here's the extended error handler struct:
          */
 
+#if defined(_MSC_VER)
+#pragma warning ( disable : 4324 4611 )
+#endif
         struct my_error_mgr {
             struct jpeg_error_mgr pub;    /* "public" fields */
 
@@ -404,7 +407,7 @@ namespace Yttrium
 
             const unit_t width  = cinfo.output_width;
             const unit_t height = cinfo.output_height;
-            Image        image(width,height);
+            Image        image( (size_t)width, (size_t) height);
 
             /* We may need to do some setup of our own at this point before reading
              * the data.  After jpeg_start_decompress() we have the correct scaled
@@ -421,7 +424,7 @@ namespace Yttrium
             //buffer = (*cinfo.mem->alloc_sarray) ((j_common_ptr) &cinfo, JPOOL_IMAGE, row_stride, 1);
             //JSAMPLE   *bufline = (JSAMPLE *) calloc(row_stride,1);
             //JSAMPLE   *buffer[1] = { bufline };
-            const unsigned   depth = cinfo.output_components;
+            const unsigned   depth = (unsigned) cinfo.output_components;
             JPEG_Row_Convert cproc = NULL;
             switch(depth)
             {
@@ -431,7 +434,7 @@ namespace Yttrium
                     throw Exception("JPEG_Format: unhandled depth=%u",depth);
             }
 
-            JPEG_Buffer buffer(cinfo.output_width, cinfo.output_components);
+            JPEG_Buffer buffer( (unsigned)cinfo.output_width, (unsigned)cinfo.output_components);
 
             /* Step 6: while (scan lines remain to be read) */
             /*           jpeg_read_scanlines(...); */

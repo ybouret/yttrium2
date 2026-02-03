@@ -170,9 +170,9 @@ namespace Yttrium
                 for(size_t i=0;i<image.w;++i)
                 {
                     const RGBA c = row(i);
-                    fp.write(c.b);
-                    fp.write(c.g);
-                    fp.write(c.r);
+                    fp.write( (char) c.b);
+                    fp.write( (char) c.g);
+                    fp.write( (char) c.r);
                 }
                 op.fill(fp);
             }

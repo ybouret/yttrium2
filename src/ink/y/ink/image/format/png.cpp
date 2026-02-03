@@ -127,7 +127,7 @@ namespace Yttrium
                     CxxArray<png_bytep> row(height);
                     for(size_t i=0,j=1;i<height;++i,++j)
                     {
-                        row[j] = (png_byte*)&pxm[i][0];
+                        row[j] = (png_byte*)&pxm(i)(0);
                     }
                     png_read_image(png,&row[1]);
 
@@ -142,7 +142,9 @@ namespace Yttrium
         }
 
 
-
+#if defined(_MSC_VER)
+#pragma warning ( disable : 4611 )
+#endif
         Image FormatPNG:: load(const String &filename, const Options *) const
         {
             PNG_Reader *io = new PNG_Reader(filename);

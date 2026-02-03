@@ -82,7 +82,7 @@ namespace Yttrium
                                const Options * const options) const;
 
 
-            virtual Image load(const String &, const Options *) const;
+            virtual Image load(const String &, const Options * const) const;
 
         private:
             Y_Disable_Copy_And_Assign(FormatPNM); //!< discarding
