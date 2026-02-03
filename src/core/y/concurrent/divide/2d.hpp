@@ -34,6 +34,8 @@ namespace Yttrium
                 //
                 //______________________________________________________________
                 static const T Zero = 0; //!< alias
+                using Tile1D<T>::offset;
+                using Tile1D<T>::utmost;
 
                 //______________________________________________________________
                 //
@@ -52,8 +54,8 @@ namespace Yttrium
                                      const size_t   rk,
                                      const T        count) noexcept :
                 Tile1D<T>(sz,rk,count,Zero),
-                cxxOffset(this->offset+1),
-                cxxUtmost(this->utmost+1)
+                cxxOffset(offset+1),
+                cxxUtmost(utmost+1)
                 {
                 }
 
