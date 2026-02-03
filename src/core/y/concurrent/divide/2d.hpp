@@ -35,7 +35,7 @@ namespace Yttrium
                 // Definitions
                 //
                 //______________________________________________________________
-                static  const T Zero = 0; //!< alias
+                static const T Zero = 0; //!< alias
 
                 //______________________________________________________________
                 //
@@ -80,10 +80,11 @@ namespace Yttrium
 
             //! helper
 #define Y_Tile2D_Ctor() \
-h(0),\
-segments( new SegsMem(1) ),\
-proc(0),\
-head(0), bulk(0), tail(0), \
+h(0),    \
+proc(0), \
+head(0), \
+bulk(0), \
+tail(0), \
 wksp()
 
             //__________________________________________________________________
@@ -107,15 +108,12 @@ wksp()
                 typedef V2D<T>                    vertex_t; //!< alias
                 typedef T                         scalar_t; //!< alias
                 typedef Box<vertex_t>             BoxType;  //!< alias
-                typedef HSegment<T>               SegType;  //!< alias
-                typedef Memory::SchoolOf<SegType> SegsMem;  //!< alias
-                typedef ArcPtr<SegsMem>           Segments; //!< alias
-
-                typedef HSegment<T> Segment;
+                typedef HSegment<T>               Segment;
                 typedef Segment (Tile2D:: *GetSegment)(const scalar_t) const;
-                static const size_t MaxSegments = 3;
-                static const size_t InnerBytes  = MaxSegments * sizeof(Segment);
-                static const size_t InnerWords  = Alignment::WordsGEQ<InnerBytes>::Count;
+
+                static const size_t MaxSegments = 3;                                      //!< head,tail,bulk
+                static const size_t InnerBytes  = MaxSegments * sizeof(Segment);          //!< alias
+                static const size_t InnerWords  = Alignment::WordsGEQ<InnerBytes>::Count; //!< alias
 
                 //______________________________________________________________
                 //
@@ -135,24 +133,7 @@ wksp()
                                        const BoxType &box) :
                 In1D<T>(sz,rk,box.count),
                 Y_Tile2D_Ctor() {
-                    setup(box);
                     initialize(box);
-                    if( this->isEmpty() ) return;
-                    assert(h>0);
-                    assert(proc);
-                    bool bad = false;
-                    for(scalar_t j=1;j<=h;++j)
-                    {
-                        const Segment lhs = segments->cxx[j];
-                        const Segment rhs = (*this.*proc)(j);
-                        if( lhs!=rhs )
-                        {
-                            bad = true;
-                            std::cerr << "bad segments " << j << "/" << h << " old=" << lhs << " | new=" << rhs << std::endl;
-                        }
-                    }
-                    std::cerr << ( bad ? "bad" : "ok" ) << " " << *this << std::endl;
-                    if(bad) exit(0);
                 }
 
 
@@ -208,7 +189,7 @@ wksp()
 
 
                 //! \param j 1<=j<=h \return matching segment
-                inline const SegType operator[](const scalar_t j) const noexcept
+                inline const Segment operator[](const scalar_t j) const noexcept
                 {
                     assert(j>0); assert(j<=h);
                     return (*this.*proc)(j);
@@ -225,13 +206,12 @@ wksp()
                 const scalar_t h; //!< height
                 
             private:
-                Y_Disable_Copy_And_Assign(Tile2D); //!< discarding
-                Segments   segments;               //!< memory for segments
-                GetSegment const      proc;        //!< access function depending on h
-                const Segment * const head;        //!< first segment
-                const Segment * const bulk;        //!< bulk/helper segment
-                const Segment * const tail;        //!< last segment
-                void *     wksp[ InnerWords ];     //!< memory for segments
+                Y_Disable_Copy_And_Assign(Tile2D);        //!< discarding
+                GetSegment const      proc;               //!< access function depending on h
+                const Segment * const head;               //!< first segment
+                const Segment * const bulk;               //!< bulk/helper segment
+                const Segment * const tail;               //!< last segment
+                void *                wksp[ InnerWords ]; //!< memory for segments
 
                 //! \return inner memory
                 inline Segment * base() noexcept
@@ -382,6 +362,7 @@ wksp()
                 }
 
 
+#if 0
                 //! setup algorithm
                 /**
                  \param box  total working box
@@ -438,6 +419,7 @@ wksp()
                         new (segments->entry+y) SegType(lhs,w);
                     }
                 }
+#endif
 
             };
 
