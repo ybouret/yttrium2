@@ -369,9 +369,9 @@ wksp()
                                 new (seg++) Segment(start,width);
                             }
 
-                            // bulk
+                            // bulk, call from j=2
                             {
-                                const vertex_t start(box.lower.x,ini.y);
+                                const vertex_t start(box.lower.x,ini.y-one);
                                 const scalar_t width = box.width.x;
                                 Coerce(bulk) = seg;
                                 new (seg) Segment(start,width);
