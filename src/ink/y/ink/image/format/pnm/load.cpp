@@ -11,7 +11,7 @@ namespace Yttrium
                                       const Options * ) const
         {
             throw Specific::Exception(CallSign,"load is not implemented yet for '%s'", fileName.c_str());
-            return Image(1,1);
+            //return Image(1,1);
         }
     }
     
