@@ -7,8 +7,6 @@
 #include "y/concurrent/divide/1d.hpp"
 #include "y/concurrent/divide/box.hpp"
 #include "y/concurrent/divide/hsegment.hpp"
-#include "y/object/school-of.hpp"
-#include "y/pointer/arc.hpp"
 
 namespace Yttrium
 {
@@ -174,17 +172,13 @@ wksp()
                 //______________________________________________________________
 
                 //! \return finish coordinate
-                inline vertex_t finish() const noexcept
-                {
+                inline vertex_t finish() const noexcept {
                     assert(h>0); return tail->right();
-                    //return (h>0) ? segments->cxx[h].right() : vertex_t();
                 }
 
                 //! \return origin coordinate
-                inline vertex_t origin() const noexcept
-                {
+                inline vertex_t origin() const noexcept {
                     assert(h>0); return head->start;
-                    //return (h>0) ? segments->entry[0].start : vertex_t();
                 }
 
 
@@ -193,7 +187,6 @@ wksp()
                 {
                     assert(j>0); assert(j<=h);
                     return (*this.*proc)(j);
-                    //return segments->cxx[j];
                 }
 
 
