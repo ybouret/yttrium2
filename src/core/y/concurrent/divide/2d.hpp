@@ -153,8 +153,7 @@ wksp()
 
 
                 //! cleanup
-                inline virtual ~Tile2D() noexcept {
-                }
+                inline virtual ~Tile2D() noexcept { }
 
                 //! display
                 inline friend std::ostream & operator<<(std::ostream &os, const Tile2D &t)
@@ -471,10 +470,9 @@ wksp()
                         if( box == rhs ) return false;
                     }
 
-                    // create/exchange
+                    // free/build and update leap
                     {
-                        Tiles2D t(tiles.size(),box);
-                        tiles.xch(t.tiles);
+                        { const size_t n = tiles.size(); tiles.free(); buildTiles(n,box); }
                         Coerce(this->lower) = box.lower;
                         Coerce(this->upper) = box.upper;
                     }
