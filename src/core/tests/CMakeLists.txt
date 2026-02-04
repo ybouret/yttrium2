@@ -35,6 +35,7 @@ rtld
 color
 )
 
+set(VAR "${CMAKE_CURRENT_SOURCE_DIR}/../../../var")
 
 Y_LinkLibraries(test-core)
 
@@ -163,14 +164,14 @@ Y_UTEST(container:associative)
 #stream
 Y_UTEST(stream:io:char)
 Y_UTEST(stream:queue)
-Y_UTEST(stream:input:file)
+Y_UTEST(stream:input:file ${VAR}/small.db)
 Y_UTEST(stream:output:file)
-Y_UTEST(stream:gets)
+Y_UTEST(stream:gets ${VAR}/small.db)
 Y_UTEST(stream:proc)
 Y_UTEST(stream:xmlog)
-Y_UTEST(stream:gzip:read)
+Y_UTEST(stream:gzip:read ${VAR}/gzip-small.db.gz)
 Y_UTEST(stream:gzip:write)
-Y_UTEST(stream:bzip2:read)
+Y_UTEST(stream:bzip2:read ${VAR}/bzip2-small.db.bz2)
 Y_UTEST(stream:bzip2:write)
 Y_UTEST(stream:misc)
 Y_UTEST(stream:io:bits)

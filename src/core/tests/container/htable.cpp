@@ -12,6 +12,7 @@ namespace
         return *(const int *)lhs == *(const int *)rhs;
     }
 }
+
 Y_UTEST(container_htable)
 {
 
