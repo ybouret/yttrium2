@@ -78,13 +78,13 @@ namespace Yttrium
 
 
 
-            //! helper
+            //! helper to setup
 #define Y_Tile2D_Ctor() \
-h(0),    \
-proc(0), \
-head(0), \
-bulk(0), \
-tail(0), \
+h(0),                   \
+proc(0),                \
+head(0),                \
+bulk(0),                \
+tail(0),                \
 wksp()
 
             //__________________________________________________________________
@@ -131,7 +131,7 @@ wksp()
                  */
                 inline explicit Tile2D(const size_t   sz,
                                        const size_t   rk,
-                                       const BoxType &box) :
+                                       const BoxType &box) noexcept :
                 In1D<T>(sz,rk,box.count),
                 Y_Tile2D_Ctor() {
                     initialize(box);
@@ -144,7 +144,7 @@ wksp()
                  \param rk  rk<sz
                  */
                 inline explicit Tile2D(const size_t   sz,
-                                       const size_t   rk) :
+                                       const size_t   rk) noexcept :
                 In1D<T>(sz,rk,In1D<T>::Zero),
                 Y_Tile2D_Ctor() {
                     assert( this->isEmpty() );
