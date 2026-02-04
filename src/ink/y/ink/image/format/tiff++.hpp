@@ -48,19 +48,19 @@ namespace Yttrium
             explicit itiff(const String &fileName); //!< setup \param fileName file name
             virtual ~itiff() noexcept;              //!< cleanup
 
-            unit_t width();                       //!< \return image width
-            unit_t height();                      //!< \return image height
+            size_t width();                       //!< \return image width
+            size_t height();                      //!< \return image height
             size_t count_directories();           //!< \return count directories
             bool   load(Pixmap<RGBA> &img);       //!< \param img image to loade img.w = width, img.h = height \return success
             void   set_directory(const size_t n); //!< set directory \param n image index
 
 
-            static unit_t width_of(const String &);        //!< \return helper to get width
-            static unit_t height_of(const String &);       //!< \return helper to get height
+            static size_t width_of(const String &);        //!< \return helper to get width
+            static size_t height_of(const String &);       //!< \return helper to get height
             static size_t directories_of(const String &);  //!< \return helper to get directories
 
-            static unit_t width_of(const char * const );        //!< \return wrapper
-            static unit_t height_of(const char * const );       //!< \return wrapper
+            static size_t width_of(const char * const );        //!< \return wrapper
+            static size_t height_of(const char * const );       //!< \return wrapper
             static size_t directories_of(const char * const);   //!< \return wrapper
 
         private:

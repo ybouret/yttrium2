@@ -31,14 +31,14 @@ namespace Yttrium
         {
         }
 
-        unit_t itiff:: width()
+        size_t itiff:: width()
         {
             uint32_t     w=0;
             TIFFGetField(static_cast<TIFF *>(handle), TIFFTAG_IMAGEWIDTH,  &w);
             return w;
         }
 
-        unit_t itiff:: height()
+        size_t itiff:: height()
         {
             uint32_t     h=0;
             TIFFGetField(static_cast<TIFF *>(handle), TIFFTAG_IMAGELENGTH,  &h);
@@ -47,14 +47,14 @@ namespace Yttrium
 
 
 
-        unit_t itiff:: width_of(const String &filename)
+        size_t itiff:: width_of(const String &filename)
         {
             itiff fp(filename);
             return fp.width();
         }
 
 
-        unit_t itiff:: height_of(const String &filename)
+        size_t itiff:: height_of(const String &filename)
         {
             itiff fp(filename);
             return fp.height();
@@ -66,12 +66,12 @@ namespace Yttrium
             return fp.count_directories();
         }
 
-        unit_t itiff:: width_of(const char *filename)
+        size_t itiff:: width_of(const char *filename)
         {
             const String _(filename); return width_of(_);
         }
 
-        unit_t itiff:: height_of(const char *filename)
+        size_t itiff:: height_of(const char *filename)
         {
             const String _(filename); return height_of(_);
         }
