@@ -214,44 +214,7 @@ wksp()
                     return static_cast<Segment *>( Y_Memory_BZero(wksp) );
                 }
 
-                //! \return head=tail segment, h=1
-                inline Segment Get1(const scalar_t) const noexcept
-                {
-                    assert(1==h);
-                    assert(0==bulk);
-                    assert(head==tail);
-                    return *head;
-                }
 
-                //! \return bulk[1..2], precomputed
-                inline Segment Get2(const scalar_t j) const noexcept
-                {
-                    assert(2==h);
-                    assert(j>=1); assert(j<=2);
-                    assert(head);
-                    assert(tail);
-                    assert(bulk);
-                    assert(head+1==tail);
-                    assert(head-1==bulk);
-                    return bulk[j];
-                }
-
-                //! \param j 1<=j<=h \return j=1:head; j=h:tail; bulk shifted by j
-                inline Segment GetH(const scalar_t j) const noexcept
-                {
-                    assert(h>=3);
-                    assert(j>=1); assert(j<=h);
-                    assert(head);
-                    assert(tail);
-                    assert(bulk);
-                    if(j<=1) return *head;
-                    if(j<h) {
-                        Segment s = *bulk;
-                        Coerce(s.start.y) += j;
-                        return s;
-                    }
-                    return *tail;
-                }
 
 
 
@@ -291,7 +254,7 @@ wksp()
                             const vertex_t start = ini;
                             const scalar_t width = one + end.x - ini.x;
                             new (seg) Segment(start,width);
-                        } return;
+                        } break;
 
                             //--------------------------------------------------
                             //
@@ -317,7 +280,7 @@ wksp()
                             }
 
 
-                        } return;
+                        } break;
 
                             //--------------------------------------------------
                             //
@@ -329,7 +292,9 @@ wksp()
                             assert(h>=3);
                             Coerce(proc) = & Tile2D:: GetH;
 
+                            //--------------------------------------------------
                             // fist segment
+                            //--------------------------------------------------
                             {
                                 const vertex_t start = ini;
                                 const scalar_t width = one + box.upper.x - ini.x;
@@ -337,7 +302,9 @@ wksp()
                                 new (seg++) Segment(start,width);
                             }
 
+                            //--------------------------------------------------
                             // last segment
+                            //--------------------------------------------------
                             {
                                 const vertex_t start(box.lower.x,end.y);
                                 const scalar_t width = one + end.x - box.lower.x;
@@ -345,76 +312,57 @@ wksp()
                                 new (seg++) Segment(start,width);
                             }
 
-                            // bulk, call from j=2
+                            //--------------------------------------------------
+                            // bulk, call from j=2 => subtract one
+                            //--------------------------------------------------
                             {
                                 const vertex_t start(box.lower.x,ini.y-one);
                                 const scalar_t width = box.width.x;
                                 Coerce(bulk) = seg;
                                 new (seg) Segment(start,width);
                             }
-                        } return;
+                        } break;
                     }
                 }
 
-
-#if 0
-                //! setup algorithm
-                /**
-                 \param box  total working box
-                 */
-                inline void setup(const BoxType &box)
+                //! \return head=tail segment, h=1
+                inline Segment Get1(const scalar_t) const noexcept
                 {
-                    static const scalar_t  one = 1;
-
-                    //----------------------------------------------------------
-                    // find indices
-                    //----------------------------------------------------------
-                    const Tile1D<scalar_t> & tile1d = *this;
-                    if( tile1d.isEmpty() ) return;
-
-
-                    //----------------------------------------------------------
-                    // convert to vertices
-                    //----------------------------------------------------------
-                    const vertex_t ini = box.at(tile1d.offset);
-                    const vertex_t end = box.at(tile1d.utmost);
-
-                    //----------------------------------------------------------
-                    // compute and allocate number of segments
-                    //----------------------------------------------------------
-                    {
-                        const scalar_t required = end.y-ini.y+one;
-                        const size_t   nhs      = (size_t)required;
-                        if(nhs>segments->maxBlocks)
-                        {
-                            Segments tmp( new SegsMem(nhs) );
-                            segments.xch(tmp);
-                        }
-                        Coerce(h) = required;
-                    }
-
-                    //----------------------------------------------------------
-                    // convert to horizontal segments
-                    //----------------------------------------------------------
-                    const scalar_t htop = h-one;
-                    for(scalar_t y=0;y<h;++y)
-                    {
-                        // lhs/rhs vertices from box
-                        vertex_t lhs(box.lower.x,ini.y+y);
-                        vertex_t rhs(box.upper.x,lhs.y);
-
-                        // cut if necessary
-                        if(y<=0)    lhs.x = ini.x;
-                        if(y>=htop) rhs.x = end.x;
-                        assert(lhs.y==rhs.y);
-                        assert(rhs.x>=lhs.x);
-                        const scalar_t w = one+rhs.x-lhs.x;
-
-                        // record
-                        new (segments->entry+y) SegType(lhs,w);
-                    }
+                    assert(1==h);
+                    assert(0==bulk);
+                    assert(head==tail);
+                    return *head;
                 }
-#endif
+
+                //! \return bulk[1..2], precomputed
+                inline Segment Get2(const scalar_t j) const noexcept
+                {
+                    assert(2==h);
+                    assert(j>=1); assert(j<=2);
+                    assert(head);
+                    assert(tail);
+                    assert(bulk);
+                    assert(head+1==tail);
+                    assert(head-1==bulk);
+                    return bulk[j];
+                }
+
+                //! \param j 1<=j<=h \return j=1:head; j=h:tail; bulk shifted by j
+                inline Segment GetH(const scalar_t j) const noexcept
+                {
+                    assert(h>=3);
+                    assert(j>=1); assert(j<=h);
+                    assert(head);
+                    assert(tail);
+                    assert(bulk);
+                    if(j<=1) return *head;
+                    if(j<h) {
+                        Segment s = *bulk;
+                        Coerce(s.start.y) += j;
+                        return s;
+                    }
+                    return *tail;
+                }
 
             };
 
