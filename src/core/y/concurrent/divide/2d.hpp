@@ -111,9 +111,10 @@ wksp()
                 typedef HSegment<T>               Segment;
                 typedef Segment (Tile2D:: *GetSegment)(const scalar_t) const;
 
-                static const size_t MaxSegments = 3;                                      //!< head,tail,bulk
-                static const size_t InnerBytes  = MaxSegments * sizeof(Segment);          //!< alias
-                static const size_t InnerWords  = Alignment::WordsGEQ<InnerBytes>::Count; //!< alias
+                static const scalar_t  One = 1;
+                static const size_t    MaxSegments = 3;                                      //!< head,tail,bulk
+                static const size_t    InnerBytes  = MaxSegments * sizeof(Segment);          //!< alias
+                static const size_t    InnerWords  = Alignment::WordsGEQ<InnerBytes>::Count; //!< alias
 
                 //______________________________________________________________
                 //
@@ -220,7 +221,6 @@ wksp()
 
                 inline void initialize(const BoxType &box) noexcept
                 {
-                    static const scalar_t  one = 1;
 
                     //----------------------------------------------------------
                     // consider 1D indices
@@ -237,93 +237,105 @@ wksp()
                     //----------------------------------------------------------
                     const vertex_t  ini = box.at(tile1d.offset);
                     const vertex_t  end = box.at(tile1d.utmost);
-                    Segment *       seg = base();
-                    Coerce(h) = one + end.y - ini.y; assert(h>0);
-
-
-                    switch(h)
+                    switch(  Coerce(h) = One + end.y - ini.y )
                     {
-                            //--------------------------------------------------
-                            //
-                            // same head and tail, no bulk
-                            //
-                            //--------------------------------------------------
-                        case 1: {
-                            Coerce(head) = Coerce(tail) = seg;
-                            Coerce(proc) = & Tile2D:: Get1;
-                            const vertex_t start = ini;
-                            const scalar_t width = one + end.x - ini.x;
-                            new (seg) Segment(start,width);
-                        } break;
-
-                            //--------------------------------------------------
-                            //
-                            // head and tail, bulk set to head-1 for access h=1,2
-                            //
-                            //--------------------------------------------------
-                        case 2: {
-                            Coerce(head) = seg;
-                            Coerce(tail) = head+1;
-                            Coerce(bulk) = head-1;
-                            Coerce(proc) = & Tile2D:: Get2;
-
-                            {   // first segment
-                                const vertex_t start = ini;
-                                const scalar_t width = one + box.upper.x - ini.x;
-                                new (seg++) Segment(start,width);
-                            }
-
-                            {   // second segment
-                                const vertex_t start(box.lower.x,end.y);
-                                const scalar_t width = one + end.x - box.lower.x;
-                                new (seg) Segment(start,width);
-                            }
-
-
-                        } break;
-
-                            //--------------------------------------------------
-                            //
-                            // head, tail, and first bulk
-                            //
-                            //--------------------------------------------------
-                        default:
-                        {
-                            assert(h>=3);
-                            Coerce(proc) = & Tile2D:: GetH;
-
-                            //--------------------------------------------------
-                            // fist segment
-                            //--------------------------------------------------
-                            {
-                                const vertex_t start = ini;
-                                const scalar_t width = one + box.upper.x - ini.x;
-                                Coerce(head) = seg;
-                                new (seg++) Segment(start,width);
-                            }
-
-                            //--------------------------------------------------
-                            // last segment
-                            //--------------------------------------------------
-                            {
-                                const vertex_t start(box.lower.x,end.y);
-                                const scalar_t width = one + end.x - box.lower.x;
-                                Coerce(tail) = seg;
-                                new (seg++) Segment(start,width);
-                            }
-
-                            //--------------------------------------------------
-                            // bulk, call from j=2 => subtract one
-                            //--------------------------------------------------
-                            {
-                                const vertex_t start(box.lower.x,ini.y-one);
-                                const scalar_t width = box.width.x;
-                                Coerce(bulk) = seg;
-                                new (seg) Segment(start,width);
-                            }
-                        } break;
+                        case 1:  set1(ini,end);     break;
+                        case 2:  set2(ini,end,box); break;
+                        default: setH(ini,end,box); break;
                     }
                 }
+
+
+                //! set for h=1 \param ini ini \param end end
+                inline void set1(const vertex_t &ini, const vertex_t &end) noexcept
+                {
+                    assert(1==h);
+                    //----------------------------------------------------------
+                    //
+                    // same head and tail, no bulk
+                    //
+                    //----------------------------------------------------------
+                    Segment * const seg = base();
+                    Coerce(head) = Coerce(tail) = seg;
+                    Coerce(proc) = & Tile2D:: Get1;
+                    const vertex_t start = ini;
+                    const scalar_t width = One + end.x - ini.x;
+                    new (seg) Segment(start,width);
+                }
+
+
+                //! set for h=2 \param ini ini \param end end \param box box
+                inline void set2(const vertex_t &ini, const vertex_t &end, const BoxType &box) noexcept
+                {
+                    assert(2==h);
+                    //----------------------------------------------------------
+                    //
+                    // head and tail, bulk set to head-1 for access h=1,2
+                    //
+                    //----------------------------------------------------------
+                    Segment * const seg = base();
+                    Coerce(head) = seg;
+                    Coerce(tail) = head+1;
+                    Coerce(bulk) = head-1;
+                    Coerce(proc) = & Tile2D:: Get2;
+
+                    {   // first segment
+                        const vertex_t start = ini;
+                        const scalar_t width = One + box.upper.x - ini.x;
+                        new (seg+0) Segment(start,width);
+                    }
+
+                    {   // second segment
+                        const vertex_t start(box.lower.x,end.y);
+                        const scalar_t width = One + end.x - box.lower.x;
+                        new (seg+1) Segment(start,width);
+                    }
+                }
+
+                //! set for h>=3 \param ini ini \param end end \param box box
+                inline void setH(const vertex_t &ini, const vertex_t &end, const BoxType &box) noexcept
+                {
+                    assert(h>=3);
+
+                    //----------------------------------------------------------
+                    //
+                    // head and tail, bulk set to head-1 for access h=1,2
+                    //
+                    //----------------------------------------------------------
+                    Segment * const seg = base();
+                    Coerce(proc) = & Tile2D:: GetH;
+
+                    //--------------------------------------------------
+                    // fist segment
+                    //--------------------------------------------------
+                    {
+                        const vertex_t start = ini;
+                        const scalar_t width = One + box.upper.x - ini.x;
+                        Coerce(head) = seg;
+                        new (seg+0) Segment(start,width);
+                    }
+
+                    //--------------------------------------------------
+                    // last segment
+                    //--------------------------------------------------
+                    {
+                        const vertex_t start(box.lower.x,end.y);
+                        const scalar_t width = One + end.x - box.lower.x;
+                        Coerce(tail) = seg;
+                        new (seg+1) Segment(start,width);
+                    }
+
+                    //--------------------------------------------------
+                    // bulk, call from j=2 => subtract one
+                    //--------------------------------------------------
+                    {
+                        const vertex_t start(box.lower.x,ini.y-One);
+                        const scalar_t width = box.width.x;
+                        Coerce(bulk) = seg;
+                        new (seg+2) Segment(start,width);
+                    }
+                }
+
 
                 //! \return head=tail segment, h=1
                 inline Segment Get1(const scalar_t) const noexcept
