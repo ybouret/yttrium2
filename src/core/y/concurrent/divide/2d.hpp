@@ -108,10 +108,12 @@ wksp()
                 typedef V2D<T>                    vertex_t; //!< alias
                 typedef T                         scalar_t; //!< alias
                 typedef Box<vertex_t>             BoxType;  //!< alias
-                typedef HSegment<T>               Segment;
+                typedef HSegment<T>               Segment;  //!< alias
+
+                //! method pointer to access a segment
                 typedef Segment (Tile2D:: *GetSegment)(const scalar_t) const;
 
-                static const scalar_t  One = 1;
+                static const scalar_t  One         = 1;                                      //!< scalar alias
                 static const size_t    MaxSegments = 3;                                      //!< head,tail,bulk
                 static const size_t    InnerBytes  = MaxSegments * sizeof(Segment);          //!< alias
                 static const size_t    InnerWords  = Alignment::WordsGEQ<InnerBytes>::Count; //!< alias
@@ -215,9 +217,7 @@ wksp()
                 }
 
 
-
-
-
+                //! initialize part of the box \param box box to map
                 inline void initialize(const BoxType &box) noexcept
                 {
 
