@@ -170,7 +170,7 @@ wksp()
                 //______________________________________________________________
                 //
                 //
-                // Method
+                // Methods
                 //
                 //______________________________________________________________
 
@@ -423,7 +423,8 @@ wksp()
                 Leap<V2D<T>>(box),
                 tiles(n)
                 {
-                    for(size_t i=0;i<n;++i) tiles.push(n,i,box);
+                    buildTiles(n,box);
+                    //for(size_t i=0;i<n;++i) tiles.push(n,i,box);
                 }
 
                 //! setup empty, with abnormal leap
@@ -486,6 +487,13 @@ wksp()
             private:
                 Y_Disable_Copy_And_Assign(Tiles2D); //!< discarding
                 CxxSeries<Tile> tiles; //!< computed tiles
+
+                inline void buildTiles(const size_t n, const BoxType &box) noexcept
+                {
+                    assert( 0 == tiles.size() );
+                    for(size_t i=0;i<n;++i) tiles.push(n,i,box);
+
+                }
 
                 inline virtual const Tile & getItemAt(const size_t indx) const noexcept
                 {
