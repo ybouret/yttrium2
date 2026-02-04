@@ -346,7 +346,7 @@ wksp()
                     return *head;
                 }
 
-                //! \return bulk[1..2], precomputed
+                //! \param j 1<=j<=2 \return bulk[1..2], precomputed
                 inline Segment Get2(const scalar_t j) const noexcept
                 {
                     assert(2==h);
@@ -424,7 +424,6 @@ wksp()
                 tiles(n)
                 {
                     buildTiles(n,box);
-                    //for(size_t i=0;i<n;++i) tiles.push(n,i,box);
                 }
 
                 //! setup empty, with abnormal leap
@@ -488,11 +487,11 @@ wksp()
                 Y_Disable_Copy_And_Assign(Tiles2D); //!< discarding
                 CxxSeries<Tile> tiles; //!< computed tiles
 
+                //! \param n number of tiles \param box (new) box
                 inline void buildTiles(const size_t n, const BoxType &box) noexcept
                 {
                     assert( 0 == tiles.size() );
                     for(size_t i=0;i<n;++i) tiles.push(n,i,box);
-
                 }
 
                 inline virtual const Tile & getItemAt(const size_t indx) const noexcept
