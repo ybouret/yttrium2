@@ -64,7 +64,7 @@ namespace Yttrium
                 // Methods
                 //
                 //______________________________________________________________
-                size_t getRow(const size_t k) const noexcept;                      //!< \param k valid index \return row index from k
+                size_t getRow(const size_t k) const noexcept;                    //!< \param k valid index \return row index from k
                 size_t getK(const size_t i) const noexcept;                      //!< \param i row index   \return max k for i-th row
                 size_t getColumn(const size_t k, const size_t i) const noexcept; //!< \param k valid indx \param i matching row index \return column index
 
