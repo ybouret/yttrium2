@@ -1,0 +1,60 @@
+\documentclass[aps,12pt]{revtex4}
+\usepackage[a4paper]{geometry}
+\usepackage{graphicx}
+\usepackage{amssymb,amsfonts,amsmath,amsthm}
+\usepackage{bm}
+\usepackage{pslatex}
+
+
+\begin{document}
+
+Let $S$ be a local surface approximation
+\begin{equation}
+S(\vec{p},\vec\alpha) = a + bx + cy + d x^2 + e xy + f y^2
+\end{equation}
+
+Let $\vec p_1,\ldots,p_N$ be the approximating points with values $Z_1,\ldots,Z_N$:
+\begin{equation}
+D^2(\vec \alpha) = \frac{1}{2}\sum_{i=1}^N \left[Z_i - S(\vec p_i,\vec \alpha)\right]^2
+\end{equation}
+
+\begin{equation}
+\left\lbrace
+\begin{aligned}
+	-\partial_a D^2 & = & \sum_{i=1}^N          \left[Z_i - S(\vec p_i,\vec \alpha)\right] \\
+    -\partial_b D^2 & = & \sum_{i=1}^N x_i     \left[Z_i - S(\vec p_i,\vec \alpha)\right] \\
+    -\partial_c D^2 & = & \sum_{i=1}^N y_i     \left[Z_i - S(\vec p_i,\vec \alpha)\right] \\
+    -\partial_d D^2 & = & \sum_{i=1}^N x_i^2    \left[Z_i - S(\vec p_i,\vec \alpha)\right] \\
+    -\partial_e D^2 & = & \sum_{i=1}^N x_i y_i  \left[Z_i - S(\vec p_i,\vec \alpha)\right] \\
+    -\partial_f D^2 & = & \sum_{i=1}^N y_i^2    \left[Z_i - S(\vec p_i,\vec \alpha)\right] \\
+\end{aligned}
+\right.
+\end{equation}
+
+\begin{equation}
+\begin{bmatrix}
+1\\
+\end{bmatrix}
+\cdot
+\vec \alpha = 
+\begin{bmatrix}
+\sum_i Z_i\\
+\sum_i x_i Z_i\\
+\sum_i y_i Z_i\\
+\sum_i x_i^2 Z_i\\
+\sum_i x_i y _i Z_i\\
+\sum_i y_i^2 Z_i\\
+\end{bmatrix}
+= 
+\begin{bmatrix}
+\vec 1 \\
+\vec x \\
+\vec y \\
+\vec {x^2} \\
+\vec {xy} \\
+\vec {y^2} \\
+\end{bmatrix}
+\cdot \vec Z
+\end{equation}
+
+\end{document}
