@@ -89,9 +89,9 @@ namespace Yttrium
                 assert( tile.bytes >= LocalMemory );
                 assert( Memory::Stealth::Are0(tile.entry,tile.bytes) );
                 Type * const h = static_cast<Type *>(tile.entry);
-                for(size_t k=tile.h;k>0;--k)
+                for(unit_t k=tile.h;k>0;--k)
                 {
-                    const Segment              &s = tile[k];
+                    const Segment               s = tile[k];
                     const typename PIXMAP::Row &r = pxm[s.start.y];
                     for(unit_t n=s.width,x=s.start.x;n>0;--n,++x)
                         ++h[(uint8_t)proc(r[x])];

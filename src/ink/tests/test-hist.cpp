@@ -38,7 +38,7 @@ Y_UTEST(hist)
         {
             for(size_t i=0;i<pxm8.w;++i)
             {
-                pxm8[j][i] = ran.to<uint8_t>();
+                pxm8(j)(i) = ran.to<uint8_t>();
             }
         }
 
@@ -56,7 +56,7 @@ Y_UTEST(hist)
         {
             for(size_t i=0;i<pxm.w;++i)
             {
-                pxm[j][i] = ran.to<float>();
+                pxm(j)(i) = ran.to<float>();
             }
         }
 

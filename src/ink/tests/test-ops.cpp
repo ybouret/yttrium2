@@ -15,7 +15,7 @@ namespace
     {
         { Y_Giant_Lock(); std::cerr << "on " << tile << std::endl; }
 
-        for(size_t k=tile.h;k>0;--k)
+        for(unit_t k=tile.h;k>0;--k)
         {
             const Ink::Segment    s   = tile[k];
             typename PIXMAP::Row &row = pxm[s.start.y];
