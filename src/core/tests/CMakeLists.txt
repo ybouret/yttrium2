@@ -203,8 +203,8 @@ Y_UTEST(info:arc4)
 Y_UTEST(info:bwt_mtf)
 Y_UTEST(info:entropy)
 Y_UTEST(info:alphabet)
-Y_UTEST(info:huffman)
-Y_UTEST(info:huffenc)
+Y_UTEST(info:huffman ${VAR}/small.db)
+Y_UTEST(info:huffenc ${VAR}/small.db)
 
 #utf8
 Y_UTEST(utf8:api)
