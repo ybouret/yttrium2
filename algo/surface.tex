@@ -15,35 +15,35 @@ S(\vec{p},\vec\alpha) = a + bx + cy + d x^2 + e xy + f y^2
 
 Let $\vec p_1,\ldots,p_N$ be the approximating points with values $Z_1,\ldots,Z_N$:
 \begin{equation}
-D^2(\vec \alpha) = \frac{1}{2}\sum_{i=1}^N \left[Z_i - S(\vec p_i,\vec \alpha)\right]^2
+D^2(\vec \alpha) = \frac{1}{2}\sum_{i=1}^N w_i^2 \left[Z_i - S(\vec p_i,\vec \alpha)\right]^2
 \end{equation}
 
 \begin{equation}
 \left\lbrace
 \begin{aligned}
-	-\partial_a D^2 & = & \sum_{i=1}^N          \left[Z_i - S(\vec p_i,\vec \alpha)\right] \\
-    -\partial_b D^2 & = & \sum_{i=1}^N x_i     \left[Z_i - S(\vec p_i,\vec \alpha)\right] \\
-    -\partial_c D^2 & = & \sum_{i=1}^N y_i     \left[Z_i - S(\vec p_i,\vec \alpha)\right] \\
-    -\partial_d D^2 & = & \sum_{i=1}^N x_i^2    \left[Z_i - S(\vec p_i,\vec \alpha)\right] \\
-    -\partial_e D^2 & = & \sum_{i=1}^N x_i y_i  \left[Z_i - S(\vec p_i,\vec \alpha)\right] \\
-    -\partial_f D^2 & = & \sum_{i=1}^N y_i^2    \left[Z_i - S(\vec p_i,\vec \alpha)\right] \\
+	-\partial_a D^2 & = & \sum_{i=1}^N          \left[Z_i - S(\vec p_i,\vec \alpha)\right] w_i^2\\
+    -\partial_b D^2 & = & \sum_{i=1}^N x_i      \left[Z_i - S(\vec p_i,\vec \alpha)\right] w_i^2\\
+    -\partial_c D^2 & = & \sum_{i=1}^N y_i      \left[Z_i - S(\vec p_i,\vec \alpha)\right] w_i^2\\
+    -\partial_d D^2 & = & \sum_{i=1}^N x_i^2    \left[Z_i - S(\vec p_i,\vec \alpha)\right] w_i^2\\
+    -\partial_e D^2 & = & \sum_{i=1}^N x_i y_i  \left[Z_i - S(\vec p_i,\vec \alpha)\right] w_i^2\\
+    -\partial_f D^2 & = & \sum_{i=1}^N y_i^2    \left[Z_i - S(\vec p_i,\vec \alpha)\right] w_i^2\\
 \end{aligned}
 \right.
 \end{equation}
 
 \begin{equation}
 \begin{bmatrix}
-1\\
+N  & \sum x_i & \sum y_i & \sum x_i^2 & \sum x_i y_i & \sum y_i^2\\
 \end{bmatrix}
 \cdot
 \vec \alpha = 
 \begin{bmatrix}
-\sum_i Z_i\\
-\sum_i x_i Z_i\\
-\sum_i y_i Z_i\\
-\sum_i x_i^2 Z_i\\
-\sum_i x_i y _i Z_i\\
-\sum_i y_i^2 Z_i\\
+\sum Z_i\\
+\sum x_i Z_i\\
+\sum y_i Z_i\\
+\sum x_i^2 Z_i\\
+\sum x_i y _i Z_i\\
+\sum y_i^2 Z_i\\
 \end{bmatrix}
 = 
 \begin{bmatrix}
