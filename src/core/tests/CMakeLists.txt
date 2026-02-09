@@ -239,6 +239,7 @@ Y_UTEST(apex:ortho:vector)
 Y_UTEST(apex:ortho:keep)
 Y_UTEST(apex:ortho:family)
 Y_UTEST(apex:simplify)
+Y_UTEST(apex:ratsimp)
 
 #coven
 Y_UTEST(coven:indx)

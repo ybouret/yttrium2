@@ -2,12 +2,15 @@
 #include "y/mkl/algebra/lu.hpp"
 #include "y/apex/rational.hpp"
 #include "y/container/cxx/array.hpp"
+#include "y/apex/ratsimp.hpp"
 
 using namespace Yttrium;
 
 namespace
 {
     typedef apq (*GetWeightSquare)(const unit_t x, const unit_t y);
+
+    static const char * const Name[8] = { 0, "a" , "b", "c" , "d", "e", "f", 0};
 
     static inline
     void computeDiff(const unit_t delta, GetWeightSquare weight)
@@ -65,7 +68,12 @@ namespace
         MKL::LU<apq> lu(6);
         if(!lu.build(mu)) throw Exception("bad mu matrix");
         lu.solve(mu,cf,tmp);
-        std::cerr << "res=" << cf << std::endl;
+        for(size_t i=1;i<=6;++i)
+        {
+            tmp[i] = Apex::RatSimp::Array(cf[i]);
+            std::cerr << "\t" << Name[i] << " = " << cf[i] << std::endl; // " / " << tmp[i] << std::endl;
+        }
+        //std::cerr << "res=" << cf << std::endl;
 
         
 
