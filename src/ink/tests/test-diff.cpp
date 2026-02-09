@@ -40,7 +40,7 @@ namespace
                 cf[5][k] = w2xy;
                 cf[6][k] = w2yy;
 
-                mu[1][1] += w2; mu[1][2] += w2x; mu[1][3] += w2y; mu[1][4] += w2xx; mu[1][5] += w2xy; mu[2][5] += w2yy;
+                mu[1][1] += w2; mu[1][2] += w2x; mu[1][3] += w2y; mu[1][4] += w2xx; mu[1][5] += w2xy; mu[1][6] += w2yy;
 
 
 
@@ -50,6 +50,7 @@ namespace
         }
         Y_ASSERT(N==k);
 
+        std::cerr << "mu=" << mu << std::endl;
         std::cerr << "cf=" << cf << std::endl;
 
 
