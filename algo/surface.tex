@@ -33,26 +33,26 @@ D^2(\vec \alpha) = \frac{1}{2}\sum_{i=1}^N w_i^2 \left[Z_i - S(\vec p_i,\vec \al
 
 \begin{equation}
 \begin{bmatrix}
-N  & \sum x_i & \sum y_i & \sum x_i^2 & \sum x_i y_i & \sum y_i^2\\
+\sum w_i^2  & \sum w_i^2 x_i & \sum w_i^2 y_i & \sum w_i^2 x_i^2 & \sum w_i^2 x_i y_i & \sum w_i^2 y_i^2\\
 \end{bmatrix}
 \cdot
 \vec \alpha = 
 \begin{bmatrix}
-\sum Z_i\\
-\sum x_i Z_i\\
-\sum y_i Z_i\\
-\sum x_i^2 Z_i\\
-\sum x_i y _i Z_i\\
-\sum y_i^2 Z_i\\
+\sum w_i^2 Z_i\\
+\sum w_i^2 x_i Z_i\\
+\sum w_i^2 y_i Z_i\\
+\sum w_i^2 x_i^2 Z_i\\
+\sum w_i^2 x_i y _i Z_i\\
+\sum w_i^2 y_i^2 Z_i\\
 \end{bmatrix}
 = 
 \begin{bmatrix}
-\vec 1 \\
-\vec x \\
-\vec y \\
-\vec {x^2} \\
-\vec {xy} \\
-\vec {y^2} \\
+\overrightarrow {w^2} \\
+\overrightarrow {w^2 x} \\
+\overrightarrow {w^2 y} \\
+\overrightarrow {w^2 x^2} \\
+\overrightarrow {w^2 xy} \\
+\overrightarrow {w^2 y^2} \\
 \end{bmatrix}
 \cdot \vec Z
 \end{equation}
