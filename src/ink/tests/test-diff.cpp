@@ -40,7 +40,18 @@ namespace
                 cf[5][k] = w2xy;
                 cf[6][k] = w2yy;
 
-                mu[1][1] += w2; mu[1][2] += w2x; mu[1][3] += w2y; mu[1][4] += w2xx; mu[1][5] += w2xy; mu[1][6] += w2yy;
+                for(size_t i=1;i<=6;++i)
+                {
+                    const apq f = cf[i][k];
+                    const apq fx = f*x;
+                    const apq fy = f*y;
+                    mu[1][i] += f;
+                    mu[2][i] += fx;
+                    mu[3][i] += fy;
+                    
+
+                }
+                //mu[1][1] += w2; mu[1][2] += w2x; mu[1][3] += w2y; mu[1][4] += w2xx; mu[1][5] += w2xy; mu[1][6] += w2yy;
 
 
 
