@@ -1,4 +1,5 @@
 Y_CreateTest(test-ink)
+include_directories(../../mkl)
 Y_LinkLibraries(test-ink y-ink y-jive y-jpeg png_static tiff)
 
 enable_testing()
@@ -13,3 +14,4 @@ Y_UTEST(broker)
 Y_UTEST(ops)
 Y_UTEST(hist)
 Y_UTEST(io)
+Y_UTEST(diff)
