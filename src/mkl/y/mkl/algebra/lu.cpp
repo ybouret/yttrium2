@@ -147,7 +147,6 @@ namespace Yttrium
                     b[ip]=b[i];
                     if(0!=ii)
                     {
-                        // for(size_t j=ii;j<i;++j) sum -= a[i][j]*b[j];
                         const Row &a_i = a[i];
                         for(size_t j=ii;j<i;++j)
                             xadd -= a_i[j]*b[j];
@@ -171,6 +170,27 @@ namespace Yttrium
                 }
             }
 
+
+
+            inline void solve(const Matrix<T> &a, Matrix<T> &rhs, Writable<T> &tmp)
+            {
+                assert(a.rows>0);
+                assert(a.isSquare());
+                assert(a.rows<=dims);
+                assert(a.rows==tmp.size());
+                assert(a.rows==rhs.rows);
+                const size_t n  = a.rows;
+
+                for(size_t c=rhs.cols;c>0;--c)
+                {
+                    for(size_t i=n;i>0;--i)
+                        tmp[i] = rhs[i][c];
+                    solve(a,tmp);
+                    for(size_t i=n;i>0;--i)
+                        rhs[i][c] = tmp[i];
+                }
+
+            }
 
             inline void inv(const Matrix<T> &a, Matrix<T> &ia)
             {

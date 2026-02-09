@@ -1,6 +1,6 @@
 Y_CreateTest(test-ink)
 include_directories(../../mkl)
-Y_LinkLibraries(test-ink y-ink y-jive y-jpeg png_static tiff)
+Y_LinkLibraries(test-ink y-ink y-jive y-jpeg png_static tiff y-mkl)
 
 enable_testing()
 

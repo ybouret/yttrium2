@@ -92,3 +92,14 @@ void  LU<real_t>:: inv(const Matrix<real_t> &a, Matrix<real_t> &ia)
 }
 
  
+template <>
+void LU<real_t>:: solve(const Matrix<real_t> &a, Matrix<real_t> &rhs, Writable<real_t> &tmp)
+{
+    assert( a.isSquare() );
+    assert( a.rows>0 );
+    assert( a.rows==tmp.size() );
+    assert( a.rows==rhs.rows   );
+    assert( 0 != code);
+    assert( code->dims >= a.rows );
+    code->solve(a,rhs,tmp);
+}

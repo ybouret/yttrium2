@@ -75,6 +75,14 @@ namespace Yttrium
             //! solve \param a decomposed matrix \param b b = inv(a) * b
             void solve(const Matrix<T> &a, Writable<T> &b);
 
+            //! solve
+            /**
+             \param a   decomposed matrix
+             \param rhs matrix with a.rows and any columns
+             \param tmp temporary a.rows array
+             */
+            void solve(const Matrix<T> &a, Matrix<T> &rhs, Writable<T> &tmp);
+
             //! inverse \param a decomposed matrix \param ia a^(-1)
             void inv(const Matrix<T> &a, Matrix<T> &ia);
 

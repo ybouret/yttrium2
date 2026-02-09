@@ -122,7 +122,7 @@ namespace Yttrium
             }
 
 
-
+            
 
         private:
             //! \param n natural \return mutable n
@@ -154,4 +154,4 @@ namespace Yttrium
     }
 }
 
-#endif
+#endif // !Y_Apex_Simplify_Included
