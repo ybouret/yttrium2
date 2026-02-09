@@ -13,17 +13,19 @@ namespace
     static const char * const Name[8] = { 0, "a" , "b", "c" , "d", "e", "f", 0};
 
     static inline
-    void computeDiff(const unit_t delta, GetWeightSquare weight)
+    void computeDiff(const unit_t delta, GetWeightSquare weightSqr)
     {
         Y_ASSERT(delta>=1);
-        Y_ASSERT(0!=weight);
+        Y_ASSERT(0!=weightSqr);
         const size_t side = 1+2*delta;
         const size_t N    = side*side;
-        std::cerr << "N=" << N << std::endl;
+        std::cerr << "delta = " << delta << std::endl;
+        std::cerr << "N     = " << N << std::endl;
 
         Matrix<apq>   mu(6,6);
         Matrix<apq>   cf(6,N);
         CxxArray<apq> tmp(6);
+        CxxArray<apz> zf(6);
 
         size_t k = 0;
         for(unit_t y=-delta;y<=delta;++y)
@@ -31,8 +33,8 @@ namespace
             for(unit_t x=-delta;x<=delta;++x)
             {
                 ++k;
-                const apq w2 = weight(x,y);
-                std::cerr << w2 << std::endl;
+                const apq w2 = weightSqr(x,y);
+                //std::cerr << w2 << std::endl;
                 const apq w2x  = w2  * x;
                 const apq w2y  = w2  * y;
                 const apq w2xx = w2x * x;
@@ -62,20 +64,40 @@ namespace
         }
         Y_ASSERT(N==k);
 
-        std::cerr << "mu=" << mu << std::endl;
-        std::cerr << "cf=" << cf << std::endl;
+        //std::cerr << "mu=" << mu << std::endl;
+        //std::cerr << "cf=" << cf << std::endl;
 
         MKL::LU<apq> lu(6);
         if(!lu.build(mu)) throw Exception("bad mu matrix");
         lu.solve(mu,cf,tmp);
+        Matrix<apq>
+        a(side,side),
+        b(side,side),
+        c(side,side),
+        d(side,side),
+        e(side,side),
+        f(side,side);
+        Matrix<apq> * const mm[8] = { 0, &a, &b, &c, &d, &e, &f, 0 };
+
+
+
+
         for(size_t i=1;i<=6;++i)
         {
-            tmp[i] = Apex::RatSimp::Array(cf[i]);
-            std::cerr << "\t" << Name[i] << " = " << cf[i] << std::endl; // " / " << tmp[i] << std::endl;
-        }
-        //std::cerr << "res=" << cf << std::endl;
+            (void) Apex::RatSimp::Array(cf[i]);
 
-        
+            // std::cerr << "\t" << Name[i] << " = " << cf[i] << std::endl; // " / " << tmp[i] << std::endl;
+            Matrix<apq> &m = *mm[i];
+            for(size_t k=1;k<=N;++k)
+            {
+                *(m()+(k-1)) = cf[i][k];
+            }
+            std::cerr << "\t" << Name[i] << " = " << m << std::endl; // " / " << tmp[i] << std::endl;
+        }
+
+
+
+
 
     }
 
@@ -83,7 +105,9 @@ namespace
     static inline apq GetOneOverR2(const unit_t x, const unit_t y)
     {
         apq res = 1;
-        return res / (x*x+y*y);
+        if(x||y)
+            return res / (x*x+y*y);
+        return res;
     }
 
 }
@@ -93,6 +117,8 @@ Y_UTEST(diff)
     std::cerr << "Computing Differential Filters" << std::endl;
 
     computeDiff(1,GetOne);
+    computeDiff(1,GetOneOverR2);
+    //computeDiff(2,GetOne);
 
 }
 Y_UDONE()
