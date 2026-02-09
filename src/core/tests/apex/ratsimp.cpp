@@ -40,11 +40,16 @@ Y_UTEST(apex_ratsimp)
 
         const apq q(numer,denom);
         std::cerr << q << " * " << zrr << std::endl;
-
-
-
-
-
     }
+
+    {
+        CxxArray<apq> arr(2);
+        arr[1] = Fraction { 1, 4 };
+        arr[2] = Fraction { 1, 3 };
+        std::cerr << arr << std::endl;
+        const apn denom = Apex::RatSimp::Array(arr);
+        std::cerr << arr << "/" << denom << std::endl;
+    }
+
 }
 Y_UDONE()
