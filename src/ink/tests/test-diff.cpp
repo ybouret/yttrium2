@@ -34,7 +34,6 @@ namespace
             {
                 ++k;
                 const apq w2 = weightSqr(x,y);
-                //std::cerr << w2 << std::endl;
                 const apq w2x  = w2  * x;
                 const apq w2y  = w2  * y;
                 const apq w2xx = w2x * x;
@@ -118,7 +117,7 @@ Y_UTEST(diff)
 
     computeDiff(1,GetOne);
     computeDiff(1,GetOneOverR2);
-    //computeDiff(2,GetOne);
+    computeDiff(2,GetOne);
 
 }
 Y_UDONE()
