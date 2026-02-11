@@ -3,6 +3,12 @@
 #include "y/apex/rational.hpp"
 #include "y/container/cxx/array.hpp"
 #include "y/apex/ratsimp.hpp"
+#include "y/random/mt19937.hpp"
+#include "y/random/gaussian.hpp"
+#include "y/cameo/addition.hpp"
+
+#include "y/ink/image/format/png.hpp"
+
 
 using namespace Yttrium;
 
@@ -33,7 +39,7 @@ namespace
             for(unit_t x=-delta;x<=delta;++x)
             {
                 ++k;
-                const apq w2 = weightSqr(x,y);
+                const apq w2   = weightSqr(x,y);
                 const apq w2x  = w2  * x;
                 const apq w2y  = w2  * y;
                 const apq w2xx = w2x * x;
@@ -118,6 +124,26 @@ Y_UTEST(diff)
     computeDiff(1,GetOne);
     computeDiff(1,GetOneOverR2);
     computeDiff(2,GetOne);
+
+#if 0
+    Random::SharedBits sharedBits = new Random::MT19937();
+    Random::Gaussian<double> gran( sharedBits );
+    Cameo::Addition<double> xadd;
+
+    size_t count = 0;
+    for(size_t i=0;i<10000;++i)
+    {
+        xadd << gran();
+        xadd << 2.0 * gran();
+        xadd << 5.0 * gran();
+        ++count;
+    }
+
+    std::cerr << xadd.sum() / count << std::endl;
+#endif
+
+
+
 
 }
 Y_UDONE()

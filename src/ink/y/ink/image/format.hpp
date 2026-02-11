@@ -6,6 +6,7 @@
 
 #include "y/ink/image/codec.hpp"
 #include "y/jive/pattern/matching.hpp"
+#include "y/pointer/keyed.hpp"
 
 namespace Yttrium
 {
@@ -23,6 +24,14 @@ namespace Yttrium
         class Format : public Codec
         {
         public:
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef Keyed<String,ArcPtr<Format>> Handle;
+            
             //__________________________________________________________________
             //
             //
