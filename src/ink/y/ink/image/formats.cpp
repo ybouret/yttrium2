@@ -11,13 +11,14 @@ namespace Yttrium
 
         Formats:: ~Formats() noexcept
         {
-            
+
         }
 
 
         Formats:: Formats() :
         Singleton<Formats,ClassLockPolicy>(),
-        FormatsDB()
+        FormatsDB(),
+        Codec(CallSign)
         {
         }
 
@@ -44,6 +45,49 @@ namespace Yttrium
             }
             --indent;
             quit(os,indent);
+        }
+
+
+        void  Formats:: save(const Image  &image, const String &fileName, const Options * const options) const
+        {
+            (*this)[fileName].save(image,fileName,options);
+        }
+
+        Image Formats:: load(const String &fileName, const Options * const options) const
+        {
+            return (*this)[fileName].load(fileName,options);
+        }
+
+    }
+
+}
+
+#include "y/vfs/vfs.hpp"
+
+namespace Yttrium
+{
+    namespace Ink
+    {
+
+        const Format   & Formats:: operator[](const String &path) const
+        {
+            const String       base = VFS::BaseName(path);
+            const char * const pExt = VFS::Extension(base);
+            if(!pExt) throw Specific::Exception(CallSign,"no extension in '%s'", base.c_str());
+            const String       ext  = pExt;
+            {
+                Y_Lock( Coerce(access) );
+                for(ConstIterator it=begin();it!=end();++it)
+                {
+                    Format &fmt = Coerce(**it);
+                    if(fmt.extension.found(Jive::Matching::Exactly,base,ext))
+                    {
+                        std::cerr << "Found " << fmt.name << " for " << base << std::endl;
+                        return fmt;
+                    }
+                }
+            }
+            throw Specific::Exception(CallSign,"not format matching '%s'", base.c_str());
         }
     }
 

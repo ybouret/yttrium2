@@ -18,7 +18,8 @@ namespace Yttrium
         
         class Formats :
         public Singleton<Formats,ClassLockPolicy>,
-        public FormatsDB
+        public FormatsDB,
+        public Codec
         {
         public:
             static const char * const CallSign;
@@ -27,9 +28,13 @@ namespace Yttrium
             void             operator()( Format * const ); //!< register new format
             void             loadBuiltIn();                //!< load built-in formats
             static Formats & Std();                        //!< \return instance with loaded built-in
+            const Format   & operator[](const String &path) const;
 
-            virtual void display(std::ostream & ,
-                                 size_t) const;
+            // interface
+            virtual void  display(std::ostream &, size_t) const;
+            virtual void  save(const Image  &, const String &, const Options * const) const;
+            virtual Image load(const String &, const Options * const)                 const;
+
         private:
             Y_Disable_Copy_And_Assign(Formats);
             friend class Singleton<Formats,ClassLockPolicy>;
