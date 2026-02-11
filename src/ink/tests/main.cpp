@@ -10,6 +10,7 @@ Y_UTEST_DECL(16)
     Y_UTEST(ops);
     Y_UTEST(hist);
     Y_UTEST(io);
+    Y_UTEST(fmt);
     Y_UTEST(diff);
 }
 Y_UTEST_EXEC()

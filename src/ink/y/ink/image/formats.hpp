@@ -24,9 +24,12 @@ namespace Yttrium
             static const char * const CallSign;
             static const Longevity    LifeTime = LifeTimeOf::InkFormats;
 
-            void operator()( Format * const ); //!< register new format
+            void             operator()( Format * const ); //!< register new format
+            void             loadBuiltIn();                //!< load built-in formats
+            static Formats & Std();                        //!< \return instance with loaded built-in
 
-
+            virtual void display(std::ostream & ,
+                                 size_t) const;
         private:
             Y_Disable_Copy_And_Assign(Formats);
             friend class Singleton<Formats,ClassLockPolicy>;

@@ -1,5 +1,6 @@
 
 #include "y/ink/image/formats.hpp"
+#include "y/xml/attribute.hpp"
 
 namespace Yttrium
 {
@@ -29,7 +30,21 @@ namespace Yttrium
         }
 
 
-
+        void Formats:: display(std::ostream &os ,
+                               size_t        indent) const
+        {
+            const size_t numFormats = size();
+            initProlog(os,indent) << Y_XML_Attr(numFormats);
+            initEpilog(os,false);
+            ++indent;
+            for(ConstIterator it=begin();it!=end();++it)
+            {
+                const Format &fmt = **it;
+                XML::Indent(os,indent) << "[+] '" << fmt.name << "'" << std::endl;
+            }
+            --indent;
+            quit(os,indent);
+        }
     }
 
 }
