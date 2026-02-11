@@ -7,7 +7,7 @@
 #include "y/random/gaussian.hpp"
 #include "y/cameo/addition.hpp"
 
-#include "y/ink/image/format/png.hpp"
+#include "y/ink/image/formats.hpp"
 
 
 using namespace Yttrium;
@@ -117,6 +117,8 @@ namespace
 
 }
 
+using namespace Ink;
+
 Y_UTEST(diff)
 {
     std::cerr << "Computing Differential Filters" << std::endl;
@@ -142,7 +144,44 @@ Y_UTEST(diff)
     std::cerr << xadd.sum() / count << std::endl;
 #endif
 
+    {
+        const Formats & IMG = Formats::Std();
+        const unit_t    delta = 10;
+        const size_t    side  = delta*2 + 1;
+        Image           img(side,side);
+        Coord           center(delta,delta);
 
+        const double    theta = 0.3;
+        const double    ct    = cos(theta);
+        const double    st    = sin(theta);
+        for(unit_t y=-delta;y<=delta;++y)
+        {
+            const double Y = y;
+            for(unit_t x=-delta;x<=delta;++x)
+            {
+                const double X = x;
+                const double d = fabs(X*st-Y*ct);
+                const Coord  p(center.x+x,center.y+y); Y_ASSERT(img.contains(p));
+                uint8_t      u=0;
+                if(d<=1.0)
+                {
+                    const double c = 1.0 - d;
+                    u = Color::Gray::UnitToByte(c);
+                    //std::cerr << "c=" << c << "=> " << int(u) << std::endl;
+                }
+                const RGBA C(u,u,u);
+                img[p.y][p.x] = C;
+                //std::cerr << "d=" << d << " @" << p << " => " << C << std::endl;
+
+            }
+        }
+
+        IMG.save(img, "diff.png", 0);
+
+
+
+
+    }
 
 
 }

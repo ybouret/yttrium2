@@ -44,19 +44,19 @@ namespace Yttrium
             //! \param x unit floating point \return closest byte
             static inline uint8_t UnitToByte(const float &x) noexcept
             {
-                return (uint8_t) floorf(x*256.0f + 0.5f);
+                return (uint8_t) floorf(x*255.0f + 0.5f);
             }
 
             //! \param x unit floating point \return closest byte
             static inline uint8_t UnitToByte(const double &x) noexcept
             {
-                return (uint8_t) floor(x*256.0 + 0.5);
+                return (uint8_t) floor(x*255.0 + 0.5);
             }
 
             //! \param x unit floating point \return closest byte
             static inline uint8_t UnitToByte(const long double &x) noexcept
             {
-                return (uint8_t) floorl(x*256.0L + 0.5L);
+                return (uint8_t) floorl(x*255.0L + 0.5L);
             }
 
 
