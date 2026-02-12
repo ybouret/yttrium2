@@ -6,7 +6,6 @@
 
 #include "y/ink/pixmap.hpp"
 #include "y/ink/draw/putpixel.hpp"
-#include "y/ink/draw/clip.hpp"
 
 namespace Yttrium
 {
@@ -84,6 +83,34 @@ namespace Yttrium
     }
 
 }
+
+#include "y/ink/draw/clip.hpp"
+
+namespace Yttrium
+{
+
+    namespace Ink
+    {
+
+        namespace Draw
+        {
+            template <typename IMAGE, typename PUTPIXEL> inline
+            void Line(const IMAGE &img,
+                      unit_t       x0,
+                      unit_t       y0,
+                      unit_t       x1,
+                      unit_t       y1,
+                      PUTPIXEL &   putPixel)
+            {
+                if( Clip::Accept(x0,y0,x1,y1,img) )
+                    Line_(x0,y0,x1,y1,putPixel,img);
+            }
+        }
+
+    }
+
+}
+
 
 
 #endif // !Y_Ink_Draw_Line_Included
