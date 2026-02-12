@@ -149,7 +149,7 @@ Y_UTEST(diff)
         const unit_t    delta = 10;
         const size_t    side  = delta*2 + 1;
         Image           img(side,side);
-        Coord           center(delta,delta);
+        Point           center(delta,delta);
 
         const double    theta = 0.3;
         const double    ct    = cos(theta);
@@ -161,7 +161,7 @@ Y_UTEST(diff)
             {
                 const double X = x;
                 const double d = fabs(X*st-Y*ct);
-                const Coord  p(center.x+x,center.y+y); Y_ASSERT(img.contains(p));
+                const Point  p(center.x+x,center.y+y); Y_ASSERT(img.contains(p));
                 uint8_t      u=0;
                 if(d<=1.0)
                 {

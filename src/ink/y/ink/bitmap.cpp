@@ -173,11 +173,11 @@ namespace Yttrium
             }
 
             static inline
-            Coord GetCoord(const size_t W, const size_t H)
+            Point GetCoord(const size_t W, const size_t H)
             {
                 const unit_t x = GetUnit("width",W);
                 const unit_t y = GetUnit("height",H);
-                return Coord(x,y);
+                return Point(x,y);
             }
 
             static inline size_t CheckBPP(const size_t B)
@@ -207,7 +207,7 @@ namespace Yttrium
                         const size_t B,
                         CTor         ctor,
                         DTor         dtor) :
-        Area( Coord(0,0), GetCoord(W,H) ),
+        Area( Point(0,0), GetCoord(W,H) ),
         w(width.x),
         h(width.y),
         bpp( CheckBPP(B) ),

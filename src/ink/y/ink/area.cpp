@@ -12,8 +12,8 @@ namespace Yttrium
             return (size_t)(1+hi-lo);
         }
 
-        Area:: Area(const Coord lo, const Coord up) noexcept :
-        Leap<Coord>(lo,up),
+        Area:: Area(const Point lo, const Point up) noexcept :
+        Leap<Point>(lo,up),
         width( udiff(lower.x,upper.x), udiff(lower.y,upper.y) ),
         items(width.x*width.y)
         {
@@ -23,7 +23,7 @@ namespace Yttrium
 
 
         Area:: Area(const Area &area) noexcept  :
-        Leap<Coord>(area),
+        Leap<Point>(area),
         width(area.width),
         items(area.items)
         {
@@ -53,7 +53,7 @@ namespace Yttrium
             return y>=lower.y && y<=upper.y;
         }
 
-        bool Area:: contains(const Coord p) const noexcept
+        bool Area:: contains(const Point p) const noexcept
         {
             return containsAbscissa(p.x) && containsOrdinate(p.y);
         }

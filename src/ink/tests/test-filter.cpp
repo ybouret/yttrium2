@@ -58,7 +58,7 @@ namespace Yttrium
         template <typename T> class FilterElement
         {
         public:
-            inline  FilterElement(const Coord _c, const T _w) : c(_c),  w(_w) {}
+            inline  FilterElement(const Point _c, const T _w) : c(_c),  w(_w) {}
             inline ~FilterElement() noexcept {}
 
             inline friend std::ostream & operator<<(std::ostream &os, const FilterElement &self)
@@ -67,7 +67,7 @@ namespace Yttrium
                 return os;
             }
 
-            const Coord c;
+            const Point c;
             const T     w;
 
         private:
@@ -94,7 +94,7 @@ namespace Yttrium
                         if(!w) continue;
                         sum += w;
                         const T     W = (T) w;
-                        const Coord C(x,y);
+                        const Point C(x,y);
                         this->push(C,W);
                     }
                 }

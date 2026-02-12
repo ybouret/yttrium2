@@ -10,7 +10,7 @@ namespace Yttrium
 {
     namespace Ink
     {
-        typedef V2D<unit_t> Coord; //!< alias
+        typedef V2D<unit_t> Point; //!< alias
         typedef V2D<size_t> Range; //!< alias
 
 
@@ -22,7 +22,7 @@ namespace Yttrium
         //
         //
         //______________________________________________________________________
-        class Area : public Leap<Coord>
+        class Area : public Leap<Point>
         {
         public:
             //__________________________________________________________________
@@ -31,7 +31,7 @@ namespace Yttrium
             // C++
             //
             //__________________________________________________________________
-            explicit Area(const Coord, const Coord) noexcept; //!< setup
+            explicit Area(const Point, const Point) noexcept; //!< setup
             Area(const Area &)                      noexcept; //!< duplicate
             Area & operator=(const Area &)          noexcept; //!< assign \return *this
             virtual ~Area()                         noexcept; //!< cleanup
@@ -44,7 +44,7 @@ namespace Yttrium
             //________________________________________________________________
             bool containsAbscissa(const unit_t) const noexcept; //!< \return true if abscissa in area
             bool containsOrdinate(const unit_t) const noexcept; //!< \return true if ordinate in area
-            bool contains(const Coord)          const noexcept; //!< \return true if point in area
+            bool contains(const Point)          const noexcept; //!< \return true if point in area
             bool contains(const Area &)         const noexcept; //!< \return true if sub-area in area
 
             

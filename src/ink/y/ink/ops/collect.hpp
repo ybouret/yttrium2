@@ -20,7 +20,7 @@ namespace Yttrium
             virtual ~Collect() noexcept;
 
             template <typename T, typename PIXMAP> inline
-            void load(T * target, PIXMAP & source, const Coord origin)
+            void load(T * target, PIXMAP & source, const Point origin)
             {
                 unit_t y = origin.y+dy;
                 for(size_t j=h;j>0;--j)
@@ -33,7 +33,7 @@ namespace Yttrium
             }
 
             template <typename T, typename PIXMAP> inline
-            T minimum(PIXMAP & source, const Coord origin)
+            T minimum(PIXMAP & source, const Point origin)
             {
                 T      res = source[origin.y][origin.x];
                 unit_t y = origin.y+dy;
@@ -48,7 +48,7 @@ namespace Yttrium
             }
 
             template <typename T, typename PIXMAP> inline
-            T maximum(PIXMAP & source, const Coord origin)
+            T maximum(PIXMAP & source, const Point origin)
             {
                 T      res = source[origin.y][origin.x];
                 unit_t y = origin.y+dy;
@@ -63,7 +63,7 @@ namespace Yttrium
             }
 
             template <typename T, typename PIXMAP> inline
-            T median(T * const target, PIXMAP & source, const Coord origin)
+            T median(T * const target, PIXMAP & source, const Point origin)
             {
                 load(target,source,origin);
                 Sorting::Heap::Sort(target,items,Sign::Increasing<T>);
