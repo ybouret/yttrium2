@@ -22,6 +22,7 @@ namespace Yttrium
         struct RatSimp
         {
 
+            //! \param iter iterator \param size number of rationals \return least common denominator
             template <typename ITER> static inline
             Natural LCD(ITER iter, size_t size)
             {
@@ -35,12 +36,14 @@ namespace Yttrium
                 return res;
             }
 
+            //! \param seq sequence \return least common denominator
             template <typename SEQ> static inline
             Natural LCD(SEQ &seq)
             {
                 return LCD(seq.begin(),seq.size());
             }
 
+            //! \param lcd factor \param iter iterator \param size number of rationals
             template <typename ITER> static inline
             void MulBy(const Natural &lcd, ITER iter, size_t size)
             {
@@ -52,6 +55,7 @@ namespace Yttrium
                 }
             }
 
+            //! \param seq input/output reduced rationals \return solving factor
             template <typename SEQ> static inline
             Natural Array(SEQ &seq)
             {

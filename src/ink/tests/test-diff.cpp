@@ -127,23 +127,6 @@ Y_UTEST(diff)
     computeDiff(1,GetOneOverR2);
     computeDiff(2,GetOne);
 
-#if 0
-    Random::SharedBits sharedBits = new Random::MT19937();
-    Random::Gaussian<double> gran( sharedBits );
-    Cameo::Addition<double> xadd;
-
-    size_t count = 0;
-    for(size_t i=0;i<10000;++i)
-    {
-        xadd << gran();
-        xadd << 2.0 * gran();
-        xadd << 5.0 * gran();
-        ++count;
-    }
-
-    std::cerr << xadd.sum() / count << std::endl;
-#endif
-
     {
         const Formats & IMG = Formats::Std();
         const unit_t    delta = 10;
