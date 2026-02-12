@@ -15,11 +15,20 @@ namespace Yttrium
 
         namespace Draw
         {
+            //! \param x integer \return |x|
             template <typename T> inline
             T AbsOf(const T x) {
                 return x < 0 ? -x : x;
             }
 
+            //! no-arg line drawing
+            /**
+             \param x0 initial x
+             \param y0 initial y
+             \param x1 final x
+             \param y1 final y
+             \param putPixel putPixel(x,y) on each line point
+             */
             template <typename PUTPIXEL> inline
             void Line_(unit_t       x0,
                        unit_t       y0,
@@ -40,6 +49,15 @@ namespace Yttrium
                 }
             }
 
+            //!  one-argument line drawing
+            /**
+             \param x0 initial x
+             \param y0 initial y
+             \param x1 final x
+             \param y1 final y
+             \param putPixel putPixel(x,y,arg1) on each line point
+             \param arg1     argument1
+             */
             template <typename PUTPIXEL, typename ARG1> inline
             void Line_(const unit_t x0,
                        const unit_t y0,
@@ -52,6 +70,16 @@ namespace Yttrium
                 Line_(x0,y0,x1,y1,wrapper);
             }
 
+            //!  two-arguments line drawing
+            /**
+             \param x0 initial x
+             \param y0 initial y
+             \param x1 final x
+             \param y1 final y
+             \param putPixel putPixel(x,y,arg1,arg2) on each line point
+             \param arg1     argument1
+             \param arg2     argument2
+             */
             template <typename PUTPIXEL, typename ARG1, typename ARG2> inline
             void Line_(const unit_t x0,
                        const unit_t y0,
@@ -65,6 +93,17 @@ namespace Yttrium
                 Line_(x0,y0,x1,y1,wrapper);
             }
 
+            //!  three-arguments line drawing
+            /**
+             \param x0 initial x
+             \param y0 initial y
+             \param x1 final x
+             \param y1 final y
+             \param putPixel putPixel(x,y,arg1,arg2,arg3) on each line point
+             \param arg1     argument1
+             \param arg2     argument2
+             \param arg3     argument3
+             */
             template <typename PUTPIXEL, typename ARG1, typename ARG2, typename ARG3> inline
             void Line_(const unit_t x0,
                        const unit_t y0,
@@ -94,6 +133,15 @@ namespace Yttrium
 
         namespace Draw
         {
+            //! no-extra argument clipped line
+            /**
+             \param img derived from area, passed to putPixel
+             \param x0 initial x
+             \param y0 initial y
+             \param x1 final x
+             \param y1 final y
+             \param putPixel putPixel(x,y,img) on each line point
+             */
             template <typename IMAGE, typename PUTPIXEL> inline
             void Line(const IMAGE &img,
                       unit_t       x0,

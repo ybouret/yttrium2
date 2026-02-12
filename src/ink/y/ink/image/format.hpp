@@ -30,7 +30,7 @@ namespace Yttrium
             // Definitions
             //
             //__________________________________________________________________
-            typedef Keyed<String,ArcPtr<Format>> Handle;
+            typedef Keyed<String,ArcPtr<Format>> Handle; //!< alias
             
             //__________________________________________________________________
             //
