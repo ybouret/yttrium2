@@ -6,6 +6,7 @@
 
 #include "y/ink/pixmap.hpp"
 #include "y/ink/draw/putpixel.hpp"
+#include "y/ink/draw/clip.hpp"
 
 namespace Yttrium
 {
@@ -62,6 +63,20 @@ namespace Yttrium
                        ARG2     &   arg2)
             {
                 PutPixel2<PUTPIXEL,ARG1,ARG2> wrapper = { putPixel, arg1, arg2 };
+                Line_(x0,y0,x1,y1,wrapper);
+            }
+
+            template <typename PUTPIXEL, typename ARG1, typename ARG2, typename ARG3> inline
+            void Line_(const unit_t x0,
+                       const unit_t y0,
+                       const unit_t x1,
+                       const unit_t y1,
+                       PUTPIXEL &   putPixel,
+                       ARG1     &   arg1,
+                       ARG2     &   arg2,
+                       ARG3     &   arg3)
+            {
+                PutPixel3<PUTPIXEL,ARG1,ARG2,ARG3> wrapper = { putPixel, arg1, arg2, arg3 };
                 Line_(x0,y0,x1,y1,wrapper);
             }
 

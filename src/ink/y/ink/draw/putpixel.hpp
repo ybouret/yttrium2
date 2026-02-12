@@ -38,6 +38,20 @@ namespace Yttrium
             }
         };
 
+        template <typename PUTPIXEL, typename ARG1, typename ARG2, typename ARG3>
+        struct PutPixel3
+        {
+            PUTPIXEL & proc;
+            ARG1     & arg1;
+            ARG2     & arg2;
+            ARG3     & arg3;
+
+            inline void operator()(const unit_t x, const unit_t y)
+            {
+                proc(x,y,arg1,arg2,arg3);
+            }
+        };
+
     }
 
 }
