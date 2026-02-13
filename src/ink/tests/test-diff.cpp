@@ -8,7 +8,12 @@
 #include "y/cameo/addition.hpp"
 
 #include "y/ink/image/formats.hpp"
-
+#include "y/container/sequence/vector.hpp"
+#include "y/container/algorithm/unique.hpp"
+#include "y/ink/ops/ld.hpp"
+#include "y/color/x11.hpp"
+#include "y/string/format.hpp"
+#include "y/ink/draw/line.hpp"
 
 using namespace Yttrium;
 
@@ -119,8 +124,21 @@ namespace
 
 using namespace Ink;
 
+#include "y/concurrent/api/simd/crew.hpp"
+
+namespace
+{
+    static inline void putWhite(const unit_t x, const unit_t y, Image &img)
+    {
+        img[y][x] = Y_White;
+    }
+}
+
 Y_UTEST(diff)
 {
+    Concurrent::Processor cpus = new Concurrent::Crew( Concurrent::Site::Default );
+    Ink::Broker           par(cpus);
+
     std::cerr << "Computing Differential Filters" << std::endl;
 
     computeDiff(1,GetOne);
@@ -129,38 +147,46 @@ Y_UTEST(diff)
 
     {
         const Formats & IMG = Formats::Std();
-        const unit_t    delta = 10;
+        const unit_t    delta = 1;
         const size_t    side  = delta*2 + 1;
         Image           img(side,side);
         Point           center(delta,delta);
+        Vector<Point>   border;
 
-        const double    theta = 0.3;
-        const double    ct    = cos(theta);
-        const double    st    = sin(theta);
-        for(unit_t y=-delta;y<=delta;++y)
+        for(unit_t i=img.lower.x;i<=img.upper.x;++i)
         {
-            const double Y = y;
-            for(unit_t x=-delta;x<=delta;++x)
+            border << Point(i,img.lower.y);
+            border << Point(i,img.upper.y);
+        }
+
+        for(unit_t j=img.lower.y;j<=img.upper.y;++j)
+        {
+            border << Point(img.lower.x,j);
+            border << Point(img.upper.x,j);
+        }
+        std::cerr << "#border=" << border.size() << std::endl;
+        const size_t nb = Algo::Unique(border).size();
+        std::cerr << "#border=" << border.size() << std::endl;
+        std::cerr << "border=" << border << std::endl;
+
+        unsigned count=0;
+        for(size_t i=1;i<=nb;++i)
+        {
+            const Point ini = border[i];
+            for(size_t j=1;j<i;++j)
             {
-                const double X = x;
-                const double d = fabs(X*st-Y*ct);
-                const Point  p(center.x+x,center.y+y); Y_ASSERT(img.contains(p));
-                uint8_t      u=0;
-                if(d<=1.0)
-                {
-                    const double c = 1.0 - d;
-                    u = Color::Gray::UnitToByte(c);
-                    //std::cerr << "c=" << c << "=> " << int(u) << std::endl;
-                }
-                const RGBA C(u,u,u);
-                img[p.y][p.x] = C;
-                //std::cerr << "d=" << d << " @" << p << " => " << C << std::endl;
+                const Point end = border[j];
+                Y_ASSERT(ini!=end);
+
+                LoadPixel::Set(par,img,Y_Black);
+                Draw::Line_(ini.x, ini.y, end.x, end.y, putWhite, img);
+
+                ++count;
+                const String fileName = Formatted::Get("diff%u.png",count);
+                IMG.save(img,fileName, 0);
 
             }
         }
-
-        IMG.save(img, "diff.png", 0);
-
 
 
 

@@ -31,5 +31,5 @@ namespace Yttrium
     }
 
 }
-#endif
+#endif // !Y_Container_Algo_Skip_Included
 

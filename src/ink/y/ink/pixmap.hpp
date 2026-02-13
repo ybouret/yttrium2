@@ -133,7 +133,30 @@ namespace Yttrium
                 return (Row &)row_[j];
             }
 
-
+            inline friend bool operator==(const Pixmap &lhs, const Pixmap &rhs)
+            {
+                {
+                    const Area &la = lhs;
+                    const Area &ra = rhs;
+                    if(la!=ra) return false;
+                }
+                for(size_t j=lhs.h;j>0;--j)
+                {
+                    const Row &l = lhs(j);
+                    const Row &r = rhs(j);
+                    for(size_t i=lhs.w;i>0;--i)
+                    {
+                        switch( Sign::Of( l(i), r(i) ) )
+                        {
+                            case Negative:
+                            case Positive:
+                                return false;
+                            case __Zero__: continue;
+                        }
+                    }
+                }
+                return true;
+            }
 
         private:
             Y_Disable_Assign(Pixmap); //!< discarding

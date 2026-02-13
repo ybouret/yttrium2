@@ -1,5 +1,5 @@
 
-#include "y/ink/ops.hpp"
+#include "y/ink/ops/ld.hpp"
 #include "y/utest/run.hpp"
 #include "y/concurrent/api/simd/crew.hpp"
 #include "y/concurrent/api/simd/sole.hpp"
@@ -38,6 +38,9 @@ Y_UTEST(ops)
 
     Ink::Ops::Apply(seq,DoSomething< Ink::Pixmap<float> >,pxm);
     Ink::Ops::Apply(par,DoSomething< Ink::Pixmap<float> >,pxm);
+
+    Ink::LoadPixel::Set(par,pxm,1.0f);
+    
 
 
 }
