@@ -147,7 +147,7 @@ Y_UTEST(diff)
 
     {
         const Formats & IMG = Formats::Std();
-        const unit_t    delta = 1;
+        const unit_t    delta = 2;
         const size_t    side  = delta*2 + 1;
         Image           img(side,side);
         Point           center(delta,delta);
@@ -171,6 +171,7 @@ Y_UTEST(diff)
 
         Vector<Image> vimg;
         unsigned      count=0;
+        unsigned      middle=0;
         for(size_t i=1;i<=nb;++i)
         {
             const Point ini = border[i];
@@ -179,9 +180,11 @@ Y_UTEST(diff)
                 const Point end = border[j];
                 Y_ASSERT(ini!=end);
 
+                // create image
                 LoadPixel::Set(par,img,Y_Black);
                 Draw::Line_(ini.x, ini.y, end.x, end.y, putWhite, img);
 
+                // check if already exists
                 bool found = false;
                 for(size_t i=vimg.size();i>0;--i)
                 {
@@ -192,18 +195,29 @@ Y_UTEST(diff)
                         break;
                     }
                 }
-
                 if(found) continue;
+
+                // append to collection
                 {
                     const Image tmp(CopyOf,img);
                     assert(img==tmp);
                     vimg << tmp;
                 }
                 Y_ASSERT(img==vimg.tail());
-                
+
+                if( img[center] != Y_Black )
+                {
+                    std::cerr << "middle point found!" << std::endl;
+                    ++middle;
+                    const String fileName = Formatted::Get("middle%u.png",middle);
+                    IMG.save(img,fileName, 0);
+                }
+
                 ++count;
-                const String fileName = Formatted::Get("diff%u.png",count);
-                IMG.save(img,fileName, 0);
+                {
+                    const String fileName = Formatted::Get("diff%u.png",count);
+                    IMG.save(img,fileName, 0);
+                }
 
             }
         }
