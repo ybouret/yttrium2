@@ -80,6 +80,16 @@ namespace Yttrium
                 return os;
             }
 
+            inline friend bool operator==(const RGB &x, const RGB &y) noexcept
+            {
+                return (x.r == y.r) && (x.g == y.g) && (x.b == y.b);
+            }
+
+            inline friend bool operator!=(const RGB &x, const RGB &y) noexcept
+            {
+                return (x.r != y.r) || (x.g != y.g) || (x.b != y.b);
+            }
+
             //__________________________________________________________________
             //
             //

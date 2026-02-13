@@ -39,6 +39,7 @@ namespace Yttrium
             const size_t bsize; //!< block size
             Bitmap::CTor ctor;  //!< constructor if needed
             Bitmap::DTor dtor;  //!< destructor  if needed
+
         private:
             Y_Disable_Copy_And_Assign(Code);
         };
@@ -249,6 +250,8 @@ namespace Yttrium
         {
             code->withhold();
             rows->withhold();
+            assert(h==bmp.h);
+            assert(w==bmp.w);
         }
 
 
@@ -268,6 +271,8 @@ namespace Yttrium
         row_( 0 )
         {
             setup();
+            assert(h==bmp.h);
+            assert(w==bmp.w);
         }
 
 

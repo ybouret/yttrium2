@@ -80,13 +80,23 @@ namespace Yttrium
             //__________________________________________________________________
             //
             //
-            // Members
+            // Methods
             //
             //__________________________________________________________________
 
             inline T &       operator[](const size_t i)       noexcept { assert(i>=1); assert(i<=4);  return *((&r)+i-1); } //!< \param i index \return access[1..2]
             inline const T & operator[](const size_t i) const noexcept { assert(i>=1); assert(i<=4);  return *((&r)+i-1); } //!< \param i index \return access[1..2]
 
+
+            inline friend bool operator==(const RGBA &x, const RGBA &y) noexcept
+            {
+                return (x.r == y.r) && (x.g == y.g) && (x.b == y.b) && (x.a==y.a);
+            }
+
+            inline friend bool operator!=(const RGBA &x, const RGBA &y) noexcept
+            {
+                return (x.r != y.r) || (x.g != y.g) || (x.b != y.b) || (x.a != y.a);
+            }
 
             //__________________________________________________________________
             //

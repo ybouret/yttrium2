@@ -167,9 +167,10 @@ Y_UTEST(diff)
         std::cerr << "#border=" << border.size() << std::endl;
         const size_t nb = Algo::Unique(border).size();
         std::cerr << "#border=" << border.size() << std::endl;
-        std::cerr << "border=" << border << std::endl;
+        std::cerr << "border="  << border << std::endl;
 
-        unsigned count=0;
+        Vector<Image> vimg;
+        unsigned      count=0;
         for(size_t i=1;i<=nb;++i)
         {
             const Point ini = border[i];
@@ -180,6 +181,34 @@ Y_UTEST(diff)
 
                 LoadPixel::Set(par,img,Y_Black);
                 Draw::Line_(ini.x, ini.y, end.x, end.y, putWhite, img);
+
+                bool found = false;
+                for(size_t i=vimg.size();i>0;--i)
+                {
+                    if( vimg[i] == img )
+                    {
+                        found = true;
+                        std::cerr << "already computed" << std::endl;
+                        break;
+                    }
+                }
+
+                if(!found)
+                {
+                    {
+                        const Image tmp(CopyOf,img);
+                        assert(tmp.h==img.h);
+                        assert(tmp.w==img.w);
+                        vimg << tmp;
+                    }
+                    {
+                        char space[32] = {};
+                        memset(space,0,sizeof(space));
+                        const Image &tmp = vimg.tail();
+                        assert(tmp.h==img.h);
+                        assert(tmp.w==img.w);
+                    }
+                }
 
                 ++count;
                 const String fileName = Formatted::Get("diff%u.png",count);

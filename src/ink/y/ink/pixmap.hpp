@@ -88,6 +88,8 @@ namespace Yttrium
             explicit Pixmap(const CopyOf_ &, const Pixmap<U> &pxm, CTor cpy = Ccpy<U>) :
             Bitmap(CopyOf,pxm,sizeof(T),cpy)
             {
+                assert(h==pxm.h);
+                assert(w==pxm.w);
             }
 
 
@@ -130,7 +132,7 @@ namespace Yttrium
             inline const Row & operator()(const size_t j) const noexcept
             {
                 assert(j<h);
-                return (Row &)row_[j];
+                return (const Row &)row_[j];
             }
 
             inline friend bool operator==(const Pixmap &lhs, const Pixmap &rhs)
@@ -138,21 +140,24 @@ namespace Yttrium
                 {
                     const Area &la = lhs;
                     const Area &ra = rhs;
-                    if(la!=ra) return false;
+                    //std::cerr << "lhs.area=" << la << " / rhs.area=" << ra << std::endl;
+                    if(la!=ra)
+                        return false;
+                    // std::cerr << "width: " << la.width << " / " << ra.width << std::endl;
+                    // std::cerr << "h=" << lhs.h << " / " << rhs.h << std::endl;
+                    // std::cerr << "w=" << lhs.w << " / " << rhs.w << std::endl;
                 }
-                for(size_t j=lhs.h;j>0;--j)
+
+                assert(lhs.h==rhs.h);
+                assert(lhs.w==rhs.w);
+
+                for(size_t j=0;j<lhs.h;++j)
                 {
                     const Row &l = lhs(j);
                     const Row &r = rhs(j);
-                    for(size_t i=lhs.w;i>0;--i)
+                    for(size_t i=0;i<lhs.w;++i)
                     {
-                        switch( Sign::Of( l(i), r(i) ) )
-                        {
-                            case Negative:
-                            case Positive:
-                                return false;
-                            case __Zero__: continue;
-                        }
+                        if( l(i) != r(i) ) return false;
                     }
                 }
                 return true;

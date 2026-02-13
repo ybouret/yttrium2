@@ -91,8 +91,8 @@ namespace Yttrium
             // Members
             //
             //__________________________________________________________________
-            const size_t & w;        //!< width.x
-            const size_t & h;        //!< width.y
+            const size_t   w;        //!< width.x
+            const size_t   h;        //!< width.y
             const size_t   bpp;      //!< bytes per pixels
             const size_t   scanline; //!< bytes per line
             const size_t   stride;   //!< bytes to skip one line

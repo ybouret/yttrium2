@@ -63,7 +63,7 @@ namespace Yttrium
         //! \param lhs lhs \param rhs rhs \return equality
         inline friend bool operator==(const Leap &lhs, const Leap &rhs) noexcept
         {
-            return (lhs.lower == rhs.lower) && (lhs.upper==rhs.upper);
+            return (lhs.lower==rhs.lower) && (lhs.upper==rhs.upper);
         }
 
         //! \param lhs lhs \param rhs rhs \return difference
