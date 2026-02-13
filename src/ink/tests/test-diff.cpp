@@ -193,23 +193,14 @@ Y_UTEST(diff)
                     }
                 }
 
-                if(!found)
+                if(found) continue;
                 {
-                    {
-                        const Image tmp(CopyOf,img);
-                        assert(tmp.h==img.h);
-                        assert(tmp.w==img.w);
-                        vimg << tmp;
-                    }
-                    {
-                        char space[32] = {};
-                        memset(space,0,sizeof(space));
-                        const Image &tmp = vimg.tail();
-                        assert(tmp.h==img.h);
-                        assert(tmp.w==img.w);
-                    }
+                    const Image tmp(CopyOf,img);
+                    assert(img==tmp);
+                    vimg << tmp;
                 }
-
+                Y_ASSERT(img==vimg.tail());
+                
                 ++count;
                 const String fileName = Formatted::Get("diff%u.png",count);
                 IMG.save(img,fileName, 0);

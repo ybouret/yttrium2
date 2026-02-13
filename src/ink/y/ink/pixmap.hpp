@@ -135,6 +135,16 @@ namespace Yttrium
                 return (const Row &)row_[j];
             }
 
+            inline Type & operator[](const Point p) noexcept
+            {
+                return (*this)[p.y][p.x];
+            }
+
+            inline ConstType & operator[](const Point p) const noexcept
+            {
+                return (*this)[p.y][p.x];
+            }
+
             inline friend bool operator==(const Pixmap &lhs, const Pixmap &rhs)
             {
                 {
