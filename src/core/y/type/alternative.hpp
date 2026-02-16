@@ -69,4 +69,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Type_Alternative_Included
