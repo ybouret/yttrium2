@@ -62,6 +62,6 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Cameo_ScalarSummator_Included
 
 

@@ -19,15 +19,21 @@ namespace Yttrium
         class Filter : public FilterMetrics, public CxxSeries< FilterElement<T> >
         {
         public:
+            typedef FilterElement<T>   Element;
+            typedef CxxSeries<Element> Elements;
             typedef Cameo::Addition<T> Addition;
             typedef Cameo::Caddy<T>    Additions;
 
+            using Elements::capacity;
+            using Elements::size;
+
             template <typename U>
             inline explicit Filter(const U   * const blockAddr,
-                                   const size_t      blockSize) :
+                                   const size_t      blockSize,
+                                   const size_t      nChannels = 0) :
             FilterMetrics(blockSize),
             CxxSeries< FilterElement<T> >( Count(blockAddr,blockSize) ),
-            adds(),
+            adds( nChannels, capacity() ),
             wsum(0)
             {
                 size_t i=0;
@@ -51,28 +57,58 @@ namespace Yttrium
             }
 
 
+
             inline virtual ~Filter() noexcept {}
 
-            template <typename PIXEL> inline
-            void load(const Pixmap<PIXEL> &source,
+
+            template <
+            typename     PIXEL,
+            typename     PTYPE,
+            const size_t NCHAN>
+            inline
+            void load(T * const            target,
+                      const Pixmap<PIXEL> &source,
                       const Point          origin)
             {
-                const FilterElement<T> * elem = & (*this)[1];
-                for(size_t i=this->size();i>0;--i,++elem)
+                assert(NCHAN==adds.size);
+                adds.ldz();
                 {
-                    const Point p = origin + elem->p;
-                    const PIXEL c = source[p];
+                    const Element * elem = & (*this)[1];
+                    for(size_t i=size();i>0;--i,++elem)
+                        acc<PTYPE,NCHAN>( (const PTYPE *) &source[origin + elem->p], elem->w);
                 }
-
+                sum<NCHAN>(target);
             }
 
-
-            Additions adds;  //!< additions
+            Additions adds; //!< additions
             const T   wsum; //!< sum of weights
-
 
         private:
             Y_Disable_Copy_And_Assign(Filter);
+
+            template <typename PTYPE, const size_t NCHAN> inline
+            void acc(const PTYPE * const ptype, const T w)
+            {
+                assert(NCHAN==adds.size);
+                Addition * add   = adds.head;
+                for(size_t j=0;j<NCHAN;++j,add=add->next)
+                {
+                    assert(0!=add);
+                    add->addProd(w,ptype[j]);
+                }
+            }
+
+            template <const size_t NCHAN>
+            void sum(T * const target)
+            {
+                assert(NCHAN==adds.size);
+                Addition * add   = adds.head;
+                for(size_t j=0;j<NCHAN;++j,add=add->next)
+                {
+                    assert(0!=add);
+                    target[j] = add->sum();
+                }
+            }
         };
 
     }

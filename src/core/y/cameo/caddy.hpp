@@ -50,6 +50,20 @@ namespace Yttrium
             //! setup empty
             inline explicit Caddy() noexcept : ListType(), pool() {}
 
+            //! setup \param minCount initial addition count
+            inline explicit Caddy(const size_t minCount) : ListType(), pool()
+            {
+                while(size<minCount) pushTail( new AddType() );
+            }
+
+            //! setup \param minCount initial addition count \param withAtLeast prepare each addition
+            inline explicit Caddy(const size_t minCount, const size_t withAtLeast) : ListType(), pool()
+            {
+                while(size<minCount) pushTail( new AddType(withAtLeast) );
+            }
+
+
+
             //! cleanup
             inline virtual ~Caddy() noexcept {}
 

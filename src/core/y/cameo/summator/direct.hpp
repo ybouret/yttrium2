@@ -44,10 +44,12 @@ namespace Yttrium
             //__________________________________________________________________
 
             //! setup
-            inline explicit DirectSummator() : Summator<T>(), acc()
+            inline explicit DirectSummator(const size_t = 0) : Summator<T>(), acc()
             {
                 Y_STATIC_CHECK(Y_Is_SuperSubClass_Strict(Apex::Number,MutableType),NoApexNumber);
             }
+
+
 
             //! cleanup
             inline virtual ~DirectSummator() noexcept {}

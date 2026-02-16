@@ -44,7 +44,7 @@ namespace Yttrium
             //__________________________________________________________________
 
             //! setup
-            inline AProxySummator() : Summator<T>(), acc()
+            inline AProxySummator(const size_t = 0) : Summator<T>(), acc()
             {
                 Y_STATIC_CHECK(TypeTraits<T>::IsIntegral,NoIntegralType);
             }
