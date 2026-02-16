@@ -150,12 +150,8 @@ namespace Yttrium
                 {
                     const Area &la = lhs;
                     const Area &ra = rhs;
-                    //std::cerr << "lhs.area=" << la << " / rhs.area=" << ra << std::endl;
                     if(la!=ra)
                         return false;
-                    // std::cerr << "width: " << la.width << " / " << ra.width << std::endl;
-                    // std::cerr << "h=" << lhs.h << " / " << rhs.h << std::endl;
-                    // std::cerr << "w=" << lhs.w << " / " << rhs.w << std::endl;
                 }
 
                 assert(lhs.h==rhs.h);

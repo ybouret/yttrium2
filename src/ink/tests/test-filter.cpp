@@ -16,58 +16,73 @@ namespace Yttrium
     namespace Ink
     {
 
-        class CoreFilter
+
+        class FilterMetrics
         {
         public:
             static const char * const CallSign;
 
-            explicit CoreFilter(const int * const blockAddr, const size_t blockSize);
-            virtual ~CoreFilter() noexcept;
+            explicit FilterMetrics(const size_t blockSize);
+            virtual ~FilterMetrics() noexcept;
 
+            template <typename T> static inline
+            size_t Count(const T * const blockAddr, const size_t blockSize)
+            {
+                assert(0!=blockAddr);
+                size_t res = 0;
+                for(size_t i=0;i<blockSize;++i)
+                {
+                    switch( Sign::Of(blockAddr[i]) )
+                    {
+                        case __Zero__: continue;
+                        case Negative:
+                        case Positive:
+                            ++res;
+                            continue;
+                    }
+                }
+                return res;
+            }
 
-            const size_t ncof;
             const size_t side;
             const unit_t delta;
 
         private:
-            Y_Disable_Copy_And_Assign(CoreFilter);
+            Y_Disable_Copy_And_Assign(FilterMetrics);
         };
 
-        const char * const CoreFilter :: CallSign = "Ink::Filter";
 
-        CoreFilter:: ~CoreFilter() noexcept
-        {
-        }
+        const char * const FilterMetrics :: CallSign = "Ink::FilterMetrics";
 
-        CoreFilter:: CoreFilter(const int * const blockAddr, const size_t blockSize)   :
-        ncof(0),
+        FilterMetrics:: FilterMetrics(const size_t blockSize)   :
         side( IntegerSquareRoot(blockSize) ),
         delta( (side-1) >> 1 )
         {
-            assert(0!=blockAddr);
             if(blockSize<=0)         throw Specific::Exception(CallSign,"no coefficient");
             if(side*side!=blockSize) throw Specific::Exception(CallSign,"%s is not a square", Decimal(blockSize).c_str());
             if(1!=(side&1))          throw Specific::Exception(CallSign,"side=%s is not odd", Decimal(side).c_str());
-
-            for(size_t i=0;i<blockSize;++i)
-            {
-                if(blockAddr[i]) ++Coerce(ncof);
-            }
         }
+
+        FilterMetrics:: ~FilterMetrics() noexcept
+        {
+        }
+
+
+
 
         template <typename T> class FilterElement
         {
         public:
-            inline  FilterElement(const Point _c, const T _w) : c(_c),  w(_w) {}
+            inline  FilterElement(const Point _p, const T _w) : p(_p),  w(_w) {}
             inline ~FilterElement() noexcept {}
 
             inline friend std::ostream & operator<<(std::ostream &os, const FilterElement &self)
             {
-                os << '@' << self.c << "=" << self.w;
+                os << '@' << self.p << "=" << self.w;
                 return os;
             }
 
-            const Point c;
+            const Point p;
             const T     w;
 
         private:
@@ -76,24 +91,28 @@ namespace Yttrium
 
 
         template <typename T>
-        class Filter : public CoreFilter, public CxxSeries< FilterElement<T> >
+        class Filter : public FilterMetrics, public CxxSeries< FilterElement<T> >
         {
         public:
-            inline explicit Filter(const int * const blockAddr,
+            template <typename U>
+            inline explicit Filter(const U   * const blockAddr,
                                    const size_t      blockSize) :
-            CoreFilter(blockAddr,blockSize),
-            CxxSeries< FilterElement<T> >(ncof)
+            FilterMetrics(blockSize),
+            CxxSeries< FilterElement<T> >( Count(blockAddr,blockSize) )
             {
-                apz    sum = 0;
                 size_t i=0;
                 for(unit_t y=-delta;y<=delta;++y)
                 {
                     for(unit_t x=-delta;x<=delta;++x)
                     {
-                        const int w = blockAddr[i++];
-                        if(!w) continue;
-                        sum += w;
-                        const T     W = (T) w;
+                        const T W = blockAddr[i++];
+                        switch( Sign::Of(W) )
+                        {
+                            case __Zero__: continue;
+                            case Negative:
+                            case Positive:
+                                break;
+                        }
                         const Point C(x,y);
                         this->push(C,W);
                     }
@@ -117,15 +136,15 @@ using namespace Ink;
 
 Y_UTEST(filter)
 {
-    static const int f[3][3] =
+    static const int8_t f[3][3] =
     {
         { 1, 2, 3 },
         { 4, 5 ,6 },
         { 7, 8, 9 }
     };
 
-    Filter<float> F(&f[0][0],sizeof(f)/sizeof(f[0][0]));
-    std::cerr << "ncof=" << F.ncof << std::endl;
+    Filter<float> F( &f[0][0], sizeof(f)/sizeof(f[0][0]));
     std::cerr << F << std::endl;
+
 }
 Y_UDONE()
