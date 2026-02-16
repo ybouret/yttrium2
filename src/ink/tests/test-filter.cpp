@@ -6,6 +6,7 @@
 
 #include "y/container/cxx/series.hpp"
 
+#include "y/cameo/caddy.hpp"
 
 
 
@@ -18,12 +19,16 @@ namespace Yttrium
         class Filter : public FilterMetrics, public CxxSeries< FilterElement<T> >
         {
         public:
+            typedef Cameo::Addition<T> Addition;
+            typedef Cameo::Caddy<T>    Additions;
+
             template <typename U>
             inline explicit Filter(const U   * const blockAddr,
                                    const size_t      blockSize) :
             FilterMetrics(blockSize),
             CxxSeries< FilterElement<T> >( Count(blockAddr,blockSize) ),
-            sum(0)
+            adds(),
+            wsum(0)
             {
                 size_t i=0;
                 for(unit_t y=-delta;y<=delta;++y)
@@ -42,13 +47,28 @@ namespace Yttrium
                         this->push(C,W);
                     }
                 }
-                Coerce(sum) = FilterSum<T>::Compute( *this );
+                Coerce(wsum) = FilterSum<T>::Compute( *this );
             }
 
 
             inline virtual ~Filter() noexcept {}
 
-            const T sum;
+            template <typename PIXEL> inline
+            void load(const Pixmap<PIXEL> &source,
+                      const Point          origin)
+            {
+                const FilterElement<T> * elem = & (*this)[1];
+                for(size_t i=this->size();i>0;--i,++elem)
+                {
+                    const Point p = origin + elem->p;
+                    const PIXEL c = source[p];
+                }
+
+            }
+
+
+            Additions adds;  //!< additions
+            const T   wsum; //!< sum of weights
 
 
         private:
@@ -71,13 +91,13 @@ Y_UTEST(filter)
     };
 
     Filter<float> F( &f[0][0], sizeof(f)/sizeof(f[0][0]));
-    std::cerr << F << "/" << F.sum << std::endl;
+    std::cerr << F << "/" << F.wsum << std::endl;
 
 
     Filter<int> Fi( &f[0][0], sizeof(f)/sizeof(f[0][0]) );
-    std::cerr << Fi<< "/" << Fi.sum << std::endl;
+    std::cerr << Fi<< "/" << Fi.wsum << std::endl;
 
     Filter<uint32_t> Fu( &f[0][0], sizeof(f)/sizeof(f[0][0]) );
-    std::cerr << Fu<< "/" << Fu.sum << std::endl;
+    std::cerr << Fu<< "/" << Fu.wsum << std::endl;
 }
 Y_UDONE()

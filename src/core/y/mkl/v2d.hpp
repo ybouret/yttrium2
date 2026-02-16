@@ -155,6 +155,12 @@ namespace Yttrium
             return V2D(-y,x);
         }
 
+        //! \return transpose
+        inline V2D transpose() const noexcept
+        {
+            return V2D(y,x);
+        }
+
         //______________________________________________________________________
         //
         //
@@ -167,5 +173,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_MKL_V2D_Included
 
