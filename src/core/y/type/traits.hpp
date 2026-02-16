@@ -35,8 +35,8 @@ namespace Yttrium
     {
         typedef TL5(signed char, short, int, long, long long)                                       StandardIntegers; //!< \return standard signed
         typedef TL5(unsigned char, unsigned short, unsigned int, unsigned long, unsigned long long) StandardUnsigned; //!< \return standard unsigned
-        typedef TL4(uint8_t,uint16_t,uint32_t,uint64_t)                                             PlatformIntegers; //!< \return system unsigned
-        typedef TL4(int8_t,int16_t,int32_t,int64_t)                                                 PlatformUnsigned; //!< \return system signed
+        typedef TL4(uint8_t,uint16_t,uint32_t,uint64_t)                                             PlatformUnsigned; //!< \return system unsigned
+        typedef TL4(int8_t,int16_t,int32_t,int64_t)                                                 PlatformIntegers; //!< \return system signed
         typedef TL2(bool,char)                                                                      LanguageIntegers; //!< \return misc. chart
         typedef TL3(float,double,long double)                                                       IsoFloatingPoint; //!< \return floating point
     }
