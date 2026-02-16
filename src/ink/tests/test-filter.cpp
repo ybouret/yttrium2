@@ -245,12 +245,10 @@ Y_UTEST(filter)
     std::cerr << F << "/" << F.sum << std::endl;
 
 
-
-
-
     Filter<int> Fi( &f[0][0], sizeof(f)/sizeof(f[0][0]) );
     std::cerr << Fi<< "/" << Fi.sum << std::endl;
 
-
+    Filter<uint32_t> Fu( &f[0][0], sizeof(f)/sizeof(f[0][0]) );
+    std::cerr << Fu<< "/" << Fu.sum << std::endl;
 }
 Y_UDONE()
