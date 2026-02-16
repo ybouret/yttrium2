@@ -72,5 +72,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Sorting_Lexicographic_Included
 

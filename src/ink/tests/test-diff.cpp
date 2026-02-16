@@ -14,6 +14,7 @@
 #include "y/color/x11.hpp"
 #include "y/string/format.hpp"
 #include "y/ink/draw/line.hpp"
+#include "y/sorting/heap.hpp"
 
 using namespace Yttrium;
 
@@ -120,6 +121,30 @@ namespace
         return res;
     }
 
+
+    static inline
+    void computeMetrics(const unit_t delta)
+    {
+        std::cerr << "computeMetrics @delta=" << delta << std::endl;
+        Y_ASSERT(delta>=0);
+        const size_t side = 1 + 2*delta;
+        const size_t ncof = side*side;
+        Vector<unit_t> r2(WithAtLeast,ncof);
+        for(unit_t y=-delta;y<=delta;++y)
+        {
+            for(unit_t x=-delta;x<=delta;++x)
+            {
+                r2 << (x*x+y*y);
+            }
+        }
+        Y_ASSERT(ncof==r2.size());
+        //std::cerr << r2 << std::endl;
+        Sorting::Heap::Sort(Algo::Unique(r2)(), r2.size(), Sign::Increasing<unit_t>);
+        std::cerr << "\t" << r2 << std::endl;
+        const size_t nw = r2.size();
+        std::cerr << "\t#weights=" << nw << std::endl;
+    }
+
 }
 
 using namespace Ink;
@@ -144,6 +169,12 @@ Y_UTEST(diff)
     computeDiff(1,GetOne);
     computeDiff(1,GetOneOverR2);
     computeDiff(2,GetOne);
+
+    computeMetrics(1);
+    computeMetrics(2);
+    computeMetrics(3);
+
+    return 0;
 
     {
         const Formats & IMG = Formats::Std();
