@@ -12,6 +12,7 @@ y/ink/image
 y/ink/image/format
 y/ink/image/format/pnm
 y/ink/ops
+y/ink/ops/filter
 y/ink/draw
 )
 
