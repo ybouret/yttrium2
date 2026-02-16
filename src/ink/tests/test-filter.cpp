@@ -70,7 +70,7 @@ namespace Yttrium
                       const Pixmap<PIXEL> &source,
                       const Point          origin)
             {
-                assert(NCHAN==adds.size);
+                assert(adds.size>=NCHAN);
                 adds.ldz();
                 {
                     const Element * elem = & (*this)[1];
@@ -89,7 +89,7 @@ namespace Yttrium
             template <typename PTYPE, const size_t NCHAN> inline
             void acc(const PTYPE * const ptype, const T w)
             {
-                assert(NCHAN==adds.size);
+                assert(adds.size>=NCHAN);
                 Addition * add   = adds.head;
                 for(size_t j=0;j<NCHAN;++j,add=add->next)
                 {
@@ -101,7 +101,7 @@ namespace Yttrium
             template <const size_t NCHAN>
             void sum(T * const target)
             {
-                assert(NCHAN==adds.size);
+                assert(adds.size>=NCHAN);
                 Addition * add   = adds.head;
                 for(size_t j=0;j<NCHAN;++j,add=add->next)
                 {
@@ -110,6 +110,20 @@ namespace Yttrium
                 }
             }
         };
+
+        template <typename SCALAR>
+        struct ApplyFilter
+        {
+            template <typename T> static inline
+            void Fill(T                    & target,
+                      Filter<T>            & filter,
+                      const Pixmap<SCALAR> & source,
+                      const Point            point)
+            {
+                filter.template load<SCALAR,SCALAR,1>(&target,source,point);
+            }
+        };
+
 
     }
 
@@ -126,7 +140,7 @@ Y_UTEST(filter)
         { 7, 8, 9 }
     };
 
-    Filter<float> F( &f[0][0], sizeof(f)/sizeof(f[0][0]));
+    Filter<float> F( &f[0][0], sizeof(f)/sizeof(f[0][0]), 4);
     std::cerr << F << "/" << F.wsum << std::endl;
 
 
@@ -135,5 +149,11 @@ Y_UTEST(filter)
 
     Filter<uint32_t> Fu( &f[0][0], sizeof(f)/sizeof(f[0][0]) );
     std::cerr << Fu<< "/" << Fu.wsum << std::endl;
+
+    Pixmap<uint8_t> pxm(200,100);
+
+    float target = 0;
+    ApplyFilter<uint8_t>::Fill(target,F,pxm,Point(0,0));
+
 }
 Y_UDONE()
