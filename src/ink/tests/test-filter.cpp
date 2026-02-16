@@ -6,6 +6,8 @@
 #include "y/utest/run.hpp"
 
 #include "y/ink/ops/filter/metrics.hpp"
+#include "y/ink/ops/filter/element.hpp"
+
 #include "y/container/cxx/series.hpp"
 
 #include "y/apex/integer.hpp"
@@ -19,28 +21,7 @@ namespace Yttrium
     {
 
         
-        template <typename T> class FilterElement
-        {
-        public:
-            inline  FilterElement(const Point _p, const T _w) : p(_p),  w(_w) {}
-            inline ~FilterElement() noexcept {}
-
-            inline friend std::ostream & operator<<(std::ostream &os, const FilterElement &self)
-            {
-                os << '@' << self.p << "=" << self.w;
-                return os;
-            }
-
-            const Point p;
-            const T     w;
-
-
-
-        private:
-            Y_Disable_Copy_And_Assign(FilterElement);
-        };
-
-
+       
 
         template <typename T>
         class FilterSumF : public Cameo::Addition<T>
