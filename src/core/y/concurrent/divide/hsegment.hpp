@@ -64,8 +64,7 @@ namespace Yttrium
                 //! display
                 inline friend std::ostream & operator<<(std::ostream &os, const HSegment &self)
                 {
-                    vertex_t end = self.start; end.x += self.width; --end.x;
-                    return os << "#" << self.width << ": " << self.start << "->" << end;
+                    return os << "#" << self.width << ": " << self.start << "->" << self.right();
                 }
 
                 //______________________________________________________________
