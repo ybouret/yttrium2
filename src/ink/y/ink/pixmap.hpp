@@ -135,16 +135,19 @@ namespace Yttrium
                 return (const Row &)row_[j];
             }
 
+            //! \param p point \return value at point
             inline Type & operator[](const Point p) noexcept
             {
                 return (*this)[p.y][p.x];
             }
 
+            //! \param p point \return const value at point
             inline ConstType & operator[](const Point p) const noexcept
             {
                 return (*this)[p.y][p.x];
             }
 
+            //! \param lhs lhs \param rhs rhs \return area/type-wise equality
             inline friend bool operator==(const Pixmap &lhs, const Pixmap &rhs)
             {
                 {

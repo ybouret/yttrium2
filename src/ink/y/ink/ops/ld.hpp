@@ -11,14 +11,28 @@ namespace Yttrium
     namespace Ink
     {
 
+        //! LoadPixel value in a pixmap
         struct LoadPixel
         {
+
+            //! set same value in a pixmap
+            /**
+             \param broker broker
+             \param pixmap pixmap
+             \param value  value
+             */
             template <typename PIXMAP> static inline
             void Set(Broker &broker, PIXMAP &pixmap, typename PIXMAP::ParamType value)
             {
                 Ops::Apply(broker, Put<PIXMAP,typename PIXMAP::MutableType>, pixmap,value);
             }
 
+            //! parallel routine
+            /**
+             \param tile target tile
+             \param pxm  target pixmap
+             \param arg  value
+             */
             template <typename PIXMAP, typename T>
             static void  Put(Lockable  &,
                              Ink::Tile &tile,
@@ -30,9 +44,7 @@ namespace Yttrium
                     const Ink::Segment    s   = tile[k];
                     typename PIXMAP::Row &row = pxm[s.start.y];
                     for(unit_t i=s.width,x=s.start.x;i>0;--i,++x)
-                    {
                         row[x] = arg;
-                    }
                 }
             }
 
