@@ -5,6 +5,7 @@
 #define Y_Ink_Draw_Line_Included
 
 #include "y/ink/draw/putpixel.hpp"
+#include "y/calculus/iabs.hpp"
 
 namespace Yttrium
 {
@@ -14,11 +15,7 @@ namespace Yttrium
 
         namespace Draw
         {
-            //! \param x integer \return |x|
-            template <typename T> inline
-            T AbsOf(const T x) {
-                return x < 0 ? -x : x;
-            }
+            
 
             //! no-arg line drawing
             /**
@@ -35,8 +32,8 @@ namespace Yttrium
                        const unit_t y1,
                        PUTPIXEL &   putPixel)
             {
-                const unit_t dx  =  AbsOf(x1-x0), sx = (x0<x1) ? 1 : -1;
-                const unit_t dy  = -AbsOf(y1-y0), sy = (y0<y1) ? 1 : -1;
+                const unit_t dx  =  IntegerAbs(x1-x0), sx = (x0<x1) ? 1 : -1;
+                const unit_t dy  = -IntegerAbs(y1-y0), sy = (y0<y1) ? 1 : -1;
                 unit_t       err = dx+dy; /* error value e_xy */
 
                 for(;;){  /* loop */

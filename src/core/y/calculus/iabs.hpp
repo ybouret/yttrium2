@@ -45,6 +45,6 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Calculus_IntegerAbs_Included
 
 
