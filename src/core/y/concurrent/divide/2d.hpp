@@ -296,6 +296,7 @@ wksp()
                 //! set for h>=3 \param ini ini \param end end \param box box
                 inline void setH(const vertex_t &ini, const vertex_t &end, const BoxType &box) noexcept
                 {
+                    std::cerr << "-> setH" << std::endl;
                     assert(h>=3);
 
                     //----------------------------------------------------------
@@ -314,6 +315,7 @@ wksp()
                         const scalar_t width = One + box.upper.x - ini.x;
                         Coerce(head) = seg;
                         new (seg+0) Segment(start,width);
+                        std::cerr << "first segment: " << seg[0] << std::endl;
                     }
 
                     //--------------------------------------------------
@@ -324,6 +326,7 @@ wksp()
                         const scalar_t width = One + end.x - box.lower.x;
                         Coerce(tail) = seg;
                         new (seg+1) Segment(start,width);
+                        std::cerr << "last  segment: " << seg[1] << std::endl;
                     }
 
                     //--------------------------------------------------
@@ -334,6 +337,7 @@ wksp()
                         const scalar_t width = box.width.x;
                         Coerce(bulk) = seg;
                         new (seg+2) Segment(start,width);
+                        std::cerr << "bulk  segment: " << seg[2] << std::endl;
                     }
                 }
 
