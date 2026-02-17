@@ -14,6 +14,12 @@ namespace Yttrium
 {
     namespace Algo
     {
+        //! test if element if different from previous
+        /**
+         \param arr sequence of testable type
+         \param j   index to test againt 1..j-1
+         \return true iff all different from j
+         */
         template <typename ARRAY> inline
         bool AcceptUnique(ARRAY &arr, const size_t j)
         {
@@ -24,6 +30,11 @@ namespace Yttrium
             return true; // all different
         }
 
+        //! restructure sequence from rejected index
+        /**
+         \param arr sequence of testable type
+         \param j   a multiple type was found at this index
+         */
         template <typename ARRAY> inline
         void RejectUnique(ARRAY &arr, const size_t j) noexcept
         {
@@ -32,6 +43,7 @@ namespace Yttrium
                 Memory::Stealth::Swap(arr[k],arr[k-1]);
         }
 
+        //! \param arr sequence of testable type \return sequence of unique types
         template <typename ARRAY> inline
         ARRAY & Unique(ARRAY &arr)
         {

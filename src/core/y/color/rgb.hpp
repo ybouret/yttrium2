@@ -80,11 +80,13 @@ namespace Yttrium
                 return os;
             }
 
+            //! \param x first color \param y second color \return channel-wise equality
             inline friend bool operator==(const RGB &x, const RGB &y) noexcept
             {
                 return (x.r == y.r) && (x.g == y.g) && (x.b == y.b);
             }
 
+            //! \param x first color \param y second color \return channel-wise difference
             inline friend bool operator!=(const RGB &x, const RGB &y) noexcept
             {
                 return (x.r != y.r) || (x.g != y.g) || (x.b != y.b);
