@@ -75,7 +75,7 @@ namespace Yttrium
             call(0),
             args(0),
             processor(proc),
-            kernel( me(), &Spawn::compute)
+            kernel(me(),&Spawn::compute)
             {
 
             }

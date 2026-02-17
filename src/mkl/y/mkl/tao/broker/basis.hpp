@@ -43,9 +43,9 @@ namespace Yttrium
 
                 //! setup \param numThreads threads count
                 inline explicit BrokerBasis(const size_t numThreads) :
-                caddy()
+                caddy(numThreads <= 0 ? 1 : numThreads)
                 {
-                    (void) caddy.adjust( numThreads <= 0 ? 1 : numThreads );
+                   
                 }
 
                 //! cleanup

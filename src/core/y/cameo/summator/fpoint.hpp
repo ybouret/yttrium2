@@ -176,5 +176,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Cameo_FPointSummator_Included
 

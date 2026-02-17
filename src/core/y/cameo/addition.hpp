@@ -89,11 +89,7 @@ namespace Yttrium
             inline void addProd(LHS lhs, RHS rhs, size_t n)
             {
                 while(n-- > 0)
-                {
-                    //std::cerr << "+(" << *lhs << ")*(" << *rhs << ")";
                     addProd( *(lhs++), *(rhs++) );
-                }
-                //std::cerr << std::endl;
             }
 
             //! add u^2 to the sum \param u compatible are

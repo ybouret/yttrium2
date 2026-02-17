@@ -31,7 +31,9 @@ namespace Yttrium
     typename T,
     typename Comparator      = Sign::Comparator<T>,
     typename ThreadingPolicy = SingleThreadedClass>
-    class PriorityQueue : public Ordered<T,PriorityQueuePolicy>, public ThreadingPolicy
+    class PriorityQueue :
+    public Ordered<T,PriorityQueuePolicy>,
+    public ThreadingPolicy
     {
     public:
         //______________________________________________________________________

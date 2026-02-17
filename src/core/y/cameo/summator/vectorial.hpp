@@ -124,5 +124,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Cameo_VectorialSummator_Included
 
