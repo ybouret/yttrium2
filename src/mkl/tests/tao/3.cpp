@@ -73,7 +73,13 @@ namespace   {
                     uint64_t par = 0;
                     Y_WallTime_Update(seq, Tao::MMul(xadd,  a,lhs,rhs));
                     Y_WallTime_Update(par, Tao::MMul(broker,b,lhs,rhs));
-                    Y_ASSERT( delta(a,b) );
+                    if(!delta(a,b))
+                    {
+                        std::cerr << std::endl;
+                        std::cerr << std::endl;
+                        throw Exception("bad for nr=%u nc=%u", (unsigned)nr, (unsigned)nc);
+                    }
+                    //Y_ASSERT( delta(a,b) );
                     const apn    num = seq;
                     const apn    den = par;
                     const double r   = apn::Ratio<double>(num,den);
