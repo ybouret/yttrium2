@@ -21,6 +21,35 @@ namespace Yttrium
                 return os;
             }
 
+            static inline SignType Compare(const FilterElement &lhs, const FilterElement &rhs) noexcept
+            {
+                const unit_t l2 = lhs.p.norm2();
+                const unit_t r2 = rhs.p.norm2();
+                switch( Sign::Of(l2,r2) )
+                {
+                    case Negative: return Negative;
+                    case Positive: return Positive;
+                    case __Zero__: break;
+                }
+
+                switch( Sign::Of(lhs.p.y,rhs.p.y) )
+                {
+                    case Negative: return Negative;
+                    case Positive: return Positive;
+                    case __Zero__: break;
+                }
+
+                switch( Sign::Of(lhs.p.x,rhs.p.x) )
+                {
+                    case Negative: return Negative;
+                    case Positive: return Positive;
+                    case __Zero__: break;
+                }
+
+
+                return __Zero__;
+            }
+
             const Point p;
             const T     w;
 

@@ -62,21 +62,20 @@ namespace Yttrium
 
 
         template <typename T>
-        class BlurData : public BlurMetrics, public CxxSeries< FilterElement<T> >
+        class Blur : public BlurMetrics, public CxxSeries< FilterElement<T> >
         {
         public:
             typedef FilterElement<T>   Element;
             typedef CxxSeries<Element> Elements;
 
             template <typename PROC>
-            explicit BlurData(PROC &proc, const unit_t rmax) :
+            explicit Blur(PROC &proc, const unit_t rmax) :
             BlurMetrics(rmax),
             Elements(count()),
             denom(0)
             {
                 std::cerr << "r  = " << r  << std::endl;
                 std::cerr << "r2 = " << r2 << std::endl;
-                std::cerr << "n  = " << count() << std::endl;
                 Cameo::Addition<T>  add;
                 for(unit_t y=-r;y<=r;++y)
                 {
@@ -95,10 +94,11 @@ namespace Yttrium
                     }
                 }
                 Coerce(denom) = add.sum();
+                Sorting::Heap::Sort( (*this)(), this->size(), Element::Compare);
             }
 
 
-            virtual ~BlurData() noexcept
+            virtual ~Blur() noexcept
             {
             }
 
@@ -106,7 +106,7 @@ namespace Yttrium
 
 
         private:
-            Y_Disable_Copy_And_Assign(BlurData);
+            Y_Disable_Copy_And_Assign(Blur);
         };
 
         float g(const float r2)
@@ -123,7 +123,7 @@ namespace Yttrium
 
 Y_UTEST(blur)
 {
-    Ink::BlurData<float> blur(Ink::g,5);
+    Ink::Blur<float> blur(Ink::g,5);
     std::cerr << "blur=" << blur << std::endl;
 
 }
