@@ -236,6 +236,7 @@ wksp()
                     //----------------------------------------------------------
                     const vertex_t  ini = box.at(tile1d.offset);
                     const vertex_t  end = box.at(tile1d.utmost);
+                    std::cerr << "cut from  " << ini << " to " << end << " : h=" << (One + end.y - ini.y) << std::endl;
                     switch(  Coerce(h) = One + end.y - ini.y )
                     {
                         case 1:  set1(ini,end);     break;
