@@ -77,6 +77,8 @@ namespace   {
                     {
                         std::cerr << std::endl;
                         std::cerr << std::endl;
+                        std::cerr << "a=" << a << std::endl;
+                        std::cerr << "b=" << b << std::endl;
                         throw Exception("bad for nr=%u nc=%u", (unsigned)nr, (unsigned)nc);
                     }
                     //Y_ASSERT( delta(a,b) );
