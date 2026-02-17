@@ -236,8 +236,6 @@ wksp()
                     //----------------------------------------------------------
                     const vertex_t  ini = box.at(tile1d.offset);
                     const vertex_t  end = box.at(tile1d.utmost);
-                    //const Subdivision &ctx = *this;
-                    //std::cerr << "@" << ctx << ": cut from  " << ini << " to " << end << " : h=" << (One + end.y - ini.y) << std::endl;
                     switch(  Coerce(h) = One + end.y - ini.y )
                     {
                         case 1:  set1(ini,end);     break;
@@ -315,7 +313,6 @@ wksp()
                         const scalar_t width = One + box.upper.x - ini.x;
                         Coerce(head) = seg;
                         new (seg++) Segment(start,width);
-                        //std::cerr << "head segment: " << *head << std::endl;
                     }
 
                     //--------------------------------------------------
@@ -326,7 +323,6 @@ wksp()
                         const scalar_t width = One + end.x - box.lower.x;
                         Coerce(tail) = seg;
                         new (seg++) Segment(start,width);
-                        //std::cerr << "tail segment: " << *tail << std::endl;
                     }
 
                     //--------------------------------------------------
@@ -337,7 +333,6 @@ wksp()
                         const scalar_t width = box.width.x;
                         Coerce(bulk) = seg;
                         new (seg) Segment(start,width);
-                        //std::cerr << "bulk segment: " << *bulk << std::endl;
                     }
                 }
 
