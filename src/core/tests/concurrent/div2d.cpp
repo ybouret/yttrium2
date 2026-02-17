@@ -2,7 +2,7 @@
 #include "y/concurrent/divide/2d.hpp"
 #include "y/utest/run.hpp"
 
-
+#include "y/container/sequence/vector.hpp"
 
 using namespace Yttrium;
 
@@ -38,7 +38,7 @@ Y_UTEST(concurrent_div2d)
         }
     }
 
-    std::cerr << "Extensive Test" << std::endl;
+    (std::cerr << "Extensive Test..." << std::endl).flush();
     {
         for(int x=1;x<=20;++x)
         {
@@ -46,9 +46,34 @@ Y_UTEST(concurrent_div2d)
             {
                 Concurrent::Divide::Box<v2d> box( v2d(1,1), v2d(x,y) );
 
-                for(size_t nproc=1;nproc<=8;++nproc)
+                for(unsigned nproc=1;nproc<=8;++nproc)
                 {
+                    std::cerr << "nproc=" << nproc << " @ " << x << " x " << y << std::endl;
                     Concurrent::Divide::Tiles2D<int> tiles(nproc,box);
+                    Vector<v2d> vertices;
+                    for(unsigned i=1;i<=nproc;++i)
+                    {
+                        const Concurrent::Divide::Tile2D<int> &tile = tiles[i];
+                        std::cerr << "\t" << tile << std::endl;
+                        for(int j=tile.h;j>0;--j)
+                        {
+                            const Concurrent::Divide::HSegment<int> s = tile[j];
+                            v2d v = s.start;
+                            for(int k=s.width;k>0;--k,++v.x)
+                            {
+                                Y_ASSERT( box.includes(v) );
+                                for(size_t l=vertices.size();l>0;--l)
+                                {
+                                    if( v == vertices[l] )
+                                    {
+                                        std::cerr << "multiple " << v << " / " << vertices[l] << std::endl;
+                                        throw Exception("bad @x=%d, y=%d",x,y);
+                                    }
+                                }
+                                vertices << v;
+                            }
+                        }
+                    }
                 }
             }
         }
