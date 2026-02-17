@@ -236,8 +236,8 @@ wksp()
                     //----------------------------------------------------------
                     const vertex_t  ini = box.at(tile1d.offset);
                     const vertex_t  end = box.at(tile1d.utmost);
-                    const Subdivision &ctx = *this;
-                    std::cerr << "@" << ctx << ": cut from  " << ini << " to " << end << " : h=" << (One + end.y - ini.y) << std::endl;
+                    //const Subdivision &ctx = *this;
+                    //std::cerr << "@" << ctx << ": cut from  " << ini << " to " << end << " : h=" << (One + end.y - ini.y) << std::endl;
                     switch(  Coerce(h) = One + end.y - ini.y )
                     {
                         case 1:  set1(ini,end);     break;
@@ -296,7 +296,7 @@ wksp()
                 //! set for h>=3 \param ini ini \param end end \param box box
                 inline void setH(const vertex_t &ini, const vertex_t &end, const BoxType &box) noexcept
                 {
-                    std::cerr << "-> setH" << std::endl;
+                    //std::cerr << "-> setH" << std::endl;
                     assert(h>=3);
 
                     //----------------------------------------------------------
@@ -304,7 +304,7 @@ wksp()
                     // head and tail, bulk set to head-1 for access h=1,2
                     //
                     //----------------------------------------------------------
-                    Segment * const seg = base();
+                    Segment * seg = base();
                     Coerce(proc) = & Tile2D:: GetH;
 
                     //--------------------------------------------------
@@ -314,8 +314,8 @@ wksp()
                         const vertex_t start = ini;
                         const scalar_t width = One + box.upper.x - ini.x;
                         Coerce(head) = seg;
-                        new (seg+0) Segment(start,width);
-                        std::cerr << "first segment: " << seg[0] << std::endl;
+                        new (seg++) Segment(start,width);
+                        //std::cerr << "head segment: " << *head << std::endl;
                     }
 
                     //--------------------------------------------------
@@ -325,8 +325,8 @@ wksp()
                         const vertex_t start(box.lower.x,end.y);
                         const scalar_t width = One + end.x - box.lower.x;
                         Coerce(tail) = seg;
-                        new (seg+1) Segment(start,width);
-                        std::cerr << "last  segment: " << seg[1] << std::endl;
+                        new (seg++) Segment(start,width);
+                        //std::cerr << "tail segment: " << *tail << std::endl;
                     }
 
                     //--------------------------------------------------
@@ -336,8 +336,8 @@ wksp()
                         const vertex_t start(box.lower.x,ini.y-One);
                         const scalar_t width = box.width.x;
                         Coerce(bulk) = seg;
-                        new (seg+2) Segment(start,width);
-                        std::cerr << "bulk  segment: " << seg[2] << std::endl;
+                        new (seg) Segment(start,width);
+                        //std::cerr << "bulk segment: " << *bulk << std::endl;
                     }
                 }
 

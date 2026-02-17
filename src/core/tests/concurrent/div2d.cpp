@@ -74,6 +74,7 @@ Y_UTEST(concurrent_div2d)
                             }
                         }
                     }
+                    Y_ASSERT((size_t)(x*y)==vertices.size());
                 }
             }
         }
