@@ -65,7 +65,7 @@ namespace Yttrium
 
 
         template <typename T>
-        class Blur : public BlurMetrics, public CxxSeries< FilterElement<T> >
+        class BlurData : public BlurMetrics, public CxxSeries< FilterElement<T> >
         {
         public:
             typedef FilterElement<T>   Element;
@@ -73,7 +73,7 @@ namespace Yttrium
             typedef TypeToType<T>      MyTypeHint;
 
             template <typename PROC>
-            explicit Blur(PROC &proc, const unit_t rmax) :
+            explicit BlurData(PROC &proc, const unit_t rmax) :
             BlurMetrics(rmax),
             Elements(count()),
             denom(0)
@@ -128,9 +128,10 @@ namespace Yttrium
             }
 
 
-            virtual ~Blur() noexcept
+            virtual ~BlurData() noexcept
             {
             }
+
 
             void operator()(Pixmap<float>       &target,
                             const Pixmap<float> &source,
@@ -144,7 +145,7 @@ namespace Yttrium
 
 
         private:
-            Y_Disable_Copy_And_Assign(Blur);
+            Y_Disable_Copy_And_Assign(BlurData);
 
         };
 
@@ -155,6 +156,8 @@ namespace Yttrium
             inline virtual ~BlurFunction() noexcept {}
 
             virtual T operator()(const unit_t r2) const = 0;
+
+            inline const BlurFunction & blurFunction() const noexcept { return *this; }
 
             inline unit_t rmax() const
             {
@@ -175,6 +178,55 @@ namespace Yttrium
         private:
             Y_Disable_Copy_And_Assign(BlurFunction);
         };
+
+
+        template <typename T>
+        class BlurHook : public BlurData<T>
+        {
+        public:
+            inline explicit BlurHook(const BlurFunction<T> &F) :
+            BlurData<T>(F,F.rmax())
+            {
+            }
+
+            inline virtual ~BlurHook() noexcept
+            {
+            }
+
+
+        private:
+            Y_Disable_Copy_And_Assign(BlurHook);
+        };
+
+        template <typename T, template <typename> class FUNCTION>
+        class Blur : public FUNCTION<T>, public BlurHook<T>
+        {
+        public:
+            using FUNCTION<T>::blurFunction;
+
+            inline explicit Blur() : FUNCTION<T>(), BlurHook<T>( blurFunction() )
+            {
+            }
+
+            inline explicit Blur(const T arg1) : FUNCTION<T>(arg1), BlurHook<T>( blurFunction() )
+            {
+            }
+
+            inline explicit Blur(const T arg1, const T arg2) : FUNCTION<T>(arg1,arg2), BlurHook<T>( blurFunction() )
+            {
+            }
+
+
+            inline virtual ~Blur() noexcept {}
+
+
+        private:
+            Y_Disable_Copy_And_Assign(Blur);
+        };
+
+        
+
+
 
         template <typename T>
         class GaussBlur : public BlurFunction<T>
@@ -235,10 +287,8 @@ namespace Yttrium
         };
 
 
-        float g(const float r2)
-        {
-            return expf(-r2/10.0f);
-        }
+
+
 
 
     }
@@ -283,8 +333,9 @@ Y_UTEST(blur)
     Concurrent::Processor cpus = new Concurrent::Crew( Concurrent::Site::Default );
     Ink::Broker           broker(cpus);
     Formats     &IMG = Formats::Std();
-    Blur<float> blur(Ink::g,5);
-    
+
+    Blur<float,GaussBlur> gauss(2.7f);
+    BlurData<float>     & blur = gauss;
     if(argc>1)
     {
         Image         img = IMG.load(argv[1],0);
