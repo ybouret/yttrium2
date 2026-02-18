@@ -205,10 +205,9 @@ Y_UTEST(blur)
         Pixmap<float> pxm(CopyOf,img,rgba2gs);
 
         Ops::Apply(broker,gs2rgba,tgt,pxm);
-
         IMG.save(tgt, "gs.png", 0);
 
-
+        
     }
 
 
