@@ -375,6 +375,20 @@ static inline RGBA GSF2RGBA(const float f)
     return RGBA(u,u,u);
 }
 
+inline uint8_t RGBA2GSU(const RGBA &c)
+{
+    return Color::Gray::To<uint8_t>::Get(c.r,c.g,c.b);
+}
+
+inline void rgba2gsu(void * const u, const void * const c)
+{
+    *(uint8_t *)u = RGBA2GSU( *(const RGBA *)c );
+}
+
+static inline RGBA GSU2RGBA(const float u)
+{
+    return RGBA(u,u,u);
+}
 
 
 Y_UTEST(blur)
@@ -399,15 +413,34 @@ Y_UTEST(blur)
     {
         Image         img = IMG.load(argv[1],0);
         Image         tgt(img.w,img.h);
-        Pixmap<float> pxm(CopyOf,img,rgba2gsf);
-        Pixmap<float> out(img.w,img.h);
 
-        Ops::Convert(broker,tgt,GSF2RGBA,pxm);
-        IMG.save(tgt, "gs.png", 0);
+        {
+            Pixmap<float> pxm(CopyOf,img,rgba2gsf);
+            Pixmap<float> out(img.w,img.h);
 
-        BlurFilter:: Apply(broker,out,gauss,pxm);
-        Ops::Convert(broker,tgt,GSF2RGBA,out);
-        IMG.save(tgt, "gs-blur.png", 0);
+
+            Ops::Convert(broker,tgt,GSF2RGBA,pxm);
+            IMG.save(tgt, "gsf.png", 0);
+
+            BlurFilter:: Apply(broker,out,gauss,pxm);
+            Ops::Convert(broker,tgt,GSF2RGBA,out);
+            IMG.save(tgt, "gsf-blur.png", 0);
+        }
+
+        {
+            Pixmap<uint8_t> pxm(CopyOf,img,rgba2gsu);
+            Pixmap<uint8_t> out(img.w,img.h);
+
+            Ops::Convert(broker,tgt,GSU2RGBA,pxm);
+            IMG.save(tgt, "gsu.png", 0);
+
+#if 0
+            BlurFilter:: Apply(broker,out,gauss,pxm);
+            Ops::Convert(broker,tgt,GSF2RGBA,out);
+            IMG.save(tgt, "gsf-blur.png", 0);
+#endif
+        }
+
 
     }
 
