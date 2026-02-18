@@ -129,6 +129,9 @@ namespace Yttrium
             {
             }
 
+            
+
+
             const T       denom;
 
 
