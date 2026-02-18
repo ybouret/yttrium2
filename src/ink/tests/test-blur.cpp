@@ -8,6 +8,8 @@
 #include "y/cameo/addition.hpp"
 
 #include "y/ink/ops/filter/element.hpp"
+#include "y/ink/ops.hpp"
+#include <cstring>
 
 using namespace Yttrium;
 
@@ -67,6 +69,7 @@ namespace Yttrium
         public:
             typedef FilterElement<T>   Element;
             typedef CxxSeries<Element> Elements;
+            typedef TypeToType<T>      MyTypeHint;
 
             template <typename PROC>
             explicit Blur(PROC &proc, const unit_t rmax) :
@@ -74,8 +77,6 @@ namespace Yttrium
             Elements(count()),
             denom(0)
             {
-                std::cerr << "r  = " << r  << std::endl;
-                std::cerr << "r2 = " << r2 << std::endl;
                 Cameo::Addition<T>  add;
                 for(unit_t y=-r;y<=r;++y)
                 {
@@ -97,6 +98,32 @@ namespace Yttrium
                 Sorting::Heap::Sort( (*this)(), this->size(), Element::Compare);
             }
 
+            template <
+            typename       PIXEL,
+            typename       PTYPE,
+            const unsigned NCHAN
+            >
+            void load(PTYPE * const        target,
+                      const Pixmap<PIXEL> &source,
+                      const Point          origin)
+            {
+                {
+                    const Elements &self = *this;
+                    memset(target,0,sizeof(PTYPE)*NCHAN);
+                    for(size_t i=self.size();i>0;--i)
+                    {
+                        static const MyTypeHint MyType = {};
+                        const Element &         elem   = self[i];
+                        const PTYPE * const     ptype  = (const PTYPE *) &source[origin+elem.p];
+                        const T                 weight = elem.w;
+                        for(size_t j=0;j<NCHAN;++j) {
+                            target[j] += MKL::AdaptedTo(MyType,ptype[j]) * weight;
+                        }
+                    }
+                }
+                for(size_t j=0;j<NCHAN;++j) target[j] /= denom;
+            }
+
 
             virtual ~Blur() noexcept
             {
@@ -107,6 +134,7 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(Blur);
+
         };
 
         float g(const float r2)
