@@ -67,6 +67,40 @@ namespace Yttrium
                 broker.run(proc,pixmap,arg1,arg2);
             }
 
+            template <typename LHS, typename RHS> static inline
+            bool HaveSameArea(const LHS &lhs, const RHS &rhs) noexcept
+            {
+                const Area &la = lhs;
+                const Area &ra = rhs;
+                return la == ra;
+            }
+
+            template <
+            typename PIXMAP,
+            typename CONVERT,
+            typename SOURCE> static inline
+            void Convert(Broker &broker, PIXMAP &pixmap, CONVERT &convert, SOURCE &source) noexcept
+            {
+                assert( HaveSameArea(pixmap,source) );
+                broker.prep(pixmap);
+                broker.run( PixToPix<PIXMAP,CONVERT,SOURCE>,pixmap,convert,source);
+            }
+
+
+        private:
+            template <typename PIXMAP, typename CONVERT, typename SOURCE> static inline
+            void PixToPix(Lockable &, const Tile &tile, PIXMAP &pixmap, CONVERT &convert, SOURCE &source)
+            {
+                for(unit_t j=tile.h;j>0;--j)
+                {
+                    const Segment               seg = tile[j];
+                    const size_t                y   = (size_t)seg.start.y;
+                    typename       PIXMAP::Row  & tgt = pixmap(y);
+                    const typename SOURCE::Row  & src = source(y);
+                    for(size_t x=seg.start.x,i=seg.width;i>0;--i,++x)
+                        tgt(x) = convert(src(x));
+                }
+            }
         };
 
     }

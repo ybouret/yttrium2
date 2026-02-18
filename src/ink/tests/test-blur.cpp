@@ -172,23 +172,14 @@ inline void rgba2gs(void * const f, const void * const c)
     *(float *)f = RGBA2GS( *(const RGBA *)c );
 }
 
-inline void gs2rgba(Lockable   &,
-                    const Tile &          tile,
-                    Image &               target,
-                    const Pixmap<float> & source)
+
+static inline RGBA GS2RGBA(const float f)
 {
-    for(unit_t j=tile.h;j>0;--j)
-    {
-        const Segment               seg = tile[j];
-        Image::Row  &               tgt = target[seg.start.y];
-        const Pixmap<float>::Row  & src = source[seg.start.y];
-        for(unit_t x=seg.start.x,i=seg.width;i>0;--i,++x)
-        {
-            const unit_t u = Color::Gray::UnitToByte(src[x]);
-            tgt[x] = RGBA(u,u,u);
-        }
-    }
+    const unit_t u = Color::Gray::UnitToByte(f);
+    return RGBA(u,u,u);
 }
+
+
 
 Y_UTEST(blur)
 {
@@ -204,7 +195,7 @@ Y_UTEST(blur)
         Image         tgt(img.w,img.h);
         Pixmap<float> pxm(CopyOf,img,rgba2gs);
 
-        Ops::Apply(broker,gs2rgba,tgt,pxm);
+        Ops::Convert(broker,tgt,GS2RGBA,pxm);
         IMG.save(tgt, "gs.png", 0);
 
         
