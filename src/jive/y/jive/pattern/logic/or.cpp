@@ -18,16 +18,18 @@ namespace Yttrium
         {
             assert(0==token.size);
             bool result = false;
-
+            //std::cerr << "<OR>" << std::endl;
             for(const Pattern *p=head;p;p=p->next)
             {
                 if(p->accepts(token,source))
                 {
+                    //std::cerr << "accepting '" << token << "'" << std::endl;
                     if(token.size>0) return true;
                     assert(p->feeble());
                     result = true; // but leave another chance to strong pattern
                 }
             }
+            //std::cerr << "<OR/>" << std::endl;
 
             assert(0==token.size);
             return result;

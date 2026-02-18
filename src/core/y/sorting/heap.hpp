@@ -66,6 +66,12 @@ namespace Yttrium{
                 Sort(arr, num, sizeof(T), rra, CompareWrapper<T,COMPARE>::Call, (void*)&cmp);
             }
 
+            template <typename CONTIGUOUS, typename COMPARE> static inline
+            void Sort(CONTIGUOUS &arr, COMPARE &cmp)
+            {
+                Sort(arr(),arr.size(),cmp);
+            }
+
             //__________________________________________________________________
             //
             //

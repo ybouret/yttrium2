@@ -9,7 +9,7 @@ namespace Yttrium
 
 
         const char * const FormatTIFF:: CallSign  = "TIFF";
-        const char * const FormatTIFF:: Extension = "tif|tiff";
+        const char * const FormatTIFF:: Extension = "tiff|tif";
 
         FormatTIFF::  FormatTIFF() : Format(CallSign,Extension) {}
         FormatTIFF:: ~FormatTIFF() noexcept {}

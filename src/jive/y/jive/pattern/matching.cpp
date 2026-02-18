@@ -41,7 +41,7 @@ namespace Yttrium
         bool Matching:: found(const Request request, Module * const input)
         {
             Source source(input);
-            free();
+            free(); assert(0==size);
             switch(request)
             {
                 case Exactly: return exactly_(source);

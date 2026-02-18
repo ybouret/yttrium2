@@ -75,12 +75,13 @@ namespace Yttrium
             const char * const pExt = VFS::Extension(base);
             if(!pExt) throw Specific::Exception(CallSign,"no extension in '%s'", base.c_str());
             const String       ext  = pExt+1;
-            //std::cerr << "Looking for " << ext << std::endl;
+            //std::cerr << "Looking for extension [" << ext << "] of [" << path << "]" << std::endl;
             {
                 Y_Lock( Coerce(access) );
                 for(ConstIterator it=begin();it!=end();++it)
                 {
                     Format &fmt = Coerce(**it);
+                    //std::cerr << "\ttrying '" << fmt.name << "'" << std::endl;
                     if(fmt.extension.found(Jive::Matching::Exactly,base,ext))
                     {
                         //std::cerr << "Found " << fmt.name << " for " << base << std::endl;

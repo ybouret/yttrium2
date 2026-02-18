@@ -11,7 +11,8 @@
 #include "y/ink/ops.hpp"
 #include <cstring>
 
-using namespace Yttrium;
+#include "y/ink/image/formats.hpp"
+
 
 
 namespace Yttrium
@@ -77,7 +78,8 @@ namespace Yttrium
             Elements(count()),
             denom(0)
             {
-                Cameo::Addition<T>  add;
+                Elements           & self = *this;
+                Cameo::Addition<T>   add;
                 for(unit_t y=-r;y<=r;++y)
                 {
                     const unit_t y2 = y*y;
@@ -90,12 +92,12 @@ namespace Yttrium
                             const T     w = proc( (T)ir2 );
                             if(w<=denom) throw Specific::Exception("Blur", "invalid weight");
                             add << w;
-                            this->push(p,w);
+                            self.push(p,w);
                         }
                     }
                 }
                 Coerce(denom) = add.sum();
-                Sorting::Heap::Sort( (*this)(), this->size(), Element::Compare);
+                Sorting::Heap::Sort(self,Element::Compare);
             }
 
             template <
@@ -129,7 +131,12 @@ namespace Yttrium
             {
             }
 
-            
+            void operator()(Pixmap<float>       &target,
+                            const Pixmap<float> &source,
+                            const Point          origin)
+            {
+                load<float,float,1>(&target[origin],source,origin);
+            }
 
 
             const T       denom;
@@ -145,17 +152,65 @@ namespace Yttrium
             return expf(-r2/10.0f);
         }
 
+
     }
 }
 
 
+using namespace Yttrium;
+using namespace Ink;
 
-#include "y/stream/libc/output.hpp"
+#include "y/concurrent/api/simd/crew.hpp"
+
+inline float RGBA2GS(const RGBA &c)
+{
+    return Color::Gray::To<float>::Get(c.r,c.g,c.b);
+}
+
+inline void rgba2gs(void * const f, const void * const c)
+{
+    *(float *)f = RGBA2GS( *(const RGBA *)c );
+}
+
+inline void gs2rgba(Lockable   &,
+                    const Tile &          tile,
+                    Image &               target,
+                    const Pixmap<float> & source)
+{
+    for(unit_t j=tile.h;j>0;--j)
+    {
+        const Segment               seg = tile[j];
+        Image::Row  &               tgt = target[seg.start.y];
+        const Pixmap<float>::Row  & src = source[seg.start.y];
+        for(unit_t x=seg.start.x,i=seg.width;i>0;--i,++x)
+        {
+            const unit_t u = Color::Gray::UnitToByte(src[x]);
+            tgt[x] = RGBA(u,u,u);
+        }
+    }
+}
 
 Y_UTEST(blur)
 {
-    Ink::Blur<float> blur(Ink::g,5);
+    Concurrent::Processor cpus = new Concurrent::Crew( Concurrent::Site::Default );
+    Ink::Broker           broker(cpus);
+    Formats     &IMG = Formats::Std();
+    Blur<float> blur(Ink::g,5);
     std::cerr << "blur=" << blur << std::endl;
+    
+    if(argc>1)
+    {
+        Image         img = IMG.load(argv[1],0);
+        Image         tgt(img.w,img.h);
+        Pixmap<float> pxm(CopyOf,img,rgba2gs);
+
+        Ops::Apply(broker,gs2rgba,tgt,pxm);
+
+        IMG.save(tgt, "gs.png", 0);
+
+
+    }
+
 
 }
 Y_UDONE()
