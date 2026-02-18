@@ -83,13 +83,27 @@ namespace Yttrium
             {
                 assert( HaveSameArea(pixmap,source) );
                 broker.prep(pixmap);
-                broker.run( PixToPix<PIXMAP,CONVERT,SOURCE>,pixmap,convert,source);
+                broker.run( ForEachPixel<PIXMAP,CONVERT,SOURCE>,pixmap,convert,source);
             }
+
+            template
+            <
+            typename TARGET,
+            typename TRANSFORM,
+            typename SOURCE> static inline
+            void Transform(Broker &broker, TARGET &target, TRANSFORM &transform, SOURCE &source) noexcept
+            {
+                assert( HaveSameArea(target,source) );
+                broker.prep(target);
+                broker.run( ForEachPoint<TARGET,TRANSFORM,SOURCE>,target,transform,source);
+            }
+
+
 
 
         private:
             template <typename PIXMAP, typename CONVERT, typename SOURCE> static inline
-            void PixToPix(Lockable &, const Tile &tile, PIXMAP &pixmap, CONVERT &convert, SOURCE &source)
+            void ForEachPixel(Lockable &, const Tile &tile, PIXMAP &pixmap, CONVERT &convert, SOURCE &source)
             {
                 for(unit_t j=tile.h;j>0;--j)
                 {
@@ -101,6 +115,20 @@ namespace Yttrium
                         tgt(x) = convert(src(x));
                 }
             }
+
+            template <typename TARGET, typename TRANSFORM, typename SOURCE> static inline
+            void ForEachPoint(Lockable &, const Tile &tile, TARGET &target, TRANSFORM &transform, SOURCE &source)
+            {
+                for(unit_t j=tile.h;j>0;--j)
+                {
+                    const Segment seg = tile[j];
+                    Point         p   = seg.start;
+                    for(unit_t i=seg.width;i>0;--i,++p.x)
+                        transform(target,source,p);
+                }
+            }
+
+
         };
 
     }

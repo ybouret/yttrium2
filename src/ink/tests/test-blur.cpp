@@ -80,6 +80,7 @@ namespace Yttrium
             {
                 Elements           & self = *this;
                 Cameo::Addition<T>   add;
+                const T              f0 = proc(0);
                 for(unit_t y=-r;y<=r;++y)
                 {
                     const unit_t y2 = y*y;
@@ -89,7 +90,7 @@ namespace Yttrium
                         if(ir2<=r2)
                         {
                             const Point p(x,y);
-                            const T     w = proc( (T)ir2 );
+                            const T     w = proc( ir2 )/f0;
                             if(w<=denom) throw Specific::Exception("Blur", "invalid weight");
                             add << w;
                             self.push(p,w);
@@ -147,6 +148,93 @@ namespace Yttrium
 
         };
 
+        template <typename T> class BlurFunction
+        {
+        public:
+            inline explicit BlurFunction() noexcept : one(1) {}
+            inline virtual ~BlurFunction() noexcept {}
+
+            virtual T operator()(const unit_t r2) const = 0;
+
+            inline unit_t rmax() const
+            {
+                const T       Dmax = 256;
+                const T       Vmin = one/Dmax;
+                const BlurFunction &F  = *this;
+                const T       f0 = F(0);
+                for(unit_t r=1;;++r)
+                {
+                    const T f = F(r*r);
+                    if(f/f0<=Vmin)
+                        return --r;
+                }
+            }
+
+            const T one; //!< 1
+
+        private:
+            Y_Disable_Copy_And_Assign(BlurFunction);
+        };
+
+        template <typename T>
+        class GaussBlur : public BlurFunction<T>
+        {
+        public:
+            inline explicit GaussBlur(const T stddev) :
+            sig( stddev ),
+            sig2( sig*sig ),
+            denom( sig2+sig2 )
+            {
+
+            }
+
+            inline virtual ~GaussBlur() noexcept {}
+
+            virtual T operator()(const unit_t r2) const
+            {
+                const T u2 = (T)r2;
+                const T arg = u2 / denom;
+                return exp(-arg);
+            }
+
+            const T sig;
+            const T sig2;
+            const T denom;
+
+        private:
+            Y_Disable_Copy_And_Assign(GaussBlur);
+        };
+
+        template <typename T>
+        class LorentzBlur : public BlurFunction<T>
+        {
+        public:
+            using BlurFunction<T>::one;
+
+            inline explicit LorentzBlur(const T stddev) :
+            sig( stddev ),
+            sig2( sig*sig )
+            {
+
+            }
+
+            inline virtual ~LorentzBlur() noexcept {}
+
+            virtual T operator()(const unit_t r2) const
+            {
+                const T u2  = (T)r2;
+                const T arg = u2 / sig2;
+                return one/(one+arg);
+            }
+
+            const T sig;
+            const T sig2;
+
+        private:
+            Y_Disable_Copy_And_Assign(LorentzBlur);
+        };
+
+
         float g(const float r2)
         {
             return expf(-r2/10.0f);
@@ -183,23 +271,37 @@ static inline RGBA GS2RGBA(const float f)
 
 Y_UTEST(blur)
 {
+
+    for(float s=0.1f;s<=10.0f;s+=0.1f)
+    {
+        std::cerr << "sigma=" << std::setw(8) << s << " :";
+        GaussBlur<float>    G(s);  std::cerr << " gauss.rmax=" << G.rmax();
+        LorentzBlur<float>  L(s);  std::cerr << " lorentz.rmax=" << L.rmax();
+        std::cerr << std::endl;
+    }
+
     Concurrent::Processor cpus = new Concurrent::Crew( Concurrent::Site::Default );
     Ink::Broker           broker(cpus);
     Formats     &IMG = Formats::Std();
     Blur<float> blur(Ink::g,5);
-    std::cerr << "blur=" << blur << std::endl;
     
     if(argc>1)
     {
         Image         img = IMG.load(argv[1],0);
         Image         tgt(img.w,img.h);
         Pixmap<float> pxm(CopyOf,img,rgba2gs);
+        Pixmap<float> out(img.w,img.h);
 
         Ops::Convert(broker,tgt,GS2RGBA,pxm);
         IMG.save(tgt, "gs.png", 0);
 
-        
+        Ops::Transform(broker,out,blur,pxm);
+        Ops::Convert(broker,tgt,GS2RGBA,out);
+        IMG.save(tgt, "gs-blur.png", 0);
+
     }
+
+
 
 
 }
