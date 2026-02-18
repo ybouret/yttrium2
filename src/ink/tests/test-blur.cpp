@@ -101,12 +101,13 @@ namespace Yttrium
                 Sorting::Heap::Sort(self,Element::Compare);
             }
 
+            //! compute result in T values
             template <
             typename       PIXEL,
             typename       PTYPE,
             const unsigned NCHAN
             >
-            void load(PTYPE * const        target,
+            void load(T * const            target,
                       const Pixmap<PIXEL> &source,
                       const Point          origin)
             {
@@ -132,12 +133,23 @@ namespace Yttrium
             {
             }
 
-
-            void operator()(Pixmap<float>       &target,
-                            const Pixmap<float> &source,
-                            const Point          origin)
+            void apply(Pixmap<T>       &target,
+                       const Pixmap<T> &source,
+                       const Point      origin)
             {
-                load<float,float,1>(&target[origin],source,origin);
+                // put direct result
+                load<T,T,1>(&target[origin],source,origin);
+            }
+
+            void apply(Pixmap<uint8_t>       &target,
+                       const Pixmap<uint8_t> &source,
+                       const Point            origin)
+            {
+                // get result in T tpe
+                T res = 0; load<uint8_t,uint8_t,1>(&res,source,origin);
+
+                // convert to byte
+                target[origin] = Color::Gray::UnitToByte(res);
             }
 
 
@@ -224,7 +236,53 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Blur);
         };
 
-        
+        template <typename U>
+        struct BlurWrapper
+        {
+            template <typename BLUR> static inline
+            void Apply(Broker &broker, Pixmap<U> &target, BLUR &blur, const Pixmap<U> &source)
+            {
+                App<BLUR> app(blur);
+                Ops::Transform(broker,target,app,source);
+            }
+
+        private:
+            template <typename BLUR>
+            class App
+            {
+            public:
+                inline explicit App(BLUR &_blur) noexcept : blur(_blur)
+                {
+                }
+
+                inline virtual ~App() noexcept
+                {
+                }
+
+                inline void operator()(Pixmap<U>       & target,
+                                       const Pixmap<U> & source,
+                                       const Point       origin)
+                {
+                    blur.apply(target,source,origin);
+                }
+
+            private:
+                Y_Disable_Copy_And_Assign(App);
+                BLUR &blur;
+            };
+        };
+
+
+        struct BlurFilter
+        {
+            template <typename U, typename BLUR> static inline
+            void Apply(Broker &broker, Pixmap<U> &target, BLUR &blur, const Pixmap<U> &source)
+            {
+                BlurWrapper<U>::template Apply<BLUR>(broker,target,blur,source);
+            }
+        };
+
+
 
 
 
@@ -300,18 +358,18 @@ using namespace Ink;
 
 #include "y/concurrent/api/simd/crew.hpp"
 
-inline float RGBA2GS(const RGBA &c)
+inline float RGBA2GSF(const RGBA &c)
 {
     return Color::Gray::To<float>::Get(c.r,c.g,c.b);
 }
 
-inline void rgba2gs(void * const f, const void * const c)
+inline void rgba2gsf(void * const f, const void * const c)
 {
-    *(float *)f = RGBA2GS( *(const RGBA *)c );
+    *(float *)f = RGBA2GSF( *(const RGBA *)c );
 }
 
 
-static inline RGBA GS2RGBA(const float f)
+static inline RGBA GSF2RGBA(const float f)
 {
     const unit_t u = Color::Gray::UnitToByte(f);
     return RGBA(u,u,u);
@@ -335,19 +393,20 @@ Y_UTEST(blur)
     Formats     &IMG = Formats::Std();
 
     Blur<float,GaussBlur> gauss(2.7f);
-    BlurData<float>     & blur = gauss;
+
+
     if(argc>1)
     {
         Image         img = IMG.load(argv[1],0);
         Image         tgt(img.w,img.h);
-        Pixmap<float> pxm(CopyOf,img,rgba2gs);
+        Pixmap<float> pxm(CopyOf,img,rgba2gsf);
         Pixmap<float> out(img.w,img.h);
 
-        Ops::Convert(broker,tgt,GS2RGBA,pxm);
+        Ops::Convert(broker,tgt,GSF2RGBA,pxm);
         IMG.save(tgt, "gs.png", 0);
 
-        Ops::Transform(broker,out,blur,pxm);
-        Ops::Convert(broker,tgt,GS2RGBA,out);
+        BlurFilter:: Apply(broker,out,gauss,pxm);
+        Ops::Convert(broker,tgt,GSF2RGBA,out);
         IMG.save(tgt, "gs-blur.png", 0);
 
     }
