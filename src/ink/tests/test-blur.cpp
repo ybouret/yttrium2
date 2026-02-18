@@ -76,7 +76,8 @@ namespace Yttrium
             explicit BlurData(PROC &proc, const unit_t rmax) :
             BlurMetrics(rmax),
             Elements(count()),
-            denom(0)
+            denom(0),
+            half(0.5)
             {
                 Elements           & self = *this;
                 Cameo::Addition<T>   add;
@@ -145,16 +146,31 @@ namespace Yttrium
                        const Pixmap<uint8_t> &source,
                        const Point            origin)
             {
-                // get result in T tpe
+                // get result in T type
                 T res = 0; load<uint8_t,uint8_t,1>(&res,source,origin);
 
-                // convert to byte
-                target[origin] = Color::Gray::UnitToByte(res);
+                // convert to closest byte
+                target[origin] = (uint8_t)floor(res+half);
+            }
+
+            void apply(Pixmap<RGBA>       &target,
+                       const Pixmap<RGBA> &source,
+                       const Point         origin)
+            {
+                // get result in T types
+                T res[3] = {0,0,0}; load<RGBA,uint8_t,3>(res,source,origin);
+
+                // convert to closest bytes
+                RGBA &c = target[origin];
+                c.r = (uint8_t)floor(res[0]+half);
+                c.g = (uint8_t)floor(res[1]+half);
+                c.b = (uint8_t)floor(res[2]+half);
             }
 
 
-            const T       denom;
 
+            const T denom;
+            const T half;
 
         private:
             Y_Disable_Copy_And_Assign(BlurData);
@@ -414,6 +430,8 @@ Y_UTEST(blur)
         Image         img = IMG.load(argv[1],0);
         Image         tgt(img.w,img.h);
 
+        IMG.save(img,"img.png",0);
+
         {
             Pixmap<float> pxm(CopyOf,img,rgba2gsf);
             Pixmap<float> out(img.w,img.h);
@@ -434,12 +452,15 @@ Y_UTEST(blur)
             Ops::Convert(broker,tgt,GSU2RGBA,pxm);
             IMG.save(tgt, "gsu.png", 0);
 
-#if 0
             BlurFilter:: Apply(broker,out,gauss,pxm);
-            Ops::Convert(broker,tgt,GSF2RGBA,out);
-            IMG.save(tgt, "gsf-blur.png", 0);
-#endif
+            Ops::Convert(broker,tgt,GSU2RGBA,out);
+            IMG.save(tgt, "gsu-blur.png", 0);
         }
+
+        BlurFilter:: Apply(broker,tgt,gauss,img);
+        IMG.save(tgt,"img-blur.png",0);
+
+
 
 
     }
