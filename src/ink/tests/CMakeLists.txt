@@ -19,3 +19,5 @@ Y_UTEST(diff)
 Y_UTEST(filter)
 Y_UTEST(draw)
 Y_UTEST(blur)
+Y_UTEST(max)
+

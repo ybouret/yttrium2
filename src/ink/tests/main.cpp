@@ -8,6 +8,7 @@ Y_UTEST_DECL(16)
     Y_UTEST(pixmap);
     Y_UTEST(broker);
     Y_UTEST(ops);
+    Y_UTEST(max);
     Y_UTEST(hist);
     Y_UTEST(io);
     Y_UTEST(fmt);
