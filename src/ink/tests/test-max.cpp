@@ -1,6 +1,7 @@
 
 
 #include "y/ink/ops/getmax.hpp"
+#include "y/ink/ops/getmin.hpp"
 #include "y/utest/run.hpp"
 #include "y/concurrent/api/simd/crew.hpp"
 #include "y/concurrent/api/simd/sole.hpp"
@@ -39,8 +40,10 @@ Y_UTEST(max)
             Ink::Ops::Convert(par,pxmf,Color::Convert::RGBATo<float>,image);
             IMG.saveAs(par,Color::Convert::ToRGBA<float>,pxmf,"gsf.png",0);
             const float vmax = Ink::GetMax::Of(par,pxmf);
+            const float vmin = Ink::GetMin::Of(par,pxmf);
+            std::cerr << "vmin=" << vmin << std::endl;
             std::cerr << "vmax=" << vmax << std::endl;
-            Color::RampOf<float> rmp(ramp,0,vmax);
+            Color::RampOf<float> rmp(ramp,vmin,vmax);
             IMG.saveAs(seq,rmp,pxmf,"max.png",0);
 
         }
