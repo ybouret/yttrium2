@@ -8,6 +8,7 @@
 
 \begin{document}
 
+\section{Quadratic}
 Let $S$ be a local surface approximation
 \begin{equation}
 S(\vec{p},\vec\alpha) = a + bx + cy + d x^2 + e xy + f y^2
@@ -55,6 +56,20 @@ D^2(\vec \alpha) = \frac{1}{2}\sum_{i=1}^N w_i^2 \left[Z_i - S(\vec p_i,\vec \al
 \overrightarrow {w^2 y^2} \\
 \end{bmatrix}
 \cdot \vec Z
+\end{equation}
+
+\section{PBR}
+
+We assume that the intensity at  of a single point is:
+\begin{equation}
+	V_{ij}(\vec{r}) = I_{ij} \Psi\left( \vert \vec{r}-\vec{r}_{ij} \vert \right)
+\end{equation}
+\begin{equation}
+	V(\vec{r}) = \sum_{i,j} I_{ij} \Psi\left( \vert \vec{r}-\vec{r}_{ij} \vert \right)
+\end{equation}
+where $\Psi$ is a decreasing function.
+\begin{equation}
+D^2(\vec \alpha) = \frac{1}{2}\sum_{i,j} \left[V(\vec{r}_{ij}) - S(\vec{r}_{ij},\vec \alpha)\right]^2
 \end{equation}
 
 \end{document}
