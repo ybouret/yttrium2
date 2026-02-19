@@ -7,19 +7,15 @@
 
 #include "y/ink/image/formats.hpp"
 #include "y/color/conversion.hpp"
+#include "y/color/ramp.hpp"
+#include "y/color/x11.hpp"
 
-#include "y/ink/ops.hpp"
 
 using namespace Yttrium;
 
 
-namespace Yttrium
-{
-    namespace Ink
-    {
-        
-      
-    }
+namespace {
+    static const Color::RGBA32 table[] = { Y_Blue, Y_Green, Y_Red };
 }
 
 
@@ -30,8 +26,8 @@ Y_UTEST(max)
     Concurrent::Processor cpu1 = new Concurrent::Sole();
     Ink::Broker           par(cpus);
     Ink::Broker           seq(cpu1);
-
-    Ink::Formats &IMG = Ink::Formats::Std();
+    Ink::Formats &        IMG = Ink::Formats::Std();
+    const Color::Ramp     ramp("ramp",table,sizeof(table)/sizeof(table[0]));
 
     if(argc>1)
     {
@@ -44,6 +40,9 @@ Y_UTEST(max)
             IMG.saveAs(par,Color::Convert::ToRGBA<float>,pxmf,"gsf.png",0);
             const float vmax = Ink::GetMax::Of(par,pxmf);
             std::cerr << "vmax=" << vmax << std::endl;
+            Color::RampOf<float> rmp(ramp,0,vmax);
+            IMG.saveAs(seq,rmp,pxmf,"max.png",0);
+
         }
 
     }
