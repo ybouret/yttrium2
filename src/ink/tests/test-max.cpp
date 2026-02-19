@@ -6,6 +6,7 @@
 #include "y/concurrent/api/simd/sole.hpp"
 
 #include "y/ink/image/formats.hpp"
+#include "y/color/conversion.hpp"
 
 #include "y/ink/ops.hpp"
 
@@ -16,7 +17,7 @@ namespace Yttrium
 {
     namespace Ink
     {
-
+        
       
     }
 }
@@ -35,10 +36,14 @@ Y_UTEST(max)
     if(argc>1)
     {
         Ink::Image         image = IMG.load(argv[1],0);
+        IMG.save(image,"img.png",0);
 
         {
             Ink::Pixmap<float> pxmf(image.w,image.w);
-            //Ink::Ops::Convert(par,pxmf,RGBA2GSF,image);
+            Ink::Ops::Convert(par,pxmf,Color::Convert::RGBATo<float>,image);
+            IMG.saveAs(par,Color::Convert::ToRGBA<float>,pxmf,"gsf.png",0);
+            const float vmax = Ink::GetMax::Of(par,pxmf);
+            std::cerr << "vmax=" << vmax << std::endl;
         }
 
     }

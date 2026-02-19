@@ -70,6 +70,14 @@ namespace Yttrium
                 return *static_cast<T *>(entry);
             }
 
+            template <typename T> inline
+            const T & as() const noexcept
+            {
+                assert(bytes>=sizeof(T));
+                assert(entry);
+                return *static_cast<T *>(entry);
+            }
+
             //__________________________________________________________________
             //
             //

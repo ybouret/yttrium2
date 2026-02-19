@@ -6,6 +6,7 @@
 #include "y/ink/image.hpp"
 #include "y/object/counted.hpp"
 #include "y/ink/image/options.hpp"
+#include "y/ink/ops.hpp"
 
 namespace Yttrium
 {
@@ -48,6 +49,7 @@ namespace Yttrium
 
             //! \return image from file with optional options
             virtual Image load(const String &, const Options * const)                 const = 0;
+            
 
             //__________________________________________________________________
             //
@@ -56,6 +58,19 @@ namespace Yttrium
             //
             //__________________________________________________________________
             const String & key() const noexcept; //!< \return name
+
+            template <typename T, typename TO_RGBA> inline
+            void saveAs(Broker              & broker,
+                        TO_RGBA             & toRGBA,
+                        const Pixmap<T>     & pixmap,
+                        const String        & fileName,
+                        const Options * const options) const
+            {
+                Image image(pixmap.w,pixmap.h);
+                Ops::Convert(broker,image,toRGBA,pixmap);
+                save(image,fileName,options);
+            }
+
 
             //__________________________________________________________________
             //

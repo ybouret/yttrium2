@@ -52,7 +52,7 @@ namespace Yttrium
                 release();
                 Coerce(blockSize) = capacity;
                 Coerce(blockAddr) = tmp;
-                
+                assert( Memory::Stealth::Are0(blockAddr,blockSize) );
             }
             else
             {

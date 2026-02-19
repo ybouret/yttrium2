@@ -20,7 +20,14 @@ namespace Yttrium
                 broker.prep(pixmap);
                 broker.acquireLocalMemory( sizeof(T) );
                 broker.run(MaxOfTile<T>,pixmap,zero);
-                return zero;
+                size_t i = broker.size(); assert(i>0); assert( !broker[i].isEmpty() );
+                T res = broker[i].as<T>();
+                for(--i;i>0;--i)
+                {
+                    const Tile &tile = broker[i]; if(tile.isEmpty()) break;
+                    InSituMax(res,tile.as<T>());
+                }
+                return res;
             }
 
             template <typename T>
@@ -29,7 +36,13 @@ namespace Yttrium
                 assert(tile.entry);
                 assert(tile.bytes>=sizeof(T));
                 T & res = (tile.as<T>() = zero);
-
+                for(unit_t j=tile.h;j>0;--j)
+                {
+                    const Segment                   s = tile[j];
+                    const typename Pixmap<T>::Row & r = pxm[s.start.y];
+                    for(unit_t i=s.width,x=s.start.x;i>0;--i,++x)
+                        InSituMax(res,r[x]);
+                }
             }
 
         };
