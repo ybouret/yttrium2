@@ -7,7 +7,7 @@
 #include "y/core/utils.hpp"
 #include "y/cameo/addition.hpp"
 
-#include "y/ink/ops/filter/element.hpp"
+#include "y/ink/filter/element.hpp"
 #include "y/ink/ops.hpp"
 #include <cstring>
 
@@ -253,7 +253,7 @@ namespace Yttrium
         };
 
         template <typename U>
-        struct BlurWrapper
+        struct BlurProcess
         {
             template <typename BLUR> static inline
             void Apply(Broker &broker, Pixmap<U> &target, BLUR &blur, const Pixmap<U> &source)
@@ -294,7 +294,7 @@ namespace Yttrium
             template <typename U, typename BLUR> static inline
             void Apply(Broker &broker, Pixmap<U> &target, BLUR &blur, const Pixmap<U> &source)
             {
-                BlurWrapper<U>::template Apply<BLUR>(broker,target,blur,source);
+                BlurProcess<U>::template Apply<BLUR>(broker,target,blur,source);
             }
         };
 
@@ -459,9 +459,6 @@ Y_UTEST(blur)
 
         BlurFilter:: Apply(broker,tgt,gauss,img);
         IMG.save(tgt,"img-blur.png",0);
-
-
-
 
     }
 

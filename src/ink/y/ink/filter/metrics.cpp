@@ -1,5 +1,5 @@
 
-#include "y/ink/ops/filter/metrics.hpp"
+#include "y/ink/filter/metrics.hpp"
 #include "y/calculus/isqrt.hpp"
 #include "y/format/decimal.hpp"
 #include "y/exception.hpp"
