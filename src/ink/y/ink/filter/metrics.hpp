@@ -10,6 +10,7 @@ namespace Yttrium
 {
     namespace Ink
     {
+        
         class FilterMetrics
         {
         public:

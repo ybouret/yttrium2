@@ -86,6 +86,7 @@ namespace Yttrium
                 broker.run( ForEachPixel<PIXMAP,CONVERT,SOURCE>,pixmap,convert,source);
             }
 
+            //! transform(target,source,origin)
             template
             <
             typename TARGET,

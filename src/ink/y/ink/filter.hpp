@@ -99,6 +99,15 @@ namespace Yttrium
                 sum<NCHAN>(target);
             }
 
+            template <typename SCALAR>
+            void applyImmediate(Pixmap<float>        & target,
+                                const Pixmap<SCALAR> & source,
+                                const Point           origin)
+            {
+                loadImmediate<SCALAR,SCALAR,1>( &target[origin], source, origin);
+            }
+
+            
 
             Additions adds; //!< additions
 
