@@ -55,7 +55,8 @@ namespace Yttrium
             const char * const   label; //!< persistent label
             const RGBA32 * const table; //!< persistent table
             const size_t         count; //!< at least two colors
-
+            const size_t         idmax; //!< count-1
+            
         private:
             Y_Disable_Assign(Ramp); //!< discarding
         };
@@ -104,7 +105,7 @@ namespace Yttrium
 
             //! color interpolation with internal float usage
             /**
-             \param x vmin <= x <= vmax \return
+             \param x vmin <= x <= vmax \return interpolated color
              */
             inline RGBA32 operator()(const T x) const noexcept
             {

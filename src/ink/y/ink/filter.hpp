@@ -9,7 +9,7 @@
 #include "y/ink/filter/element.hpp"
 #include "y/container/cxx/series.hpp"
 #include "y/mkl/api/adaptor.hpp"
-
+#include <cstring>
 
 namespace Yttrium
 {
@@ -63,7 +63,7 @@ namespace Yttrium
             inline
             void loadImmediate(T * const            target,
                                const Pixmap<PIXEL> &source,
-                               const Point          origin)
+                               const Point          origin) const
             {
                 memset(target,0,NCHAN*sizeof(T));
                 const Element * elem = & (*this)[1];
@@ -77,9 +77,9 @@ namespace Yttrium
             typename     PTYPE,
             const size_t NCHAN>
             inline
-            void loadTranpose(T * const            target,
+            void loadTranspose(T * const            target,
                                const Pixmap<PIXEL> &source,
-                               const Point          origin)
+                               const Point          origin) const
             {
                 memset(target,0,NCHAN*sizeof(T));
                 const Element * elem = & (*this)[1];
@@ -87,18 +87,68 @@ namespace Yttrium
                     acc<PTYPE,NCHAN>(target,(const PTYPE *) &source[origin + elem->p.transpose()], elem->w);
             }
 
-            
+            template <typename SCALAR> inline
+            void loadImmediateScalar(Pixmap<T>            & target,
+                                     const Pixmap<SCALAR> & source,
+                                     const Point            origin) const
+            {
+                loadImmediate<SCALAR,SCALAR,1>( &target[origin], source, origin);
+            }
+
+            template <typename SCALAR> inline
+            void loadTransposeScalar(Pixmap<T>            & target,
+                                     const Pixmap<SCALAR> & source,
+                                     const Point            origin) const
+            {
+                loadTranspose<SCALAR,SCALAR,1>( &target[origin], source, origin);
+            }
+
+            template <typename SCALAR> inline
+            T loadGradient(Pixmap<T>            & amplitude,
+                           Pixmap< V2D<T> >     & direction,
+                           const Pixmap<SCALAR> & field,
+                           const Point            origin) const
+            {
+                T gx = 0, gy = 0;
+                const Element * elem = & (*this)[1];
+                for(size_t i=size();i>0;--i,++elem)
+                {
+                    const T w = elem->w;
+                    const Point p = elem->p;
+                    gy += w * field[origin+p];
+                    gx += w * field[origin+p.transpose()];
+                }
+                const T  g2 = gx*gx + gy *gy;
+                T      & a = amplitude[origin];
+                V2D<T> & v = direction[origin];
+
+                if(g2<=0)
+                {
+                    a = 0;
+                    v.x = v.y = 0;
+                    return 0;
+                }
+                else
+                {
+                    a   = sqrt(g2);
+                    v.x = gx/a;
+                    v.y = gy/a;
+                    return a;
+                }
+            }
+
+
+
 
 
         private:
             Y_Disable_Copy_And_Assign(Filter);
             template <typename PTYPE, const size_t NCHAN> inline
-            void acc(T * const target, const PTYPE * const ptype, const T w)
+            void acc(T * const target, const PTYPE * const ptype, const T w) const
             {
                 static const TypeToType<T> MyType = {};
                 for(size_t j=0;j<NCHAN;++j)
                 {
-                    //xstd::cerr << "  + " << w << "*" << ptype[j] << std::endl;
                     target[j] += w * MKL::AdaptedTo(MyType,ptype[j]);
                 }
             }

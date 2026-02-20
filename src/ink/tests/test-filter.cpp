@@ -22,6 +22,16 @@ namespace Yttrium
             }
         };
 
+        template <typename T, typename SCALAR>
+        struct FilterTransposeOn
+        {
+            Filter<T> & filter;
+            inline void operator()(Pixmap<T> &target, const Pixmap<SCALAR> &source, const Point origin)
+            {
+                filter.template loadTranspose<SCALAR,SCALAR,1>(&target[origin],source,origin);
+            }
+        };
+
         template <typename T>
         struct FilterProcess
         {
@@ -31,8 +41,17 @@ namespace Yttrium
                 FilterImmediateOn<T,SCALAR> F = { filter };
                 Ops::Transform(broker,target,F,source);
             }
+
+            template <typename SCALAR> static inline
+            void TransposeOn(Broker &broker, Pixmap<T> &target, Filter<T> &filter, const Pixmap<SCALAR> &source)
+            {
+                FilterTransposeOn<T,SCALAR> F = { filter };
+                Ops::Transform(broker,target,F,source);
+            }
         };
 
+
+        
 
 
     }
@@ -53,7 +72,7 @@ using namespace Ink;
 
 namespace
 {
-    static const Color::RGBA32 table[] = { Y_Blue, Y_Green, Y_Red };
+    static const Color::RGBA32 table[] = { Y_Blue, Y_Black, Y_Red };
 }
 
 Y_UTEST(filter)
@@ -64,9 +83,9 @@ Y_UTEST(filter)
 
     static const int8_t f[3][3] =
     {
-        { 1, 2, 3 },
-        { 4, 5 ,6 },
-        { 7, 8, 9 }
+        {  -1,  -1,  -1 },
+        {   0,  0,    0 },
+        {   1,  1,    1 }
     };
 
     Filter<float> F( &f[0][0], sizeof(f)/sizeof(f[0][0]));
@@ -89,13 +108,24 @@ Y_UTEST(filter)
 
 
 
-        FilterProcess<float>::ImmediateOn(broker,tgt,F,gsf);
-        const float vmin = GetMin::Of(broker,tgt);
-        const float vmax = GetMax::Of(broker,tgt);
-        std::cerr << "vmin=" << vmin << ", vmax=" << vmax << std::endl;
-        Color::RampOf<float> rmp(ramp,vmin,vmax);
-        IMG.save(broker,rmp,tgt, "gsf-immediate.png", 0);
-        
+        {
+            FilterProcess<float>::ImmediateOn(broker,tgt,F,gsf);
+            const float vmin = GetMin::Of(broker,tgt);
+            const float vmax = GetMax::Of(broker,tgt);
+            std::cerr << "vmin=" << vmin << ", vmax=" << vmax << std::endl;
+            Color::RampOf<float> rmp(ramp,vmin,vmax);
+            IMG.save(broker,rmp,tgt, "gsf-immediate.png", 0);
+        }
+
+        {
+            FilterProcess<float>::TransposeOn(broker,tgt,F,gsf);
+            const float vmin = GetMin::Of(broker,tgt);
+            const float vmax = GetMax::Of(broker,tgt);
+            std::cerr << "vmin=" << vmin << ", vmax=" << vmax << std::endl;
+            Color::RampOf<float> rmp(ramp,vmin,vmax);
+            IMG.save(broker,rmp,tgt, "gsf-transpose.png", 0);
+        }
+
 
 
     }
