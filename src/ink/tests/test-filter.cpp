@@ -42,14 +42,25 @@ namespace Yttrium
 #include "y/ink/image/formats.hpp"
 #include "y/color/conversion.hpp"
 #include "y/concurrent/api/simd/crew.hpp"
+#include "y/ink/ops/getmax.hpp"
+#include "y/ink/ops/getmin.hpp"
+#include "y/color/ramp.hpp"
+#include "y/color/x11.hpp"
+
 
 using namespace Yttrium;
 using namespace Ink;
+
+namespace
+{
+    static const Color::RGBA32 table[] = { Y_Blue, Y_Green, Y_Red };
+}
 
 Y_UTEST(filter)
 {
     Concurrent::Processor cpus = new Concurrent::Crew( Concurrent::Site::Default );
     Ink::Broker           broker(cpus);
+    const Color::Ramp     ramp("ramp",table,sizeof(table)/sizeof(table[0]));
 
     static const int8_t f[3][3] =
     {
@@ -58,7 +69,7 @@ Y_UTEST(filter)
         { 7, 8, 9 }
     };
 
-    Filter<float> F( &f[0][0], sizeof(f)/sizeof(f[0][0]), 4);
+    Filter<float> F( &f[0][0], sizeof(f)/sizeof(f[0][0]));
     std::cerr << F << std::endl;
 
     Formats &IMG = Formats::Std();
@@ -68,7 +79,6 @@ Y_UTEST(filter)
         Image           img = IMG.load(argv[1],0);
         Pixmap<float>   gsf(img.w,img.h);
         Pixmap<uint8_t> gsu(img.w,img.h);
-
         Pixmap<float>   tgt(img.w,img.h);
 
         Ops::Convert(broker,gsf,Color::Convert::RGBATo<float>,  img);
@@ -78,10 +88,14 @@ Y_UTEST(filter)
         IMG.save(broker,Color::Convert::ToRGBA<float>,gsf, "gsf.png", 0);
 
 
-        F.applyImmediate(tgt,gsf,Point(0,0));
 
-        //FilterProcess<float>::ImmediateOn(broker,tgt,F,gsf);
-
+        FilterProcess<float>::ImmediateOn(broker,tgt,F,gsf);
+        const float vmin = GetMin::Of(broker,tgt);
+        const float vmax = GetMax::Of(broker,tgt);
+        std::cerr << "vmin=" << vmin << ", vmax=" << vmax << std::endl;
+        Color::RampOf<float> rmp(ramp,vmin,vmax);
+        IMG.save(broker,rmp,tgt, "gsf-immediate.png", 0);
+        
 
 
     }
