@@ -1,6 +1,7 @@
 
 #include "y/color/ramp.hpp"
 #include "y/core/utils.hpp"
+#include <cmath>
 
 namespace Yttrium
 {

@@ -70,6 +70,7 @@ namespace Yttrium
                 return *static_cast<T *>(entry);
             }
 
+            //! const aliasing helper \return cast to user's type
             template <typename T> inline
             const T & as() const noexcept
             {

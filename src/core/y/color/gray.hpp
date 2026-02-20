@@ -59,6 +59,7 @@ namespace Yttrium
                 return (uint8_t) floorl(x*255.0L + 0.5L);
             }
 
+            //! helpe \param x byte \return x
             static inline uint8_t UnitToByte(const uint8_t &x) noexcept
             {
                 return x;

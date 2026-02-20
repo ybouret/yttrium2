@@ -66,6 +66,17 @@ namespace Yttrium{
                 Sort(arr, num, sizeof(T), rra, CompareWrapper<T,COMPARE>::Call, (void*)&cmp);
             }
 
+            //__________________________________________________________________
+            //
+            //
+            //
+            //! contiguous container sorting
+            /**
+             \param arr contiguous contaier
+             \param cmp object-wise comparator
+             */
+            //
+            //__________________________________________________________________
             template <typename CONTIGUOUS, typename COMPARE> static inline
             void Sort(CONTIGUOUS &arr, COMPARE &cmp)
             {
