@@ -1,4 +1,4 @@
-
+#if 0
 //! \file
 
 #ifndef Y_Ink_Filter_Sum_Included
@@ -105,3 +105,5 @@ namespace Yttrium
 }
 
 #endif // !Y_Ink_Filter_Sum_Included
+#endif
+
