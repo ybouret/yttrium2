@@ -29,7 +29,7 @@ namespace Yttrium
             //__________________________________________________________________
             static const char * const CallSign;  //!< "PNG"
             static const char * const Extension; //!< "png"
-            
+
             //__________________________________________________________________
             //
             //
@@ -50,12 +50,12 @@ namespace Yttrium
             /**
              \param options alpha=[true|false], level=[0..9]
              */
-            virtual void  save(const Image   &,
-                               const String  &,
-                               const Options * const options) const;
+            virtual void  onSave(const Image   &,
+                                 const String  &,
+                                 const Options * const options) const;
 
-            virtual Image load(const String  &,
-                               const Options * const) const;
+            virtual Image onLoad(const String  &,
+                                 const Options * const) const;
 
         private:
             Y_Disable_Copy_And_Assign(FormatPNG); //!< discarding

@@ -51,7 +51,7 @@ namespace Yttrium
              \return matching kind
              */
             static Kind GetKind(const String &lowerCaseExt, const bool binary);
-            
+
             //__________________________________________________________________
             //
             //
@@ -77,12 +77,12 @@ namespace Yttrium
              - 'binary=[on|off]'
              - 'zoom=x[,y]'
              */
-            virtual void  save(const Image   &       image,
-                               const String  &       fileName,
-                               const Options * const options) const;
+            virtual void  onSave(const Image   &       image,
+                                 const String  &       fileName,
+                                 const Options * const options) const;
 
 
-            virtual Image load(const String &, const Options * const) const;
+            virtual Image onLoad(const String &, const Options * const) const;
 
         private:
             Y_Disable_Copy_And_Assign(FormatPNM); //!< discarding

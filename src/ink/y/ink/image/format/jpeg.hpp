@@ -51,12 +51,12 @@ namespace Yttrium
             /**
              \param options quality=[10..100], default to 75
              */
-            virtual void  save(const Image  &,
-                               const String &,
-                               const Options * const options) const;
+            virtual void  onSave(const Image  &,
+                                 const String &,
+                                 const Options * const options) const;
 
-            virtual Image load(const String & ,
-                               const Options * const) const;
+            virtual Image onLoad(const String & ,
+                                 const Options * const) const;
 
         private:
             Y_Disable_Copy_And_Assign(FormatJPEG); //!< discarding

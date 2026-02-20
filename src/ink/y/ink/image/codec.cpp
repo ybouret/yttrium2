@@ -29,6 +29,29 @@ namespace Yttrium
             return Query(options,_);
         }
 
+        void Codec:: save(const Image &image, const String &fileName, const Options *const options) const
+        {
+            onSave(image,fileName,options);
+        }
+
+
+        void Codec:: save(const Image &image, const char * const fileName, const Options *const options) const
+        {
+            const String _(fileName);
+            save(image,_,options);
+        }
+
+        Image Codec:: load(const String &fileName, const Options * const options) const
+        {
+            return onLoad(fileName,options);
+        }
+
+        Image Codec:: load(const char * const fileName, const Options * const options) const
+        {
+            const String _(fileName);
+            return load(_,options);
+        }
+
 
     }
 

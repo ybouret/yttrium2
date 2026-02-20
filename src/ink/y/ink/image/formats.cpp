@@ -48,12 +48,12 @@ namespace Yttrium
         }
 
 
-        void  Formats:: save(const Image  &image, const String &fileName, const Options * const options) const
+        void  Formats:: onSave(const Image  &image, const String &fileName, const Options * const options) const
         {
             (*this)[fileName].save(image,fileName,options);
         }
 
-        Image Formats:: load(const String &fileName, const Options * const options) const
+        Image Formats:: onLoad(const String &fileName, const Options * const options) const
         {
             return (*this)[fileName].load(fileName,options);
         }

@@ -34,11 +34,11 @@ namespace Yttrium
         }
 
 
-        Image FormatTIFF:: load(const String &filename, const Options *) const
+        Image FormatTIFF:: onLoad(const String &filename, const Options *) const
         {
             itiff tif(filename);
-            const unit_t w = tif.width();  if(w<=0) throw Specific::Exception(CallSign,"w=0 in '%s'",filename());
-            const unit_t h = tif.height(); if(h<=0) throw Specific::Exception(CallSign,"h=0 in '%s'",filename());
+            const size_t w = tif.width();  if(w<=0) throw Specific::Exception(CallSign,"w=0 in '%s'",filename());
+            const size_t h = tif.height(); if(h<=0) throw Specific::Exception(CallSign,"h=0 in '%s'",filename());
             Image img(w,h);
             if(!tif.load(img)) throw Specific::Exception(CallSign,"can't ReadRGBAImage '%s'",filename());
             return img;
@@ -55,7 +55,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(tiff_output);
         };
 
-        void FormatTIFF:: save(const Image &img, const String &filename, const Options * const) const
+        void FormatTIFF:: onSave(const Image &img, const String &filename, const Options * const) const
         {
             tiff_output tif(filename);
             int compression = COMPRESSION_NONE;

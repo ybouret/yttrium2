@@ -43,13 +43,13 @@ namespace Yttrium
             // Interface
             //
             //__________________________________________________________________
-
             //! save image into file with optional options
-            virtual void  save(const Image  &, const String &, const Options * const) const = 0;
+            virtual void  onSave(const Image  &, const String &, const Options * const) const = 0;
 
             //! \return image from file with optional options
-            virtual Image load(const String &, const Options * const)                 const = 0;
-            
+            virtual Image onLoad(const String &, const Options * const)                 const = 0;
+
+
 
             //__________________________________________________________________
             //
@@ -59,12 +59,17 @@ namespace Yttrium
             //__________________________________________________________________
             const String & key() const noexcept; //!< \return name
 
+            void  save(const Image &, const String &,     const Options * const) const;
+            void  save(const Image &, const char * const, const Options * const) const;
+            Image load( const String &,     const Options * const)                const;
+            Image load( const char * const, const Options * const)                const;
+
             template <typename T, typename TO_RGBA> inline
-            void saveAs(Broker              & broker,
-                        TO_RGBA             & toRGBA,
-                        const Pixmap<T>     & pixmap,
-                        const String        & fileName,
-                        const Options * const options) const
+            void save(Broker              & broker,
+                      TO_RGBA             & toRGBA,
+                      const Pixmap<T>     & pixmap,
+                      const String        & fileName,
+                      const Options * const options) const
             {
                 Image image(pixmap.w,pixmap.h);
                 Ops::Convert(broker,image,toRGBA,pixmap);
@@ -82,6 +87,10 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(Codec); //!< discarding
+
+
+
+
         };
 
     }

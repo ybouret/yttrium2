@@ -115,9 +115,9 @@ namespace Yttrium
             return quality;
         }
 
-        void FormatJPEG:: save(const Image   &       img,
-                               const String  &       fileName,
-                               const Options * const options) const
+        void FormatJPEG:: onSave(const Image   &       img,
+                                 const String  &       fileName,
+                                 const Options * const options) const
         {
 
 
@@ -341,8 +341,8 @@ namespace Yttrium
                                          const JSAMPLE *,
                                          const unit_t);
 
-        Image FormatJPEG:: load(const String        &fileName,
-                                const Options       *) const
+        Image FormatJPEG:: onLoad(const String        &fileName,
+                                  const Options       *) const
         {
             /* This struct contains the JPEG decompression parameters and pointers to
              * working space (which is allocated as needed by the JPEG library).
@@ -453,7 +453,7 @@ namespace Yttrium
                 //put_scanline_someplace(buffer[0], row_stride);
                 cproc(image[j++],(*buffer)[0],width);
             }
-
+            
             /* Step 7: Finish decompression */
 
             (void) jpeg_finish_decompress(&cinfo);

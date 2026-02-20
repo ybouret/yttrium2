@@ -46,8 +46,8 @@ namespace Yttrium
             // Inteface
             //
             //__________________________________________________________________
-            virtual void  save(const Image &, const String &, const Options * const) const;
-            virtual Image load(const String &, const Options * const)                const;
+            virtual void  onSave(const Image &, const String &, const Options * const) const;
+            virtual Image onLoad(const String &, const Options * const)                const;
 
 
         private:

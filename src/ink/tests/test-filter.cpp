@@ -12,20 +12,27 @@ namespace Yttrium
     namespace Ink
     {
 
-       
-
-        template <typename SCALAR>
-        struct ApplyFilter
+        template <typename T, typename SCALAR>
+        struct FilterImmediateOn
         {
-            template <typename T> static inline
-            void Fill(T                    & target,
-                      Filter<T>            & filter,
-                      const Pixmap<SCALAR> & source,
-                      const Point            point)
+            Filter<T> & filter;
+            inline void operator()(Pixmap<T> &target, const Pixmap<SCALAR> &source, const Point origin)
             {
-                filter.template loadImmediate<SCALAR,SCALAR,1>(&target,source,point);
+                filter.template loadImmediate<SCALAR,SCALAR,1>(&target[origin],source,origin);
             }
         };
+
+        template <typename T>
+        struct FilterProcess
+        {
+            template <typename SCALAR> static inline
+            void ImmediateOn(Broker &broker, Pixmap<T> &target, Filter<T> &filter, const Pixmap<SCALAR> &source)
+            {
+                FilterImmediateOn<T,SCALAR> F = { filter };
+                Ops::Transform(broker,target,F,source);
+            }
+        };
+
 
 
     }
@@ -68,9 +75,12 @@ Y_UTEST(filter)
         Ops::Convert(broker,gsu,Color::Convert::RGBATo<uint8_t>,img);
 
         IMG.save(img,"img.png",0);
-        
+        IMG.save(broker,Color::Convert::ToRGBA<float>,gsf, "gsf.png", 0);
+
 
         F.applyImmediate(tgt,gsf,Point(0,0));
+
+        //FilterProcess<float>::ImmediateOn(broker,tgt,F,gsf);
 
 
 

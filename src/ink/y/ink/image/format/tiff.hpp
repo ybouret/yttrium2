@@ -11,7 +11,7 @@ namespace Yttrium
 {
     namespace Ink
     {
-        
+
         //______________________________________________________________________
         //
         //
@@ -31,7 +31,7 @@ namespace Yttrium
             //__________________________________________________________________
             static const char * const CallSign; //!< "TIFF"
             static const char * const Extension; //!< "tif|tiff"
-            
+
             //__________________________________________________________________
             //
             //
@@ -48,12 +48,12 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            virtual void  save(const Image   &       image,
-                               const String  &       fileName,
-                               const Options * const options) const;
+            virtual void  onSave(const Image   &       image,
+                                 const String  &       fileName,
+                                 const Options * const options) const;
 
-            virtual Image load(const String  &       fileName,
-                               const Options * const options) const;
+            virtual Image onLoad(const String  &       fileName,
+                                 const Options * const options) const;
 
             //! TIFF count_directories
             /**

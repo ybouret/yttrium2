@@ -145,7 +145,7 @@ namespace Yttrium
 #if defined(_MSC_VER)
 #pragma warning ( disable : 4611 )
 #endif
-        Image FormatPNG:: load(const String &filename, const Options *) const
+        Image FormatPNG:: onLoad(const String &filename, const Options *) const
         {
             PNG_Reader *io = new PNG_Reader(filename);
             try
@@ -194,7 +194,7 @@ namespace Yttrium
         }
 
         
-        void FormatPNG:: save(const Image &img, const String &filename, const Options *opts) const
+        void FormatPNG:: onSave(const Image &img, const String &filename, const Options *opts) const
         {
             OutputFile fp(filename);
 

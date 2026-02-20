@@ -4,6 +4,7 @@
 #include "y/ink/image/format/jpeg.hpp"
 #include "y/ink/image/format/tiff.hpp"
 #include "y/ink/image/format/pnm.hpp"
+#include "y/ink/image/format/bmp.hpp"
 
 namespace Yttrium
 {
@@ -23,6 +24,7 @@ namespace Yttrium
             ensureLoaded<FormatJPEG>(*this);
             ensureLoaded<FormatTIFF>(*this);
             ensureLoaded<FormatPNM>(*this);
+            ensureLoaded<FormatBMP>(*this);
         }
 
         Formats & Formats:: Std()

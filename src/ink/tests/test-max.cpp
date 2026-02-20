@@ -38,14 +38,13 @@ Y_UTEST(max)
         {
             Ink::Pixmap<float> pxmf(image.w,image.w);
             Ink::Ops::Convert(par,pxmf,Color::Convert::RGBATo<float>,image);
-            IMG.saveAs(par,Color::Convert::ToRGBA<float>,pxmf,"gsf.png",0);
+            IMG.save(par,Color::Convert::ToRGBA<float>,pxmf,"gsf.png",0);
             const float vmax = Ink::GetMax::Of(par,pxmf);
             const float vmin = Ink::GetMin::Of(par,pxmf);
             std::cerr << "vmin=" << vmin << std::endl;
             std::cerr << "vmax=" << vmax << std::endl;
             Color::RampOf<float> rmp(ramp,vmin,vmax);
-            IMG.saveAs(seq,rmp,pxmf,"max.png",0);
-
+            IMG.save(seq,rmp,pxmf,"max.png",0);
         }
 
     }
