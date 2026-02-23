@@ -59,11 +59,19 @@ namespace Yttrium
             //__________________________________________________________________
             const String & key() const noexcept; //!< \return name
 
-            void  save(const Image &, const String &,     const Options * const) const;
-            void  save(const Image &, const char * const, const Options * const) const;
-            Image load( const String &,     const Options * const)                const;
-            Image load( const char * const, const Options * const)                const;
+            void  save(const Image &, const String &,     const Options * const) const; //!< save alias
+            void  save(const Image &, const char * const, const Options * const) const; //!< save alias
+            Image load( const String &,     const Options * const)               const; //!< \return load alias
+            Image load( const char * const, const Options * const)               const; //!< \return load alias
 
+            //! save with conversion
+            /**
+             \param broker   cpu broker
+             \param toRGBA   return RGBA from T
+             \param pixmap   source pixmap
+             \param fileName output file name
+             \param options  output options
+             */
             template <typename T, typename TO_RGBA> inline
             void save(Broker              & broker,
                       TO_RGBA             & toRGBA,
@@ -74,6 +82,25 @@ namespace Yttrium
                 Image image(pixmap.w,pixmap.h);
                 Ops::Convert(broker,image,toRGBA,pixmap);
                 save(image,fileName,options);
+            }
+
+            //! save with conversion, alias
+            /**
+             \param broker   cpu broker
+             \param toRGBA   return RGBA from T
+             \param pixmap   source pixmap
+             \param fileName output file name
+             \param options  output options
+             */
+            template <typename T, typename TO_RGBA> inline
+            void save(Broker              & broker,
+                      TO_RGBA             & toRGBA,
+                      const Pixmap<T>     & pixmap,
+                      const char * const    fileName,
+                      const Options * const options) const
+            {
+                const String _(fileName);
+                save(broker,toRGBA,pixmap,_,options);
             }
 
 
