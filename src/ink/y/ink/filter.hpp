@@ -110,15 +110,21 @@ namespace Yttrium
                            const Point            origin) const
             {
                 T gx = 0, gy = 0;
-                const Element * elem = & (*this)[1];
-                for(size_t i=size();i>0;--i,++elem)
+
+                // accumulate components
                 {
-                    const T w = elem->w;
-                    const Point p = elem->p;
-                    gy += w * field[origin+p];
-                    gx += w * field[origin+p.transpose()];
+                    const Element * elem = & (*this)[1];
+                    for(size_t i=size();i>0;--i,++elem)
+                    {
+                        const T     w = elem->w;
+                        const Point p = elem->p;
+                        gy += w * field[origin+p];
+                        gx += w * field[origin+p.transpose()];
+                    }
                 }
-                const T  g2 = gx*gx + gy *gy;
+
+                // deduce gradient
+                const T  g2 = gx*gx + gy*gy;
                 T      & a = amplitude[origin];
                 V2D<T> & v = direction[origin];
 

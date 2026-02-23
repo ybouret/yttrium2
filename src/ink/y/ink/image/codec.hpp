@@ -122,6 +122,7 @@ namespace Yttrium
             {
                 const PixelRange<T>    px = MinMax::Of(broker,pixmap);
                 const Color::RampOf<T> ramp(colorRamp,px.vmin,px.vmax);
+                std::cerr << "px.min=" << px.vmin << ", px.max=" << px.vmax << " / #colors=" << ramp.count << std::endl;
                 save(broker,ramp,pixmap,fileName,options);
             }
 

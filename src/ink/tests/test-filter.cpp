@@ -107,15 +107,16 @@ using namespace Ink;
 namespace
 {
     static const Color::RGBA32 table[]  = { Y_Blue, Y_Black, Y_Red };
-    static const Color::RGBA32 table2[] = { Y_Black, Y_Blue, Y_Green, Y_Red };
+    static const Color::RGBA32 table2[] = { Y_Black, Y_Orange, Y_White };
+
 }
 
 Y_UTEST(filter)
 {
     Concurrent::Processor cpus = new Concurrent::Crew( Concurrent::Site::Default );
     Ink::Broker           broker(cpus);
-    const Color::Ramp     ramp("ramp",table,sizeof(table)/sizeof(table[0]));
-    const Color::Ramp     ramp2("ramp2",table,sizeof(table2)/sizeof(table2[0]));
+    const Color::Ramp     ramp(Y_Color_Ramp_From(table));
+    const Color::Ramp     ramp2(Y_Color_Ramp_From(table2));
 
     static const int8_t f[3][3] =
     {

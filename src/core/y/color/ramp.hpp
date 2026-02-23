@@ -83,10 +83,10 @@ namespace Yttrium
             //! setup
             /**
              \param ramp  precomputed ramp
-             \param _vmin minimal value of tyoe
+             \param _vmin minimal value of type
              \param _vmax maximal value of type
              */
-            inline explicit RampOf(const Ramp &ramp, const T _vmin=0, const T _vmax=1) noexcept :
+            inline explicit RampOf(const Ramp &ramp, const T _vmin, const T _vmax) noexcept :
             Ramp(ramp),
             vmin(_vmin),
             vmax(_vmax),
@@ -133,5 +133,7 @@ namespace Yttrium
     }
 
 }
+
+#define Y_Color_Ramp_From(TABLE) #TABLE, TABLE, sizeof(TABLE)/sizeof(TABLE[0])
 
 #endif // !Y_Color_Ramp_Included
