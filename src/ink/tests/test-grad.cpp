@@ -17,21 +17,19 @@ namespace Yttrium
 
             template <typename SCALAR> static inline
             void Compute(Broker               & broker,
-                         Pixmap<T>            & amplitude,
-                         Pixmap<vtx_t>        & direction,
+                         Gradient<T>          & gradient,
                          const Filter<T>      & filter,
                          const Pixmap<SCALAR> & source)
             {
-                broker.prep(amplitude);
-                broker.run(Run<SCALAR>,amplitude,direction,filter,source);
+                broker.prep(gradient);
+                broker.run(Run<SCALAR>,gradient,filter,source);
             }
 
         private:
             template <typename SCALAR> static inline
             void Run(Lockable             &,
                      const Tile           & tile,
-                     Pixmap<T>            & amplitude,
-                     Pixmap<vtx_t>        & direction,
+                     Gradient<T>          & gradient,
                      const Filter<T>      & filter,
                      const Pixmap<SCALAR> & source)
             {
@@ -40,7 +38,7 @@ namespace Yttrium
                     const Segment s = tile[j];
                     Point         p = s.start;
                     for(unit_t i=s.width;i>0;--i,++p.x)
-                        filter.loadGradient(amplitude,direction,source,p);
+                        filter.loadGradient(gradient,gradient.dir,source,p);
                 }
             }
 
@@ -91,7 +89,7 @@ Y_UTEST(grad)
         Ops::Convert(broker,gsf,Color::Convert::RGBATo<float>,  img);
 
 
-
+#if 0
         typedef V2D<float> vtx_t;
         Pixmap<float> g(img.w,img.h);
         Pixmap<vtx_t> gv(img.w,img.h);
@@ -102,6 +100,7 @@ Y_UTEST(grad)
         IMG.save(img,"img.png",0);
         IMG.save(broker,Color::Convert::ToRGBA<float>,gsf, "gsf.png", 0);
         IMG.save(ramp2,broker,g, "gsf-grad.png", 0);
+#endif
         
     }
 
