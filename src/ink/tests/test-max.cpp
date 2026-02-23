@@ -1,5 +1,5 @@
 
-
+#include "y/ink/ops/minmax.hpp"
 #include "y/ink/ops/getmax.hpp"
 #include "y/ink/ops/getmin.hpp"
 #include "y/utest/run.hpp"
@@ -36,13 +36,14 @@ Y_UTEST(max)
         IMG.save(image,"img.png",0);
 
         {
-            Ink::Pixmap<float> pxmf(image.w,image.w);
+            Ink::Pixmap<float> pxmf(image.w,image.h);
             Ink::Ops::Convert(par,pxmf,Color::Convert::RGBATo<float>,image);
             IMG.save(par,Color::Convert::ToRGBA<float>,pxmf,"gsf.png",0);
-            const float vmax = Ink::GetMax::Of(par,pxmf);
-            const float vmin = Ink::GetMin::Of(par,pxmf);
-            std::cerr << "vmin=" << vmin << std::endl;
-            std::cerr << "vmax=" << vmax << std::endl;
+            const float                  vmax = Ink::GetMax::Of(par,pxmf);
+            const float                  vmin = Ink::GetMin::Of(par,pxmf);
+            const Ink::PixelValue<float> px   = Ink::MinMax::Of(par,pxmf);
+            std::cerr << "vmin=" << vmin << " / " << px.vmin << std::endl;
+            std::cerr << "vmax=" << vmax << " / " << px.vmax << std::endl;
             Color::RampOf<float> rmp(ramp,vmin,vmax);
             IMG.save(seq,rmp,pxmf,"max.png",0);
         }
