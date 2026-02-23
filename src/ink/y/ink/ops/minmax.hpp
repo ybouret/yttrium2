@@ -12,22 +12,23 @@ namespace Yttrium
 {
     namespace Ink
     {
+#if !defined(DOXYGEN_SHOULD_SKIP_THIS)
         template <typename T>
-        class PixelValue
+        class PixelRange
         {
         public:
-            inline  PixelValue() : vmin(0), vmax(0) {}
-            inline  PixelValue(const PixelValue &_) : vmin(_.vmin), vmax(_.vmax) {}
-            inline ~PixelValue() noexcept {}
-            inline  PixelValue(const T pmin, const T pmax) : vmin(pmin), vmax(pmax) {}
-            inline PixelValue(const T * const addr) : vmin(addr[0]), vmax(addr[1]) {}
-            inline PixelValue & operator=(const PixelValue &_)
+            inline  PixelRange() : vmin(0), vmax(0) {}
+            inline  PixelRange(const PixelRange &_) : vmin(_.vmin), vmax(_.vmax) {}
+            inline ~PixelRange() noexcept {}
+            inline  PixelRange(const T pmin, const T pmax) : vmin(pmin), vmax(pmax) {}
+            inline  PixelRange(const T * const addr) : vmin(addr[0]), vmax(addr[1]) {}
+            inline  PixelRange & operator=(const PixelRange &_)
             {
                 vmin = _.vmin;
                 vmax = _.vmax;
                 return *this;
             }
-            inline void updateWith(const PixelValue &other)
+            inline void updateWith(const PixelRange &other)
             {
                 InSituMin(vmin,other.vmin);
                 InSituMax(vmax,other.vmax);
@@ -35,31 +36,42 @@ namespace Yttrium
             T vmin;
             T vmax;
         };
+#endif // !defined(DOXYGEN_SHOULD_SKIP_THIS)
 
-
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Get maximum/minimum of pixmap
+        //
+        //
+        //______________________________________________________________________
         struct MinMax
         {
+            //! \param broker cpu broker \param pixmap source \return range value
             template <typename T> static inline
-            PixelValue<T> Of(Broker &broker, const Pixmap<T> &pixmap)
+            PixelRange<T> Of(Broker &broker, const Pixmap<T> &pixmap)
             {
                 broker.prep(pixmap);
-                broker.acquireLocalMemory( sizeof( PixelValue<T> ) );
+                broker.acquireLocalMemory( sizeof( PixelRange<T> ) );
                 broker.run(MinMaxOfTile<T>,pixmap);
                 size_t i = broker.size(); assert(i>0); assert( !broker[i].isEmpty() );
-                PixelValue<T> res = broker[i].as< PixelValue<T> >();
+                PixelRange<T> res = broker[i].as< PixelRange<T> >();
                 for(--i;i>0;--i)
                 {
                     const Tile &tile = broker[i]; if(tile.isEmpty()) break;
-                    res.updateWith( tile.as< PixelValue<T> > () );
+                    res.updateWith( tile.as< PixelRange<T> > () );
                 }
                 return res;
             }
 
+        private:
+            //! \param tile tile to probe \param pxm source
             template <typename T>
             static inline void MinMaxOfTile(Lockable &, Ink::Tile &tile, const Pixmap<T> &pxm)
             {
                 assert(tile.entry);
-                assert(tile.bytes>=sizeof(PixelValue<T>));
+                assert(tile.bytes>=sizeof(PixelRange<T>));
                 if(tile.isEmpty()) return;
                 T * const addr = static_cast<T *>(tile.entry);
                 T & vmin = ( addr[0] = pxm[ tile.origin() ]);

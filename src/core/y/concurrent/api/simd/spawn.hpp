@@ -135,6 +135,38 @@ namespace Yttrium
                 (*this)(instr);
             }
 
+            //! run 4-arguments code
+            /**
+             \param code code(context.sync, self[context.indx], arg1, arg2, arg3,arg4)
+             \param arg1 persistent argument
+             \param arg2 persistent argument
+             \param arg3 persistent argument
+             \param arg4 persistent argument
+             */
+            template <typename CODE, typename ARG1, typename ARG2, typename ARG3, typename ARG4> inline
+            void run(CODE &code, ARG1 &arg1, ARG2 &arg2, ARG3 &arg3, ARG4 &arg4)
+            {
+                Stub4<CODE,ARG1,ARG2,ARG3,ARG4> instr = { code, arg1, arg2, arg3, arg4 };
+                (*this)(instr);
+            }
+
+            //! run 5-arguments code
+            /**
+             \param code code(context.sync, self[context.indx], arg1, arg2, arg3,arg4, arg5)
+             \param arg1 persistent argument
+             \param arg2 persistent argument
+             \param arg3 persistent argument
+             \param arg4 persistent argument
+             \param arg5 persistent argument
+             */
+            template <typename CODE, typename ARG1, typename ARG2, typename ARG3, typename ARG4, typename ARG5> inline
+            void run(CODE &code, ARG1 &arg1, ARG2 &arg2, ARG3 &arg3, ARG4 &arg4, ARG5 &arg5)
+            {
+                Stub5<CODE,ARG1,ARG2,ARG3,ARG4,ARG5> instr = { code, arg1, arg2, arg3, arg4, arg5 };
+                (*this)(instr);
+            }
+
+
 
 
 
@@ -320,6 +352,37 @@ namespace Yttrium
                     code(sync,tile,arg1,arg2,arg3);
                 }
             };
+
+            template <typename CODE, typename ARG1, typename ARG2, typename ARG3, typename ARG4>
+            struct Stub4
+            {
+                CODE &code;
+                ARG1 &arg1;
+                ARG2 &arg2;
+                ARG3 &arg3;
+                ARG4 &arg4;
+
+                inline void operator()(Lockable &sync, Tile &tile) {
+                    code(sync,tile,arg1,arg2,arg3,arg4);
+                }
+            };
+
+            template <typename CODE, typename ARG1, typename ARG2, typename ARG3, typename ARG4, typename ARG5>
+            struct Stub5
+            {
+                CODE &code;
+                ARG1 &arg1;
+                ARG2 &arg2;
+                ARG3 &arg3;
+                ARG4 &arg4;
+                ARG5 &arg5;
+
+                inline void operator()(Lockable &sync, Tile &tile) {
+                    code(sync,tile,arg1,arg2,arg3,arg4,arg5);
+                }
+            };
+
+
 #endif // !defined(DOXYGEN_SHOULD_SKIP_THIS)
 
             //! alias to wrap host+method call

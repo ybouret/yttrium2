@@ -41,7 +41,7 @@ Y_UTEST(max)
             IMG.save(par,Color::Convert::ToRGBA<float>,pxmf,"gsf.png",0);
             const float                  vmax = Ink::GetMax::Of(par,pxmf);
             const float                  vmin = Ink::GetMin::Of(par,pxmf);
-            const Ink::PixelValue<float> px   = Ink::MinMax::Of(par,pxmf);
+            const Ink::PixelRange<float> px   = Ink::MinMax::Of(par,pxmf);
             std::cerr << "vmin=" << vmin << " / " << px.vmin << std::endl;
             std::cerr << "vmax=" << vmax << " / " << px.vmax << std::endl;
             Color::RampOf<float> rmp(ramp,vmin,vmax);

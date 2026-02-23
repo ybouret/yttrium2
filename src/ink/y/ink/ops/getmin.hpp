@@ -11,8 +11,17 @@ namespace Yttrium
 {
     namespace Ink
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Get maximum of pixmap
+        //
+        //
+        //______________________________________________________________________
         struct GetMin
         {
+            //! \param broker cpu broker \param pixmap source \return minimum value
             template <typename T> static inline
             T Of(Broker &broker, const Pixmap<T> &pixmap)
             {
@@ -29,6 +38,8 @@ namespace Yttrium
                 return res;
             }
 
+        private:
+            //! \param tile tile to probe \param pxm source
             template <typename T>
             static inline void MinOfTile(Lockable &, Ink::Tile &tile, const Pixmap<T> &pxm)
             {

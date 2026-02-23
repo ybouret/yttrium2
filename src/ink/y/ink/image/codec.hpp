@@ -7,6 +7,8 @@
 #include "y/object/counted.hpp"
 #include "y/ink/image/options.hpp"
 #include "y/ink/ops.hpp"
+#include "y/ink/ops/minmax.hpp"
+#include "y/color/ramp.hpp"
 
 namespace Yttrium
 {
@@ -103,6 +105,26 @@ namespace Yttrium
                 save(broker,toRGBA,pixmap,_,options);
             }
 
+            //! save with a color ramp and automatic scaling
+            /**
+             \param colorRamp precomputed color ramp
+             \param broker    cpu broker
+             \param pixmap    source pixmap
+             \param fileName  output file name
+             \param options   output options
+             */
+            template <typename T,typename FILENAME> inline
+            void save(const Color::Ramp &   colorRamp,
+                      Broker            &   broker,
+                      const Pixmap<T>   &   pixmap,
+                      const FILENAME    &   fileName,
+                      const Options * const options) const
+            {
+                const PixelRange<T>    px = MinMax::Of(broker,pixmap);
+                const Color::RampOf<T> ramp(colorRamp,px.vmin,px.vmax);
+                save(broker,ramp,pixmap,fileName,options);
+            }
+
 
             //__________________________________________________________________
             //
@@ -114,10 +136,6 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(Codec); //!< discarding
-
-
-
-
         };
 
     }

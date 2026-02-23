@@ -124,8 +124,9 @@ namespace Yttrium
 
                 if(g2<=0)
                 {
-                    a = 0;
-                    v.x = v.y = 0;
+                    a   = 0;
+                    v.x = 0;
+                    v.y = 0;
                     return 0;
                 }
                 else
