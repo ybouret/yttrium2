@@ -7,6 +7,7 @@
 
 #include "y/ink/filter/metrics.hpp"
 #include "y/ink/filter/element.hpp"
+#include "y/ink/pixmap.hpp"
 #include "y/container/cxx/series.hpp"
 #include "y/mkl/api/adaptor.hpp"
 #include <cstring>
