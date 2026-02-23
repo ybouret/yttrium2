@@ -14,6 +14,7 @@ Y_UTEST_DECL(16)
     Y_UTEST(fmt);
     Y_UTEST(diff);
     Y_UTEST(filter);
+    Y_UTEST(grad);
     Y_UTEST(draw);
     Y_UTEST(blur);
 }

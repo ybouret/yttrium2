@@ -18,6 +18,7 @@ Y_UTEST(fmt)
 Y_UTEST(diff)
 Y_UTEST(filter)
 Y_UTEST(draw)
+Y_UTEST(grad)
 Y_UTEST(blur)
 Y_UTEST(max)
 
