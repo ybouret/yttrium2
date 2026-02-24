@@ -5,6 +5,11 @@
 
 #include "y/ink/filter/prewitt3.hpp"
 #include "y/ink/filter/prewitt5.hpp"
+#include "y/ink/filter/prewitt7.hpp"
+
+#include "y/ink/filter/sobel3.hpp"
+#include "y/ink/filter/sobel5.hpp"
+
 
 using namespace Yttrium;
 using namespace Ink;
@@ -27,9 +32,13 @@ namespace
         const String        name = FILTER::Label;
         const Color::Ramp   ramp(Y_Color_Ramp_From(table));
         const Filter<float> F( Y_Ink_Filter_From(FILTER) );
+        const Formats     & IMG = Formats::Instance();
         std::cerr << "Using " << name << std::endl;
         FilterGradient<float>::Compute(broker,g,F,gsf);
-
+        {
+            const String gradName = "gsf-" + name + ".png";
+            IMG.save(ramp,broker,g,gradName,0);
+        }
     }
 }
 
@@ -53,6 +62,10 @@ Y_UTEST(grad)
         Gradient<float> g(img.w,img.h);
         process<Prewitt3>(broker,g,gsf);
         process<Prewitt5>(broker,g,gsf);
+        process<Prewitt7>(broker,g,gsf);
+
+        process<Sobel3>(broker,g,gsf);
+        process<Sobel5>(broker,g,gsf);
 
 
         //IMG.save(ramp2,broker,g, "gsf-grad.png", 0);
