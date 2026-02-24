@@ -11,11 +11,30 @@ namespace Yttrium
 {
     namespace Ink
     {
+        //______________________________________________________________________
+        //
+        //
+        //! use filter to compute gradient
+        //
+        //______________________________________________________________________
         template <typename T>
         struct FilterGradient
         {
-            typedef V2D<T> vtx_t;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef V2D<T> vtx_t; //!< unit direction
 
+            //! compute gradient
+            /**
+             \param broker broker
+             \param gradient gradient
+             \param filter   immediate: gy, transpose: gx
+             \param source   source scalar pixmap
+             */
             template <typename SCALAR> static inline
             void Compute(Broker               & broker,
                          Gradient<T>          & gradient,
@@ -27,6 +46,8 @@ namespace Yttrium
             }
 
         private:
+
+#if !defined(DOXYGEN_SHOULD_SKIP_THIS)
             template <typename SCALAR> static inline
             void Run(Lockable             &,
                      const Tile           & tile,
@@ -42,6 +63,7 @@ namespace Yttrium
                         filter.loadGradient(gradient,gradient.dir,source,p);
                 }
             }
+#endif // !defined(DOXYGEN_SHOULD_SKIP_THIS)
 
         };
 

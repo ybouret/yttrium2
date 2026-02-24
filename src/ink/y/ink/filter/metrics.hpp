@@ -10,15 +10,45 @@ namespace Yttrium
 {
     namespace Ink
     {
-        
+
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! compute metrics from block size
+        //
+        //
+        //______________________________________________________________________
         class FilterMetrics
         {
         public:
-            static const char * const CallSign;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            static const char * const CallSign; //!< "Filter"
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup \param blockSize number of items in the filter data
             explicit FilterMetrics(const size_t blockSize);
-            virtual ~FilterMetrics() noexcept;
+            virtual ~FilterMetrics() noexcept; //!< cleanup
 
+            //__________________________________________________________________
+            //
+            //
+            // Methds
+            //
+            //__________________________________________________________________
+
+            //! \param blockAddr data \param blockSize size \return non-zero elements
             template <typename T> static inline
             size_t Count(const T * const blockAddr, const size_t blockSize)
             {
@@ -38,11 +68,17 @@ namespace Yttrium
                 return res;
             }
 
-            const size_t side;
-            const unit_t delta;
+            //__________________________________________________________________
+            //
+            //
+            // Mebers
+            //
+            //__________________________________________________________________
+            const size_t side;  //!< sqrt(blockSize)
+            const unit_t delta; //!< side/2-1
 
         private:
-            Y_Disable_Copy_And_Assign(FilterMetrics);
+            Y_Disable_Copy_And_Assign(FilterMetrics); //!< discarding
         };
     }
 

@@ -67,6 +67,7 @@ namespace Yttrium
                 broker.run(proc,pixmap,arg1,arg2);
             }
 
+            //! \param lhs lhs \param rhs rhs \return true iff same are
             template <typename LHS, typename RHS> static inline
             bool HaveSameArea(const LHS &lhs, const RHS &rhs) noexcept
             {
@@ -75,6 +76,13 @@ namespace Yttrium
                 return la == ra;
             }
 
+            //! target = convert(source) pixel-wise
+            /**
+             \param broker  broker
+             \param pixmap  target
+             \param convert pixel-wise function
+             \param source  source
+             */
             template <
             typename PIXMAP,
             typename CONVERT,
@@ -87,6 +95,12 @@ namespace Yttrium
             }
 
             //! transform(target,source,origin)
+            /**
+             \param broker    broker
+             \param target    target
+             \param transform probe-point procedure
+             \param source    source
+             */
             template
             <
             typename TARGET,
@@ -103,6 +117,7 @@ namespace Yttrium
 
 
         private:
+#if !defined(DOXYGEN_SHOULD_SKIP_THIS)
             template <typename PIXMAP, typename CONVERT, typename SOURCE> static inline
             void ForEachPixel(Lockable &, const Tile &tile, PIXMAP &pixmap, CONVERT &convert, SOURCE &source)
             {
@@ -128,7 +143,7 @@ namespace Yttrium
                         transform(target,source,p);
                 }
             }
-
+#endif // !defined(DOXYGEN_SHOULD_SKIP_THIS)
 
         };
 

@@ -10,10 +10,11 @@ namespace Yttrium
 {
     namespace Ink
     {
+        //! definition
         struct Sobel5
         {
-            static const char * const Label;
-            static const int8_t       Table[5][5];
+            static const char * const Label;       //!< label
+            static const int8_t       Table[5][5]; //!< table
         };
     }
 

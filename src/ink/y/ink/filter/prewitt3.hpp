@@ -10,10 +10,11 @@ namespace Yttrium
 {
     namespace Ink
     {
+        //! definition
         struct Prewitt3
         {
-            static const char * const Label;
-            static const int8_t       Table[3][3];
+            static const char * const Label;       //!< label
+            static const int8_t       Table[3][3]; //!< table
         };
     }
 

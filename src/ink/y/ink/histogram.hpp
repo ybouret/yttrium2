@@ -71,6 +71,7 @@ namespace Yttrium
                 broker.run(CallAdd<PIXMAP,PIXEL_TO_BYTE>,pxm,proc);
             }
 
+            //! save histogram data
             void save(const Core::String<char> &) const;
 
         private:

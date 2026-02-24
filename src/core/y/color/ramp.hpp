@@ -134,6 +134,7 @@ namespace Yttrium
 
 }
 
+//! helper
 #define Y_Color_Ramp_From(TABLE) #TABLE, TABLE, sizeof(TABLE)/sizeof(TABLE[0])
 
 #endif // !Y_Color_Ramp_Included

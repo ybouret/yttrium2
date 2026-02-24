@@ -16,16 +16,42 @@ namespace Yttrium
 {
     namespace Ink
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Square Filter
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class Filter : public FilterMetrics, public CxxSeries< FilterElement<T> >
         {
         public:
-            typedef FilterElement<T>   Element;
-            typedef CxxSeries<Element> Elements;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef FilterElement<T>   Element;  //!< alias
+            typedef CxxSeries<Element> Elements; //!< alias
 
             using Elements::capacity;
             using Elements::size;
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup using "decreasing y-filter" representation
+            /**
+             \param blockAddr values
+             \param blockSize number of values
+             */
             template <typename U>
             inline explicit Filter(const U   * const blockAddr,
                                    const size_t      blockSize) :
@@ -52,11 +78,23 @@ namespace Yttrium
                 Sorting::Heap::Sort(*this,Element::Compare);
             }
 
-
-
+            //! cleanup
             inline virtual ~Filter() noexcept {}
 
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! apply filter
+            /**
+             \param target target[NCHAN]
+             \param source source pixmap
+             \param origin probe point
+             */
             template <
             typename     PIXEL,
             typename     PTYPE,
@@ -72,7 +110,12 @@ namespace Yttrium
                     acc<PTYPE,NCHAN>(target,(const PTYPE *) &source[origin + elem->p], elem->w);
             }
 
-
+            //! apply filter of transpose positions
+            /**
+             \param target target[NCHAN]
+             \param source source pixmap
+             \param origin probe point
+             */
             template <
             typename     PIXEL,
             typename     PTYPE,
@@ -88,6 +131,12 @@ namespace Yttrium
                     acc<PTYPE,NCHAN>(target,(const PTYPE *) &source[origin + elem->p.transpose()], elem->w);
             }
 
+            //! apply filter on scalar pixmap
+            /**
+             \param target target
+             \param source scalar source
+             \param origin probe point
+             */
             template <typename SCALAR> inline
             void loadImmediateScalar(Pixmap<T>            & target,
                                      const Pixmap<SCALAR> & source,
@@ -96,6 +145,12 @@ namespace Yttrium
                 loadImmediate<SCALAR,SCALAR,1>( &target[origin], source, origin);
             }
 
+            //! apply tranpose filter on scalar pixmap
+            /**
+             \param target target
+             \param source scalar source
+             \param origin probe point
+             */
             template <typename SCALAR> inline
             void loadTransposeScalar(Pixmap<T>            & target,
                                      const Pixmap<SCALAR> & source,
@@ -104,6 +159,14 @@ namespace Yttrium
                 loadTranspose<SCALAR,SCALAR,1>( &target[origin], source, origin);
             }
 
+            //! apply filter on both direction to deduce gradient
+            /**
+             \param amplitude gradient amplitude
+             \param direction gradient direction
+             \param field     scalar field
+             \param origin probe point
+             \return gradient amplitude at probe point
+             */
             template <typename SCALAR> inline
             T loadGradient(Pixmap<T>            & amplitude,
                            Pixmap< V2D<T> >     & direction,
@@ -150,7 +213,14 @@ namespace Yttrium
 
 
         private:
-            Y_Disable_Copy_And_Assign(Filter);
+            Y_Disable_Copy_And_Assign(Filter); //!< discarding
+
+            //! accumulate channel-wise elements
+            /**
+             \param target target[NCHAN]
+             \param ptype  ptype[NCHAN]
+             \param w      current weight
+             */
             template <typename PTYPE, const size_t NCHAN> inline
             void acc(T * const target, const PTYPE * const ptype, const T w) const
             {
@@ -167,6 +237,7 @@ namespace Yttrium
 
 }
 
+//! helper
 #define Y_Ink_Filter_From(CLASS) & (CLASS::Table[0][0]), sizeof(CLASS::Table)/sizeof(CLASS::Table[0][0])
 
 #endif // !Y_Ink_Filter_Included

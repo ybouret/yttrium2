@@ -11,8 +11,10 @@ namespace Yttrium
     namespace Ink
     {
 
+        //! Otsu method for thresholding
         struct Otsu
         {
+            //! \return threshold from histogram
             static uint8_t Threshold(const Histogram &) noexcept;
         };
 
