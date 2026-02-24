@@ -16,6 +16,7 @@ namespace Yttrium
         namespace Draw
         {
 
+            //! \param img pixmap \param x x-pos \param y y-pos \param putPixel putPixel(x,y)
             template <typename IMAGE, typename PUTPIXEL> inline
             void SetPixel(IMAGE &img, const unit_t x, const unit_t y, PUTPIXEL &putPixel)
             {
@@ -24,7 +25,7 @@ namespace Yttrium
             }
 
 
-            //! draw a circle
+            //! draw a circle using putPixel(x,y)
             /**
              \param img pixmap, Area based
              \param xm  circle x-center
@@ -58,6 +59,14 @@ namespace Yttrium
                 } while (x < 0);
             }
 
+            //! draw a circle using putPixel(x,y,img)
+            /**
+             \param img pixmap, Area based
+             \param xm  circle x-center
+             \param ym  circle y-center
+             \param r   circle radius
+             \param putPixel putPixel(x,y,img)
+             */
             template <typename IMAGE, typename PUTPIXEL> inline
             void Circle(IMAGE &       img,
                         const unit_t  xm,
@@ -69,6 +78,15 @@ namespace Yttrium
                 Circle_(img,xm,ym,r,wrapper);
             }
 
+            //! draw a circle using putPixel(x,y,img,arg2)
+            /**
+             \param img pixmap, Area based
+             \param xm  circle x-center
+             \param ym  circle y-center
+             \param r   circle radius
+             \param putPixel putPixel(x,y,img,arg2)
+             \param arg2  extra argument
+             */
             template <typename IMAGE, typename PUTPIXEL, typename ARG2> inline
             void Circle(IMAGE &       img,
                         const unit_t  xm,

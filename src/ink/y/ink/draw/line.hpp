@@ -150,7 +150,16 @@ namespace Yttrium
                     Line_(x0,y0,x1,y1,putPixel,img);
             }
 
-
+            //! 1-extra argument clipped line
+            /**
+             \param img derived from area, passed to putPixel
+             \param x0 initial x
+             \param y0 initial y
+             \param x1 final x
+             \param y1 final y
+             \param putPixel putPixel(x,y,img,arg2) on each line point
+             \param arg2 extra argument
+             */
             template <typename IMAGE, typename PUTPIXEL, typename ARG2> inline
             void Line(const IMAGE &img,
                       unit_t       x0,

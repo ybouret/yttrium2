@@ -99,7 +99,7 @@ namespace Yttrium
 
 
                 assert(tile.bytes>=Histogram::LocalMemory);
-                Histogram::Type * const H = static_cast<Histogram::Type * const>(tile.entry);
+                Histogram::Type * const H = static_cast<Histogram::Type *>(tile.entry);
                 memset(H,0,Histogram::LocalMemory);
 
                 for(unit_t j=tile.h;j>0;--j)
