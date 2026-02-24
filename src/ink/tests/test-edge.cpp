@@ -69,6 +69,7 @@ namespace Yttrium
                       Pixmap<uint8_t> &edge,
                       const uint8_t    threshold) noexcept
             {
+                const uint8_t discarded = threshold >> 1;
                 for(unit_t j=tile.h;j>0;--j)
                 {
                     const Segment         s = tile[j];
@@ -76,7 +77,7 @@ namespace Yttrium
                     for(unit_t i=s.width,x=s.start.x;i>0;--i,++x)
                     {
                         uint8_t &b = u[x];
-                        if(b<=0) continue;
+                        if(b<=discarded) { b=0;      continue; }
                         if(b<=threshold) { b=Feeble; continue; }
                         b = Strong;
                     }
