@@ -3,53 +3,7 @@
 #include "y/ink/image/formats.hpp"
 #include "y/utest/run.hpp"
 
-namespace Yttrium
-{
-    namespace Ink
-    {
-
-
-
-        template <typename T>
-        struct FilterGradient
-        {
-            typedef V2D<T> vtx_t;
-
-            template <typename SCALAR> static inline
-            void Compute(Broker               & broker,
-                         Gradient<T>          & gradient,
-                         const Filter<T>      & filter,
-                         const Pixmap<SCALAR> & source)
-            {
-                broker.prep(gradient);
-                broker.run(Run<SCALAR>,gradient,filter,source);
-            }
-
-        private:
-            template <typename SCALAR> static inline
-            void Run(Lockable             &,
-                     const Tile           & tile,
-                     Gradient<T>          & gradient,
-                     const Filter<T>      & filter,
-                     const Pixmap<SCALAR> & source)
-            {
-                for(unit_t j=tile.h;j>0;--j)
-                {
-                    const Segment s = tile[j];
-                    Point         p = s.start;
-                    for(unit_t i=s.width;i>0;--i,++p.x)
-                        filter.loadGradient(gradient,gradient.dir,source,p);
-                }
-            }
-
-        };
-
-
-
-    }
-
-}
-
+#include "y/ink/filter/prewitt3.hpp"
 
 using namespace Yttrium;
 using namespace Ink;
@@ -70,14 +24,7 @@ Y_UTEST(grad)
     Ink::Broker           broker(cpus);
     const Color::Ramp     ramp2(Y_Color_Ramp_From(table2));
 
-    static const int8_t f[3][3] =
-    {
-        {  -1,  -1,  -1 },
-        {   0,  0,    0 },
-        {   1,  1,    1 }
-    };
-
-    Filter<float> F( &f[0][0], sizeof(f)/sizeof(f[0][0]));
+    Filter<float> F( Y_Filter_From(Prewitt3) );
     std::cerr << F << std::endl;
 
     Formats &IMG = Formats::Std();
@@ -86,22 +33,17 @@ Y_UTEST(grad)
         Image           img = IMG.load(argv[1],0);
         Pixmap<float>   gsf(img.w,img.h);
 
-        Ops::Convert(broker,gsf,Color::Convert::RGBATo<float>,  img);
+        Ops::Convert(broker,gsf,Color::Convert::RGBATo<float>, img);
 
+        Gradient<float> g(img.w,img.h);
+        FilterGradient<float>::Compute(broker,g,F,gsf);
 
-#if 0
-        typedef V2D<float> vtx_t;
-        Pixmap<float> g(img.w,img.h);
-        Pixmap<vtx_t> gv(img.w,img.h);
-
-        FilterGradient<float>::Compute(broker,g,gv,F,gsf);
 
         std::cerr << "Saving..." << std::endl;
         IMG.save(img,"img.png",0);
         IMG.save(broker,Color::Convert::ToRGBA<float>,gsf, "gsf.png", 0);
         IMG.save(ramp2,broker,g, "gsf-grad.png", 0);
-#endif
-        
+
     }
 
 

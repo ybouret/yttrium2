@@ -17,5 +17,6 @@ Y_UTEST_DECL(16)
     Y_UTEST(grad);
     Y_UTEST(draw);
     Y_UTEST(blur);
+    Y_UTEST(edge);
 }
 Y_UTEST_EXEC()

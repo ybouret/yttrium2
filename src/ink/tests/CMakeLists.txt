@@ -21,4 +21,4 @@ Y_UTEST(draw)
 Y_UTEST(grad)
 Y_UTEST(blur)
 Y_UTEST(max)
-
+Y_UTEST(edge)

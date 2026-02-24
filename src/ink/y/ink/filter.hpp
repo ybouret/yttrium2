@@ -33,7 +33,7 @@ namespace Yttrium
             CxxSeries< FilterElement<T> >( Count(blockAddr,blockSize) )
             {
                 size_t i=0;
-                for(unit_t y=-delta;y<=delta;++y)
+                for(unit_t y=delta;y>=-delta;--y)
                 {
                     for(unit_t x=-delta;x<=delta;++x)
                     {
@@ -166,6 +166,8 @@ namespace Yttrium
     }
 
 }
+
+#define Y_Filter_From(CLASS) & (CLASS::Table[0][0]), sizeof(CLASS::Table)/sizeof(CLASS::Table[0][0])
 
 #endif // !Y_Ink_Filter_Included
 
