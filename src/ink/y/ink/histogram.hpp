@@ -6,6 +6,8 @@
 
 #include "y/ink/ops.hpp"
 #include "y/memory/stealth.hpp"
+#include "y/string/fwd.hpp"
+
 namespace Yttrium
 {
     namespace Ink
@@ -68,6 +70,8 @@ namespace Yttrium
                 broker.acquireLocalMemory( LocalMemory );
                 broker.run(CallAdd<PIXMAP,PIXEL_TO_BYTE>,pxm,proc);
             }
+
+            void save(const Core::String<char> &) const;
 
         private:
             Y_Disable_Copy_And_Assign(Histogram); //!< discarding

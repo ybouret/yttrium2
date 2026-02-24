@@ -7,6 +7,8 @@
 #include "y/color/conversion.hpp"
 
 #include "y/ink/filter/scharr5.hpp"
+#include "y/ink/histogram/otsu.hpp"
+#include <cstring>
 
 namespace Yttrium
 {
@@ -15,14 +17,108 @@ namespace Yttrium
 
         struct LocalMaxima
         {
+            static const uint8_t Feeble = 127;
+            static const uint8_t Strong = 255;
 
             template <typename T> static inline
-            void Keep(Broker &broker, Pixmap<T> &thin, const Gradient<T> &g)
+            void Keep(Broker &broker, Histogram &H, Pixmap<uint8_t> &edge, Pixmap<T> &thin, const Gradient<T> &g)
             {
                 assert( Ops::HaveSameArea(thin,g) );
+                assert( Ops::HaveSameArea(edge,g) );
+
+                // first pass: keep only local maxima
                 broker.prep(thin);
-                broker.acquireLocalMemory( sizeof(T) );
+                broker.acquireLocalMemory( Histogram::LocalMemory );
                 broker.run(Run<T>,thin,g);
+                const T gmax = GMax<T>(broker); std::cerr << "gmax=" << gmax << std::endl;
+
+                // second pass: build quantized edge and its histogram
+                broker.run(Hist<T>,edge,thin,gmax);
+
+                // build histogram and threshold
+                H.ldz();
+                for(size_t i=broker.size();i>0;--i)
+                {
+                    const Tile &tile = broker[i]; if(tile.isEmpty()) break;
+                    H += static_cast<const Histogram::Type *>( tile.entry );
+                }
+                const uint8_t threshold = Otsu::Threshold(H);
+                std::cerr << "threshold=" << (int)threshold << std::endl;
+
+                // part strong from feeble
+                broker.run(Part,edge,threshold);
+            }
+
+        private:
+            template <typename T> static inline
+            T GMax(const Broker &broker)
+            {
+                size_t i = broker.size(); assert(i>0); assert( !broker[i].isEmpty() );
+                T gmax = broker[i].as<T>();
+                for(--i;i>0;--i)
+                {
+                    const Tile &tile = broker[i]; if(tile.isEmpty()) break;
+                    InSituMax(gmax,tile.as<T>());
+                }
+                return gmax;
+            }
+
+            static
+            void Part(Lockable &,
+                      const Tile      &tile,
+                      Pixmap<uint8_t> &edge,
+                      const uint8_t    threshold) noexcept
+            {
+                for(unit_t j=tile.h;j>0;--j)
+                {
+                    const Segment         s = tile[j];
+                    Pixmap<uint8_t>::Row &u = edge[s.start.y];
+                    for(unit_t i=s.width,x=s.start.x;i>0;--i,++x)
+                    {
+                        uint8_t &b = u[x];
+                        if(b<=0) continue;
+                        if(b<=threshold) { b=Feeble; continue; }
+                        b = Strong;
+                    }
+                }
+            }
+
+
+            template <typename T> static inline
+            void Hist(Lockable &,
+                      Tile &           tile,
+                      Pixmap<uint8_t> &edge,
+                      const Pixmap<T> &thin,
+                      const T          gmax)
+            {
+                const T zero(0);
+                const T bmax(255);
+                const T half(0.5);
+
+
+                assert(tile.bytes>=Histogram::LocalMemory);
+                Histogram::Type * const H = static_cast<Histogram::Type * const>(tile.entry);
+                memset(H,0,Histogram::LocalMemory);
+
+                for(unit_t j=tile.h;j>0;--j)
+                {
+                    const Segment                   s   = tile[j];
+                    Pixmap<uint8_t>::Row &          tgt = edge[s.start.y];
+                    const typename Pixmap<T>::Row & src = thin[s.start.y];
+                    for(unit_t i=s.width,x=s.start.x;i>0;--i,++x)
+                    {
+                        const T g = src[x];
+                        if(g>zero) {
+                            const uint8_t b = (uint8_t) floor(half + (bmax*g)/gmax );
+                            if(b>0)
+                                 ++H[tgt[x] = b];
+                        }
+                        else
+                        {
+                            tgt[x] = 0;
+                        }
+                    }
+                }
             }
 
             template <typename T> static inline
@@ -69,7 +165,9 @@ using namespace Ink;
 
 namespace
 {
-    static const Color::RGBA32 table[] = { Y_Black, Y_Red, Y_White };
+    static const Color::RGBA32 table[]  = { Y_Black, Y_Red, Y_White };
+    static const Color::RGBA32 table2[] = { Y_Black, Y_Magenta, Y_White };
+
 }
 
 Y_UTEST(edge)
@@ -79,12 +177,15 @@ Y_UTEST(edge)
     Formats &             IMG  = Formats::Std();
     const Filter<float>   F( Y_Ink_Filter_From(Scharr5) );
     const Color::Ramp     ramp( Y_Color_Ramp_From(table) );
+    const Color::Ramp     ramp2( Y_Color_Ramp_From(table2) );
+
     if(argc>1)
     {
         const Image     img = IMG.load(argv[1],0);
         Pixmap<float>   gsf(img.w,img.h);
         Gradient<float> g(img.w,img.h);
         Pixmap<float>   thin(img.w,img.h);
+        Pixmap<uint8_t> edge(img.w,img.h);
 
         Ops::Convert(broker,gsf,Color::Convert::RGBATo<float>, img);
         FilterGradient<float>::Compute(broker,g,F,gsf);
@@ -92,8 +193,11 @@ Y_UTEST(edge)
         IMG.save(broker,Color::Convert::ToRGBA<float>,gsf, "gsf.png", 0);
         IMG.save(ramp,broker,g,"gsf-grad.png", 0);
 
-        LocalMaxima::Keep(broker,thin,g);
-        IMG.save(ramp,broker,thin,"gsf-thin.png", 0);
+        Histogram H;
+        LocalMaxima::Keep(broker,H,edge,thin,g);
+        IMG.save(ramp, broker,thin,"gsf-thin.png", 0);
+        IMG.save(ramp2,broker,edge,"gsf-edge.png", 0);
+        H.save("hist.dat");
 
     }
 }

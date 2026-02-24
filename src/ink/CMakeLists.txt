@@ -14,6 +14,7 @@ y/ink/image/format/pnm
 y/ink/ops
 y/ink/filter
 y/ink/draw
+y/ink/histogram
 )
 
 add_dependencies(y-ink y-jpeg png_static tiff)

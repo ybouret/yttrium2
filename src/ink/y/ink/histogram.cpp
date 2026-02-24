@@ -56,3 +56,26 @@ namespace Yttrium
     }
 
 }
+
+#include "y/stream/libc/output.hpp"
+#include "y/string.hpp"
+#include "y/format/decimal.hpp"
+
+namespace Yttrium
+{
+    namespace Ink
+    {
+        void Histogram:: save(const String &fileName) const
+        {
+            OutputFile fp(fileName);
+            for(unsigned i=0;i<256;++i)
+            {
+                fp << Decimal(i).c_str() << ' ' << Decimal(bin[i]).c_str() << '\n';
+            }
+
+        }
+
+    }
+
+}
+
