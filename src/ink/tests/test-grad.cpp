@@ -12,6 +12,7 @@
 #include "y/ink/filter/sobel7.hpp"
 
 #include "y/ink/filter/scharr3.hpp"
+#include "y/ink/filter/scharr5.hpp"
 
 
 using namespace Yttrium;
@@ -72,6 +73,7 @@ Y_UTEST(grad)
         process<Sobel7>(broker,g,gsf);
 
         process<Scharr3>(broker,g,gsf);
+        process<Scharr5>(broker,g,gsf);
 
 
         //IMG.save(ramp2,broker,g, "gsf-grad.png", 0);
