@@ -76,8 +76,7 @@ Y_UTEST(grad)
         process<Scharr5>(broker,g,gsf);
 
 
-        //IMG.save(ramp2,broker,g, "gsf-grad.png", 0);
-
+        
     }
 
 
