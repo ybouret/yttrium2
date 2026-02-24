@@ -1,15 +1,8 @@
-#include "y/ink/blur/data.hpp"
+#include "y/ink/blur/hook.hpp"
 
 #include "y/utest/run.hpp"
-#include "y/container/algorithm/unique.hpp"
-#include "y/container/sequence/vector.hpp"
-#include "y/sorting/heap.hpp"
-#include "y/container/cxx/series.hpp"
-#include "y/calculus/iabs.hpp"
 #include "y/core/utils.hpp"
-#include "y/cameo/addition.hpp"
 
-#include "y/ink/filter/element.hpp"
 #include "y/ink/ops.hpp"
 #include <cstring>
 
@@ -21,59 +14,8 @@ namespace Yttrium
 {
     namespace Ink
     {
-
-
-
-       
-        template <typename T> class BlurFunction
-        {
-        public:
-            inline explicit BlurFunction() noexcept : one(1) {}
-            inline virtual ~BlurFunction() noexcept {}
-
-            virtual T operator()(const unit_t r2) const = 0;
-
-            inline const BlurFunction & blurFunction() const noexcept { return *this; }
-
-            inline unit_t rmax() const
-            {
-                const T       Dmax = 256;
-                const T       Vmin = one/Dmax;
-                const BlurFunction &F  = *this;
-                const T       f0 = F(0);
-                for(unit_t r=1;;++r)
-                {
-                    const T f = F(r*r);
-                    if(f/f0<=Vmin)
-                        return --r;
-                }
-            }
-
-            const T one; //!< 1
-
-        private:
-            Y_Disable_Copy_And_Assign(BlurFunction);
-        };
-
-
-        template <typename T>
-        class BlurHook : public BlurData<T>
-        {
-        public:
-            inline explicit BlurHook(const BlurFunction<T> &F) :
-            BlurData<T>(F,F.rmax())
-            {
-            }
-
-            inline virtual ~BlurHook() noexcept
-            {
-            }
-
-
-        private:
-            Y_Disable_Copy_And_Assign(BlurHook);
-        };
-
+        
+        
         template <typename T, template <typename> class FUNCTION>
         class Blur : public FUNCTION<T>, public BlurHook<T>
         {
@@ -148,10 +90,21 @@ namespace Yttrium
 
 
 
+        class GaussBlurCommon
+        {
+        public:
+            static const char * const CallSign;
+            explicit GaussBlurCommon() noexcept {}
+            virtual ~GaussBlurCommon() noexcept {}
 
+        private:
+            Y_Disable_Copy_And_Assign(GaussBlurCommon);
+        };
+
+        const char * const GaussBlurCommon :: CallSign = "Gauss";
 
         template <typename T>
-        class GaussBlur : public BlurFunction<T>
+        class GaussBlur : public GaussBlurCommon, public BlurFunction<T>
         {
         public:
             inline explicit GaussBlur(const T stddev) :
@@ -163,6 +116,8 @@ namespace Yttrium
             }
 
             inline virtual ~GaussBlur() noexcept {}
+
+            virtual const char * callSign() const noexcept { return CallSign; }
 
             virtual T operator()(const unit_t r2) const
             {
@@ -179,8 +134,22 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(GaussBlur);
         };
 
+
+        class LorentzBlurCommon
+        {
+        public:
+            static const char * const CallSign;
+            explicit LorentzBlurCommon() noexcept {}
+            virtual ~LorentzBlurCommon() noexcept {}
+
+        private:
+            Y_Disable_Copy_And_Assign(LorentzBlurCommon);
+        };
+
+        const char * const LorentzBlurCommon :: CallSign = "Lorentz";
+
         template <typename T>
-        class LorentzBlur : public BlurFunction<T>
+        class LorentzBlur : public LorentzBlurCommon, public BlurFunction<T>
         {
         public:
             using BlurFunction<T>::one;
@@ -193,6 +162,8 @@ namespace Yttrium
             }
 
             inline virtual ~LorentzBlur() noexcept {}
+
+            virtual const char * callSign() const noexcept { return CallSign; }
 
             virtual T operator()(const unit_t r2) const
             {
