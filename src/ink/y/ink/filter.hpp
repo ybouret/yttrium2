@@ -167,7 +167,7 @@ namespace Yttrium
 
 }
 
-#define Y_Filter_From(CLASS) & (CLASS::Table[0][0]), sizeof(CLASS::Table)/sizeof(CLASS::Table[0][0])
+#define Y_Ink_Filter_From(CLASS) & (CLASS::Table[0][0]), sizeof(CLASS::Table)/sizeof(CLASS::Table[0][0])
 
 #endif // !Y_Ink_Filter_Included
 
