@@ -11,6 +11,8 @@
 #include "y/ink/filter/sobel5.hpp"
 #include "y/ink/filter/sobel7.hpp"
 
+#include "y/ink/filter/scharr3.hpp"
+
 
 using namespace Yttrium;
 using namespace Ink;
@@ -68,6 +70,8 @@ Y_UTEST(grad)
         process<Sobel3>(broker,g,gsf);
         process<Sobel5>(broker,g,gsf);
         process<Sobel7>(broker,g,gsf);
+
+        process<Scharr3>(broker,g,gsf);
 
 
         //IMG.save(ramp2,broker,g, "gsf-grad.png", 0);
