@@ -29,7 +29,7 @@ namespace Yttrium
                 // first pass: keep only local maxima
                 broker.prep(thin);
                 broker.acquireLocalMemory( Histogram::LocalMemory );
-                broker.run(Run<T>,thin,g);
+                broker.run(Thin<T>,thin,g);
                 const T gmax = GMax<T>(broker); std::cerr << "gmax=" << gmax << std::endl;
 
                 // second pass: build quantized edge and its histogram
@@ -111,7 +111,7 @@ namespace Yttrium
                         if(g>zero) {
                             const uint8_t b = (uint8_t) floor(half + (bmax*g)/gmax );
                             if(b>0)
-                                 ++H[tgt[x] = b];
+                                ++H[tgt[x] = b];
                         }
                         else
                         {
@@ -122,10 +122,10 @@ namespace Yttrium
             }
 
             template <typename T> static inline
-            void Run(Lockable          &,
-                     Tile              &tile,
-                     Pixmap<T>         &thin,
-                     const Gradient<T> &g)
+            void Thin(Lockable          &,
+                      Tile              &tile,
+                      Pixmap<T>         &thin,
+                      const Gradient<T> &g)
             {
                 const T half(0.5);
                 const T zero(0);
