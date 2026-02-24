@@ -43,10 +43,11 @@ namespace Yttrium
                     H += static_cast<const Histogram::Type *>( tile.entry );
                 }
                 const uint8_t threshold = Otsu::Threshold(H);
+                const uint8_t discarded = threshold/2;
                 std::cerr << "threshold=" << (int)threshold << std::endl;
 
                 // part strong from feeble
-                broker.run(Part,edge,threshold);
+                broker.run(Part,edge,threshold,discarded);
             }
 
         private:
@@ -67,9 +68,9 @@ namespace Yttrium
             void Part(Lockable &,
                       const Tile      &tile,
                       Pixmap<uint8_t> &edge,
-                      const uint8_t    threshold) noexcept
+                      const uint8_t    threshold,
+                      const uint8_t    discarded) noexcept
             {
-                const uint8_t discarded = threshold >> 1;
                 for(unit_t j=tile.h;j>0;--j)
                 {
                     const Segment         s = tile[j];
@@ -140,7 +141,7 @@ namespace Yttrium
                     const typename Pixmap<V2D<T>>::Row &vec = g.dir[p.y];
                     for(unit_t i=s.width;i>0;--i,++p.x)
                     {
-                        const T      g0 = src[p.x];
+                        const T      g0 = src[p.x]; if(g0<=zero) { tgt[p.x] = zero; continue; }
                         const V2D<T> v0 = vec[p.x];
                         const Point  dv( (unit_t) floor(v0.x+half), (unit_t) floor(v0.y+half) );
                         const T      gp = g[p+dv];
