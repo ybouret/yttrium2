@@ -81,6 +81,7 @@ namespace Yttrium
 
             //! \param q quartile to find \param lo lower bin \param up bin \return matching bin
             uint8_t find(const Quartile q, const uint8_t lo, const uint8_t up) const noexcept;
+            void    toCDF();
 
             void save(const Core::String<char> &) const; //!< save histogram data
             void save(const char * const)         const; //!< save histogram data

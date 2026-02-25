@@ -100,4 +100,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Sequence_Included

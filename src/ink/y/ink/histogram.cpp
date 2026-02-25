@@ -69,6 +69,10 @@ namespace Yttrium
             }
         }
 
+        void Histogram:: toCDF()
+        {
+            for(size_t i=1;i<Bins;++i) bin[i] += bin[i-1];
+        }
 
 
         uint8_t Histogram:: find(const Quartile q, const uint8_t lo, const uint8_t up) const noexcept

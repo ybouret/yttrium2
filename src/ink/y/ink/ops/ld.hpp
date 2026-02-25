@@ -27,6 +27,7 @@ namespace Yttrium
                 Ops::Apply(broker, Put<PIXMAP,typename PIXMAP::MutableType>, pixmap,value);
             }
 
+        private:
             //! parallel routine
             /**
              \param tile target tile
