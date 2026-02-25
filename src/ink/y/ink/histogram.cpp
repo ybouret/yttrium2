@@ -69,7 +69,9 @@ namespace Yttrium
             }
         }
 
-        uint8_t Histogram:: median(const uint8_t lo, const uint8_t up) const noexcept
+
+
+        uint8_t Histogram:: find(const Quartile q, const uint8_t lo, const uint8_t up) const noexcept
         {
             assert(lo<=up);
             Type         sum[Bins]; // cumulative distribution
@@ -77,24 +79,44 @@ namespace Yttrium
             const int jup = up;
             sum[jlo] = bin[jlo];
             for(int j=jlo+1;j<=jup;++j) sum[j] = sum[j-1] + bin[j];
-            const Type mid = sum[jup]/2;
 
-            const int jmid = (jlo+jup)/2;
-            int       jopt = jmid;
+            Type sQuery = sum[jup];
+            int  jQuery = jlo+jup;
+
+            switch(q)
             {
-                Type  best = Score(mid,sum[jopt]);
-                for(int j=jmid-1;j>=jlo;--j)
+                case Q1:
+                    sQuery /= 4;
+                    jQuery = jlo + (jup-jlo)/4;
+                    break;
+
+                case Q2:
+                    sQuery /= 2;
+                    jQuery /= 2;
+                    break;
+
+                default:
+                    (sQuery *= 3) /= 4;
+                    jQuery = jlo + ( 3 * (jup-jlo) ) / 4;
+                    break;
+            }
+
+
+            int       jopt = jQuery;
+            {
+                Type  best = Score(sQuery,sum[jopt]);
+                for(int j=jQuery-1;j>=jlo;--j)
                 {
-                    const Type score = Score(mid,sum[j]);
+                    const Type score = Score(sQuery,sum[j]);
                     if(score<best)
                     {
                         best = score;
                         jopt = j;
                     }
                 }
-                for(int j=jmid+1;j<=jup;++j)
+                for(int j=jQuery+1;j<=jup;++j)
                 {
-                    const Type score = Score(mid,sum[j]);
+                    const Type score = Score(sQuery,sum[j]);
                     if(score<best)
                     {
                         best = score;

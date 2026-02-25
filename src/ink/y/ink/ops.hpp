@@ -113,6 +113,12 @@ namespace Yttrium
                 broker.run( ForEachPoint<TARGET,TRANSFORM,SOURCE>,target,transform,source);
             }
 
+            //! copy each pixel
+            /**
+             \param broker    broker
+             \param target    target
+             \param source    source
+             */
             template <typename TARGET, typename T> static inline
             void Copy(Broker &broker, TARGET &target, const Pixmap<T> &source)
             {

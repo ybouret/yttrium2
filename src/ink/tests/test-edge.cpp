@@ -25,11 +25,11 @@ namespace Yttrium
             return DoubleThreshold(strong/2,strong);
         }
 
-
-        DoubleThreshold OtsuAndMedian(const Histogram &H) noexcept
+        template <Histogram::Quartile Q>
+        DoubleThreshold OtsuAndQuartile(const Histogram &H) noexcept
         {
             const uint8_t strong = Otsu::Threshold(H);
-            const uint8_t feeble = H.median(0,strong);
+            const uint8_t feeble = H.find(Q,0,strong);
             return DoubleThreshold(feeble,strong);
         }
 
@@ -62,8 +62,9 @@ Y_UTEST(edge)
         Pixmap<float>   gsf(img.w,img.h);
         Gradient<float> g(img.w,img.h);
         Pixmap<float>   thin(img.w,img.h);
-        Pixmap<uint8_t> edge1(img.w,img.h);
+        Pixmap<uint8_t> edge0(img.w,img.h);
         Pixmap<uint8_t> edge2(img.w,img.h);
+        Pixmap<uint8_t> edge3(img.w,img.h);
 
         Ops::Convert(broker,gsf,Color::Convert::RGBATo<float>, img);
         FilterGradient<float>::Compute(broker,g,F,gsf);
@@ -72,23 +73,27 @@ Y_UTEST(edge)
         IMG.save(ramp,broker,g,"gsf-grad.png", 0);
 
         Histogram H;
-        LocalMaxima::Keep(broker,H,edge1,thin,g);
+        LocalMaxima::Keep(broker,H,edge0,thin,g);
         IMG.save(ramp, broker,thin,"gsf-thin.png", 0);
         H.save("hist.dat");
-        Ops::Copy(broker,edge2,edge1);
+        Ops::Copy(broker,edge2,edge0);
+        Ops::Copy(broker,edge3,edge0);
 
-        const DoubleThreshold part1 = OtsuAndHalf(H);
-        std::cerr << "part1=" << part1 << std::endl;
-        LocalMaxima::Part(broker,edge1,part1);
-        IMG.save(ramp2,broker,edge1,"gsf-edge1.png", 0);
+        const DoubleThreshold part0 = OtsuAndHalf(H);
+        std::cerr << "part0=" << part0 << std::endl;
+        LocalMaxima::Part(broker,edge0,part0);
+        IMG.save(ramp2,broker,edge2,"gsf-edge0.png", 0);
 
-        const DoubleThreshold part2 = OtsuAndMedian(H);
+
+        const DoubleThreshold part2 = OtsuAndQuartile<Histogram::Q2>(H);
         std::cerr << "part2=" << part2 << std::endl;
         LocalMaxima::Part(broker,edge2,part2);
         IMG.save(ramp2,broker,edge2,"gsf-edge2.png", 0);
 
-
-
+        const DoubleThreshold part3 = OtsuAndQuartile<Histogram::Q3>(H);
+        std::cerr << "part3=" << part3 << std::endl;
+        LocalMaxima::Part(broker,edge3,part3);
+        IMG.save(ramp2,broker,edge3,"gsf-edge3.png", 0);
     }
 }
 Y_UDONE()
