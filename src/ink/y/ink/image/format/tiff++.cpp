@@ -94,8 +94,8 @@ namespace Yttrium
         static inline
         void expand(Pixmap<RGBA> &img) noexcept
         {
-            const unit_t h   = img.h;
-            const unit_t w   = img.w;
+            const unit_t h   = (unit_t)img.h;
+            const unit_t w   = (unit_t)img.w;
             unit_t       jlo = 0;
             unit_t       jhi = h;
 
@@ -105,7 +105,7 @@ namespace Yttrium
                 Image::Row &rhi = img[--jhi];
                 RGBA *lo          = &rlo[0];
                 RGBA *hi          = &rhi[0];
-                for(size_t i=w;i>0;--i)
+                for(unit_t i=w;i>0;--i)
                 {
                     const uint32_t lo32 = *(uint32_t *)lo;
                     const uint32_t hi32 = *(uint32_t *)hi;

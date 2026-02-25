@@ -12,7 +12,7 @@ namespace Yttrium
 
         FilterMetrics:: FilterMetrics(const size_t blockSize)   :
         side( IntegerSquareRoot(blockSize) ),
-        delta( (side-1) >> 1 )
+        delta( (unit_t) ( (side-1) >> 1 ) )
         {
             if(blockSize<=0)         throw Specific::Exception(CallSign,"no coefficient");
             if(side*side!=blockSize) throw Specific::Exception(CallSign,"%s is not a square", Decimal(blockSize).c_str());
