@@ -16,6 +16,9 @@ namespace Yttrium
         {
             //! \return threshold from histogram
             static uint8_t Threshold(const Histogram &) noexcept;
+
+            
+
         };
 
     }

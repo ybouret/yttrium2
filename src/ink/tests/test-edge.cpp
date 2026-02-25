@@ -10,18 +10,74 @@
 #include "y/ink/histogram/otsu.hpp"
 #include <cstring>
 
+#include "y/format/decimal.hpp"
+
 namespace Yttrium
 {
     namespace Ink
     {
+        class DoubleThreshold
+        {
+        public:
+            DoubleThreshold(const uint8_t feebleValue,const uint8_t strongValue) noexcept;
+            ~DoubleThreshold() noexcept;
+            DoubleThreshold(const DoubleThreshold &) noexcept;
+            Y_OSTREAM_PROTO(DoubleThreshold);
+
+
+            const uint8_t feeble;
+            const uint8_t strong;
+        private:
+            Y_Disable_Assign(DoubleThreshold);
+        };
+
+        DoubleThreshold:: DoubleThreshold(const uint8_t feebleValue,const uint8_t strongValue) noexcept :
+        feeble( feebleValue ),
+        strong( strongValue )
+        {
+            assert(feeble<=strong);
+        }
+
+        DoubleThreshold:: ~DoubleThreshold() noexcept {}
+
+        DoubleThreshold:: DoubleThreshold(const DoubleThreshold &_) noexcept :
+        feeble(_.feeble),
+        strong(_.strong)
+        {
+        }
+
+        DoubleThreshold OtsuAndHalf(const Histogram &H) noexcept
+        {
+            const uint8_t strong = Otsu::Threshold(H);
+            return DoubleThreshold(strong/2,strong);
+        }
+
+
+        DoubleThreshold OtsuAndMedian(const Histogram &H) noexcept
+        {
+            const uint8_t strong = Otsu::Threshold(H);
+            const uint8_t feeble = H.median(0,strong);
+            return DoubleThreshold(feeble,strong);
+        }
+
+        std::ostream & operator<<(std::ostream &os, const DoubleThreshold &t)
+        {
+            return os << '[' << Decimal(t.feeble).c_str() << ':' << Decimal(t.strong).c_str() << ']';
+        }
+
 
         struct LocalMaxima
         {
             static const uint8_t Feeble = 127;
             static const uint8_t Strong = 255;
 
-            template <typename T> static inline
-            void Keep(Broker &broker, Histogram &H, Pixmap<uint8_t> &edge, Pixmap<T> &thin, const Gradient<T> &g)
+            template <typename T, typename DOUBLE_THRESHOLD> static inline
+            void Keep(Broker &broker,
+                      Histogram &H,
+                      Pixmap<uint8_t> &edge,
+                      Pixmap<T> &thin,
+                      const Gradient<T> &g,
+                      DOUBLE_THRESHOLD  &doubleThreshold)
             {
                 assert( Ops::HaveSameArea(thin,g) );
                 assert( Ops::HaveSameArea(edge,g) );
@@ -42,12 +98,12 @@ namespace Yttrium
                     const Tile &tile = broker[i]; if(tile.isEmpty()) break;
                     H += static_cast<const Histogram::Type *>( tile.entry );
                 }
-                const uint8_t threshold = Otsu::Threshold(H);
-                const uint8_t discarded = threshold/2;
-                std::cerr << "threshold=" << (int)threshold << std::endl;
+                const DoubleThreshold threshold = doubleThreshold(H);
+                std::cerr << "threshold=" << threshold << std::endl;
+                
 
                 // part strong from feeble
-                broker.run(Part,edge,threshold,discarded);
+                broker.run(Part,edge,threshold);
             }
 
         private:
@@ -68,8 +124,7 @@ namespace Yttrium
             void Part(Lockable &,
                       const Tile      &tile,
                       Pixmap<uint8_t> &edge,
-                      const uint8_t    threshold,
-                      const uint8_t    discarded) noexcept
+                      const DoubleThreshold threshold) noexcept
             {
                 for(unit_t j=tile.h;j>0;--j)
                 {
@@ -78,8 +133,8 @@ namespace Yttrium
                     for(unit_t i=s.width,x=s.start.x;i>0;--i,++x)
                     {
                         uint8_t &b = u[x];
-                        if(b<=discarded) { b=0;      continue; }
-                        if(b<=threshold) { b=Feeble; continue; }
+                        if(b<=threshold.feeble) { b=0;      continue; }
+                        if(b<=threshold.strong) { b=Feeble; continue; }
                         b = Strong;
                     }
                 }
@@ -196,7 +251,7 @@ Y_UTEST(edge)
         IMG.save(ramp,broker,g,"gsf-grad.png", 0);
 
         Histogram H;
-        LocalMaxima::Keep(broker,H,edge,thin,g);
+        LocalMaxima::Keep(broker,H,edge,thin,g,OtsuAndHalf);
         IMG.save(ramp, broker,thin,"gsf-thin.png", 0);
         IMG.save(ramp2,broker,edge,"gsf-edge.png", 0);
         H.save("hist.dat");

@@ -53,6 +53,61 @@ namespace Yttrium
         }
 
 
+        static inline
+        Histogram::Type Score(const Histogram::Type a, const Histogram::Type b) noexcept
+        {
+            if(a<b)
+            {
+                return b-a;
+            }
+            else
+            {
+                if(b<a)
+                    return a-b;
+                else
+                    return 0;
+            }
+        }
+
+        uint8_t Histogram:: median(const uint8_t lo, const uint8_t up) const noexcept
+        {
+            assert(lo<=up);
+            Type         sum[Bins]; // cumulative distribution
+            const int jlo = lo;
+            const int jup = up;
+            sum[jlo] = bin[jlo];
+            for(int j=jlo+1;j<=jup;++j) sum[j] = sum[j-1] + bin[j];
+            const Type mid = sum[jup]/2;
+
+            const int jmid = (jlo+jup)/2;
+            int       jopt = jmid;
+            {
+                Type  best = Score(mid,sum[jopt]);
+                for(int j=jmid-1;j>=jlo;--j)
+                {
+                    const Type score = Score(mid,sum[j]);
+                    if(score<best)
+                    {
+                        best = score;
+                        jopt = j;
+                    }
+                }
+                for(int j=jmid+1;j<=jup;++j)
+                {
+                    const Type score = Score(mid,sum[j]);
+                    if(score<best)
+                    {
+                        best = score;
+                        jopt = j;
+                    }
+                }
+            }
+            assert(jlo<=jopt);
+            assert(jopt<=jup);
+            return (uint8_t) jopt;
+        }
+
+
     }
 
 }
@@ -75,6 +130,11 @@ namespace Yttrium
 
         }
 
+        void Histogram:: save(const char * const fileName) const
+        {
+            const String _(fileName);
+            save(_);
+        }
     }
 
 }

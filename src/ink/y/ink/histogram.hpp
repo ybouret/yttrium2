@@ -71,8 +71,12 @@ namespace Yttrium
                 broker.run(CallAdd<PIXMAP,PIXEL_TO_BYTE>,pxm,proc);
             }
 
-            //! save histogram data
-            void save(const Core::String<char> &) const;
+            //! \param lo lower bin \param upper bin \return median bin
+            uint8_t median(const uint8_t lo, const uint8_t up) const noexcept;
+
+            void save(const Core::String<char> &) const; //!< save histogram data
+            void save(const char * const)         const; //!< save histogram data
+
 
         private:
             Y_Disable_Copy_And_Assign(Histogram); //!< discarding
