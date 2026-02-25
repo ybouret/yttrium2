@@ -1,28 +1,26 @@
 
 //! \file
 
-#ifndef Y_Ink_Blur_Gauss_Included
-#define Y_Ink_Blur_Gauss_Included 1
+#ifndef Y_Ink_Blur_Lorentz_Included
+#define Y_Ink_Blur_Lorentz_Included 1
 
 #include "y/ink/blur/function.hpp"
-#include <cmath>
 
 
 namespace Yttrium
 {
     namespace Ink
     {
-
 #if !defined(DOXYGEN_SHOULD_SKIP_THIS)
-        class GaussBlurCommon
+        class LorentzBlurCommon
         {
         public:
             static const char * const CallSign;
-            explicit GaussBlurCommon() noexcept;
-            virtual ~GaussBlurCommon() noexcept;
+            explicit LorentzBlurCommon() noexcept;
+            virtual ~LorentzBlurCommon() noexcept;
 
         private:
-            Y_Disable_Copy_And_Assign(GaussBlurCommon);
+            Y_Disable_Copy_And_Assign(LorentzBlurCommon);
         };
 #endif // !defined(DOXYGEN_SHOULD_SKIP_THIS)
 
@@ -30,14 +28,16 @@ namespace Yttrium
         //
         //
         //
-        //! Gauss Blur Function
+        //! Lorentz Blur Function
         //
         //
         //______________________________________________________________________
         template <typename T>
-        class GaussBlur : public GaussBlurCommon, public BlurFunction<T>
+        class LorentzBlur : public LorentzBlurCommon, public BlurFunction<T>
         {
         public:
+            using BlurFunction<T>::one;
+
             //__________________________________________________________________
             //
             //
@@ -45,17 +45,16 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            //! setup \param stddev standard deviation
-            inline explicit GaussBlur(const T stddev) :
-            sig(    stddev   ),
-            sig2(   sig*sig  ),
-            denom( sig2+sig2 )
+            //! setup \param scaling parameter
+            inline explicit LorentzBlur(const T scaling) :
+            sig( scaling ),
+            sig2( sig*sig )
             {
 
             }
 
             //! cleanup
-            inline virtual ~GaussBlur() noexcept {}
+            inline virtual ~LorentzBlur() noexcept {}
 
             //__________________________________________________________________
             //
@@ -67,9 +66,9 @@ namespace Yttrium
 
             inline virtual T operator()(const unit_t r2) const
             {
-                const T u2 = (T)r2;
-                const T arg = u2 / denom;
-                return exp(-arg);
+                const T u2  = (T)r2;
+                const T arg = u2 / sig2;
+                return one/(one+arg);
             }
 
             //__________________________________________________________________
@@ -78,16 +77,15 @@ namespace Yttrium
             // Members
             //
             //__________________________________________________________________
-            const T sig;    //!< standard deviation
+            const T sig;    //!< scaling
             const T sig2;   //!< sig^2
-            const T denom;  //!< 2*sig^2
 
         private:
-            Y_Disable_Copy_And_Assign(GaussBlur); //!< discarding
+            Y_Disable_Copy_And_Assign(LorentzBlur); //!< discarding
         };
-
     }
 
 }
 
-#endif // !Y_Ink_Blur_Gauss_Included
+#endif // !Y_Ink_Blur_Lorentz_Included
+

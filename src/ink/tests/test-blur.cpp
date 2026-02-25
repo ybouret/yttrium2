@@ -1,7 +1,8 @@
 
-#include "y/ink/blur/gauss.hpp"
+#include "y/ink/blur.hpp"
 
-#include "y/ink/blur/hook.hpp"
+#include "y/ink/blur/lorentz.hpp"
+#include "y/ink/blur/gauss.hpp"
 
 #include "y/utest/run.hpp"
 #include "y/core/utils.hpp"
@@ -19,31 +20,7 @@ namespace Yttrium
     {
         
         
-        template <typename T, template <typename> class FUNCTION>
-        class Blur : public FUNCTION<T>, public BlurHook<T>
-        {
-        public:
-            using FUNCTION<T>::blurFunction;
-
-            inline explicit Blur() : FUNCTION<T>(), BlurHook<T>( blurFunction() )
-            {
-            }
-
-            inline explicit Blur(const T arg1) : FUNCTION<T>(arg1), BlurHook<T>( blurFunction() )
-            {
-            }
-
-            inline explicit Blur(const T arg1, const T arg2) : FUNCTION<T>(arg1,arg2), BlurHook<T>( blurFunction() )
-            {
-            }
-
-
-            inline virtual ~Blur() noexcept {}
-
-
-        private:
-            Y_Disable_Copy_And_Assign(Blur);
-        };
+        
 
         template <typename U>
         struct BlurProcess
@@ -95,49 +72,7 @@ namespace Yttrium
 
      
 
-        class LorentzBlurCommon
-        {
-        public:
-            static const char * const CallSign;
-            explicit LorentzBlurCommon() noexcept {}
-            virtual ~LorentzBlurCommon() noexcept {}
-
-        private:
-            Y_Disable_Copy_And_Assign(LorentzBlurCommon);
-        };
-
-        const char * const LorentzBlurCommon :: CallSign = "Lorentz";
-
-        template <typename T>
-        class LorentzBlur : public LorentzBlurCommon, public BlurFunction<T>
-        {
-        public:
-            using BlurFunction<T>::one;
-
-            inline explicit LorentzBlur(const T stddev) :
-            sig( stddev ),
-            sig2( sig*sig )
-            {
-
-            }
-
-            inline virtual ~LorentzBlur() noexcept {}
-
-            virtual const char * callSign() const noexcept { return CallSign; }
-
-            virtual T operator()(const unit_t r2) const
-            {
-                const T u2  = (T)r2;
-                const T arg = u2 / sig2;
-                return one/(one+arg);
-            }
-
-            const T sig;
-            const T sig2;
-
-        private:
-            Y_Disable_Copy_And_Assign(LorentzBlur);
-        };
+       
 
 
 

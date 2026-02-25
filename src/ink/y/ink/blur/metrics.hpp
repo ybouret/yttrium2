@@ -10,19 +10,45 @@ namespace Yttrium
 {
     namespace Ink
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Radius of blur, computing number of points inside
+        //
+        //
+        //______________________________________________________________________
         class BlurMetrics
         {
         public:
-            explicit BlurMetrics(const unit_t rmax);
-            virtual ~BlurMetrics() noexcept;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            explicit BlurMetrics(const unit_t rmax); //!< setup \param rmax radius
+            virtual ~BlurMetrics()         noexcept; //!< cleanup
 
-            size_t count() const;
+            //__________________________________________________________________
+            //
+            //
+            // methods
+            //
+            //__________________________________________________________________
+            size_t count() const; //!< \return number of points less than |r|
 
-            const unit_t r;
-            const unit_t r2;
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            const unit_t r;  //!< radius
+            const unit_t r2; //!< r^2
 
         private:
-            Y_Disable_Copy_And_Assign(BlurMetrics);
+            Y_Disable_Copy_And_Assign(BlurMetrics); //!< discarding
         };
 
     }

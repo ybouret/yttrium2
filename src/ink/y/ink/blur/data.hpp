@@ -17,14 +17,36 @@ namespace Yttrium
 {
     namespace Ink
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Points and weights for function+radius
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class BlurData : public BlurMetrics, public CxxSeries< FilterElement<T> >
         {
         public:
-            typedef FilterElement<T>   Element;
-            typedef CxxSeries<Element> Elements;
-            typedef TypeToType<T>      MyTypeHint;
+            //__________________________________________________________________
+            //
+            //
+            // Definitions
+            //
+            //__________________________________________________________________
+            typedef FilterElement<T>   Element;    //!< alias
+            typedef CxxSeries<Element> Elements;   //!< alias
+            typedef TypeToType<T>      MyTypeHint; //!< alias
 
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+
+            //! setup \param proc proc(x^2+y^2) \param rmax radius
             template <typename PROC>
             explicit BlurData(PROC &proc, const unit_t rmax) :
             BlurMetrics(rmax),
@@ -56,11 +78,24 @@ namespace Yttrium
             }
 
 
-
+            //! cleanup
             virtual ~BlurData() noexcept
             {
             }
 
+            //__________________________________________________________________
+            //
+            //
+            // Methods
+            //
+            //__________________________________________________________________
+
+            //! apply to Pixmap<T> at given point: raw average
+            /**
+             \param target target
+             \param source source
+             \param origin origin
+             */
             void apply(Pixmap<T>       &target,
                        const Pixmap<T> &source,
                        const Point      origin)
@@ -69,6 +104,12 @@ namespace Yttrium
                 load<T,T,1>(&target[origin],source,origin);
             }
 
+            //! apply to Pixmap<uint8_t> at given point: raw average+closest byte
+            /**
+             \param target target
+             \param source source
+             \param origin origin
+             */
             void apply(Pixmap<uint8_t>       &target,
                        const Pixmap<uint8_t> &source,
                        const Point            origin)
@@ -80,6 +121,12 @@ namespace Yttrium
                 target[origin] = (uint8_t)floor(res+half);
             }
 
+            //! apply to Pixmap<RGBA> at given point: raw average+closest byte per channel
+            /**
+             \param target target
+             \param source source
+             \param origin origin
+             */
             void apply(Pixmap<RGBA>       &target,
                        const Pixmap<RGBA> &source,
                        const Point         origin)
@@ -95,15 +142,24 @@ namespace Yttrium
                 c.b = (uint8_t)floor(res[2]+half);
             }
 
-
-
-            const T denom;
-            const T half;
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            const T denom; //!< sum of weights
+            const T half;  //!< 0.5
 
         private:
-            Y_Disable_Copy_And_Assign(BlurData);
+            Y_Disable_Copy_And_Assign(BlurData); //!< discarding
 
             //! compute result in T values
+            /**
+             \param target target[NCHAN]
+             \param source source pixmap
+             \param origin probe point
+             */
             template <
             typename       PIXEL,
             typename       PTYPE,

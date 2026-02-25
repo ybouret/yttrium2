@@ -12,22 +12,33 @@ namespace Yttrium
 {
     namespace Ink
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Prepare data according to function
+        //
+        //
+        //______________________________________________________________________
         template <typename T>
         class BlurHook : public BlurData<T>
         {
         public:
+
+            //! prepare data \param F blur function
             inline explicit BlurHook(const BlurFunction<T> &F) :
             BlurData<T>(F,F.rmax())
             {
             }
 
+            //! cleanup
             inline virtual ~BlurHook() noexcept
             {
             }
 
 
         private:
-            Y_Disable_Copy_And_Assign(BlurHook);
+            Y_Disable_Copy_And_Assign(BlurHook); //!< discarding
         };
 
     }

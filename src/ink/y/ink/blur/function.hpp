@@ -10,16 +10,38 @@ namespace Yttrium
 {
     namespace Ink
     {
+        //______________________________________________________________________
+        //
+        //
+        //
+        //! Blur function prototype
+        //
+        //
+        //______________________________________________________________________
         template <typename T> class BlurFunction : public Identifiable
         {
         public:
-            inline explicit BlurFunction() noexcept : one(1) {}
-            inline virtual ~BlurFunction() noexcept {}
+            //__________________________________________________________________
+            //
+            //
+            // C++
+            //
+            //__________________________________________________________________
+            inline explicit BlurFunction() noexcept : one(1) {} //!< setup
+            inline virtual ~BlurFunction() noexcept {}          //!< cleanup
 
-            virtual T operator()(const unit_t r2) const = 0;
+            //__________________________________________________________________
+            //
+            //
+            // Interface
+            //
+            //__________________________________________________________________
+            virtual T operator()(const unit_t r2) const = 0; //!< \param r2 x^2+y^2 \return value at r2
 
+            //! helper for constructors \return *this
             inline const BlurFunction & blurFunction() const noexcept { return *this; }
 
+            //! \return radius with weight below 1/256
             inline unit_t rmax() const
             {
                 const T       Dmax = 256;
@@ -34,10 +56,16 @@ namespace Yttrium
                 }
             }
 
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
             const T one; //!< 1
 
         private:
-            Y_Disable_Copy_And_Assign(BlurFunction);
+            Y_Disable_Copy_And_Assign(BlurFunction); //!< discarding
         };
     }
 
