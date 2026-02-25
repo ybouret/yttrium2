@@ -86,6 +86,28 @@ namespace Yttrium
                     }
                 }
             }
+
+
+            static inline
+            void Separate(Lockable &,
+                          const Tile          & tile,
+                          Pixmap<uint8_t>     & edge,
+                          const DoubleThreshold part) noexcept
+            {
+                for(unit_t j=tile.h;j>0;--j)
+                {
+                    const Segment         s = tile[j];
+                    Pixmap<uint8_t>::Row &u = edge[s.start.y];
+                    for(unit_t i=s.width,x=s.start.x;i>0;--i,++x)
+                    {
+                        uint8_t &b = u[x];
+                        if(b<=part.feeble) { b=0;      continue; }
+                        if(b<=part.strong) { b= LocalMaxima::Feeble; continue; }
+                        b = LocalMaxima::Strong;
+                    }
+                }
+            }
+
         }
 
 
@@ -98,7 +120,7 @@ namespace Yttrium
             broker.prep(thin);
             broker.acquireLocalMemory( Histogram::LocalMemory );
             broker.run(Thinning,thin,grad);
-            const float gmax = MaxGradient(broker);  
+            const float gmax = MaxGradient(broker);
 
             // second pass: build quantized edge and its histogram
             broker.run(Quantize,edge,thin,gmax);
@@ -108,6 +130,14 @@ namespace Yttrium
                 const Tile &tile = broker[i]; if(tile.isEmpty()) break;
                 hist += static_cast<const Histogram::Type *>( tile.entry );
             }
+        }
+
+        void LocalMaxima:: Part(Broker           & broker,
+                                Pixmap<uint8_t>  & edge,
+                                DoubleThreshold    part)
+        {
+            broker.prep(edge);
+            broker.run(Separate,edge,part);
         }
 
     }

@@ -113,11 +113,23 @@ namespace Yttrium
                 broker.run( ForEachPoint<TARGET,TRANSFORM,SOURCE>,target,transform,source);
             }
 
+            template <typename TARGET, typename T> static inline
+            void Copy(Broker &broker, TARGET &target, const Pixmap<T> &source)
+            {
+                assert( HaveSameArea(target,source) );
+                broker.prep(target);
+                Convert(broker,target,CopyPixel<T>,source);
+            }
+
 
 
 
         private:
 #if !defined(DOXYGEN_SHOULD_SKIP_THIS)
+
+            template <typename T> static inline
+            const T & CopyPixel(const T &x) noexcept { return x; }
+
             template <typename PIXMAP, typename CONVERT, typename SOURCE> static inline
             void ForEachPixel(Lockable &, const Tile &tile, PIXMAP &pixmap, CONVERT &convert, SOURCE &source)
             {

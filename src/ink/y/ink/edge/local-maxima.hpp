@@ -7,6 +7,7 @@
 
 #include "y/ink/histogram.hpp"
 #include "y/ink/gradient.hpp"
+#include "y/ink/edge/double-threshold.hpp"
 
 namespace Yttrium
 {
@@ -23,7 +24,12 @@ namespace Yttrium
                       Pixmap<uint8_t>       & edge,
                       Pixmap<float>         & thin,
                       const Gradient<float> & grad);
-           
+
+            static
+            void Part(Broker           & broker,
+                      Pixmap<uint8_t>  & edge,
+                      DoubleThreshold    part);
+
 
         };
     }
