@@ -1,4 +1,3 @@
-
 #include "y/ink/blur.hpp"
 
 #include "y/ink/blur/lorentz.hpp"
@@ -7,86 +6,14 @@
 #include "y/utest/run.hpp"
 #include "y/core/utils.hpp"
 
-#include "y/ink/ops.hpp"
-#include <cstring>
 
 #include "y/ink/image/formats.hpp"
-
-
-
-namespace Yttrium
-{
-    namespace Ink
-    {
-        
-        
-        
-
-        template <typename U>
-        struct BlurProcess
-        {
-            template <typename BLUR> static inline
-            void Apply(Broker &broker, Pixmap<U> &target, BLUR &blur, const Pixmap<U> &source)
-            {
-                App<BLUR> app(blur);
-                Ops::Transform(broker,target,app,source);
-            }
-
-        private:
-            template <typename BLUR>
-            class App
-            {
-            public:
-                inline explicit App(BLUR &_blur) noexcept : blur(_blur)
-                {
-                }
-
-                inline virtual ~App() noexcept
-                {
-                }
-
-                inline void operator()(Pixmap<U>       & target,
-                                       const Pixmap<U> & source,
-                                       const Point       origin)
-                {
-                    blur.apply(target,source,origin);
-                }
-
-            private:
-                Y_Disable_Copy_And_Assign(App);
-                BLUR &blur;
-            };
-        };
-
-
-        struct BlurFilter
-        {
-            template <typename U, typename BLUR> static inline
-            void Apply(Broker &broker, Pixmap<U> &target, BLUR &blur, const Pixmap<U> &source)
-            {
-                BlurProcess<U>::template Apply<BLUR>(broker,target,blur,source);
-            }
-        };
-
-
-
-     
-
-       
-
-
-
-
-
-
-    }
-}
+#include "y/concurrent/api/simd/crew.hpp"
 
 
 using namespace Yttrium;
 using namespace Ink;
 
-#include "y/concurrent/api/simd/crew.hpp"
 
 inline float RGBA2GSF(const RGBA &c)
 {
