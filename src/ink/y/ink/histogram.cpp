@@ -80,6 +80,7 @@ namespace Yttrium
             sum[jlo] = bin[jlo];
             for(int j=jlo+1;j<=jup;++j) sum[j] = sum[j-1] + bin[j];
 
+            // search parameters
             Type sQuery = sum[jup];
             int  jQuery = jlo+jup;
 
@@ -101,8 +102,8 @@ namespace Yttrium
                     break;
             }
 
-
-            int       jopt = jQuery;
+            // search from jQuery
+            int jopt = jQuery;
             {
                 Type  best = Score(sQuery,sum[jopt]);
                 for(int j=jQuery-1;j>=jlo;--j)
