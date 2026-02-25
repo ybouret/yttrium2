@@ -1,4 +1,4 @@
-
+#include "y/ink/edge/local-maxima.hpp"
 #include "y/ink/edge/double-threshold.hpp"
 
 #include "y/ink/filter/gradient.hpp"
@@ -35,7 +35,7 @@ namespace Yttrium
 
 
 
-
+#if 0
         struct LocalMaxima
         {
             static const uint8_t Feeble = 127;
@@ -184,6 +184,7 @@ namespace Yttrium
             }
 
         };
+#endif
 
     }
 }
@@ -221,11 +222,10 @@ Y_UTEST(edge)
         IMG.save(ramp,broker,g,"gsf-grad.png", 0);
 
         Histogram H;
-        LocalMaxima::Keep(broker,H,edge,thin,g,OtsuAndHalf);
+        LocalMaxima::Keep(broker,H,edge,thin,g);
         IMG.save(ramp, broker,thin,"gsf-thin.png", 0);
-        IMG.save(ramp2,broker,edge,"gsf-edge.png", 0);
         H.save("hist.dat");
-
+        
     }
 }
 Y_UDONE()

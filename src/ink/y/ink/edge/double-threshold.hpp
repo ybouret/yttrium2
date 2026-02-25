@@ -1,4 +1,4 @@
-
+//! \file
 
 #ifndef Y_Ink_Double_Threshold_Included
 #define Y_Ink_Double_Threshold_Included 1
