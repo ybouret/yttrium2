@@ -16,6 +16,7 @@ y/ink/filter
 y/ink/draw
 y/ink/histogram
 y/ink/blur
+y/ink/edge
 )
 
 add_dependencies(y-ink y-jpeg png_static tiff)

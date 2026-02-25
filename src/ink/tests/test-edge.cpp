@@ -1,3 +1,6 @@
+
+#include "y/ink/edge/double-threshold.hpp"
+
 #include "y/ink/filter/gradient.hpp"
 #include "y/ink/image/formats.hpp"
 #include "y/utest/run.hpp"
@@ -10,42 +13,12 @@
 #include "y/ink/histogram/otsu.hpp"
 #include <cstring>
 
-#include "y/format/decimal.hpp"
 
 namespace Yttrium
 {
     namespace Ink
     {
-        class DoubleThreshold
-        {
-        public:
-            DoubleThreshold(const uint8_t feebleValue,const uint8_t strongValue) noexcept;
-            ~DoubleThreshold() noexcept;
-            DoubleThreshold(const DoubleThreshold &) noexcept;
-            Y_OSTREAM_PROTO(DoubleThreshold);
-
-
-            const uint8_t feeble;
-            const uint8_t strong;
-        private:
-            Y_Disable_Assign(DoubleThreshold);
-        };
-
-        DoubleThreshold:: DoubleThreshold(const uint8_t feebleValue,const uint8_t strongValue) noexcept :
-        feeble( feebleValue ),
-        strong( strongValue )
-        {
-            assert(feeble<=strong);
-        }
-
-        DoubleThreshold:: ~DoubleThreshold() noexcept {}
-
-        DoubleThreshold:: DoubleThreshold(const DoubleThreshold &_) noexcept :
-        feeble(_.feeble),
-        strong(_.strong)
-        {
-        }
-
+        
         DoubleThreshold OtsuAndHalf(const Histogram &H) noexcept
         {
             const uint8_t strong = Otsu::Threshold(H);
@@ -60,10 +33,7 @@ namespace Yttrium
             return DoubleThreshold(feeble,strong);
         }
 
-        std::ostream & operator<<(std::ostream &os, const DoubleThreshold &t)
-        {
-            return os << '[' << Decimal(t.feeble).c_str() << ':' << Decimal(t.strong).c_str() << ']';
-        }
+
 
 
         struct LocalMaxima
@@ -72,10 +42,10 @@ namespace Yttrium
             static const uint8_t Strong = 255;
 
             template <typename T, typename DOUBLE_THRESHOLD> static inline
-            void Keep(Broker &broker,
+            void Keep(Broker    &broker,
                       Histogram &H,
-                      Pixmap<uint8_t> &edge,
-                      Pixmap<T> &thin,
+                      Pixmap<uint8_t>   &edge,
+                      Pixmap<T>         &thin,
                       const Gradient<T> &g,
                       DOUBLE_THRESHOLD  &doubleThreshold)
             {
