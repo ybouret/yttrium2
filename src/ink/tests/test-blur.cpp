@@ -1,3 +1,6 @@
+
+#include "y/ink/blur/gauss.hpp"
+
 #include "y/ink/blur/hook.hpp"
 
 #include "y/utest/run.hpp"
@@ -90,50 +93,7 @@ namespace Yttrium
 
 
 
-        class GaussBlurCommon
-        {
-        public:
-            static const char * const CallSign;
-            explicit GaussBlurCommon() noexcept {}
-            virtual ~GaussBlurCommon() noexcept {}
-
-        private:
-            Y_Disable_Copy_And_Assign(GaussBlurCommon);
-        };
-
-        const char * const GaussBlurCommon :: CallSign = "Gauss";
-
-        template <typename T>
-        class GaussBlur : public GaussBlurCommon, public BlurFunction<T>
-        {
-        public:
-            inline explicit GaussBlur(const T stddev) :
-            sig( stddev ),
-            sig2( sig*sig ),
-            denom( sig2+sig2 )
-            {
-
-            }
-
-            inline virtual ~GaussBlur() noexcept {}
-
-            virtual const char * callSign() const noexcept { return CallSign; }
-
-            virtual T operator()(const unit_t r2) const
-            {
-                const T u2 = (T)r2;
-                const T arg = u2 / denom;
-                return exp(-arg);
-            }
-
-            const T sig;
-            const T sig2;
-            const T denom;
-
-        private:
-            Y_Disable_Copy_And_Assign(GaussBlur);
-        };
-
+     
 
         class LorentzBlurCommon
         {
