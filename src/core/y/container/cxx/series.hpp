@@ -155,6 +155,11 @@ Gradual()
         }
 
 
+        inline void pop() noexcept
+        {
+            assert(built>0); assert(data->entry);
+            Memory::Stealth::DestructedAndZeroed(&data->entry[--built]);
+        }
 
         //______________________________________________________________________
         //
@@ -188,7 +193,7 @@ Gradual()
 
         //! free all objects
         inline void free_() noexcept {
-            while(built) Memory::Stealth::DestructedAndZeroed( &data->entry[--built] );
+            while(built) pop();
         }
 
         //! \param indx \return (*this)[indx]

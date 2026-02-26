@@ -3,6 +3,8 @@
 #include "y/container/sequence/vector.hpp"
 #include "y/container/cxx/series.hpp"
 #include "y/sorting/heap.hpp"
+#include "y/core/utils.hpp"
+#include "y/exception.hpp"
 
 #include <cmath>
 
@@ -12,6 +14,8 @@ namespace Yttrium
 {
     struct Disperse
     {
+        static const char * const CallSign;
+
         template <typename POSITION>
         class Item
         {
@@ -32,6 +36,12 @@ namespace Yttrium
                 return os << '#' << item.idx << '@' << item.pos;
             }
 
+            static inline
+            SignType Compare(const Item &lhs, const Item &rhs) noexcept
+            {
+                return Sign::Of(lhs.idx,rhs.idx);
+            }
+
             const size_t   idx;
             const POSITION pos;
 
@@ -49,10 +59,12 @@ namespace Yttrium
 
             template <typename PROC>
             inline Pair(PROC &proc, const ItemType &lhsItem, const ItemType &rhsItem) :
-            lhs(lhsItem),
-            rhs(rhsItem),
-            delta( proc(lhs.pos,rhs.pos) )
+            lhs( & lhsItem),
+            rhs( & rhsItem),
+            delta( proc(lhs->pos,rhs->pos) )
             {
+                if(lhs->idx>rhs->idx) CoerceSwap(lhs,rhs);
+                assert(lhs->idx<rhs->idx);
             }
 
             inline Pair(const Pair &_) : lhs(_.lhs), rhs(_.rhs), delta(_.delta) {}
@@ -63,7 +75,7 @@ namespace Yttrium
 
             inline friend std::ostream & operator<<(std::ostream &os, const Pair &pair)
             {
-                return os << '|' << pair.lhs << ':' << pair.rhs << '|' << '=' << pair.delta;
+                return os << '|' << *pair.lhs << ':' << *pair.rhs << '|' << '=' << pair.delta;
             }
 
             static inline
@@ -73,9 +85,10 @@ namespace Yttrium
             }
 
 
-            const ItemType &lhs;
-            const ItemType &rhs;
-            const DISTANCE  delta;
+
+            const ItemType * const lhs;
+            const ItemType * const rhs;
+            const DISTANCE         delta;
 
         private:
             Y_Disable_Assign(Pair);
@@ -101,15 +114,43 @@ namespace Yttrium
 
 
         template <typename ITEM> static inline
-        void RemoveItem(const size_t idx, CxxSeries<ITEM> &items)
+        void Remove(const size_t idx, CxxSeries<ITEM> &items)
         {
-            for(size_t i=items.size();i>0;--i)
+            assert(items.size()>0);
+            const size_t count = items.size();
+            for(size_t i=count;i>0;--i)
             {
                 ITEM &item = items[i];
                 if(idx == item.idx)
                 {
+                    std::cerr << "Found " << item << std::endl;
+                    if(count != idx)
+                        Memory::Stealth::Swap(item,items[count]);
+                    assert(idx==items[count].idx);
+                    items.pop();
+                    return;
                 }
             }
+            throw Specific::Exception(CallSign,"missing Remove(%u)", (unsigned)idx);
+        }
+
+        template <typename ITEM> static inline
+        void Leader(const size_t idx, CxxSeries<ITEM> &items)
+        {
+            assert(items.size()>0);
+            const size_t count = Sorting::Heap::Sort(items,ITEM::Compare).size();
+            for(size_t i=count;i>0;--i)
+            {
+                ITEM &item = items[i];
+                if(idx == item.idx )
+                {
+                    std::cerr << "Found " << item << std::endl;
+                    if(1!=idx)
+                        Memory::Stealth::Swap(item,items[1]);
+                    return;
+                }
+            }
+            throw Specific::Exception(CallSign,"missing MoveToFrom#%u", (unsigned)idx);
         }
 
         template <typename POSITION, typename DISTANCE, typename PROC> static inline
@@ -132,8 +173,8 @@ namespace Yttrium
                 items << ItemType(i,pos[i]);
             std::cerr << "items=" << items << std::endl;
 
+            // initialize first two indices
             size_t curr = 0;
-            // pairs from current items
             {
                 const size_t n = items.size();
                 pairs.free();
@@ -145,16 +186,20 @@ namespace Yttrium
                     }
                 }
                 const PairType & pair = Sorting::Heap::Sort(pairs, PairType::Compare)[ Select(pairs.size()) ];
-                std::cerr << "pair=" << pair << std::endl;
-                idx[++curr] = pair.lhs.idx;
-                idx[++curr] = pair.rhs.idx;
-                RemoveItem(idx[1],items);
+                std::cerr << "pair=" << pair << " of " << pairs << std::endl;
+                idx[++curr] = pair.lhs->idx;
+                idx[++curr] = pair.rhs->idx;
+                pairs.free();
+                Remove(idx[1],items);
+                Leader(idx[2],items);
+                std::cerr << "items=" << items << std::endl;
             }
 
         }
 
     };
 
+    const char * const Disperse:: CallSign = "Disperse";
 
     static inline double scalarDistance(const double a, const double b) noexcept
     {
@@ -164,11 +209,12 @@ namespace Yttrium
 }
 
 #include "y/random/park-miller.hpp"
+#include "y/ascii/convert.hpp"
 
 Y_UTEST(calculus_disperse)
 {
     Random::ParkMiller ran;
-    const size_t   n = 3;
+    const size_t   n = argc>1 ? ASCII::Convert::To<size_t>(argv[1]) : 3;
     Vector<size_t> idx(n,0);
     Vector<double> pos(n,0);
     for(size_t i=n;i>0;--i)
