@@ -154,6 +154,32 @@ Gradual()
             return *this;
         }
 
+        inline Type & head() noexcept
+        {
+            assert(built>0);
+            return data->entry[0];
+        }
+
+
+        inline ConstType & head() const noexcept
+        {
+            assert(built>0);
+            return data->entry[0];
+        }
+
+
+
+        inline Type & tail() noexcept
+        {
+            assert(built>0);
+            return data->cxx[built];
+        }
+
+        inline ConstType & tail() const noexcept
+        {
+            assert(built>0);
+            return data->cxx[built];
+        }
 
         inline void pop() noexcept
         {

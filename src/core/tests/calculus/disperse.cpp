@@ -37,9 +37,9 @@ namespace Yttrium
             }
 
             static inline
-            SignType Compare(const Item &lhs, const Item &rhs) noexcept
+            SignType Compare(const Item * const lhs, const Item * const rhs) noexcept
             {
-                return Sign::Of(lhs.idx,rhs.idx);
+                return Sign::Of(lhs->idx,rhs->idx);
             }
 
             const size_t   idx;
@@ -68,6 +68,11 @@ namespace Yttrium
             }
 
             inline Pair(const Pair &_) : lhs(_.lhs), rhs(_.rhs), delta(_.delta) {}
+
+            inline bool has(const size_t idx) const noexcept
+            {
+                return idx==lhs->idx || idx==rhs->idx;
+            }
 
             inline ~Pair() noexcept
             {
@@ -114,43 +119,59 @@ namespace Yttrium
 
 
         template <typename ITEM> static inline
-        void Remove(const size_t idx, CxxSeries<ITEM> &items)
+        void RemoveItem(const size_t idx, CxxSeries<ITEM *> &iAddr)
         {
-            assert(items.size()>0);
-            const size_t count = items.size();
+            assert(iAddr.size()>0);
+            const size_t count = iAddr.size();
             for(size_t i=count;i>0;--i)
             {
-                ITEM &item = items[i];
+                ITEM &item = *iAddr[i];
                 if(idx == item.idx)
                 {
-                    std::cerr << "Found " << item << std::endl;
-                    if(count != idx)
-                        Memory::Stealth::Swap(item,items[count]);
-                    assert(idx==items[count].idx);
-                    items.pop();
+                    std::cerr << "Remove Found " << item << std::endl;
+                    Swap(iAddr[i],iAddr[count]);
+                    iAddr.pop();
                     return;
                 }
             }
             throw Specific::Exception(CallSign,"missing Remove(%u)", (unsigned)idx);
         }
 
-        template <typename ITEM> static inline
-        void Leader(const size_t idx, CxxSeries<ITEM> &items)
+        template <typename PAIR> static inline
+        void NoPairWith(const size_t idx, CxxSeries<PAIR> &pairs)
         {
-            assert(items.size()>0);
-            const size_t count = Sorting::Heap::Sort(items,ITEM::Compare).size();
+            for(size_t i=1;i<=pairs.size();)
+            {
+                PAIR &pair = pairs[i];
+                if(pair.has(idx))
+                {
+                    std::cerr << "found bad " << pair << std::endl;
+                    Memory::Stealth::Swap(pair,pairs.tail());
+                    pairs.pop();
+                }
+                else
+                {
+                    ++i;
+                }
+            }
+        }
+
+        template <typename ITEM> static inline
+        void Leader(const size_t idx, CxxSeries<ITEM *> &iAddr)
+        {
+            assert(iAddr.size()>0);
+            const size_t count = Sorting::Heap::Sort(iAddr,ITEM::Compare).size();
             for(size_t i=count;i>0;--i)
             {
-                ITEM &item = items[i];
+                ITEM &item = *iAddr[i];
                 if(idx == item.idx )
                 {
                     std::cerr << "Found " << item << std::endl;
-                    if(1!=idx)
-                        Memory::Stealth::Swap(item,items[1]);
+                    Swap(iAddr[i],iAddr[1]);
                     return;
                 }
             }
-            throw Specific::Exception(CallSign,"missing MoveToFrom#%u", (unsigned)idx);
+            throw Specific::Exception(CallSign,"missing Leader(%u)", (unsigned)idx);
         }
 
         template <typename POSITION, typename DISTANCE, typename PROC> static inline
@@ -165,35 +186,45 @@ namespace Yttrium
                 for(size_t i=1;i<=num;++i) idx[i] = i;
                 return;
             }
-            CxxSeries<ItemType> items(num);
+            CxxSeries<ItemType>   items(num);
+            CxxSeries<ItemType *> iAddr(num);
             CxxSeries<PairType> pairs((num*(num-1))>>1);
 
             // initialize all items
             for(size_t i=1;i<=num;++i)
+            {
                 items << ItemType(i,pos[i]);
+                iAddr << &items[i];
+            }
             std::cerr << "items=" << items << std::endl;
 
-            // initialize first two indices
+            // initialize all pairs
+            for(size_t i=1;i<=num;++i) {
+                for(size_t j=i+1;j<=num;++j)
+                    pairs << PairType(proc,items[i],items[j]);
+            }
+            std::cerr << "pairs=" << pairs << std::endl;
+
             size_t curr = 0;
             {
-                const size_t n = items.size();
-                pairs.free();
-                for(size_t i=1;i<=n;++i)
-                {
-                    for(size_t j=i+1;j<=n;++j)
-                    {
-                        pairs << PairType(proc,items[i],items[j]);
-                    }
-                }
-                const PairType & pair = Sorting::Heap::Sort(pairs, PairType::Compare)[ Select(pairs.size()) ];
-                std::cerr << "pair=" << pair << " of " << pairs << std::endl;
-                idx[++curr] = pair.lhs->idx;
+                const PairType &pair = Sorting::Heap::Sort(pairs,PairType::Compare)[ Select(pairs.size()) ];
+                std::cerr << "pair=" << pair << std::endl;
+                const size_t used = idx[++curr] = pair.lhs->idx;
                 idx[++curr] = pair.rhs->idx;
-                pairs.free();
-                Remove(idx[1],items);
-                Leader(idx[2],items);
-                std::cerr << "items=" << items << std::endl;
+                std::cerr << "iAddr=" << iAddr << std::endl;
+                std::cerr << "remove #" << idx[1] << std::endl;
+                RemoveItem(used,iAddr);
+                NoPairWith(used,pairs);
+                std::cerr << "pairs=" << pairs << std::endl;
+                std::cerr << "iAddr=" << iAddr << std::endl;
+                Leader(idx[2],iAddr);
+                std::cerr << "iAddr=" << iAddr << std::endl;
             }
+
+
+
+
+
 
         }
 
