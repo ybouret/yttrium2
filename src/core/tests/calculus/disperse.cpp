@@ -4,6 +4,8 @@
 #include "y/container/cxx/series.hpp"
 #include "y/sorting/heap.hpp"
 
+#include <cmath>
+
 using namespace Yttrium;
 
 namespace Yttrium
@@ -97,44 +99,58 @@ namespace Yttrium
             }
         }
 
+
+        template <typename ITEM> static inline
+        void RemoveItem(const size_t idx, CxxSeries<ITEM> &items)
+        {
+            for(size_t i=items.size();i>0;--i)
+            {
+                ITEM &item = items[i];
+                if(idx == item.idx)
+                {
+                }
+            }
+        }
+
         template <typename POSITION, typename DISTANCE, typename PROC> static inline
         void Make(TypeToType<DISTANCE>, Writable<size_t> &idx, PROC &proc, const Readable<POSITION> &pos)
         {
+            typedef Item<POSITION>          ItemType;
+            typedef Pair<POSITION,DISTANCE> PairType;
+
             assert(idx.size()==pos.size());
-            const size_t n  = idx.size();
-            if(n<=2) {
-                for(size_t i=1;i<=n;++i) idx[i] = i;
+            const size_t num  = idx.size();
+            if(num<=2) {
+                for(size_t i=1;i<=num;++i) idx[i] = i;
                 return;
             }
+            CxxSeries<ItemType> items(num);
+            CxxSeries<PairType> pairs((num*(num-1))>>1);
 
-            const size_t np = (n*(n-1))>>1;
-
-            // create items
-            typedef Item<POSITION> ItemType;
-            CxxSeries<ItemType>    items(n);
-            for(size_t i=1;i<=n;++i)
-            {
+            // initialize all items
+            for(size_t i=1;i<=num;++i)
                 items << ItemType(i,pos[i]);
-            }
             std::cerr << "items=" << items << std::endl;
 
-            // create pairs
-            typedef Pair<POSITION,DISTANCE> PairType;
-            CxxSeries<PairType> pairs(np);
-
-            for(size_t i=1;i<=n;++i)
+            size_t curr = 0;
+            // pairs from current items
             {
-                const ItemType &lhs = items[i];
-                for(size_t j=i+1;j<=n;++j)
+                const size_t n = items.size();
+                pairs.free();
+                for(size_t i=1;i<=n;++i)
                 {
-                    pairs << PairType(proc,lhs,items[j]);
+                    for(size_t j=i+1;j<=n;++j)
+                    {
+                        pairs << PairType(proc,items[i],items[j]);
+                    }
                 }
+                const PairType & pair = Sorting::Heap::Sort(pairs, PairType::Compare)[ Select(pairs.size()) ];
+                std::cerr << "pair=" << pair << std::endl;
+                idx[++curr] = pair.lhs.idx;
+                idx[++curr] = pair.rhs.idx;
+                RemoveItem(idx[1],items);
             }
-            std::cerr << "pairs=" << pairs << std::endl;
-            Sorting::Heap::Sort(pairs,PairType::Compare);
-            std::cerr << "pairs=" << pairs << std::endl;
-            const PairType & pair = pairs[ Select(pairs.size()) ];
-            std::cerr << "using " << pair << std::endl;
+
         }
 
     };

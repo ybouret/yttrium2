@@ -78,9 +78,10 @@ namespace Yttrium{
             //
             //__________________________________________________________________
             template <typename CONTIGUOUS, typename COMPARE> static inline
-            void Sort(CONTIGUOUS &arr, COMPARE &cmp)
+            CONTIGUOUS & Sort(CONTIGUOUS &arr, COMPARE &cmp)
             {
                 Sort(arr(),arr.size(),cmp);
+                return arr;
             }
 
             //__________________________________________________________________
