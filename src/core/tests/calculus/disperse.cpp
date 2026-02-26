@@ -89,6 +89,12 @@ namespace Yttrium
                 return Sign::Of(lhs.delta,rhs.delta);
             }
 
+            static inline
+            SignType CompareAddr(const Pair * const lhs, const Pair * const rhs)
+            {
+                return Compare(*lhs,*rhs);
+            }
+
 
 
             const ItemType * const lhs;
@@ -134,7 +140,7 @@ namespace Yttrium
                     return;
                 }
             }
-            throw Specific::Exception(CallSign,"missing Remove(%u)", (unsigned)idx);
+            throw Specific::Exception(CallSign,"missing RemoveItem(%u)", (unsigned)idx);
         }
 
         template <typename PAIR> static inline
@@ -157,7 +163,7 @@ namespace Yttrium
         }
 
         template <typename ITEM> static inline
-        void Leader(const size_t idx, CxxSeries<ITEM *> &iAddr)
+        void SetLeading(const size_t idx, CxxSeries<ITEM *> &iAddr)
         {
             assert(iAddr.size()>0);
             const size_t count = Sorting::Heap::Sort(iAddr,ITEM::Compare).size();
@@ -171,7 +177,7 @@ namespace Yttrium
                     return;
                 }
             }
-            throw Specific::Exception(CallSign,"missing Leader(%u)", (unsigned)idx);
+            throw Specific::Exception(CallSign,"missing SetLeading(%u)", (unsigned)idx);
         }
 
         template <typename POSITION, typename DISTANCE, typename PROC> static inline
@@ -187,40 +193,57 @@ namespace Yttrium
                 return;
             }
             CxxSeries<ItemType>   items(num);
-            CxxSeries<ItemType *> iAddr(num);
-            CxxSeries<PairType> pairs((num*(num-1))>>1);
+            CxxSeries<PairType>   pairs((num*(num-1))>>1);
+            CxxSeries<PairType *> pAddr(num);
+
 
             // initialize all items
             for(size_t i=1;i<=num;++i)
             {
                 items << ItemType(i,pos[i]);
-                iAddr << &items[i];
             }
-            std::cerr << "items=" << items << std::endl;
+            std::cerr << "initial items=" << items << std::endl;
 
             // initialize all pairs
             for(size_t i=1;i<=num;++i) {
                 for(size_t j=i+1;j<=num;++j)
                     pairs << PairType(proc,items[i],items[j]);
             }
-            std::cerr << "pairs=" << pairs << std::endl;
+            std::cerr << "initial pairs=" << pairs << std::endl;
 
+            // find first pair and first two items
             size_t curr = 0;
             {
                 const PairType &pair = Sorting::Heap::Sort(pairs,PairType::Compare)[ Select(pairs.size()) ];
-                std::cerr << "pair=" << pair << std::endl;
+                std::cerr << "selected pair=" << pair << std::endl;
                 const size_t used = idx[++curr] = pair.lhs->idx;
-                idx[++curr] = pair.rhs->idx;
-                std::cerr << "iAddr=" << iAddr << std::endl;
-                std::cerr << "remove #" << idx[1] << std::endl;
-                RemoveItem(used,iAddr);
+                const size_t lead = idx[++curr] = pair.rhs->idx;
                 NoPairWith(used,pairs);
-                std::cerr << "pairs=" << pairs << std::endl;
-                std::cerr << "iAddr=" << iAddr << std::endl;
-                Leader(idx[2],iAddr);
-                std::cerr << "iAddr=" << iAddr << std::endl;
+                std::cerr << "used =      " << used << std::endl;
+                std::cerr << "lead =      " << lead << std::endl;
+                std::cerr << "remaining = " << pairs << std::endl;
             }
 
+            {
+                const size_t hook = idx[curr];
+                std::cerr << "hook is now #" << hook << std::endl;
+                pAddr.free();
+                for(size_t i=pairs.size();i>0;--i)
+                {
+                    PairType &pair = pairs[i];
+                    if(!pair.has(hook)) continue;
+                    std::cerr << "using " << pair << std::endl;
+                    pAddr << &pair;
+                }
+                const PairType &pair = *Sorting::Heap::Sort(pAddr,PairType::CompareAddr)[ Select(pAddr.size()) ];
+                std::cerr << "choice=" << pair << std::endl;
+                assert(pair.has(hook));
+                const size_t lead = (pair.lhs->idx == hook)  ? pair.rhs->idx : pair.lhs->idx;
+                std::cerr << "lead will be " << lead << std::endl;
+                idx[++curr] = lead;
+                NoPairWith(hook,pairs);
+                std::cerr << "remaining = " << pairs << std::endl;
+            }
 
 
 
