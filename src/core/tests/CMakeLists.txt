@@ -91,6 +91,7 @@ Y_UTEST(calculus:iabs)
 Y_UTEST(calculus:bits_in)
 Y_UTEST(calculus:primes)
 Y_UTEST(calculus:find:prime)
+Y_UTEST(calculus:disperse)
 
 #concurrent
 Y_UTEST(concurrent:nucleus)
