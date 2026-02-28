@@ -192,6 +192,8 @@ namespace Yttrium
                 for(size_t i=1;i<=num;++i) idx[i] = i;
                 return;
             }
+
+            // reserve memory
             CxxSeries<ItemType>   items(num);
             CxxSeries<PairType>   pairs((num*(num-1))>>1);
             CxxSeries<PairType *> pAddr(num);
@@ -211,16 +213,17 @@ namespace Yttrium
             }
             std::cerr << "initial pairs=" << pairs << std::endl;
 
+
             // find first pair and first two items
             size_t curr = 0;
             {
                 const PairType &pair = Sorting::Heap::Sort(pairs,PairType::Compare)[ Select(pairs.size()) ];
                 std::cerr << "selected pair=" << pair << std::endl;
-                const size_t used = idx[++curr] = pair.lhs->idx;
-                const size_t lead = idx[++curr] = pair.rhs->idx;
-                NoPairWith(used,pairs);
-                std::cerr << "used =      " << used << std::endl;
-                std::cerr << "lead =      " << lead << std::endl;
+                const size_t head = idx[++curr] = pair.lhs->idx;
+                const size_t tail = idx[++curr] = pair.rhs->idx;
+                NoPairWith(head,pairs);
+                std::cerr << "head =      " << head << std::endl;
+                std::cerr << "tail =      " << tail << std::endl;
                 std::cerr << "remaining = " << pairs << std::endl;
             }
 
