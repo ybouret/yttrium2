@@ -20,5 +20,5 @@
 /**/        catch(...) { std::cerr << "unhandled exception in " << program << std::endl; return 3; }\
 /**/        return 0; \
 /**/    }
-#endif
+#endif // !Y_System_Program_Included
 

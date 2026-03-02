@@ -63,6 +63,8 @@ struct Port
             const String cmd = "port deps " + port;
             InputProcess::AppendTo(strings,cmd);
         }
+        if( strings.size() <= 0)
+            throw Specific::Exception("ScanDeps","error for '%s'",port.c_str());
         strings.popHead();
         for(size_t i=1;i<=strings.size();++i)
             QueryDeps(pdb,root,strings[i]);
