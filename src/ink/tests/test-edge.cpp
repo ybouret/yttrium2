@@ -1,3 +1,4 @@
+#include "y/ink/edge/blobs.hpp"
 #include "y/ink/edge/local-maxima.hpp"
 #include "y/ink/edge/double-threshold.hpp"
 
@@ -38,97 +39,10 @@ namespace Yttrium
     }
 }
 
+
 #include "y/ink/ops/ld.hpp"
-#include "y/protean/coop/heavy/list.hpp"
 #include "y/container/sequence/vector.hpp"
 
-namespace Yttrium
-{
-    namespace Ink
-    {
-
-        typedef Pixmap<size_t> IndexMap;
-
-        class Blobs : public IndexMap
-        {
-        public:
-            static const size_t Zero = 0;
-            static const unit_t Delta[8][2];
-
-
-            explicit Blobs(const size_t W, const size_t H) :
-            IndexMap(W,H)
-            {
-            }
-
-            virtual ~Blobs() noexcept {}
-
-
-            void build(Broker &broker, Pixmap<uint8_t> &edge)
-            {
-                static const Point * const delta = Memory::Stealth::Cast<Point>( &Delta[0][0] );
-                const size_t ncof = 8;
-                IndexMap &   self = *this;
-                assert(Ops::HaveSameArea(self,edge));
-                LoadPixel::Set(broker,*this,Zero);
-                size_t indx = 0;
-                for(unit_t y=lower.y;y<=upper.y;++y)
-                {
-                    const Pixmap<uint8_t>::Row & erow = edge[y];
-                    IndexMap::Row              & irow = (*this)[y];
-                    for(unit_t x=lower.x;x<=upper.x;++x)
-                    {
-                        const uint8_t eval = erow[x];
-                        if(eval<=0)   continue; // no edge
-                        if(irow[x]>0) continue; // already detected
-
-                        // start new blob
-                        ++indx; stack.free();
-                        stack << Point(x,y);
-                        while( stack.size() > 0 )
-                        {
-                            const Point p = stack.pullTail();
-                            if(0!=self[p]) { assert(indx==self[p]); continue; }
-                            self[p] = indx;
-                            for(size_t i=0;i<ncof;++i)
-                            {
-                                const Point q = p + delta[i];
-                                if(!self.contains(q)) continue;
-                                if(0==edge[q])        continue;
-                                if(0!=self[q])        continue;
-                                stack << q;
-                            }
-                        }
-                    }
-                }
-
-                std::cerr << "indx=" << indx << std::endl;
-
-            }
-
-            Vector<Point> stack;
-
-
-        private:
-            Y_Disable_Copy_And_Assign(Blobs);
-        };
-
-        const unit_t Blobs:: Delta[8][2] =
-        {
-            // axis
-            {  1,  0 },
-            {  0,  1 },
-            { -1,  0 },
-            {  0, -1 },
-            // diag
-            {  1,  1 },
-            { -1,  1 },
-            { -1, -1 },
-            {  1, -1 }
-        };
-    }
-
-}
 
 
 
