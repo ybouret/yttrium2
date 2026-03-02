@@ -163,13 +163,13 @@ namespace Yttrium
         template <typename PAIR> static inline
         void NoPairWith(const size_t idx, CxxSeries<PAIR> &pairs)
         {
-            std::cerr << "removing pairs with #" << idx << std::endl;
+            //std::cerr << "removing pairs with #" << idx << std::endl;
             for(size_t i=1;i<=pairs.size();)
             {
                 PAIR &pair = pairs[i];
                 if(pair.has(idx))
                 {
-                    std::cerr << "\tfound bad " << pair << std::endl;
+                    //std::cerr << "\tfound bad " << pair << std::endl;
                     Memory::Stealth::Swap(pair,pairs.tail());
                     pairs.pop();
                 }
@@ -180,23 +180,7 @@ namespace Yttrium
             }
         }
 
-        template <typename ITEM> static inline
-        void SetLeading(const size_t idx, CxxSeries<ITEM *> &iAddr)
-        {
-            assert(iAddr.size()>0);
-            const size_t count = Sorting::Heap::Sort(iAddr,ITEM::Compare).size();
-            for(size_t i=count;i>0;--i)
-            {
-                ITEM &item = *iAddr[i];
-                if(idx == item.idx)
-                {
-                    std::cerr << "Found " << item << std::endl;
-                    Swap(iAddr[i],iAddr[1]);
-                    return;
-                }
-            }
-            throw Specific::Exception(CallSign,"missing SetLeading(%u)", (unsigned)idx);
-        }
+
 
         template <typename POSITION, typename DISTANCE, typename PROC> static inline
         void Make(TypeToType<DISTANCE>, Writable<size_t> &idx, PROC &proc, const Readable<POSITION> &pos)
@@ -235,10 +219,10 @@ namespace Yttrium
                 const PairType &pair = Sorting::Heap::Sort(pairs,PairType::Compare)[ Select(pairs.size()) ];
                 std::cerr << "selected pair=" << pair << std::endl;
                 const size_t head = idx[++curr] = pair.lhs->idx;
-                idx[++curr] = pair.rhs->idx;
+                /* tail */          idx[++curr] = pair.rhs->idx;
+                std::cerr << "starting with " << idx[1] << " -> " << idx[2] << " : $" << pair.delta << std::endl;
                 NoPairWith(head,pairs);
                 std::cerr << "remaining = " << pairs << std::endl;
-                std::cerr << "starting with " << idx[1] << " -> " << idx[2] << std::endl;
             }
             assert(2==curr);
 
@@ -253,19 +237,20 @@ namespace Yttrium
                 {
                     PairType &pair = pairs[i];
                     if(!pair.has(head)) continue;
-                    std::cerr << "\tusing " << pair << std::endl;
+                    //std::cerr << "\tusing " << pair << std::endl;
                     handle << &pair;
                 }
                 const PairType &pair = *Sorting::Heap::Sort(handle,PairType::CompareAddr)[ Select(handle.size()) ];
-                std::cerr << "choice = " << pair << std::endl;
+                //std::cerr << "choice = " << pair << std::endl;
                 const size_t    tail = pair.tailMatching(head);
-                std::cerr << "tail   = " << tail << std::endl;
+                std::cerr << "next   = " << head << " -> " << tail << " : $" << pair.delta << std::endl;
                 idx[++curr] = tail;
                 NoPairWith(head,pairs);
-                std::cerr << "remaining = " << pairs << std::endl;
-                break;
+                //std::cerr << "remaining = " << pairs << std::endl;
+               // break;
             }
 
+            std::cerr << "res=" << idx << std::endl;
 
 
         }
