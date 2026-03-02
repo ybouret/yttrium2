@@ -199,27 +199,42 @@ namespace Yttrium
                 typedef Pair<POSITION,DISTANCE> PairType;
                 assert(idx.size()==pos.size());
 
+                //--------------------------------------------------------------
+                //
                 // check cases
+                //
+                //--------------------------------------------------------------
                 const size_t num  = idx.size();
                 if(num<=2) {
                     for(size_t i=1;i<=num;++i) idx[i] = i;
                     return;
                 }
-                
 
+                //--------------------------------------------------------------
+                //
                 // initialize all items
+                //
+                //--------------------------------------------------------------
                 CxxSeries<ItemType>   items(num);
                 for(size_t i=1;i<=num;++i)
                     items << ItemType(i,pos[i]);
 
+                //--------------------------------------------------------------
+                //
                 // initialize all pairs
+                //
+                //--------------------------------------------------------------
                 CxxSeries<PairType>   pairs((num*(num-1))>>1);
                 for(size_t i=1;i<=num;++i)
                     for(size_t j=i+1;j<=num;++j)
                         pairs << PairType(proc,items[i],items[j]);
 
 
+                //--------------------------------------------------------------
+                //
                 // find first pair and first two items
+                //
+                //--------------------------------------------------------------
                 size_t curr = 0;
                 {
                     const PairType &pair = Sorting::Heap::Sort(pairs,PairType::Compare)[ Select(pairs.size()) ];
@@ -228,7 +243,7 @@ namespace Yttrium
                     /* tail */          idx[++curr] = pair.rhs->idx;
                     std::cerr << "starting with " << idx[1] << " -> " << idx[2] << " : $" << pair.delta << std::endl;
                     NoPairWith(head,pairs);
-                    std::cerr << "remaining = " << pairs << std::endl;
+                    //std::cerr << "remaining = " << pairs << std::endl;
                 }
                 assert(2==curr);
 
@@ -237,7 +252,6 @@ namespace Yttrium
                 for(;curr<num;)
                 {
                     const size_t head = idx[curr];
-                    std::cerr << "new head = " << head << std::endl;
                     handle.free();
                     for(size_t i=pairs.size();i>0;--i)
                     {
