@@ -137,58 +137,8 @@ namespace Yttrium
             };
 
 
-            static
-            size_t Select(const size_t n) noexcept
-            {
-                assert(n>0);
-                if( 0 == (n&1) )
-                {
-                    // even
-                    return (n >> 1);
-                }
-                else
-                {
-                    // odd
-                    assert( 1 == (n&1) );
-                    return 1 + ( (n-1) >> 1);
-                }
-            }
 
 
-            template <typename ITEM> static inline
-            void RemoveItem(const size_t idx, CxxSeries<ITEM *> &iAddr)
-            {
-                assert(iAddr.size()>0);
-                const size_t count = iAddr.size();
-                for(size_t i=count;i>0;--i)
-                {
-                    ITEM &item = *iAddr[i];
-                    if(idx == item.idx)
-                    {
-                        std::cerr << "Remove Found " << item << std::endl;
-                        Swap(iAddr[i],iAddr[count]);
-                        iAddr.pop();
-                        return;
-                    }
-                }
-                throw Specific::Exception(CallSign,"missing RemoveItem(%u)", (unsigned)idx);
-            }
-
-            template <typename PAIR> static inline
-            void NoPairWith(const size_t idx, CxxSeries<PAIR> &pairs)
-            {
-                for(size_t i=1;i<=pairs.size();)
-                {
-                    PAIR &pair = pairs[i];
-                    if(pair.has(idx)) {
-                        Memory::Stealth::Swap(pair,pairs.tail());
-                        pairs.pop();
-                    }
-                    else
-                        ++i;
-
-                }
-            }
 
 
 
@@ -230,6 +180,8 @@ namespace Yttrium
                         pairs << PairType(proc,items[i],items[j]);
 
 
+
+
                 //--------------------------------------------------------------
                 //
                 // find first pair and first two items
@@ -237,8 +189,8 @@ namespace Yttrium
                 //--------------------------------------------------------------
                 size_t curr = 0;
                 {
-                    const PairType &pair = Sorting::Heap::Sort(pairs,PairType::Compare)[ Select(pairs.size()) ];
-                    std::cerr << "selected pair=" << pair << std::endl;
+                    const PairType &pair = Sorting::Heap::Sort(pairs,PairType::Compare)[ Select(pairs) ];
+                    //std::cerr << "selected pair=" << pair << std::endl;
                     const size_t head = idx[++curr] = pair.lhs->idx;
                     /* tail */          idx[++curr] = pair.rhs->idx;
                     std::cerr << "starting with " << idx[1] << " -> " << idx[2] << " : $" << pair.delta << std::endl;
@@ -257,27 +209,56 @@ namespace Yttrium
                     {
                         PairType &pair = pairs[i];
                         if(!pair.has(head)) continue;
-                        //std::cerr << "\tusing " << pair << std::endl;
                         handle << &pair;
                     }
-                    const PairType &pair = *Sorting::Heap::Sort(handle,PairType::CompareAddr)[ Select(handle.size()) ];
-                    //std::cerr << "choice = " << pair << std::endl;
+                    assert(handle.size()>0);
+                    const PairType &pair = *Sorting::Heap::Sort(handle,PairType::CompareAddr)[ Select(handle) ];
                     const size_t    tail = pair.tailMatching(head);
                     std::cerr << "next   = " << head << " -> " << tail << " : $" << pair.delta << std::endl;
                     idx[++curr] = tail;
                     NoPairWith(head,pairs);
-                    //std::cerr << "remaining = " << pairs << std::endl;
-                    // break;
                 }
-
                 std::cerr << "res=" << idx << std::endl;
+            }
+
+        private:
+            template <typename ARR> static inline
+            size_t Select(const ARR &arr) noexcept
+            {
+                const size_t n = arr.size();
+                assert(n>0);
+                if( 0 == (n&1) )
+                {
+                    // even
+                    return (n >> 1);
+                }
+                else
+                {
+                    // odd
+                    assert( 1 == (n&1) );
+                    return 1 + ( (n-1) >> 1);
+                }
+            }
 
 
+            template <typename PAIR> static inline
+            void NoPairWith(const size_t idx, CxxSeries<PAIR> &pairs)
+            {
+                for(size_t i=1;i<=pairs.size();)
+                {
+                    PAIR &pair = pairs[i];
+                    if(pair.has(idx)) {
+                        Memory::Stealth::Swap(pair,pairs.tail());
+                        pairs.pop();
+                    }
+                    else
+                        ++i;
+
+                }
             }
 
         };
 
-        const char * const Disperse:: CallSign = "Disperse";
     }
 
 }
