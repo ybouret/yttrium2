@@ -244,6 +244,7 @@ namespace Yttrium
 
 
             CxxSeries<PairType *> handle(num);
+            for(;curr<num;)
             {
                 const size_t head = idx[curr];
                 std::cerr << "new head = " << head << std::endl;
@@ -259,36 +260,11 @@ namespace Yttrium
                 std::cerr << "choice = " << pair << std::endl;
                 const size_t    tail = pair.tailMatching(head);
                 std::cerr << "tail   = " << tail << std::endl;
-            }
-
-#if 0
-            size_t                hmax = 0;
-            for(;curr<num;++curr)
-            {
-                const size_t hook = idx[curr];
-                std::cerr << "hook is now #" << hook << std::endl;
-                handle.free();
-                for(size_t i=pairs.size();i>0;--i)
-                {
-                    PairType &pair = pairs[i];
-                    if(!pair.has(hook)) continue;
-                    std::cerr << "using " << pair << std::endl;
-                    handle << &pair;
-                    InSituMax(hmax,handle.size());
-                }
-                assert(handle.size()>0);
-                const PairType &pair = *Sorting::Heap::Sort(handle,PairType::CompareAddr)[ Select(handle.size()) ];
-                std::cerr << "choice=" << pair << std::endl;
-                assert(pair.has(hook));
-                const size_t tail = (pair.lhs->idx == hook)  ? pair.rhs->idx : pair.lhs->idx;
-                std::cerr << "tail will be " << tail << std::endl;
                 idx[++curr] = tail;
-                NoPairWith(hook,pairs);
+                NoPairWith(head,pairs);
                 std::cerr << "remaining = " << pairs << std::endl;
-                std::cerr << "curr = " << curr << std::endl;
+                break;
             }
-            std::cerr << "hmax=" << hmax << std::endl;
-#endif
 
 
 
