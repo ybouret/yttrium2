@@ -54,7 +54,6 @@ Y_UTEST_DECL(256)
     Y_UTEST(calculus_primes33); // no ctest
     Y_UTEST(calculus_gap33);    // no ctest
     Y_UTEST(calculus_find_prime);
-    Y_UTEST(calculus_disperse);
 
 
 
@@ -127,7 +126,8 @@ Y_UTEST_DECL(256)
     Y_UTEST(container_hash_set);
     Y_UTEST(container_hash_map);
     Y_UTEST(container_associative);
-    
+    Y_UTEST(container_disperse);
+
 
     Y_UTEST(stream_io_char);
     Y_UTEST(stream_queue);

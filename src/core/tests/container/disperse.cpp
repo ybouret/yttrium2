@@ -269,7 +269,7 @@ namespace Yttrium
 #include "y/random/park-miller.hpp"
 #include "y/ascii/convert.hpp"
 
-Y_UTEST(calculus_disperse)
+Y_UTEST(container_disperse)
 {
     Random::ParkMiller ran;
     const size_t   n = argc>1 ? ASCII::Convert::To<size_t>(argv[1]) : 3;

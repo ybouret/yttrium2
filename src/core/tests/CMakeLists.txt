@@ -91,7 +91,6 @@ Y_UTEST(calculus:iabs)
 Y_UTEST(calculus:bits_in)
 Y_UTEST(calculus:primes)
 Y_UTEST(calculus:find:prime)
-Y_UTEST(calculus:disperse)
 
 #concurrent
 Y_UTEST(concurrent:nucleus)
@@ -162,6 +161,7 @@ Y_UTEST(container:suffix:map)
 Y_UTEST(container:hash:set)
 Y_UTEST(container:hash:map)
 Y_UTEST(container:associative)
+Y_UTEST(container:disperse)
 
 #stream
 Y_UTEST(stream:io:char)
