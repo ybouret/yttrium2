@@ -71,10 +71,6 @@ namespace Yttrium
 
             inline Pair(const Pair &_) : lhs(_.lhs), rhs(_.rhs), delta(_.delta) {}
 
-            inline bool has(const size_t idx) const noexcept
-            {
-                return idx==lhs->idx || idx==rhs->idx;
-            }
 
             inline ~Pair() noexcept
             {
@@ -97,6 +93,24 @@ namespace Yttrium
                 return Compare(*lhs,*rhs);
             }
 
+            inline bool has(const size_t idx) const noexcept
+            {
+                return idx==lhs->idx || idx==rhs->idx;
+            }
+
+            inline size_t tailMatching(const size_t head) const noexcept
+            {
+                assert( has(head) );
+                if(head == lhs->idx)
+                {
+                    return rhs->idx;
+                }
+                else
+                {
+                    assert(head==rhs->idx);
+                    return lhs->idx;
+                }
+            }
 
 
             const ItemType * const lhs;
@@ -174,7 +188,7 @@ namespace Yttrium
             for(size_t i=count;i>0;--i)
             {
                 ITEM &item = *iAddr[i];
-                if(idx == item.idx )
+                if(idx == item.idx)
                 {
                     std::cerr << "Found " << item << std::endl;
                     Swap(iAddr[i],iAddr[1]);
@@ -229,13 +243,25 @@ namespace Yttrium
             assert(2==curr);
 
 
+            CxxSeries<PairType *> handle(num);
             {
                 const size_t head = idx[curr];
                 std::cerr << "new head = " << head << std::endl;
+                handle.free();
+                for(size_t i=pairs.size();i>0;--i)
+                {
+                    PairType &pair = pairs[i];
+                    if(!pair.has(head)) continue;
+                    std::cerr << "\tusing " << pair << std::endl;
+                    handle << &pair;
+                }
+                const PairType &pair = *Sorting::Heap::Sort(handle,PairType::CompareAddr)[ Select(handle.size()) ];
+                std::cerr << "choice = " << pair << std::endl;
+                const size_t    tail = pair.tailMatching(head);
+                std::cerr << "tail   = " << tail << std::endl;
             }
 
 #if 0
-            CxxSeries<PairType *> handle(num);
             size_t                hmax = 0;
             for(;curr<num;++curr)
             {
