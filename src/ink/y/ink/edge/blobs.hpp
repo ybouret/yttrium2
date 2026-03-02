@@ -18,7 +18,7 @@ namespace Yttrium
         class Blobs : public IndexMap
         {
         public:
-            static const size_t Zero = 0;
+            static const Type   Zero = 0;
             static const unit_t Delta[8][2];
 
 
