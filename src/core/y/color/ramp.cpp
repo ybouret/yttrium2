@@ -11,6 +11,8 @@ namespace Yttrium
         {
         }
 
+        
+
         Ramp:: Ramp(const char   * const _label,
                     const RGBA32 * const _table,
                     const size_t         _count) noexcept :

@@ -142,8 +142,15 @@ namespace
 
 }
 
-#include "y/calculus/prime/next.hpp"
-#include "y/calculus/prime/prev.hpp"
+#include "y/container/algorithm/disperse.hpp"
+
+static inline double DeltaColor(const Color::RGBA32 &lhs, const Color::RGBA32 &rhs)
+{
+    const double dr = (double)lhs.r - (double)rhs.r;
+    const double dg = (double)lhs.g - (double)rhs.g;
+    const double db = (double)lhs.b - (double)rhs.b;
+    return sqrt(dr*dr+dg*dg+db*db);
+}
 
 Y_UTEST(edge)
 {
@@ -153,6 +160,32 @@ Y_UTEST(edge)
     const Filter<float>   F( Y_Ink_Filter_From(Scharr5) );
     const Color::Ramp     ramp( Y_Color_Ramp_From(table) );
     const Color::Ramp     ramp2( Y_Color_Ramp_From(table2) );
+
+
+    Y_PRINTV(Color::X11::Count);
+    Vector<RGBA> x11map;
+    {
+        Histogram    intensity;
+        for(size_t i=0;i<Color::X11::Count;++i)
+        {
+            const Color::X11 & x11  = Color::X11::Table[i];
+            const uint8_t      I    = Color::Conv::GrayScale<uint8_t>::From(x11.r,x11.g,x11.b);
+            std::cerr << std::setw(24) << x11.name << " : I=" << (int)I << std::endl;
+            ++intensity[I];
+            if(I>=128)
+            {
+                x11map << RGBA(x11.r,x11.g,x11.b);
+            }
+        }
+
+        intensity.toCDF();
+        intensity.save("x11hist.dat");
+        std::cerr << "#x11map=" << x11map.size() << std::endl;
+    }
+    Vector<size_t> x11idx(x11map.size(),0);
+
+    Algo::Disperse::Make(TypeToType<double>(), x11idx, DeltaColor, x11map);
+    
 
     if(argc>1)
     {
@@ -204,26 +237,7 @@ Y_UTEST(edge)
         Vector<RGBA> icol(WithAtLeast,px.vmax+1);
         icol << Y_Black;
 
-        Y_PRINTV(Color::X11::Count);
-        Y_PRINTV(Prime::Prev(Color::X11::Count));
 
-        Vector<RGBA> x11map;
-        Histogram    intensity;
-        for(size_t i=0;i<Color::X11::Count;++i)
-        {
-            const Color::X11 & x11  = Color::X11::Table[i];
-            const uint8_t      I    = Color::Conv::GrayScale<uint8_t>::From(x11.r,x11.g,x11.b);
-            std::cerr << std::setw(24) << x11.name << " : I=" << (int)I << std::endl;
-            ++intensity[I];
-            if(I>=128)
-            {
-                x11map << RGBA(x11.r,x11.g,x11.b);
-            }
-        }
-
-        intensity.toCDF();
-        intensity.save("x11hist.dat");
-        std::cerr << "#x11map=" << x11map.size() << std::endl;
 
 
     }

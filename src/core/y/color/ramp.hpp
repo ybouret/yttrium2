@@ -6,7 +6,6 @@
 
 #include "y/color/rgba.hpp"
 
-
 namespace Yttrium
 {
     namespace Color
@@ -31,7 +30,7 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            //! setup
+            //! setup from persistent table
             explicit Ramp(const char * const, const RGBA32 * const, const size_t) noexcept;
             virtual ~Ramp()    noexcept; //!< cleanup
             Ramp(const Ramp &) noexcept; //!< duplicate

@@ -22,7 +22,7 @@ namespace Yttrium
         //______________________________________________________________________
         struct Disperse
         {
-            static const char * const CallSign;
+            static const char * const CallSign; //!< "Disperse"
 
             //__________________________________________________________________
             //
@@ -36,26 +36,29 @@ namespace Yttrium
             class Item
             {
             public:
+                //! setup \param i index \param p position
                 inline  Item(const size_t i, const POSITION &p) : idx(i), pos(p){}
-                inline  Item(const Item &_) : idx(_.idx), pos(_.pos) {}
-                inline ~Item() noexcept {}
+                inline  Item(const Item &_) : idx(_.idx), pos(_.pos) {} //!< duplicate \param _ item
+                inline ~Item() noexcept                              {} //!< cleanup
 
+                //! display
                 inline friend std::ostream & operator<<(std::ostream &os, const Item &item)
                 {
                     return os << '#' << item.idx << '@' << item.pos;
                 }
 
+                //! \param lhs pointer \param rhs pointer \return compared by index
                 static inline
                 SignType Compare(const Item * const lhs, const Item * const rhs) noexcept
                 {
                     return Sign::Of(lhs->idx,rhs->idx);
                 }
 
-                const size_t   idx;
-                const POSITION pos;
+                const size_t   idx; //!< index
+                const POSITION pos; //!< position
 
             private:
-                Y_Disable_Assign(Item);
+                Y_Disable_Assign(Item); //!< discarding
             };
 
             //__________________________________________________________________
@@ -72,8 +75,14 @@ namespace Yttrium
             class Pair
             {
             public:
-                typedef Item<POSITION> ItemType;
+                typedef Item<POSITION> ItemType; //!< alias
 
+                //! setup
+                /**
+                 \param proc compute distance between two positions
+                 \param lhsItem first item
+                 \param rhsItem second item
+                 */
                 template <typename PROC>
                 inline Pair(PROC &proc, const ItemType &lhsItem, const ItemType &rhsItem) :
                 lhs( & lhsItem),
@@ -84,35 +93,41 @@ namespace Yttrium
                     assert(lhs->idx<rhs->idx);
                 }
 
+                //! duplicate \param _ pait
                 inline Pair(const Pair &_) : lhs(_.lhs), rhs(_.rhs), delta(_.delta) {}
 
-
+                //! cleanup
                 inline ~Pair() noexcept
                 {
                 }
 
+                //! display
                 inline friend std::ostream & operator<<(std::ostream &os, const Pair &pair)
                 {
                     return os << '|' << *pair.lhs << ':' << *pair.rhs << '|' << '=' << pair.delta;
                 }
 
+                //! \param lhs pair \param rhs pair \return compared by distance
                 static inline
                 SignType Compare(const Pair &lhs, const Pair &rhs)
                 {
                     return Sign::Of(lhs.delta,rhs.delta);
                 }
 
+                //! \param lhs pair \param rhs pair \return compared by distance
                 static inline
                 SignType CompareAddr(const Pair * const lhs, const Pair * const rhs)
                 {
                     return Compare(*lhs,*rhs);
                 }
 
+                //! \param idx index \return true iff idx matches lhs or rhs
                 inline bool has(const size_t idx) const noexcept
                 {
                     return idx==lhs->idx || idx==rhs->idx;
                 }
 
+                //! \param head index \return matching tail index
                 inline size_t tailMatching(const size_t head) const noexcept
                 {
                     assert( has(head) );
@@ -128,18 +143,13 @@ namespace Yttrium
                 }
 
 
-                const ItemType * const lhs;
-                const ItemType * const rhs;
-                const DISTANCE         delta;
+                const ItemType * const lhs;   //!< first item
+                const ItemType * const rhs;   //!< second item
+                const DISTANCE         delta; //!< distance
 
             private:
-                Y_Disable_Assign(Pair);
+                Y_Disable_Assign(Pair); //!< discarding
             };
-
-
-
-
-
 
 
             template <typename POSITION, typename DISTANCE, typename PROC> static inline
@@ -222,6 +232,8 @@ namespace Yttrium
             }
 
         private:
+
+            //! \param arr SORTED array \return median index
             template <typename ARR> static inline
             size_t Select(const ARR &arr) noexcept
             {
@@ -241,6 +253,7 @@ namespace Yttrium
             }
 
 
+            //! remove pairs having idx \param idx index \param pairs series of pairs
             template <typename PAIR> static inline
             void NoPairWith(const size_t idx, CxxSeries<PAIR> &pairs)
             {
