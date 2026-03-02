@@ -34,5 +34,5 @@ namespace Yttrium {
 
 }
 
-#endif
+#endif // !Y_MultiThreadedObject_Included
 

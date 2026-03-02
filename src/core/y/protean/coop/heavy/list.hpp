@@ -24,7 +24,7 @@ namespace Yttrium
         //
         //______________________________________________________________________
         template <typename T, typename ThreadingPolicy = SingleThreadedClass>
-        class CoopHeavyList : public CoopList<HeavyNode<T>,Sequence<T,CommonContainer>,ThreadingPolicy>
+        class CoopHeavyList : public CoopList<HeavyNode<T>, Sequence<T,CommonContainer>,ThreadingPolicy>
         {
         public:
             //__________________________________________________________________
@@ -64,4 +64,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Protean_CoopHeavList_Included

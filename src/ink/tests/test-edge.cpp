@@ -15,15 +15,43 @@
 #include <cstring>
 
 
+#include "y/protean/coop/heavy/list.hpp"
+
 namespace Yttrium
 {
     namespace Ink
     {
 
+        typedef Protean::CoopHeavyList<Point,MultiThreadedObject> ParticleList;
+        typedef ParticleList::PoolType                            ParticlePool;
+
+        class Particle : public Object, public ParticleList
+        {
+        public:
+            explicit Particle(const ParticlePool &pool) :
+            Object(),
+            ParticleList(pool),
+            kind(0),
+            next(0),
+            prev(0)
+            {}
+            
+            virtual ~Particle() noexcept {}
+
+            uint8_t    kind;
+            Particle * next;
+            Particle * prev;
+
+        private:
+            Y_Disable_Copy_And_Assign(Particle);
+        };
+
+
+
         DoubleThreshold OtsuAndHalf(const Histogram &H) noexcept
         {
             const uint8_t strong = Otsu::Threshold(H);
-            return DoubleThreshold(strong/2,strong);
+            return DoubleThreshold(strong>>1,strong);
         }
 
         template <Histogram::Quartile Q>
@@ -71,9 +99,15 @@ Y_UTEST(edge)
     Concurrent::Processor cpus = new Concurrent::Crew( Concurrent::Site::Default );
     Ink::Broker           broker(cpus);
     Formats &             IMG  = Formats::Std();
-    const Filter<float>   F( Y_Ink_Filter_From(Scharr5) );
-    const Color::Ramp     ramp( Y_Color_Ramp_From(table) );
-    const Color::Ramp     ramp2( Y_Color_Ramp_From(table2) );
+    const Filter<float>   F(     Y_Ink_Filter_From(Scharr5) );
+    const Color::Ramp     ramp(  Y_Color_Ramp_From(table)   );
+    const Color::Ramp     ramp2( Y_Color_Ramp_From(table2)  );
+
+    Ink::ParticlePool pool;
+
+    Ink::Particle pt(pool);
+    pt.free();
+
 
 
     Y_PRINTV(Color::X11::Count);
@@ -100,6 +134,11 @@ Y_UTEST(edge)
 
     Algo::Disperse::With<double>::Make(x11idx, DeltaColor, x11map);
 
+    Vector<RGBA> icol;
+    for(size_t i=1;i<=x11idx.size();++i)
+    {
+        icol << x11map[ x11idx[i] ];
+    }
 
     if(argc>1)
     {
@@ -146,17 +185,13 @@ Y_UTEST(edge)
         Blobs blobs(img.w,img.h);
 
         blobs.build(broker,edge0);
-        PixelRange<size_t> px = MinMax::Of(broker,blobs);
-        std::cerr << px.vmin << ":" << px.vmax  << std::endl;
-        Vector<RGBA> icol;
-        for(size_t i=1;i<=x11idx.size();++i)
-        {
-            icol << x11map[ x11idx[i] ];
-        }
+        IMG.save(icol, broker,blobs,"gsf-blobs0.png", 0);
 
-        IMG.save(icol, broker,blobs,"blobs.png", 0);
-        
+        blobs.build(broker,edge2);
+        IMG.save(icol, broker,blobs,"gsf-blobs2.png", 0);
 
+        blobs.build(broker,edge3);
+        IMG.save(icol, broker,blobs,"gsf-blobs3.png", 0);
     }
 }
 Y_UDONE()
