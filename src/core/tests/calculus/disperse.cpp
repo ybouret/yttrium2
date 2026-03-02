@@ -16,6 +16,7 @@ namespace Yttrium
     {
         static const char * const CallSign;
 
+        //! item with given index and position
         template <typename POSITION>
         class Item
         {
@@ -49,6 +50,7 @@ namespace Yttrium
             Y_Disable_Assign(Item);
         };
 
+        //! pair with two (ordered by index) items and a distance
         template <
         typename POSITION,
         typename DISTANCE>
@@ -106,6 +108,7 @@ namespace Yttrium
         };
 
 
+        //! select the median index
         static
         size_t Select(const size_t n) noexcept
         {
@@ -185,8 +188,9 @@ namespace Yttrium
         {
             typedef Item<POSITION>          ItemType;
             typedef Pair<POSITION,DISTANCE> PairType;
-
             assert(idx.size()==pos.size());
+
+            // check cases
             const size_t num  = idx.size();
             if(num<=2) {
                 for(size_t i=1;i<=num;++i) idx[i] = i;
@@ -220,10 +224,8 @@ namespace Yttrium
                 const PairType &pair = Sorting::Heap::Sort(pairs,PairType::Compare)[ Select(pairs.size()) ];
                 std::cerr << "selected pair=" << pair << std::endl;
                 const size_t head = idx[++curr] = pair.lhs->idx;
-                const size_t tail = idx[++curr] = pair.rhs->idx;
+                idx[++curr] = pair.rhs->idx;
                 NoPairWith(head,pairs);
-                std::cerr << "head =      " << head << std::endl;
-                std::cerr << "tail =      " << tail << std::endl;
                 std::cerr << "remaining = " << pairs << std::endl;
             }
 
