@@ -39,7 +39,7 @@ Y_UTEST(container_disperse)
 
     std::cerr << "pos=" << pos << std::endl;
 
-    Algo::Disperse::Make( TypeToType<double>(), idx,scalarDistance,pos);
+    Algo::Disperse::With<double>::Make(idx,scalarDistance,pos);
 
 
 

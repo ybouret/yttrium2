@@ -125,6 +125,23 @@ namespace Yttrium
                 save(broker,ramp,pixmap,fileName,options);
             }
 
+            struct IndexToRGBA
+            {
+                const Readable<RGBA> &cmap;
+                RGBA operator()(size_t) const noexcept;
+            };
+
+            template <typename FILENAME>
+            inline void save(const Readable<RGBA> &colorMap,
+                             Broker &              broker,
+                             const Pixmap<size_t> &pixmap,
+                             const FILENAME       &fileName,
+                             const Options * const options) const
+            {
+                const IndexToRGBA toRGBA = { colorMap };
+                save(broker,toRGBA,pixmap,fileName,options);
+            }
+
 
             //__________________________________________________________________
             //

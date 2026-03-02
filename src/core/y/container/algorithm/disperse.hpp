@@ -151,85 +151,86 @@ namespace Yttrium
                 Y_Disable_Assign(Pair); //!< discarding
             };
 
-
-            template <typename POSITION, typename DISTANCE, typename PROC> static inline
-            void Make(TypeToType<DISTANCE>, Writable<size_t> &idx, PROC &proc, const Readable<POSITION> &pos)
+            template <typename DISTANCE> struct With
             {
-                typedef Item<POSITION>          ItemType;
-                typedef Pair<POSITION,DISTANCE> PairType;
-                assert(idx.size()==pos.size());
-
-                //--------------------------------------------------------------
-                //
-                // check cases
-                //
-                //--------------------------------------------------------------
-                const size_t num  = idx.size();
-                if(num<=2) {
-                    for(size_t i=1;i<=num;++i) idx[i] = i;
-                    return;
-                }
-
-                //--------------------------------------------------------------
-                //
-                // initialize all items
-                //
-                //--------------------------------------------------------------
-                CxxSeries<ItemType>   items(num);
-                for(size_t i=1;i<=num;++i)
-                    items << ItemType(i,pos[i]);
-
-                //--------------------------------------------------------------
-                //
-                // initialize all pairs
-                //
-                //--------------------------------------------------------------
-                CxxSeries<PairType>   pairs((num*(num-1))>>1);
-                for(size_t i=1;i<=num;++i)
-                    for(size_t j=i+1;j<=num;++j)
-                        pairs << PairType(proc,items[i],items[j]);
-
-
-
-
-                //--------------------------------------------------------------
-                //
-                // find first pair and first two items
-                //
-                //--------------------------------------------------------------
-                size_t curr = 0;
+                template <typename POSITION,typename PROC> static inline
+                void Make(Writable<size_t> &idx, PROC &proc, const Readable<POSITION> &pos)
                 {
-                    const PairType &pair = Sorting::Heap::Sort(pairs,PairType::Compare)[ Select(pairs) ];
-                    //std::cerr << "selected pair=" << pair << std::endl;
-                    const size_t head = idx[++curr] = pair.lhs->idx;
-                    /* tail */          idx[++curr] = pair.rhs->idx;
-                    std::cerr << "starting with " << idx[1] << " -> " << idx[2] << " : $" << pair.delta << std::endl;
-                    NoPairWith(head,pairs);
-                    //std::cerr << "remaining = " << pairs << std::endl;
-                }
-                assert(2==curr);
+                    typedef Item<POSITION>          ItemType;
+                    typedef Pair<POSITION,DISTANCE> PairType;
+                    assert(idx.size()==pos.size());
 
-
-                CxxSeries<PairType *> handle(num);
-                for(;curr<num;)
-                {
-                    const size_t head = idx[curr];
-                    handle.free();
-                    for(size_t i=pairs.size();i>0;--i)
-                    {
-                        PairType &pair = pairs[i];
-                        if(!pair.has(head)) continue;
-                        handle << &pair;
+                    //--------------------------------------------------------------
+                    //
+                    // check cases
+                    //
+                    //--------------------------------------------------------------
+                    const size_t num  = idx.size();
+                    if(num<=2) {
+                        for(size_t i=1;i<=num;++i) idx[i] = i;
+                        return;
                     }
-                    assert(handle.size()>0);
-                    const PairType &pair = *Sorting::Heap::Sort(handle,PairType::CompareAddr)[ Select(handle) ];
-                    const size_t    tail = pair.tailMatching(head);
-                    std::cerr << "next   = " << head << " -> " << tail << " : $" << pair.delta << std::endl;
-                    idx[++curr] = tail;
-                    NoPairWith(head,pairs);
+
+                    //--------------------------------------------------------------
+                    //
+                    // initialize all items
+                    //
+                    //--------------------------------------------------------------
+                    CxxSeries<ItemType>   items(num);
+                    for(size_t i=1;i<=num;++i)
+                        items << ItemType(i,pos[i]);
+
+                    //--------------------------------------------------------------
+                    //
+                    // initialize all pairs
+                    //
+                    //--------------------------------------------------------------
+                    CxxSeries<PairType>   pairs((num*(num-1))>>1);
+                    for(size_t i=1;i<=num;++i)
+                        for(size_t j=i+1;j<=num;++j)
+                            pairs << PairType(proc,items[i],items[j]);
+
+
+
+
+                    //--------------------------------------------------------------
+                    //
+                    // find first pair and first two items
+                    //
+                    //--------------------------------------------------------------
+                    size_t curr = 0;
+                    {
+                        const PairType &pair = Sorting::Heap::Sort(pairs,PairType::Compare)[ Select(pairs) ];
+                        //std::cerr << "selected pair=" << pair << std::endl;
+                        const size_t head = idx[++curr] = pair.lhs->idx;
+                        /* tail */          idx[++curr] = pair.rhs->idx;
+                        //std::cerr << "starting with " << idx[1] << " -> " << idx[2] << " : $" << pair.delta << std::endl;
+                        NoPairWith(head,pairs);
+                    }
+                    assert(2==curr);
+
+
+                    CxxSeries<PairType *> handle(num);
+                    for(;curr<num;)
+                    {
+                        const size_t head = idx[curr];
+                        handle.free();
+                        for(size_t i=pairs.size();i>0;--i)
+                        {
+                            PairType &pair = pairs[i];
+                            if(!pair.has(head)) continue;
+                            handle << &pair;
+                        }
+                        assert(handle.size()>0);
+                        const PairType &pair = *Sorting::Heap::Sort(handle,PairType::CompareAddr)[ Select(handle) ];
+                        const size_t    tail = pair.tailMatching(head);
+                        //std::cerr << "next   = " << head << " -> " << tail << " : $" << pair.delta << std::endl;
+                        idx[++curr] = tail;
+                        NoPairWith(head,pairs);
+                    }
                 }
-                std::cerr << "res=" << idx << std::endl;
-            }
+
+            };
 
         private:
 

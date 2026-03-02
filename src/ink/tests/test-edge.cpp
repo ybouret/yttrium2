@@ -170,7 +170,7 @@ Y_UTEST(edge)
         {
             const Color::X11 & x11  = Color::X11::Table[i];
             const uint8_t      I    = Color::Conv::GrayScale<uint8_t>::From(x11.r,x11.g,x11.b);
-            std::cerr << std::setw(24) << x11.name << " : I=" << (int)I << std::endl;
+            //std::cerr << std::setw(24) << x11.name << " : I=" << (int)I << std::endl;
             ++intensity[I];
             if(I>=128)
             {
@@ -184,8 +184,8 @@ Y_UTEST(edge)
     }
     Vector<size_t> x11idx(x11map.size(),0);
 
-    Algo::Disperse::Make(TypeToType<double>(), x11idx, DeltaColor, x11map);
-    
+    Algo::Disperse::With<double>::Make(x11idx, DeltaColor, x11map);
+
 
     if(argc>1)
     {
@@ -234,11 +234,14 @@ Y_UTEST(edge)
         blobs.build(broker,edge0);
         PixelRange<size_t> px = MinMax::Of(broker,blobs);
         std::cerr << px.vmin << ":" << px.vmax  << std::endl;
-        Vector<RGBA> icol(WithAtLeast,px.vmax+1);
-        icol << Y_Black;
+        Vector<RGBA> icol;
+        for(size_t i=1;i<=x11idx.size();++i)
+        {
+            icol << x11map[ x11idx[i] ];
+        }
 
-
-
+        IMG.save(icol, broker,blobs,"blobs.png", 0);
+        
 
     }
 }
