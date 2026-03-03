@@ -8,6 +8,7 @@
 #include "y/container/associative/suffix/set.hpp"
 #include "y/singleton.hpp"
 #include "y/concurrent/life-time.hpp"
+#include "y/ink/image/points.hpp"
 
 namespace Yttrium
 {
@@ -61,6 +62,13 @@ namespace Yttrium
             const Format   & operator[](const String &path) const; //!< \param path file name \return format for path
 
 
+            //__________________________________________________________________
+            //
+            //
+            // Members
+            //
+            //__________________________________________________________________
+            PointPoolType pool;
 
         private:
             Y_Disable_Copy_And_Assign(Formats); //!< discarding

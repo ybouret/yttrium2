@@ -22,6 +22,9 @@ namespace Yttrium
     namespace Ink
     {
 
+
+
+#if 0
         typedef Protean::CoopHeavyList<Point> PointList;
         typedef PointList::PoolType           PointPool;
 
@@ -50,7 +53,7 @@ namespace Yttrium
             Y_Disable_Copy_And_Assign(Particle);
 
         };
-
+#endif
 
 
 
@@ -113,10 +116,8 @@ Y_UTEST(edge)
     const Color::Ramp     ramp(  Y_Color_Ramp_From(table)   );
     const Color::Ramp     ramp2( Y_Color_Ramp_From(table2)  );
 
-    Ink::PointPool pool;
+    //Ink::PointPool pool( IMG.access );
 
-    Ink::Particle pt(pool);
-    pt.free();
 
 
 

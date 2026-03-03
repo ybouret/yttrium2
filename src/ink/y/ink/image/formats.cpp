@@ -18,7 +18,8 @@ namespace Yttrium
         Formats:: Formats() :
         Singleton<Formats,ClassLockPolicy>(),
         FormatsDB(),
-        Codec(CallSign)
+        Codec(CallSign),
+        pool(access)
         {
         }
 
