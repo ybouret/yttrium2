@@ -16,6 +16,7 @@
 
 //! epilog
 #define Y_EXECUTE() \
+/**/        catch(const Yttrium::Exception &excp) { excp.show(std::cerr); return 1; } \
 /**/        catch(const std::exception &excp) { std::cerr << excp.what() << std::endl; return 2; }\
 /**/        catch(...) { std::cerr << "unhandled exception in " << program << std::endl; return 3; }\
 /**/        return 0; \
