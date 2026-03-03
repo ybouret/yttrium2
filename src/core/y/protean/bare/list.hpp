@@ -70,5 +70,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Protean_BareList_Included
 

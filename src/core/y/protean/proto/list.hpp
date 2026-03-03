@@ -378,5 +378,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Protean_ListProto_Included
 

@@ -59,4 +59,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Protean_BareLightList_Included

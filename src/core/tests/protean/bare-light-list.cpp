@@ -3,7 +3,11 @@
 #include "y/system/rand.hpp"
 #include "y/utest/run.hpp"
 #include "y/threading/multi-threaded-object.hpp"
+#include "y/threading/multi-threaded-handle.hpp"
+
 #include "y/container/iter/tests.hpp"
+
+#include "y/concurrent/mutex.hpp"
 
 using namespace Yttrium;
 
@@ -12,8 +16,12 @@ Y_UTEST(protean_bare_light_list)
     System::Rand ran;
     float        array[] = { 1, 2, 3, 4 };
 
+   // Concurrent::Mutex mutex;
+
     Protean::BareLightList<float,SingleThreadedClass> st_list;
     Protean::BareLightList<float,MultiThreadedObject> mt_list;
+    //Protean::BareLightList<float,MultiThreadedHandle> sh_list(mutex);
+
 
     for(size_t i=0;i<sizeof(array)/sizeof(array[0]);++i)
     {
