@@ -14,11 +14,15 @@ Y_UTEST(protean_coop_heavy_list)
     System::Rand ran;
 
     typedef Protean::CoopHeavyList<int,SingleThreadedClass> STList;
+    typedef Protean::CoopHeavyList<int,MultiThreadedObject> MTList;
     typedef STList::PoolType STPool;
+    typedef MTList::PoolType MTPool;
 
     STPool st_pool;
+    MTPool mt_pool;
 
-    Protean::CoopHeavyList<int,SingleThreadedClass> st_list(st_pool);
+    STList st_list(st_pool);
+    MTList mt_list(mt_pool);
     
 
 }
