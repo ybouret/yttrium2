@@ -22,15 +22,19 @@ namespace Yttrium
     namespace Ink
     {
 
-        typedef Protean::CoopHeavyList<Point,MultiThreadedObject> ParticleList;
-        typedef ParticleList::PoolType                            ParticlePool;
+        typedef Protean::CoopHeavyList<Point> PointList;
+        typedef PointList::PoolType           PointPool;
 
-        class Particle : public Object, public ParticleList
+        class Particle : public Object, public PointList
         {
         public:
-            explicit Particle(const ParticlePool &pool) :
+            typedef Core::ListOf<Particle> List;
+            typedef Core::PoolOf<Particle> Pool;
+
+
+            explicit Particle(const PointPool &pool) :
             Object(),
-            ParticleList(pool),
+            PointList(pool),
             kind(0),
             next(0),
             prev(0)
@@ -44,7 +48,13 @@ namespace Yttrium
 
         private:
             Y_Disable_Copy_And_Assign(Particle);
+
         };
+
+
+
+
+
 
 
 
@@ -103,7 +113,7 @@ Y_UTEST(edge)
     const Color::Ramp     ramp(  Y_Color_Ramp_From(table)   );
     const Color::Ramp     ramp2( Y_Color_Ramp_From(table2)  );
 
-    Ink::ParticlePool pool;
+    Ink::PointPool pool;
 
     Ink::Particle pt(pool);
     pt.free();
@@ -140,6 +150,7 @@ Y_UTEST(edge)
         icol << x11map[ x11idx[i] ];
     }
 
+    
     if(argc>1)
     {
         const Image     img = IMG.load(argv[1],0);

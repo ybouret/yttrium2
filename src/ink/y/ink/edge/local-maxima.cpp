@@ -101,9 +101,9 @@ namespace Yttrium
                     for(unit_t i=s.width,x=s.start.x;i>0;--i,++x)
                     {
                         uint8_t &b = u[x];
-                        if(b<=part.feeble) { b=0;      continue; }
-                        if(b<=part.strong) { b= LocalMaxima::Feeble; continue; }
-                        b = LocalMaxima::Strong;
+                        if(b<=part.feeble) { b= EdgeIs::Absent; continue; }
+                        if(b<=part.strong) { b= EdgeIs::Feeble; continue; }
+                        b = EdgeIs::Strong;
                     }
                 }
             }

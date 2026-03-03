@@ -14,6 +14,13 @@ namespace Yttrium
     namespace Ink
     {
 
+        struct EdgeIs
+        {
+            static const uint8_t Absent = 0x00; //!< alias
+            static const uint8_t Feeble = 0x40; //!< alias
+            static const uint8_t Strong = 0x80; //!< alias
+        };
+
         //______________________________________________________________________
         //
         //
@@ -24,9 +31,7 @@ namespace Yttrium
         //______________________________________________________________________
         struct LocalMaxima
         {
-            static const uint8_t Feeble = 127; //!< alias
-            static const uint8_t Strong = 255; //!< alias
-
+            
             //! convert gradient map into thin borders, and build histogram
             /**
              \param broker broker
