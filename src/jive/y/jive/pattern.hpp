@@ -56,7 +56,7 @@ namespace Yttrium
             // Methods
             //
             //__________________________________________________________________
-            bool feeble() const; //!< \return true if accepts empty token
+            bool feeble()   const; //!< \return true if accepts empty token
             bool flexible() const; //!< \return !univoca()
 
             bool             isBasic()  const noexcept;    //!< \return true is basic
@@ -68,6 +68,7 @@ namespace Yttrium
             static Pattern * Among(const char * const);    //!< \return Or'd
             static Pattern * Exact(const String &);        //!< \return And
             static Pattern * Exact(const char * const);    //!< \return And
+            static String    ToRegExp(const String &);     //!< \return string that will compile to exact string matching
 
             //__________________________________________________________________
             //

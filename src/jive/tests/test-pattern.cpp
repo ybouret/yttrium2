@@ -91,7 +91,8 @@ Y_UTEST(pattern)
         testPattern( p.yield() );
     }
 
-
+ 
+    
 
 }
 Y_UDONE()

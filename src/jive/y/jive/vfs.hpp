@@ -99,5 +99,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Jive_VFS_Included
 

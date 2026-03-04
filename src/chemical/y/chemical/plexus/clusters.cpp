@@ -98,6 +98,8 @@ namespace Yttrium
 
 #include "y/format/decimal.hpp"
 #include "y/stream/libc/output.hpp"
+#include "y/jive/vfs.hpp"
+#include "y/vfs/local/fs.hpp"
 
 namespace Yttrium
 {
@@ -119,14 +121,34 @@ namespace Yttrium
             Vizible::DotToPng(fileName);
         }
 
-
+        using namespace Jive;
         void Clusters:: viz(const String &root) const
         {
+
+            LocalFS & fs = LocalFS:: Instance();
+            Matching matching = Pattern::Exact(root);
+            
+#if 0
+            if( argc > 1 )
+            {
+                Matching matching  = argv[1];
+                if(argc>2)
+                {
+
+                    _VFS::Apply(fs,
+                                argv[1],
+                                argv[1],
+                                Matching::Exactly,
+                                VFS::Entry::Path,
+                                _VFS::Display);
+                }
+            }
+#endif
+
             for(size_t numOrder=1;numOrder<=maxOrder;++numOrder)
             {
                 viz(root,numOrder);
             }
-
         }
     }
 

@@ -5,12 +5,24 @@
 #include "y/stream/libc/output.hpp"
 #include "y/stream/libc/input.hpp"
 #include "y/ascii/boolean.hpp"
+#include "y/pointer/auto.hpp"
 
 using namespace Yttrium;
 using namespace Jive;
 
 Y_UTEST(rx)
 {
+    {
+        String root = "root";
+        AutoPtr<Pattern> lhs = Pattern::Exact(root);
+        const String     rx  = Pattern::ToRegExp(root);
+        std::cerr << root << "->" << rx << std::endl;
+        AutoPtr<Pattern> rhs = RegExp::Compile(rx);
+        Vizible::Render("lhs.dot",*lhs);
+        Vizible::Render("rhs.dot",*rhs);
+        Y_ASSERT(lhs->toBinary() == rhs->toBinary());
+    }
+
     if(argc>1)
     {
 
@@ -56,7 +68,6 @@ Y_UTEST(rx)
                 std::cerr << std::endl;
             }
         }
-
     }
 }
 Y_UDONE()

@@ -220,7 +220,7 @@ namespace Yttrium
         Pattern * Pattern:: Exact(const String &data)
         {
             AutoPtr<Logic> p = new And();
-            for(size_t i=1;i<=data.size();++i) p->pushHead( new Byte( (uint8_t)data[i]) );
+            for(size_t i=1;i<=data.size();++i) p->pushTail( new Byte( (uint8_t)data[i]) );
             return p.yield();
         }
 
