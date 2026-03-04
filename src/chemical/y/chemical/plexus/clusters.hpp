@@ -49,8 +49,8 @@ namespace Yttrium
             //__________________________________________________________________
             void computeK(const xreal_t ); //!< compute inner K
 
-            void viz(const String &root, const size_t numOrder) const;
-
+            void viz(const String &root, const size_t numOrder) const; //!< viz/render root + numOrder + .dot
+            void viz(const String &root) const;                        //!< viz/render all orders
 
         private:
             Y_Disable_Copy_And_Assign(Clusters); //!< discarding

@@ -120,6 +120,14 @@ namespace Yttrium
         }
 
 
+        void Clusters:: viz(const String &root) const
+        {
+            for(size_t numOrder=1;numOrder<=maxOrder;++numOrder)
+            {
+                viz(root,numOrder);
+            }
+
+        }
     }
 
 }

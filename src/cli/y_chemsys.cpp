@@ -31,23 +31,9 @@ Y_PROGRAM()
         std::cerr << *cl << std::endl;
     }
 
-#if 0
-    {
-        OutputFile fp("cs.dot");
-        Vizible::Enter(fp);
-        for(const Cluster *cl=cls->head;cl;cl=cl->next)
-        {
-            cl->viz(fp,1);
-        }
+    std::cerr << "Rendering..." << std::endl;
+    cls.viz("cs");
 
-        Vizible::Leave(fp);
-    }
-
-    Vizible::DotToPng("cs.dot",false);
-#endif
-
-    cls.viz("cs",1);
-    
 }
 Y_EXECUTE()
 
