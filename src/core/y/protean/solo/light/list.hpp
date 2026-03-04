@@ -41,6 +41,8 @@ namespace Yttrium
             //__________________________________________________________________
             inline explicit SoloLightList() : BaseType() {} //!< setup empty
             inline virtual ~SoloLightList() noexcept {}     //!< cleanup
+            inline explicit SoloLightList(Lockable &handle) : BaseType(handle) {} //!< setup empty \param handle PERSISTENT lockable
+
 
             //! duplicate with own cache \param other another list
             inline SoloLightList(const SoloLightList &other) : Container(), BaseType(other)
@@ -55,4 +57,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Protean_SoloLightList_Included

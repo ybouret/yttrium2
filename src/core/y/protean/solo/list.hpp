@@ -108,10 +108,12 @@ namespace Yttrium
             //! setup empty
             inline explicit SoloList() : CoreType() {}
 
+            //! setup empty \param handle PERSISTENT lockable
+            inline explicit SoloList(Lockable &handle) : CoreType(handle) {}
+
             //! duplicate \param other another list
             inline SoloList(const SoloList &other) : Container(), CoreType(other)
             {
-                //this->duplicate(other);
             }
 
         private:

@@ -44,6 +44,8 @@ namespace Yttrium
         //______________________________________________________________________
         inline explicit List() : BaseType() {} //!< setup emtpy
         inline virtual ~List() noexcept {}     //!< cleanup
+        inline explicit List(Lockable &handle) : BaseType(handle) {} //!< setup empty \param handle PERSISTENT lockable
+
 
         //! duplicate \param other another list
         inline List(const List &other) : Container(), BaseType(other)
@@ -55,6 +57,13 @@ namespace Yttrium
         {
             pool.cache(n);
         }
+
+        //! setup with capacity \param handle PERSISTENT lockable \param n memory for objects
+        inline List(Lockable &handle, const WithAtLeast_ &, const size_t n) : BaseType(handle)
+        {
+            pool.cache(n);
+        }
+
 
 
     private:

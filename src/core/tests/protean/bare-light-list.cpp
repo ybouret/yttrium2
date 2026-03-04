@@ -5,7 +5,6 @@
 #include "y/threading/multi-threaded-object.hpp"
 #include "y/threading/multi-threaded-handle.hpp"
 #include "y/threading/global-multi-threaded.hpp"
-
 #include "y/container/iter/tests.hpp"
 #include "y/concurrent/mutex.hpp"
 
@@ -39,9 +38,7 @@ Y_UTEST(protean_bare_light_list)
             sh_list << array[i];
             gb_list << array[i];
         }
-        std::cerr << st_list << std::endl;
-        std::cerr << mt_list << std::endl;
-        std::cerr << sh_list << std::endl;
+
     }
 
     Iter::Test::All(st_list);
