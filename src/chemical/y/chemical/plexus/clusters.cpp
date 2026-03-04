@@ -125,7 +125,6 @@ namespace Yttrium
         void RemoveLocalFile(const VFS::Entry &entry)
         {
             static LocalFS & fs = LocalFS:: Instance();
-            //std::cerr << "should remove " << entry << std::endl;
             fs.tryRemoveFile(entry.path);
         }
 
@@ -136,12 +135,8 @@ namespace Yttrium
             const String rx = Pattern::ToRegExp(root) + "[:digit:]+[.]png";
             //_VFS::Apply(fs, ".", rx, Matching::Exactly, VFS::Entry::Base, _VFS::Display);
             _VFS::Apply(fs, ".", rx, Matching::Exactly, VFS::Entry::Base, RemoveLocalFile);
-
-
             for(size_t numOrder=1;numOrder<=maxOrder;++numOrder)
-            {
                 viz(root,numOrder);
-            }
         }
     }
 
