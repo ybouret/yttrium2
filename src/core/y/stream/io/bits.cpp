@@ -15,9 +15,9 @@ namespace Yttrium
         {
         }
 
-        Bits:: Bits(const Bits &other) : BitsProto( other.pool ), Recyclable()
+        Bits:: Bits(const Bits &other) : BitsProto( other ), Recyclable()
         {
-            duplicate(other);
+           // duplicate(other);
         }
 
         Bits & Bits:: operator=(const Bits &other)

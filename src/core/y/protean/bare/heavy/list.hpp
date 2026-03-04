@@ -1,7 +1,7 @@
 //! \file
 
-#ifndef Y_Protean_BareHeavyLisr_Included
-#define Y_Protean_BareHeavyLisr_Included 1
+#ifndef Y_Protean_BareHeavyList_Included
+#define Y_Protean_BareHeavyList_Included 1
 
 #include "y/protean/node/heavy.hpp"
 #include "y/protean/bare/list.hpp"
@@ -45,6 +45,9 @@ namespace Yttrium
             //! cleanup
             inline virtual ~BareHeavyList() noexcept {}
 
+            //! setup empty \param handle PERSISTENT lockable
+            inline explicit BareHeavyList(Lockable &handle) : BaseType(handle) {}
+
             //! duplicate \param other another heavy list
             inline BareHeavyList(const BareHeavyList &other) : BaseType(other)
             {
@@ -58,4 +61,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Protean_BareHeavyList_Included

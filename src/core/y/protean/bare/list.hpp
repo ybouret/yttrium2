@@ -60,9 +60,9 @@ namespace Yttrium
             inline explicit BareList(Lockable &handle) : CoreType(handle), Releasable() {}
 
             //! duplicate \param other another list
-            inline BareList(const BareList &other) : CoreType(), Releasable()
+            inline BareList(const BareList &other) : CoreType(other), Releasable()
             {
-                this->duplicate(other);
+                //this->duplicate(other);
             }
 
         private:

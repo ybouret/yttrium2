@@ -109,9 +109,9 @@ namespace Yttrium
             inline explicit SoloList() : CoreType() {}
 
             //! duplicate \param other another list
-            inline SoloList(const SoloList &other) : Container(), CoreType()
+            inline SoloList(const SoloList &other) : Container(), CoreType(other)
             {
-                this->duplicate(other);
+                //this->duplicate(other);
             }
 
         private:

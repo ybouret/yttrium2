@@ -109,9 +109,9 @@ namespace Yttrium
             inline explicit CoopList(const PoolType &shared) : CoreType(shared) {}
 
             //! duplicate with same cache \param other another list
-            inline CoopList(const CoopList &other) : Container(), CoreType(other.pool)
+            inline CoopList(const CoopList &other) : Container(), CoreType(other)
             {
-                this->duplicate(other);
+                //this->duplicate(other);
             }
 
         private:
@@ -123,5 +123,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Protean_CoopList_Included
 

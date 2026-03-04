@@ -310,7 +310,17 @@ namespace Yttrium
             list(),
             pool(shared)
             {}
-            
+
+            inline ListProto(const ListProto &other) :
+            CONTAINER(),
+            ThreadingPolicy(other),
+            Ingress< Core::ListOf<NODE> >(),
+            list(),
+            pool(other.pool)
+            {
+                duplicate(other);
+            }
+
             //__________________________________________________________________
             //
             //
@@ -342,16 +352,10 @@ namespace Yttrium
             }
 
 
-            //! duplicate \param other another list
-            inline void duplicate(const ListProto &other)
-            {
-                volatile Lock primary(*this), replica(other);
-                assert(0==list.size);
-                duplicateInto(list,other);
-            }
+
 
         private:
-            Y_Disable_Copy_And_Assign(ListProto); //!< discaring
+            Y_Disable_Assign(ListProto); //!< discaring
 
 
             inline virtual typename Entrance::ConstInterface & locus() const noexcept { return list; }
@@ -370,6 +374,14 @@ namespace Yttrium
                 Y_Must_Lock();
                 assert(list.tail!=0);
                 return **list.tail;
+            }
+
+            //! duplicate \param other another list
+            inline void duplicate(const ListProto &other)
+            {
+                volatile Lock primary(*this), replica(other);
+                assert(0==list.size);
+                duplicateInto(list,other);
             }
 
             //! duplicate into agnostic list

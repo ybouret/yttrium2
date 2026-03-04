@@ -17,7 +17,6 @@ using namespace Yttrium;
 Y_UTEST(stream_io_char)
 {
     //Concurrent::Singulet::Verbose = true;
-#if 1
     IO::Chars chars;
     chars << 'a' >> 'b' << 'c';
     std::cerr << chars << std::endl;
@@ -27,6 +26,5 @@ Y_UTEST(stream_io_char)
     std::cerr << ccopy << std::endl;
     ccopy = chars;
     std::cerr << ccopy << std::endl;
-#endif
 }
 Y_UDONE()

@@ -13,9 +13,9 @@ namespace Yttrium
         {
         }
 
-        Chars:: Chars(const Chars &other) : CharsProto( other.pool ), Recyclable()
+        Chars:: Chars(const Chars &other) : CharsProto( other ), Recyclable()
         {
-            duplicate(other);
+            //duplicate(other);
         }
 
         Chars & Chars:: operator=(const Chars &other)
