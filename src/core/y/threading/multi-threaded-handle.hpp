@@ -23,7 +23,7 @@ namespace Yttrium {
         typedef Threading::Locker<MultiThreadedHandle> Lock; //!< alias
 
         explicit MultiThreadedHandle(Lockable &handle ) noexcept; //!< setup \param handle PERSISTENT lockable
-        virtual ~MultiThreadedHandle() noexcept; //!< cleanup
+        virtual ~MultiThreadedHandle()                  noexcept; //!< cleanup
 
     private:
         friend class Threading::Locker<MultiThreadedHandle>;

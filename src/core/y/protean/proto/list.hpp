@@ -14,15 +14,7 @@ namespace Yttrium
 {
     namespace Protean
     {
-
-        //! helper to setup same parts of ListProto
-#define Y_Protean_List_Proto()          \
-/**/   CONTAINER(),                     \
-/**/   ThreadingPolicy(),               \
-/**/   Ingress< Core::ListOf<NODE> >(), \
-/**/   list()
-
-
+        
         //______________________________________________________________________
         //
         //
@@ -282,12 +274,20 @@ namespace Yttrium
 
             //! setup with own cache
             inline explicit ListProto() :
-            Y_Protean_List_Proto(), pool()
+            CONTAINER(),
+            ThreadingPolicy(),
+            Ingress< Core::ListOf<NODE> >(),
+            list(),
+            pool()
             {}
 
             //! setup with shared cache \param shared existing cache
             inline explicit ListProto(const PoolType &shared) :
-            Y_Protean_List_Proto(), pool(shared)
+            CONTAINER(),
+            ThreadingPolicy(),
+            Ingress< Core::ListOf<NODE> >(),
+            list(),
+            pool(shared)
             {}
 
 

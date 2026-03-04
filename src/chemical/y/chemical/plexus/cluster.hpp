@@ -143,5 +143,5 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Chemical_Cluster_Included
 
