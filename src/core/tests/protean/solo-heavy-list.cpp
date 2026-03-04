@@ -13,9 +13,8 @@ using namespace Yttrium;
 
 Y_UTEST(protean_solo_heavy_list)
 {
-    System::Rand ran;
-
-    Concurrent::Mutex mutex;
+    System::Rand                  ran;
+    Concurrent::Mutex             mutex;
     List<int,SingleThreadedClass> st_list;
     List<int,MultiThreadedObject> mt_list;
     List<int,MultiThreadedHandle> sh_list(mutex);

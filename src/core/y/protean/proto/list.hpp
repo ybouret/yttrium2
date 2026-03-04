@@ -9,6 +9,7 @@
 #include "y/threading/must-lock.hpp"
 #include "y/type/ingress.hpp"
 #include "y/container/iter/linked.hpp"
+#include "y/container.hpp"
 
 namespace Yttrium
 {
