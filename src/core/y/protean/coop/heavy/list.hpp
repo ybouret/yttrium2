@@ -45,8 +45,11 @@ namespace Yttrium
             //
             //__________________________________________________________________
 
-            //! setupe empty \param shared shared pool
+            //! setup empty \param shared shared pool
             inline explicit CoopHeavyList(const PoolType &shared) : BaseType(shared) {}
+
+            //! setup empty \param shared shared pool \param handle PERSISTENT lockable
+            inline explicit CoopHeavyList(const PoolType &shared, Lockable &handle) : BaseType(shared,handle) {}
 
             //! cleanup
             inline virtual ~CoopHeavyList() noexcept {}
