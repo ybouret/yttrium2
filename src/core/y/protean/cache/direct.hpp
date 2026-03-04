@@ -18,7 +18,8 @@ namespace Yttrium
         //
         //! no local memory, direct I/O with Small::Blocks as global cache
         /**
-         no threading policy since it is always behind List::Lock
+         - no threading policy since it is always behind List::Lock
+         - internal guild memory management is thread-safe
          */
         //
         //______________________________________________________________________

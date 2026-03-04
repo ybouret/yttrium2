@@ -33,4 +33,4 @@ namespace Yttrium {
     
 }
 
-#endif
+#endif // !Y_MultiThreadedHandle_Included

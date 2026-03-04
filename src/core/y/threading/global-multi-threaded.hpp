@@ -32,5 +32,5 @@ namespace Yttrium {
     };
 
 }
-#endif
+#endif // !Y_GlobalMultiThreaded_Included
 
