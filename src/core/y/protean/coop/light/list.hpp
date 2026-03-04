@@ -45,6 +45,13 @@ namespace Yttrium
             //! setup \param shared shared cache
             inline explicit CoopLightList(const PoolType &shared) : BaseType(shared) {}
 
+            inline explicit CoopLightList(const PoolType &shared,
+                                          Lockable       &handle) :
+            BaseType(shared,handle)
+            {
+            }
+
+
             //! cleanup
             inline virtual ~CoopLightList() noexcept {}
 
@@ -62,4 +69,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Protean_CoopLightList_Included

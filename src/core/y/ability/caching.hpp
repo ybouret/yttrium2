@@ -45,4 +45,4 @@ namespace Yttrium
 
 }
 
-#endif
+#endif // !Y_Caching_Included

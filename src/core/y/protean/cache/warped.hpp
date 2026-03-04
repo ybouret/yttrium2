@@ -63,8 +63,8 @@ namespace Yttrium
 
 
             //! shared copy of zombies \param other another cache
-            inline WarpedCacheOf( const WarpedCacheOf &other ) :
-            CacheThreading(),
+            inline WarpedCacheOf(const WarpedCacheOf &other) :
+            CacheThreading(other),
             Caching(),
             zpool(other.zpool)
             {

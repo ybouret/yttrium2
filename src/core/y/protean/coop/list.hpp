@@ -108,10 +108,14 @@ namespace Yttrium
             //! setup \param shared shared pool
             inline explicit CoopList(const PoolType &shared) : CoreType(shared) {}
 
+            //! setup \param handle PERSISTENT lockable \param shared shared pool
+            inline explicit CoopList(const PoolType &shared, Lockable &handle) : CoreType(handle,shared)
+            {
+            }
+
             //! duplicate with same cache \param other another list
             inline CoopList(const CoopList &other) : Container(), CoreType(other)
             {
-                //this->duplicate(other);
             }
 
         private:
