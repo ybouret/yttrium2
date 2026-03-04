@@ -22,5 +22,5 @@ if(APPLE)
 	#target_link_libraries(y_mp_missing y-jive)
 endif()
 Y_CLI(y_chemsys)
-target_link_libraries(y_chemsys y-jive y-lua++ y-lua y-json y-chemical y-mkl)
+target_link_libraries(y_chemsys  y-chemical y-json y-jive y-mkl y-lua++ y-lua)
 
