@@ -121,29 +121,22 @@ namespace Yttrium
             Vizible::DotToPng(fileName);
         }
 
+        static inline
+        void RemoveLocalFile(const VFS::Entry &entry)
+        {
+            static LocalFS & fs = LocalFS:: Instance();
+            //std::cerr << "should remove " << entry << std::endl;
+            fs.tryRemoveFile(entry.path);
+        }
+
         using namespace Jive;
         void Clusters:: viz(const String &root) const
         {
+            LocalFS &    fs = LocalFS:: Instance();
+            const String rx = Pattern::ToRegExp(root) + "[:digit:]+[.]png";
+            //_VFS::Apply(fs, ".", rx, Matching::Exactly, VFS::Entry::Base, _VFS::Display);
+            _VFS::Apply(fs, ".", rx, Matching::Exactly, VFS::Entry::Base, RemoveLocalFile);
 
-            LocalFS & fs = LocalFS:: Instance();
-            Matching matching = Pattern::Exact(root);
-            
-#if 0
-            if( argc > 1 )
-            {
-                Matching matching  = argv[1];
-                if(argc>2)
-                {
-
-                    _VFS::Apply(fs,
-                                argv[1],
-                                argv[1],
-                                Matching::Exactly,
-                                VFS::Entry::Path,
-                                _VFS::Display);
-                }
-            }
-#endif
 
             for(size_t numOrder=1;numOrder<=maxOrder;++numOrder)
             {
