@@ -33,7 +33,7 @@ namespace Yttrium
 
         explicit SingleThreadedClass() noexcept; //!< setup
         virtual ~SingleThreadedClass() noexcept; //!< cleanup
-        SingleThreadedClass(const SingleThreadedClass &) noexcept; //!< duplicate
+        SingleThreadedClass(const SingleThreadedClass &) noexcept; //!< duplicate, do nothing
 
     private:
         Y_Disable_Assign(SingleThreadedClass); //!< discarding

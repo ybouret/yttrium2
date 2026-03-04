@@ -23,13 +23,14 @@ namespace Yttrium {
     public:
         typedef Threading::Locker<MultiThreadedObject> Lock; //!< alias
 
-        explicit MultiThreadedObject();           //!< setup
-        virtual ~MultiThreadedObject() noexcept;  //!< cleanup
+        explicit MultiThreadedObject();                   //!< setup
+        virtual ~MultiThreadedObject() noexcept;          //!< cleanup
+        MultiThreadedObject(const MultiThreadedObject &); //!< as setup
 
     private:
         friend class Threading::Locker<MultiThreadedObject>;
-        Y_Disable_Copy_And_Assign(MultiThreadedObject); //!< discarding
-        Lockable * const authorization;                 //!< new Concurrent::Mutex
+        Y_Disable_Assign(MultiThreadedObject); //!< discarding
+        Lockable * const authorization;        //!< new Concurrent::Mutex
     };
 
 }

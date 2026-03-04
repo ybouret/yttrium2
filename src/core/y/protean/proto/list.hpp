@@ -283,7 +283,7 @@ namespace Yttrium
             pool()
             {}
 
-            //! setup with own cache and external PERSISTENT Lockable
+            //! setup \param handle external PERSISTENT Lockable
             inline explicit ListProto(Lockable &handle) :
             CONTAINER(),
             ThreadingPolicy(handle),
@@ -293,7 +293,7 @@ namespace Yttrium
             {}
 
 
-            //! setup with shared cache \param shared existing cache
+            //! setup \param shared existing cache
             inline explicit ListProto(const PoolType &shared) :
             CONTAINER(),
             ThreadingPolicy(),
@@ -302,8 +302,15 @@ namespace Yttrium
             pool(shared)
             {}
 
-
-
+            //! setup \param shared existing cache
+            inline explicit ListProto(Lockable &handle, const PoolType &shared) :
+            CONTAINER(),
+            ThreadingPolicy(handle),
+            Ingress< Core::ListOf<NODE> >(),
+            list(),
+            pool(shared)
+            {}
+            
             //__________________________________________________________________
             //
             //
@@ -335,6 +342,36 @@ namespace Yttrium
             }
 
 
+            //! duplicate \param other another list
+            inline void duplicate(const ListProto &other)
+            {
+                volatile Lock primary(*this), replica(other);
+                assert(0==list.size);
+                duplicateInto(list,other);
+            }
+
+        private:
+            Y_Disable_Copy_And_Assign(ListProto); //!< discaring
+
+
+            inline virtual typename Entrance::ConstInterface & locus() const noexcept { return list; }
+
+            //! [Sequence] \return head value
+            inline virtual ConstType & getHead() const noexcept
+            {
+                Y_Must_Lock();
+                assert(list.head!=0);
+                return **list.head;
+            }
+
+            //! [Sequence] \return tail value
+            inline virtual ConstType & getTail() const noexcept
+            {
+                Y_Must_Lock();
+                assert(list.tail!=0);
+                return **list.tail;
+            }
+
             //! duplicate into agnostic list
             /**
              \param target list to fill
@@ -353,36 +390,6 @@ namespace Yttrium
                     while(target.size>0) pool.remove( target.popTail() );
                     throw;
                 }
-            }
-
-            //! duplicate \param other another list
-            inline void duplicate(const ListProto &other)
-            {
-                volatile Lock primary(*this), replica(other);
-                assert(0==list.size);
-                duplicateInto(list,other);
-            }
-
-
-
-        private:
-            Y_Disable_Copy_And_Assign(ListProto); //!< discaring
-            inline virtual typename Entrance::ConstInterface & locus() const noexcept { return list; }
-
-            //! [Sequence] \return head value
-            inline virtual ConstType & getHead() const noexcept
-            {
-                Y_Must_Lock();
-                assert(list.head!=0);
-                return **list.head;
-            }
-
-            //! [Sequence] \return tail value
-            inline virtual ConstType & getTail() const noexcept
-            {
-                Y_Must_Lock();
-                assert(list.tail!=0);
-                return **list.tail;
             }
         };
 

@@ -22,12 +22,13 @@ namespace Yttrium {
     public:
         typedef Threading::Locker<MultiThreadedHandle> Lock; //!< alias
 
-        explicit MultiThreadedHandle(Lockable &handle) noexcept; //!< setup \param handle PERSISTENT lockable
-        virtual ~MultiThreadedHandle()                 noexcept; //!< cleanup
+        explicit MultiThreadedHandle(Lockable &handle)   noexcept; //!< setup \param handle PERSISTENT lockable
+        virtual ~MultiThreadedHandle()                   noexcept; //!< cleanup
+        MultiThreadedHandle(const MultiThreadedHandle &) noexcept; //!< duplicate
 
     private:
         friend class Threading::Locker<MultiThreadedHandle>;
-        Y_Disable_Copy_And_Assign(MultiThreadedHandle); //!< discarding
+        Y_Disable_Assign(MultiThreadedHandle); //!< discarding
         Lockable * const authorization;                 //!< & handle
     };
     
