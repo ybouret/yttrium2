@@ -151,8 +151,15 @@ namespace Yttrium
                 Y_Disable_Assign(Pair); //!< discarding
             };
 
+            //! helper to use DISTANCE based algoithm
             template <typename DISTANCE> struct With
             {
+                //! find acceptable dispersed indices
+                /**
+                 \param idx output indices of smaple
+                 \param proc distance=proc(pos[i],pos[j])
+                 \param pos initial sample
+                 */
                 template <typename POSITION,typename PROC> static inline
                 void Make(Writable<size_t> &idx, PROC &proc, const Readable<POSITION> &pos)
                 {

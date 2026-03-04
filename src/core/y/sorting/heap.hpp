@@ -74,6 +74,7 @@ namespace Yttrium{
             /**
              \param arr contiguous contaier
              \param cmp object-wise comparator
+             \return arr 
              */
             //
             //__________________________________________________________________

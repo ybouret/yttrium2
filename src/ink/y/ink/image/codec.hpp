@@ -125,12 +125,23 @@ namespace Yttrium
                 save(broker,ramp,pixmap,fileName,options);
             }
 
+            //! convert indices to RGBA using a set of colors
             struct IndexToRGBA
             {
-                const Readable<RGBA> &cmap;
+                const Readable<RGBA> &cmap; //!< persistent colors
+
+                //! \return (0,0,0) if zero, cyclic values in cmap otherwise
                 RGBA operator()(size_t) const noexcept;
             };
 
+            //! save index map
+            /**
+             \param colorMap colors to use
+             \param broker   broker
+             \param pixmap   map of indices
+             \param fileName output file name
+             \param options  options
+             */
             template <typename FILENAME>
             inline void save(const Readable<RGBA> &colorMap,
                              Broker &              broker,

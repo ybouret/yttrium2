@@ -45,6 +45,7 @@ namespace Yttrium
             //! setup \param shared shared cache
             inline explicit CoopLightList(const PoolType &shared) : BaseType(shared) {}
 
+            //! setup \param shared shared cache \param handle PERSISTENT lockable
             inline explicit CoopLightList(const PoolType &shared,
                                           Lockable       &handle) :
             BaseType(shared,handle)

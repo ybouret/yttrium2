@@ -303,7 +303,7 @@ namespace Yttrium
             pool(shared)
             {}
 
-            //! setup \param shared existing cache
+            //! setup \param handle PERSISTENT lockable \param shared existing cache
             inline explicit ListProto(Lockable &handle, const PoolType &shared) :
             CONTAINER(),
             ThreadingPolicy(handle),
@@ -312,6 +312,7 @@ namespace Yttrium
             pool(shared)
             {}
 
+            //! duplicate \param other another list prototype
             inline ListProto(const ListProto &other) :
             CONTAINER(),
             ThreadingPolicy(other),

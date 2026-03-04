@@ -49,17 +49,17 @@ namespace Yttrium
             //__________________________________________________________________
             void computeK(const xreal_t ); //!< compute inner K
 
-            void viz(const String &root, const size_t numOrder) const; //!< viz/render root + numOrder + .dot
-            void viz(const String &root) const;                        //!< viz/render all orders
+            void viz(const String &root, const size_t numOrder) const; //!< viz/render  root + numOrder + .dot \param root root name \param numOrder order to save
+            void viz(const String &root) const;                        //!< viz/render all orders \param root root name
 
         private:
             Y_Disable_Copy_And_Assign(Clusters); //!< discarding
-            Y_Ingress_Decl();        //!< helper
-            CxxListOf<Cluster> list; //!< content
-            XArray             topK; //!< top level K array
+            Y_Ingress_Decl();                    //!< helper
+            CxxListOf<Cluster> list;             //!< content
+            XArray             topK;             //!< top level K array
 
         public:
-            const XReadable    &K;   //!< top level K reference
+            const XReadable    &K;        //!< top level K reference
             const size_t        maxOrder; //!< maximum order over all clusters
         };
     }

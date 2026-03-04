@@ -33,6 +33,7 @@ namespace Yttrium
             static const size_t Bins = 256;                         //!< number of bins
             static const size_t LocalMemory = Bins * sizeof(Type); //!< local memory
 
+            //! named quartile
             enum Quartile
             {
                 Q1, //!< first  quartile
@@ -81,7 +82,7 @@ namespace Yttrium
 
             //! \param q quartile to find \param lo lower bin \param up bin \return matching bin
             uint8_t find(const Quartile q, const uint8_t lo, const uint8_t up) const noexcept;
-            void    toCDF();
+            void    toCDF(); //!< convert to Cumulative Density Function
 
             void save(const Core::String<char> &) const; //!< save histogram data
             void save(const char * const)         const; //!< save histogram data

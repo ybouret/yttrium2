@@ -154,33 +154,35 @@ Gradual()
             return *this;
         }
 
+        //! \return first item
         inline Type & head() noexcept
         {
             assert(built>0);
             return data->entry[0];
         }
 
-
+        //! \return first const item
         inline ConstType & head() const noexcept
         {
             assert(built>0);
             return data->entry[0];
         }
 
-
-
+        //! \return last item
         inline Type & tail() noexcept
         {
             assert(built>0);
             return data->cxx[built];
         }
 
+        //! \return last const item
         inline ConstType & tail() const noexcept
         {
             assert(built>0);
             return data->cxx[built];
         }
 
+        //! remove last item
         inline void pop() noexcept
         {
             assert(built>0); assert(data->entry);
