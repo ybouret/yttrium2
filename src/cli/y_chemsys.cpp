@@ -31,6 +31,7 @@ Y_PROGRAM()
         std::cerr << *cl << std::endl;
     }
 
+#if 0
     {
         OutputFile fp("cs.dot");
         Vizible::Enter(fp);
@@ -43,6 +44,10 @@ Y_PROGRAM()
     }
 
     Vizible::DotToPng("cs.dot",false);
+#endif
+
+    cls.viz("cs",1);
+    
 }
 Y_EXECUTE()
 

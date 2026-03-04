@@ -49,6 +49,9 @@ namespace Yttrium
             //__________________________________________________________________
             void computeK(const xreal_t ); //!< compute inner K
 
+            void viz(const String &root, const size_t numOrder) const;
+
+
         private:
             Y_Disable_Copy_And_Assign(Clusters); //!< discarding
             Y_Ingress_Decl();        //!< helper
@@ -57,7 +60,7 @@ namespace Yttrium
 
         public:
             const XReadable    &K;   //!< top level K reference
-
+            const size_t        maxOrder; //!< maximum order over all clusters
         };
     }
 

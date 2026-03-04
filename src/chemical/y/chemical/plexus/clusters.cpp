@@ -6,21 +6,22 @@ namespace Yttrium
     namespace Chemical
     {
         Y_Ingress_Impl(Clusters,list)
-        
+
         Clusters:: ~Clusters() noexcept
         {
         }
 
         const char * const Clusters:: CallSign = "Clusters";
-        
+
         Clusters:: Clusters(XMLog &xml, Equilibria &eqs, const xreal_t t0) :
         list(),
         topK(0,0),
-        K(topK)
+        K(topK),
+        maxOrder(0)
         {
             Y_XML_Section(xml,CallSign);
             assert(!eqs.frozen());
-            
+
             for(Equilibria::Iterator it=eqs.begin();it!=eqs.end();++it)
             {
                 Equilibrium &eq = **it;
@@ -63,7 +64,10 @@ namespace Yttrium
                 cl->compile(xml,eqs,K);
                 Coerce(cl->indx) = icl;
                 ntot += (***cl).size;
+                InSituMax( Coerce(maxOrder), cl->order.size() );
             }
+            Y_XMLog(xml, "maxOrder=" << maxOrder);
+
 
             // prepare top level K
             {
@@ -86,6 +90,35 @@ namespace Yttrium
                 cl->compute(topK,t);
             }
         }
+
+    }
+
+}
+
+
+#include "y/format/decimal.hpp"
+#include "y/stream/libc/output.hpp"
+
+namespace Yttrium
+{
+    namespace Chemical
+    {
+        void Clusters:: viz(const String &root, const size_t numOrder) const
+        {
+            const String fileName = root + Decimal(numOrder).c_str() + ".dot";
+            {
+                OutputFile   fp(fileName);
+                Vizible::Enter(fp);
+                for(const Cluster *cl = list.head;cl;cl=cl->next)
+                {
+                    if(cl->order.size()<numOrder) continue;
+                    cl->viz(fp,numOrder);
+                }
+                Vizible::Leave(fp);
+            }
+            Vizible::DotToPng(fileName);
+        }
+
 
     }
 

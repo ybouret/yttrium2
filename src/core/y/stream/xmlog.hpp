@@ -123,5 +123,5 @@ do { if(HOST.verbose) { HOST.os << ATTR; HOST.quit(); } } while(false)
 }
 
 
-#endif
+#endif // !Y_XMLog_Included
 
