@@ -55,6 +55,13 @@ namespace Yttrium
             {
             }
 
+            //! duplicate, using new guild pointing to same blocks
+            inline DirectCacheOf(const DirectCacheOf &) : guild( sizeof(NODE) )
+            {
+                assert( guild.getBlockSize() >= sizeof(NODE) );
+            }
+
+
             //__________________________________________________________________
             //
             //
@@ -120,7 +127,7 @@ namespace Yttrium
             }
 
         private:
-            Y_Disable_Copy_And_Assign(DirectCacheOf); //!< discarding
+            Y_Disable_Assign(DirectCacheOf); //!< discarding
             Memory::Small::Guild guild; //!< directly to Small::Blocks
         };
 
