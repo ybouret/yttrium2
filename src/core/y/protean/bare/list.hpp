@@ -56,6 +56,9 @@ namespace Yttrium
             //! setup empty
             inline explicit BareList() : CoreType(), Releasable() {}
 
+            //! setup with lockable \param handle PERSISTENT lock
+            inline explicit BareList(Lockable &handle) : CoreType(handle), Releasable() {}
+
             //! duplicate \param other another list
             inline BareList(const BareList &other) : CoreType(), Releasable()
             {

@@ -5,6 +5,8 @@ namespace Yttrium
 {
     SingleThreadedClass::  SingleThreadedClass() noexcept {}
     SingleThreadedClass:: ~SingleThreadedClass() noexcept {}
+    SingleThreadedClass::  SingleThreadedClass( const SingleThreadedClass &) noexcept {}
+
 
     SingleThreadedClass:: Lock:: Lock(const SingleThreadedClass&) noexcept
     {

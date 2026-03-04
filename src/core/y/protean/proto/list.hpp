@@ -12,6 +12,8 @@
 
 namespace Yttrium
 {
+    class Lockable;
+    
     namespace Protean
     {
         
@@ -280,6 +282,16 @@ namespace Yttrium
             list(),
             pool()
             {}
+
+            //! setup with own cache and external PERSISTENT Lockable
+            inline explicit ListProto(Lockable &handle) :
+            CONTAINER(),
+            ThreadingPolicy(handle),
+            Ingress< Core::ListOf<NODE> >(),
+            list(),
+            pool()
+            {}
+
 
             //! setup with shared cache \param shared existing cache
             inline explicit ListProto(const PoolType &shared) :

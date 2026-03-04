@@ -43,6 +43,9 @@ namespace Yttrium
             //! setup empty
             inline explicit BareLightList() : BaseType() {}
 
+            //! setup empty \param handle PERSISTENT lockable
+            inline explicit BareLightList(Lockable &handle) : BaseType(handle) {}
+
             //! cleanup
             inline virtual ~BareLightList() noexcept {}
 

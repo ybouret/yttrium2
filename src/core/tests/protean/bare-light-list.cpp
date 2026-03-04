@@ -16,11 +16,11 @@ Y_UTEST(protean_bare_light_list)
     System::Rand ran;
     float        array[] = { 1, 2, 3, 4 };
 
-   // Concurrent::Mutex mutex;
+    Concurrent::Mutex mutex;
 
     Protean::BareLightList<float,SingleThreadedClass> st_list;
     Protean::BareLightList<float,MultiThreadedObject> mt_list;
-    //Protean::BareLightList<float,MultiThreadedHandle> sh_list(mutex);
+    Protean::BareLightList<float,MultiThreadedHandle> sh_list(mutex);
 
 
     for(size_t i=0;i<sizeof(array)/sizeof(array[0]);++i)
@@ -42,6 +42,7 @@ Y_UTEST(protean_bare_light_list)
 
     Protean::BareLightList<float,SingleThreadedClass> st_list2(st_list);
     Protean::BareLightList<float,MultiThreadedObject> mt_list2(mt_list);
+    //Protean::BareLightList<float,MultiThreadedHandle> sh_list2(sh_list);
 
 }
 Y_UDONE()
