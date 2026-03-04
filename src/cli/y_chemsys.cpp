@@ -1,6 +1,7 @@
 #include "y/system/program.hpp"
 #include "y/chemical/plexus/clusters.hpp"
 #include "y/chemical/weasel.hpp"
+#include "y/stream/libc/output.hpp"
 
 using namespace Yttrium;
 using namespace Chemical;
@@ -29,6 +30,19 @@ Y_PROGRAM()
     {
         std::cerr << *cl << std::endl;
     }
+
+    {
+        OutputFile fp("cs.dot");
+        Vizible::Enter(fp);
+        for(const Cluster *cl=cls->head;cl;cl=cl->next)
+        {
+            cl->viz(fp,1);
+        }
+
+        Vizible::Leave(fp);
+    }
+
+    Vizible::DotToPng("cs.dot",false);
 }
 Y_EXECUTE()
 
